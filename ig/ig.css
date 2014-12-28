@@ -1,0 +1,30 @@
+#menuhr {border:	solid #001e14 1px;height:1px;}
+#navigation {border-bottom:	solid #001e14 1px;
+		 padding:		5px;		}
+#statusbar {border-bottom:	solid #001e14 1px; 	color:#000000;}
+#img_area {	text-align:	center;
+		margin-top:	10px;		
+		background-color:	#ffffff;
+		}
+#footer	{border-top:	solid #001e14 1px;
+		padding:		10px;
+		text-align:	center;		}
+#footer p	{	font-size:		10px;
+		color:		#000000;
+		font-weight:	bold;		}
+#commentArea {text-align:left; font-size:12px;
+	border-right-width: 1px; border-right-style: solid; border-right-color: #001e14 ;
+	border-top-width: 1px; border-top-style: solid; border-top-color: #001e14 ;
+	border-left-width: 1px; border-left-style: solid; border-left-color: #001e14 ;
+	border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #001e14 ;
+}
+#comment {text-align:left; font-size:12px; background-color:#c8c8c7;border:0px;	}
+#commentList {text-align:left; font-size:12px; background-color:#ffffff;border:0px;	}
+#commentHeader {text-align:left; font-size:12px; background-color:#c8c8c7;border:0px;	}
+#metaData	{	font-size:10px;	color:#000000;	font-weight:normal;text-align:left;	}
+img {border:0px;	}
+a			{color:#000000;text-decoration:none; }
+a:hover		{color:#ff1eff;text-decoration:none; }
+#GGroup 	{font-size:14px;color:#000000;font-weight:bold;}
+#GLink 		{font-size:12px;color:#000000;font-weight:normal;	}
+#GLink:Hover{font-size:12px;color:#ff1eff;font-weight:normal;}

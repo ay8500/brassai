@@ -1,0 +1,9 @@
+#Picture Metafile
+visibleforall=yes
+date=
+title=1985 Edittel
+comment=
+ip=
+uploadDate=
+lastIp=127.0.0.1
+lastChangeDate=04.10.2009 23:27

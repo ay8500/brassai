@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>http://brassai.blue-l.de/</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>http://brassai.blue-l.de/index.php?scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-27</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>http://brassai.blue-l.de/index.php?scoolYear=1985&amp;scoolClass=12A</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/brassai.php</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/iskola.php</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.9</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?guests=true&amp;scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.9</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/tablo.php?scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.7</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?scoolYear=1985&amp;scoolClass=12A</loc>
+  <priority>0.9</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?guests=true&amp;scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.9</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/tablo.php?scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.7</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=CSOPORT</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=BALLAGAS</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=LASTDAYS</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/LASTDAYS&amp;slideshow_index=10</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=EMLEKEK</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/EMLEKEK&amp;slideshow_index=11</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK10</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/TALALK10&amp;slideshow_index=10</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK15</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/TALALK15&amp;slideshow_index=10</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK20</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/TALALK20&amp;slideshow_index=12</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK25</loc>
+  <priority>0.8</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/TALALK25&amp;slideshow_index=10</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK25S</loc>
+  <priority>0.8</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/TALALK25S&amp;slideshow_index=10</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK25T</loc>
+  <priority>0.8</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/pictureGallery.php?view=slideshow&amp;gallery=ig/TALALK25T&amp;slideshow_index=10</loc>
+  <priority>0.5</priority>
+  <lastmod>2013-06-06</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>http://brassai.blue-l.de/zenetoplista.php</loc>
+  <priority>0.7</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/worldmap.php?scoolYear=1985&amp;scoolClass=12B</loc>
+  <priority>0.7</priority>
+  <lastmod>2013-06-27</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/worldmap.php?scoolYear=1985&amp;scoolClass=12A</loc>
+  <priority>0.7</priority>
+  <lastmod>2013-06-27</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/vote.php</loc>
+  <priority>0.7</priority>
+  <lastmod>2013-06-27</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/impressum.php</loc>
+  <priority>0.5</priority>
+  <lastmod>2010-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+
+<url>
+	<loc>http://brassai.blue-l.de/Tamas_Gizella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Andras_Gizella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Varga_Dorottya</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Balogh_Dorottya</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Barabasi_Jeno-Rudolf</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Benedek_Zsolt</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Eniko_Hinschutz</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bereczki_Eniko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Biro_Adam-Atilla</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Katalin</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Biro_Katalin</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bujaki_Sandor</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Gaspar_Edina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Cosma_Edina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Csaszar_Istvan</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/David_Ildiko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Daniel_Ildiko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Donath_Kalman</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szilagyi_Ildiko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dozsa_Ildiko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Onci_Krisztina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Erdelyi_Krisztina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Buchmuller_Agnes</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Ferenc_Agnes</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Veres_Agnes</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Fulop_Agnes</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szallos_Eszter</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Gergely_Eszter</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Gruber_Oszkar</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kali_Sandor</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Maier_Levente</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-01-12</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kiss_Edit</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Krull_Klara</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kiss_Klara</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bogardi_Magdolna</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kocsis_Magdolna</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Laszlo</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Donath_Julia-Karmen</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-01-12</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Miklos_Andras</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Darai_Gabriella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Pallos_Gabriella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Petrov_Ljubomir</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Sover_Laszlo-Tibor</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szabo_Istvan</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szekely_Hajnalka</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Tatar_Tunde</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Varga_Ildiko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vincze-Nemet_Gabriella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vanyolosi_Gabriella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Moll_Marta</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Zsiboi_Marta</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Ferenczy-Vass_Eva</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vass_Eva</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+
+
+
+<url>
+	<loc>http://brassai.blue-l.de/Balazs_Attila</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Fodor_Eva</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Balog_Eva</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bodo_Istvan</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-12-01</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Boros_Edit</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Both_Melinda</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Chiorean_Krisztina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Branea_Krisztina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vernes_Ibolya</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bukkos_Ibolya</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bukkos_Ildiko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dali_Endre</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Deak_Attila</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kalman_Maria-Magdolna</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Enyedi_Maria-Magdolna</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Felhazi_Sandor</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Fulop_Erzsebet</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Gellert_Ilona</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Ilike_Ilona</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Hosszu_Sandor</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Jasko_Ilona</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kelemen_Attila</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kiss_Attila-Geza</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kis-Lukacs_Laszlo</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kory_Orsolya</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Arpad</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Adelka</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szabo_Eva</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kudor_Eva</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Lazar_Gabriella</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Lenard_Jozsef</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Yogi_Jozsef</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Marton-Asgrim_Aniko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Marton_Aniko</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Berger_Maria</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Molnar_Maria</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Papp_Levente</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szados_Erzsebet</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Peter_Erzsebet</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dosa_Magda</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Rigo_Magda</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dezsi_Krisztina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Ripka_Krisztina</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Rozsa_Julianna</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Losteiner_Agnes</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Sepsy_Agnes</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Gergely-Varga_Andrea</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Simonfi_Andrea</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Tar-Bengtsson_Zsuzsa</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Tar_Zsuzsa</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Toth_Ibolya</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bazsa_Jolan</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Tokes_Jolan</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Veres_Gitta</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Nagy_Maria</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vremir_Marton</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Revesz_Erzsebet</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kiss_Erzsebet</loc>
+	<priority>0.5</priority>
+	<lastmod>2010-09-09</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+
+
+</urlset>

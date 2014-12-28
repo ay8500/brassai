@@ -1,0 +1,9 @@
+#Picture Metafile
+visibleforall=yes
+date=
+title=
+comment=
+ip=
+uploadDate=
+lastIp=92.82.40.134
+lastChangeDate=02.11.2009 19:32
