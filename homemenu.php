@@ -15,6 +15,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
 	<title><?PHP echo($SiteTitle) ?></title>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-15">
 	<link rel="stylesheet" type="text/css" href="menu.css" />
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />
@@ -137,9 +138,6 @@
 	<br /><br />
 	Facebook
 	<div><a name="fb_share" type="button_count" share_url="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></div>
-	<br />
-	iwiw
-	<div><script type='text/javascript'>document.write("<iframe src='http://iwiw.hu/like.jsp?u="+encodeURIComponent(document.location)+"&title="+encodeURIComponent(document.title)+"&t=tetszik&s=white' width='90px' height='21px' style='border: none' scrolling='no' frameBorder='0'></iframe>");</script></div>
 	<hr />
 	<?PHP 
 		writeLogonBox(); 
