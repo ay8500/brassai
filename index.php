@@ -26,9 +26,9 @@ include("homemenu.php");
 <table align="center"class="pannel">
   <tr><td>
 
-	<table>
-  <tr><td>
-  <table border="1">
+  <table style="width: 600px;">
+  <tr><td align="center">
+  <table style="width: 500px;" align="center" border="1">
 	<tr>
 		<td style="text-align:center;width:300px">
 			<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>
@@ -42,10 +42,9 @@ include("homemenu.php");
   </table>
   </td></tr>
 </table>
-</td></tr><tr><td>
+</td></tr><tr><td align="center">
 	Ez az oldal <B>1997. junius 11.</B>-e &oacute;ta el&eacute;rhet&otilde;.
-	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2010. julius 31.</b>-én.<br>
-	A honlap az általánosan használt web-böngészök újabb verzióival (Safari, Firefox, Google Chrome, IE 8, Opera ) kompatibilis.<br>
+	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2014. december 29.</b>-én.<br>
 </td>
 </tr>
 </table>
