@@ -34,8 +34,8 @@
 	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />
 	
-	<script type="text/javascript" src="http://www.blue-l.de/stat/track.php?mode=js"></script>
-	<noscript><img src="http://www.blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
+	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
+	<noscript><img src="http://s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
