@@ -44,7 +44,7 @@ include("homemenu.php");
 </table>
 </td></tr><tr><td align="center">
 	Ez az oldal <B>1997. junius 11.</B>-e &oacute;ta el&eacute;rhet&otilde;.
-	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2014. december 29.</b>-én.<br>
+	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2015. április 12.</b>-én.<br>
 </td>
 </tr>
 </table>
