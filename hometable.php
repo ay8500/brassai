@@ -61,6 +61,8 @@ foreach ($data as $l => $d)
 		if(showField($d["mobil"])) echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
 		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
 		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
+		if(showField($d["facebook"])) echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.getFieldValue($d["facebook"]).'">'.getFieldValue($d["facebook"])."</a></td></tr>";
+		if(showField($d["homepage"])) echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.getFieldValue($d["homepage"]).'">'.getFieldValue($d["homepage"])."</a></td></tr>";
 		if ( userIsAdmin() || userIsEditor()) {
 			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$l.'">Módósít</a></td><td>&nbsp;</td></tr>';
 		}

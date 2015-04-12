@@ -6,7 +6,7 @@ $data = array();
 
 //List of databases
 $dataBase=Array("12A1985","12B1985");
-$datafields = array("firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip");
+$datafields = array("firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook");
 
 
 //select the database
