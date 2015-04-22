@@ -107,7 +107,7 @@
 								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25T">Torockói panzió</a></li>
 								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">Székelykö</a></li>
 							</ul></li>
-							<li><a href="vote.php">30-éves Találkozó</a></li>
+							<li><a href="talalk30.php">30-éves Találkozó</a></li>
 						</ul></li>
 					<?PHP }  ?>
 					<?PHP if (true && ($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12B')) { ?>
