@@ -1,13 +1,13 @@
-1|1|A kˆr|http://www.youtube.com/watch?v=dcgo-zNAaSs|http://www.edda.hu/
-2|1|Elhagyom a v·rost|http://www.youtube.com/watch?v=dvDtGVMqFUo|http://www.edda.hu/
-3|3|Modern rom·nc|http://www.youtube.com/watch?v=I9Rhc7_EoMs|http://www.dollyroll.hu/
-4|1|Sz·lljunk fel!|http://www.youtube.com/watch?v=O342iUVhJIs|http://www.edda.hu/
-5|3|Wind Szˆrny|http://www.youtube.com/watch?v=wXxpmPT7zb8|http://www.dollyroll.hu/
-6|8|Any·m, Ha Szeretsz |http://www.youtube.com/watch?v=mI-oerL9_Js|http://www.100folkcelsius.hu/
-7|13|T·ncolÛ fekete lakkcipık |http://www.youtube.com/watch?v=lfa_XQPBeS0|http://hu.wikipedia.org/wiki/Kom%C3%A1r_L%C3%A1szl%C3%B3
+1|1|A k√∂r|http://www.youtube.com/watch?v=dcgo-zNAaSs|http://www.edda.hu/
+2|1|Elhagyom a v√°rost|http://www.youtube.com/watch?v=dvDtGVMqFUo|http://www.edda.hu/
+3|3|Modern rom√°nc|http://www.youtube.com/watch?v=I9Rhc7_EoMs|http://www.dollyroll.hu/
+4|1|Sz√°lljunk fel!|http://www.youtube.com/watch?v=O342iUVhJIs|http://www.edda.hu/
+5|3|Wind Sz√∂rny|http://www.youtube.com/watch?v=wXxpmPT7zb8|http://www.dollyroll.hu/
+6|8|Any√°m, Ha Szeretsz |http://www.youtube.com/watch?v=mI-oerL9_Js|http://www.100folkcelsius.hu/
+7|13|T√°ncol√≥ fekete lakkcip√µk |http://www.youtube.com/watch?v=lfa_XQPBeS0|http://hu.wikipedia.org/wiki/Kom%C3%A1r_L%C3%A1szl%C3%B3
 8|11|Time After Time |http://www.youtube.com/watch?v=SlykYu5QOkM|http://www.cyndilauper.com/
 9|19|Woodpeckers from space |http://www.youtube.com/watch?v=3Qo1__kbwrA|http://en.wikipedia.org/wiki/VideoKids
-10|17|Dinamit A VÈrem|http://www.youtube.com/watch?v=QQM8gC3SWb4|http://www.zeneszoveg.hu/dalszoveg/10993/dinamit/dinamit-a-verem-zeneszoveg.html
+10|17|Dinamit A V√©rem|http://www.youtube.com/watch?v=QQM8gC3SWb4|http://www.zeneszoveg.hu/dalszoveg/10993/dinamit/dinamit-a-verem-zeneszoveg.html
 11|20|We are the champions|http://www.youtube.com/watch?v=xdCrZfTkG1c|http://www.queenonline.com/
 12|21|You Win Again|http://www.youtube.com/watch?v=pAeLIyO1n9I|
 13|22|You Drive Me Crazy|
@@ -17,20 +17,20 @@
 17|14|I Have A Dream|http://www.youtube.com/watch?v=Y2YOGfBFAb|http://www.abbasite.com/
 18|24|Living Next Door To Alice|http://www.youtube.com/watch?v=NKNfb13vcDI|
 19|25|The Power Of Love|http://www.youtube.com/watch?v=Lr0xJBsVbZY|
-20|5|Gyˆngyhaj˙ l·ny|http://www.youtube.com/watch?v=tN1RdgZj2Ts|
+20|5|Gy√∂ngyhaj√∫ l√°ny|http://www.youtube.com/watch?v=tN1RdgZj2Ts|
 21|4|Casino Twist|http://www.youtube.com/watch?v=Ec7p1Wiqjf0|
-22|4|CsÛkkir·ly|http://www.youtube.com/watch?v=a4pQSCVBJSM|
-23|4|Limbo HintÛ |http://www.youtube.com/watch?v=haPLxloxnCU|
-24|2|LÈtezem|http://www.youtube.com/watch?v=ww4muZV8FMY|www.rgo.hu
-25|2|Szerelmes vagyok, mint egy nagy ·gy˙|http://www.youtube.com/watch?v=VJYLpKiJxaE|http://www.rgo.hu
+22|4|Cs√≥kkir√°ly|http://www.youtube.com/watch?v=a4pQSCVBJSM|
+23|4|Limbo Hint√≥ |http://www.youtube.com/watch?v=haPLxloxnCU|
+24|2|L√©tezem|http://www.youtube.com/watch?v=ww4muZV8FMY|www.rgo.hu
+25|2|Szerelmes vagyok, mint egy nagy √°gy√∫|http://www.youtube.com/watch?v=VJYLpKiJxaE|http://www.rgo.hu
 26|15|In The Army Now|http://www.youtube.com/watch?v=uAgJpDCI-lI|
 27|26|Wind Of Change|http://www.youtube.com/watch?v=rMUX_4B-Hr4|http://www.the-scorpions.com
 28|4|Micsoda Buli |http://www.youtube.com/watch?v=FRdaOJbXPeg|
 29|4|Multimilliomos Jazzdobos|http://www.youtube.com/watch?v=p7yhgOSIdOA|
-30|3|Vak·ciÛ|http://www.youtube.com/watch?v=N8kOB2hvcos|
-31|18|Hossz˙ az a nap|http://www.youtube.com/watch?v=yXEBsLvbFP4|
+30|3|Vak√°ci√≥|http://www.youtube.com/watch?v=N8kOB2hvcos|
+31|18|Hossz√∫ az a nap|http://www.youtube.com/watch?v=yXEBsLvbFP4|
 32|18|Holnap hajnalig|http://www.youtube.com/watch?v=DQZHfXhbO5A|
-34|18|Hossz˙ az a nap|http://www.youtube.com/watch?v=yXEBsLvbFP4|
+34|18|Hossz√∫ az a nap|http://www.youtube.com/watch?v=yXEBsLvbFP4|
 35|27|Kids In America|http://www.youtube.com/watch?v=pKpObNMeeSY|
 36|28|Don't dream its over |http://www.youtube.com/watch?v=VHjT3CHvg-c|
 37|29|It started with a kiss|http://www.youtube.com/watch?v=HM_Ge9AZZec|
@@ -41,18 +41,18 @@
 42|33|Another Day In Paradise |http://www.youtube.com/watch?v=oFBT8_XbGqg|
 43|34|I'm Alive |http://www.youtube.com/watch?v=WFbF4j-y3ZY|
 44|35|Rasputin|http://www.youtube.com/watch?v=o7rPKT36mK4|
-45|17|Igazs·g|http://www.youtube.com/watch?v=a1evKw7JmLo|
-46|36|GÈpnek sz¸lettem |http://www.youtube.com/watch?v=bTTgD7jX_So|
-47|36|Gyerty·k|http://www.youtube.com/watch?v=gWQgrNAU4hc|
+45|17|Igazs√°g|http://www.youtube.com/watch?v=a1evKw7JmLo|
+46|36|G√©pnek sz√ºlettem |http://www.youtube.com/watch?v=bTTgD7jX_So|
+47|36|Gyerty√°k|http://www.youtube.com/watch?v=gWQgrNAU4hc|
 48|37|One Moment In Time|http://www.youtube.com/watch?v=tYFHAvULvJ0|
-49|17|K¸lv·rosban sz¸lettem|CJG6t98lBvc|
+49|17|K√ºlv√°rosban sz√ºlettem|CJG6t98lBvc|
 50|38|They Don't Care About Us |MM8dwh_Kde4|
 51|39|Push The Button|ZO2JabccTBk|
-52|2|Megy a l·ny|E87b3R7zZKo|
+52|2|Megy a l√°ny|E87b3R7zZKo|
 54|2|Ballag a katona|QkEhfOiR-QI|
 55|21|How Deep Is Your Love|0vgwk8tUT5k|
 56|34|My Heart Will Go On|zmbw8OycJrE|
-57|3|¡br·ndos szÈp napok|OC99IyTr_LA|
+57|3|√Åbr√°ndos sz√©p napok|OC99IyTr_LA|
 58|3|Arrivederci Amore|CTjNhH4V0Rk|
 60|21|How Deep Is Your Love|0vgwk8tUT5k|
 63|34|My Heart Will Go On|zmbw8OycJrE|
@@ -75,17 +75,17 @@
 80|49|Celebration|http://www.youtube.com/watch?v=CD2-N9CjOEI|
 81|49|Secretes Of Love|http://www.youtube.com/watch?v=hKNLwM1NllU|
 82|50|Bad Boys|V2EOzaEWsyo|
-83|9|Ha Èn rÛzsa volnÈk|6ojhBoj8bP8|
-84|9|Valahol egy l·ny|dZmA8MPpxCw|
-85|9|Jˆjj kedvesem|ahma7wz5P1o|
-86|51|Lakodalom van a mi utc·nkba|fE_Deudsj40|
-87|51|GÛlya, gÛlya hossz˙l·b˙ gÛlya|pnTE9ISF9CQ|
-88|51|Lemegyek a pince fenekÈre|wR5I-po_kFs|
+83|9|Ha √©n r√≥zsa voln√©k|6ojhBoj8bP8|
+84|9|Valahol egy l√°ny|dZmA8MPpxCw|
+85|9|J√∂jj kedvesem|ahma7wz5P1o|
+86|51|Lakodalom van a mi utc√°nkba|fE_Deudsj40|
+87|51|G√≥lya, g√≥lya hossz√∫l√°b√∫ g√≥lya|pnTE9ISF9CQ|
+88|51|Lemegyek a pince fenek√©re|wR5I-po_kFs|
 89|42|Cryin|q2_GCcXEgfQ|
 90|52|Iko Iko|5_8IifQjYuI|
 91|52|Captain Jack|CUvg7Empjfg|
 92|53|I Just Called To Say I Love You|XxoBaEQGMPo|
-93|54|Szeress ˙gy is, ha rossz vagyok|UQV6f7P3McQ|
+93|54|Szeress √∫gy is, ha rossz vagyok|UQV6f7P3McQ|
 94|55|Twist in my Sobriety|sJdgSRzv8wE|
 95|56|Can\'t Help Falling In Love With You|qCfAmkvuXP8|
 96|57|Enjoy The Silence|V7eR7AqvUkI|

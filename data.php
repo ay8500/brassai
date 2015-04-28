@@ -542,7 +542,7 @@ function getPersonLink($fn,$ln) {
 }
 
 function getNormalisedChars($s) {
-  return strtr($s, " âäåáàéèíîöóòõúùüÅÁÄÉÖÜ", "-aaaaaeeiioooouuuAAAEOU");
+  return strtr($s, " Ã¢Ã¤Ã¥Ã¡Ã Ã©Ã¨Ã­Ã®Ã¶Ã³Ã²ÃµÃºÃ¹Ã¼Ã…ÃÃ„Ã‰Ã–Ãœ", "-aaaaaeeiioooouuuAAAEOU");
 }
 
 ?>

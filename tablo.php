@@ -9,10 +9,10 @@ if (isset($_GET['scoolClass']))  {
 }
 
 include_once("data.php");
-$SiteTitle="Ballag·si tablÛ ".getDatabaseName();
+$SiteTitle="Ballag√°si tabl√≥ ".getDatabaseName();
 include("homemenu.php"); ?>
 
-<h2 class="sub_title">A tan&aacute;rok &eacute;s di&aacute;kok egy&uuml;tt a ballag·si TablÛn.</h2>
+<h2 class="sub_title">A tan&aacute;rok &eacute;s di&aacute;kok egy&uuml;tt a ballag√°si Tabl√≥n.</h2>
 
   <table align="center" border="1">
     <td><IMG SRC="images/tablo<?PHP echo($_SESSION['scoolYear'].$_SESSION['scoolClass']);?>.jpg" width="640" height="369">

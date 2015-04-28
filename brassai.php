@@ -1,6 +1,6 @@
 <?PHP
-$SiteTitle="Brassai Sámuel életrajza"; 
-$SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai";
+$SiteTitle="Brassai SÃ¡muel Ã©letrajza"; 
+$SiteDescription="Brassai SÃ¡muel: nyelvÃ©sz, filozÃ³fus, termÃ©szettudÃ³s, az â€utolsÃ³ erdÃ©lyi polihisztorâ€ Ã©letrajzi adatai";
 include("homemenu.php"); 
 ?>
 
@@ -9,7 +9,7 @@ include("homemenu.php");
   <TR><TD>
   <TABLE BORDER=1>
    <TR><TD ALIGN="CENTER" WIDTH=300>
-    <img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/><br/>
+    <img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai SÃ¡muel"/><br/>
    <B><FONT SIZE=2>Brassai S&aacute;muel (1800-1897)</FONT></B>
    </TD></TR>
   </TABLE>
@@ -22,38 +22,38 @@ include("homemenu.php");
   </TD></TR>
 </TABLE>
 </TD></TR><TR><TD>
-<h2 class="sub_title">Brassai Sámuel életrajzi adatai</h2>
-<p>- 1797., ill. 1800 június 15-én született Torockószentgyörgyön (saját bevallása szerint 1797-ben - hivatalos iratba nincs bejegyezve, mivel nagyapja keresztelte Torockószent-györgyön). Édesapja Brassai Sámuel, Torockószentgyörgyön iskolamester, unitárius pap. Édesanyja, Koncz Krisztina, unitárius papcsaládból származó tanult, igen mûvelt nõ. A család 1827-ig lakik Torockószentgyörgyön, majd id. Brassai Sámuel Szentmihályfalvára költözik, itt lesz unitárius pap haláláig, 1837-ig.
-<p>- 1813: kisebb megszakításokkal 1820-ig a Kolozsvári Unitárius Kollégiumban tanul
-<p>- 1821: Zsibón a Wesselényi Miklós meghívására rendezi ennek könyvtárát 
-<p>- 1821-1837: a Bethlen és Kendeffy családoknál magántanár, zenét, nyelveket tanít. Rettegen, Iklódon és Bécsben él ezekben az években. 
-<p>- 1831: megjelennek elsõ cikkei
-<p>- 1832: megjelenik elsõ jelentõs esztétikai tanulmánya: "A gyönyörûségrõl"
-<p>- 1834: szerkeszti a Vasárnapi Újságot, mely 4 oldalban, magyar nyelven jelenik meg; "közhasznú ismeretekkel" neveli, tanítja Erdély olvasótáborát. Kolozsvár kulturális-társadal-mi életének minden jelentõs szervezkedésében és megnyilatkozásában részt vesz.
-<p>- az 1836-ban létesült Úrikaszinó alapító tagja (ez egy értelmiséget összefogó, klub jellegû társaság, mely Széchenyi István kezdeményezésére alakult; nagy jelentõsége van Kolozsvár kulturális-gazdasági-társadalmi életében)
-<p>- 1837: a Kolozsvári Unitárius Kollégium tanára. Magyarul tanít, annak ellenére, hogy a zsinat csak 1841-ben engedélyezi ezt (addig a tanítás hivatalos nyelve a latin)
-<p>- 1834: földrajzkönyve jelenik meg magyar nyelven "Bevezetés a Világ, Föld és Státusok ismeretébe" címmel
-<p>- tanári munkássága alatt tankönyveket ír, mert látja ezek hiányát. Megindítja a "Kék könyvtár" sorozatot (fûzött, olcsó kiadású könyvecskék); német, francia nyelvkönyvet szerkeszt, matematika tankönyvet "Számító Szokrátesz" címmel, algebrai gyakorlókönyvet ad ki, valamint a "Magyar Fûvészkönyvet" és a "Latin nyelvtant". 
-<p>- 1865: megjelenik egyik legjelentõsebb tanulmánya "A Módszerrõl" címmel, melyben pedagógiai munkásságának tapasztalatait foglalja össze, tulajdonképpen a magyar didaktika tudomány alapjait fekteti le ezzel a tanulmányával
-<p>	Tanítsunk "keveset, jól és lassan" - vallja Brassai - "Tanítsunk igazságot, legyünk fokozatosak és következetesek."
-<p>- 1848-as szereplése miatt Pestre menekül, majd a szabadságharc bukása után Szatmár és Máramaros megyékben bújkál
-<p>- 1850-59: Kolozsvártól távol, Budapesten él édesanyjával, akit édesapja halála után (1837) magához vesz
-<p>- Erkel Ferenccel, Hubay Miklós hegedûmûvésszel barátkozik, gyakran megfordul Eötvös József házában, ahol Eötvösnével kamarazenélnek - négykezeseket játszanak
-<p>- 1859: visszakerül Kolozsvárra és az Unitárius Kollégium tanára 1862-ig, amikor lemond tanári állásáról és a Kollégiumnak 1000 forintos alapítványt tesz
-<p>- 1859: az Erdélyi Múzeum alapító tagja, õre, majd igazgatója. A Múzeum Mikó-kerti házában lakik édesanyjával.
-<p>- 1862: meghal édesanyja
-<p>- 1865: a Magyar Tudományos Akadémia rendes tagjává választja
-<p>- 1872: az akkor alakult Kolozsvári Ferencz József Tudományegyetem rendes tanára a matematikai tanszéken, de tanít szanszkrit nyelvet és nyelvbölcseletet is
-<p>- 1881: az egyetem természettudományi karán tanuló, szegény sorú hallgatók számára létesít alapítványt
-<p>- 1883: egyetemi tanárként nyugdíjazzák
-<p>- 1884: a Dávid Ferenc Egylet alapító tagja és elnöke
-<p>- 1887: a Kolozsvári Zenetársaság alapító tagja
-<p>- 1897 májusától gyengélkedik a Kolozsvári Vöröskeresztes Kórházban, itt látogatja meg Hubay Jenõ hegedûmûvész, aki kérésére a Bach Chacon-ját játssza neki búcsúként
-<p>- 1897 június 24-én hunyt el, az unitárius templomban ravatalozzák fel, a Házsongárdi temetõben helyezik örök nyugalomra
+<h2 class="sub_title">Brassai SÃ¡muel Ã©letrajzi adatai</h2>
+<p>- 1797., ill. 1800 jÃºnius 15-Ã©n szÃ¼letett TorockÃ³szentgyÃ¶rgyÃ¶n (sajÃ¡t bevallÃ¡sa szerint 1797-ben - hivatalos iratba nincs bejegyezve, mivel nagyapja keresztelte TorockÃ³szent-gyÃ¶rgyÃ¶n). Ã‰desapja Brassai SÃ¡muel, TorockÃ³szentgyÃ¶rgyÃ¶n iskolamester, unitÃ¡rius pap. Ã‰desanyja, Koncz Krisztina, unitÃ¡rius papcsalÃ¡dbÃ³l szÃ¡rmazÃ³ tanult, igen mÃ»velt nÃµ. A csalÃ¡d 1827-ig lakik TorockÃ³szentgyÃ¶rgyÃ¶n, majd id. Brassai SÃ¡muel SzentmihÃ¡lyfalvÃ¡ra kÃ¶ltÃ¶zik, itt lesz unitÃ¡rius pap halÃ¡lÃ¡ig, 1837-ig.
+<p>- 1813: kisebb megszakÃ­tÃ¡sokkal 1820-ig a KolozsvÃ¡ri UnitÃ¡rius KollÃ©giumban tanul
+<p>- 1821: ZsibÃ³n a WesselÃ©nyi MiklÃ³s meghÃ­vÃ¡sÃ¡ra rendezi ennek kÃ¶nyvtÃ¡rÃ¡t 
+<p>- 1821-1837: a Bethlen Ã©s Kendeffy csalÃ¡doknÃ¡l magÃ¡ntanÃ¡r, zenÃ©t, nyelveket tanÃ­t. Rettegen, IklÃ³don Ã©s BÃ©csben Ã©l ezekben az Ã©vekben. 
+<p>- 1831: megjelennek elsÃµ cikkei
+<p>- 1832: megjelenik elsÃµ jelentÃµs esztÃ©tikai tanulmÃ¡nya: "A gyÃ¶nyÃ¶rÃ»sÃ©grÃµl"
+<p>- 1834: szerkeszti a VasÃ¡rnapi ÃšjsÃ¡got, mely 4 oldalban, magyar nyelven jelenik meg; "kÃ¶zhasznÃº ismeretekkel" neveli, tanÃ­tja ErdÃ©ly olvasÃ³tÃ¡borÃ¡t. KolozsvÃ¡r kulturÃ¡lis-tÃ¡rsadal-mi Ã©letÃ©nek minden jelentÃµs szervezkedÃ©sÃ©ben Ã©s megnyilatkozÃ¡sÃ¡ban rÃ©szt vesz.
+<p>- az 1836-ban lÃ©tesÃ¼lt ÃšrikaszinÃ³ alapÃ­tÃ³ tagja (ez egy Ã©rtelmisÃ©get Ã¶sszefogÃ³, klub jellegÃ» tÃ¡rsasÃ¡g, mely SzÃ©chenyi IstvÃ¡n kezdemÃ©nyezÃ©sÃ©re alakult; nagy jelentÃµsÃ©ge van KolozsvÃ¡r kulturÃ¡lis-gazdasÃ¡gi-tÃ¡rsadalmi Ã©letÃ©ben)
+<p>- 1837: a KolozsvÃ¡ri UnitÃ¡rius KollÃ©gium tanÃ¡ra. Magyarul tanÃ­t, annak ellenÃ©re, hogy a zsinat csak 1841-ben engedÃ©lyezi ezt (addig a tanÃ­tÃ¡s hivatalos nyelve a latin)
+<p>- 1834: fÃ¶ldrajzkÃ¶nyve jelenik meg magyar nyelven "BevezetÃ©s a VilÃ¡g, FÃ¶ld Ã©s StÃ¡tusok ismeretÃ©be" cÃ­mmel
+<p>- tanÃ¡ri munkÃ¡ssÃ¡ga alatt tankÃ¶nyveket Ã­r, mert lÃ¡tja ezek hiÃ¡nyÃ¡t. MegindÃ­tja a "KÃ©k kÃ¶nyvtÃ¡r" sorozatot (fÃ»zÃ¶tt, olcsÃ³ kiadÃ¡sÃº kÃ¶nyvecskÃ©k); nÃ©met, francia nyelvkÃ¶nyvet szerkeszt, matematika tankÃ¶nyvet "SzÃ¡mÃ­tÃ³ SzokrÃ¡tesz" cÃ­mmel, algebrai gyakorlÃ³kÃ¶nyvet ad ki, valamint a "Magyar FÃ»vÃ©szkÃ¶nyvet" Ã©s a "Latin nyelvtant". 
+<p>- 1865: megjelenik egyik legjelentÃµsebb tanulmÃ¡nya "A MÃ³dszerrÃµl" cÃ­mmel, melyben pedagÃ³giai munkÃ¡ssÃ¡gÃ¡nak tapasztalatait foglalja Ã¶ssze, tulajdonkÃ©ppen a magyar didaktika tudomÃ¡ny alapjait fekteti le ezzel a tanulmÃ¡nyÃ¡val
+<p>	TanÃ­tsunk "keveset, jÃ³l Ã©s lassan" - vallja Brassai - "TanÃ­tsunk igazsÃ¡got, legyÃ¼nk fokozatosak Ã©s kÃ¶vetkezetesek."
+<p>- 1848-as szereplÃ©se miatt Pestre menekÃ¼l, majd a szabadsÃ¡gharc bukÃ¡sa utÃ¡n SzatmÃ¡r Ã©s MÃ¡ramaros megyÃ©kben bÃºjkÃ¡l
+<p>- 1850-59: KolozsvÃ¡rtÃ³l tÃ¡vol, Budapesten Ã©l Ã©desanyjÃ¡val, akit Ã©desapja halÃ¡la utÃ¡n (1837) magÃ¡hoz vesz
+<p>- Erkel Ferenccel, Hubay MiklÃ³s hegedÃ»mÃ»vÃ©sszel barÃ¡tkozik, gyakran megfordul EÃ¶tvÃ¶s JÃ³zsef hÃ¡zÃ¡ban, ahol EÃ¶tvÃ¶snÃ©vel kamarazenÃ©lnek - nÃ©gykezeseket jÃ¡tszanak
+<p>- 1859: visszakerÃ¼l KolozsvÃ¡rra Ã©s az UnitÃ¡rius KollÃ©gium tanÃ¡ra 1862-ig, amikor lemond tanÃ¡ri Ã¡llÃ¡sÃ¡rÃ³l Ã©s a KollÃ©giumnak 1000 forintos alapÃ­tvÃ¡nyt tesz
+<p>- 1859: az ErdÃ©lyi MÃºzeum alapÃ­tÃ³ tagja, Ãµre, majd igazgatÃ³ja. A MÃºzeum MikÃ³-kerti hÃ¡zÃ¡ban lakik Ã©desanyjÃ¡val.
+<p>- 1862: meghal Ã©desanyja
+<p>- 1865: a Magyar TudomÃ¡nyos AkadÃ©mia rendes tagjÃ¡vÃ¡ vÃ¡lasztja
+<p>- 1872: az akkor alakult KolozsvÃ¡ri Ferencz JÃ³zsef TudomÃ¡nyegyetem rendes tanÃ¡ra a matematikai tanszÃ©ken, de tanÃ­t szanszkrit nyelvet Ã©s nyelvbÃ¶lcseletet is
+<p>- 1881: az egyetem termÃ©szettudomÃ¡nyi karÃ¡n tanulÃ³, szegÃ©ny sorÃº hallgatÃ³k szÃ¡mÃ¡ra lÃ©tesÃ­t alapÃ­tvÃ¡nyt
+<p>- 1883: egyetemi tanÃ¡rkÃ©nt nyugdÃ­jazzÃ¡k
+<p>- 1884: a DÃ¡vid Ferenc Egylet alapÃ­tÃ³ tagja Ã©s elnÃ¶ke
+<p>- 1887: a KolozsvÃ¡ri ZenetÃ¡rsasÃ¡g alapÃ­tÃ³ tagja
+<p>- 1897 mÃ¡jusÃ¡tÃ³l gyengÃ©lkedik a KolozsvÃ¡ri VÃ¶rÃ¶skeresztes KÃ³rhÃ¡zban, itt lÃ¡togatja meg Hubay JenÃµ hegedÃ»mÃ»vÃ©sz, aki kÃ©rÃ©sÃ©re a Bach Chacon-jÃ¡t jÃ¡tssza neki bÃºcsÃºkÃ©nt
+<p>- 1897 jÃºnius 24-Ã©n hunyt el, az unitÃ¡rius templomban ravatalozzÃ¡k fel, a HÃ¡zsongÃ¡rdi temetÃµben helyezik Ã¶rÃ¶k nyugalomra
 <p>
-Brassai Sámuel hit- és életelveit a következõképpen foglalta össze:
-<br> <i>"Bízzál Isten szeretetében és támaszkodj az õ egységére, melyet a világmindenségben oly tökéletesen valósít meg. Legyen hited a te meggyõzõdésed szerint, de szereteted öleljen magához mindenkit. Kövesd Jézust és boldog leszel."</i>
-<p>(Dr. Boros György: Dr. Brassai Sámuel élete)
+Brassai SÃ¡muel hit- Ã©s Ã©letelveit a kÃ¶vetkezÃµkÃ©ppen foglalta Ã¶ssze:
+<br> <i>"BÃ­zzÃ¡l Isten szeretetÃ©ben Ã©s tÃ¡maszkodj az Ãµ egysÃ©gÃ©re, melyet a vilÃ¡gmindensÃ©gben oly tÃ¶kÃ©letesen valÃ³sÃ­t meg. Legyen hited a te meggyÃµzÃµdÃ©sed szerint, de szereteted Ã¶leljen magÃ¡hoz mindenkit. KÃ¶vesd JÃ©zust Ã©s boldog leszel."</i>
+<p>(Dr. Boros GyÃ¶rgy: Dr. Brassai SÃ¡muel Ã©lete)
 
 </TD></TR></TABLE>
 <?PHP  include ("homefooter.php");?>

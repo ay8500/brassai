@@ -10,7 +10,7 @@
 	echo(' <table border="0" style="width:100%"><tr><td>'."\r\n");
 	echo ('<h2 style="font-size:20px">'.getGalleryDescription()."</h2>&nbsp;&nbsp;".$images_count.$TXT["PictCount"]."\r\n");
 	echo(' </td><td style="text-align:right">'."\r\n");
-	echo "  <a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery&slideshow_index=$slideshow_index\" title=\"".$TXT["BackTT"]."\">".$TXT["MenuBack"]."</a>"; 
+	echo "Â Â <a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery&slideshow_index=$slideshow_index\" title=\"".$TXT["BackTT"]."\">".$TXT["MenuBack"]."</a>"; 
 	echo(' </td></tr></table>'."\r\n");
 	echo "</div>";
 	echo "<div id=\"img_area\">";

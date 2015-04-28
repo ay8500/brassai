@@ -3,7 +3,7 @@
 		$gallery=$_GET["gallery"];
 	else
 		$gallery="BALLAGAS";
-	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndikok képtára: ".$gallery;
+	$SiteTitle="A kolozsvÃ¡ri Brassai SÃ¡muel lÃ­ceum vÃ©ndikok kÃ©ptÃ¡ra: ".$gallery;
 	include("homemenu.php"); 
 ?>
 <?PHP /*

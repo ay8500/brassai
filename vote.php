@@ -27,17 +27,17 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 }
 ?>
 
-<div class="sub_title">30 éves Találkozó</div>
+<div class="sub_title">30 Ã©ves TalÃ¡lkozÃ³</div>
 <div style="text-align:center;">
-	<b>A 30 éves talákozonk 2015 ben lesz megtartva.</b>
-	Légyszíves
+	<b>A 30 Ã©ves talÃ¡kozonk 2015 ben lesz megtartva.</b>
+	LÃ©gyszÃ­ves
 	<?PHP if (!((isset($_SESSION['UID']))&&($_SESSION['UID']>0))) echo(' jelenkezz be '); ?> 
-	és töltsd ki a táblázatot egyszerübb organizáció miatt.
+	Ã©s tÃ¶ltsd ki a tÃ¡blÃ¡zatot egyszerÃ¼bb organizÃ¡ciÃ³ miatt.
 </div>
 	
 <form action="<?PHP echo($SCRIPT_NAME);?>" method="get"">
 <table align="center" class="pannel" style="width:850px">
-<tr style="font-weight:bold"><td>Név</td><td>Dátum javaslat</td><td>Osztályfönöki</td><td>Temetö</td><td>Vacsora</td><td>Kirándulás</td><td>Hova?</td></tr>
+<tr style="font-weight:bold"><td>NÃ©v</td><td>DÃ¡tum javaslat</td><td>OsztÃ¡lyfÅ‘nÃ¶ki</td><td>TemetÅ‘</td><td>Vacsora</td><td>KirÃ¡ndulÃ¡s</td><td>Hova?</td></tr>
 <?php
 	$k=false;
 	for ($l=1;$l<=getDataSize();$l++) {
@@ -52,7 +52,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 			echo('<td><input style="text" size="4" name="dinner_'.$l.'" value="'.$vote["dinner"].'"</td>');
 			echo('<td><input style="text" size="4" name="excursion_'.$l.'" value="'.$vote["excursion"].'"</td>');
 			echo('<td><input style="text" size="40" name="where_'.$l.'" value="'.$vote["where"].'"</td>');
-			echo('<td><input type="submit" value="Elküld" class="submit2" /></td>');
+			echo('<td><input type="submit" value="ElkÃ¼ld" class="submit2" /></td>');
 			echo('<input type="hidden" value="vote" name="action" />');
 		} else {
 			echo("\r\n".'<td>'.$vote["date"].'</td>');

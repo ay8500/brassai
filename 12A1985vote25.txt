@@ -12,7 +12,7 @@ excursion=
 where=
 
 id=2
-date=július közepétõl augusztus 20.
+date=jÃºlius kÃ¶zepÃ©tÅ‘l augusztus 20.
 class=igen
 cemetery=igen
 dinner=igen
@@ -89,7 +89,7 @@ class=igen
 cemetery=igen
 dinner=igen
 excursion=igen
-where=Torockó
+where=TorockÃ³
 
 id=12
 date=
@@ -124,12 +124,12 @@ excursion=
 where=
 
 id=16
-date=majdnem mindegy, csak mindenki mondja meg idõben
+date=majdnem mindegy, csak mindenki mondja meg idÃµben
 class=igen
 cemetery=igen
 dinner=igen
 excursion=igen
-where=Torockó, szállás: Torockó Vendégház
+where=TorockÃ³, szÃ¡llÃ¡s: TorockÃ³ VendÃ©ghÃ¡z
 
 id=17
 date=
@@ -145,7 +145,7 @@ class=igen
 cemetery=igen
 dinner=igen
 excursion=igen
-where=a többseg utan igazodom
+where=a tÃ¶bbseg utan igazodom
 
 id=19
 date=
@@ -161,7 +161,7 @@ class=igen
 cemetery=igen
 dinner=igen
 excursion=igen
-where=Torockó, Tarnica, stb
+where=TorockÃ³, Tarnica, stb
 
 id=21
 date=
@@ -228,12 +228,12 @@ excursion=
 where=
 
 id=29
-date=ez már le van zsírozva:aug.13-15
+date=ez mÃ¡r le van zsÃ­rozva:aug.13-15
 class=igen
 cemetery=igen
 dinner=igen
 excursion=igen
-where=ide megyünk: Torockó Vendégház innen pedig kirándulunk
+where=ide megyÃ¼nk: TorockÃ³ VendÃ©ghÃ¡z innen pedig kirÃ¡ndulunk
 
 id=30
 date=
@@ -268,7 +268,7 @@ excursion=
 where=
 
 id=34
-date=aug.1 után bármikor
+date=aug.1 utÃ¡n bÃ¡rmikor
 class=igen
 cemetery=igen
 dinner=igen

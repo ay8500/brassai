@@ -25,9 +25,9 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
     }
 </script>
    
-<p class="sub_title">Adminisztráció</p>
+<p class="sub_title">AdminisztrÃ¡ciÃ³</p>
 <?PHP
-$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
+$tabsCaption=Array("Mail&nbsp;kÃ¼ldÃ©s","DiÃ¡kok&nbsp;tÃ¡blÃ¡zatai","AdministrÃ¡torok");
 include("tabs.php");
 ?>
 
@@ -35,23 +35,23 @@ include("tabs.php");
 	<?PHP if ($tabOpen==0) {?>
 		<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" name="mail">
 		<table align="center" class="pannel" style="width:800px"><tr><td>
-		<input type="checkbox" name="U"/> Bejelentkezési adatokat is küld? <br/>
+		<input type="checkbox" name="U"/> BejelentkezÃ©si adatokat is kÃ¼ld? <br/>
 		<textarea name="T" rows="10" cols="90" wrap="off" onchange="fieldChanged();">
 <b>Kedves %%name%%</b><br/>
 <p>
-Ide kell írni a szöveget....
+Ide kell Ã­rni a szÃ¶veget....
 </p>
 <p>
-Üdvözlettel <?PHP $dd=getPerson($_SESSION["UID"]); echo($dd["lastname"]." ".$dd["firstname"]); ?>
+ÃœdvÃ¶zlettel <?PHP $dd=getPerson($_SESSION["UID"]); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
 <p>
-Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass']);?>>A kolozsvári Brassai Sámuel líceum <?PHP echo($_SESSION['scoolYear']);?>-ben végzett diákjainak <?PHP echo($_SESSION['scoolClass']);?></a> honlapjáról kaptad.
+Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass']);?>>A kolozsvÃ¡ri Brassai SÃ¡muel lÃ­ceum <?PHP echo($_SESSION['scoolYear']);?>-ben vÃ©gzett diÃ¡kjainak <?PHP echo($_SESSION['scoolClass']);?></a> honlapjÃ¡rÃ³l kaptad.
 </p>
 		</textarea>
-		<div style="color:red;font-weight:bold;text-align:right">Vigyázz! A beadott szöveg <a target="_blank" href="http://hu.wikipedia.org/wiki/HTML">HTML</a> formatumban kell legyen.</div>
-		<input type="submit" class="submit2" value="E-Mail küldés!" />
-		&nbsp;<a href="javascript:checkUncheckAll(true);">mindenkit megjelöl</a>
-		&nbsp;<a href="javascript:checkUncheckAll(false);">megjelöléseket töröl</a>
+		<div style="color:red;font-weight:bold;text-align:right">VigyÃ¡zz! A beadott szÃ¶veg <a target="_blank" href="http://hu.wikipedia.org/wiki/HTML">HTML</a> formatumban kell legyen.</div>
+		<input type="submit" class="submit2" value="E-Mail kÃ¼ldÃ©s!" />
+		&nbsp;<a href="javascript:checkUncheckAll(true);">mindenkit megjelÃ¶l</a>
+		&nbsp;<a href="javascript:checkUncheckAll(false);">megjelÃ¶lÃ©seket tÃ¶rÃ¶l</a>
 		</td></tr></table>
 		<table align="center" class="pannel" style="width:800px;" cellspacing="0" cellpadding="0">
 		<tr>
@@ -73,12 +73,12 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 	<?PHP } ?>
 	<?PHP if ($tabOpen==1) {?>
 		<p style="text-align:center">
-			<!---a href="getExcelData.php?data=Kontakt" target="excel">Kontaklista letöltése Excel formátumban</a--->
+			<!---a href="getExcelData.php?data=Kontakt" target="excel">Kontaklista letÃ¶ltÃ©se Excel formÃ¡tumban</a--->
 			&nbsp;|&nbsp;
-			<a href="getExcelData.php?data=All" target="excel">Összes adatok letöltése Excel formátumban</a>
+			<a href="getExcelData.php?data=All" target="excel">Ã–sszes adatok letÃ¶ltÃ©se Excel formÃ¡tumban</a>
 		</p>
 		<table style="width:90%;border-collapse:collapse" align="center" >
-		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>Becenév</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
+		<tr style="text-align:center;font-weight:bold;"><td>NÃ©v</td><td>BecenÃ©v</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
 		<?PHP
 		for ($l=1;$l<=getDataSize();$l++) {
 			$d=getPerson($l);
@@ -97,7 +97,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 	<?PHP } ?>
 	<?PHP if ($tabOpen==2) {?>
 		<table style="width:70%;border-collapse:collapse" align="center" >
-		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
+		<tr style="text-align:center;font-weight:bold;"><td>NÃ©v</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
 		<?PHP
 		foreach ($data as $idx => $d) {
 			if ($d['admin']!="") {
@@ -116,7 +116,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 	<?PHP } ?>
 <?PHP } 
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";
+	echo "<div>Adat hozzÃ¡fÃ©rÃ©si jog hiÃ¡nyzik!</div>";
 ?>
 </td></tr></table>
 </td></tr></table>

@@ -39,7 +39,7 @@
 195.170.161.80	10.Feb.2009 08:21	198512A	true		NewPassword	david@topnet.ro	sHMwQEmSP
 195.170.161.80	10.Feb.2009 10:11	198512A	true	11	dani	dani	da67345
 84.206.45.195	10.Feb.2009 10:37	198512A	true	21	edit	edit	56tre4
-81.182.165.102	10.Feb.2009 13:46		false	0		V·nyolosi Gabi	123456
+81.182.165.102	10.Feb.2009 13:46		false	0		V√°nyolosi Gabi	123456
 81.182.165.102	10.Feb.2009 13:48		false	0		Gabi	123456
 81.182.165.102	10.Feb.2009 13:49		false	0		Gabi	123456
 79.122.35.38	10.Feb.2009 16:48	198512B	false	0		Babi	zolika
@@ -301,7 +301,7 @@
 91.82.172.251	01.11.2009 15:03	198512B	true	29	SaveData	Vernes_Ibolya	
 91.82.172.251	01.11.2009 15:06	198512B	true	29	Vernes_Ibolya	Vernes_Ibolya	B4JNPEwRu
 84.119.84.225	01.11.2009 15:30	198512B	true	13	Simonfi_Andrea	Simonfi_Andrea	XVkfbV2X5
-84.119.84.225	01.11.2009 15:38	198512A	false	0		Simonfi_Andrea	ahova a legtˆbben el tudnak jˆnni
+84.119.84.225	01.11.2009 15:38	198512A	false	0		Simonfi_Andrea	ahova a legt√∂bben el tudnak j√∂nni
 84.119.84.225	01.11.2009 15:39	198512B	true	13	Simonfi_Andrea	Simonfi_Andrea	XVkfbV2X5
 84.119.84.225	01.11.2009 15:40	198512B	true	13	Simonfi_Andrea	Simonfi_Andrea	XVkfbV2X5
 84.119.84.225	01.11.2009 15:48	198512B	true	13	SaveData	Simonfi_Andrea	
@@ -318,8 +318,8 @@
 188.157.80.154	01.11.2009 16:42	198512B	true	16	SaveGeo	bababi	
 188.157.80.154	01.11.2009 16:42	198512B	true	16	SaveData	bababi	
 188.157.80.154	01.11.2009 16:42	198512B	false	0		Tokes_Kolan	btNw3Kndf
-82.131.237.24	01.11.2009 20:10	198512B	false	0		RigÛ Magda	dbZm5jAak
-82.131.237.24	01.11.2009 20:11	198512B	false	0		RigÛ_Magda	dbZm5jAak
+82.131.237.24	01.11.2009 20:10	198512B	false	0		Rig√≥ Magda	dbZm5jAak
+82.131.237.24	01.11.2009 20:11	198512B	false	0		Rig√≥_Magda	dbZm5jAak
 82.131.237.24	01.11.2009 20:12	198512B	true	30	Rigo_Magda	Rigo_Magda	dbZm5jAak
 82.131.237.24	01.11.2009 20:13	198512B	true	30	SaveData	Rigo_Magda	
 82.131.237.24	01.11.2009 20:13	198512B	true	30	SaveData	Rigo_Magda	
@@ -335,7 +335,7 @@
 193.230.156.158	02.11.2009 07:19	198512B	true	14	SaveData	Gellert_Ilona	
 193.230.156.158	02.11.2009 07:20	198512B	true	14	SaveData	Gellert_Ilona	
 193.230.156.158	02.11.2009 07:21	198512B	true	14	Gellert_Ilona	Gellert_Ilona	k5yI35LKK
-193.30.164.114	02.11.2009 13:00	198512B	false	0		Losteiner ¡gnes	g9dmYIMmy
+193.30.164.114	02.11.2009 13:00	198512B	false	0		Losteiner √Ågnes	g9dmYIMmy
 193.30.164.114	02.11.2009 13:00	198512B	false	0		Sepsy_Agnes 	g9dmYIMmy
 193.30.164.114	02.11.2009 13:03	198512B	false	0		Sepsy Agnes	g9dmYIMmy
 193.30.164.114	02.11.2009 13:04	198512B	false	0		Sepsy_Agnes 	g9dmYIMmy
@@ -347,7 +347,7 @@
 193.30.164.114	02.11.2009 13:23	198512B	true	33	SaveData	Sepsy_Agnes	
 193.30.164.114	02.11.2009 13:27	198512B	true	33	SaveData	Sepsy_Agnes	
 194.237.142.20	02.11.2009 14:39	198512B	true	32	Rozsa_Julianna	Rozsa_Julianna	TNEYV3ugT
-89.238.209.78	02.11.2009 16:20	198512B	false	0		De·k_Attila	e2jcwbyd
+89.238.209.78	02.11.2009 16:20	198512B	false	0		De√°k_Attila	e2jcwbyd
 89.238.209.78	02.11.2009 16:21	198512B	true	10	Deak_Attila	Deak_Attila	e2jcwbyd
 89.238.209.78	02.11.2009 16:26	198512B	true	10	SaveData	Deak_Attila	
 89.238.209.78	02.11.2009 16:28	198512B	true	10	SaveGeo	Deak_Attila	
@@ -462,16 +462,16 @@
 82.144.168.63	31.05.2010 11:32	198512B	true	27	SaveGeo	Berger_Maria	
 82.144.168.63	31.05.2010 11:37	198512B	true	27	Berger_Maria	Berger_Maria	ffqpsgg
 82.144.168.63	31.05.2010 11:38	198512B	true	27	Berger_Maria	Berger_Maria	ffqpsgg
-82.144.168.63	31.05.2010 11:49	198512B	false	0		Berger_M·ria	ffqpsgg
-82.144.168.63	31.05.2010 11:49	198512B	false	0		Berger_M·ria	ffqpsgg
+82.144.168.63	31.05.2010 11:49	198512B	false	0		Berger_M√°ria	ffqpsgg
+82.144.168.63	31.05.2010 11:49	198512B	false	0		Berger_M√°ria	ffqpsgg
 82.144.168.63	31.05.2010 11:50	198512B	true	27	Berger_Maria	Berger_Maria	ffqpsgg
 82.144.168.63	01.06.2010 13:10	198512B	true	27	Berger_Maria	Berger_Maria	ffqpsgg
-82.144.168.63	01.06.2010 13:13	198512B	false	0		Berger_M·ria	ffqpsgg
+82.144.168.63	01.06.2010 13:13	198512B	false	0		Berger_M√°ria	ffqpsgg
 82.144.168.63	01.06.2010 13:13	198512B	true	27	Berger_Maria	Berger_Maria	ffqpsgg
 212.24.173.139	03.06.2010 11:52	198512A	true	29	Tibi	Tibi	gyerekek
 212.24.173.139	04.06.2010 13:52	198512A	false	0		Tibi	lh78jrfds
 212.24.173.139	04.06.2010 13:52	198512A	true	29	Tibi	Tibi	gyerekek
-81.182.214.173	19.07.2010 20:29	198512B	false	0		Szabo …va	dNy7aTKZE
+81.182.214.173	19.07.2010 20:29	198512B	false	0		Szabo √âva	dNy7aTKZE
 81.182.214.173	19.07.2010 20:31	198512B	false	0		Szabo_Eva 	dNy7aTKZE
 81.182.214.173	19.07.2010 20:33	198512B	false	0		Szabo_Eva 	dNy7aTKZE
 89.123.84.238	22.07.2010 08:44	198512B	true	42	Revesz_Erzsebet	revesz_erzsebet	re2009
@@ -486,7 +486,7 @@
 193.68.35.226	26.07.2010 09:52	198512A	true	3	SaveData	jenci	
 193.68.35.226	26.07.2010 09:53	198512A	true	3	SavePassw	jenci	
 82.79.69.137	26.07.2010 10:52	198512A	true	15	agnesb	agnesb	ag79612
-92.193.107.170	26.07.2010 11:09	198512A	false	0		m√°rta	sk34dsd
+92.193.107.170	26.07.2010 11:09	198512A	false	0		m√É¬°rta	sk34dsd
 92.193.107.170	26.07.2010 11:10	198512A	true	35	marta	marta	sk34dsd
 92.193.107.170	26.07.2010 11:11	198512A	true	35	marta	marta	sk34dsd
 92.193.107.170	26.07.2010 11:12	198512A	true	35	marta	marta	sk34dsd
@@ -526,7 +526,7 @@
 89.123.68.79	29.07.2010 19:15	198512A	true	14	SaveData	krisztina	
 193.230.156.151	30.07.2010 07:01	198512B	true	14	Gellert_Ilona	Gellert_Ilona	k5yI35LKK
 87.175.204.206	31.07.2010 14:57	198512A	true	20	Levi	levi	lm1967
-81.182.15.15	31.07.2010 20:54	198512A	false	0		DÛri	zsobok
+81.182.15.15	31.07.2010 20:54	198512A	false	0		D√≥ri	zsobok
 81.182.15.15	31.07.2010 20:55	198512A	true		NewPassword	vargadori@yahoo.com	Px8UhjAIH
 81.182.15.15	31.07.2010 20:57	198512A	true	2	dori	dori	dr1234
 92.193.42.128	01.08.2010 07:36	198512A	false	0			
@@ -581,8 +581,8 @@
 145.236.83.6	23.03.2011 06:37	198512A	true	29	Tibi	Tibi	gyerekek
 178.190.41.233	27.04.2011 06:20	198512A	false	0		angi	lilly123
 178.190.41.233	27.04.2011 06:22	198512A	false	0		angi	lilly123
-82.131.179.39	03.05.2011 10:08	198512A	false	0		manyi	mmanyi56gÈpÈszutca60
-91.144.113.130	03.06.2011 19:23	198512A	false	0		·ron	1973
+82.131.179.39	03.05.2011 10:08	198512A	false	0		manyi	mmanyi56g√©p√©szutca60
+91.144.113.130	03.06.2011 19:23	198512A	false	0		√°ron	1973
 87.175.184.214	30.06.2011 23:24	198512A	false	0		admin	lm1967
 91.82.33.12	02.07.2011 11:33	198512B	true	18	Kiss_Attila	Kiss_Attila	199595
 194.173.174.106	18.07.2011 17:03	198512A	false	0		admin	nbvnbv
@@ -595,7 +595,7 @@
 66.249.72.16	01.12.2011 23:43	198512A	false	0			
 66.249.72.33	10.12.2011 13:38	198512A	false	0			
 66.249.72.33	12.12.2011 10:47	198512A	false	0			
-188.156.4.77	22.01.2012 17:11	198512A	false	0		mozi	t¸ndike
+188.156.4.77	22.01.2012 17:11	198512A	false	0		mozi	t√ºndike
 66.249.71.170	04.04.2012 00:25	198512A	false	0			
 188.36.210.128	06.07.2012 21:00	198512A	false	0			
 188.36.210.128	06.07.2012 21:00	198512A	false	0			
@@ -649,7 +649,7 @@
 118.68.252.3	10.03.2014 01:20	198512A	false	0			
 47.66.252.190	14.04.2014 01:01	198512A	false	0		admin	levi1967-kvar
 47.66.252.190	14.04.2014 01:01	198512A	false	0		admin	levi1967
-82.131.157.202	30.04.2014 23:14	1985...12A	false	0		CÈz·r	1995
+82.131.157.202	30.04.2014 23:14	1985...12A	false	0		C√©z√°r	1995
 82.131.157.202	30.04.2014 23:15	1985...12A	true		NewPassword	cezar1995@invitel.hu	Tces4EPmU
 194.173.174.106	08.05.2014 17:02	198512A	false	0		admin	levi1967
 194.173.174.106	08.05.2014 17:02	198512A	false	0		admin	levi1967
@@ -666,3 +666,12 @@
 178.150.142.129	22.11.2014 11:20	198512A	false	0		gtuvlj	fofb5
 47.68.152.148	28.12.2014 18:45	198512A	false	0		admin	levi1967-kvar
 47.68.152.148	28.12.2014 18:45	198512A	false	0		admin	levi1967
+192.168.201.40	12.04.2015 20:47	198512A	true	1	SaveData	Gizu	
+192.168.201.40	12.04.2015 20:56	198512A	false	0		maierle	levi67
+192.168.201.40	12.04.2015 20:56	198512A	true	20	Levi	levi	levi67
+192.168.201.40	12.04.2015 20:59	198512A	true	20	SaveData	Levi	
+192.168.201.40	12.04.2015 22:05	198512A	false	0		maierle	levi67
+192.168.201.40	27.04.2015 23:00	198512A	false	0		maierle	levi67
+192.168.201.40	27.04.2015 23:00	198512A	true	20	Levi	levi	levi67
+192.168.201.40	28.04.2015 14:18	198512A	true	20	Levi	levi	levi67
+192.168.201.40	28.04.2015 15:27	198512A	true	20	Levi	levi	levi67

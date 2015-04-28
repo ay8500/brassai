@@ -15,7 +15,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
 	<title><?PHP echo($SiteTitle) ?></title>
-	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-15">
+	<meta http-equiv="content-type" content="text/html; charset=UTF8">
 	<link rel="stylesheet" type="text/css" href="menu.css" />
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />
@@ -23,7 +23,7 @@
 		<meta name="robots" content="index,follow" />
 	<?PHP } ?>
 	<meta name="google-site-verification" content="ognb1O-3TIzQ_1jjeBXEMlhCg1elZ72eda1Lzis7B8g" />
-	<meta name="geo.placename" content="Kolozsvár" />
+	<meta name="geo.placename" content="KolozsvÃ¡r" />
 	<meta name="geo.position" content="46.771919;23.592248" />
 	<meta name="author" content="Levente Maier" />
 	<?PHP if ($SiteDescription!="") { ?>
@@ -31,7 +31,7 @@
 	<?PHP } else { ?>
 		<meta name="description" content="<?PHP echo($SiteTitle) ?>" />
 	<?PHP } ?>
-	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok" />
+	<meta name="keywords" content="Brassai SÃ¡muel iskola lÃ­ceum KolozsvÃ¡r Cluj Klausenburg diÃ¡k diÃ¡kok" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />
 	
 	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
@@ -73,54 +73,54 @@
 				<div id="smoothmenu" class="ddsmoothmenu-v">
 					<ul>
 					<li><a href="index.php">Honoldal</a></li>
-					<li><a href="brassai.php">Brassai Sámuel</a></li>
-					<li><a href="iskola.php">Líceum története</a></li>
-					<li><a href="hometable.php">Diákok</a></li>
-					<li><a href="hometable.php?guests=true">Vendégek és tanárok</a></li>
-					<li><a href="tablo.php">Tabló</a></li>
-					<li><a href="#">A többi osztályok</a>
+					<li><a href="brassai.php">Brassai SÃ¡muel</a></li>
+					<li><a href="iskola.php">LÃ­ceum tÃ¶rtÃ©nete</a></li>
+					<li><a href="hometable.php">DiÃ¡kok</a></li>
+					<li><a href="hometable.php?guests=true">VendÃ©gek Ã©s tanÃ¡rok</a></li>
+					<li><a href="tablo.php">TablÃ³</a></li>
+					<li><a href="#">A tÃ¶bbi osztÃ¡lyok</a>
 					  <ul>
 						<?PHP if (($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12A')) { ?>
-					  		<li><a href="index.php?scoolYear=1985&scoolClass=12B">Párhuzamos osztály</a></li>
+					  		<li><a href="index.php?scoolYear=1985&scoolClass=12B">PÃ¡rhuzamos osztÃ¡ly</a></li>
 					  	<?PHP } else  { ?>
-					  		<li><a href="index.php?scoolYear=1985&scoolClass=12A">Párhuzamos osztály</a></li>
+					  		<li><a href="index.php?scoolYear=1985&scoolClass=12A">PÃ¡rhuzamos osztÃ¡ly</a></li>
 					  	<?PHP }  ?>
 					  </ul>
 					<?PHP if (($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12A')) { ?>
-						<li><a href="#">Régi képek</a>
+						<li><a href="#">RÃ©gi kÃ©pek</a>
 						<ul>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=BALLAGAS">Ballagás</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=LASTDAYS">Utolsó órák</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=EMLEKEK">Emlékek</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=SzepIdok">Kirándulások és bulik</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">OsztÃ¡lykÃ©pek</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=BALLAGAS">BallagÃ¡s</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=LASTDAYS">UtolsÃ³ Ã³rÃ¡k</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=EMLEKEK">EmlÃ©kek</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=SzepIdok">KirÃ¡ndulÃ¡sok Ã©s bulik</a></li>
 						</ul></li>
-						<li><a href="#">Találkozók</a>
+						<li><a href="#">TalÃ¡lkozÃ³k</a>
 						<ul>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK10">10-éves Találkozó</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK15">15-éves Találkozó</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK20">20-éves Találkozó</a></li>
-							<li><a href="#">25-éves Találkozó</a>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK10">10-Ã©ves TalÃ¡lkozÃ³</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK15">15-Ã©ves TalÃ¡lkozÃ³</a></li>
+							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK20">20-Ã©ves TalÃ¡lkozÃ³</a></li>
+							<li><a href="#">25-Ã©ves TalÃ¡lkozÃ³</a>
 							<ul>
 								<li><a href="zenetoplista.php">Zenetoplista</a></li>
-								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25">Az iskolánkban</a></li>
-								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25T">Torockói panzió</a></li>
-								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">Székelykö</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25">Az iskolÃ¡nkban</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25T">TorockÃ³i panziÃ³</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">SzÃ©kelykÅ</a></li>
 							</ul></li>
-							<li><a href="talalk30.php">30-éves Találkozó</a></li>
+							<li><a href="talalk30.php">30-Ã©ves TalÃ¡lkozÃ³</a></li>
 						</ul></li>
 					<?PHP }  ?>
 					<?PHP if (true && ($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12B')) { ?>
-						<li><a href="vote.php">30-éves Találkozó</a></li>
+						<li><a href="vote.php">30-Ã©ves TalÃ¡lkozÃ³</a></li>
 					<?PHP }  ?>	
-						<li><a href="worldmap.php">Térkép</a></li>
+						<li><a href="worldmap.php">TÃ©rkÃ©p</a></li>
 					<?PHP if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {	 $person=getPersonLogedOn(); ?>
-						<li><a href="editDiak.php" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
+						<li><a href="editDiak.php" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az Ã©n adataim</a></li>
 					<?PHP }  ?>	
-						<li><a href="gb.php" >Vendégkönyv</a></li>
+						<li><a href="gb.php" >VendÃ©gkÃ¶nyv</a></li>
 					<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
-						<li><a href="admin.php"  >Adminsztráció</a></li>
-						<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
+						<li><a href="admin.php"  >AdminsztrÃ¡ciÃ³</a></li>
+						<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >KÃ©pek</a></li>
 					<?PHP }	?>
 					<?PHP if (userIsAdmin() ) { ?>
 						<li><a href="logingData.php"  >Loging</a></li>
@@ -143,7 +143,7 @@
 		writeLogonBox(); 
 		$googleMap = false;
 	?>
-	<td><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getScoolYear()) ?>-ben végzett diákjai <?PHP echo(getScoolClass()) ?></h1></td>
+	<td><h1 class="appltitle">A kolozsvÃ¡ri Brassai SÃ¡muel lÃ­ceum <?PHP echo(getScoolYear()) ?>-ben vÃ©gzett diÃ¡kjai <?PHP echo(getScoolClass()) ?></h1></td>
 </tr>
 	<td class="content">
 

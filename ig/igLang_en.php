@@ -33,11 +33,11 @@ $TXT["CommentSubmit"]		="Kommentar abgeben!";
 
 
 $TXT["CommentErrorSCode"]	="<div style=\"color:red;text-align:center;\"><b>Sicherheitscode nicht richtig!</b></div>";
-$TXT["CommentErrorFields"]	="<div style=\"color:red;text-align:center;\"><b>Bitte alle Felder ausfüllen und gültige Mail-Adresse eingeben.</b></div>";
-$TXT["CommentColumns"]		="<tr style=\"font:bold;\"><td>Datum</td><td>Name</td><td>Qualität</td><td>Inhalt</td><td>Kommentar</td><td></td></tr>";
+$TXT["CommentErrorFields"]	="<div style=\"color:red;text-align:center;\"><b>Bitte alle Felder ausfÃ¼llen und gÃ¼ltige Mail-Adresse eingeben.</b></div>";
+$TXT["CommentColumns"]		="<tr style=\"font:bold;\"><td>Datum</td><td>Name</td><td>QualitÃ¤t</td><td>Inhalt</td><td>Kommentar</td><td></td></tr>";
 
-$TXT["DetailDelete"]	=	"Bild löschen?";
-$TXT["DetailAskDelete"]	=	"Bild wirklich löschen!";
+$TXT["DetailDelete"]	=	"Bild lÃ¶schen?";
+$TXT["DetailAskDelete"]	=	"Bild wirklich lÃ¶schen!";
 $TXT["DetailTitle"]		=	"Bildtitel";
 
 $TXT["LogIn"]			="Login"; 
@@ -53,11 +53,11 @@ $TXT["LogInNewPasswNotOK"]	="New password to easy!";
 $TXT["LogInLostData"]		="No account!";
 $TXT["LogInLostDataTitle"]	="I need help to log in.";
    
-$TXT["Ranking"]=array("keine Bewertung","supper gut","gut", "es geht","könnte besser sein","nicht gut");
+$TXT["Ranking"]=array("keine Bewertung","supper gut","gut", "es geht","kÃ¶nnte besser sein","nicht gut");
 
-$TXT["DBErrorDeleteFile"]	="Fehler beim löschen des Bildes!"; 
+$TXT["DBErrorDeleteFile"]	="Fehler beim lÃ¶schen des Bildes!"; 
 $TXT["DBOKSaveGallery"]		="Gallerie Daten gespeichert. ";
-$TXT["DBOKDelPictComment"]	="Kommentar gelöscht.";
+$TXT["DBOKDelPictComment"]	="Kommentar gelÃ¶scht.";
 
 $TXT["GPropertysEdit"]	="Change picture gallery";
 $TXT["GNew"]			="new picture gallery";

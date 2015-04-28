@@ -12,12 +12,12 @@ else if  ($su[1]=='impressum') {
 
 else {
 header("status: 404"); 
-$SiteTitle="A kolozsvári Brassai Sámuel líceum: Hiba oldal";
+$SiteTitle="A kolozsvÃ¡ri Brassai SÃ¡muel lÃ­ceum: Hiba oldal";
 
 include_once("homemenu.php"); 
 ?>
 
-<h2 class="sub_title">Sajnos ez az oldal nem létezik ezen a szerveren.</h2>
+<h2 class="sub_title">Sajnos ez az oldal nem lÃ©tezik ezen a szerveren.</h2>
 Keresett oldal:
 <?PHP
 echo($su[1]." ");echo($su[2]." ");echo($su[3]." ");

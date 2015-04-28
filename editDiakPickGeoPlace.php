@@ -5,22 +5,22 @@
 	<table class="editpagetable">
 		<tr><td style="text-align:center"><?PHP echo($resultDBoperation); ?></td></tr>
 		<tr><td>
-			<p><b>Jelöld meg a térképen a lakhelyedet.</b> Ezt a poziciót csak az osztálytársak látják pontosan.</p>
+			<p><b>JelÃ¶ld meg a tÃ©rkÃ©pen a lakhelyedet.</b> Ezt a poziciÃ³t csak az osztÃ¡lytÃ¡rsak lÃ¡tjÃ¡k pontosan.</p>
 		</td></tr>
 		<tr>
 			<td>
 				<hr/>
-				Helységnév, utca, házszám keresés:	<br />
-				<input type="text" id="addres" value="Kolozsvár, Brassai" onKeyPress="if (window.event.keyCode == 13) {doSearch();}	" />
+				HelysÃ©gnÃ©v, utca, hÃ¡zszÃ¡m keresÃ©s:	<br />
+				<input type="text" id="addres" value="KolozsvÃ¡r, Brassai" onKeyPress="if (window.event.keyCode == 13) {doSearch();}	" />
 				<input class="submit2" type="button" value="Keres" onclick="doSearch();return true;"/><br />
 				<hr/>
 				<form action="<?PHP echo($SCRIPT_NAME); ?>" method="get" name="geo">
 					<input type="hidden" value="changegeo" name="action" />
 					<input type="hidden" value="<?PHP echo($uid)?>" name="uid" />
 					<input type="hidden" value="<?PHP echo($tabOpen); ?>" name="tabOpen" />
-					Koordináták:<br />
-					<input type="text" size="24" name="geolat" class="input2" />&nbsp;Szélesség<br/>
-					<input type="text" size="24" name="geolng" class="input2" />&nbsp;Hosszúság&nbsp;&nbsp;&nbsp;<input type="submit" class="submit2" value="Geokoordinátákat módósít" title="" />
+					KoordinÃ¡tÃ¡k:<br />
+					<input type="text" size="24" name="geolat" class="input2" />&nbsp;SzÃ©lessÃ©g<br/>
+					<input type="text" size="24" name="geolng" class="input2" />&nbsp;HosszÃºsÃ¡g&nbsp;&nbsp;&nbsp;<input type="submit" class="submit2" value="GeokoordinÃ¡tÃ¡kat mÃ³dÃ³sÃ­t" title="" />
 				</form>
 			</td>
 		</tr>

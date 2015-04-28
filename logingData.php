@@ -7,13 +7,13 @@
 if (userIsAdmin()) {  
 	$logData= readLogingData();
 	//initialise tabs
-	$tabsCaption=Array("Bejelentkezés","Adatmódosítás","Jelszó&nbsp;kérés","Sikertelen&nbsp;bejelentkezés");
+	$tabsCaption=Array("BejelentkezÃ©s","AdatmÃ³dosÃ­tÃ¡s","JelszÃ³&nbsp;kÃ©rÃ©s","Sikertelen&nbsp;bejelentkezÃ©s");
 	include("tabs.php");
 	?>
 	
 	<?PHP if ($tabOpen==0) { ?>
 	<p align="center">
-	   Sikeres bejelentkezések:<br/>	
+	   Sikeres bejelentkezÃ©sek:<br/>	
 	  <table align="center" border="1">
 	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td></tr>
 	  	<?PHP
@@ -27,7 +27,7 @@ if (userIsAdmin()) {
 	<?PHP }?>
 	<?PHP if ($tabOpen==1) { ?>
 	<p align="center">
-	   Adatok módosítva:<br/>	
+	   Adatok mÃ³dosÃ­tva:<br/>	
 	  <table align="center" border="1">
 	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>Data</td><td>ID</td><td>User</td></tr>
 	  	<?PHP
@@ -41,7 +41,7 @@ if (userIsAdmin()) {
 	<?PHP }?>
 	<?PHP if ($tabOpen==2) { ?>
 	<p align="center">
-	   Jelszó kérése:<br/>	
+	   JelszÃ³ kÃ©rÃ©se:<br/>	
 	  <table align="center" border="1">
 	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>User</td></tr>
 	  	<?PHP
@@ -56,7 +56,7 @@ if (userIsAdmin()) {
 	
 	<?PHP if ($tabOpen==3) { ?>
 	<p align="center">
-	   Sikertelen Bejelentkezés:<br/>	
+	   Sikertelen BejelentkezÃ©s:<br/>	
 	  <table align="center" border="1">
 	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>User</td><td>Passw</td></tr>
 	  	<?PHP
@@ -75,7 +75,7 @@ if (userIsAdmin()) {
 
 <?PHP }
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";	
+	echo "<div>Adat hozzÃ¡fÃ©rÃ©si jog hiÃ¡nyzik!</div>";	
 ?>
 </td></tr></table>
 </body>

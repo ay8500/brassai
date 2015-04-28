@@ -44,12 +44,12 @@ excursion=
 where=
 
 id=6
-date=július
+date=jÃºlius
 class=x
 cemetery=
 dinner=x
 excursion=x
-where=ahova a legtöbben el tudnak jönni
+where=ahova a legtÃ¶bben el tudnak jÃ¶nni
 
 id=7
 date=
@@ -76,12 +76,12 @@ excursion=
 where=
 
 id=10
-date=július
+date=jÃºlius
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=Kvár környéke
+where=KvÃ¡r kÃ¶rnyÃ©ke
 
 id=11
 date=
@@ -100,20 +100,20 @@ excursion=
 where=
 
 id=13
-date=július
+date=jÃºlius
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=ahova a legtöbben el tudnak jönni
+where=ahova a legtÃ¶bben el tudnak jÃ¶nni
 
 id=14
-date=bármikor
+date=bÃ¡rmikor
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=megbeszéljük
+where=megbeszÃ©ljÃ¼k
 
 id=15
 date=
@@ -140,12 +140,12 @@ excursion=
 where=
 
 id=18
-date=július
+date=jÃºlius
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=ami a többségnek megfelel
+where=ami a tÃ¶bbsÃ©gnek megfelel
 
 id=19
 date=
@@ -164,12 +164,12 @@ excursion=
 where=
 
 id=21
-date=igazódom utánnatok !
+date=igazÃ³dom utÃ¡nnatok !
 class=x
 cemetery=
 dinner=x
 excursion=x
-where=dönteni kell, hány nap? minden megoldható
+where=dÃ¶nteni kell, hÃ¡ny nap? minden megoldhatÃ³
 
 id=22
 date=
@@ -180,12 +180,12 @@ excursion=
 where=
 
 id=23
-date=június 15-30, július15-30
+date=jÃºnius 15-30, jÃºlius15-30
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=Ahová minél többen el tudnak jönni
+where=AhovÃ¡ minÃ©l tÃ¶bben el tudnak jÃ¶nni
 
 id=24
 date=Julius
@@ -204,12 +204,12 @@ excursion=
 where=
 
 id=26
-date=július 1-július18
+date=jÃºlius 1-jÃºlius18
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=ami a többségnek megfelel
+where=ami a tÃ¶bbsÃ©gnek megfelel
 
 id=27
 date=Julius
@@ -217,7 +217,7 @@ class=x
 cemetery=
 dinner=x
 excursion=x
-where=ahova a legtöbben el tudnak jönni
+where=ahova a legtÃ¶bben el tudnak jÃ¶nni
 
 id=28
 date=
@@ -228,12 +228,12 @@ excursion=
 where=
 
 id=29
-date=julius második fele
+date=julius mÃ¡sodik fele
 class=x
 cemetery=x
 dinner=x
 excursion=x
-where=ahová szervezitek én ott fogom jól érezni magam
+where=ahovÃ¡ szervezitek Ã©n ott fogom jÃ³l Ã©rezni magam
 
 id=30
 date=
@@ -281,7 +281,7 @@ class=x
 cemetery=x
 dinner=x
 excursion=x
-where=Ahova minél többnek lehetösége van eljönni!
+where=Ahova minÃ©l tÃ¶bbnek lehetÃ¶sÃ©ge van eljÃ¶nni!
 
 id=36
 date=

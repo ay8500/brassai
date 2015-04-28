@@ -1,7 +1,7 @@
-1=Edda M¸vek
+1=Edda M√ºvek
 2=R-Go
 3=Dolly Roll
-4=Hung·ria
+4=Hung√°ria
 5=Omega
 6=Piramis
 7=LGT
@@ -10,7 +10,7 @@
 10=Modern Talking
 11=Cindy Lauper
 12=Vangelis
-13=Kom·r L·szlÛ
+13=Kom√°r L√°szl√≥
 14=ABBA
 15=Status Quo
 16=Richard Clayderman
@@ -31,7 +31,7 @@
 31=Ryan Paris
 32=Tony Esposito
 33=Phil Collins
-34=CÈline Dion
+34=C√©line Dion
 35=Boney M 
 36=V'Moto-Rock
 37=Whitney Houston
@@ -48,10 +48,10 @@
 48=Gigi D\'Agostino
 49=DJ Bobo
 50=Inner Circle
-51=Mc Hawer & Tekknı
+51=Mc Hawer & Tekkn√µ
 52=Captain Jack 
 53=Stevie Wonder
-54=Z·mbÛ Jimmy
+54=Z√°mb√≥ Jimmy
 55=Tanita Tikaram
 56=UB40
 57=Depeche Mode

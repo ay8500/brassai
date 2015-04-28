@@ -14,7 +14,7 @@ if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
     
     function changeTab(link) {
     	if ( changed ) { 
-    		if (confirm("Adatok még nincsenek kimentve! Ha oldalt változtatsz elveszíted módosításaid. Folytatni akarod?" )) {
+    		if (confirm("Adatok mÃ©g nincsenek kimentve! Ha oldalt vÃ¡ltoztatsz elveszÃ­ted mÃ³dosÃ­tÃ¡said. Folytatni akarod?" )) {
     			 	window.location=link;
     		}    	
     	}

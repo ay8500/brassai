@@ -2,30 +2,30 @@
 $TXT["Title"] 			="Fotoalbum";
 $TXT["Footer"] 			="Fotoalbum (p) Levente Maier 2008";
 $TXT["Album"] 			="Album";
-$TXT["Change"] 			="Ändern";
+$TXT["Change"] 			="Ã„ndern";
 $TXT["NewAlbum"] 		="Neues Album";
 $TXT["Create"] 			="Anlegen";
 $TXT["PictCount"]		=" Bilder";
 $TXT["PictViewCount"]	=" Agesehen";
-$TXT["MenuBack"]		=" zurück";
-$TXT["BackTT"]			=" zurück blättern";
+$TXT["MenuBack"]		=" zurÃ¼ck";
+$TXT["BackTT"]			=" zurÃ¼ck blÃ¤ttern";
 $TXT["MenuThumbnails"]	="Bildergalerie"; 
 $TXT["MenuSlideshow"]	="Diashow";
 $TXT["MenuComment"]		="Kommentar abgeben";
 $TXT["MenuDetails"]		="Bild Info";
-$TXT["MenuNextPageTT"]	="nächste Seite";
+$TXT["MenuNextPageTT"]	="nÃ¤chste Seite";
 $TXT["MenuPrevPageTT"]	="vorherige Seite"; 
-$TXT["MenuNextPictTT"]	="nächstes Bild";
+$TXT["MenuNextPictTT"]	="nÃ¤chstes Bild";
 $TXT["MenuPrevPictTT"]	="vorheriges Bild";
 
-$TXT["CommentDelete"]	="Löschen";
-$TXT["CommentDeleteTT"]	="Kommentar löschen";
+$TXT["CommentDelete"]	="LÃ¶schen";
+$TXT["CommentDeleteTT"]	="Kommentar lÃ¶schen";
 
 $TXT["CommentTitle"]		="Kommentar und Bewertung erfassen";
 $TXT["CommentName"]			="Name";
 $TXT["CommentMail"]			="E-Mail";
 $TXT["CommentText"]			="Text";
-$TXT["CommentQuali"]		="Bild Qualität";
+$TXT["CommentQuali"]		="Bild QualitÃ¤t";
 $TXT["CommentCont"]			="Bild Inhalt";
 $TXT["CommentSCode"]		="Siherheitscode";
 $TXT["CommentSText"]		="Bitte die 5 Ziffern eingeben, damit die Anwendung dich als menschliches Wesen erkennt.";
@@ -33,11 +33,11 @@ $TXT["CommentSubmit"]		="Kommentar abgeben!";
 
 
 $TXT["CommentErrorSCode"]	="<div style=\"color:red;text-align:center;\"><b>Sicherheitscode nicht richtig!</b></div>";
-$TXT["CommentErrorFields"]	="<div style=\"color:red;text-align:center;\"><b>Bitte alle Felder ausfüllen und gültige Mail-Adresse eingeben.</b></div>";
-$TXT["CommentColumns"]		="<tr style=\"font:bold;\"><td>Datum</td><td>Name</td><td>Qualität</td><td>Inhalt</td><td>Kommentar</td><td></td></tr>";
+$TXT["CommentErrorFields"]	="<div style=\"color:red;text-align:center;\"><b>Bitte alle Felder ausfÃ¼llen und gÃ¼ltige Mail-Adresse eingeben.</b></div>";
+$TXT["CommentColumns"]		="<tr style=\"font:bold;\"><td>Datum</td><td>Name</td><td>QualitÃ¤t</td><td>Inhalt</td><td>Kommentar</td><td></td></tr>";
 
-$TXT["DetailDelete"]	=	"Bild löschen?";
-$TXT["DetailAskDelete"]	=	"Bild wirklich löschen!";
+$TXT["DetailDelete"]	=	"Bild lÃ¶schen?";
+$TXT["DetailAskDelete"]	=	"Bild wirklich lÃ¶schen!";
 $TXT["DetailTitle"]		=	"Bildtitel";
 
 $TXT["LogIn"]			="Anmelden"; 
@@ -48,16 +48,16 @@ $TXT["LogInError"]		="Anmeldungsfehler!";
 $TXT["LogInUserPassw"]	="Benutzername und Kennwort eingeben!"; 
 $TXT["LogInUserPasErr"]	="Benutzername oder Kennwort falsch!"; 
 $TXT["LogInPasswChanged"]	="Neues Passwort gesetzt.";
-$TXT["LogInNewPasswNotEQ"]	="Neue Passwörten nicht gleich!";
+$TXT["LogInNewPasswNotEQ"]	="Neue PasswÃ¶rten nicht gleich!";
 $TXT["LogInNewPasswNotOK"]	="Neues Passwort zu einfach!"; 
-$TXT["LogInLostData"]		="Ich bin vergässlich!";
+$TXT["LogInLostData"]		="Ich bin vergÃ¤sslich!";
 $TXT["LogInLostDataTitle"]	="Anmeldedaten nicht vorhanden oder verloren.";
    
-$TXT["Ranking"]=array("keine Bewertung","supper gut","gut", "es geht","könnte besser sein","nicht gut");
+$TXT["Ranking"]=array("keine Bewertung","supper gut","gut", "es geht","kÃ¶nnte besser sein","nicht gut");
 
-$TXT["DBErrorDeleteFile"]	="Fehler beim löschen des Bildes!"; 
+$TXT["DBErrorDeleteFile"]	="Fehler beim lÃ¶schen des Bildes!"; 
 $TXT["DBOKSaveGallery"]		="Gallerie Daten gespeichert. ";
-$TXT["DBOKDelPictComment"]	="Kommentar gelöscht.";
+$TXT["DBOKDelPictComment"]	="Kommentar gelÃ¶scht.";
 
 $TXT["GPropertysEdit"]	="Galerie bearbeiten";
 $TXT["GNew"]			="Neue Galerie erzeugen";
@@ -67,7 +67,7 @@ $TXT["GFolder"]			="Verzeichnis";
 $TXT["GTitle"]			="Titel";
 $TXT["GDescr"]			="Beschreibung";
 $TXT["GDefault"]		="Default Album";
-$TXT["GUser"]			="Änderer";
+$TXT["GUser"]			="Ã„nderer";
 $TXT["GDate"]			="Datum";
 $TXT["GSaveChanges"]	="Speichern";
 $TXT["GSelectFile"]		="Bild oder ZIP Datei";
@@ -75,15 +75,15 @@ $TXT["GUpload"]			="Hochladen";
 $TXT["GPictureUpload"]	="Bilder Hochladen";
 $TXT["DUploadOK"]		=": upload OK.";
 $TXT["DUploadError"]	=": Dateihochladen fehlgeschlagen.";
-$TXT["DFileToBig"]		=": Datei zu groß max 1 MByte";
-$TXT["DWrongExtension"]	="Dateityp wird nicht unterstützt. (JPG or ZIP)";
+$TXT["DFileToBig"]		=": Datei zu groÃŸ max 1 MByte";
+$TXT["DWrongExtension"]	="Dateityp wird nicht unterstÃ¼tzt. (JPG or ZIP)";
 
 $TXT["ExifCamera"] 		= "Kamera";
 $TXT["ExifDate"] 		= "Datum";
-$TXT["ExifResolution"] 	= "Auflösung";
+$TXT["ExifResolution"] 	= "AuflÃ¶sung";
 $TXT["ExifFlashlight"] 	= "Blitz";
 $TXT["ExifExposure"] 	= "Belichtungszeit";
-$TXT["ExifDiafragma"] 	= "Blenden Öffnung";
+$TXT["ExifDiafragma"] 	= "Blenden Ã–ffnung";
 $TXT["ExifYes"] 		= "ja";
 $TXT["ExifNo"] 			= "nein";
 ?>

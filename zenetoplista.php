@@ -1,7 +1,7 @@
 <?PHP 
 
 
-$SiteTitle="A véndiákok ezt hallgatják szívesen";
+$SiteTitle="A vÃ©ndiÃ¡kok ezt hallgatjÃ¡k szÃ­vesen";
 include("homemenu.php");
 include("songdatabase.php");
 include_once("userManager.php"); 
@@ -12,24 +12,24 @@ include_once("userManager.php");
    $voteCount=getUserSongVoteCount(getDatabaseName(),getUserID());
    if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
    if ($voteCount<$maxVoteCount)  
-	 $voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot csinálhatsz"; 
+	 $voteStatus = " MÃ©g ".($maxVoteCount-$voteCount)." szavatot csinÃ¡lhatsz"; 
    else 
-   	 $voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
+   	 $voteStatus="A maximÃ¡lis szavazatok szÃ¡mÃ¡t elÃ©rted. Ha szeretnÃ©l mÃ©gis mÃ¡s zenÃ©re szavazni, akkor tÃ¶rÃ¶lj ki a szavazataidbÃ³l.";
 
    //Site Status 
-   $siteStatus="Válaszd ki a kedvenc elöadód, ha nem találod a listában akkor írd be a lenti mezöbe.";
+   $siteStatus="VÃ¡laszd ki a kedvenc elÃ¶adÃ³d, ha nem talÃ¡lod a listÃ¡ban akkor Ã­rd be a lenti mezÃ¶be.";
 
    //Parameter Interpret
    if (isset($_GET["interpret"])) $pinterpret = $_GET["interpret"]; else $pinterpret=0;
    if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
    		$pinterpret=insertNewInterpret(getDatabaseName(),$pnewinterpret);
-	    $siteStatus="Az elöadó kimentve, most írd be a kendvenc zenéd címét.";
+	    $siteStatus="Az elÃ¶adÃ³ kimentve, most Ã­rd be a kendvenc zenÃ©d cÃ­mÃ©t.";
    }
    
    //Site Status 
    if ($pinterpret>0) {
-	   $siteStatus="Válaszd ki a kedvenc énkedet, ha nem találod a listában akkor írd be a lenti mezöbe.";
+	   $siteStatus="VÃ¡laszd ki a kedvenc Ã©nkedet, ha nem talÃ¡lod a listÃ¡ban akkor Ã­rd be a lenti mezÃ¶be.";
    }
    //Parameter Song
    if (isset($_GET["song"])) $psong = $_GET["song"]; else $psong=0;
@@ -39,7 +39,7 @@ include_once("userManager.php");
    if (($psong=="0") && ($pnewSong<>"" )) {
    		$psong=insertNewSong(getDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
    		insertVote(getDatabaseName(),getUserID(),$psong);
-	    $siteStatus="A zene és a szavazatod kimentve.";
+	    $siteStatus="A zene Ã©s a szavazatod kimentve.";
    		$psong=0;$pinterpret=0;
    } 
    if ($psong>0) {
@@ -96,24 +96,28 @@ function autoComplete (field, select, property, forcematch) {
 	}
 </script>
 
-<div class="sub_title">A 25-éves Találkozó zene toplistája<!---a target="wikipedia" href="http://hu.wikipedia.org/wiki/A_szoftverkiad%C3%A1s_%C3%A9letciklusa#B.C3.A9ta">(beta)</a---></div>
+<div class="sub_title">A 25-Ã©ves TalÃ¡lkozÃ³ zene toplistÃ¡ja<!---a target="wikipedia" href="http://hu.wikipedia.org/wiki/A_szoftverkiad%C3%A1s_%C3%A9letciklusa#B.C3.A9ta">(beta)</a---></div>
 <table class="editpagetable"><tr><td width="250px">
 <!-- img src="images/music.jpg" /--->
 </td>
 <td>
 
-<?PHP if ( false && ($voteCount<$maxVoteCount) && (getUserID()>0) && (userIsAdmin()) ) {?>
+<?PHP 
+	//if ( ($voteCount<$maxVoteCount) && (getUserID()>0)  ) 
+	if ( (getUserID()>0)  ) 
+	{
+?>
 <div><form action="zenetoplista.php">
 <table class="zene">
   <?PHP if (!($pinterpret>0)) { ?>
-  <tr><td class="zenetab">Válaszd ki az elöadot</td><td class="zenetabout">&nbsp;</td></tr>
+  <tr><td class="zenetab">VÃ¡laszd ki az elÃ¶adot</td><td class="zenetabout">&nbsp;</td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
   <tr><td>&nbsp;</td><td><?PHP echo($siteStatus); ?></td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">Az adatbázisból:</td><td>
+  <tr><td class="zenetext">Az adatbÃ¡zisbÃ³l:</td><td>
     <?PHP $interpretList= readInterpretList(getDatabaseName()); ?>
   <select name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" >
-    <option value="0">...válassz!...</option>
+    <option value="0">...vÃ¡lassz!...</option>
   	 <?PHP
 		foreach ($interpretList as $interpret) 
 		{
@@ -124,22 +128,22 @@ function autoComplete (field, select, property, forcematch) {
   </select>
   </td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">vagy írj be egy újat:<br/>Például ABBA, Hungaria, Vangelis stb.</td>
+  <tr><td class="zenetext">vagy Ã­rj be egy Ãºjat:<br/>PÃ©ldÃ¡ul ABBA, Hungaria, Vangelis stb.</td>
       <td><input name="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)">
   </td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td><input type="submit" value="tovább" /></td></tr>
+  <tr><td>&nbsp;</td><td><input type="submit" value="tovÃ¡bb" /></td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 <?PHP } else { ?>
-  <tr><td class="zenetab">Válaszd ki az éneket</td><td class="zenetabout">&nbsp;</td></tr>
+  <tr><td class="zenetab">VÃ¡laszd ki az Ã©neket</td><td class="zenetabout">&nbsp;</td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
   <tr><td>&nbsp;</td><td><?PHP echo($siteStatus); ?></td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">Elöadó:</td><td style="font-weight: bold"><?PHP $i=readInterpret(getDatabaseName(),$pinterpret); echo($i['name']); ?></td></tr>
-  <tr><td class="zenetext">Az adatbázisból:</td><td>
+  <tr><td class="zenetext">ElÃ¶adÃ³:</td><td style="font-weight: bold"><?PHP $i=readInterpret(getDatabaseName(),$pinterpret); echo($i['name']); ?></td></tr>
+  <tr><td class="zenetext">Az adatbÃ¡zisbÃ³l:</td><td>
   <?PHP $songList= readSongList(getDatabaseName(),$pinterpret); ?>
   <select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';">
-    <option value="0">...válassz!...</option>
+    <option value="0">...vÃ¡lassz!...</option>
   	 <?PHP
 		foreach ($songList as $song) 
 		{
@@ -150,14 +154,14 @@ function autoComplete (field, select, property, forcematch) {
   </select>
   </td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">vagy írj be egy újat<br/>Például: Létezem, A Kör stb.</td>
+  <tr><td class="zenetext">vagy Ã­rj be egy Ãºjat<br/>PÃ©ldÃ¡ul: LÃ©tezem, A KÃ¶r stb.</td>
       <td><input name="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)">
   </td></tr>
   <tr><td class="zenetext">Youtube</td> <td><input name="newVideo" type="text" size="50" />
   <tr><td class="zenetext">Honoldal</td> <td><input name="newLink" type="text" size="50" />
   </td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td>  <input type="submit" value="Ez az én kedvencem!" /></td></tr>
+  <tr><td>&nbsp;</td><td>  <input type="submit" value="Ez az Ã©n kedvencem!" /></td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
   <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />	
 <?PHP } ?>
@@ -177,7 +181,7 @@ function autoComplete (field, select, property, forcematch) {
 ?>
 <tr><td valign="top">
 <table  class="zenevoters" >
-  <tr><td colspan="2"><b>Szavazatok száma:<?PHP echo($allVotes); ?></b><hr/></td></tr>
+  <tr><td colspan="2"><b>Szavazatok szÃ¡ma:<?PHP echo($allVotes); ?></b><hr/></td></tr>
   <?PHP
      foreach ($votersList as $voter) {
      	echo("<tr><td>".$voter["Name"]."</td><td>".$voter["VotesCount"]."</td></tr>");
@@ -186,14 +190,14 @@ function autoComplete (field, select, property, forcematch) {
 </table>
 </td><td>
 <table  class="zene" width="750px" align="center">
-   <tr class="zenecaption"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>Elöadó</td><td>Ének</td><td>Bejelölés</td><td>Youtube Link</td><td>Honoldal</td></tr>
+   <tr class="zenecaption"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>ElÃ¶adÃ³</td><td>Ã‰nek</td><td>BejelÃ¶lÃ©s</td><td>Youtube Link</td><td>Honoldal</td></tr>
   	 <?PHP
 		$i=1;
 		foreach ($topList as $v) 
 		{	
 			$dh='&nbsp;';
 			if  ($v['voted']) {
-				$voted='<a href="zenetoplista.php?delVote='.$v['song']['id'].'"><img border="0"  src="images/delete.gif" /> Mégsem tetszik törlöm.</a>';
+				$voted='<a href="zenetoplista.php?delVote='.$v['song']['id'].'"><img border="0"  src="images/delete.gif" /> MÃ©gsem tetszik tÃ¶rlÃ¶m.</a>';
 				$dh='<img src="images/DaumenHoch.png" title="Nekem tetszik :-)" />';
 			} else {
 				if (($voteCount<$maxVoteCount)&&(getUserID()>0))

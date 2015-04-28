@@ -21,7 +21,7 @@
 			}
 		}
 		//Display Slideshow link
-		echo "  <a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery\" title=\"".$TXT["MenuSlideshow"]."\">".$TXT["MenuSlideshow"]."</a>"; 
+		echo "Â Â <a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery\" title=\"".$TXT["MenuSlideshow"]."\">".$TXT["MenuSlideshow"]."</a>"; 
 		//Display Facebook link
 		echo('&nbsp;&nbsp;<a name="fb_share" type="button_count" share_url="http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?gallery='.$gallery.'" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>');
 		

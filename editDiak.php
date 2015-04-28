@@ -38,7 +38,7 @@ $diak = getPerson($uid);
 
 
 $dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children");
-$dataFieldCaption 	=array("VezetÈknÈv","KeresztnÈv","Di·kkori nÈv","…lett·rs","CÌm","Ir·nyÌtÛsz·m","HelysÈg","Orsz·g","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","VÈgzettsÈg","Munkahely","Beoszt·s","Gyerekek");
+$dataFieldCaption 	=array("Vezet√©kn√©v","Keresztn√©v","Di√°kkori n√©v","√âlett√°rs","C√≠m","Ir√°ny√≠t√≥sz√°m","Helys√©g","Orsz√°g","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","V√©gzetts√©g","Munkahely","Beoszt√°s","Gyerekek");
 $dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20);
 $dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false);
 	
@@ -46,7 +46,7 @@ $resultDBoperation="";
 
 //Retrive changed data and save it 
 if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changediak") && isset($_SESSION['UID']) && $_SESSION['UID']>0 ) {
-	$resultDBoperation='<div class="okay">Adatok sikeresen mÛdÛsÌtva!</div>';
+	$resultDBoperation='<div class="okay">Adatok sikeresen m√≥d√≥s√≠tva!</div>';
 	for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 		$tilde="";
 		if ($dataFieldVisible[$i]) {
@@ -68,7 +68,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changegeo")) {
 	setPerson($uid,$diak);
 	if (!userIsAdmin()) 
 		saveLogInInfo("SaveGeo",$uid,$diak["user"],"",true);
-	$resultDBoperation='<div class="okay">Geokoordin·t·k sikeresen mÛdÛsÌtva!</div>';
+	$resultDBoperation='<div class="okay">Geokoordin√°t√°k sikeresen m√≥d√≥s√≠tva!</div>';
 }
 
 
@@ -83,11 +83,11 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changepassw")) {
 			setPerson($uid,$diak);
 			if (!userIsAdmin()) 
 				saveLogInInfo("SavePassw",$uid,$diak["user"],"",true);
-			$resultDBoperation='<div class="okay">JelszÛ mÛdosÌva!</div>';
+			$resultDBoperation='<div class="okay">Jelsz√≥ m√≥dos√≠va!</div>';
 		}
-		else $resultDBoperation='<div class="error">JelszÛ ismÈtlÈse hib·s!</div>';
+		else $resultDBoperation='<div class="error">Jelsz√≥ ism√©tl√©se hib√°s!</div>';
 	}
-	else $resultDBoperation='<div class="error">JelszÛ rˆvid, minimum 6 karakter!</div>';
+	else $resultDBoperation='<div class="error">Jelsz√≥ r√∂vid, minimum 6 karakter!</div>';
 }
 
 //Change user name
@@ -100,13 +100,13 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changeuser")) {
 			setPerson($uid,$diak);
 			if (!userIsAdmin()) 
 				saveLogInInfo("SaveUsername",$uid,$diak["user"],"",true);
-			$resultDBoperation='<div class="okay">BecenÈv mÛdosÌva!</div>';
+			$resultDBoperation='<div class="okay">Becen√©v m√≥dos√≠va!</div>';
 		}
 		else
-			$resultDBoperation='<div class="error">BecenÈv m·r lÈtezik v·lassz egy m·sikat!</div>';
+			$resultDBoperation='<div class="error">Becen√©v m√°r l√©tezik v√°lassz egy m√°sikat!</div>';
 	}
 	else
-		$resultDBoperation='<div class="error">BecenÈv rˆvid, minimum 3 karakter!</div>';
+		$resultDBoperation='<div class="error">Becen√©v r√∂vid, minimum 3 karakter!</div>';
 }
 
 //Upload Image
@@ -120,12 +120,12 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			if ($_FILES['userfile']['size']<2000000) {
 				if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 					resizeImage($uploadfile,1024,768);
-					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen feltˆltve.";
+					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen felt√∂ltve.";
 				} else
-					$resultDBoperation=$fileName[0].".".$fileName[1]." feltpˆtÈse sikertelen";
+					$resultDBoperation=$fileName[0].".".$fileName[1]." feltp√∂t√©se sikertelen";
 			}
 			else {
-				$resultDBoperation=$fileName[0].".".$fileName[1]."A kÈp file nagys·ga t˙lhaladja 2 MByteot.";
+				$resultDBoperation=$fileName[0].".".$fileName[1]."A k√©p file nagys√°ga t√∫lhaladja 2 MByteot.";
 			} 	
 		}
 	}
@@ -136,7 +136,7 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
-   <title><?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai S·muel lÌceum vÈn diakja</title>
+   <title><?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai S√°muel l√≠ceum v√©n diakja</title>
    <link rel="stylesheet" type="text/css" href="menu.css" />
    <link rel="stylesheet" href="lightbox.css" type="text/css" media="screen" />
    
@@ -144,8 +144,8 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
    <meta name="geo.placename" content="<?PHP echo(getFieldValue($diak["place"]));?>" />
    <meta name="geo.position" content="<?PHP echo($diak["geolat"].";".$diak["geolng"]);?>" />
    <meta name="author" content="Levente Maier" />
-   <meta name="description" content="<?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai Samuel lÌceum vÈn diakjai" />
-   <meta name="keywords" content="<?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?>Brassai S·muel iskola lÌceum Kolozsv·r Cluj Klausenburg di·k di·kok <?PHP echo(getFieldValue($diak["place"]));?>" />
+   <meta name="description" content="<?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai Samuel l√≠ceum v√©n diakjai" />
+   <meta name="keywords" content="<?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?>Brassai S√°muel iskola l√≠ceum Kolozsv√°r Cluj Klausenburg di√°k di√°kok <?PHP echo(getFieldValue($diak["place"]));?>" />
 
 	<script type="text/javascript" src="http://www.blue-l.de/stat/track.php?mode=js"></script>
 	<noscript><img src="http://www.blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
@@ -227,7 +227,7 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
           addres,
           function(point) {
             if (!point) {
-              alert(addres + " Nem tal·ltam semmit.");
+              alert(addres + " Nem tal√°ltam semmit.");
             } else {
               map.setCenter(point, 13);
               marker.setLatLng(point);
@@ -268,9 +268,9 @@ global $SCRIPT_NAME;
 
 //initialize tabs
 if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) 
-	$tabsCaption=Array("SemÈlyes&nbsp;adatok","KÈpek","Geokoordin·ta","BejelentkezÈsi&nbsp;adatok","Be·llÌt·sok");
+	$tabsCaption=Array("Sem√©lyes&nbsp;adatok","K√©pek","Geokoordin√°ta","Bejelentkez√©si&nbsp;adatok","Be√°ll√≠t√°sok");
 else
-	$tabsCaption=Array("SemÈlyes&nbsp;adatok","KÈpek");
+	$tabsCaption=Array("Sem√©lyes&nbsp;adatok","K√©pek");
 include("tabs.php");
 ?>
 
@@ -281,19 +281,19 @@ include("tabs.php");
 	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) {
 		//person data fields
 		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
-		echo('<tr><td></td><td class="highlight"></td><td class="highlight">Ha azt szeretnÈd, hogy az adataidat csak mi az oszt·lyt·rsak l·thassuk, akkor jelˆld meg ˆket!</td></tr>');
+		echo('<tr><td></td><td class="highlight"></td><td class="highlight">Ha azt szeretn√©d, hogy az adataidat csak mi az oszt√°lyt√°rsak l√°thassuk, akkor jel√∂ld meg √∂ket!</td></tr>');
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
 		echo('');
 		for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 			echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
 			if ($dataFieldVisible[$i]) 
-				echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak[$dataFieldNames[$i]]).' title="Jelˆld meg Ès akkor csak a bejelentkezett oszt·lyt·rsak l·ss·k!" /></td>');
+				echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak[$dataFieldNames[$i]]).' title="Jel√∂ld meg √©s akkor csak a bejelentkezett oszt√°lyt√°rsak l√°ss√°k!" /></td>');
 			else 
 				echo('<td class="highlight">&nbsp;</td>');
 			echo('<td><input type="text" value="'.getFieldValue($diak[$dataFieldNames[$i]]).'" name="'.$dataFieldNames[$i].'" size="'.$dataFieldLengths[$i].'" class="input2" onchange="fieldChanged();" /></td></tr>'."\r\n");
 		}
 		echo('<tr><td colspan="3"> </td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Kiment!" title="Adatok kimentÈse" /></td></tr>');
+		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Kiment!" title="Adatok kiment√©se" /></td></tr>');
 		echo('<input type="hidden" value="changediak" name="action" />');
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
@@ -307,21 +307,21 @@ include("tabs.php");
 		echo "<img src=\"images/".$d["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
 		echo "</td><td valign=top>";
 		echo "<table>\r\n";
-		echo "<tr><td valign=top align=right>…lett·rs:</td><td>".$d["partner"]."</td></tr>";
-		echo "<tr><td valign=top align=right>VÈgzettsÈg:</td><td>".$d["education"]."</td></tr>";
+		echo "<tr><td valign=top align=right>√âlett√°rs:</td><td>".$d["partner"]."</td></tr>";
+		echo "<tr><td valign=top align=right>V√©gzetts√©g:</td><td>".$d["education"]."</td></tr>";
 		if(showField($d["employer"])) 
 			echo "<tr><td valign=top align=right>Munkahely:</td><td><div itemprop=\"worksFor\" itemscope itemtype=\"http://schema.org/Organization\"><span itemprop=\"Name\">".getFieldValue($d["employer"])."</span></div></td></tr>";
 		if(showField($d["function"])) 
-			echo "<tr><td valign=top align=right>Beoszt·s:</td><td><span itemprop=\"jobTitle\">".getFieldValue($d["function"])."</span></td></tr>";
+			echo "<tr><td valign=top align=right>Beoszt√°s:</td><td><span itemprop=\"jobTitle\">".getFieldValue($d["function"])."</span></td></tr>";
 		echo "<tr><td valign=top align=right>Gyerekek:</td><td>".$d["children"]."</td></tr>";
 		if(showField($d["address"])||showField($d["place"])||showField($d["zipcode"])) { 
-			echo ("<tr><td valign=top align=right>CÌm:</td><td><div itemprop=\"address\" itemscope itemtype=\"http://schema.org/PostalAddress\">");
+			echo ("<tr><td valign=top align=right>C√≠m:</td><td><div itemprop=\"address\" itemscope itemtype=\"http://schema.org/PostalAddress\">");
 			if(showField($d["address"])) echo('<span itemprop="streetAddress">'.getFieldValue($d["address"])."</span>, ");
 			if(showField($d["zipcode"])) echo('<span itemprop="postalCode">'.getFieldValue($d["zipcode"])."</span> ");
 			if(showField($d["place"]))   echo('<span itemprop="addressLocality">'.getFieldValue($d["place"]).'</span>');
 			echo("</div></td></tr>");
 		}
-		if(showField($d["country"])) echo "<tr><td valign=top align=right>Orsz·g:</td><td>".getFieldValue($d["country"])."</td></tr>";
+		if(showField($d["country"])) echo "<tr><td valign=top align=right>Orsz√°g:</td><td>".getFieldValue($d["country"])."</td></tr>";
 		if(showField($d["phone"])) echo "<tr><td valign=top align=right>Telefon:</td><td>".getFieldValue($d["phone"])."</td></tr>";
 		if(showField($d["mobil"])) echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
 		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
@@ -341,9 +341,9 @@ if ($tabOpen==3) {
 		//change password
 		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
-		echo('<tr><td colspan="3"><p style="text-align:left" ><b>BecenÈv mÛdosÌt·sa</b><br/> A becenÈv minimum 3 karakter hossz˙ kell legyen. </p></td></tr>');
-		echo('<tr><td class="caption1">BecenÈv</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="'.$diak["user"].'" /></td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="⁄j becenÈv!" title="⁄j becenÈv kimentÈse" /></td></tr>');
+		echo('<tr><td colspan="3"><p style="text-align:left" ><b>Becen√©v m√≥dos√≠t√°sa</b><br/> A becen√©v minimum 3 karakter hossz√∫ kell legyen. </p></td></tr>');
+		echo('<tr><td class="caption1">Becen√©v</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="'.$diak["user"].'" /></td></tr>');
+		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="√öj becen√©v!" title="√öj becen√©v kiment√©se" /></td></tr>');
 		echo('<input type="hidden" value="changeuser" name="action" />');
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
@@ -351,9 +351,9 @@ if ($tabOpen==3) {
 		echo('<tr><td colspan="3"><hr/> </td></tr>');
 
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
-		echo('<tr><td colspan="3"><p style="text-align:left" ><b>JelszÛ mÛdosÌt·sa</b><br/> A jelszÛ minimum 6 karakter hossz˙ kell legyen. </p></td></tr>');
-		echo('<tr><td class="caption1">JelszÛ</td><td>&nbsp;</td><td><input type="password" class="input2" name="newpwd1" value="" />&nbsp;jelszÛ ismÈtlÈse:&nbsp;<input type="password" class="input2" name="newpwd2" value="" /></td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="⁄j jelszÛ!" title="⁄j jelszÛ kimentÈse" /></td></tr>');
+		echo('<tr><td colspan="3"><p style="text-align:left" ><b>Jelsz√≥ m√≥dos√≠t√°sa</b><br/> A jelsz√≥ minimum 6 karakter hossz√∫ kell legyen. </p></td></tr>');
+		echo('<tr><td class="caption1">Jelsz√≥</td><td>&nbsp;</td><td><input type="password" class="input2" name="newpwd1" value="" />&nbsp;jelsz√≥ ism√©tl√©se:&nbsp;<input type="password" class="input2" name="newpwd2" value="" /></td></tr>');
+		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="√öj jelsz√≥!" title="√öj jelsz√≥ kiment√©se" /></td></tr>');
 		echo('<input type="hidden" value="changepassw" name="action" />');
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');

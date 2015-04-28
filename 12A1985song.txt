@@ -1,13 +1,13 @@
-1|1|A kˆr|dcgo-zNAaSs|http://www.edda.hu/
-2|1|Elhagyom a v·rost|dvDtGVMqFUo|http://www.edda.hu/
-3|3|Modern rom·nc|I9Rhc7_EoMs|http://www.dollyroll.hu/
-4|1|Sz·lljunk fel!|O342iUVhJIs|http://www.edda.hu/
-5|3|Wind Szˆrny|wXxpmPT7zb8|http://www.dollyroll.hu/
-6|8|Any·m, Ha Szeretsz |mI-oerL9_Js|http://www.100folkcelsius.hu/
-7|13|T·ncolÛ fekete lakkcipık |lfa_XQPBeS0|http://hu.wikipedia.org/wiki/Kom%C3%A1r_L%C3%A1szl%C3%B3
+1|1|A k√∂r|dcgo-zNAaSs|http://www.edda.hu/
+2|1|Elhagyom a v√°rost|dvDtGVMqFUo|http://www.edda.hu/
+3|3|Modern rom√°nc|I9Rhc7_EoMs|http://www.dollyroll.hu/
+4|1|Sz√°lljunk fel!|O342iUVhJIs|http://www.edda.hu/
+5|3|Wind Sz√∂rny|wXxpmPT7zb8|http://www.dollyroll.hu/
+6|8|Any√°m, Ha Szeretsz |mI-oerL9_Js|http://www.100folkcelsius.hu/
+7|13|T√°ncol√≥ fekete lakkcip√µk |lfa_XQPBeS0|http://hu.wikipedia.org/wiki/Kom%C3%A1r_L%C3%A1szl%C3%B3
 8|11|Time After Time |SlykYu5QOkM|http://www.cyndilauper.com/
 9|19|Woodpeckers from space |3Qo1__kbwrA|http://en.wikipedia.org/wiki/VideoKids
-10|17|Dinamit A VÈrem|QQM8gC3SWb4|http://www.zeneszoveg.hu/dalszoveg/10993/dinamit/dinamit-a-verem-zeneszoveg.html
+10|17|Dinamit A V√©rem|QQM8gC3SWb4|http://www.zeneszoveg.hu/dalszoveg/10993/dinamit/dinamit-a-verem-zeneszoveg.html
 11|20|We are the champions|xdCrZfTkG1c|http://www.queenonline.com/
 12|21|You Win Again|pAeLIyO1n9I|
 13|22|You Drive Me Crazy|Yliimc9aIbo|
@@ -17,20 +17,20 @@
 17|14|I Have A Dream|Y2YOGfBFAbs|http://www.abbasite.com/
 18|24|Living Next Door To Alice|NKNfb13vcDI|
 19|25|The Power Of Love|Lr0xJBsVbZY|
-20|5|Gyˆngyhaj˙ l·ny|tN1RdgZj2Ts|
+20|5|Gy√∂ngyhaj√∫ l√°ny|tN1RdgZj2Ts|
 21|4|Casino Twist|Ec7p1Wiqjf0|
-22|4|CsÛkkir·ly|a4pQSCVBJSM|
-23|4|Limbo HintÛ |haPLxloxnCU|
-24|2|LÈtezem|ww4muZV8FMY|http://www.rgo.hu
-25|2|Szerelmes vagyok, mint egy nagy ·gy˙|VJYLpKiJxaE|http://www.rgo.hu
+22|4|Cs√≥kkir√°ly|a4pQSCVBJSM|
+23|4|Limbo Hint√≥ |haPLxloxnCU|
+24|2|L√©tezem|ww4muZV8FMY|http://www.rgo.hu
+25|2|Szerelmes vagyok, mint egy nagy √°gy√∫|VJYLpKiJxaE|http://www.rgo.hu
 26|15|In The Army Now|uAgJpDCI-lI|
 27|26|Wind Of Change|rMUX_4B-Hr4|http://www.the-scorpions.com
 28|4|Micsoda Buli |FRdaOJbXPeg|
 29|4|Multimilliomos Jazzdobos|p7yhgOSIdOA|
-30|3|Vak·ciÛ|N8kOB2hvcos|http://www.dollyroll.hu/
-31|18|Hossz˙ az a nap|yXEBsLvbFP4|
+30|3|Vak√°ci√≥|N8kOB2hvcos|http://www.dollyroll.hu/
+31|18|Hossz√∫ az a nap|yXEBsLvbFP4|
 32|18|Holnap hajnalig|DQZHfXhbO5A|
-34|18|Hossz˙ az a nap|yXEBsLvbFP4|
+34|18|Hossz√∫ az a nap|yXEBsLvbFP4|
 35|27|Kids In America|pKpObNMeeSY|
 36|28|Don't dream its over |VHjT3CHvg-c|
 37|29|It started with a kiss|HM_Ge9AZZec|
@@ -41,18 +41,18 @@
 42|33|Another Day In Paradise |oFBT8_XbGqg|
 43|34|I'm Alive |WFbF4j-y3ZY|
 44|35|Rasputin|o7rPKT36mK4|
-45|17|Igazs·g|a1evKw7JmLo|
-46|36|GÈpnek sz¸lettem |bTTgD7jX_So|
-47|36|Gyerty·k|gWQgrNAU4hc|
+45|17|Igazs√°g|a1evKw7JmLo|
+46|36|G√©pnek sz√ºlettem |bTTgD7jX_So|
+47|36|Gyerty√°k|gWQgrNAU4hc|
 48|37|One Moment In Time|tYFHAvULvJ0|
-49|17|K¸lv·rosban sz¸lettem|CJG6t98lBvc|
+49|17|K√ºlv√°rosban sz√ºlettem|CJG6t98lBvc|
 50|38|They Don't Care About Us |MM8dwh_Kde4|
 51|39|Push The Button|ZO2JabccTBk|
-52|2|Megy a l·ny|E87b3R7zZKo|http://www.rgo.hu
+52|2|Megy a l√°ny|E87b3R7zZKo|http://www.rgo.hu
 54|2|Ballag a katona|QkEhfOiR-QI|http://www.rgo.hu
 55|21|How Deep Is Your Love|0vgwk8tUT5k|
 56|34|My Heart Will Go On|zmbw8OycJrE|
-57|3|¡br·ndos szÈp napok|OC99IyTr_LA|http://www.dollyroll.hu/
+57|3|√Åbr√°ndos sz√©p napok|OC99IyTr_LA|http://www.dollyroll.hu/
 58|3|Arrivederci Amore|CTjNhH4V0Rk|http://www.dollyroll.hu/
 60|21|How Deep Is Your Love|0vgwk8tUT5k|
 63|34|My Heart Will Go On|zmbw8OycJrE|
@@ -75,17 +75,17 @@
 80|49|Celebration|CD2-N9CjOEI|
 81|49|Secretes Of Love|hKNLwM1NllU|
 82|50|Bad Boys|V2EOzaEWsyo|
-83|9|Ha Èn rÛzsa volnÈk|6ojhBoj8bP8|
-84|9|Valahol egy l·ny|dZmA8MPpxCw|
-85|9|Jˆjj kedvesem|ahma7wz5P1o|
-86|51|Lakodalom van a mi utc·nkba|fE_Deudsj40|
-87|51|GÛlya, gÛlya hossz˙l·b˙ gÛlya|pnTE9ISF9CQ|
-88|51|Lemegyek a pince fenekÈre|wR5I-po_kFs|
+83|9|Ha √©n r√≥zsa voln√©k|6ojhBoj8bP8|
+84|9|Valahol egy l√°ny|dZmA8MPpxCw|
+85|9|J√∂jj kedvesem|ahma7wz5P1o|
+86|51|Lakodalom van a mi utc√°nkba|fE_Deudsj40|
+87|51|G√≥lya, g√≥lya hossz√∫l√°b√∫ g√≥lya|pnTE9ISF9CQ|
+88|51|Lemegyek a pince fenek√©re|wR5I-po_kFs|
 89|42|Cryin|q2_GCcXEgfQ|
 90|52|Iko Iko|5_8IifQjYuI|
 91|52|Captain Jack|CUvg7Empjfg|
 92|53|I Just Called To Say I Love You|XxoBaEQGMPo|
-93|54|Szeress ˙gy is, ha rossz vagyok|UQV6f7P3McQ|
+93|54|Szeress √∫gy is, ha rossz vagyok|UQV6f7P3McQ|
 94|55|Twist in my Sobriety|sJdgSRzv8wE|
 95|56|Can\'t Help Falling In Love With You|qCfAmkvuXP8|
 96|57|Enjoy The Silence|V7eR7AqvUkI|
@@ -93,10 +93,10 @@
 98|58|Gypsy|qrbtrOdytJ8|
 99|4|Isztambul |Pfpdt74MDJw|
 100|4|Ciao, Marina |g7VH7kqjnAs|
-101|4|Meghalok, hogyha r·m nÈzel|SiwtAyv5hGo|
-102|59|Csavard Fel A Szınyeget |LKyEAHifc24|
-103|59|V·rni R·d Egy …jen ¡t|TSPAaAEd6PU|
-104|59|Eszelıs Szerelem |3ebCVVfb6uc|
+101|4|Meghalok, hogyha r√°m n√©zel|SiwtAyv5hGo|
+102|59|Csavard Fel A Sz√µnyeget |LKyEAHifc24|
+103|59|V√°rni R√°d Egy √âjen √Åt|TSPAaAEd6PU|
+104|59|Eszel√µs Szerelem |3ebCVVfb6uc|
 105|60|Rude Boy|vKkA4U4zlOk|
 106|61|Lady in Red|ejxFeS47OZ8|
 107|62|Say you say me|we0mk_J0zyc|
@@ -107,7 +107,7 @@
 112|67|To All The Girls I\'ve Loved Before|tOifaUXPk4g|
 113|13|Mambo Italiano|tFBQpnpNb28|
 114|13|Pesti gigolo|bvOl4qh6-jM|
-115|13|”, csak a hajnal jˆnne m·r|0TiAF9QRaMU|
+115|13|√ì, csak a hajnal j√∂nne m√°r|0TiAF9QRaMU|
 116|14|Fernando|4ohr4P8E_io|
 117|14|Money Money Money|xmujxC8G1TQ|
 118|27|You Came|RqCLGWz9-SE|
@@ -127,7 +127,7 @@
 133|24|Don\'t Play Your Rock\'n Roll To Me|Jn8uerEbRBE|
 134|76|I was made for loving you|q7fxN3g5sLw|
 135|77|Daylight in your eyes|Tkb1JGxswfY|
-136|5|PetrÛleum l·mpa|4szfWQ7Sspg|
+136|5|Petr√≥leum l√°mpa|4szfWQ7Sspg|
 137|14|Thank You For The Music|4069PUk3aM0|
 138|4|Duci Juci|jH1AiYq91h4|
 139|78|Coco Jambo|cOrc37wNUqU|
@@ -140,26 +140,26 @@
 146|84|Head over heels|VWJPa0bvWnM|
 147|84|Shout Us Remix|VxnLP4qseyA|
 148|71|All The Lovers|ekPRAeHc-L4|
-149|85|JÈg dupla whiskyvel|2peI7Cz2yb0|
-150|3|VÈgleg a szÌv¸gyem maradt·l |L9CyNQRAvnc|
-151|1|Lelk¸nkbıl|xLJhd0QBilM|http://www.edda.hu/
-152|1|Nekem nem kell m·s|wAqacu-GbBg|http://www.edda.hu/
-153|9|Ahogy lesz, ˙gy lesz|YaMUlL_Uxgk|
+149|85|J√©g dupla whiskyvel|2peI7Cz2yb0|
+150|3|V√©gleg a sz√≠v√ºgyem maradt√°l |L9CyNQRAvnc|
+151|1|Lelk√ºnkb√µl|xLJhd0QBilM|http://www.edda.hu/
+152|1|Nekem nem kell m√°s|wAqacu-GbBg|http://www.edda.hu/
+153|9|Ahogy lesz, √∫gy lesz|YaMUlL_Uxgk|
 154|26|Still Loving You|Pep6nREBpS8|
 155|26|Send me an Angel|0LdSHWMVn2k|
 156|14|Super trooper|uRSl9ysa6-c|
 157|86|Like A Lady|NKcAyMngxik|
 158|87|Fight For This Love|C7BcGa0nGgk|
 159|88|Requiem|r8pYAKM25Hc|
-160|89|VÈn EurÛpa, az ˆreg hˆlgy|BeSCX85w4P0|
+160|89|V√©n Eur√≥pa, az √∂reg h√∂lgy|BeSCX85w4P0|
 161|5|Babylon|1YnOG9zv2tY|
-162|90|Uram, segÌts|DY-Fz_FhS38|http://www.napoleonboulevard.hu/
-163|90|J˙lia nem akar a fˆldˆn j·rni|-RIEqVfah2Q|http://www.napoleonboulevard.hu/
-164|91|Most kÈne abbahagyni|yk9Jgc6G-DE|
-165|92|RÈgi ny·r|JrxkkDZ8vfE|
-166|92|A vil·g kˆzepÈn|EmDE7J8ld2g|
-167|1|Oh, azok az Èjszak·k|KR9FXhshIJE|http://www.edda.hu/
-168|1|FÈmszÌv˚ fi˙|dWjzQ341yec|http://www.edda.hu/
+162|90|Uram, seg√≠ts|DY-Fz_FhS38|http://www.napoleonboulevard.hu/
+163|90|J√∫lia nem akar a f√∂ld√∂n j√°rni|-RIEqVfah2Q|http://www.napoleonboulevard.hu/
+164|91|Most k√©ne abbahagyni|yk9Jgc6G-DE|
+165|92|R√©gi ny√°r|JrxkkDZ8vfE|
+166|92|A vil√°g k√∂zep√©n|EmDE7J8ld2g|
+167|1|Oh, azok az √©jszak√°k|KR9FXhshIJE|http://www.edda.hu/
+168|1|F√©msz√≠v√ª fi√∫|dWjzQ341yec|http://www.edda.hu/
 169|93|Your love is my drug|umFouH_4Yuw|
 170|93|Blah blah blah|YqRtMTq4vzI|
 171|93|Tik Tok|Pohatsq8K7Q|
@@ -167,8 +167,8 @@
 175|96|Rush Rush|0IPbMVLZX6g|
 176|97|Nothing\'s gonna stop us now||
 177|18|220 felett||
-178|98|J·tszom|http://www.youtube.com/watch?v=NhgiAuSUBCc|
-179|13|Mond kis kÛcos|http://www.youtube.com/watch?v=O9KN8H8d_Wg|
+178|98|J√°tszom|http://www.youtube.com/watch?v=NhgiAuSUBCc|
+179|13|Mond kis k√≥cos|http://www.youtube.com/watch?v=O9KN8H8d_Wg|
 180|22|Megamix|http://www.youtube.com/watch?v=eC-hB_5L0uA|
 181|99|I Like Chopin|http://www.youtube.com/watch?v=grGjD1rTNyg|
 182|100|Walk of life|http://www.youtube.com/watch?v=d-ScbqH1Fz0|

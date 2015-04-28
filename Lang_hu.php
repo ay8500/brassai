@@ -2,16 +2,16 @@
 $TXT["Title"] 			="";
 $TXT["Footer"] 			="";
 
-$TXT["LogIn"]				="Belépés"; 
-$TXT["LogInUser"]			="Becenév"; 
-$TXT["LogInPassw"]			="Jelszó"; 
-$TXT["LogOut"]				="Kilépés"; 
-$TXT["LogInError"]			="Belépés sikertelen!"; 
-$TXT["LogInUserPassw"]		="Becenév és jelszó hiányzik."; 
-$TXT["LogInUserPasErr"]		="Hibás becenév vagy jelszó!";
-$TXT["LogInPasswChanged"]	="Jelszó sikeresen módósítva.";   
-$TXT["LogInNewPasswNotEQ"]	="Az új jelszavak nem egyformák.";
-$TXT["LogInNewPasswNotOK"]	="Az új jelszó nagyon egyszerü!"; 
+$TXT["LogIn"]				="BelÃ©pÃ©s"; 
+$TXT["LogInUser"]			="BecenÃ©v"; 
+$TXT["LogInPassw"]			="JelszÃ³"; 
+$TXT["LogOut"]				="KilÃ©pÃ©s"; 
+$TXT["LogInError"]			="BelÃ©pÃ©s sikertelen!"; 
+$TXT["LogInUserPassw"]		="BecenÃ©v Ã©s jelszÃ³ hiÃ¡nyzik."; 
+$TXT["LogInUserPasErr"]		="HibÃ¡s becenÃ©v vagy jelszÃ³!";
+$TXT["LogInPasswChanged"]	="JelszÃ³ sikeresen mÃ³dÃ³sÃ­tva.";   
+$TXT["LogInNewPasswNotEQ"]	="Az Ãºj jelszavak nem egyformÃ¡k.";
+$TXT["LogInNewPasswNotOK"]	="Az Ãºj jelszÃ³ nagyon egyszerÃ¼!"; 
 $TXT["LogInLostData"]		="Elfelejtettem";
-$TXT["LogInLostDataTitle"]	="Bejelenkezési adataim nincsenek vagy elfelejtettem.";
+$TXT["LogInLostDataTitle"]	="BejelenkezÃ©si adataim nincsenek vagy elfelejtettem.";
 ?>

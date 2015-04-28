@@ -1,6 +1,6 @@
 <?PHP include("homemenu.php"); ?>
 
-<h4 style="text-align:center"><font face="Arial">Az osztálytársak kontakt adatai:</font></h4>
+<h4 style="text-align:center"><font face="Arial">Az osztÃ¡lytÃ¡rsak kontakt adatai:</font></h4>
 <?php 
 include_once("UserManager.php");
 
@@ -8,11 +8,11 @@ if (userIsAdmin()) {
 	include_once("data.php");
 ?>
 <p style="text-align:center">
-	<a href="getExcelData.php?data=Kontakt">Kontaklista letöltése Excel formátumban</a>&nbsp;|&nbsp;
-	<a href="getExcelData.php?data=All">Összes adatok letöltése Excel formátumban</a>
+	<a href="getExcelData.php?data=Kontakt">Kontaklista letÃ¶ltÃ©se Excel formÃ¡tumban</a>&nbsp;|&nbsp;
+	<a href="getExcelData.php?data=All">Ã–sszes adatok letÃ¶ltÃ©se Excel formÃ¡tumban</a>
 </p>
 <table style="width:70%;border-collapse:collapse" align="center" >
-	<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td></tr>
+	<tr style="text-align:center;font-weight:bold;"><td>NÃ©v</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td></tr>
 	<?PHP
 	for ($l=1;$l<=getDataSize();$l++) {
 		$d=getPerson($l);
@@ -28,7 +28,7 @@ if (userIsAdmin()) {
 	}
 }
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";
+	echo "<div>Adat hozzÃ¡fÃ©rÃ©si jog hiÃ¡nyzik!</div>";
 
 ?>
 

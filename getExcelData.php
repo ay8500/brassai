@@ -6,7 +6,7 @@ header("Expires: 0");
 include_once("data.php");  
 ?>
 <table>
-<tr style="background-color:#ffffcb;font-weight:bold;"><td>Sz.</td><td>Név</td><td>Feleség/férj neve</td><td>Cím</td><td>Email</td><td>Telefon</td><td>Mobil</td><td>Skype</td><td>Munkahely</td><td>Beosztás</td><td>Gyerekek</td></tr>
+<tr style="background-color:#ffffcb;font-weight:bold;"><td>Sz.</td><td>NÃ©v</td><td>FelesÃ©g/fÃ©rj neve</td><td>CÃ­m</td><td>Email</td><td>Telefon</td><td>Mobil</td><td>Skype</td><td>Munkahely</td><td>BeosztÃ¡s</td><td>Gyerekek</td></tr>
 		<?PHP
 		for ($l=1;$l<=getDataSize();$l++) {
 			$d=getPerson($l);

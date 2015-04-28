@@ -1,9 +1,9 @@
 <?PHP 
-	$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
+	$SiteTitle="A kolozsvÃ¡ri Brassai SÃ¡muel vÃ©ndiÃ¡kok bejelentkezÃ©si oldala";
 	include("homemenu.php"); 
 	include_once("logon.php"); 
 ?>
-<div class="sub_title">Bejelentkezés</div>
+<div class="sub_title">BejelentkezÃ©s</div>
 <?PHP 
 if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) { 
 	$person=getPersonLogedOn();
@@ -12,7 +12,7 @@ if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {
 <table style="width:600px" class="pannel" align="center">
 	<tr style="font-size:12px; font-weight:bold">
 	<td>
-		<div>Kedves <?PHP echo($person['lastname'].' '.$person['firstname']);?> sikeresen bejelentkeztél a brassaista véndiákok honlapjára.</div>
+		<div>Kedves <?PHP echo($person['lastname'].' '.$person['firstname']);?> sikeresen bejelentkeztÃ©l a brassaista vÃ©ndiÃ¡kok honlapjÃ¡ra.</div>
 	</td></tr>
 	<tr>
 		<td><hr/></td>
@@ -21,25 +21,25 @@ if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {
 		<td>Gyors linkek:</td>
 	</tr>
 	<tr><td>
-		<div><img src="images/T.GIF" style="width:40px"/><img src="images/myData.png" /><a href="editDiak.php">Az én adataim </a> címem, foglalkozásom, gyerekek, képek, beállítások </div>
+		<div><img src="images/T.GIF" style="width:40px"/><img src="images/myData.png" /><a href="editDiak.php">Az Ã©n adataim </a> cÃ­mem, foglalkozÃ¡som, gyerekek, kÃ©pek, beÃ¡llÃ­tÃ¡sok </div>
 	</td></tr><tr><td>	
-		<div><img src="images/T.GIF" style="width:40px"/><img src="images/address.png" /><a href="hometable.php">Osztálytársak</a> diákkori névsor szerint. </div>
+		<div><img src="images/T.GIF" style="width:40px"/><img src="images/address.png" /><a href="hometable.php">OsztÃ¡lytÃ¡rsak</a> diÃ¡kkori nÃ©vsor szerint. </div>
 	</td></tr><tr><td>	
-		<div><img src="images/T.GIF" style="width:40px"/><img src="images/talalk.png" /><a href="zenetoplista.php">Zenetoplista</a>Zene a 25-éves találkozón </div>
+		<div><img src="images/T.GIF" style="width:40px"/><img src="images/talalk.png" /><a href="zenetoplista.php">Zenetoplista</a>Zene a 25-Ã©ves talÃ¡lkozÃ³n </div>
 	</td></tr><tr><td>	
-		<div><img src="images/T.GIF" style="width:40px"/><img src="images/world.png" /><a href="worldmap.php">A világtérkép</a> az osztálytársakkal.</div>
+		<div><img src="images/T.GIF" style="width:40px"/><img src="images/world.png" /><a href="worldmap.php">A vilÃ¡gtÃ©rkÃ©p</a> az osztÃ¡lytÃ¡rsakkal.</div>
 	</td></tr><tr><td>
 		<hr />	
 	<tr style="font-size:12px; font-weight:bold">
-		<td>Újdonságok:</td>
+		<td>ÃšjdonsÃ¡gok:</td>
 	</tr>
 	</td></tr><tr><td>	
 		<div><img src="images/T.GIF" style="width:40px"/><img src="images/news.png" /></div>
 	</td></tr><tr><td>	
 	<table>
-		<tr><td>Május 2010</td><td><a href="zenetoplista.php">Zenetoplista</a></td></tr>
-		<tr><td>Junius 2010</td><td>Képek: <a href="pictureGallery.php?gallery=SzepIdok">Régi szép idök</a> csak bejelentkezet osztálytársak részére</td></tr>
-		<tr><td>Julius 2010</td><td><a href="hometable.php?guests=true">Tanárok, vendégek és jó barátok</a> adatainak a megtekintési lehetösége.</td></tr>
+		<tr><td>MÃ¡jus 2010</td><td><a href="zenetoplista.php">Zenetoplista</a></td></tr>
+		<tr><td>Junius 2010</td><td>KÃ©pek: <a href="pictureGallery.php?gallery=SzepIdok">RÃ©gi szÃ©p idÅ‘k</a> csak bejelentkezet osztÃ¡lytÃ¡rsak rÃ©szÃ©re</td></tr>
+		<tr><td>Julius 2010</td><td><a href="hometable.php?guests=true">TanÃ¡rok, vendÃ©gek Ã©s jÃ³ barÃ¡tok</a> adatainak a megtekintÃ©si lehetÅ‘sÃ©ge.</td></tr>
 	</table>
 	</td></tr>
 </table>	
@@ -49,8 +49,8 @@ if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {
 else {
 	if (isset($_GET["action"]) && ($_GET["action"]=="logon")) { 
 	?>
-	<div class="sub_title" style="color:red">Sajnos a bejelentkezés nem sikerült. </div>
-	<div style="text-align:center">Lehetséges rosszul írtad be a beceneved vagy lejszavad. Probáld meg még egyszer!</div>
+	<div class="sub_title" style="color:red">Sajnos a bejelentkezÃ©s nem sikerÃ¼lt. </div>
+	<div style="text-align:center">LehetsÃ©ges rosszul Ã­rtad be a beceneved vagy lejszavad. ProbÃ¡lkozz mÃ©g egyszer!</div>
 	<?PHP }
 	include("lostPassw.php");
 }

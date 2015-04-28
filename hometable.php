@@ -12,15 +12,15 @@ $SiteTitle=$_SESSION['scoolYear']."-".$_SESSION['scoolClass'];
    //Parameter guests
    if (isset($_GET["guests"])) $guests = true; else $guests=false;
 	if ( $guests )
-		$SiteTitle=$SiteTitle.' tan·rok, vendÈgek, jÛ bar·tok';
+		$SiteTitle=$SiteTitle.' tan√°rok, vend√©gek, j√≥ bar√°tok';
 	else
-		$SiteTitle=$SiteTitle.' oszt·lyt·rsak';
+		$SiteTitle=$SiteTitle.' oszt√°lyt√°rsak';
 include("homemenu.php"); 
 
 	if ( $guests )
-		echo('<h2 class="sub_title">Tan·rok, vendÈgek, jÛ bar·tok.</h2>');
+		echo('<h2 class="sub_title">Tan√°rok, vend√©gek, j√≥ bar√°tok.</h2>');
 	else
-		echo('<h2 class="sub_title">Oszt·lyt·rsak</h2>');
+		echo('<h2 class="sub_title">Oszt√°lyt√°rsak</h2>');
 
 ?>
 
@@ -44,19 +44,19 @@ foreach ($data as $l => $d)
 			if ($d["birthname"]!="") echo("&nbsp;(".$d["birthname"].")");
 		echo("</h3>"); 
 		echo "<table>\r\n";
-		echo "<tr><td valign=top align=right>…lett·rs:</td><td>".$d["partner"]."</td></tr>";
-		echo "<tr><td valign=top align=right>VÈgzettsÈg:</td><td>".$d["education"]."</td></tr>";
+		echo "<tr><td valign=top align=right>√âlett√°rs:</td><td>".$d["partner"]."</td></tr>";
+		echo "<tr><td valign=top align=right>V√©gzetts√©g:</td><td>".$d["education"]."</td></tr>";
 		if(showField($d["employer"])) echo "<tr><td valign=top align=right>Munkahely:</td><td>".getFieldValue($d["employer"])."</td></tr>";
-		if(showField($d["function"])) echo "<tr><td valign=top align=right>Beoszt·s:</td><td>".getFieldValue($d["function"])."</td></tr>";
+		if(showField($d["function"])) echo "<tr><td valign=top align=right>Beoszt√°s:</td><td>".getFieldValue($d["function"])."</td></tr>";
 		echo "<tr><td valign=top align=right>Gyerekek:</td><td>".$d["children"]."</td></tr>";
 		if(showField($d["address"])||showField($d["place"])||showField($d["zipcode"])) { 
-			echo ("<tr><td valign=top align=right>CÌm:</td><td>");
+			echo ("<tr><td valign=top align=right>C√≠m:</td><td>");
 			if(showField($d["address"])) echo(getFieldValue($d["address"]).", ");
 			if(showField($d["zipcode"])) echo(getFieldValue($d["zipcode"])." ");
 			if(showField($d["place"]))   echo(getFieldValue($d["place"]));
 			echo("</td></tr>");
 		}
-		if(showField($d["country"])) echo "<tr><td valign=top align=right>Orsz·g:</td><td>".getFieldValue($d["country"])."</td></tr>";
+		if(showField($d["country"])) echo "<tr><td valign=top align=right>Orsz√°g:</td><td>".getFieldValue($d["country"])."</td></tr>";
 		if(showField($d["phone"])) echo "<tr><td valign=top align=right>Telefon:</td><td>".getFieldValue($d["phone"])."</td></tr>";
 		if(showField($d["mobil"])) echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
 		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
@@ -64,14 +64,14 @@ foreach ($data as $l => $d)
 		if(showField($d["facebook"])) echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.urldecode(getFieldValue($d["facebook"])).'">'.urldecode(getFieldValue($d["facebook"]))."</a></td></tr>";
 		if(showField($d["homepage"])) echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
 		if ( userIsAdmin() || userIsEditor()) {
-			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$l.'">MÛdÛsÌt</a></td><td>&nbsp;</td></tr>';
+			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$l.'">M√≥d√≥s√≠t</a></td><td>&nbsp;</td></tr>';
 		}
 		else {
 			if (isset($_SESSION['UID']) && $_SESSION['UID']==$l) {
-				echo '<tr><td valign=top align=right><a href="editDiak.php">MÛdÛsÌt</a></td><td>&nbsp;</td></tr>';
+				echo '<tr><td valign=top align=right><a href="editDiak.php">M√≥d√≥s√≠t</a></td><td>&nbsp;</td></tr>';
 			}
 			else {
-				echo '<tr><td valign=top align=right><a href="'.getPersonLink($d["lastname"],$d["firstname"]).'">Tˆbb info</a></td><td>&nbsp;</td></tr>';
+				echo '<tr><td valign=top align=right><a href="'.getPersonLink($d["lastname"],$d["firstname"]).'">T√∂bb info</a></td><td>&nbsp;</td></tr>';
 			}
 		}
   	echo "</table>";

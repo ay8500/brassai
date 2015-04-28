@@ -19,10 +19,10 @@ if ($classchanged) {
 } 
 
 //include the menu.
-$SiteDescription="A kolozsvári Brassai Sámuel líceum véndiákok honlapja";
+$SiteDescription="A kolozsvÃ¡ri Brassai SÃ¡muel lÃ­ceum vÃ©ndiÃ¡kok honlapja";
 include("homemenu.php");
 ?>
-<h2 class="sub_title">Szeretettel köszöntünk honlapunkon</h2>
+<h2 class="sub_title">Szeretettel kÃ¶szÃ¶ntÃ¼nk honlapunkon</h2>
 <table align="center"class="pannel">
   <tr><td>
 
@@ -31,7 +31,7 @@ include("homemenu.php");
   <table style="width: 500px;" align="center" border="1">
 	<tr>
 		<td style="text-align:center;width:300px">
-			<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>
+			<img src="images/BRASSAIS.JPG"  alt="Brassai SÃ¡muel" /><br/>
 			<div style="font-size:12px;font-weight:bold">Brassai S&aacute;muel (1800-1897)</div>
 			  <div style="font-size:11px;">
     				&quot;A tan&iacute;t&oacute;, mint a gazda, csak magvakat vet el,<br/>
@@ -44,7 +44,7 @@ include("homemenu.php");
 </table>
 </td></tr><tr><td align="center">
 	Ez az oldal <B>1997. junius 11.</B>-e &oacute;ta el&eacute;rhet&otilde;.
-	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2015. április 12.</b>-én.<br>
+	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2015. Ã¡prilis 28.</b>-Ã¡n.<br>
 </td>
 </tr>
 </table>

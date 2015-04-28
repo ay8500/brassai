@@ -60,7 +60,7 @@ function CompareTopList($a, $b)
 }
 
 /**
- * Compare funtion für the song list
+ * Compare funtion fÃ¼r the song list
  */
 function CompareSong($a, $b) 
 {

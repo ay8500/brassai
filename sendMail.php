@@ -22,15 +22,15 @@ function SendNewPassword($uid) {
 	global $sendMailMsg;
 	$diak = getPerson($uid);
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
-	$text.="Ezt az e-mail azért kapod mert kérésedre megvátoztak a bejelentkezési adataid.<br />";
+	$text.="Ezt az e-mail azÃ©rt kapod mert kÃ©rÃ©sedre megvÃ¡toztak a bejelentkezÃ©si adataid.<br />";
 	$text.="<p>";
-	$text.="Végzös osztály:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
-	$text.="Becenév:".$diak["user"]."<br/>";
-	$text.="Jelszó:".$diak["passw"]."<br/>";
+	$text.="VÃ©gzÅ‘s osztÃ¡ly:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
+	$text.="BecenÃ©v:".$diak["user"]."<br/>";
+	$text.="JelszÃ³:".$diak["passw"]."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vézös diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vÃ©zÃ¶s diÃ¡kok honlapja</a>';
 	$text.="</p>";
-	$text.="<p>Üdvözlettel az adminsztátor.";
+	$text.="<p>ÃœdvÃ¶zlettel az adminsztÃ¡tor.";
 	sendTheMail(getFieldValue($diak["email"]),$text);
 }
 
@@ -39,15 +39,15 @@ function SendNewPassword($uid) {
  */
 function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights) {
 	$text='<p style="font-weight: bold;">Kedeves '.$lastname." ".$firstname.'</p>';
-	$text.="Ezt az e-mail azért kapod mert bejelentkezési adatokat kértél.<br />";
+	$text.="Ezt az e-mail azÃ©rt kapod mert bejelentkezÃ©si adatokat kÃ©rtÃ©l.<br />";
 	$text.="<p>";
-	$text.="Végzös osztály:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
-	$text.="Hamarosan még egy emailt fogsz kapni a bejelentkezési becenévvel és jelszóval.<br/>";
-	$text.="Mail címed: ".$mail."<br/>";
+	$text.="VÃ©gzÅ‘s osztÃ¡ly:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
+	$text.="Hamarosan mÃ©g egy emailt fogsz kapni a bejelentkezÃ©si becenÃ©vvel Ã©s jelszÃ³val.<br/>";
+	$text.="Mail cÃ­med: ".$mail."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vézös diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vÃ©zÃ¶s diÃ¡kok honlapja</a>';
 	$text.="</p>";
-	$text.="<p>Üdvözlettel az adminsztátor.";
+	$text.="<p>ÃœdvÃ¶zlettel az adminsztÃ¡tor.";
 	sendTheMail($mail,$text);
 	$text.="<p>Szerep: ".$rights."</p>";
 	sendTheMail("brassai@blue-l.de",$text);
@@ -63,11 +63,11 @@ function SendMail($uid,$text,$userData) {
 		
 		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
 		$text=str_replace("\"","&quot;",$text);
-		$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".$diak["passw"]."<br/></p>";
+		$text.="<hr/><p>BejelentkezÃ©si Adatok<br/>BecenÃ©v: ".$diak["user"]." <br/>JelszÃ³: ".$diak["passw"]."<br/></p>";
 		sendTheMail(getFieldValue($diak["email"]),$text);
 		//echo($text);
 		$sendMailCount++;
-		$sendMailMsg="Elködött mailek száma:".$sendMailCount;
+		$sendMailMsg="ElkÃ¶dÃ¶tt mailek szÃ¡ma:".$sendMailCount;
 }
 
 /**

@@ -5,24 +5,51 @@ include_once("homemenu.php");
   <h2 class="sub_title">Impresszum</h2>
   <table class="pannel" align="center" border="1" style="width:700px">
     <tr><td>
-		<h5>Impresszum: Weboldal tulajdonos</h5 >
-		<a href="Levente_Maier">Maier Levente</a><br/>
+		<h1>Impresszum: </h1 >
+		Weboldal tulajdonos <a href="Levente_Maier">Maier Levente</a><br/>
 		Bergstr. 33a<br/>
 		91790 Bergen<br/>
 		Germany<br/>
 	</td></tr>
 	<tr><td>
-		<p>A v�ndi�kok weboldalai, illetve annak tartalma, vagy b�rmely r�szlete szerzoi jogv�delem al� esnek.</p>
-		<p>Levente Maier �r�sbeli enged�lye n�lk�l tilos a weboldalak tartalm�nak eg�sz�t vagy r�szeit b�rmilyen form�ban felhaszn�lni, reproduk�lni, �truh�zni, terjeszteni, �tdolgozni, vagy t�rolni.</p>
-		<p>Levente Maier fenntartja a jogot, hogy a v�ndi�kok weboldalait b�rmikor m�dos�tsa, vagy �tdolgozza, illetve el�rhetos�g�ket korl�tozza, vagy megsz�ntesse. Levente Maier nem garant�lja, hogy a weboldalakhoz val� hozz�f�r�s folyamatos vagy hibamentes lesz.</p>
-		<p>Levente Maier nem v�llal feleloss�get olyan, harmadik f�l �ltal l�trehozott, tov�bb�tott, t�rolt, hozz�f�rhetov� tett, vagy publik�lt tartalmak�rt, melyekhez a v�ndi�kok weboldalai kapcsol�dnak, vagy amelyekre hivatkoznak</p>
+		<p>A véndiákok weboldalai, illetve annak tartalma, vagy bármely részlete szerzői jogvédelem alá esnek.</p>
+		<p>Levente Maier írásbeli engedélye nélkül tilos a weboldalak tartalmának egészét vagy részeit bármilyen formában felhasználni, reprodukálni, átruházni, terjeszteni, átdolgozni, vagy tárolni.</p>
+		<p>Levente Maier fenntartja a jogot, hogy a véndiákok veboldalait bármikor módosítsa, vagy átdolgozza, illetve elérhetoségüket korlátozza, vagy megszüntesse. Levente Maier nem garantálja, hogy a weboldalakhoz való hozzáférés folyamatos vagy hibamentes lesz.</p>
+		<p>Levente Maier nem vállal felelősséget olyan, harmadik fél által létrehozott, továbbított, tárolt, hozzáférhetővé tett, vagy publikált tartalmakért, melyekhez a véndiákok weboldalai kapcsolódnak, vagy amelyekre hivatkoznak</p>
 		<p>
-			A honlappal kapcsolatos technikai, formai k�rd�seket, �szrev�teleket k�rj�k a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> c�mre k�ldeni.<br/> 
-			Ha pedig k�rd�s�k a tartalomra vagy a Brassai S�muel l�ceumra vonatkozik, �zenet�ket k�ldj�k a <a href="mailto:levente@blue-l.de">levente@blue-l.de</a> c�mre. 
-		</p><p>
+			A honlappal kapcsolatos technikai, formai kérdéseket, észrevételeket kérjük a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre küldeni.<br/> 
+			Ha pedig kérdésük a tartalomra vagy a Brassai Sámuel líceumra vonatkozik, üzenetüket küldjék a <a href="mailto:levente@blue-l.de">levente@blue-l.de</a> címre. 
+		</p>
+		<p>
 			Should you have any questions or comments regarding the technical issues of this web site<br/> please contact the webmaster at <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a><br>
 			Questions and requests concerning the content of this web site or the Brassai Samuel high school<br/> should be addressed to <a href="mailto:levente@blue-l.de">levente@blue-l.de</a>.
 		</p>
+	</td>
+	</tr><tr>
+	<td>
+		<p>
+			Az oldal németországban van hosztolva, emiatt a következő szöveg a törvények miatt kötelező.
+		</p>
+		
+		<p>Angaben gemäß § 5 TMG:</p>
+		<p>Levente Maier<br /> Bergstr. 33<br />91790 Bergen</p>
+		<h2>Kontakt:</h2>
+		<p>Telefon:+49 09147 95033<br />E-Mail:levi@blue-l.de</p>
+		<p><span style="line-height: 1.3em;">Quelle: </span><em style="line-height: 1.3em;"><a href="http://www.e-recht24.de">eRecht24</a>, Rechtsanwalt für Internetrecht Sören Siebert</em></p>
+		<h2><strong>Haftungsausschluss:</strong></h2>
+		<p><strong>Haftung für Inhalte</strong><br /> Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
+		<p><strong>Haftung für Links</strong><br /> Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+		<p><strong>Urheberrecht</strong><br /> Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
+		<p><strong>Datenschutz</strong><br /> Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder eMail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben.</p>
+		<p>Wir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.</p>
+		<p>Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.</p>
+		<p><strong>Datenschutzerklärung für die Nutzung von Google Analytics</strong><br /> Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. ("Google"). Google Analytics verwendet sog. "Cookies", Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website durch Sie ermöglichen. Die durch den Cookie erzeugten Informationen über Ihre Benutzung dieser Website werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Im Falle der Aktivierung der IP-Anonymisierung auf dieser Webseite wird Ihre IP-Adresse von Google jedoch innerhalb von Mitgliedstaaten der Europäischen Union oder in anderen Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum zuvor gekürzt.</p>
+		<p>Nur in Ausnahmefällen wird die volle IP-Adresse an einen Server von Google in den USA übertragen und dort gekürzt. Im Auftrag des Betreibers dieser Website wird Google diese Informationen benutzen, um Ihre Nutzung der Website auszuwerten, um Reports über die Websiteaktivitäten zusammenzustellen und um weitere mit der Websitenutzung und der Internetnutzung verbundene Dienstleistungen gegenüber dem Websitebetreiber zu erbringen. Die im Rahmen von Google Analytics von Ihrem Browser übermittelte IP-Adresse wird nicht mit anderen Daten von Google zusammengeführt.</p>
+		<p>Sie können die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website vollumfänglich werden nutzen können. Sie können darüber hinaus die Erfassung der durch das Cookie erzeugten und auf Ihre Nutzung der Website bezogenen Daten (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser Daten durch Google verhindern, indem sie das unter dem folgenden Link verfügbare Browser-Plugin herunterladen und installieren: <a href="http://tools.google.com/dlpage/gaoptout?hl=de">http://tools.google.com/dlpage/gaoptout?hl=de</a>.</p>
+		<p><strong>Datenschutzerklärung für die Nutzung von Google Adsense</strong><br /> Diese Website benutzt Google AdSense, einen Dienst zum Einbinden von Werbeanzeigen der Google Inc. ("Google"). Google AdSense verwendet sog. "Cookies", Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website ermöglicht. Google AdSense verwendet auch so genannte Web Beacons (unsichtbare Grafiken). Durch diese Web Beacons können Informationen wie der Besucherverkehr auf diesen Seiten ausgewertet werden.</p>
+		<p>Die durch Cookies und Web Beacons erzeugten Informationen über die Benutzung dieser Website (einschließlich Ihrer IP-Adresse) und Auslieferung von Werbeformaten werden an einen Server von Google in den USA übertragen und dort gespeichert. Diese Informationen können von Google an Vertragspartner von Google weiter gegeben werden. Google wird Ihre IP-Adresse jedoch nicht mit anderen von Ihnen gespeicherten Daten zusammenführen.</p>
+		<p>Sie können die Installation der Cookies durch eine entsprechende Einstellung Ihrer Browser Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website voll umfänglich nutzen können. Durch die Nutzung dieser Website erklären Sie sich mit der Bearbeitung der über Sie erhobenen Daten durch Google in der zuvor beschriebenen Art und Weise und zu dem zuvor benannten Zweck einverstanden.</p>
+		<p><em>Quellverweis:</em> <a href="http://www.e-recht24.de/muster-disclaimer.htm" target="_blank">Disclaimer eRecht24</a></p>
 	</td></tr>
 </table>  
  <?PHP  include_once("homefooter.php");?>

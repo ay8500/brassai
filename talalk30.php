@@ -1,26 +1,27 @@
 <?PHP
-$SiteTitle="30-éves találkozó"; 
-$SiteDescription="30-éves éretségi találkozó";
+$SiteTitle="30-Ã©ves vÃ©ndiÃ¡k talÃ¡lkozÃ³"; 
+$SiteDescription="Brassai SÃ¡muel: nyelvÃ©sz, filozÃ³fus, termÃ©szettudÃ³s, az â€utolsÃ³ erdÃ©lyi polihisztorâ€ Ã©letrajzi adatai";
 include("homemenu.php"); 
 ?>
 
-<h1>30 Éves éretségi találkozó</h1>
+<h1>30 Ã©ves Ã©retsÃ©gi talÃ¡lkozÃ³</h1>
 
-<h3>Programajánlat:</h3>
-<h4>Augusztus 13 csütörtök:</h4> 
-Délután  5-6-7 óra körül temetö látogatás,
+<h3>ProgramajÃ¡nlat:</h3>
+<h4>Augusztus 13 csÃ¼tÃ¶rtÃ¶k:</h4> 
+DÃ©lutÃ¡n  5-6-7 Ã³ra kÃ¶rÃ¼l temetÅ‘lÃ¡togatÃ¡s,
+talÃ¡lka: A temetÅ‘ fÅ‘bejÃ¡ratÃ¡nal.
 
-<h4>Augusztus 14 péntek:</h4> 
-Délelött 10-11 osztályfönöki óra,délután indulás Torockora.<br />
-<b><a href="https://www.google.de/maps/place/46%C2%B028'18.8%22N+23%C2%B034'58.8%22E/@46.471876,23.58299,398m/data=!3m2!1e3!4b1!4m2!3m1!1s0x0:0x0"  taget="blank">Panzió</a></b> 
-Délután 7-kor vacsora, éjjelre is lesz valami étel.<br />
+<h4>Augusztus 14 pÃ©ntek:</h4> 
+DÃ©lelÃ¶tt 10-11 osztÃ¡lyÅ‘nÅ‘ki Ã³ra,dÃ©lutÃ¡n indulÃ¡s Torockora.<br />
+<b><a href="https://www.google.de/maps/place/46%C2%B028'18.8%22N+23%C2%B034'58.8%22E/@46.471876,23.58299,398m/data=!3m2!1e3!4b1!4m2!3m1!1s0x0:0x0"  taget="blank">PanziÃ³</a></b> 
+DÃ©lutÃ¡n 7-kor vacsora, Ã©jjelre is lesz valami Ã©tel.<br />
  
 <h4>Augusztus 15 szombat:</h4> 
-Reggel 10 óra körül indulás a 38,6km-re levö Szolcsvai-búvópatakhoz.<a href="https://www.google.de/maps/dir/Sub+Piatr%C4%83,+Rum%C3%A4nien/46.4718537,23.5829783/@46.3986645,23.5129027,19938m/data=!3m1!1e3!4m9!4m8!1m5!1m1!1s0x474948e358644b8f:0x78616929543288dc!2m2!1d23.4607753!2d46.3833121!1m0!3e0?hl=hu"><b>Útleírás</b></a><br />
-Itt hagyjuk az autókat, elmegyünk a barlangszájig (<a href="https://ssl.panoramio.com/photo/98918629"><b>itt jön ki a patak a sziklából</b></a>), egy lengöhídon át, majd felsétálunk az erdöben, kb. 1,6 km, kiérünk egy nyeregbe, innen ereszkedünk le a <a href="https://ssl.panoramio.com/photo/42505289"><b>Dilbina-vízeséshez</b></a>, itt gyül össze 3 patak vize, és folyik be a szikla alá. 
-Könnyü túra gyönörü kilátással, nem szabad kihagyni! Persze, nem kötelezö, csak ajánlott.<br />
-Visszafelé az Aranyos partján, megállunk valahol, tüzet rakunk, szalonnát sütünk. Délben nincs ebéd, majd este közös gulyás lesz, mint a múltkor.
-Este bulizás, jókedv, éneklés, tánc, beszélgetés.
+Reggel 10 Ã³ra kÃ¶rÃ¼l indulÃ¡s a 38,6km-re lÃ©vÅ‘ Szolcsvai-bÃºvÃ³patakhoz.<a href="https://www.google.de/maps/dir/Sub+Piatr%C4%83,+Rum%C3%A4nien/46.4718537,23.5829783/@46.3986645,23.5129027,19938m/data=!3m1!1e3!4m9!4m8!1m5!1m1!1s0x474948e358644b8f:0x78616929543288dc!2m2!1d23.4607753!2d46.3833121!1m0!3e0?hl=hu"><b>ÃºtleÃ­rÃ¡s</b></a><br />
+Itt hagyjuk az autÃ³kat, elmegyÃ¼nk a barlangszÃ¡jig (<a href="https://ssl.panoramio.com/photo/98918629"><b>itt jÃ¶n ki a patak a sziklÃ¡bÃ³l</b></a>), egy lengÅ‘hÃ­don Ã¡t, majd felsÃ©tÃ¡lunk az erdÅ‘ben, kb. 1,6 km, kiÃ©rÃ¼nk egy nyeregbe, innen ereszkedÃ¼nk le a <a href="https://ssl.panoramio.com/photo/42505289"><b>Dilbina-vÃ­zesÃ©shez</b></a>, itt gyÅ±l Ã¶ssze 3 patak vize, Ã©s folyik be a szikla alÃ¡. 
+KÃ¶nnyÅ± tÃºra, tÃ©nyleg nem szabad kihagyni, gyÃ¶nyÃ¶rÅ± kilÃ¡tÃ¡ssal. Nem olyan nehÃ©z, mint a SzÃ©kelykÅ‘, messzirÅ‘l sem. Persze, ezÃ©rt mÃ©g nem kÃ¶telezÅ‘, csak ajÃ¡nlott.
+VisszafelÃ© megÃ¡llunk az Aranyos partjÃ¡n valahol, tÃ¼zet rakunk, szalonnÃ¡t sÃ¼tÃ¼nk. DÃ©lben tehÃ¡t nincs ebÃ©d, majd este kÃ¶zÃ¶s gulyÃ¡s lesz, mint a mÃºltkor.
+Este bulizÃ¡s, jÃ³kedv, Ã©neklÃ©s, tÃ¡nc, beszÃ©lgetÃ©s.
 <br/><br/>
 <img src="images/kepek/IMG_1650.JPG"><br />
 <img src="images/kepek/IMG_1623.JPG">

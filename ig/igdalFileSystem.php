@@ -115,7 +115,7 @@
 		$thumb="./.thumbs/".$thumbnail_size."_thumb_".$image.".".$slideshow_filetype;
 		$slide="./.modified/".$width."_mod_".$image.".".$slideshow_filetype;
 		$image="./".$image;
-		$operationMessage="Bild: $image wurde gelöscht!";
+		$operationMessage="Bild: $image wurde gelÃ¶scht!";
 		if (file_exists($image) && file_exists($thumb) && file_exists($slide)) {
 			if(!unlink("$thumb")) {
 				$operationMessage=$TXT["DBErrorDeleteFile"].$image;exit;

@@ -13,14 +13,14 @@ if (isset($_GET['scoolClass']))  {
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
-   <title>A diakok a vílág térképén</title>
+   <title>A diakok a vÃ­lÃ¡g tÃ©rkÃ©pÃ©n</title>
    <link rel="stylesheet" type="text/css" href="./menu.css">
    <meta name="robots" content="index,follow" />
-   <meta name="geo.placename" content="Kolozsvár" />
+   <meta name="geo.placename" content="KolozsvÃ¡r" />
    <meta name="geo.position" content="46.771919;23.592248" />
    <meta name="author" content="Levente Maier">
-   <meta name="description" content="A kolozsvari Brassai Samuel líceum diakjai a vílág térképén">
-   <meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok térkép">
+   <meta name="description" content="A kolozsvari Brassai Samuel lÃ­ceum diakjai a vÃ­lÃ¡g tÃ©rkÃ©pÃ©n">
+   <meta name="keywords" content="Brassai SÃ¡muel iskola lÃ­ceum KolozsvÃ¡r Cluj Klausenburg diÃ¡k diÃ¡kok tÃ©rkÃ©p">
    <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
  
 	<script type="text/javascript">
@@ -152,7 +152,7 @@ if (isset($_GET['scoolClass']))  {
 					application.map.addOverlay(marker);
 				}				
 			}
-	 		document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(pointArr.length-1); 
+	 		document.getElementById("txtPerson").innerHTML="OsztÃ¡lytÃ¡rs a tÃ©rkÃ©pen:"+(pointArr.length-1); 
 	 	} 
 	}
 
@@ -183,7 +183,7 @@ if (isset($_GET['scoolClass']))  {
 	
 function getLocation() {
   if (!window.google || !google.gears) {
-    location.href = "http://gears.google.com/?action=install&name=A kolozsvari Brassai Sámuel líceum vén diákjai&message=Google Gears telepítése szükséges&icon_src=http://brassai.blue-l.de/favicon.jpg&return=http://brassai.blue-l.de/worldmap.php";
+    location.href = "http://gears.google.com/?action=install&name=A kolozsvari Brassai SÃ¡muel lÃ­ceum vÃ©n diÃ¡kjai&message=Google Gears telepÃ­tÃ©se szÃ¼ksÃ©ges&icon_src=http://brassai.blue-l.de/favicon.jpg&return=http://brassai.blue-l.de/worldmap.php";
     return;
   }
 
@@ -199,7 +199,7 @@ function getLocation() {
                   //+ 'Altitude:'+ p.altitude + '  '
                   + '('+ p.latitude + ', '
                   + p.longitude + ')'
-                  + ' Pontosság:'+ p.accuracy + ' meter'
+                  + ' PontossÃ¡g:'+ p.accuracy + ' meter'
                   ;
 
     clearStatus();
@@ -236,28 +236,28 @@ $googleMap = true;
 include("homemenu.php"); 
 
 ?>
-<h2 class="sub_title">Merre szóródtak szét az osztálytársak:</h2>
+<h2 class="sub_title">Merre szÃ³rÃ³dtak szÃ©t az osztÃ¡lytÃ¡rsak:</h2>
 <table align="center" class="pannel" style="width:700px">
 <tr><td>
 <?PHP
 if ( !isset($_SESSION['USER']) || $_SESSION['USER']="" || $_SESSION['USER']=0) { 
-	echo('<div style="text-align:center;font-size:12px">Mivel a weblap látogatója anonim a koordináták véletlenszerüen el vannak kb. 10 km el tólva. Jelenkezz be a pontos poziciók megtekintéséhez.</div>');
+	echo('<div style="text-align:center;font-size:12px">Mivel a weblap lÃ¡togatÃ³ja anonim a koordinÃ¡tÃ¡k vÃ©letlenszerÃ¼en el vannak kb. 10 km el tÃ³lva. Jelenkezz be a pontos poziciÃ³k megtekintÃ©sÃ©hez.</div>');
 }
 ?>
 
 <div align="center" style="text-align:center;">
 	<div id="map_canvas" style="width: 600px; height: 400px; text-align:center"></div>
 	<br/>
-	Térkép részletek: 
-	<a href="javascript:zoomMap(1);">Kolozsvár</a>
+	TÃ©rkÃ©p rÃ©szletek: 
+	<a href="javascript:zoomMap(1);">KolozsvÃ¡r</a>
 	<a href="javascript:zoomMap(2);">Budapest</a>
-	<a href="javascript:zoomMap(3);">Erdély</a>
-	<a href="javascript:zoomMap(4);">Magyarország</a>
-	<a href="javascript:zoomMap(5);">Németország</a>
+	<a href="javascript:zoomMap(3);">ErdÃ©ly</a>
+	<a href="javascript:zoomMap(4);">MagyarorszÃ¡g</a>
+	<a href="javascript:zoomMap(5);">NÃ©metorszÃ¡g</a>
 	<a href="javascript:zoomMap(6);">Europa</a>
-	<a href="javascript:zoomMap(7);">Az egész világ</a>
+	<a href="javascript:zoomMap(7);">Az egÃ©sz vilÃ¡g</a>
 	<br/>&nbsp;
-	<div id="txtPerson">Osztálytárs a térképen:</div>
+	<div id="txtPerson">OsztÃ¡lytÃ¡rs a tÃ©rkÃ©pen:</div>
 </div>
 </td></tr>
 <tr><td id="status"></td></tr>

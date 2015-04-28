@@ -25,26 +25,26 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
     }
 </script>
    
-<p class="sub_title">Osztálytárs e-mail küldö parancsnokság</p>
+<p class="sub_title">OsztÃ¡lytÃ¡rs e-mail kÃ¼ldÅ‘ parancsnoksÃ¡g</p>
 
 <?PHP if (userIsAdmin() ) { ?>
 	<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" name="mail">
 	<table align="center" class="pannel" style="width:800px"><tr><td>
-	<input type="checkbox" name="U"/> Bejelentkezési adatokat is küld? <br/>
+	<input type="checkbox" name="U"/> BejelentkezÃ©si adatokat is kÃ¼ld? <br/>
 	<textarea name="T" rows="8" cols="80" wrap="off" >
 	  <b>Kedves %%name%%</b><br/>
 	  <p>
-	  Szöveg....
+	  SzÃ¶veg....
 	  </p>
 	  <p>
-	  Üdvözlettel <?PHP $dd=getPerson($_SESSION["UID"]); echo($dd["lastname"]." ".$dd["firstname"]); ?>
+	  ÃœdvÃ¶zlettel <?PHP $dd=getPerson($_SESSION["UID"]); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 	  </p>
 	  <p>
-	  Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass']);?>>A kolozsvári Brassai Sámuel líceum <?PHP echo($_SESSION['scoolYear']);?>-ben végzett diákjainak <?PHP echo($_SESSION['scoolClass']);?></a> honlapjáról kaptad.
+	  Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass']);?>>A kolozsvÃ¡ri Brassai SÃ¡muel lÃ­ceum <?PHP echo($_SESSION['scoolYear']);?>-ben vÃ©gzett diÃ¡kjainak <?PHP echo($_SESSION['scoolClass']);?></a> honlapjÃ¡rÃ³l kaptad.
 	  </p>
 	</textarea>
 	<br/>
-	<input type="submit" class="submit2" value="E-Mail küldés!" />
+	<input type="submit" class="submit2" value="E-Mail kÃ¼ldÃ©s!" />
 	&nbsp;<a href="javascript:checkUncheckAll(true);">mindenkinek</a>
 	&nbsp;<a href="javascript:checkUncheckAll(false);">senkinek</a>
 	</td></tr></table>
@@ -74,7 +74,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	</p>
 <?PHP } 
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";
+	echo "<div>Adat hozzÃ¡fÃ©rÃ©si jog hiÃ¡nyzik!</div>";
 ?>
 </td></tr></table>
 </body>

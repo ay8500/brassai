@@ -12,15 +12,15 @@ if (isset($_GET['action']) && ($_GET['action']=='newPassword')) {
 		$ret=setUserPasswort($mail, createPassword(8) );
 		if ($ret>0) { 
 			SendNewPassword($ret);
-			$resultText='<div class="okay">Új jelszó a következö címre elküldve : '.$mail.'</div>';
+			$resultText='<div class="okay">Ãšj jelszÃ³ a kÃ¶vetkezÅ‘ cÃ­mre elkÃ¼ldve : '.$mail.'</div>';
 		}
     	else if ($ret==-1)
-    		$resultText='<div class="error">Mailcímet az adatbank nem ismeri!</div>';
+    		$resultText='<div class="error">MailcÃ­met az adatbank nem ismeri!</div>';
     	else
-    		$resultText='<div class="error">Jelszó módósítás nem lehetséges!</div>';
+    		$resultText='<div class="error">JelszÃ³ mÃ³dÃ³sÃ­tÃ¡s nem lehetsÃ©ges!</div>';
 	}
 	else
-	   $resultText='<div class="error">Mail cím nem helyes!</div>';
+	   $resultText='<div class="error">Mail cÃ­m nem helyes!</div>';
 }
 
 //new user
@@ -36,21 +36,21 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 				$ret=createNewUser($myname,$mail,$passw,$rights);
 				if ($ret==0) {
 					sendNewUserMail($xname[1],$xname[0],$mail,$passw,$rights);
-					$resultText='<div class="okay">Sikeres bejelentkezés, hamarosan e-mailt fogsz kapni: ' .$mail.'</div>';
+					$resultText='<div class="okay">Sikeres bejelentkezÃ©s, hamarosan e-mailt fogsz kapni: ' .$mail.'</div>';
 				}
 		    	else if ($ret==-1)
-		    		$resultText='<div class="error">Mailcím az adatbankban már létezik!</div>';
+		    		$resultText='<div class="error">MailcÃ­m az adatbankban mÃ¡r lÃ©tezik!</div>';
 		    	else
-		    		$resultText='<div class="error">Bejelentkezés sikertelen!</div>';
+		    		$resultText='<div class="error">BejelentkezÃ©s sikertelen!</div>';
 			}
 			else
-				$resultText='<div class="error">Válaszd ki milyen szereped van az osztályban!</div>';
+				$resultText='<div class="error">VÃ¡laszd ki milyen szereped van az osztÃ¡lyban!</div>';
 		}
 		else
-			$resultText='<div class="error">Család és vezektékneved hibás!</div>';
+			$resultText='<div class="error">CsalÃ¡d Ã©s vezektÃ©kneved hibÃ¡s!</div>';
 	}
 	else
-	   $resultText='<div class="error">Mail cím nem helyes!</div>';
+	   $resultText='<div class="error">Mail cÃ­m nem helyes!</div>';
 }
 ?>
 <div style="text-align:left">
@@ -58,14 +58,14 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 	<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
 	<input type="hidden"  name="action" value="newPassword" />
 	<tr style="font-size:12px; font-weight:bold">
-		<td rowspan="3"><img style="widht:60px;height:60px" src="images/szomoru.png"/></td><td> Elfelejtettem a jelszavam, szeretnék az email címemre egy újjat.</td>
+		<td rowspan="3"><img style="widht:60px;height:60px" src="images/szomoru.png"/></td><td> Elfelejtettem a jelszavam, szeretnÃ©k az email cÃ­memre egy Ãºjjat.</td>
 	</tr>
 	<tr>
-		<td>Akkor használd ezt a funktiót ha már ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.</td>
+		<td>Akkor hasznÃ¡ld ezt a funktiÃ³t ha mÃ¡r ismert az e-mail cÃ­med. A generÃ¡lt Ãºj jelszÃ³t e-mailben kapod meg, ezt bÃ¡rmikor megtudod mÃ³dosÃ­tani.</td>
 	</tr>
 	<tr>
-		<td>E-Mail címem: <input type="text" name="mail" value="<?PHP echo($mail); ?>" />&nbsp;&nbsp;&nbsp; 
-		<br/><input class="submit2" type="submit" value="Szeretnék új jelszót!" /></td>  
+		<td>E-Mail cÃ­mem: <input type="text" name="mail" value="<?PHP echo($mail); ?>" />&nbsp;&nbsp;&nbsp; 
+		<br/><input class="submit2" type="submit" value="SzeretnÃ©k Ãºj jelszÃ³t!" /></td>  
 	</tr>
 	<tr>
 		<td colspan="2" ><hr /></td>  
@@ -75,43 +75,43 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 	<input type="hidden"  name="action" value="newUser" />
 	
 	<tr style="font-size:12px; font-weight:bold">
-		<td rowspan="5"><img style="widht:60px;height:60px" src="images/beszedes.png"/><td> Új vagyok ezen az oldalon szeretnék én is bejelentkezni.</td>
+		<td rowspan="5"><img style="widht:60px;height:60px" src="images/beszedes.png"/><td> Ãšj vagyok ezen az oldalon szeretnÃ©k Ã©n is bejelentkezni.</td>
 	</tr>
 	<tr>
-		<td>Ird be az e-mail címedet és rövidesen megkapod a megadott címre a bejelentkezési adatokat.</td>
+		<td>Ird be az e-mail cÃ­medet Ã©s rÃ¶videsen megkapod a megadott cÃ­mre a bejelentkezÃ©si adatokat.</td>
 	</tr>
 	<tr>
-		<td>E-Mail címem: <input type="text" name="mail" value="<?PHP echo($mail); ?>" />&nbsp;&nbsp;&nbsp;
+		<td>E-Mail cÃ­mem: <input type="text" name="mail" value="<?PHP echo($mail); ?>" />&nbsp;&nbsp;&nbsp;
 		<br />Nevem: <input type="text" name="myname" value="<?PHP echo($myname); ?>" size="40"/>
 		</td>  
 	</tr>
 	<tr>
-		<td>Az <?PHP echo($_SESSION['scoolYear']); ?>-ben végzett <?PHP echo($_SESSION['scoolClass']);?> osztálynak az oldalait szeretném használni mint:
+		<td>Az <?PHP echo($_SESSION['scoolYear']); ?>-ben vÃ©gzett <?PHP echo($_SESSION['scoolClass']);?> osztÃ¡lynak az oldalait szeretnÃ©m hasznÃ¡lni mint:
 		<select name="rights" size="1">
-			<option value="">...válassz!...</option>
-			<option value="user">Véndiák</option>
-			<option value="editor">Osztály felelös</option>
-			<option value="editor">Osztályfönök</option>
-			<option value="viewer">Tanár</option>
+			<option value="">...vÃ¡lassz!...</option>
+			<option value="user">VÃ©ndiÃ¡k</option>
+			<option value="editor">OsztÃ¡ly felelÅ‘s</option>
+			<option value="editor">OsztÃ¡lyfÅ‘nÃ¶k</option>
+			<option value="viewer">TanÃ¡r</option>
 		</select>
 	</tr>
 	<tr>
-		<td><input class="submit2" type="submit" value="Szeretnék bejelentkezni!" /></td>
+		<td><input class="submit2" type="submit" value="SzeretnÃ©k bejelentkezni!" /></td>
 	</tr>
 	</form> 
 	<tr>
 		<td colspan="2" ><hr /></td>  
 	</tr>
 	<tr style="font-size:12px; font-weight:bold">
-		<td rowspan="2"><img style="widht:60px;height:60px" src="images/vicces.png"/><td> Vannak bejelenkezési adataim de nem sikerül bekerülni.</td>
+		<td rowspan="2"><img style="widht:60px;height:60px" src="images/vicces.png"/><td> Vannak bejelenkezÃ©si adataim de nem sikerÃ¼l bekerÃ¼lni.</td>
 	</tr>
 	<tr>
-		<td>Ne add fel hamar a harcot a technika ellen, próbáld meg még egyszer.
+		<td>Ne add fel hamar a harcot a technika ellen, prÃ³bÃ¡ld meg mÃ©g egyszer.
 		<br/>Tippek:
 		<ul>
-		<li>A becenév nem tartalmaz ékezetes betüket!</li> 
-		<li>Esetleg használd a kopirozás-beillesztés <a  target="_blank" href="http://en.wikipedia.org/wiki/Cut,_copy,_and_paste">(C&amp;P)</a> technikát a jelszó beadására.</li>
-		<li>Az adatok csak a te osztályodra vonatkoznak!</li> 
+		<li>A becenÃ©v nem tartalmaz Ã©kezetes betÃ¼ket!</li> 
+		<li>Esetleg hasznÃ¡ld a kopirozÃ¡s-beillesztÃ©s <a  target="_blank" href="http://en.wikipedia.org/wiki/Cut,_copy,_and_paste">(C&amp;P)</a> technikÃ¡t a jelszÃ³ beadÃ¡sÃ¡ra.</li>
+		<li>Az adatok csak a te osztÃ¡lyodra vonatkoznak!</li> 
 		</ul> 
 		</td>
 	</tr>
@@ -119,9 +119,9 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 		<td colspan="2"><hr /></td>  
 	</tr>
 	<tr style="font-size:12px; font-weight:bold">
-	   <td rowspan="2"><img style="widht:60px;height:60px" src="images/mosolygo.png"/><td>Segitséget kérek:</td>
+	   <td rowspan="2"><img style="widht:60px;height:60px" src="images/mosolygo.png"/><td>SegitsÃ©get kÃ©rek:</td>
 	</tr> 
-	<tr><td>Küldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre ha bármilyen kérdésed van.</td></tr>
+	<tr><td>KÃ¼ldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> cÃ­mre ha bÃ¡rmilyen kÃ©rdÃ©sed van.</td></tr>
 	<tr>
 		<td colspan="2" ><hr /></td>  
 	</tr>
