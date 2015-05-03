@@ -32,11 +32,11 @@ include("homemenu.php");
 	<tr>
 		<td style="text-align:center;width:300px">
 			<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>
-			<div style="font-size:12px;font-weight:bold">Brassai S&aacute;muel (1800-1897)</div>
+			<div style="font-size:12px;font-weight:bold">Brassai Sámuel (1800-1897)</div>
 			  <div style="font-size:11px;">
-    				&quot;A tan&iacute;t&oacute;, mint a gazda, csak magvakat vet el,<br/>
-    				melyb&otilde;l a tan&iacute;tv&aacute;ny elm&eacute;j&eacute;ben ismeretek
-    				teremnek,<br/>mint a gabona s m&aacute;s term&eacute;k a f&ouml;ldben.&quot;
+    				&quot;A tanító, mint a gazda, csak magvakat vet el,<br/>
+    				melyöl a tanítvány elméjében ismeretek teremnek,<br/>
+    				mint a gabona s más termék a földben.&quot;
   			</div>
    </tr>
   </table>

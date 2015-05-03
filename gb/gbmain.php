@@ -132,21 +132,21 @@ if ($action == 'd')
 			<td colspan="4" class="navi" >
 			<table border="0" width="100%">
 			<tr><td class="navi" width="100" style="text-align:right" >
-				<? if ($page>1) {?>
+				<?php if ($page>1) {?>
 					<a href="<?=$pagefile?>?page=<?=$page-1?>"><?=$TXT["MenuPrevPageTT"]?></a>
-				<?} else {?>
+				<?php } else {?>
 					&nbsp;
-				<?}?>
+				<?php }?>
 				</td>
 				<td class="navi" width="100" style="text-align:center">
 					<?=$TXT["Page"]?> <?=$page?> / <?=round((getNumberOfEntrys() / $ciEntrysPerPage) +0.4999) ?>
 				</td>
 				<td class="navi" width="100" style="text-align:left">
-				<? if ($page*$ciEntrysPerPage<getNumberOfEntrys()) {?>
+				<?php if ($page*$ciEntrysPerPage<getNumberOfEntrys()) {?>
 					<a href="<?=$pagefile?>?page=<?=$page+1?>"><?=$TXT["MenuNextPageTT"]?></a>
-				<?} else {?>
+				<?php } else {?>
 					&nbsp;
-				<?}?>	
+				<?php }?>	
 				</td>
 			</tr>
 			</table>
@@ -157,7 +157,7 @@ if ($action == 'd')
 	</td></tr>
 	<tr><td><div align='center'>
 	<table width="<?=$ciGbWidth?>" border="0" cellspacing="0" cellpadding="2">
-	<? 
+	<?php 
 	$maxEntry = getNumberOfEntrys() - ($page-1)*$ciEntrysPerPage -1;
 	$minEntry = $maxEntry - $ciEntrysPerPage +1;
 	if ($minEntry<0) { $minEntry=0;}
@@ -176,34 +176,34 @@ if ($action == 'd')
 	<tr><td width='5'>&nbsp;</td>
 	    <td width="10%" class="einrandlinks" ><div class="texta"><?=$TXT["EntryText"]?></div></td><td width="70%" class="back2" colspan="3"><?=$entry['text'];?></td><td class="einrandrechts">&nbsp;</td><td>&nbsp;</td></tr>
 	<tr><td width='5'></td><td colspan="4" class="einrandlinks"><img src="t.gif" height="2" width="100%" border="0" alt=""></td><td colspan="1" class="einrandrechts"><img src="t.gif" height="2" width="100%" border="0" alt=""><td></td></td></tr>
-	<? if ($entry['comment']!='') {?>	
+	<?php if ($entry['comment']!='') {?>	
 		<tr><td width='5'>&nbsp;</td><td width="10%" class="einrandlinks" ><div class="texta"><?=$TXT["Comment"]?></div></td><td width="70%" class="back2" colspan="3"><?=$entry['comment'];?></td><td class="einrandrechts">&nbsp;</td><td>&nbsp;</td></tr>
 		<tr><td width='5'></td><td colspan="4" class="einrandlinks"><img src="t.gif" height="2" width="100%" border="0" alt=""></td><td colspan="1" class="einrandrechts"><img src="t.gif" height="2" width="100%" border="0" alt=""><td></td></td></tr>
-	<? }?>
+	<?php }?>
 	<tr><td  class='einrand' colspan="7">		
 	  <table border="0" width="100%"><tr>
 	  <form action="<?=$pagefile?>" method="post">
 	  <td  class="back1" colspan="1" style="text-align:center" height="20px">
-	  <? if ($admin || ($_SERVER['REMOTE_ADDR']==$entry['ip'])) {?> 	
+	  <?php if ($admin || ($_SERVER['REMOTE_ADDR']==$entry['ip'])) {?> 	
 		<input class="submit" type="submit" value="<?=$TXT["DeleteEntry"]?>" />
 		<input type="hidden" name="page" value="1"/><input type="hidden" name="action" value="d"/><input type="hidden" name="id" value="<?=$entry['id']?>"/>
-	  <?} else {?>&nbsp<?}?>
+	  <?php } else {?> &nbsp <?php } ?>
   	  </td></form>
 	  <form action="<?=$pagefile?>" method="post"><td class="back1" colspan="2"  style="text-align:center" height="20px">
-	  <? if ($admin) {?>	
+	  <?php if ($admin) {?>	
 		   <input class="submit" type="submit" value="<?=$TXT["SetComment"]?>" />&nbsp;
 		   <input class="button" type="text" name="comment" value="" size="40"/>
 		   <input type="hidden" name="page" value="<?=$page?>"/>
 		   <input type="hidden" name="action" value="k"/>
 		   <input type="hidden" name="id" value="<?=$entry['id']?>"/>
-	  <?} else {?>&nbsp<?}?>	
+	  <?php } else {?>&nbsp<?php }?>	
  	  </td></form><td><div align="right"><?=$i+1?></td>
 	  </tr></table>
 	  </td></tr>
 	  <tr><td colspan="7">&nbsp;</td></tr>
-	<?}?>
+	<?php }?>
 	</table></div></td></tr>
 </table>
-<?PHP if ($TXT["Footer"][0]!="~") echo($TXT["Footer"]); ?>  
+<?php if ($TXT["Footer"][0]!="~") echo($TXT["Footer"]); ?>  
 </body>
 </html>

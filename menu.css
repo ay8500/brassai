@@ -1,6 +1,7 @@
 	body		{ background-image:url('images/b2.gif');background-repeat: repeat;font-family: sans-serif,arial;font-size:11px;color:black;
 					margin:0;padding:0;height:100%; border:none
 				}
+	form		{display:inline};
 	.submit2	{ height:18px;font-size:10px;}
 	.input2		{ height:13px; font-size:10px;}
 	.highlight 	{ background-color: #ffdddd;text-align:center}
@@ -37,4 +38,5 @@
 	.zenevoters     {margin:10px;color:black;text-align:left; 	background-color: #e8e8e8;border-width:1px;border-color:black; }
 	.zenetext		{text-align:right; }
 	.zenecaption	{background-color: #e0e0e0;font-weight: bold }
-	
+	.LogonLine		{text-align: right;}
+	.loginFacebookSubmit {border-style: none; background-image: url("images/facebook_bejelentkezes.jpg");width: 163px;height: 22px;vertical-align: bottom;	}

@@ -1,4 +1,9 @@
 <?PHP 
+	include_once 'sessionManager.php';
+	$facebook = isset($_SESSION['FacebookId']);
+	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) { 
+		header("Location: index.php");
+	}	
 	$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
 	include("homemenu.php"); 
 	include_once("logon.php"); 
@@ -49,10 +54,16 @@ if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {
 else {
 	if (isset($_GET["action"]) && ($_GET["action"]=="logon")) { 
 	?>
-	<div class="sub_title" style="color:red">Sajnos a bejelentkezés nem sikerült. </div>
-	<div style="text-align:center">Lehetséges rosszul írtad be a beceneved vagy lejszavad. Probálkozz még egyszer!</div>
-	<?PHP }
-	include("lostPassw.php");
+		<div class="sub_title" style="color:red">Sajnos a bejelentkezés nem sikerült. </div>
+		<div style="text-align:center">Lehetséges rosszul írtad be a beceneved vagy lejszavad. Probálkozz még egyszer!</div>
+	<?php }
+	elseif (isset($_GET["action"]) && ($_GET["action"]=="lostpassw")) {
+		include("lostPassw.php");
+	} elseif ($facebook) { ?>
+		<div class="sub_title" style="color:red">Sajnos a bejelentkezés Facebookon keresztül nem sikerült. </div>
+		<div style="text-align:center">Probálkozz még egyszer!</div>
+	<?php 
+	} 
 }
 ?>
 

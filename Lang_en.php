@@ -14,5 +14,6 @@ $TXT["LogInNewPasswNotEQ"]	="The new passwords are not identical!";
 $TXT["LogInNewPasswNotOK"]	="New password to easy!"; 
 $TXT["LogInLostData"]		="No account!";
 $TXT["LogInLostDataTitle"]	="I need help to log in.";
+$TXT["Like"]				="I like this page!";
 
 ?>

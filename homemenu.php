@@ -15,7 +15,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
 	<title><?PHP echo($SiteTitle) ?></title>
-	<meta http-equiv="content-type" content="text/html; charset=UTF8">
+	<meta http-equiv="content-type" content="text/html; charset=UTF8" />
 	<link rel="stylesheet" type="text/css" href="menu.css" />
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />
@@ -26,7 +26,7 @@
 	<meta name="geo.placename" content="Kolozsvár" />
 	<meta name="geo.position" content="46.771919;23.592248" />
 	<meta name="author" content="Levente Maier" />
-	<?PHP if ($SiteDescription!="") { ?>
+	<?PHP if (isset($SiteDescription) && $SiteDescription!="") { ?>
 		<meta name="description" content="<?PHP echo($SiteDescription) ?>" />
 	<?PHP } else { ?>
 		<meta name="description" content="<?PHP echo($SiteTitle) ?>" />
@@ -63,7 +63,7 @@
 <?PHP } ?>
 <table border="0" style="width:100%; height:100%;margin-top:0px" >
 <tr>
-	<td style="vertical-align: top;" rowspan="2">
+	<td style="vertical-align: top;" rowspan="3">
 		<table width="100%" border="0" cellspacing="1" cellpadding="0">
 			<tr>
 				<td style="width:100px;height:142px">
@@ -132,18 +132,22 @@
 			</td></tr>
 		</table>
 	<hr />
-	Ez az oldal tetszik!<br />
-	<b>Google</b>
+	<?php echo $TXT["Like"] ?><br /><br />
 	<g:plusone size="medium"></g:plusone>
 	<br /><br />
-	Facebook
 	<div><a name="fb_share" type="button_count" share_url="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></div>
 	<hr />
 	<?PHP 
-		writeLogonBox(); 
+		//writeLogonBox(); 
+		foreach ($SupportedLang as $Language) {
+			if (isset($_SESSION['LANG']) && ($Language!=$_SESSION['LANG']))
+				echo('<a href='.$SCRIPT_NAME.'?language='.$Language.'><img src="images/flag_'.$Language.'.jpg" alt=""/></a>'."\r\n");
+		}
 		$googleMap = false;
 	?>
 	<td><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getScoolYear()) ?>-ben végzett diákjai <?PHP echo(getScoolClass()) ?></h1></td>
 </tr>
+	<?php writeLogonLine(); ?>
+<tr>
 	<td class="content">
 

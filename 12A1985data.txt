@@ -1,6 +1,6 @@
-#Database File
-#Last IP:2.164.235.108
-#Change Date:12.04.2015 22:24
+﻿#Database File
+#Last IP:2.164.67.122
+#Change Date:29.04.2015 01:39
 
 
 id=1
@@ -499,7 +499,8 @@ passw=os74624
 admin=
 date=
 ip=
-facebook=
+facebook=nincs
+homepage=
 
 id=19
 firstname=Sándor
@@ -556,6 +557,7 @@ date=27.06.2013 00:53
 ip=46.78.93.163
 facebook=https://www.facebook.com/levente.maier
 homepage=http://levi.blue-l.de
+facebookid=965038823537045
 
 id=21
 firstname=Edit
@@ -974,7 +976,7 @@ id=36
 firstname=Adminisztrátor
 lastname=Veboldal
 birthname=Szerelő
-partner=
+partner=Szerelő
 address=~
 zipcode=~
 place=~
@@ -996,6 +998,7 @@ admin=admin
 date=
 ip=
 facebook=
+homepage=
 
 id=37
 firstname=Éva

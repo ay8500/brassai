@@ -37,10 +37,10 @@ else {
 $diak = getPerson($uid);
 
 
-$dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children");
-$dataFieldCaption 	=array("Vezetéknév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20);
-$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false);
+$dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children","facebookid");
+$dataFieldCaption 	=array("Vezetéknév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FacebookID");
+$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30);
+$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false);
 	
 $resultDBoperation="";
 
@@ -137,6 +137,7 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
    <title><?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai Sámuel líceum vén diakja</title>
+   <meta http-equiv="content-type" content="text/html; charset=UTF8">
    <link rel="stylesheet" type="text/css" href="menu.css" />
    <link rel="stylesheet" href="lightbox.css" type="text/css" media="screen" />
    
@@ -284,7 +285,9 @@ include("tabs.php");
 		echo('<tr><td></td><td class="highlight"></td><td class="highlight">Ha azt szeretnéd, hogy az adataidat csak mi az osztálytársak láthassuk, akkor jelöld meg öket!</td></tr>');
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
 		echo('');
-		for ($i=0;$i<sizeof($dataFieldNames);$i++) {
+		$fieldCountToBeEdited = sizeof($dataFieldNames);
+		if (!userIsAdmin()) $fieldCountToBeEdited--;
+		for ($i=0;$i<$fieldCountToBeEdited;$i++) {
 			echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
 			if ($dataFieldVisible[$i]) 
 				echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak[$dataFieldNames[$i]]).' title="Jelöld meg és akkor csak a bejelentkezett osztálytársak lássák!" /></td>');

@@ -1,12 +1,13 @@
 <?PHP
 include_once("data.php");
+	
 	/**
 	 * Check login data in each database 
 	 */
 	function checkUserLogin($user,$passw) {
 		$ret = false;
 		logoutUser();
-		if (checkRequester()) {
+		if (checkRequesterIP()) {
 				//check user data in the actual database
 				if (checkUserLoginDB($user,$passw)) {
 					$ret=true;
@@ -17,22 +18,40 @@ include_once("data.php");
 			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],$user,$passw,$ret);
 		return $ret;
 	}
+
+	/**
+	 * Check login data in each database
+	 */
+	function checkFacebookUserLogin($facebookId) {
+		$ret = false;
+		logoutUser();
+		if (checkRequesterIP()) {
+			//check user data in the actual database
+			if (checkUserFacebookLoginDB($facebookId)) {
+				$ret=true;
+			}
+			openDatabase(getDatabaseName());
+		}
+		if (!userIsAdmin())
+			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],"Facebook",$facebookId,$ret);
+		return $ret;
+	}
 	
 	/**
 	 * check if user login data is correct in all databases
 	 */
 	function checkUserLoginDB($user,$passw) {
 		$ret=false;
-		//todo it not necessery to read all the user data in an array, just check the user and password and set session variables
 		$data=readUserAuthDB();
 
 		foreach($data as $key =>$usr) {
 			if ((strcasecmp($usr["user"],$user)==0) && ($passw==$usr["passw"])) {
-				$_SESSION['ADMIN']=$usr["admin"];
-				$_SESSION['USER']=$usr["user"];
-				$_SESSION['UID']=$usr["id"];
-				$_SESSION['scoolYear']=$usr["scoolYear"];
-				$_SESSION['scoolClass']=$usr["scoolClass"];
+				setUserInSession(
+					$usr["admin"],
+					$usr["user"],
+					$usr["id"],
+					$usr["scoolYear"],
+					$usr["scoolClass"]);
 				$ret = true;
 				break;
 			}
@@ -41,6 +60,38 @@ include_once("data.php");
 		return $ret;
 	}
 
+	/**
+	 * check if user login data is correct in all databases
+	 */
+	function checkUserFacebookLoginDB($facebookId) {
+		$ret=false;
+		$data=readUserAuthDB();
+	
+		foreach($data as $key =>$usr) {
+			if ((strcasecmp($usr["facebookid"],$facebookId)==0)) {
+				setUserInSession(
+				$usr["admin"],
+				$usr["user"],
+				$usr["id"],
+				$usr["scoolYear"],
+				$usr["scoolClass"]);
+				$ret = true;
+				break;
+			}
+		}
+	
+		return $ret;
+	}
+	
+	function setUserInSession($admin, $user, $uid, $scoolYear, $scoolClass)
+	{
+		$_SESSION['ADMIN']=$admin;
+		$_SESSION['USER']=$user;
+		$_SESSION['UID']=$uid;
+		$_SESSION['scoolYear']=$scoolYear;
+		$_SESSION['scoolClass']=$scoolClass;
+	}
+	
 	/**
 	 * Returns the User ID from the logged in User
 	 * Equal 0 if no user loggen in 
@@ -57,7 +108,14 @@ include_once("data.php");
 	 */
 	function logoutUser() {
 		//if (isset($_SESSION['scoolYear'])) session_destroy();
-		$_SESSION['ADMIN']="";$_SESSION['USER']="";$_SESSION['MAIL']="";$_SESSION['UID']=0;
+		$_SESSION['ADMIN']="";
+		$_SESSION['USER']="";
+		$_SESSION['MAIL']="";
+		$_SESSION['UID']=0;
+		$_SESSION['FacebookId'] = NULL;
+		$_SESSION['FacebookName'] = NULL;
+		$_SESSION['FacebookEmail'] =  NULL;
+		
 	}
 	
 	/**
@@ -72,7 +130,7 @@ include_once("data.php");
 	}
 	
 	/**
-	 * user is loggen in and he is an editor
+	 * user is logged in and he is an editor
 	 */
 	function userIsEditor() {
 		if (isset($_SESSION['ADMIN']))
@@ -82,7 +140,7 @@ include_once("data.php");
 	}
 	
 	/**
-	 * user is loggen in and he is an viewer
+	 * user is logged in and he is an viewer
 	 */
 	function userIsViewer() {
 		if (isset($_SESSION['ADMIN']))
@@ -186,7 +244,7 @@ function checkUserNameExists($id,$userName) {
 	 * if the IP can't login more then 10 time on a day then return value will set to false 
 	 * this is a safety funtion to prevent automatic loging of password crack
 	 */
-	function checkRequester() {
+	function checkRequesterIP() {
 		return true;
 	}
 
@@ -209,7 +267,7 @@ function checkUserNameExists($id,$userName) {
 	}
 	
 	/**
-	 * create a log backup file
+	 * create a log backup file if the file is to big or to old
 	 */
 	function backupLoginData() {
 		//todo

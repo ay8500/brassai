@@ -6,7 +6,7 @@ $data = array();
 
 //List of databases
 $dataBase=Array("12A1985","12B1985");
-$datafields = array("firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook");
+$datafields = array("firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
 
 
 //select the database
@@ -150,8 +150,11 @@ function getPersonDummy() {
 	return $p;
 }
 
+/**
+ * returns an empty authorisation 
+ */
 function getUserAuthDummy() {
-	$datafields=array("id","user","passw","admin","scoolYear","scoolClass");
+	$datafields=array("id","user","passw","admin","scoolYear","scoolClass","facebookid");
 	$p = array();
 	foreach ($datafields as $field) {
 		$p[$field]="";
@@ -219,7 +222,7 @@ function readUserAuthDB()
 							$data[$id]["scoolClass"]=$scoolClass;
 							$data[$id]["id"]=$idx++;
 						} else {
-							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "admin")) {
+							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "facebookid") || ($b[0] == "admin")) {
 	    						$data[$id][$b[0]]=chop($b[1]);
 							}
 						}
@@ -527,13 +530,23 @@ function getFieldChecked($field) {
 
 }
 
+/*
+ * is a field content printable
+ */
 function showField($field) {
   if ($field=="") 
-  	return true;
-  if (($field[0]!="~") || ( isset($_SESSION["UID"])) && ($_SESSION["UID"]>0) ) return true;
+  	return false;
+  if (($field[0]!="~") || ( isset($_SESSION["UID"])) && ($_SESSION["UID"]>0) ) { 
+  	if (ltrim($field,"~")!="") {
+  		return true;
+  	} else { 
+  		return false;
+  	}
+  }
   else return false;
 
 }
+
 
 //generate normalised person link
 

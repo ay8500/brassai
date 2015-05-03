@@ -15,5 +15,5 @@ $TXT["LogInNewPasswNotOK"]	="Neues Passwort zu einfach!";
 $TXT["LogInLostData"]		="Ich bin vergässlich!";
 $TXT["LogInLostData"]		="Anmeldedaten";
 $TXT["LogInLostDataTitle"]	="Anmeldedaten nicht vorhanden oder verloren.";
-
+$TXT["Like"]				="Seite gefällt mir !";
 ?>

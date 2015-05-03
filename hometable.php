@@ -1,12 +1,9 @@
 <?PHP 
+include("homemenu.php");
 
 //Change scool year and class if parameters are there 
-if (isset($_GET['scoolYear'])) {
-	$_SESSION['scoolYear']=$_GET['scoolYear'];
-} 
-if (isset($_GET['scoolClass']))  {
-	$_SESSION['scoolClass']=$_GET['scoolClass'];	
-}
+if (isset($_GET['scoolYear']))   { $_SESSION['scoolYear']=$_GET['scoolYear']; } 
+if (isset($_GET['scoolClass']))  { $_SESSION['scoolClass']=$_GET['scoolClass']; }
 
 $SiteTitle=$_SESSION['scoolYear']."-".$_SESSION['scoolClass'];
    //Parameter guests
@@ -15,7 +12,6 @@ $SiteTitle=$_SESSION['scoolYear']."-".$_SESSION['scoolClass'];
 		$SiteTitle=$SiteTitle.' tanárok, vendégek, jó barátok';
 	else
 		$SiteTitle=$SiteTitle.' osztálytársak';
-include("homemenu.php"); 
 
 	if ( $guests )
 		echo('<h2 class="sub_title">Tanárok, vendégek, jó barátok.</h2>');
@@ -26,7 +22,7 @@ include("homemenu.php");
 
 
 
-<table align="center" style="width:600px" border="0"><tr><td>
+<table style="text-align:cleft;width:100%;" ><tr><td>
 <?php
 	include_once("data.php");
 	
@@ -37,7 +33,7 @@ foreach ($data as $l => $d)
 			(!($guests) && ($d["admin"]=="") )  
 		) { 
 			
-		echo "<table border=1 width=100%><tr><td width=150>\r\n" ;
+		echo "<table border=0 width=100%><tr><td width=150>\r\n" ;
 		echo "<img src=\"images/".$d["picture"].'" border="0" alt="'.$d["lastname"].' '.$d["firstname"].'" />';
 		echo "</td><td valign=top>";
 		echo "<h3>".$d["lastname"].' '.$d["firstname"];
@@ -62,7 +58,7 @@ foreach ($data as $l => $d)
 		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
 		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
 		if(showField($d["facebook"])) echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.urldecode(getFieldValue($d["facebook"])).'">'.urldecode(getFieldValue($d["facebook"]))."</a></td></tr>";
-		if(showField($d["homepage"])) echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
+		if(isset($d["homepage"]) && showField($d["homepage"])) echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
 		if ( userIsAdmin() || userIsEditor()) {
 			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$l.'">Módósít</a></td><td>&nbsp;</td></tr>';
 		}

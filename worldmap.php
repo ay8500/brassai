@@ -14,6 +14,7 @@ if (isset($_GET['scoolClass']))  {
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
    <title>A diakok a vílág térképén</title>
+   <meta http-equiv="content-type" content="text/html; charset=UTF8">
    <link rel="stylesheet" type="text/css" href="./menu.css">
    <meta name="robots" content="index,follow" />
    <meta name="geo.placename" content="Kolozsvár" />
