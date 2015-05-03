@@ -1,6 +1,10 @@
 <?PHP 
 	include_once 'sessionManager.php';
 	$facebook = isset($_SESSION['FacebookId']);
+	if ($facebook) {
+		$file=fopen("facebooklogin.log","a");
+		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".print_r($_SESSION,true)."\r\n");
+	}
 	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) { 
 		header("Location: index.php");
 	}	

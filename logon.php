@@ -100,8 +100,7 @@ function writeLogonLine() {
 			<input type="hidden" value="lostpassw" name="action"/>
 			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo $TXT["LogInLostData"]?>" />
 		</form>
-		</form><form action="start.php" method="get">
-			<input type="hidden" value="facebooklogin" name="action"/>
+		</form><form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
 			&nbsp;&nbsp;<input class="loginFacebookSubmit" type="submit"  value="" />
 		</form>
 	</td></tr>

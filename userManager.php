@@ -29,8 +29,8 @@ include_once("data.php");
 			//check user data in the actual database
 			if (checkUserFacebookLoginDB($facebookId)) {
 				$ret=true;
+				openDatabase(getDatabaseName());
 			}
-			openDatabase(getDatabaseName());
 		}
 		if (!userIsAdmin())
 			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],"Facebook",$facebookId,$ret);
@@ -236,8 +236,10 @@ function checkUserNameExists($id,$userName) {
 		$file=fopen("login.log","a");
 		if ($result) $res="true"; else $res="false";
 		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".$_SESSION['scoolYear'].$_SESSION['scoolClass']."\t".$res."\t".$uid."\t".$user."\t".$cuser."\t".$cpassw."\r\n");
-	
+		
 	}
+	
+	
 	
 	/**
 	 * Check the requester IP 
