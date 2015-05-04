@@ -15,4 +15,14 @@ if (isset($_GET["language"]))  {
         include $LangFile;
     else
         include "Lang_".$SupportedLang[0].".php";
+    
+    
+function getTextRes($index) {
+	global $TXT;
+	if (isset($TXT[$index]))
+		return  $TXT[$index];
+	else {
+		return "#".$index."#";
+	}
+}
 ?>

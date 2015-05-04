@@ -27,6 +27,14 @@ function getScoolClass() {
 		return "12A";
 }
 
+function setScoolYear($year) {
+		$_SESSION['scoolYear']=$year;
+}
+
+function setScoolClass($class) {
+	$_SESSION['scoolClass']=$class;
+}
+
 /**
  * getDabaseName
  */
@@ -55,8 +63,8 @@ function openDatabase($name) {
 		foreach($dataBase as $db) {
 			if ($name==$db) {
 				$ret=true;
-				$_SESSION['scoolYear']=substr($name,3,4);
-				$_SESSION['scoolClass']=substr($name,0,3);
+				setScoolYear(substr($name,3,4));
+				setScoolClass(substr($name,0,3));
 				$dataFileName=$name."data.txt";
 				ReadDB();
 			}

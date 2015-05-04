@@ -9,8 +9,24 @@
 		header("Location: index.php");
 	}	
 	$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
+	
+	include_once 'ltools.php';
+	include_once 'data.php';
+	$scoolYear=getParam("scoolYearFb","");
+	$scoolClass=getParam("scoolClassFb","");
+	if ($scoolYear!="" && $scoolClass!="") {
+		setScoolYear($scoolYear);
+		setScoolClass($scoolClass);
+		openDatabase(getDatabaseName());
+	}
+	 
+	$userId=getIntParam("userId",-1);
+	if ($userId>=0) {
+		$data[$userId]["facebookid"] = $_SESSION["FacebookId"];
+		saveDB();
+	}
+
 	include("homemenu.php"); 
-	include_once("logon.php"); 
 ?>
 <div class="sub_title">Bejelentkezés</div>
 <?PHP 
@@ -63,10 +79,8 @@ else {
 	<?php }
 	elseif (isset($_GET["action"]) && ($_GET["action"]=="lostpassw")) {
 		include("lostPassw.php");
-	} elseif ($facebook) { ?>
-		<div class="sub_title" style="color:red">Sajnos a bejelentkezés Facebookon keresztül nem sikerült. </div>
-		<div style="text-align:center">Probálkozz még egyszer!</div>
-	<?php 
+	} elseif ($facebook) { 
+		include("facebooklogin.php");
 	} 
 }
 ?>

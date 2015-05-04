@@ -15,7 +15,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
 	<title><?PHP echo($SiteTitle) ?></title>
-	<meta http-equiv="content-type" content="text/html; charset=UTF8" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	
 	<link rel="stylesheet" type="text/css" href="menu.css" />
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />

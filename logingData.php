@@ -7,7 +7,7 @@
 if (userIsAdmin()) {  
 	$logData= readLogingData();
 	//initialise tabs
-	$tabsCaption=Array("Bejelentkezés","Adatmódosítás","Jelszó&nbsp;kérés","Sikertelen&nbsp;bejelentkezés");
+	$tabsCaption=Array("Bejelentkezés","Adatmódosítás","Jelszó&nbsp;kérés","Sikertelen&nbsp;bejelentkezés","Facebook");
 	include("tabs.php");
 	?>
 	

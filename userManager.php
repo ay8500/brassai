@@ -1,18 +1,28 @@
 <?PHP
-include_once("data.php");
+	include_once("data.php");
 	
 	/**
-	 * Check login data in each database 
+	 * Check login data in each client 
 	 */
 	function checkUserLogin($user,$passw) {
 		$ret = false;
-		logoutUser();
+		//logoutUser();
 		if (checkRequesterIP()) {
-				//check user data in the actual database
-				if (checkUserLoginDB($user,$passw)) {
-					$ret=true;
+			$ret=false;
+			$data=readUserAuthDB();
+			foreach($data as $key =>$usr) {
+				if ((strcasecmp($usr["user"],$user)==0) && ($passw==$usr["passw"])) {
+					setUserInSession(
+						$usr["admin"],
+						$usr["user"],
+						$usr["id"],
+						$usr["scoolYear"],
+						$usr["scoolClass"]);
+					$ret = true;
+					openDatabase(getDatabaseName());
+				break;
 				}
-				openDatabase(getDatabaseName());
+			}
 		}
 		if (!userIsAdmin()) 
 			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],$user,$passw,$ret);
@@ -20,16 +30,26 @@ include_once("data.php");
 	}
 
 	/**
-	 * Check login data in each database
+	 * Check facebook login data in each client
 	 */
 	function checkFacebookUserLogin($facebookId) {
 		$ret = false;
-		logoutUser();
+		//logoutUser();
 		if (checkRequesterIP()) {
-			//check user data in the actual database
-			if (checkUserFacebookLoginDB($facebookId)) {
-				$ret=true;
-				openDatabase(getDatabaseName());
+			$ret=false;
+			$data=readUserAuthDB();
+			foreach($data as $key =>$usr) {
+				if ($usr["facebookid"]==$facebookId) {
+					setUserInSession(
+						$usr["admin"],
+						$usr["user"],
+						$usr["id"],
+						$usr["scoolYear"],
+						$usr["scoolClass"]);
+					$ret = true;
+					openDatabase(getDatabaseName());
+					break;
+				}
 			}
 		}
 		if (!userIsAdmin())
@@ -37,51 +57,6 @@ include_once("data.php");
 		return $ret;
 	}
 	
-	/**
-	 * check if user login data is correct in all databases
-	 */
-	function checkUserLoginDB($user,$passw) {
-		$ret=false;
-		$data=readUserAuthDB();
-
-		foreach($data as $key =>$usr) {
-			if ((strcasecmp($usr["user"],$user)==0) && ($passw==$usr["passw"])) {
-				setUserInSession(
-					$usr["admin"],
-					$usr["user"],
-					$usr["id"],
-					$usr["scoolYear"],
-					$usr["scoolClass"]);
-				$ret = true;
-				break;
-			}
-		}
-		
-		return $ret;
-	}
-
-	/**
-	 * check if user login data is correct in all databases
-	 */
-	function checkUserFacebookLoginDB($facebookId) {
-		$ret=false;
-		$data=readUserAuthDB();
-	
-		foreach($data as $key =>$usr) {
-			if ((strcasecmp($usr["facebookid"],$facebookId)==0)) {
-				setUserInSession(
-				$usr["admin"],
-				$usr["user"],
-				$usr["id"],
-				$usr["scoolYear"],
-				$usr["scoolClass"]);
-				$ret = true;
-				break;
-			}
-		}
-	
-		return $ret;
-	}
 	
 	function setUserInSession($admin, $user, $uid, $scoolYear, $scoolClass)
 	{
@@ -254,6 +229,7 @@ function checkUserNameExists($id,$userName) {
 	 * read login log in memory ($logdata[])
 	 */
 	function readLogingData() {
+		backupLoginData();
 		$logData = array();
 		$logDataField = array("IP","Date","Scool","Result","ID","User","CUser","Passw");
 		$file=fopen("login.log","r");

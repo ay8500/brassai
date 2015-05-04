@@ -15,4 +15,15 @@ $TXT["LogInNewPasswNotOK"]	="Az új jelszó nagyon egyszerü!";
 $TXT["LogInLostData"]		="Nincs / Elfelejtettem";
 $TXT["LogInLostDataTitle"]	="Bejelenkezési adataim nincsenek vagy elfelejtettem.";
 $TXT["Like"]				="Ez az oldal tetszik !";
+
+//Todo other languages
+$TXT["NextPage"]    			="tovább";
+$TXT["SelectOneOption"]		="... válassz!...";
+
+$TXT["FacebookLoginOk"]		="Facebook bejelentkezés sikeres.";
+$TXT["SelectYear"]			="Válaszd ki melyik évben volt a ballagásod.";
+$TXT["SelectClass"]			="Válaszd ki melyik osztályban jártad az utolsó évet.";
+$TXT["SelectUser"]			="Válaszd ki a neved.";
+$TXT["NotFoundCreateNewUser"]="Nem találom, új bejegyzést szeretnék.";
+$TXT["ConnectToFacebook"]	="Facebook felhasználót a kijelölt diákkal összekapcsol";
 ?>

@@ -272,6 +272,8 @@ if ( isset($_SESSION['UID']) && $_SESSION['UID']>0)
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Geokoordináta","Bejelentkezési&nbsp;adatok","Beállítások");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek");
+if (isset($_SESSION["FacebookId"]))
+	array_push($tabsCaption,"Facebook");
 include("tabs.php");
 ?>
 
@@ -377,6 +379,16 @@ if ($tabOpen==2) {
 //************** change options
 if ($tabOpen==4) { 
 	include("editDiakOptions.php");
+}
+//************** facebook
+if ($tabOpen==5) { 
+	?>
+	<p></p>
+	Jelenleg Facebook kapcsolat létezik a "<?php echo $_SESSION["FacebookName"] ?>" felhasználóval.<br />
+	Kép: <img src="https://graph.facebook.com/<?php echo $_SESSION['FacebookId']; ?>/picture" /> 
+	<br />
+	Hamarosan itt lehetséges lessz a Facebook kapcsolatot megszakítani. 
+	<?php 
 }
 echo('</div>');
 

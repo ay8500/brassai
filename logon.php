@@ -25,7 +25,7 @@
 	//Facebook login
 	if ( isset($_SESSION['FacebookId']) ) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
-			logoutUser();
+			//logoutUser();
 			$logOnMessage=$TXT["LogInError"];
 		}
 	} 
