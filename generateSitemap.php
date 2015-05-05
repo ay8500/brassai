@@ -18,9 +18,9 @@ function writeSitemap($id,$link)
 
 include_once("data.php");
 
-		foreach ($data as $id => $d) 
+		foreach ($data as $d) 
 		{
-			writeSitemap($id,getPersonLink($d["lastname"],$d["firstname"]));
+			writeSitemap($d["id"],getPersonLink($d["lastname"],$d["firstname"]));
 			if ((trim($d["birthname"])!="") && (trim($d["birthname"])!=trim($d["lastname"]))) 
 			  writeSitemap($id,getPersonLink($d["birthname"],$d["firstname"])); 
 		}

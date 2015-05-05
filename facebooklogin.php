@@ -37,7 +37,7 @@
 <?php if ($scoolYear!="" && $scoolClass!="") {?>
 	<div style="background-color: #eeeeee; width:500px;" >
 		<br />
-		<div><?php echo getTextRes("SelectClass"); ?></div>
+		<div><?php echo getTextRes("SelectUser"); ?></div>
 		<br />
 		<form action="start.php" >
 			<input type="hidden" name="scoolYearFb" value="<?php echo $scoolYear?>">
