@@ -6,7 +6,8 @@ $data = array();
 
 //List of databases
 $dataBase=Array("12A1985","12B1985");
-$datafields = array("firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
+$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
+$dataPath = "data/";
 
 
 //select the database
@@ -51,11 +52,12 @@ function openDatabase($name) {
 	global $dataFileName;
 	global $dataBase;
 	global $data;
+	global $dataPath;
 
 	
 	if (getScoolClass().getScoolYear()==$name) {
 		$ret=true;
-		$dataFileName=$name."data.txt";
+		$dataFileName=$dataPath.$name."data.txt";
 		ReadDB();
 	}
 	else {
@@ -65,7 +67,7 @@ function openDatabase($name) {
 				$ret=true;
 				setScoolYear(substr($name,3,4));
 				setScoolClass(substr($name,0,3));
-				$dataFileName=$name."data.txt";
+				$dataFileName=$dataPath.$name."data.txt";
 				ReadDB();
 			}
 		}
@@ -82,25 +84,39 @@ function getPerson($id) {
 		if (sizeof($data)==0) {
 			readDB();
 		}
-		if ($id<=sizeof($data))
-			return $data[$id];
-		else
-			return getPersonDummy();	
+		foreach ($data as $l => $d) {	
+			if ($d["id"]==$id)
+				return $d;
+		}
 	}
-	else 
-		return getPersonDummy();
+	return getPersonDummy();
+}
+
+/**
+ * Resturns the person index in the data
+ * @param person id
+ * @return index:integer
+ */
+function getPersonIdx($id) {
+	if (isset($id) && ($id>0)  ) { 
+		global $data;
+		if (sizeof($data)==0) {
+			readDB();
+		}
+		foreach ($data as $l => $d) {	
+			if ($d["id"]==$id)
+				return $l;
+		}
+	}
+	return -1;
 }
 
 /**
  * returns user id from logged in user
  */
 function getPersonLogedOn() {
-	global $data;
-	if (sizeof($data)==0) {
-		readDB();
-	}
-	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0 && ($_SESSION['UID']<sizeof($data)))  { 
-		return $data[$_SESSION['UID']];
+	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0 )  { 
+		return getPerson($_SESSION['UID']);
 	} else {
 		return getPersonDummy();
 	}
@@ -110,19 +126,19 @@ function getPersonLogedOn() {
 /**
  * Set person data
  */
-function setPerson($id,$person) {
+function savePerson($person) {
 	global $data;
 	if (sizeof($data)==0) {
 		readDB();
 	}
 	if (sizeof($person)>0) {
-		reset($person);
 		if (!userIsAdmin()) {
 			$person['date']=date('d.m.Y H:i');
 			$person['ip']=$_SERVER["REMOTE_ADDR"];
 		}
+		reset($person);
 		while (list($key, $val) = each($person)) {
-		   $data[$id][$key]=$val;
+		   $data[getPersonIdx($person["id"])][$key]=$val;
 		   //echo('Name='.$key.'Value='.$val);
 		}
 		saveDB();
@@ -177,26 +193,33 @@ function readDB()
 {
 	global $data;
 	
-	for ($i=0;$i<sizeof($data);$i++)
-		unset( $data[$i]);			//delete old records
+	while (count($data)>0) array_pop($data);  //delete old records
 	
 	global $dataFileName;
     if (file_exists($dataFileName)) {
 		$file=fopen($dataFileName ,"r");
+		$person = NULL;
 		$id=0;
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
 			if (isset($b[0])&&isset($b[1])) {
 				if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
 					if ($b[0]=="id") {
-						$id++;
-						$data[$id]=getPersonDummy();
-					} else {
-						$data[$id][$b[0]]=chop($b[1]);
+						if (isset($person)) {
+							while (list($key, $val) = each($person)) 
+								$data[$id][$key]=$val;
+							$id++;
+							$person=getPersonDummy();
+						}
+						else 
+							$person=getPersonDummy();
 					}
+					$person[$b[0]]=chop($b[1]);
 				}
 			}
 		}
+		while (list($key, $val) = each($person)) 
+			$data[$id][$key]=$val;
 		fclose($file);
 	}
 	else 
@@ -210,15 +233,14 @@ function readDB()
 function readUserAuthDB()
 {
 	global $dataBase;
+	global $dataPath;
 	$data=array();
-	$id=0;
+	$id=-1;
 	foreach($dataBase as $db) {
-		$scoolYear=substr($db,3,4);
-		$scoolClass=substr($db,0,3);
-		$dataFileName=$scoolClass.$scoolYear."data.txt";
+		$scoolYear=substr($db,3,4);$scoolClass=substr($db,0,3);
+		$dataFileName=$dataPath.$scoolClass.$scoolYear."data.txt";
 	    if (file_exists($dataFileName)) {
 			$file=fopen($dataFileName ,"r");
-			$idx=1;
 			while (!feof($file)) {
 				$b = explode("=",fgets($file));
 				if (isset($b[0])&&isset($b[1])) {
@@ -228,7 +250,7 @@ function readUserAuthDB()
 							$data[$id]=getUserAuthDummy();
 							$data[$id]["scoolYear"]=$scoolYear;
 							$data[$id]["scoolClass"]=$scoolClass;
-							$data[$id]["id"]=$idx++;
+							$data[$id]["id"]=chop($b[1]);
 						} else {
 							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "facebookid") || ($b[0] == "admin")) {
 	    						$data[$id][$b[0]]=chop($b[1]);
@@ -263,9 +285,9 @@ function saveDB() {
 		if (strlen($person['user'])==0) $person['user']=getPersonLink($person['lastname'],$person['firstname']);
 		if (strlen($person['passw'])==0) $person['passw']=createPassword(8);
 		fwrite($file,"\r\n");
-		fwrite($file,"id=".$i++."\r\n");
 		while (list($key, $val) = each($person)) {
-		   fwrite($file,$key."=".$val."\r\n");
+			if ($val!="")
+		   		fwrite($file,$key."=".$val."\r\n");
 		}
 	}
 	fclose($file);
@@ -285,13 +307,15 @@ function setVote($uid, $vote) {
 
 function readVoteData() {
 	global $voteData;
+	global $dataPath;
 	global $voteFileName;
 
 	for ($i=0;$i<sizeof($voteData);$i++)
 		unset( $voteData[$i]);			//delete old records
 
-    if (file_exists($_SESSION['scoolClass'].$_SESSION['scoolYear'].$voteFileName)) {
-		$file=fopen($_SESSION['scoolClass'].$_SESSION['scoolYear'].$voteFileName ,"r");
+	$fileName=$dataPath.getScoolClass().getScoolYear().$voteFileName;
+    if (file_exists($fileName)) {
+		$file=fopen($fileName ,"r");
 		$id=0;
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
@@ -326,11 +350,13 @@ function getVoteDummy() {
 
 function saveVoteData() {
 	global $data;
+	global  $dataPath;
 	getDataSize();
 	global $voteData;
 	reset( $voteData);
 	global $voteFileName;
-	$file=fopen($_SESSION['scoolClass'].$_SESSION['scoolYear'].$voteFileName,"w");
+	$fileName=$dataPath.getScoolClass().getScoolYear().$voteFileName;
+	$file=fopen($fileName,"w");
 	fwrite($file,"#Vote Database File\r\n");
 	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
 	fwrite($file,"#Change Date:".date('d.m.Y H:i')."\r\n\r\n");
@@ -563,7 +589,19 @@ function getPersonLink($fn,$ln) {
 }
 
 function getNormalisedChars($s) {
-  return strtr($s, " âäåáàéèíîöóòõúùüÅÁÄÉÖÜ", "-aaaaaeeiioooouuuAAAEOU");
+  $trans = array (
+  	" "=>"-", "â"=>"a", "ä"=>"a","â"=>"a", "á"=>"a", "à"=>"a",
+  	"é "=>"e", "è"=>"e", 
+  	"í "=>"i", "ì"=>"i", "Í"=>"I","Ì"=>"I",
+  	"ó"=>"o", "ò"=>"o", "ö"=>"o","ő"=>"o", "õ"=>"o",
+  	"ú"=>"u", "ù"=>"u", "ü"=>"u","ű"=>"u",
+  	"Á"=>"A", "À"=>"A", "Ä"=>"A",
+  	"É"=>"E", "È"=>"E",
+	"Ó"=>"O", "Ò"=>"O", "Ö"=>"O","Ő"=>"O",
+	"Ú"=>"U", "Ù"=>"U", "Ü"=>"U","Ű"=>"U"
+  );
+  //return strtr($s, " âäåáàéèíîöóòõőúùüűÅÁÄÉÖŐÜŰ", "-aaaaaeeiiooooouuuuAAAEOOUU");
+  return strtr($s, $trans);
 }
 
 ?>

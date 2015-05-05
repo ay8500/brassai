@@ -35,7 +35,7 @@ include("homemenu.php");
 			<div style="font-size:12px;font-weight:bold">Brassai Sámuel (1800-1897)</div>
 			  <div style="font-size:11px;">
     				&quot;A tanító, mint a gazda, csak magvakat vet el,<br/>
-    				melyöl a tanítvány elméjében ismeretek teremnek,<br/>
+    				melyböl a tanítvány elméjében ismeretek teremnek,<br/>
     				mint a gabona s más termék a földben.&quot;
   			</div>
    </tr>
@@ -43,8 +43,8 @@ include("homemenu.php");
   </td></tr>
 </table>
 </td></tr><tr><td align="center">
-	Ez az oldal <B>1997. junius 11.</B>-e &oacute;ta el&eacute;rhet&otilde;.
-	Utolj&aacute;ra m&oacute;d&oacute;s&iacute;tva <b>2015. április 28.</b>-án.<br>
+	Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.
+	Utoljára módósítva <b>2015. április 28.</b>-án.<br>
 </td>
 </tr>
 </table>

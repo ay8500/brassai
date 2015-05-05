@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['FacebookId'] = "a965038823537045";
+$_SESSION['FacebookId'] = "965038823537045";
 $_SESSION['FacebookName'] = "Levi Levi";
 $_SESSION['FacebookEmail'] =  "MailLevi";
 session_write_close();

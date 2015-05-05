@@ -23,12 +23,12 @@ include("homemenu.php");
 </TABLE>
 </TD></TR><TR><TD>
 <h2 class="sub_title">Brassai Sámuel életrajzi adatai</h2>
-<p>- 1797., ill. 1800 június 15-én született Torockószentgyörgyön (saját bevallása szerint 1797-ben - hivatalos iratba nincs bejegyezve, mivel nagyapja keresztelte Torockószent-györgyön). Édesapja Brassai Sámuel, Torockószentgyörgyön iskolamester, unitárius pap. Édesanyja, Koncz Krisztina, unitárius papcsaládból származó tanult, igen mûvelt nõ. A család 1827-ig lakik Torockószentgyörgyön, majd id. Brassai Sámuel Szentmihályfalvára költözik, itt lesz unitárius pap haláláig, 1837-ig.
+<p>- 1797., ill. 1800 június 15-én született Torockószentgyörgyön (saját bevallása szerint 1797-ben - hivatalos iratba nincs bejegyezve, mivel nagyapja keresztelte Torockószent-györgyön). Édesapja Brassai Sámuel, Torockószentgyörgyön iskolamester, unitárius pap. Édesanyja, Koncz Krisztina, unitárius papcsaládból származó tanult, igen mûvelt nő. A család 1827-ig lakik Torockószentgyörgyön, majd id. Brassai Sámuel Szentmihályfalvára költözik, itt lesz unitárius pap haláláig, 1837-ig.
 <p>- 1813: kisebb megszakításokkal 1820-ig a Kolozsvári Unitárius Kollégiumban tanul
 <p>- 1821: Zsibón a Wesselényi Miklós meghívására rendezi ennek könyvtárát 
 <p>- 1821-1837: a Bethlen és Kendeffy családoknál magántanár, zenét, nyelveket tanít. Rettegen, Iklódon és Bécsben él ezekben az években. 
 <p>- 1831: megjelennek elsõ cikkei
-<p>- 1832: megjelenik elsõ jelentõs esztétikai tanulmánya: "A gyönyörûségrõl"
+<p>- 1832: megjelenik elsõ jelentős esztétikai tanulmánya: "A gyönyörûségről"
 <p>- 1834: szerkeszti a Vasárnapi Újságot, mely 4 oldalban, magyar nyelven jelenik meg; "közhasznú ismeretekkel" neveli, tanítja Erdély olvasótáborát. Kolozsvár kulturális-társadal-mi életének minden jelentõs szervezkedésében és megnyilatkozásában részt vesz.
 <p>- az 1836-ban létesült Úrikaszinó alapító tagja (ez egy értelmiséget összefogó, klub jellegû társaság, mely Széchenyi István kezdeményezésére alakult; nagy jelentõsége van Kolozsvár kulturális-gazdasági-társadalmi életében)
 <p>- 1837: a Kolozsvári Unitárius Kollégium tanára. Magyarul tanít, annak ellenére, hogy a zsinat csak 1841-ben engedélyezi ezt (addig a tanítás hivatalos nyelve a latin)

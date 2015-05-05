@@ -53,9 +53,10 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changediak") && 
 			if (isset($_GET["cb_".$dataFieldNames[$i]])) $tilde="~";
 		}
 		//save the fields in the person array
-		$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
+		if (isset($_GET[$dataFieldNames[$i]]))
+			$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
 	}
-	setPerson($uid,$diak);
+	savePerson($diak);
 	if (!userIsAdmin()) 
 		saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
 }
@@ -65,7 +66,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changegeo")) {
 	if (isset($_GET["geolat"])) $diak["geolat"]=$_GET["geolat"];
 	if (isset($_GET["geolng"])) $diak["geolng"]=$_GET["geolng"];
 	
-	setPerson($uid,$diak);
+	savePerson($diak);
 	if (!userIsAdmin()) 
 		saveLogInInfo("SaveGeo",$uid,$diak["user"],"",true);
 	$resultDBoperation='<div class="okay">Geokoordináták sikeresen módósítva!</div>';
@@ -80,7 +81,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changepassw")) {
 	if (strlen($newpwd1)>5) {
 		if ($newpwd1==$newpwd2) {
 			$diak['passw']=$newpwd1;
-			setPerson($uid,$diak);
+			savePerson($diak);
 			if (!userIsAdmin()) 
 				saveLogInInfo("SavePassw",$uid,$diak["user"],"",true);
 			$resultDBoperation='<div class="okay">Jelszó módosíva!</div>';
@@ -97,7 +98,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changeuser")) {
 		if (!checkUserNameExists($uid,$user)) { 
 			$diak["user"]=$user;
 			$_SESSION["USER"]=$user;
-			setPerson($uid,$diak);
+			savePerson($diak);
 			if (!userIsAdmin()) 
 				saveLogInInfo("SaveUsername",$uid,$diak["user"],"",true);
 			$resultDBoperation='<div class="okay">Becenév módosíva!</div>';
@@ -107,6 +108,12 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changeuser")) {
 	}
 	else
 		$resultDBoperation='<div class="error">Becenév rövid, minimum 3 karakter!</div>';
+}
+
+//Remove Facebook connection
+if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="removefacebookconnection")) {
+	$diak["facebookid"]="";
+	savePerson($diak);
 }
 
 //Upload Image
@@ -290,12 +297,14 @@ include("tabs.php");
 		$fieldCountToBeEdited = sizeof($dataFieldNames);
 		if (!userIsAdmin()) $fieldCountToBeEdited--;
 		for ($i=0;$i<$fieldCountToBeEdited;$i++) {
-			echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
-			if ($dataFieldVisible[$i]) 
-				echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak[$dataFieldNames[$i]]).' title="Jelöld meg és akkor csak a bejelentkezett osztálytársak lássák!" /></td>');
-			else 
-				echo('<td class="highlight">&nbsp;</td>');
-			echo('<td><input type="text" value="'.getFieldValue($diak[$dataFieldNames[$i]]).'" name="'.$dataFieldNames[$i].'" size="'.$dataFieldLengths[$i].'" class="input2" onchange="fieldChanged();" /></td></tr>'."\r\n");
+			if (isset($diak[$dataFieldNames[$i]])) {
+				echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
+				if ($dataFieldVisible[$i]) 
+					echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak[$dataFieldNames[$i]]).' title="Jelöld meg és akkor csak a bejelentkezett osztálytársak lássák!" /></td>');
+				else 
+					echo('<td class="highlight">&nbsp;</td>');
+				echo('<td><input type="text" value="'.getFieldValue($diak[$dataFieldNames[$i]]).'" name="'.$dataFieldNames[$i].'" size="'.$dataFieldLengths[$i].'" class="input2" onchange="fieldChanged();" /></td></tr>'."\r\n");
+			}
 		}
 		echo('<tr><td colspan="3"> </td></tr>');
 		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Kiment!" title="Adatok kimentése" /></td></tr>');
@@ -383,11 +392,19 @@ if ($tabOpen==4) {
 //************** facebook
 if ($tabOpen==5) { 
 	?>
-	<p></p>
-	Jelenleg Facebook kapcsolat létezik a "<?php echo $_SESSION["FacebookName"] ?>" felhasználóval.<br />
-	Kép: <img src="https://graph.facebook.com/<?php echo $_SESSION['FacebookId']; ?>/picture" /> 
+	<div style="margin:20px">
+	<h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo $_SESSION["FacebookName"] ?>" Facebook felhasználóval.</h3><br />
+	<div style="border-style: solid; border-width: 1px">
+		Facebook kép: <img src="https://graph.facebook.com/<?php echo $_SESSION['FacebookId']; ?>/picture" />
+	</div> 
 	<br />
-	Hamarosan itt lehetséges lessz a Facebook kapcsolatot megszakítani. 
+	<form action="editDiak.php" method="get">
+		<input type="hidden" value="removefacebookconnection" name="action" />
+		<input type="hidden" value="<?php echo $uid ?>" name="uid" />
+		<input type="hidden" value="<?php echo $tabOpen ?>" name="tabOpen" />
+		<input type="submit" value="Facebook kapcsolatot töröl" />
+	</form>
+	</div>
 	<?php 
 }
 echo('</div>');

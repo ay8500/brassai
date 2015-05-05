@@ -166,7 +166,7 @@ function checkUserNameExists($id,$userName) {
 						if ((strcasecmp($person["email"],$email)==0) ) {
 							$person["passw"]=$newPassw;
 							$ret = $key;
-							setPerson($key,$person);
+							savePerson($person);
 							break;
 						}
 					}

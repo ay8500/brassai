@@ -1,6 +1,6 @@
 #Database File
-#Last IP:2.164.235.108
-#Change Date:12.04.2015 22:45
+#Last IP:::1
+#Change Date:05.05.2015 01:04
 
 
 id=1
@@ -29,6 +29,7 @@ admin=
 date=11.02.2009 23:11
 ip=127.0.0.1
 facebook=
+facebookid=
 
 id=2
 firstname=Eva
@@ -56,6 +57,7 @@ admin=
 date=18.10.2009 19:28
 ip=188.24.37.229
 facebook=https://www.facebook.com/fodorbalog.eva
+facebookid=
 homepage=~
 
 id=3
@@ -84,6 +86,7 @@ admin=
 date=17.02.2009 19:36
 ip=71.111.140.84
 facebook=
+facebookid=
 
 id=4
 firstname=Edit
@@ -111,6 +114,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=5
 firstname=Melinda
@@ -138,6 +142,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=6
 firstname=Krisztina
@@ -165,6 +170,7 @@ admin=
 date=10.10.2009 22:16
 ip=92.82.43.106
 facebook=
+facebookid=
 
 id=7
 firstname=Ibolya
@@ -192,6 +198,7 @@ admin=
 date=01.11.2009 15:03
 ip=91.82.172.251
 facebook=
+facebookid=
 
 id=8
 firstname=Ildikó
@@ -219,6 +226,7 @@ admin=
 date=12.02.2009 00:29
 ip=87.175.214.1
 facebook=
+facebookid=
 
 id=9
 firstname=Endre
@@ -246,6 +254,7 @@ admin=
 date=
 ip=
 facebook=https://www.facebook.com/kicsiyoda
+facebookid=
 homepage=
 
 id=10
@@ -274,6 +283,7 @@ admin=
 date=02.11.2009 16:30
 ip=89.238.209.78
 facebook=https://www.facebook.com/deak.attila.509
+facebookid=
 homepage=
 
 id=11
@@ -302,6 +312,7 @@ admin=
 date=09.02.2009 19:29
 ip=87.175.216.212
 facebook=
+facebookid=
 
 id=12
 firstname=Sándor
@@ -329,6 +340,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=13
 firstname=Erzsébet
@@ -356,6 +368,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=14
 firstname=Ilona
@@ -383,6 +396,7 @@ admin=
 date=02.11.2009 07:20
 ip=193.230.156.158
 facebook=
+facebookid=
 
 id=15
 firstname=Sándor
@@ -410,6 +424,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=16
 firstname=Ilona
@@ -437,6 +452,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=17
 firstname=Attila
@@ -464,6 +480,7 @@ admin=
 date=09.02.2009 19:22
 ip=87.175.216.212
 facebook=
+facebookid=
 
 id=18
 firstname=Attila Géza
@@ -491,6 +508,7 @@ admin=
 date=11.10.2009 18:35
 ip=91.82.35.81
 facebook=https://www.facebook.com/attilageza.kiss
+facebookid=
 homepage=~
 
 id=19
@@ -519,6 +537,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=20
 firstname=Orsolya
@@ -546,6 +565,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=21
 firstname=Árpád
@@ -573,6 +593,7 @@ admin=
 date=30.03.2009 19:35
 ip=92.85.118.205
 facebook=https://www.facebook.com/kolozsvar.kepkeretezes
+facebookid=
 homepage=~
 
 id=22
@@ -601,6 +622,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=23
 firstname=Éva
@@ -628,6 +650,7 @@ admin=
 date=11.11.2009 17:21
 ip=81.182.215.249
 facebook=https://www.facebook.com/szabo.eva.7359
+facebookid=
 homepage=~
 
 id=24
@@ -656,6 +679,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=25
 firstname=József
@@ -683,6 +707,7 @@ admin=
 date=08.03.2009 21:09
 ip=188.24.23.61
 facebook=
+facebookid=
 
 id=26
 firstname=Anikó
@@ -710,6 +735,7 @@ admin=
 date=13.10.2009 11:44
 ip=193.10.63.101
 facebook=
+facebookid=
 
 id=27
 firstname=Mária
@@ -737,6 +763,7 @@ admin=
 date=09.01.2015 13:45
 ip=37.76.15.244
 facebook=https://www.facebook.com/bergmolma
+facebookid=
 homepage=~
 
 id=28
@@ -765,6 +792,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=29
 firstname=Erzsébet
@@ -792,6 +820,7 @@ admin=
 date=03.10.2009 20:51
 ip=78.97.174.46
 facebook=https://www.facebook.com/szados.eliz
+facebookid=
 homepage=~
 
 id=30
@@ -820,6 +849,7 @@ admin=
 date=03.11.2009 15:52
 ip=82.131.225.54
 facebook=
+facebookid=
 
 id=31
 firstname=Krisztina
@@ -847,6 +877,7 @@ admin=
 date=
 ip=
 facebook=https://www.facebook.com/ribizli.kriss
+facebookid=
 homepage=
 
 id=32
@@ -875,6 +906,7 @@ admin=
 date=29.10.2009 13:58
 ip=194.237.142.7
 facebook=https://www.facebook.com/profile.php?id%3D100008362470851
+facebookid=
 homepage=~
 
 id=33
@@ -903,6 +935,7 @@ admin=
 date=03.04.2015 20:50
 ip=2.166.32.83
 facebook=
+facebookid=
 
 id=34
 firstname=Andrea
@@ -930,6 +963,7 @@ admin=
 date=01.11.2009 15:51
 ip=84.119.84.225
 facebook=
+facebookid=
 
 id=35
 firstname=Zsuzsa
@@ -957,6 +991,7 @@ admin=
 date=11.10.2009 19:16
 ip=83.254.159.29
 facebook=https://www.facebook.com/tar.zsuzsa
+facebookid=
 homepage=
 
 id=36
@@ -985,6 +1020,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=37
 firstname=Jolán
@@ -1012,6 +1048,7 @@ admin=
 date=01.11.2009 16:42
 ip=188.157.80.154
 facebook=
+facebookid=
 
 id=38
 firstname=Gitta
@@ -1039,6 +1076,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=39
 firstname=Mária
@@ -1066,6 +1104,7 @@ admin=
 date=
 ip=
 facebook=
+facebookid=
 
 id=40
 firstname=Marton
@@ -1093,6 +1132,7 @@ admin=
 date=
 ip=
 facebook=https://www.facebook.com/mvremir
+facebookid=
 homepage=~
 
 id=41
@@ -1121,6 +1161,8 @@ admin=admin
 date=
 ip=
 facebook=
+facebookid=
+homepage=
 
 id=42
 firstname=Erzsébet
@@ -1148,4 +1190,5 @@ admin=editor
 date=11.09.2009 19:05
 ip=89.123.85.73
 facebook=https://www.facebook.com/rerzsebet
+facebookid=
 homepage=

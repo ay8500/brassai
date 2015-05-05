@@ -9,12 +9,12 @@ $SiteTitle=$_SESSION['scoolYear']."-".$_SESSION['scoolClass'];
    //Parameter guests
    if (isset($_GET["guests"])) $guests = true; else $guests=false;
 	if ( $guests )
-		$SiteTitle=$SiteTitle.' tanárok, vendégek, jó barátok';
+		$SiteTitle=$SiteTitle.' tanárok, vendégek, jó barátok, régi volt osztálytársak';
 	else
 		$SiteTitle=$SiteTitle.' osztálytársak';
 
 	if ( $guests )
-		echo('<h2 class="sub_title">Tanárok, vendégek, jó barátok.</h2>');
+		echo('<h2 class="sub_title">Tanárok, régi volt osztálytársak, vendégek, jó barátok.</h2>');
 	else
 		echo('<h2 class="sub_title">Osztálytársak</h2>');
 
@@ -60,10 +60,10 @@ foreach ($data as $l => $d)
 		if(showField($d["facebook"])) echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.urldecode(getFieldValue($d["facebook"])).'">'.urldecode(getFieldValue($d["facebook"]))."</a></td></tr>";
 		if(isset($d["homepage"]) && showField($d["homepage"])) echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
 		if ( userIsAdmin() || userIsEditor()) {
-			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$l.'">Módósít</a></td><td>&nbsp;</td></tr>';
+			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$d["id"].'">Módósít</a></td><td>&nbsp;</td></tr>';
 		}
 		else {
-			if (isset($_SESSION['UID']) && $_SESSION['UID']==$l) {
+			if (isset($_SESSION['UID']) && $_SESSION['UID']==$d["id"]) {
 				echo '<tr><td valign=top align=right><a href="editDiak.php">Módósít</a></td><td>&nbsp;</td></tr>';
 			}
 			else {
