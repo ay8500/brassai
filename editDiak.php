@@ -144,7 +144,7 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
    <title><?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai Sámuel líceum vén diakja</title>
-   <meta http-equiv="content-type" content="text/html; charset=UTF8">
+   <meta http-equiv="content-type" content="text/html; charset=utf-8">
    <link rel="stylesheet" type="text/css" href="menu.css" />
    <link rel="stylesheet" href="lightbox.css" type="text/css" media="screen" />
    
