@@ -1,7 +1,7 @@
 <?PHP
-	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) {
+	if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
 ?>
-	<div id="map_canvas" style="width: 520px; height: 400px;"></div>
+	<div id="map_canvas" style="width: 100%x; height: 400px;"></div>
 	<table class="editpagetable">
 		<tr><td style="text-align:center"><?PHP echo($resultDBoperation); ?></td></tr>
 		<tr><td>

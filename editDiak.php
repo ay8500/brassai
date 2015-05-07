@@ -1,6 +1,7 @@
 <?PHP 
 
 include_once("sessionManager.php");
+include_once ('userManager.php');
 //********* Edit person ****************
 
  
@@ -137,127 +138,22 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 		}
 	}
 }
-?>
+$diakEditGeo = true;
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
- <head>
-   <title><?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai Sámuel líceum vén diakja</title>
-   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-   <link rel="stylesheet" type="text/css" href="menu.css" />
-   <link rel="stylesheet" href="lightbox.css" type="text/css" media="screen" />
-   
-   <meta name="robots" content="index,follow" />
-   <meta name="geo.placename" content="<?PHP echo(getFieldValue($diak["place"]));?>" />
-   <meta name="geo.position" content="<?PHP echo($diak["geolat"].";".$diak["geolng"]);?>" />
-   <meta name="author" content="Levente Maier" />
-   <meta name="description" content="<?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?> A kolozsvari Brassai Samuel líceum vén diakjai" />
-   <meta name="keywords" content="<?PHP echo($diak["lastname"]." ".$diak["firstname"]." ".$diak["birthname"]." ");?>Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok <?PHP echo(getFieldValue($diak["place"]));?>" />
-
-	<script type="text/javascript" src="http://www.blue-l.de/stat/track.php?mode=js"></script>
-	<noscript><img src="http://www.blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
-
-	<script type="text/javascript">
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-20252557-2']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-	</script>
-
-   
-	<script type="text/javascript" src="js/prototype.js"></script>
-	<script type="text/javascript" src="js/scriptaculous.js?load=effects,builder"></script>
-	<script type="text/javascript" src="js/lightbox.js"></script>
-   
-   	<link rel="stylesheet" type="text/css" href="ddsmoothmenu.css" />
-	<link rel="stylesheet" type="text/css" href="ddsmoothmenu-v.css" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
-	<script type="text/javascript">
-	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" })
-	</script>
-   
-   
-   <?PHP if ($tabOpen==2) { ?>
-      
-   <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg"  type="text/javascript"></script>
-   <script type="text/javascript">
-    var map = null;
-    var geocoder = null;
-    var marker = null;
-    
-    function initialize() {
-      if (GBrowserIsCompatible()) {
-        map = new GMap2(document.getElementById("map_canvas"));
-		map.enableScrollWheelZoom();
-        map.addControl(new GSmallMapControl());
-        map.addControl(new GMapTypeControl());
-		<?PHP
-			if ($diak["geolat"]!="") 
-				echo('var center = new GLatLng('.$diak["geolat"].','.$diak["geolng"].');');
-			else
-				echo('var center = new GLatLng(46.771919,23.592248);');
-		?>
-        map.setCenter(center, 10);
-
-        marker = new GMarker(center, {draggable: true});
-		document.geo.geolat.value=center.lat();
-		document.geo.geolng.value=center.lng();
-
-        GEvent.addListener(marker, "dragstart", function() {
-          map.closeInfoWindow();
-        });
-
-        GEvent.addListener(marker, "dragend", function() {
-          marker.openInfoWindowHtml("<?PHP echo('<b>'.$diak["birthname"].' '.$diak["firstname"].'</b> '.$diak["lastname"].' <br/>'.getFieldValue($diak["address"]).'<br />'.getFieldValue($diak["zipcode"]).'&nbsp;'.getFieldValue($diak["place"]));?>");
-		  var position = marker.getLatLng();
-		  document.geo.geolat.value=position.lat();
-		  document.geo.geolng.value=position.lng();
-		  fieldChanged(); 
-        });
-
-        map.addOverlay(marker);
-        
-        geocoder = new GClientGeocoder();
-       }
-    }
-    
-    function doSearch() {
-      var addres = document.getElementById("addres").value;
-      if (geocoder) {
-        geocoder.getLatLng(
-          addres,
-          function(point) {
-            if (!point) {
-              alert(addres + " Nem találtam semmit.");
-            } else {
-              map.setCenter(point, 13);
-              marker.setLatLng(point);
-			  document.geo.geolat.value=point.lat();
-			  document.geo.geolng.value=point.lng();
-            }
-          }
-        );
-      }
-    }
-       
-    </script>
-    <?PHP } ?>
- </head>
-<body  <?PHP if ($tabOpen==2) { ?>onload="initialize()" onunload="GUnload()" <?PHP } ?> >
-
-<?PHP 
-//******************************Save Data**************************************
-$googleMap = true;
 include("homemenu.php"); 
 include_once("userManager.php"); 
 
+//Set person geo and data to be used in diakEditGeo.js
+if ($tabOpen==2) {
+	echo('<script language="JavaScript" type="text/javascript">'."\r\n");
+	echo("\t".'var diak="<b>'.$diak["birthname"].' '.$diak["firstname"].'</b> '.$diak["lastname"].' <br/>'.getFieldValue($diak["address"]).'<br />'.getFieldValue($diak["zipcode"]).'&nbsp;'.getFieldValue($diak["place"]).'";'."\r\n");
+	if ($diak["geolat"]!="")
+		echo("\t".'var centerx = '.$diak["geolat"].'; var centery ='.$diak["geolng"].";"."\r\n");
+	else
+		echo("\tvar centerx =46.771919; var centery = 23.592248;"."\r\n");
+	echo("</script>"."\r\n");
+
+}
 
 
 ?>
@@ -275,7 +171,7 @@ include_once("userManager.php");
 global $SCRIPT_NAME;
 
 //initialize tabs
-if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) 
+if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID']) ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Geokoordináta","Bejelentkezési&nbsp;adatok","Beállítások");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek");
@@ -288,7 +184,7 @@ include("tabs.php");
 	$diak = getPerson($uid);
 	//Edit variant of this page
 	echo('<table class="editpagetable" >');
-	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) {
+	if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
 		//person data fields
 		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
 		echo('<tr><td></td><td class="highlight"></td><td class="highlight">Ha azt szeretnéd, hogy az adataidat csak mi az osztálytársak láthassuk, akkor jelöld meg öket!</td></tr>');
@@ -341,7 +237,7 @@ include("tabs.php");
 		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
 		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
 		if(showField($d["facebook"])) echo "<tr><td valign=top align=right>Facebook:</td><td>".getFieldValue($d["facebook"])."</td></tr>";
-		if(showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["honoldal"])."</td></tr>";
+		if(isset($d["homepage"]) && showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["honoldal"])."</td></tr>";
 		echo "</table>";
 	}
 	echo('</table>');
@@ -351,7 +247,7 @@ include("tabs.php");
 
 if ($tabOpen==3) { 
 	echo('<table style="width:500px" class="editpagetable">');
-	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) {
+	if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
 		//change password
 		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
@@ -411,6 +307,3 @@ echo('</div>');
 
 ?>
 </td></tr></table>
-</td></tr></table>
-</body>
-</html>

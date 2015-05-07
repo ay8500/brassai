@@ -1,5 +1,5 @@
 <?PHP
-	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) {
+	if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
 ?>		
 <table class="editpagetable">
 	
@@ -11,5 +11,8 @@
 
 </table>
 <?PHP
+}
+else {
+  getTextRes("OnlyForLoggedInUser");
 }
 ?>

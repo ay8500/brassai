@@ -34,12 +34,20 @@ if ( isset( $session ) ) {
   // get response
   $graphObject = $response->getGraphObject();
 		$ara = $graphObject->asArray();
-     	$fbid = $graphObject->getProperty('id');              // To Get Facebook ID
- 	    $fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
-	    $femail = $graphObject->getProperty('email');    // To Get Facebook email ID
+     	$fbid = $graphObject->getProperty('id');            // To Get Facebook ID
+ 	    $fbfullname = $graphObject->getProperty('name'); 	// To Get Facebook full name
+	    $femail = $graphObject->getProperty('email');    	// To Get Facebook email ID
+	    $flink = $graphObject->getProperty('link');    		// To Get Facebook email ID
 	    $_SESSION['FacebookId'] = $fbid;           
         $_SESSION['FacebookName'] = $fbfullname;
 	    $_SESSION['FacebookEmail'] =  $femail;
+	    //$_SESSION['FacebookLink'] =  $flink;
+	    
+	    //Change Facebook Id
+	    //$urlName =strtr($_SESSION['FacebookName']," ",".");
+	    //$res = json_decode(file_get_contents('https://graph.facebook.com/'.$urlName),true);
+	    //$_SESSION['FacebookId'] = $res["id"];
+	    
 	 /*
 	echo("Username:".$fbfullname = $graphObject->getProperty('name') );
 	echo("<br/><br/>");

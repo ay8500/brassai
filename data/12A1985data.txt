@@ -1,6 +1,6 @@
-﻿#Database File
+#Database File
 #Last IP:::1
-#Change Date:05.05.2015 15:50
+#Change Date:07.05.2015 01:32
 
 
 id=2
@@ -53,6 +53,7 @@ passw=dr1234
 date=09.02.2009 19:16
 ip=84.1.58.138
 facebook=https://www.facebook.com/dorottya.varga.92
+facebookid=100000088166507
 homepage=~
 
 id=4
@@ -151,10 +152,10 @@ geolat=46.76714653871027
 geolng=23.62060546875
 user=bircsi
 passw=bi7864
+admin=viewer
 date=16.10.2009 11:44
 ip=109.96.83.80
 facebook=https://www.facebook.com/biro.attila3
-admin=viewer
 homepage=~
 
 id=8
@@ -493,7 +494,6 @@ passw=levi67
 date=05.05.2015 15:50
 ip=::1
 facebook=https://www.facebook.com/levente.maier
-facebookid=965038823537045
 homepage=http://levi.blue-l.de
 
 id=22
@@ -863,8 +863,8 @@ skype=~
 education=PHP programozó
 employer=~
 function=~programozó
-geolat=49.066347
-geolng=11.1495044
+geolat=46.68114849135431
+geolng=23.634904998730462
 user=admin
 passw=levi67
 admin=admin

@@ -77,6 +77,7 @@ function openDatabase($name) {
 
 /**
  * get person from database
+ * * @return Person
  */
 function getPerson($id) {
 	if (isset($id) && ($id>0)  ) { 
@@ -381,7 +382,7 @@ function saveVoteData() {
 // picture name: the letter p plus personid-pictureid.jpg
 // the pictures are saved in a maximal resolution of 1024x1024
 
-$PictureFields=array("visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate");
+$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate");
 $pictures = array();
 $pictureFolder = "./images/";
 
@@ -442,17 +443,18 @@ function savePicture($database,$personID,$title, $comment, $vorAll){
 	return $nextId;
 }
 
-function loadPictureAttributes($database,$personID,$pictureId) {
+function loadPictureAttributes($database,$personId,$pictureId) {
 	global $pictureFolder;
 	$picture=getPictureDummy();
-	if (!file_exists($pictureFolder.$database."/".$personID."-".$pictureId.".txt")) {
-		setPictureAttributes($database,$personID,$pictureId,"","","yes");
+	if (!file_exists($pictureFolder.$database."/".$personId."-".$pictureId.".txt")) {
+		setPictureAttributes($database,$personId,$pictureId,"","","yes");
 	}
-    if (file_exists($pictureFolder.$database."/".$personID."-".$pictureId.".txt")) {
-		$file=fopen($pictureFolder.$database."/".$personID."-".$pictureId.".txt" ,"r");
+    if (file_exists($pictureFolder.$database."/".$personId."-".$pictureId.".txt")) {
+		$file=fopen($pictureFolder.$database."/".$personId."-".$pictureId.".txt" ,"r");
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
 			if (isset($b[0])&&isset($b[1])) {
+				$picture["id"]=$pictureId;
 				if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
 					$picture[$b[0]]=chop($b[1]);
 				}

@@ -5,19 +5,15 @@
 	include_once("logon.php");
 	include_once("data.php");
 	
+	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
-	
-	if (!(isset($googleMap) && ($googleMap))) 
-	{
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
 	<title><?PHP echo($SiteTitle) ?></title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	
-	<link rel="stylesheet" type="text/css" href="menu.css" />
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
@@ -55,13 +51,22 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
 	<script type="text/javascript">
-	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" })
+	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" });
 	</script>
-
+	<?php if (isset($googleMap)) {?>
+		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
+		<script type="text/javascript" src="js/diakMap.js"></script>
+	<?php }?>
+	<?php if (isset($diakEditGeo)) {?>
+		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
+		<script type="text/javascript" src="js/diakEditGeo.js"></script>
+	<?php }?>
+	<link rel="stylesheet" type="text/css" href="menu.css" />
+	
  </head>
 <body>
 
-<?PHP } ?>
+
 <table border="0" style="width:100%; height:100%;margin-top:0px" >
 <tr>
 	<td style="vertical-align: top;" rowspan="3">
@@ -115,7 +120,7 @@
 						<li><a href="vote.php">30-éves Találkozó</a></li>
 					<?PHP }  ?>	
 						<li><a href="worldmap.php">Térkép</a></li>
-					<?PHP if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {	 $person=getPersonLogedOn(); ?>
+					<?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
 						<li><a href="editDiak.php" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
 					<?PHP }  ?>	
 						<li><a href="gb.php" >Vendégkönyv</a></li>
@@ -129,26 +134,25 @@
 						<li><a href="impressum.php"  >Impresszum</a></li>
 					</ul>
 				</div>
-				<td class="nav"> 
-			</td></tr>
+				</td>
+			</tr>
 		</table>
 	<hr />
-	<?php echo $TXT["Like"] ?><br /><br />
+	<?php echo getTextRes("Like") ?><br /><br />
 	<g:plusone size="medium"></g:plusone>
 	<br /><br />
 	<div><a name="fb_share" type="button_count" share_url="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></div>
 	<hr />
 	<?PHP 
-		//writeLogonBox(); 
+		writeLogonBox(); 
 		foreach ($SupportedLang as $Language) {
 			if (isset($_SESSION['LANG']) && ($Language!=$_SESSION['LANG']))
 				echo('<a href='.$SCRIPT_NAME.'?language='.$Language.'><img src="images/flag_'.$Language.'.jpg" alt=""/></a>'."\r\n");
 		}
-		$googleMap = false;
 	?>
-	<td><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getScoolYear()) ?>-ben végzett diákjai <?PHP echo(getScoolClass()) ?></h1></td>
+	<td  id="topLine"><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getScoolYear()) ?>-ben végzett diákjai <?PHP echo(getScoolClass()) ?></h1></td>
 </tr>
-	<?php writeLogonLine(); ?>
+	<?php //writeLogonLine(); ?>
 <tr>
 	<td class="content">
 

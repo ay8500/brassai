@@ -12,16 +12,16 @@ $i=0;
 for ($l=1;$l<=getDataSize();$l++) {
 	$d=getPerson($l);
 	if (($d["geolat"]!="") && ($d["geolng"]!="")) {
-		if ( ($d["geolat"]>$lat1) && ($d["geolat"]<$lat2) && ($d["geolng"]>$lng1) && ($d["geolng"]<$lng2) ) {
-			if ( !isset($_SESSION['USER']) || $_SESSION['USER']="" || $_SESSION['USER']=0)
-				$random=rand(1,10)/100;
-			else
+		//if ( ($d["geolat"]>$lat1) && ($d["geolat"]<$lat2) && ($d["geolng"]>$lng1) && ($d["geolng"]<$lng2) ) {
+			if ( userIsLoggedOn() )
 				$random=0;
+			else
+				$random=rand(1,10)/100;
 			$points[$i]["name"]=$d["lastname"]." ".$d["firstname"];
 			if ($d["birthname"]!="") $points[$i]["name"] = $points[$i]["name"]." (".$d["birthname"].")";
 			$points[$i]["lat"]=$d["geolat"]+$random;
 			$points[$i++]["lng"]=$d["geolng"]+$random;
-		}
+		//}
 	}
   }
 

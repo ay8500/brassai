@@ -94,6 +94,13 @@
 	}
 	
 	/**
+	 * a user is logged on
+	 */
+	function userIsLoggedOn() {
+		return ( isset($_SESSION['UID']) && $_SESSION['UID']>0 );		
+	}
+	
+	/**
 	 * user is loggen in and he is an admin
 	 */
 	function userIsAdmin() {

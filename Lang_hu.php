@@ -26,4 +26,5 @@ $TXT["SelectClass"]			="Válaszd ki melyik osztályban jártad az utolsó évet.
 $TXT["SelectUser"]			="Válaszd ki a neved.";
 $TXT["NotFoundCreateNewUser"]="Nem találom, új bejegyzést szeretnék.";
 $TXT["ConnectToFacebook"]	="Facebook felhasználót a kijelölt diákkal összekapcsol";
+$TXT["OnlyForLoggedInUser"]	="Ez a tartalom csak bejelentkezett felhasználoknak látható !";
 ?>

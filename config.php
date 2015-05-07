@@ -1,6 +1,6 @@
 <?PHP
 if (!isset($SiteTitle))
-	$SiteTitle="A kolozsv&aacute;ri Brassai S&aacute;muel l&iacute;ceum v&eacute;n diakjai";
+	$SiteTitle="A kolozsvári Brassai Sámuel líceum vén diakjai";
 $SupportedLang = array("hu"); //First language ist the default language
 
 // Set languge include file

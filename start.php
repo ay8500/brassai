@@ -66,7 +66,7 @@ if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) {
 		<div><img src="images/T.GIF" style="width:40px"/><img src="images/news.png" /></div>
 	</td></tr><tr><td>	
 	<table>
-		<tr><td>Május 2015</td><td><a href="http://localhost/brassai/talalk30.php">Programajánlat</a> a 30 éves találkozóra.</td></tr>
+		<tr><td>Május 2015</td><td><a href="talalk30.php">Programajánlat</a> a 30 éves találkozóra.</td></tr>
 		<tr><td>Aprilis 2015</td><td>Bejelentkezés Facebook felhasználóval.</td></tr>
 		<tr><td>Julius 2010</td><td><a href="hometable.php?guests=true">Tanárok, vendégek és jó barátok</a> adatainak a megtekintési lehetősége.</td></tr>
 		<tr><td>Junius 2010</td><td>Képek: <a href="pictureGallery.php?gallery=SzepIdok">Régi szép idők</a> csak bejelentkezet osztálytársak részére</td></tr>

@@ -1,8 +1,8 @@
-#Picture Metafile
+﻿#Picture Metafile
 visibleforall=yes
 date=
-title=
-comment=
+title=A kép címe: Nincs mit írjak ide
+comment=Diákok lksdflkjsd jsdjfk sdkfj sdfkjsd fjksdf Levi KOkokokesdjhkljk askldjlkajsd  Levi2
 ip=
 uploadDate=
 lastIp=87.175.213.234

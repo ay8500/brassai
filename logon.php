@@ -59,27 +59,30 @@ function writeLogonBox() {
 		global $SCRIPT_NAME;
 		global $SupportedLang;
 		global $TXT;
-		if ( !isset($_SESSION['USER']) || $_SESSION['USER']=="") {
+		if ( !userIsLoggedOn()) {
 ?>
 	<form action="start.php" method="get">
 		<input type="hidden" value="logon" name="action"/>
-		<div class="loginText"><?php echo $TXT["LogInUser"] ?></div>
+		<div class="loginText"><?php echo getTextRes("LogInUser") ?></div>
 		<div><input class="loginInput" type="text" size="12" name="paramName" /></div>
-		<div class="loginText"><?php echo $TXT["LogInPassw"] ?></div>
+		<div class="loginText"><?php echo getTextRes("LogInPassw") ?></div>
 		<div><input class="loginInput" type="password" size="12" name="paramPassw" /></div><br/>
-		<div><input class="loginSubmit" type="submit" value="<?php echo $TXT["LogIn"]?>" /></div><br/>
+		<div><input class="loginSubmit" type="submit" value="<?php echo getTextRes("LogIn") ?>" /></div><br/>
 	</form> 
 	<form action="start.php" method="get">
 		<input type="hidden" value="lostpassw" name="action"/>
-		<div><input class="loginSubmit" type="submit"  value="<?php echo $TXT["LogInLostData"]?>" /></div>
+		<div><input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogInLostData")?>" /></div>
 	</form>
-<?php  } else { ?>
+	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
+		<input class="loginFacebookSubmitH" type="submit"  value="" />
+	</form>
+	<?php  } else { ?>
 	<form action="index.php" method="get">
 		<input type="hidden" value="logoff" name="action" />
 		<input type="hidden" value="<?php echo $_SESSION['scoolClass'] ?>" name="scoolClass"/>
 		<input type="hidden" value="<?php echo $_SESSION['scoolYear'] ?>" name="scoolYear"/>
-		<div class="loginText"><?php echo $TXT["LogInUser"].":".$_SESSION['USER'] ?></div>
-		<div><input class="loginSubmit" type="submit"  value="<?php echo $TXT["LogOut"] ?>" /></div><br/>
+		<div class="loginText"><?php echo getTextRes("LogInUser").":".$_SESSION['USER'] ?></div>
+		<div><input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" /></div><br/>
 	</form>
 <?php } ?>
 	<div class="loginError"><?php echo $logOnMessage ?></div><br/>
@@ -88,19 +91,20 @@ function writeLogonBox() {
 	
 function writeLogonLine() {
 	global $TXT;
-	if ( !isset($_SESSION['USER']) || $_SESSION['USER']=="") {
+	if (!userIsLoggedOn()) {
 	?>
 	<tr><td class="LogonLine">
 		<form action="start.php" method="get">
 			<input type="hidden" value="logon" name="action"/>
-			<?php echo $TXT["LogInUser"] ?><input class="loginInput" type="text" size="12" name="paramName" />
-			<?php echo $TXT["LogInPassw"] ?><input class="loginInput" type="password" size="12" name="paramPassw" />
-			<input class="loginSubmit" type="submit" value="<?php echo $TXT["LogIn"]?>" />
-		</form><form action="start.php" method="get">
-			<input type="hidden" value="lostpassw" name="action"/>
-			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo $TXT["LogInLostData"]?>" />
+			<?php echo getTextRes("LogInUser"); ?><input class="loginInput" type="text" size="12" name="paramName" />
+			<?php echo getTextRes("LogInPassw"); ?><input class="loginInput" type="password" size="12" name="paramPassw" />
+			<input class="loginSubmit" type="submit" value="<?php echo getTextRes("LogIn"); ?>" />
 		</form>
-		</form><form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
+		<form action="start.php" method="get">
+			<input type="hidden" value="lostpassw" name="action"/>
+			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogInLostData") ?>" />
+		</form>
+		<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
 			&nbsp;&nbsp;<input class="loginFacebookSubmit" type="submit"  value="" />
 		</form>
 	</td></tr>
@@ -110,8 +114,8 @@ function writeLogonLine() {
 			<input type="hidden" value="logoff" name="action" />
 			<input type="hidden" value="<?php echo $_SESSION['scoolClass'] ?>" name="scoolClass"/>
 			<input type="hidden" value="<?php echo $_SESSION['scoolYear'] ?>" name="scoolYear"/>
-			<?php echo $TXT["LogInUser"].":".$_SESSION['USER'] ?>
-			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo $TXT["LogOut"] ?>" />
+			<?php echo getTextRes("LogInUser").":".$_SESSION['USER'] ?>
+			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" />
 		</form> 
 	</td></tr>
 	<?php

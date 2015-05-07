@@ -40,3 +40,5 @@
 	.zenecaption	{background-color: #e0e0e0;font-weight: bold }
 	.LogonLine		{text-align: right;}
 	.loginFacebookSubmit {border-style: none; background-image: url("images/facebook_bejelentkezes.jpg");width: 163px;height: 22px;vertical-align: bottom;	}
+	.loginFacebookSubmitH{border-style: none; background-image: url("images/fblogin.png");width: 87px;height: 21px; margin: 10px	}
+	#topLine		{height:20px;}
