@@ -2,6 +2,7 @@
 
 include_once("sessionManager.php");
 include_once ('userManager.php');
+include_once 'ltools.php';
 //********* Edit person ****************
 
  
@@ -46,7 +47,7 @@ $dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,t
 $resultDBoperation="";
 
 //Retrive changed data and save it 
-if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changediak") && isset($_SESSION['UID']) && $_SESSION['UID']>0 ) {
+if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	$resultDBoperation='<div class="okay">Adatok sikeresen módósítva!</div>';
 	for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 		$tilde="";
@@ -62,7 +63,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changediak") && 
 		saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
 }
 //Save geo data
-if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changegeo")) {
+if (($uid != 0) && getParam("action","")=="changegeo" && userIsLoggedOn()) {
 	
 	if (isset($_GET["geolat"])) $diak["geolat"]=$_GET["geolat"];
 	if (isset($_GET["geolng"])) $diak["geolng"]=$_GET["geolng"];
@@ -75,7 +76,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changegeo")) {
 
 
 //Change password
-if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changepassw")) {
+if (($uid != 0) && getParam("action","")=="changepassw" && userIsLoggedOn()) {
 	
 	if (isset($_GET["newpwd1"])) $newpwd1=$_GET["newpwd1"]; else $newpwd1="";
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
@@ -93,7 +94,7 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changepassw")) {
 }
 
 //Change user name
-if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changeuser")) {
+if (($uid != 0) && getParam("action","")=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
 		if (!checkUserNameExists($uid,$user)) { 
@@ -112,16 +113,22 @@ if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="changeuser")) {
 }
 
 //Remove Facebook connection
-if (($uid != 0) && isset($_GET["action"]) && ($_GET["action"]=="removefacebookconnection")) {
+if (($uid != 0) && getParam("action","")=="removefacebookconnection"  && userIsLoggedOn()) {
 	$diak["facebookid"]="";
 	savePerson($diak);
 }
 
+//Delete Picture
+if (($uid != 0) && getParam("action","")=="deletePicture" && userIsLoggedOn()) {
+	deletePicture(getDatabaseName(), $uid,getParam("id", ""));
+}
+
+
 //Upload Image
-if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
+if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
-		$idx=savePicture(getScoolClass().getScoolYear(),$uid,$_POST["title"], $_POST["content"], true);
+		$idx=savePicture(getScoolClass().getScoolYear(),$uid,"", "", true);
 		$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getScoolClass().getScoolYear()."/p".$uid."-".$idx.".".$fileName[1];
 		//JPG
 		if (strcasecmp($fileName[1],"jpg")==0) {
@@ -130,15 +137,21 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 					resizeImage($uploadfile,1024,768);
 					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen feltöltve.";
 				} else
-					$resultDBoperation=$fileName[0].".".$fileName[1]." feltpötése sikertelen";
+					$resultDBoperation=$fileName[0].".".$fileName[1]." feltötése sikertelen. Probáljozz újra.";
 			}
 			else {
-				$resultDBoperation=$fileName[0].".".$fileName[1]."A kép file nagysága túlhaladja 2 MByteot.";
+				$resultDBoperation=$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.";
 			} 	
 		}
+		else
+			$resultDBoperation=$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.";
+				
 	}
 }
-$diakEditGeo = true;
+
+if ($tabOpen==2) {
+	$diakEditGeo = true;
+}
 
 include("homemenu.php"); 
 include_once("userManager.php"); 
@@ -159,16 +172,13 @@ if ($tabOpen==2) {
 ?>
 <div itemscope itemtype="http://schema.org/Person">
 <h2 class="sub_title" >
-	
 	<?PHP 
 		echo('<span itemprop="name">'.$diak["lastname"].' '.$diak["firstname"].'</span> ');
 		if ($diak["birthname"]!="") echo('('.$diak["birthname"].')');
 	?>
-	
 </h2>
 
 <?PHP
-global $SCRIPT_NAME;
 
 //initialize tabs
 if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID']) ) 
@@ -179,6 +189,7 @@ if (isset($_SESSION["FacebookId"]))
 	array_push($tabsCaption,"Facebook");
 include("tabs.php");
 ?>
+
 
 <?PHP if ($tabOpen==0) { 
 	$diak = getPerson($uid);
@@ -243,7 +254,7 @@ include("tabs.php");
 	echo('</table>');
 }
 
-//************************Change Password
+//Change Password
 
 if ($tabOpen==3) { 
 	echo('<table style="width:500px" class="editpagetable">');
@@ -305,5 +316,12 @@ if ($tabOpen==5) {
 }
 echo('</div>');
 
+include 'homefooter.php';
+
 ?>
-</td></tr></table>
+<div id="pictureViewer" class="pictureView">
+	<img id="pictureToView" src="" />
+	<br>
+	<input type="button" value="Bezár" onclick="$('#pictureViewer').hide('slow');">
+</div>
+

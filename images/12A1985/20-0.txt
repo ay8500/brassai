@@ -1,9 +1,0 @@
-#Picture Metafile
-visibleforall=yes
-date=
-title=Kék Levente
-comment=minden kék
-ip=
-uploadDate=
-lastIp=127.0.0.1
-lastChangeDate=04.10.2009 23:27

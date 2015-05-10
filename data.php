@@ -382,7 +382,7 @@ function saveVoteData() {
 // picture name: the letter p plus personid-pictureid.jpg
 // the pictures are saved in a maximal resolution of 1024x1024
 
-$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate");
+$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate","deleted");
 $pictures = array();
 $pictureFolder = "./images/";
 
@@ -390,7 +390,14 @@ function getPictureDummy() {
 	global $PictureFields;
 	$p = array();
 	foreach ($PictureFields as $field) {
-		$p[$field]="";
+		if($field=="visibleforall")
+			$p[$field]="false";
+		if($field=="deleted")
+			$p[$field]="false";
+		elseif($field=="date" || $field=="lastChangeDate")
+		$p["lastChangeDate"]=date('d.m.Y H:i');
+		else
+			$p[$field]="";
 	}
 	return $p;
 }
@@ -412,7 +419,7 @@ function getListofPictures($database,$personID, $vorAll) {
 				$images_array[$idx]["File"] = $file;	
 				$picture = loadPictureAttributes($database,$personID,$idx);
 				while (list($key, $val) = each($picture)) {
-		   			$images_array[$idx][$key]=$val;
+	   				$images_array[$idx][$key]=$val;
 				}
 				$idx++;
 			}
@@ -420,7 +427,24 @@ function getListofPictures($database,$personID, $vorAll) {
 		
 	}
 	$directory->close();
-	//reset($images_array);
+	/*
+	$directory = glob($pictureFolder.$database."/p".$personID."-*.jpg");	
+	usort($directory, function($a, $b) {
+		return filemtime($a) < filemtime($b);
+	});
+	foreach ($directory as $file) {
+		$fileSplit = split('[.-]',basename($file));
+		echo($fileSplit[1]);
+		$idx=$fileSplit[1];
+		$images_array[$idx]["File"] = $file;
+		$picture = loadPictureAttributes($database,$personID,$idx);
+		while (list($key, $val) = each($picture)) {
+			$images_array[$idx][$key]=$val;
+		}
+		$idx++;
+		
+	}
+	*/
 	return $images_array;
 }
 
@@ -439,22 +463,22 @@ function savePicture($database,$personID,$title, $comment, $vorAll){
 	}
 	$directory->close();
 	
-	setPictureAttributes($database,$personID,$nextId,$title,$comment,$vorAll);
+	setPictureAttributes($database,$personID,$nextId,$title,$comment,"false");
 	return $nextId;
 }
 
 function loadPictureAttributes($database,$personId,$pictureId) {
 	global $pictureFolder;
 	$picture=getPictureDummy();
-	if (!file_exists($pictureFolder.$database."/".$personId."-".$pictureId.".txt")) {
-		setPictureAttributes($database,$personId,$pictureId,"","","yes");
-	}
-    if (file_exists($pictureFolder.$database."/".$personId."-".$pictureId.".txt")) {
-		$file=fopen($pictureFolder.$database."/".$personId."-".$pictureId.".txt" ,"r");
+	$fileName =$pictureFolder.$database."/".$personId."-".$pictureId.".txt";
+	//if (!file_exists($fileName)) {
+	//	setPictureAttributes($database,$personId,$pictureId,"","","false");
+	//}
+    if (file_exists($fileName)) {
+		$file=fopen($fileName,"r");
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
 			if (isset($b[0])&&isset($b[1])) {
-				$picture["id"]=$pictureId;
 				if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
 					$picture[$b[0]]=chop($b[1]);
 				}
@@ -462,32 +486,41 @@ function loadPictureAttributes($database,$personId,$pictureId) {
 		}
 		fclose($file);
 	}
+	$picture["id"]=$pictureId;
 	return $picture;
 }
 
-function setPictureAttributes($database,$personID,$pictureId,$title,$comment,$visibleforall) {
-	global $pictureFolder;
-	$file=fopen($pictureFolder.$database."/".$personID."-".$pictureId.".txt","w");
+function setPictureAttributes($database,$personID,$pictureId,$title,$comment, $visibleforall=null) {
 	$picture=loadPictureAttributes($database,$personID,$pictureId);
-	$picture["lastChangeDate"]=date('d.m.Y H:i');
-	$picture["lastIp"]=$_SERVER["REMOTE_ADDR"];
 	$picture["title"]=$title;
 	$picture["comment"]=$comment;
-	$picture["visibleforall"]=$visibleforall;
-	
-	fwrite($file,"#Picture Metafile\r\n");
-	while (list($key, $val) = each($picture)) {
-	   fwrite($file,$key."=".$val."\r\n");
-	}
-	fclose($file);
+	if ($visibleforall!=null)
+		$picture["visibleforall"]=$visibleforall;
+	savePictureAttributes($database,$personID,$pictureId,$picture);
 }
 
-function setPictureVisibleForAll($database,$personID,$pictureId, $vorAll){
-	
+function setPictureVisibleForAll($database,$personID,$pictureId, $visibleforall){
+	$picture=loadPictureAttributes($database,$personID,$pictureId);
+	$picture["visibleforall"]=$visibleforall;
+	savePictureAttributes($database,$personID,$pictureId,$picture);
 }
 
 function deletePicture($database,$personID,$pictureId) {
-	
+	$picture=loadPictureAttributes($database,$personID,$pictureId);
+	$picture["deleted"]="true";
+	savePictureAttributes($database,$personID,$pictureId,$picture);
+}
+
+function savePictureAttributes($database,$personID,$pictureId,$picture) {
+	global $pictureFolder;
+	$file=fopen($pictureFolder.$database."/".$personID."-".$pictureId.".txt","w");
+	$picture["lastChangeDate"]=date('d.m.Y H:i');
+	$picture["lastIp"]=$_SERVER["REMOTE_ADDR"];
+	fwrite($file,"#Picture Metafile\r\n");
+	while (list($key, $val) = each($picture)) {
+		fwrite($file,$key."=".$val."\r\n");
+	}
+	fclose($file);
 }
 
 /* resize image

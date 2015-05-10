@@ -1,6 +1,6 @@
 #Database File
 #Last IP:::1
-#Change Date:07.05.2015 01:32
+#Change Date:10.05.2015 21:10
 
 
 id=2
@@ -487,13 +487,14 @@ employer=IT2media GmbH & Co. KG. Nürnberg
 function=~JAVA software fejlesztő osztály vezető
 children=Zsuzsa - 1992, Tamás - 1996
 picture=DIAK_19.GIF
-geolat=49.06638722185396
-geolng=11.149191856384277
+geolat=49.06515003855258
+geolng=11.151938438415527
 user=Levi
 passw=levi67
-date=05.05.2015 15:50
+date=10.05.2015 21:10
 ip=::1
 facebook=https://www.facebook.com/levente.maier
+facebookid=965038823537045
 homepage=http://levi.blue-l.de
 
 id=22

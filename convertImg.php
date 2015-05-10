@@ -1,8 +1,19 @@
 <?php
 Header ("Content-type: image/png"); 
 include_once("sessionManager.php");
-if (!isset($_SESSION['scoolYear'])) exit; 
-if(isset($_GET['file'])) $file_name=$_GET['file']; else exit;
+include_once 'data.php';
+include_once 'ltools.php';
+
+//we are in a session
+if (!isset($_SESSION['scoolYear'])) exit;
+
+//file Name
+$file_name = getParam("file", "");
+$data = explode("-",$file_name);
+if ($file_name=="") exit; 
+$file_name="images/".getDatabaseName()."/p".$file_name.".jpg";
+
+
 if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = 200;
 $Thumb = false; if ((isset($_GET['thumb'])) && ($_GET['thumb']=="true")) $Thumb = true;
 $color ="ffffff"; if (isset($_GET['color'])) $color=($_GET['color']); 
@@ -62,8 +73,16 @@ if ($Thumb) {
 else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
-//the resizing is going on here!
-imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+//visibility
+$picture = loadPictureAttributes(getDatabaseName(),$data[0],$data[1]);
+
+if (($picture["visibleforall"]!="true" && !userIsLoggedOn()) || ($picture["deleted"]=="true" && !userIsAdmin()) ) {
+	
+}
+else {
+	//the resizing is going on here!
+	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+}
 
 //finally, save the image
 

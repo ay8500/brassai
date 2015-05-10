@@ -52,7 +52,7 @@
 				}
 			}
 		}
-		if (!userIsAdmin())
+		if (!userIsAdmin() && userIsLoggedOn())
 			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],"Facebook",$facebookId,$ret);
 		return $ret;
 	}
