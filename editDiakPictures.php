@@ -24,7 +24,7 @@
 		var id = $('input[name=pictureid]:checked', '#formRadio').val();
 		if (id>0) {
 			$.ajax({
-				url:"editDiakPicturetITLE.php?id="+(id-1)+"&title="+t+"&comment="+c+"&uid="+uid,
+				url:"editDiakPictureTitle.php?id="+(id-1)+"&title="+t+"&comment="+c+"&uid="+uid,
 				type:"GET",
 				dataType: 'json',
 				success:function(data){

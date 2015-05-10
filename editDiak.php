@@ -137,7 +137,7 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 					resizeImage($uploadfile,1024,768);
 					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen feltöltve.";
 				} else
-					$resultDBoperation=$fileName[0].".".$fileName[1]." feltötése sikertelen. Probáljozz újra.";
+					$resultDBoperation=$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.";
 			}
 			else {
 				$resultDBoperation=$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.";
