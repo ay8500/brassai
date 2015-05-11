@@ -18,23 +18,35 @@ $SiteTitle=$_SESSION['scoolYear']."-".$_SESSION['scoolClass'];
 	else
 		echo('<h2 class="sub_title">Osztálytársak</h2>');
 
+include_once("data.php");
+
 ?>
-
-
 
 <table style="text-align:cleft;width:100%;" ><tr><td>
 <?php
-	include_once("data.php");
 	
 foreach ($data as $l => $d)	
 { 
-	if ( 
-			(  $guests && (($d["admin"]=="viewer") || ($d["admin"]=="editor"))) || 
-			(!($guests) && ($d["admin"]=="") )  
-		) { 
-			
+	if (	(  $guests && (($d["admin"]=="viewer") || ($d["admin"]=="editor"))) || 
+			( !$guests &&  ($d["admin"]=="") )										) { 
+		if ( userIsAdmin() || userIsEditor()) {
+			$personLink='editDiak.php?uid='.$d["id"];
+		}
+		else {
+			if (isset($_SESSION['UID']) && $_SESSION['UID']==$d["id"]) 
+				$personLink="editDiak.php";
+			else { 
+				if ($_SERVER["SERVER_NAME"]=="localhost")
+					$personLink='editDiak.php?uid='.$d["id"];
+				else 
+					$personLink=getPersonLink($d["lastname"],$d["firstname"]);
+			}
+		}
+		
 		echo "<table border=0 width=100%><tr><td width=150>\r\n" ;
-		echo "<img src=\"images/".$d["picture"].'" border="0" alt="'.$d["lastname"].' '.$d["firstname"].'" />';
+		echo '<a href="'.$personLink.'">';
+		echo "<img src=\"images/".$d["picture"].'" border="0" title="'.$d["lastname"].' '.$d["firstname"].'" />';
+		echo '</a>';
 		echo "</td><td valign=top>";
 		echo "<h3>".$d["lastname"].' '.$d["firstname"];
 			if ($d["birthname"]!="") echo("&nbsp;(".$d["birthname"].")");
@@ -59,17 +71,7 @@ foreach ($data as $l => $d)
 		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
 		if(showField($d["facebook"])) echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.urldecode(getFieldValue($d["facebook"])).'">'.urldecode(getFieldValue($d["facebook"]))."</a></td></tr>";
 		if(isset($d["homepage"]) && showField($d["homepage"])) echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
-		if ( userIsAdmin() || userIsEditor()) {
-			echo '<tr><td valign=top align=right><a href="editDiak.php?uid='.$d["id"].'">Módósít</a></td><td>&nbsp;</td></tr>';
-		}
-		else {
-			if (isset($_SESSION['UID']) && $_SESSION['UID']==$d["id"]) {
-				echo '<tr><td valign=top align=right><a href="editDiak.php">Módósít</a></td><td>&nbsp;</td></tr>';
-			}
-			else {
-				echo '<tr><td valign=top align=right><a href="'.getPersonLink($d["lastname"],$d["firstname"]).'">Több info</a></td><td>&nbsp;</td></tr>';
-			}
-		}
+		echo '<tr><td valign=top align=right><a href="'.$personLink.'">Több info</a></td><td>&nbsp;</td></tr>';
   	echo "</table>";
   echo "</td></tr></table>\r\n";
   }
@@ -78,4 +80,4 @@ foreach ($data as $l => $d)
  echo("\r\n<br><br><br>\r\n");
  
 ?>
-<?PHP  include ("homefooter.php");?>
+<?php  include ("homefooter.php");?>

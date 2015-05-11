@@ -40,7 +40,7 @@
 
 	function showPicture(picture) {
 	    $('#pictureViewer').show('slow');
-	    var url = "convertImg.php?width=800&file="+picture;
+	    var url = "convertImg.php?width=1024&file="+picture;
 	    $('#pictureToView').attr('src',url);
 	}
    

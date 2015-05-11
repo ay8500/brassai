@@ -380,7 +380,7 @@ function saveVoteData() {
 // title, comment, visibleforall, date, uploaddate, ip
 // the pictures are save in a folder named like the database
 // picture name: the letter p plus personid-pictureid.jpg
-// the pictures are saved in a maximal resolution of 1024x1024
+// the pictures are saved in a maximal resolution of 1200x1024
 
 $PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate","deleted");
 $pictures = array();
@@ -582,7 +582,39 @@ function resizeImage($fileName,$maxWidth,$maxHight)
 	ImageDestroy ($new_img);
 }
 
-//*************************************************************
+//****************************** TextData *********************
+
+/**
+ * read text data 
+ * @param unknown $database
+ * @param unknown $personId
+ * @param unknown $type m=cv; d=stroy; h=hobby
+ * @return unknown
+ */
+function loadTextData($database, $personId, $type) {
+	global $dataPath;
+	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
+	$ret="";
+	if (file_exists($fileName)) {
+		$file=fopen($fileName,"r");
+		while (!feof($file)) {
+			$ret .= fgets($file);
+		}
+		fclose($file);
+	}
+	return $ret;
+}
+
+
+function saveTextData($database, $personId, $type,$text) {
+	global $dataPath;
+	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
+	fwrite($file,$text);
+	fclose($file);
+}
+
+
+//****************************** Tools *********************
 
 function getFieldValue($field) {
   if ($field=="") 

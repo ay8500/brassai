@@ -129,12 +129,12 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
 		$idx=savePicture(getScoolClass().getScoolYear(),$uid,"", "", true);
-		$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getScoolClass().getScoolYear()."/p".$uid."-".$idx.".".$fileName[1];
+		$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getScoolClass().getScoolYear()."/p".$uid."-".$idx.".".strtolower($fileName[1]);
 		//JPG
 		if (strcasecmp($fileName[1],"jpg")==0) {
 			if ($_FILES['userfile']['size']<2000000) {
 				if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-					resizeImage($uploadfile,1024,768);
+					resizeImage($uploadfile,1200,1024);
 					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen feltöltve.";
 				} else
 					$resultDBoperation=$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.";
@@ -149,7 +149,7 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 	}
 }
 
-if ($tabOpen==2) {
+if ($tabOpen==5) {
 	$diakEditGeo = true;
 }
 
@@ -157,7 +157,7 @@ include("homemenu.php");
 include_once("userManager.php"); 
 
 //Set person geo and data to be used in diakEditGeo.js
-if ($tabOpen==2) {
+if ($tabOpen==5) {
 	echo('<script language="JavaScript" type="text/javascript">'."\r\n");
 	echo("\t".'var diak="<b>'.$diak["birthname"].' '.$diak["firstname"].'</b> '.$diak["lastname"].' <br/>'.getFieldValue($diak["address"]).'<br />'.getFieldValue($diak["zipcode"]).'&nbsp;'.getFieldValue($diak["place"]).'";'."\r\n");
 	if ($diak["geolat"]!="")
@@ -182,11 +182,9 @@ if ($tabOpen==2) {
 
 //initialize tabs
 if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID']) ) 
-	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Geokoordináta","Bejelentkezési&nbsp;adatok","Beállítások");
+	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
-	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek");
-if (isset($_SESSION["FacebookId"]))
-	array_push($tabsCaption,"Facebook");
+	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
 include("tabs.php");
 ?>
 
@@ -214,7 +212,7 @@ include("tabs.php");
 			}
 		}
 		echo('<tr><td colspan="3"> </td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Kiment!" title="Adatok kimentése" /></td></tr>');
+		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="'.getTextRes("Save").'" title="Adatok kimentése" /></td></tr>');
 		echo('<input type="hidden" value="changediak" name="action" />');
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
@@ -248,39 +246,52 @@ include("tabs.php");
 		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
 		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
 		if(showField($d["facebook"])) echo "<tr><td valign=top align=right>Facebook:</td><td>".getFieldValue($d["facebook"])."</td></tr>";
-		if(isset($d["homepage"]) && showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["honoldal"])."</td></tr>";
+		if(isset($d["homepage"]) && showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["homepage"])."</td></tr>";
 		echo "</table>";
 	}
 	echo('</table>');
 }
 
-//Change Password
-
-if ($tabOpen==3) { 
-	echo('<table style="width:500px" class="editpagetable">');
+//Change password, usename, facebook
+if ($tabOpen==6) {
 	if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
-		//change password
-		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
-		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
-		echo('<tr><td colspan="3"><p style="text-align:left" ><b>Becenév módosítása</b><br/> A becenév minimum 3 karakter hosszú kell legyen. </p></td></tr>');
-		echo('<tr><td class="caption1">Becenév</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="'.$diak["user"].'" /></td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Új becenév!" title="Új becenév kimentése" /></td></tr>');
-		echo('<input type="hidden" value="changeuser" name="action" />');
-		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
-		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
-		echo('</form>');
-		echo('<tr><td colspan="3"><hr/> </td></tr>');
-
-		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
-		echo('<tr><td colspan="3"><p style="text-align:left" ><b>Jelszó módosítása</b><br/> A jelszó minimum 6 karakter hosszú kell legyen. </p></td></tr>');
-		echo('<tr><td class="caption1">Jelszó</td><td>&nbsp;</td><td><input type="password" class="input2" name="newpwd1" value="" />&nbsp;jelszó ismétlése:&nbsp;<input type="password" class="input2" name="newpwd2" value="" /></td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Új jelszó!" title="Új jelszó kimentése" /></td></tr>');
-		echo('<input type="hidden" value="changepassw" name="action" />');
-		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
-		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
-		echo('</form>');
-	}
-	echo('</table>');
+?> 
+	<table style="width:90%" class="editpagetable">
+		<tr><td colspan="3" style="text-align:center"><b><?php echo $resultDBoperation; ?></b></td></tr>
+		<form action="editDiak.php" method="get">
+			<tr><td colspan="3"><p style="text-align:left" ><h3>Becenév módosítása</h3> A becenév minimum 6 karakter hosszú kell legyen. </p></td></tr>
+			<tr><td class="caption1">Becenév</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="<?php  echo $diak["user"] ?>" /></td></tr>
+			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Új becenév!" title="Új becenév kimentése" /></td></tr>
+			<input type="hidden" value="changeuser" name="action" />
+			<input type="hidden" value="<?php echo $uid; ?>" name="uid" />
+			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
+		</form>
+		<tr><td colspan="3"><hr/> </td></tr>
+			<form action="editDiak.php" method="get">
+			<tr><td colspan="3"><p style="text-align:left"><h3>Jelszó módosítása</h3> A jelszó minimum 6 karakter hosszú kell legyen. </p></td></tr>
+			<tr><td class="caption1">Jelszó</td><td>&nbsp;</td><td><input type="password" class="input2" name="newpwd1" value="" />&nbsp;jelszó ismétlése:&nbsp;<input type="password" class="input2" name="newpwd2" value="" /></td></tr>
+			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="Új jelszó!" title="Új jelszó kimentése" /></td></tr>
+			<input type="hidden" value="changepassw" name="action" />
+			<input type="hidden" value="<?php echo $uid; ?>" name="uid" />
+			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
+		</form>
+		<tr><td colspan="3"><hr/> </td></tr>
+		<tr><td colspan="3">
+			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo $_SESSION["FacebookName"] ?>" Facebook felhasználóval.<br />
+			<div style="border-style: solid; border-width: 1px; width: 250px;" >
+				Facebook kép: <img src="https://graph.facebook.com/<?php echo $_SESSION['FacebookId']; ?>/picture" />
+			</div> 
+			<br />
+			<form action="editDiak.php" method="get">
+				<input type="hidden" value="removefacebookconnection" name="action" />
+				<input type="hidden" value="<?php echo $uid ?>" name="uid" />
+				<input type="hidden" value="<?php echo $tabOpen ?>" name="tabOpen" />
+				<input type="submit" value="Facebook kapcsolatot töröl" />
+			</form>
+		</td></tr>
+	</table>
+	<?php 
+	}	
 }
 
 //************** pictures
@@ -289,30 +300,12 @@ if ($tabOpen==1) {
 }
 
 //*************** change geo place
-if ($tabOpen==2) { 
+if ($tabOpen==5) { 
 	include("editDiakPickGeoPlace.php");
 }
 //************** change options
-if ($tabOpen==4) { 
-	include("editDiakOptions.php");
-}
-//************** facebook
-if ($tabOpen==5) { 
-	?>
-	<div style="margin:20px">
-	<h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo $_SESSION["FacebookName"] ?>" Facebook felhasználóval.</h3><br />
-	<div style="border-style: solid; border-width: 1px">
-		Facebook kép: <img src="https://graph.facebook.com/<?php echo $_SESSION['FacebookId']; ?>/picture" />
-	</div> 
-	<br />
-	<form action="editDiak.php" method="get">
-		<input type="hidden" value="removefacebookconnection" name="action" />
-		<input type="hidden" value="<?php echo $uid ?>" name="uid" />
-		<input type="hidden" value="<?php echo $tabOpen ?>" name="tabOpen" />
-		<input type="submit" value="Facebook kapcsolatot töröl" />
-	</form>
-	</div>
-	<?php 
+if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) { 
+	include("editDiakStorys.php");
 }
 echo('</div>');
 
