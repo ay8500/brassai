@@ -1,5 +1,6 @@
 <?PHP
 	include_once("userManager.php");
+	include_once 'sendMail.php';
 
 	$logOnMessage="";
 	
@@ -10,12 +11,17 @@
 		if (($paramName=="") || ($paramPassw=="")) { 
 			$paramName=""; $paramPassw="";
 			logoutUser();
-			$logOnMessage=$TXT["LogInUserPassw"];
+			$logOnMessage=getTextRes("LogInUserPassw");
 		}
 		if (!checkUserLogin($paramName,$paramPassw)) {
 			logoutUser();
-			$logOnMessage=$TXT["LogInError"];
+			$logOnMessage=getTextRes("LogInError");
 		}
+		sendTheMail('code@blue-l.de',
+			"<h2>Login</h2>".
+			"Datenbank:".getDatabaseName()."<br/>".
+			"Name:".$paramName."<br/>",
+			"Login result:".$logOnMessage," Login");
 	}
 	//Logoff action
 	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) {
@@ -26,8 +32,14 @@
 	if ( isset($_SESSION['FacebookId']) ) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
 			//logoutUser();
-			$logOnMessage=$TXT["LogInError"];
+			$logOnMessage=getTextRes("LogInError");
 		}
+		sendTheMail('code@blue-l.de',
+			"<h2>Facebooklogin</h2>".
+			"Datenbank:".getDatabaseName()."<br/>".
+			"FacebookId:".$_SESSION['FacebookId']."<br/>",
+			"FacebookName:".$_SESSION['FacebookName']."<br/>".
+			"Login result:".$logOnMessage," Login");
 	} 
 	
 	//Change password
@@ -38,20 +50,25 @@
 		if (isset($_GET["paramPassw2"])) $paramPassw=$_GET["paramPassw2"]; else $paramPassw2="";
 		if (($paramName=="") || ($paramPassw=="")) { 
 			$paramName=""; $paramPassw="";
-			ogoutUser();
-			$logOnMessage=$TXT["LogInUserPassw"];
+			logoutUser();
+			$logOnMessage=getTextRes("LogInUserPassw");
 		}
 		if (!checkUserLogin($paramName,$paramPassw)) {
 			if (($paramPassw1==$paramPassw2)) { 
 				if (setUserPasswort()) {
-					$logOnMessage=$TXT["LogInPasswChanged"];
-				}
+					$logOnMessage=getTextRes("LogInPasswChanged");
+					}
 				else
-					$logOnMessage=$TXT["LogInNewPasswNotOK"];
+					$logOnMessage=getTextRes("LogInNewPasswNotOK");
 			}
 			else
-				$logOnMessage=$TXT["LogInNewPasswNotEQ"];
+				$logOnMessage=getTextRes("LogInNewPasswNotEQ");
 		}
+		sendTheMail('code@blue-l.de',
+			"<h2>Change Password</h2>".
+			"Datenbank:".getDatabaseName()."<br/>".
+			"Name:".$paramName."<br/>",
+			"Login result:".$logOnMessage," Change Password");
 	}
 
 function writeLogonBox() {

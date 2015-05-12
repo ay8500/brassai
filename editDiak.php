@@ -149,9 +149,10 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 	}
 }
 
-if ($tabOpen==5) {
+if ($tabOpen==5) 
 	$diakEditGeo = true;
-}
+if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
+	$diakEditStorys = true;
 
 include("homemenu.php"); 
 include_once("userManager.php"); 

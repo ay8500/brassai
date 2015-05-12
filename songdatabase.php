@@ -4,6 +4,7 @@ include_once "data.php";
 
 //Database engime for song database
 
+
 /**
  * Compare function for the interpret list
  */
@@ -82,7 +83,7 @@ function readInterpretList($database)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'interpret.txt'; 
+	$FileName=$dataPath.$database.'/interpret.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		$id=0;
@@ -110,7 +111,7 @@ function readInterpret($database,$id)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'interpret.txt'; 
+	$FileName=$dataPath.$database.'/interpret.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		while (!feof($file)) {
@@ -140,7 +141,7 @@ function insertNewInterpret($database,$newinterpret)
 	}
 	$newid +=1;
 
-	$FileName=$dataPath.$database.'interpret.txt'; 
+	$FileName=$dataPath.$database.'/interpret.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"a");
 		fwrite($file,$newid.'='.$newinterpret."\r\n");
@@ -161,7 +162,7 @@ function readSongList($database,$interpret)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'song.txt'; 
+	$FileName=$dataPath.$database.'/song.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		$id=0;
@@ -192,7 +193,7 @@ function readSong($database,$id)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'song.txt'; 
+	$FileName=$dataPath.$database.'/song.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		while (!feof($file)) {
@@ -273,7 +274,7 @@ function insertVote($database,$userID,$song) {
 		  	$data[]=$newVote;
 		} 
 		  
-		$FileName=$dataPath.$database.'songvote.txt'; 
+		$FileName=$dataPath.$database.'/songvote.txt'; 
 		$file=fopen($FileName ,"w");
 		sort($data);
 		foreach($data as $vote) {
@@ -312,7 +313,7 @@ function deleteVote($database,$userID,$song) {
   	}
   } 
   
-   	$FileName=$dataPath.$database.'songvote.txt'; 
+   	$FileName=$dataPath.$database.'/songvote.txt'; 
 	$file=fopen($FileName ,"w");
 	sort($data);
 	foreach($data as $vote) {
@@ -346,7 +347,7 @@ function readVoteList($database,$userId)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'songvote.txt'; 
+	$FileName=$dataPath.$database.'/songvote.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		$id=0;
@@ -396,7 +397,7 @@ function readVotersList($database)
 	global $dataPath;
 	$votersList = array();
 
-	$FileName=$dataPath.$database.'songvote.txt'; 
+	$FileName=$dataPath.$database.'/songvote.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		$id=0;

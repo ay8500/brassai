@@ -39,10 +39,10 @@
 	.zenetext		{text-align:right; }
 	.zenecaption	{background-color: #e0e0e0;font-weight: bold }
 	.LogonLine		{text-align: right;}
-	.loginFacebookSubmit {border-style: none; background-image: url("images/facebook_bejelentkezes.jpg");width: 163px;height: 22px;vertical-align: bottom;	}
-	.loginFacebookSubmitH{border-style: none; background-image: url("images/fblogin.png");width: 87px;height: 21px; margin: 10px	}
+	.loginFacebookSubmit {border-style: none; background-image: url("../images/facebook_bejelentkezes.jpg");width: 163px;height: 22px;vertical-align: bottom;	}
+	.loginFacebookSubmitH{border-style: none; background-image: url("../images/fblogin.png");width: 87px;height: 21px; margin: 10px	}
 	#topLine		{height:20px;}
 	.borderbutton 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 19px;text-align: center;vertical-align:middle;}
-	.borderbuttonedit {background-image: url("images/edit.gif");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px;height: 39px;}
-	.borderbuttonworld {background-image: url("images/world-16.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
+	.borderbuttonedit {background-image: url("../images/edit.gif");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px;height: 39px;}
+	.borderbuttonworld {background-image: url("../images/world-16.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
 	.pictureView {border-radius: 6px; display:none;position: absolute; top:50px; left:50px;background-color: lightgray;z-index: 200;padding:20px}

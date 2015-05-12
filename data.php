@@ -1,7 +1,10 @@
 <?php
+/**
+ * Database engime for person data  
+ */
+
 include_once("userManager.php");
 
-//** Database engime for person data **
 $data = array();
 
 //List of databases
@@ -11,7 +14,7 @@ $dataPath = "data/";
 
 
 //select the database
-openDatabase( getScoolClass().getScoolYear() ) ;
+openDatabase( getDatabaseName() ) ;
 
 
 function getScoolYear() {
@@ -46,7 +49,8 @@ function getDatabaseName()
 
 
 /**
- * open the specific database for year and class
+ * open the specific database name = class+year eg. 12A1985
+ * @return true if the database don't changed
  */
 function openDatabase($name) {
 	global $dataFileName;
@@ -54,12 +58,13 @@ function openDatabase($name) {
 	global $data;
 	global $dataPath;
 
-	
-	if (getScoolClass().getScoolYear()==$name) {
+	//no database change
+	if (getDatabaseName()==$name) {
 		$ret=true;
-		$dataFileName=$dataPath.$name."data.txt";
+		$dataFileName=$dataPath.$name."\data.txt";
 		ReadDB();
 	}
+	//database change
 	else {
 		$ret=false;
 		foreach($dataBase as $db) {
@@ -67,7 +72,7 @@ function openDatabase($name) {
 				$ret=true;
 				setScoolYear(substr($name,3,4));
 				setScoolClass(substr($name,0,3));
-				$dataFileName=$dataPath.$name."data.txt";
+				$dataFileName=$dataPath.$name."\data.txt";
 				ReadDB();
 			}
 		}
@@ -239,7 +244,7 @@ function readUserAuthDB()
 	$id=-1;
 	foreach($dataBase as $db) {
 		$scoolYear=substr($db,3,4);$scoolClass=substr($db,0,3);
-		$dataFileName=$dataPath.$scoolClass.$scoolYear."data.txt";
+		$dataFileName=$dataPath.$db."\data.txt";
 	    if (file_exists($dataFileName)) {
 			$file=fopen($dataFileName ,"r");
 			while (!feof($file)) {
@@ -298,7 +303,7 @@ function saveDB() {
 
 $voteFields=array("date","class","cemetery","dinner","excursion","where");
 $voteData = array();
-$voteFileName = "vote.txt";
+$voteFileName = "\vote.txt";
 
 function setVote($uid, $vote) {
 	global $voteData;
@@ -314,7 +319,7 @@ function readVoteData() {
 	for ($i=0;$i<sizeof($voteData);$i++)
 		unset( $voteData[$i]);			//delete old records
 
-	$fileName=$dataPath.getScoolClass().getScoolYear().$voteFileName;
+	$fileName=$dataPath.getDatabaseName().$voteFileName;
     if (file_exists($fileName)) {
 		$file=fopen($fileName ,"r");
 		$id=0;
@@ -356,7 +361,7 @@ function saveVoteData() {
 	global $voteData;
 	reset( $voteData);
 	global $voteFileName;
-	$fileName=$dataPath.getScoolClass().getScoolYear().$voteFileName;
+	$fileName=$dataPath.getDatabaseName().$voteFileName;
 	$file=fopen($fileName,"w");
 	fwrite($file,"#Vote Database File\r\n");
 	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
@@ -585,10 +590,10 @@ function resizeImage($fileName,$maxWidth,$maxHight)
 //****************************** TextData *********************
 
 /**
- * read text data 
+ * load text data 
  * @param unknown $database
  * @param unknown $personId
- * @param unknown $type m=cv; d=stroy; h=hobby
+ * @param unknown $type cv; story; spare
  * @return unknown
  */
 function loadTextData($database, $personId, $type) {
@@ -605,10 +610,17 @@ function loadTextData($database, $personId, $type) {
 	return $ret;
 }
 
-
+/**
+ * Save text data
+ * @param unknown $database
+ * @param unknown $personId
+ * @param unknown $type
+ * @param unknown $text
+ */
 function saveTextData($database, $personId, $type,$text) {
 	global $dataPath;
 	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
+	$file=fopen($fileName,"w");
 	fwrite($file,$text);
 	fclose($file);
 }

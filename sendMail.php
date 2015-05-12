@@ -73,7 +73,7 @@ function SendMail($uid,$text,$userData) {
 /**
  * send text to recipient
  */
-function sendTheMail($recipient,$Text) {
+function sendTheMail($recipient,$text,$subject="") {
 	/* recipient */
 	$empfaenger = array('<'.$recipient.'>');
 
@@ -90,14 +90,14 @@ function sendTheMail($recipient,$Text) {
 	$reply = '';
 
 	/* subject */
-	$subject = 'Brassai Samuel Liceum Vendiakok Honlapja';
+	$subject = 'Brassai Samuel Liceum Vendiakok Honlapja '.$subject;
 
 	/* Nachricht */
 	$message = '<html>
 	    <head>
 	        <title>Brassai Samuel Liceum Vendiakok Honlapja</title>
 	    </head>
-	    <body>'.$Text.'
+	    <body>'.$text.'
 	    </body>
 	</html>
 	';

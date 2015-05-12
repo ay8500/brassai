@@ -46,22 +46,26 @@
 	  })();
 	</script>
 	
-	<link rel="stylesheet" type="text/css" href="ddsmoothmenu.css" />
-	<link rel="stylesheet" type="text/css" href="ddsmoothmenu-v.css" />
+	<link rel="stylesheet" type="text/css" href="css/ddsmoothmenu.css" />
+	<link rel="stylesheet" type="text/css" href="css/ddsmoothmenu-v.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
 	<script type="text/javascript">
 	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" });
 	</script>
-	<?php if (isset($googleMap)) {?>
+	<?php if (isset($googleMap)) :?>
 		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
 		<script type="text/javascript" src="js/diakMap.js"></script>
-	<?php }?>
-	<?php if (isset($diakEditGeo)) {?>
+	<?php endif ?>
+	<?php if (isset($diakEditGeo)) :?>
 		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
 		<script type="text/javascript" src="js/diakEditGeo.js"></script>
-	<?php }?>
-	<link rel="stylesheet" type="text/css" href="menu.css" />
+	<?php endif?>
+	<?php if (isset($diakEditStorys)) :?>
+		<link rel="stylesheet" type="text/css" href="css/widgEditor.css" />
+		<script type="text/javascript" src="js/widgEditor.js"></script>
+	<?php endif?>
+	<link rel="stylesheet" type="text/css" href="css/menu.css" />
 	
  </head>
 <body>

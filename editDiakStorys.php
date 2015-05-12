@@ -5,30 +5,62 @@
 	$tab=getIntParam("tabOpen", 0);
 	if ($tab==2) {
 		$title="Rövid életrajzom: továbbképzések munkahelyek.";
-		$text =loadTextData(getDatabaseName(), $uid, "cv");
+		$type="cv";
 	} elseif ($tab==3) {
 		$title="Kedvenc diákkori történetek.";
-		$text =loadTextData(getDatabaseName(), $uid, "story");
-			} elseif ($tab==4) {
+		$type="story";
+	} elseif ($tab==4) {
 		$title="Ezt szeretem csinálni szabadidőmben.";
-		$text =loadTextData(getDatabaseName(), $uid, "spare");
+		$type="spare";
 	} 
+	$text =loadTextData(getDatabaseName(), $uid, $type);
 	
-	if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
-		$disabled="";
-	} else {
-		$disabled = "disabled";
-	}
 ?>		
+
+<?php if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])): ?>
+<script type="text/javascript">
+	function saveStory() {
+		var data = {
+			id: "<?php echo $uid; ?>",
+		    type:"<?php  echo $type; ?>",
+		    story: $("#story").val()
+		}
+		$('#ajaxStatus').html('küldés...');
+		$.ajax({
+			url:"editDiakStorySave.php",
+			type:"POST",
+			dataType: 'json',
+			success:function(data){
+				$('#ajaxStatus').html(' Kimetés sikerült. ');
+				$('#ajaxStatus').show();
+				setTimeout(function(){
+				    $('#ajaxStatus').html('');
+				    $('#ajaxStatus').hide();
+				}, 2000);
+			},
+			data:data
+		});
+	}
+	
+</script>
+<?php endif ?>
+
+
 <div style="padding: 10px;">
-	<div style="text-align:center"> <?PHP echo($resultDBoperation); ?> </div>
-	<h3><?php  echo $title ?></h3>
-	<textarea style="text-align: left;" rows="40" cols="100" <?php echo $disabled ?> >
+	<h3><?php  echo $title; ?></h3>
+	<?php if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) { ?>
+	<form onsubmit="saveStory(); return false;">
+	<fieldset>
+		<textarea id="story" style="text-align: left;" rows="40" cols="100"  class="widgEditor nothing" >
 <?php echo $text; ?>
-	</textarea>
+		</textarea>
+	</fieldset>
 	<br/>
-	<?php if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])): ?>
 		<input type="checkbox" id="visibleforall">Ezt a szöveget csak az osztálytársaim láthatják. 
-		<input type="button" value="<?php echo getTextRes("Save");?>" />
-	<?php endif ?>
+		<input type="submit" onclick="saveStory();" value="<?php echo getTextRes("Save");?>" />
+		&nbsp; <span style="padding:3px; background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></span>
+	</form>
+	<?php } else { ?>
+		<?php echo $text; ?>
+	<?php } ?>
 </div>
