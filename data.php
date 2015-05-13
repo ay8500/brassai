@@ -61,7 +61,7 @@ function openDatabase($name) {
 	//no database change
 	if (getDatabaseName()==$name) {
 		$ret=true;
-		$dataFileName=$dataPath.$name."\data.txt";
+		$dataFileName=$dataPath.$name."/data.txt";
 		ReadDB();
 	}
 	//database change
@@ -72,7 +72,7 @@ function openDatabase($name) {
 				$ret=true;
 				setScoolYear(substr($name,3,4));
 				setScoolClass(substr($name,0,3));
-				$dataFileName=$dataPath.$name."\data.txt";
+				$dataFileName=$dataPath.$name."/data.txt";
 				ReadDB();
 			}
 		}
@@ -244,7 +244,7 @@ function readUserAuthDB()
 	$id=-1;
 	foreach($dataBase as $db) {
 		$scoolYear=substr($db,3,4);$scoolClass=substr($db,0,3);
-		$dataFileName=$dataPath.$db."\data.txt";
+		$dataFileName=$dataPath.$db."/data.txt";
 	    if (file_exists($dataFileName)) {
 			$file=fopen($dataFileName ,"r");
 			while (!feof($file)) {
