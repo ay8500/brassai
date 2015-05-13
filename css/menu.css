@@ -1,4 +1,4 @@
-	body		{ background-image:url('images/b2.gif');background-repeat: repeat;font-family: sans-serif,arial;font-size:11px;color:black;
+	body		{ background-image:url('../images/b2.gif');background-repeat: repeat;font-family: sans-serif,arial;font-size:11px;color:black;
 					margin:0;padding:0;height:100%; border:none
 				}
 	form		{display:inline};
@@ -46,3 +46,9 @@
 	.borderbuttonedit {background-image: url("../images/edit.gif");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px;height: 39px;}
 	.borderbuttonworld {background-image: url("../images/world-16.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
 	.pictureView {border-radius: 6px; display:none;position: absolute; top:50px; left:50px;background-color: lightgray;z-index: 200;padding:20px}
+	
+	.cradio 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 39px;text-align: center;vertical-align:middle;display: inline-block;}
+	.radio_world {background-image: url("../images/world-16.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
+	.radio_scool {background-image: url("../images/study.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
+	.radio_class {background-image: url("../images/friends.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
+	.radiogroup { display:inline-block; padding: 7px; border-style: solid; border-width: 1px; vertical-align: middle; border-color: lightgray; border-radius: 5px; eight: 44px;}

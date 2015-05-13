@@ -7,14 +7,17 @@ include_once 'userManager.php';
 $personId = getPostParam("id","" );
 $type = getPostParam("type", "");
 $story = getPostParam("story", "");
+$privacy = getPostParam("privacy", "class");
 
 $row = array();
 
 if ( (userIsLoggedOn() && $_SESSION["UID"]==$personId) || userIsAdmin() ) {
-	saveTextData(getDatabaseName(), $personId, $type,htmlspecialchars_decode(urldecode($story))) ;
+	saveTextData(getDatabaseName(), $personId, $type,$privacy,htmlspecialchars_decode(urldecode($story))) ;
 	$row["database"] = getDatabaseName();
 	$row["person"] = $personId;
 	$row["type"] = $type;
+	$row["privacy"] =$privacy;
+	
 	$row["story"] = substr($story,0,40)."...";
 }
 else

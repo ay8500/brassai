@@ -7,8 +7,16 @@
 	function changeVisibility(uid,id) {
 		var c = $('#visibility'+id).attr('checked');
 		$.ajax({
-		url:"editDiakPictureVisibility.php?id="+id+"&attr="+c+"&uid="+uid,
-		type:"GET",
+			url:"editDiakPictureVisibility.php?id="+id+"&attr="+c+"&uid="+uid,
+			type:"GET",
+			success:function(data){
+				$('#ajaxStatus').html(' Kimetés sikerült. ');
+				$('#ajaxStatus').show();
+				setTimeout(function(){
+				    $('#ajaxStatus').html('');
+				    $('#ajaxStatus').hide();
+				}, 2000);
+			},
 	    });
 	       
    }
@@ -30,9 +38,15 @@
 				success:function(data){
 				    $('#pTitle'+data.id).html(data.title);
 				    $('#pComment'+data.id).html(data.comment);
-				    $('#pTitle').val("");
-					$('#pComment').val("");
-				}
+				    $('#pTitle').val( $('#pTitle'+data.id).html());
+					$('#pComment').val($('#pComment'+data.id).html());
+					$('#ajaxStatus').html(' Kimetés sikerült. ');
+					$('#ajaxStatus').show();
+					setTimeout(function(){
+					    $('#ajaxStatus').html('');
+					    $('#ajaxStatus').hide();
+					}, 2000);
+}
 			});
 		}
 	       
@@ -104,14 +118,17 @@
 				<tr><td>A kép címe:</td><td><input type="text" id="pTitle" size="40"/></td></tr>
 				<tr>
 					<td>A kép tartalma:</td><td><input type="text" id="pComment" size="40"/></td>
-					<td><input type="button" value="kiment"  style="width:70px" class="submit2"  onclick="changeTitle(<?PHP echo($uid) ?>)"/></td>
+					<td>
+						<input type="button" value="kiment"  style="width:70px" class="submit2"  onclick="changeTitle(<?PHP echo($uid) ?>)"/>
+						&nbsp; <span style="padding:3px; background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></span>
+					</td>
 				</tr>
 			</form>
 			<?php if ($notDeletedPictures<24 || userIsAdmin()) :?>
 			<tr><td colspan="3"><hr>Kép feltöltése</td></td>
 			<tr>
 				<form enctype="multipart/form-data" action="editDiak.php" method="post">
-					<td>Válassz egy képet</td><td><input class="submit2" name="userfile" type="file" size="44"/></td>	
+					<td>Válassz egy képet max. 2MByte</td><td><input class="submit2" name="userfile" type="file" size="44" accept=".jpg" /></td>	
 					<td><input class="submit2"  style="width:70px" type="submit" value="feltölt"/></td>
 					<input type="hidden" value="upload" name="action" />
 					<input type="hidden" value="<?PHP echo($uid) ?>" name="uid" />

@@ -2,7 +2,7 @@
 $su = explode("/",$_SERVER["REDIRECT_REDIRECT_SCRIPT_URL"]);
 
 if  (($su[1]=='Levi') || ($su[1]=='levi'))  {
-  header('Location:Levente_Maier');
+  header('Location:Maier_Levente');
 }
 
 else if  ($su[1]=='impressum') {

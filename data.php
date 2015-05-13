@@ -342,7 +342,10 @@ function readVoteData() {
 
 function getVote($uid) {
 	global $voteData;
-   return $voteData[$uid];
+	if (isset($voteData[$uid]))
+   		return $voteData[$uid];
+	else
+		return  getVoteDummy();
 }
 
 function getVoteDummy() {
@@ -610,6 +613,16 @@ function loadTextData($database, $personId, $type) {
 	return $ret;
 }
 
+function getTextDataDate($database, $personId, $type) {
+	global $dataPath;
+	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
+	$ret="";
+	if (file_exists($fileName)) {
+		// if ($_SESSION['LANG']=="hu"
+		$ret=date ("Y.m.d. H:i:s.",filemtime($fileName));
+	}
+	return $ret;
+}
 /**
  * Save text data
  * @param unknown $database
@@ -617,10 +630,13 @@ function loadTextData($database, $personId, $type) {
  * @param unknown $type
  * @param unknown $text
  */
-function saveTextData($database, $personId, $type,$text) {
+function saveTextData($database, $personId, $type, $privacy, $text) {
 	global $dataPath;
 	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
 	$file=fopen($fileName,"w");
+	if ($privacy=="world") fwrite($file,"~~"); 
+	if ($privacy=="scool") fwrite($file,"~"); 
+	//if ($privacy=="class") fwrite($file,"");
 	fwrite($file,$text);
 	fclose($file);
 }
@@ -631,16 +647,40 @@ function saveTextData($database, $personId, $type,$text) {
 function getFieldValue($field) {
   if ($field=="") 
   	return "";
-  if ($field[0]=="~") return substr($field,1);
-  else return $field;
+  return ltrim($field,"~");
 }
+
+function getFieldCheckedWord($field) {
+	if (strlen($field)>1 && $field[0]=="~" && $field[1]=="~") #
+		return "checked";
+	else 
+		return "";
+}
+
+function getFieldCheckedScool($field) {
+	if (strlen($field)==1 && $field[0]=="~" )
+		return "checked";
+	if (strlen($field)>1 && $field[0]=="~" && $field[1]!="~" )
+		return "checked";
+	else
+		return "";
+}
+
+function getFieldCheckedClass($field) {
+	if ($field=="")
+		return "checked";
+	if (strlen($field)>0 && $field[0]!="~")
+		return "checked";
+	else 
+		return "";
+}
+			
 
 function getFieldChecked($field) {
   if ($field=="") 
   	return "";
   if ($field[0]=="~") return "checked";
   else return "";
-
 }
 
 /*

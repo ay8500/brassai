@@ -173,10 +173,9 @@ if ($tabOpen==5) {
 ?>
 <div itemscope itemtype="http://schema.org/Person">
 <h2 class="sub_title" >
-	<?PHP 
-		echo('<span itemprop="name">'.$diak["lastname"].' '.$diak["firstname"].'</span> ');
-		if ($diak["birthname"]!="") echo('('.$diak["birthname"].')');
-	?>
+		<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-round:3px;" />
+			<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
+			<?php if ($diak["birthname"]!="") echo('('.$diak["birthname"].')');?>
 </h2>
 
 <?PHP

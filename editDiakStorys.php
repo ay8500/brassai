@@ -23,6 +23,7 @@
 		var data = {
 			id: "<?php echo $uid; ?>",
 		    type:"<?php  echo $type; ?>",
+		    privacy:$('input[name=privacy]:checked', '#stroryForm').val(),
 		    story: $("#story").val()
 		}
 		$('#ajaxStatus').html('küldés...');
@@ -49,18 +50,32 @@
 <div style="padding: 10px;">
 	<h3><?php  echo $title; ?></h3>
 	<?php if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) { ?>
-	<form onsubmit="saveStory(); return false;">
+	<form id="stroryForm" onsubmit="saveStory(); return false;">
 	<fieldset>
 		<textarea id="story" style="text-align: left;" rows="40" cols="100"  class="widgEditor nothing" >
-<?php echo $text; ?>
+<?php echo getFieldValue($text); ?>
 		</textarea>
 	</fieldset>
 	<br/>
-		<input type="checkbox" id="visibleforall">Ezt a szöveget csak az osztálytársaim láthatják. 
-		<input type="submit" onclick="saveStory();" value="<?php echo getTextRes("Save");?>" />
+		<div class="radiogroup">
+			<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt a szöveget?</div>
+			<div title="Az egész világ" class="cradio radio_world"><input type="radio" name="privacy" value="world" <?php echo getFieldCheckedWord($text)?> onclick="saveStory();" /></div>
+			<div title="Az iskolatársak" class="cradio radio_scool"><input type="radio" name="privacy" value="scool" <?php echo getFieldCheckedScool($text)?> onclick="saveStory();" /></div>
+			<div title="Az osztálytársak" class="cradio radio_class"><input type="radio" name="privacy" value="class"<?php echo getFieldCheckedClass($text)?> onclick="saveStory();" /></div>
+		</div> 
+		<div class="radiogroup">
+			<div style="display: inline-block; padding:5px" >
+				Ulóljára módósítva:<br />
+				<?php echo getTextDataDate(getDatabaseName(), $uid, $type)?>
+			</div>
+			<div style="display: inline-block; padding:5px" >
+				<input type="submit" value="<?php echo getTextRes("Save");?>" />
+			</div>
+		</div>
 		&nbsp; <span style="padding:3px; background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></span>
 	</form>
 	<?php } else { ?>
 		<?php echo $text; ?>
 	<?php } ?>
 </div>
+

@@ -8,7 +8,7 @@ $uid = getIntParam("uid",-1 );
 $title = getParam("title", "");
 $comment = getParam("comment", "");
 
-if ( (userIsLoggedOn() && $_SESSION["UID"]==$personId) || userIsAdmin() ) {
+if ( (userIsLoggedOn() && $_SESSION["UID"]==$uid) || userIsAdmin() ) {
 
 	setPictureAttributes(getDatabaseName(),$uid,$id,$title,$comment);
 	
