@@ -12,8 +12,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
  <head>
-	<title><?PHP echo($SiteTitle) ?></title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title><?PHP echo($SiteTitle) ?></title>
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
@@ -31,41 +31,13 @@
 	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />
 	
-	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
-	<noscript><img src="http://s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
-	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-	<script type="text/javascript">
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-20252557-2']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-	</script>
-	
 	<link rel="stylesheet" type="text/css" href="css/ddsmoothmenu.css" />
 	<link rel="stylesheet" type="text/css" href="css/ddsmoothmenu-v.css" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
-	<script type="text/javascript">
-	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" });
-	</script>
-	<?php if (isset($googleMap)) :?>
-		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakMap.js"></script>
-	<?php endif ?>
-	<?php if (isset($diakEditGeo)) :?>
-		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakEditGeo.js"></script>
-	<?php endif?>
+	<link rel="stylesheet" type="text/css" href="css/menu.css" />
+	
 	<?php if (isset($diakEditStorys)) :?>
 		<link rel="stylesheet" type="text/css" href="css/widgEditor.css" />
-		<script type="text/javascript" src="js/widgEditor.js"></script>
 	<?php endif?>
-	<link rel="stylesheet" type="text/css" href="css/menu.css" />
 	
  </head>
 <body>
@@ -145,7 +117,7 @@
 	<?php echo getTextRes("Like") ?><br /><br />
 	<g:plusone size="medium"></g:plusone>
 	<br /><br />
-	<div><a name="fb_share" type="button_count" share_url="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></div>
+	<div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="box_count" data-action="like" data-show-faces="false" data-share="true"></div>
 	<hr />
 	<?PHP 
 		writeLogonBox(); 

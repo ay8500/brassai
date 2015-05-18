@@ -19,11 +19,12 @@
 	if (isset($_SESSION['ADMIN']) && ($_SESSION['ADMIN'])) {
 		echo "&nbsp;&nbsp;<a href=\"$SCRIPT_NAME?view=details&gallery=$gallery&slideshow_index=$slideshow_index\" title=\"".$TXT["MenuDetails"]."\">".$TXT["MenuDetails"]."</a>"; 
 	}
-    echo('&nbsp;&nbsp;<a name="fb_share" type="button_count" share_url="http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?view=slideshow&gallery='.$gallery.'&slideshow_index='.$slideshow_index.'" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>');
-	echo(' </td></tr></table>'."\r\n");
-	echo "</div>";
-
-	echo "<div id=\"img_area\">";
+?>
+    <div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
+	</td></tr></table>
+	</div>
+	<div id="img_area">
+<?php 
 	echo '<h2 id="commentList">'.getPictureTitle($images_array[$slideshow_index]).'</h2>';
 	if (!is_file("./.modified/$width"."_mod_".$images_array[$slideshow_index].".".$slideshow_filetype)) { 
 		create_slideshow_item($images_array[$slideshow_index]); 

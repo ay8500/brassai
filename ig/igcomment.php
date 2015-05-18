@@ -61,22 +61,22 @@
 			<tr><td><?PHP echo($TXT["CommentText"]); ?></td><td><input type="text" name="paramComment" size="70"value="<?=$paramComment?>" /></td></tr>
 			<tr><td><?PHP echo($TXT["CommentQuali"]); ?></td><td>
 				<select name="paramQ">
-					<option value="0" <?PHP if ($paramQ=="0") echo(" selected ");echo(">".$TXT["Ranking"][0]);?> </option>
-					<option value="1" <?PHP if ($paramQ=="1") echo(" selected ");echo(">".$TXT["Ranking"][1]);?> </option>
-					<option value="2" <?PHP if ($paramQ=="2") echo(" selected ");echo(">".$TXT["Ranking"][2]);?> </option>
-					<option value="3" <?PHP if ($paramQ=="3") echo(" selected ");echo(">".$TXT["Ranking"][3]);?> </option>
-					<option value="4" <?PHP if ($paramQ=="4") echo(" selected ");echo(">".$TXT["Ranking"][4]);?> </option>
-					<option value="5" <?PHP if ($paramQ=="5") echo(" selected ");echo(">".$TXT["Ranking"][5]);?> </option>
+					<option value="0" <?php if ($paramQ=="0") echo("selected") ?>><?php echo $TXT["Ranking"][0]?></option>
+					<option value="1" <?php if ($paramQ=="1") echo("selected") ?>><?php echo $TXT["Ranking"][1]?></option>
+					<option value="2" <?php if ($paramQ=="2") echo("selected") ?>><?php echo $TXT["Ranking"][2]?></option>
+					<option value="3" <?php if ($paramQ=="3") echo("selected") ?>><?php echo $TXT["Ranking"][3]?></option>
+					<option value="4" <?php if ($paramQ=="4") echo("selected") ?>><?php echo $TXT["Ranking"][4]?></option>
+					<option value="5" <?php if ($paramQ=="5") echo("selected") ?>><?php echo $TXT["Ranking"][5]?></option>
 				</select>
 			</td></tr>
 			<tr><td><?PHP echo($TXT["CommentCont"]); ?></td><td>
 				<select name="paramC">
-					<option value="0" <? if ($paramC=="0") echo(" selected ");echo(">".$TXT["Ranking"][0]);?> </option>
-					<option value="1" <? if ($paramC=="1") echo(" selected ");echo(">".$TXT["Ranking"][1]);?> </option>
-					<option value="2" <? if ($paramC=="2") echo(" selected ");echo(">".$TXT["Ranking"][2]);?> </option>
-					<option value="3" <? if ($paramC=="3") echo(" selected ");echo(">".$TXT["Ranking"][3]);?> </option>
-					<option value="4" <? if ($paramC=="4") echo(" selected ");echo(">".$TXT["Ranking"][4]);?> </option>
-					<option value="5" <? if ($paramC=="5") echo(" selected ");echo(">".$TXT["Ranking"][5]);?> </option>
+					<option value="0" <?php if ($paramC=="0") echo("selected") ?>><?php echo $TXT["Ranking"][0]?></option>
+					<option value="1" <?php if ($paramC=="1") echo("selected") ?>><?php echo $TXT["Ranking"][1]?></option>
+					<option value="2" <?php if ($paramC=="2") echo("selected") ?>><?php echo $TXT["Ranking"][2]?></option>
+					<option value="3" <?php if ($paramC=="3") echo("selected") ?>><?php echo $TXT["Ranking"][3]?></option>
+					<option value="4" <?php if ($paramC=="4") echo("selected") ?>><?php echo $TXT["Ranking"][4]?></option>
+					<option value="5" <?php if ($paramC=="5") echo("selected") ?>><?php echo $TXT["Ranking"][5]?></option>
 				</select>
 			</td></tr>
 			<tr>

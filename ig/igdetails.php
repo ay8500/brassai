@@ -17,47 +17,47 @@
 
 	?><table  id="commentArea">
 	<tr><td colspan="2">&nbsp;</td></tr>
-	<?if ($detailAction=="askDeleteImage") {?>
+	<?php if ($detailAction=="askDeleteImage") {?>
 		<tr>
-		<td style="text-align:center;"><?PHP echo("<img src=\"$gallery/.thumbs/$thumbnail_size"."_thumb_".$image.".".$thumbnail_filetype."\" title=\"thumbnail\" alt=\"thumbnail\" />");?>
+		<td style="text-align:center;"><?php echo("<img src=\"$gallery/.thumbs/$thumbnail_size"."_thumb_".$image.".".$thumbnail_filetype."\" title=\"thumbnail\" alt=\"thumbnail\" />");?>
 		</td>
 		<td>
-		<form action="<?PHP echo($SCRIPT_NAME);?>" method="get">
+		<form action="<?php echo($SCRIPT_NAME);?>" method="get">
 			<input type="hidden" name="view" value="thumbnails" />
-			<input type="hidden" name="slideshow_index" value="<?=$slideshow_index?>" />
-			<input type="hidden" name="gallery" value="<?=$gallery?>" />
-			<input type="hidden" name="image" value="<?=$image?>" />
+			<input type="hidden" name="slideshow_index" value="<?php echo $slideshow_index?>" />
+			<input type="hidden" name="gallery" value="<?php echo $gallery?>" />
+			<input type="hidden" name="image" value="<?php echo $image?>" />
 			<input type="hidden" name="action" value="deleteImage" />
 			<input type="submit" name="deleteImage" value="<?PHP echo($TXT["DetailAskDelete"]) ?>" />
 		</form>
 		</td></tr>
-	<? } else {?>
+	<?php } else {?>
 		<tr>
-		<td style="text-align:center;"><?echo("<img src=\"$gallery/.thumbs/$thumbnail_size"."_thumb_".$image.".".$thumbnail_filetype."\" title=\"thumbnail\" alt=\"thumbnail\" />");?>
-			<br/><?writeMetaData($image);?></td>
+		<td style="text-align:center;"><?php echo("<img src=\"$gallery/.thumbs/$thumbnail_size"."_thumb_".$image.".".$thumbnail_filetype."\" title=\"thumbnail\" alt=\"thumbnail\" />");?>
+			<br/><?php writeMetaData($image);?></td>
 		<td>
-			<form action="<?echo($SCRIPT_NAME);?>" method="get">
+			<form action="<?php echo ($SCRIPT_NAME);?>" method="get">
 				<input type="hidden" name="view" value="details" />
-				<input type="hidden" name="slideshow_index" value="<?=$slideshow_index?>" />
-				<input type="hidden" name="gallery" value="<?=$gallery?>" />
-				<input type="hidden" name="paramImage" value="<?=$image?>" />
+				<input type="hidden" name="slideshow_index" value="<?php echo $slideshow_index?>" />
+				<input type="hidden" name="gallery" value="<?php echo $gallery?>" />
+				<input type="hidden" name="paramImage" value="<?php echo $image?>" />
 				<input type="hidden" name="action" value="askDeleteImage" />
 				<input type="submit" name="deleteImage" value="<?PHP echo($TXT["DetailDelete"]) ?>" />
 			</form>
 		</td></tr>
 		<tr><td colspan="2">
-			<form action="<?echo($SCRIPT_NAME);?>" method="get">
+			<form action="<?php echo($SCRIPT_NAME);?>" method="get">
 				<input type="hidden" name="view" value="details" />
-				<input type="hidden" name="slideshow_index" value="<?=$slideshow_index?>" />
-				<input type="hidden" name="gallery" value="<?=$gallery?>" />
-				<input type="hidden" name="paramImage" value="<?=$image?>" />
+				<input type="hidden" name="slideshow_index" value="<?php echo $slideshow_index?>" />
+				<input type="hidden" name="gallery" value="<?php echo $gallery?>" />
+				<input type="hidden" name="paramImage" value="<?php echo $image?>" />
 				<input type="hidden" name="action" value="setPictureTitle" />
 				<input type="text" size="100"  name="pictureTitle" value="<?PHP echo(getPictureTitle($image));?>" /><br />
 				<input type="submit" name="setPictureTitle" value="<?PHP echo($TXT["DetailTitle"]) ?>" />
 			</form>
 		</td></tr>
-		<tr><td colspan="2"><? writeComment($image); ?></td></tr>
-	<?}?>
+		<tr><td colspan="2"><?php writeComment($image); ?></td></tr>
+	<?php }?>
 	<tr><td colspan="2">&nbsp;</td></tr>
 	</table>
 

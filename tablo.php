@@ -12,12 +12,10 @@ include_once("data.php");
 $SiteTitle="Ballagási tabló ".getDatabaseName();
 include("homemenu.php"); ?>
 
-<h2 class="sub_title">A tan&aacute;rok &eacute;s di&aacute;kok egy&uuml;tt a ballagási Tablón.</h2>
+<h2 class="sub_title">A tanárok és diákok együtt a ballagási Tablón.</h2>
 
   <table align="center" border="1">
-    <td><IMG SRC="images/tablo<?PHP echo($_SESSION['scoolYear'].$_SESSION['scoolClass']);?>.jpg" width="640" height="369">
+    <td><IMG SRC="images/tablo<?PHP echo($_SESSION['scoolYear'].$_SESSION['scoolClass']);?>.jpg" ">
   </table>  
 
-</td></tr></table>
-</body>
-</html>
+<?php include 'homefooter.php'; ?> 

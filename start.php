@@ -89,10 +89,8 @@ else {
 		include("facebooklogin.php");
 	} 
 }
+
+include 'homefooter.php';
 ?>
 
-<div>
-</div>
-</td></tr></table>
-</body>
-</html>
+

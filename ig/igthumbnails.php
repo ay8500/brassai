@@ -1,7 +1,9 @@
-<?PHP	
+<?php	
 	if (!empty($images_array)) {
-		echo "<div id=\"statusbar\">";
-		echo(' <table border="0" style="width:100%"><tr><td>'."\r\n");
+?>	
+		<div id="statusbar">
+		<table border="0" style="width:100%"><tr><td>
+<?php 
 		//Display gallery name and picture cout 
 		echo ('<b style="font-size:20px">'.getGalleryDescription()."</b>&nbsp;&nbsp;".$images_count.$TXT["PictCount"]."\r\n");
 		echo(' </td><td style="text-align:right">'."\r\n");
@@ -21,14 +23,16 @@
 			}
 		}
 		//Display Slideshow link
-		echo "  <a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery\" title=\"".$TXT["MenuSlideshow"]."\">".$TXT["MenuSlideshow"]."</a>"; 
+		echo "<a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery\" title=\"".$TXT["MenuSlideshow"]."\">".$TXT["MenuSlideshow"]."</a>"; 
 		//Display Facebook link
-		echo('&nbsp;&nbsp;<a name="fb_share" type="button_count" share_url="http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?gallery='.$gallery.'" href="http://www.facebook.com/sharer.php"></a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>');
+		?>
 		
-		echo(' </td></tr></table>'."\r\n");
-		echo "</div>";
+		<div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
 		
-		echo "<div id=\"img_area\">";
+		</td></tr></table>
+		</div>
+		<div id="img_area">
+		<?php 
 		$i = 1;
 		$row = 0;
 		foreach ($images_array as $image) {

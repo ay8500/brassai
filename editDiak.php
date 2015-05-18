@@ -275,6 +275,7 @@ if ($tabOpen==6) {
 			<input type="hidden" value="<?php echo $uid; ?>" name="uid" />
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
+		<?php if (isset($_SESSION['FacebookId'])) : ?>		
 		<tr><td colspan="3"><hr/> </td></tr>
 		<tr><td colspan="3">
 			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo $_SESSION["FacebookName"] ?>" Facebook felhasználóval.<br />
@@ -289,6 +290,7 @@ if ($tabOpen==6) {
 				<input type="submit" value="Facebook kapcsolatot töröl" />
 			</form>
 		</td></tr>
+		<?php endif ?>
 	</table>
 	<?php 
 	}	
