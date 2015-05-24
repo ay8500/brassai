@@ -17,11 +17,11 @@
 			logoutUser();
 			$logOnMessage=getTextRes("LogInError");
 		}
-		sendTheMail('code@blue-l.de',
+		/*sendTheMail('code@blue-l.de',
 			"<h2>Login</h2>".
-			"Datenbank:".getDatabaseName()."<br/>".
+			"Datenbank:".getUserDatabaseName()."<br/>".
 			"Name:".$paramName."<br/>",
-			"Login result:".$logOnMessage," Login");
+			"Login result:".$logOnMessage," Login");*/
 	}
 	//Logoff action
 	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) {
@@ -36,7 +36,7 @@
 		}
 		sendTheMail('code@blue-l.de',
 			"<h2>Facebooklogin</h2>".
-			"Datenbank:".getDatabaseName()."<br/>".
+			"Datenbank:".getUserDatabaseName()."<br/>".
 			"FacebookId:".$_SESSION['FacebookId']."<br/>",
 			"FacebookName:".$_SESSION['FacebookName']."<br/>".
 			"Login result:".$logOnMessage," Login");
@@ -66,7 +66,7 @@
 		}
 		sendTheMail('code@blue-l.de',
 			"<h2>Change Password</h2>".
-			"Datenbank:".getDatabaseName()."<br/>".
+			"Datenbank:".getUserDatabaseName()."<br/>".
 			"Name:".$paramName."<br/>",
 			"Login result:".$logOnMessage," Change Password");
 	}
@@ -96,9 +96,7 @@ function writeLogonBox() {
 	<?php  } else { ?>
 	<form action="index.php" method="get">
 		<input type="hidden" value="logoff" name="action" />
-		<input type="hidden" value="<?php echo $_SESSION['scoolClass'] ?>" name="scoolClass"/>
-		<input type="hidden" value="<?php echo $_SESSION['scoolYear'] ?>" name="scoolYear"/>
-		<div class="loginText"><?php echo getTextRes("LogInUser").":".$_SESSION['USER'] ?></div>
+		<div class="loginText"><?php echo getTextRes("LogInUser").":".$_SESSION['uName'] ?></div>
 		<div><input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" /></div><br/>
 	</form>
 <?php } ?>
@@ -125,13 +123,13 @@ function writeLogonLine() {
 			&nbsp;&nbsp;<input class="loginFacebookSubmit" type="submit"  value="" />
 		</form>
 	</td></tr>
-		<?php  } else { ?>
+	<?php  } else { ?>
 	<tr><td class="LogonLine">
 		<form action="start.php" method="get">
 			<input type="hidden" value="logoff" name="action" />
 			<input type="hidden" value="<?php echo $_SESSION['scoolClass'] ?>" name="scoolClass"/>
 			<input type="hidden" value="<?php echo $_SESSION['scoolYear'] ?>" name="scoolYear"/>
-			<?php echo getTextRes("LogInUser").":".$_SESSION['USER'] ?>
+			<?php echo getTextRes("LogInUser").":".$_SESSION['uName'] ?>
 			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" />
 		</form> 
 	</td></tr>

@@ -8,9 +8,9 @@ $uid = getIntParam("uid",-1 );
 $title = getParam("title", "");
 $comment = getParam("comment", "");
 
-if ( (userIsLoggedOn() && $_SESSION["UID"]==$uid) || userIsAdmin() ) {
+if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 
-	setPictureAttributes(getDatabaseName(),$uid,$id,$title,$comment);
+	setPictureAttributes(getAktDatabaseName(),$uid,$id,$title,$comment);
 	
 	$row = array();
 	$row["title"] = $title;

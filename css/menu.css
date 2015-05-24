@@ -1,8 +1,8 @@
 	body		{ background-image:url('../images/b2.gif');background-repeat: repeat;font-family: sans-serif,arial;font-size:11px;color:black;
 					margin:0;padding:0;height:100%; border:none
 				}
-	form		{display:inline};
-	.submit2	{ height:18px;font-size:10px;}
+	form		{display:inline;}
+	.submit2	{ height:18px;font-size:10px;margin-right:20px;}
 	.input2		{ height:13px; font-size:10px;}
 	.highlight 	{ background-color: #ffdddd;text-align:center}
 	.caption1   { font-weight: bold; text-align:right;}
@@ -24,7 +24,7 @@
 	.error			{text-align:center;color:red;font-weight: bold;height:20px;}
 	.okay			{text-align:center;color:green;height:20px;}
 	
-	.tab			{width:800px; outline-style:none;  margin:10px; border-collapse:collapse; }
+	.tab			{width:auto; outline-style:none;  margin:10px; border-collapse:collapse; }
 	.tabCaption 	{color:black;text-align:left; width:1%;font-family:Arial;font-size:12px;border-collapse:collapse;}
 	.tabCaptionText {color:black;text-align:left;font-family:Arial;font-size:12px;text-decoration:none; border-collapse:collapse;border-width:1px;border-color:black;border-style:solid;padding:0px 10px 0px 10px }
 	.tabActive  	{color:black;text-align:left; width:1%;font-family:Arial;font-size:12px;border-width:1px;border-color:black;border-style:solid;padding:0px 10px 0px 10px;border-bottom-style:none;background-color:#F8F8F8;}
@@ -52,3 +52,4 @@
 	.radio_scool {background-image: url("../images/study.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
 	.radio_class {background-image: url("../images/friends.png");background-repeat: no-repeat;background-position-x: 5px;background-position-y: 20px; height: 39px;}
 	.radiogroup { display:inline-block; padding: 7px; border-style: solid; border-width: 1px; vertical-align: middle; border-color: lightgray; border-radius: 5px; eight: 44px;}
+	.trumbowyg-editor {background-color: white;}

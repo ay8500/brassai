@@ -4,7 +4,7 @@ include_once("UserManager.php");
 
 if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	if ( userIsAdmin() ) {
-		include("sendMail.php");
+		include_once ("sendMail.php");
 		for($uid=1;$uid<=getDataSize()+1;$uid++) {
 			if (isset($_GET["D".$uid])) {
 				SendMail($uid, $_GET["T"],isset($_GET["U"]) );
@@ -37,7 +37,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	  Szöveg....
 	  </p>
 	  <p>
-	  Üdvözlettel <?PHP $dd=getPerson($_SESSION["UID"]); echo($dd["lastname"]." ".$dd["firstname"]); ?>
+	  Üdvözlettel <?PHP $dd=getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 	  </p>
 	  <p>
 	  Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass']);?>>A kolozsvári Brassai Sámuel líceum <?PHP echo($_SESSION['scoolYear']);?>-ben végzett diákjainak <?PHP echo($_SESSION['scoolClass']);?></a> honlapjáról kaptad.

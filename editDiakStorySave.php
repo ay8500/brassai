@@ -11,9 +11,9 @@ $privacy = getPostParam("privacy", "class");
 
 $row = array();
 
-if ( (userIsLoggedOn() && $_SESSION["UID"]==$personId) || userIsAdmin() ) {
-	saveTextData(getDatabaseName(), $personId, $type,$privacy,htmlspecialchars_decode(urldecode($story))) ;
-	$row["database"] = getDatabaseName();
+if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) {
+	saveTextData(getAktDatabaseName(), $personId, $type,$privacy,htmlspecialchars_decode(urldecode($story))) ;
+	$row["database"] = getAktDatabaseName();
 	$row["person"] = $personId;
 	$row["type"] = $type;
 	$row["privacy"] =$privacy;

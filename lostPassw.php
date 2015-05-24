@@ -86,7 +86,7 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 		</td>  
 	</tr>
 	<tr>
-		<td>Az <?PHP echo($_SESSION['scoolYear']); ?>-ben végzett <?PHP echo($_SESSION['scoolClass']);?> osztálynak az oldalait szeretném használni mint:
+		<td>Az <?PHP echo(getAktScoolYear()); ?>-ben végzett <?PHP echo(getAKtScoolClass());?> osztálynak az oldalait szeretném használni mint:
 		<select name="rights" size="1">
 			<option value="">...válassz!...</option>
 			<option value="user">Véndiák</option>

@@ -1,5 +1,16 @@
-<?PHP
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" />
+
+<?php
 	include_once("sessionManager.php");
+
+	//Change scool year and class if parameters are there
+	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
+	if (isset($_GET['scoolClass']))  { setAktScoolClass($_GET['scoolClass']); }
+
 	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	include_once("config.php");
 	include_once("logon.php");
@@ -9,11 +20,7 @@
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 ?>
 	
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
- <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title><?PHP echo($SiteTitle) ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">	<title><?PHP echo($SiteTitle) ?></title>
 	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
@@ -36,8 +43,9 @@
 	<link rel="stylesheet" type="text/css" href="css/menu.css" />
 	
 	<?php if (isset($diakEditStorys)) :?>
-		<link rel="stylesheet" type="text/css" href="css/widgEditor.css" />
+		<link rel="stylesheet" href="editor/ui/trumbowyg.min.css">
 	<?php endif?>
+	
 	
  </head>
 <body>
@@ -62,13 +70,13 @@
 					<li><a href="tablo.php">Tabló</a></li>
 					<li><a href="#">A többi osztályok</a>
 					  <ul>
-						<?PHP if (($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12A')) { ?>
-					  		<li><a href="index.php?scoolYear=1985&scoolClass=12B">Párhuzamos osztály</a></li>
-					  	<?PHP } else  { ?>
-					  		<li><a href="index.php?scoolYear=1985&scoolClass=12A">Párhuzamos osztály</a></li>
-					  	<?PHP }  ?>
+						<?php if (getAktScoolYear()==1985 && getAKtScoolClass()=='12A') { ?>
+					  		<li><a href="index.php?scoolYear=1985&scoolClass=12B">Párhuzamos osztály 12B</a></li>
+					  	<?php  } else {  ?>
+					  		<li><a href="index.php?scoolYear=1985&scoolClass=12A">Párhuzamos osztály 12A</a></li>
+					  	<?php } ?>
 					  </ul>
-					<?PHP if (($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12A')) { ?>
+					<?php if (getAktScoolYear()==1985 && getAKtScoolClass()=='12A') : ?>
 						<li><a href="#">Régi képek</a>
 						<ul>
 							<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
@@ -91,10 +99,10 @@
 							</ul></li>
 							<li><a href="talalk30.php">30-éves Találkozó</a></li>
 						</ul></li>
-					<?PHP }  ?>
-					<?PHP if (true && ($_SESSION['scoolYear']==1985) && ($_SESSION['scoolClass']=='12B')) { ?>
+					<?PHP endif  ?>
+					<?php if (getAktScoolYear()==1985 && getAKtScoolClass()=='12B') : ?>
 						<li><a href="vote.php">30-éves Találkozó</a></li>
-					<?PHP }  ?>	
+					<?PHP endif  ?>	
 						<li><a href="worldmap.php">Térkép</a></li>
 					<?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
 						<li><a href="editDiak.php" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
@@ -102,9 +110,9 @@
 						<li><a href="gb.php" >Vendégkönyv</a></li>
 					<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
 						<li><a href="admin.php"  >Adminsztráció</a></li>
-						<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
 					<?PHP }	?>
 					<?PHP if (userIsAdmin() ) { ?>
+						<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
 						<li><a href="logingData.php"  >Loging</a></li>
 					<?PHP }	?>
 						<li><a href="impressum.php"  >Impresszum</a></li>
@@ -126,7 +134,7 @@
 				echo('<a href='.$SCRIPT_NAME.'?language='.$Language.'><img src="images/flag_'.$Language.'.jpg" alt=""/></a>'."\r\n");
 		}
 	?>
-	<td  id="topLine"><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getScoolYear()) ?>-ben végzett diákjai <?PHP echo(getScoolClass()) ?></h1></td>
+	<td  id="topLine"><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getAktScoolYear()) ?>-ben végzett diákjai <?PHP echo(getAktScoolClass()) ?></h1></td>
 </tr>
 	<?php //writeLogonLine(); ?>
 <tr>

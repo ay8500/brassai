@@ -63,11 +63,13 @@
 
 <table class="editpagetable">
 	<tr><td colspan="3" style="text-align:center"><?PHP echo( $resultDBoperation ) ?></td></tr>
-	<tr><td colspan="3"><p style="text-align:left" ><h2>Képes album:</h2>A feltöltött képeket csak az osztálytársaid látják. Ha akkarod egyeseket megjelölhetsz és akkor mindenki látni fogja.</p></td></tr>
+	<?php if (isAktUserTheLoggedInUser() ) :?>
+		<tr><td colspan="3"><p style="text-align:left" ><h2>Képes album:</h2>A feltöltött képeket csak az osztálytársaid látják. Ha akkarod eggyeseket megjelölhetsz és akkor mindenki látni fogja.</p></td></tr>
+	<?php endif ?>
 	<tr><td colspan="3">
 	<form id="formRadio">
 	<?php
-		$pictures = getListofPictures($_SESSION['scoolClass'].$_SESSION['scoolYear'],$uid, false) ;
+		$pictures = getListofPictures(getAktDatabaseName(),$uid, false) ;
 		$notDeletedPictures=1;
 		foreach ($pictures as $pict) {
 			if (   (   (userIsLoggedOn() || $pict["visibleforall"]=="true") && $pict["deleted"]!="true")  || userIsAdmin() ) {
@@ -77,7 +79,7 @@
 			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php  echo $file ?>');" >
 				<img style="width: 200px; height: 200px;" src="convertImg.php?color=eeeeee&thumb=true&file=<?php  echo $file ?>" />
 			</a>
-			<?php if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) : ?>
+			<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 				<div style="display: inline-block;">
 				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo $pict["id"] +1 ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
 				<br />
@@ -102,7 +104,6 @@
 			</div>
 			</div>
 	<?php 
-			if ($notDeletedPictures++ % 3 ==0) echo("<br />");
 		}
 	}
 	?>
@@ -110,7 +111,7 @@
 	</td></tr>
 	<tr><td colspan="3"><hr/> </td></tr>
 	
-	<?php if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) : ?>
+	<?php if (userIsAdmin() || isAktUserTheLoggedInUser()) : ?>
 	<tr><td colspan="3">
 		<table>
 			<form>
@@ -140,4 +141,10 @@
 	<?php endif ?>
 	
 </table>
+<div id="pictureViewer" class="pictureView">
+	<img id="pictureToView" src="" />
+	<br>
+	<input type="button" value="Bezár" onclick="$('#pictureViewer').hide('slow');">
+</div>
+
 

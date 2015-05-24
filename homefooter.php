@@ -1,16 +1,43 @@
-<?php
-
-?>
-	</td>
+</td>
 </tr>
 </table>
 
 
 </body>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+	<script type="text/javascript">
+	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" });
+	</script>
+	<?php if (isset($googleMap)) :?>
+		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
+		<script type="text/javascript" src="js/diakMap.js"></script>
+	<?php endif ?>
+	<?php if (isset($diakEditGeo)) :?>
+		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
+		<script type="text/javascript" src="js/diakEditGeo.js"></script>
+	<?php endif?>
+	<?php if (isset($diakEditStorys)) :?>
+		<script src="editor/trumbowyg.min.js"></script>
+		<script type="text/javascript" src="editor/langs/hu.min.js"></script>
+		<script >
+		$( document ).ready(function() {
+			$('#story').trumbowyg({
+				fullscreenable: false,
+				closable: false,
+				lang: "hu",
+				btns: ['viewHTML','formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists','|', 'horizontalRule'],
+				removeformatPasted: true
+			});
 
+			$('#story').trumbowyg('html','<?php echo getFieldValue($text); ?>');
+		});
+		</script>
+	<?php endif?>
+	
 	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
 	<noscript><img src="http://s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
-
+	
 	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 
 	<script type="text/javascript">
@@ -32,24 +59,7 @@
   		js = d.createElement(s); js.id = id;
   		js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.3&appId=1606012466308740";
   		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
-	<script type="text/javascript">
-	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" });
+	}(document, 'script', 'facebook-jssdk'));
 	</script>
-	<?php if (isset($googleMap)) :?>
-		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakMap.js"></script>
-	<?php endif ?>
-	<?php if (isset($diakEditGeo)) :?>
-		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakEditGeo.js"></script>
-	<?php endif?>
-	<?php if (isset($diakEditStorys)) :?>
-		<script type="text/javascript" src="js/widgEditor.js"></script>
-	<?php endif?>
 	
-
 </html>

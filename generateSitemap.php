@@ -5,7 +5,7 @@ Header ("Content-type: text/txt");
 function writeSitemap($id,$link) 
 {
 	if (isset($_GET["htacces"])) {
-		echo("RewriteRule ".$link." editDiak.php?uid=".$id."&scoolYear=".$_SESSION['scoolYear']."&scoolClass=".$_SESSION['scoolClass']."\r\n");
+		echo("RewriteRule ".$link." editDiak.php?uid=".$id."&scoolYear=".getAktScoolYear()."&scoolClass=".getAKtScoolClass()."\r\n");
 	} else {
 		echo("<url>"."\r\n");
 		echo("\t<loc>http://brassai.blue-l.de/".$link."</loc>"."\r\n");

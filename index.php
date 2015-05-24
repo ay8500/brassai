@@ -1,25 +1,15 @@
 <?PHP 
 include_once("sessionManager.php");
+include_once("data.php");
 
 //Change scool year and class if parameters are there 
-$classchanged = false;
 if (isset($_GET['scoolYear'])) {
-	if ($_SESSION['scoolYear']!=$_GET['scoolYear']) $classchanged=true;
-	$_SESSION['scoolYear']=$_GET['scoolYear'];
+	setAktScoolYear($_GET['scoolYear']);
 } 
 if (isset($_GET['scoolClass']))  {
-	if ($_SESSION['scoolClass']!=$_GET['scoolClass'])  $classchanged=true;
-	$_SESSION['scoolClass']=$_GET['scoolClass'];	
+	setAktScoolClass($_GET['scoolClass']);	
 } 
 
-//include login logoff
-if ($classchanged) {
-	include_once("userManager.php");
-	logoutUser();
-} 
-
-//include the menu.
-$SiteDescription="A kolozsvári Brassai Sámuel líceum véndiákok honlapja";
 include("homemenu.php");
 ?>
 <h2 class="sub_title">Szeretettel köszöntünk honlapunkon</h2>

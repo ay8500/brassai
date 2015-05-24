@@ -11,42 +11,63 @@ $data = array();
 $dataBase=Array("12A1985","12B1985");
 $datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
 $dataPath = "data/";
+$openedDatebase="";
 
 
 //select the database
-openDatabase( getDatabaseName() ) ;
+openDatabase( getAktDatabaseName() ) ;
 
+function getOpenedDatabase() {
+	global $openedDatabase;
+	return $openedDatabase;
+}
 
-function getScoolYear() {
-	if (isset($_SESSION['scoolYear'])) 
-		return $_SESSION['scoolYear'];
+function setOpenedDatabase($dataBaseName) {
+	global $openedDatabase;
+	$openedDatabase = $dataBaseName;
+}
+
+//aktual used scoolyear and class
+function getAktScoolYear() {
+	if (isset($_SESSION['aktScoolYear'])) 
+		return $_SESSION['aktScoolYear'];
 	else
 		return "1985";
 }
 
-function getScoolClass() {
-	if (isset($_SESSION['scoolClass']))
-		return $_SESSION['scoolClass'];
+function getAKtScoolClass() {
+	if (isset($_SESSION['aktScoolClass']))
+		return $_SESSION['aktScoolClass'];
 	else
 		return "12A";
 }
 
-function setScoolYear($year) {
-		$_SESSION['scoolYear']=$year;
+function setAktScoolYear($year) {
+	$_SESSION['aktScoolYear']=$year;
 }
 
-function setScoolClass($class) {
-	$_SESSION['scoolClass']=$class;
+function setAktScoolClass($class) {
+	$_SESSION['aktScoolClass']=$class;
 }
 
 /**
- * getDabaseName
+ * get aktual DabaseName
  */
-function getDatabaseName()
+function getAktDatabaseName()
 {
-	return  getScoolClass().getScoolYear();
+	if (null!=getAktScoolClass() && null!=getAktScoolYear())
+		return  getAKtScoolClass().getAktScoolYear();
+	else 
+		return "12A1985";
 }
 
+function getUserDatabaseName() 
+{
+	if (null!=getUScoolClass() && null!=getUScoolYear())
+		return  getUScoolClass().getUScoolYear();
+	else 
+		return "";
+}
 
 /**
  * open the specific database name = class+year eg. 12A1985
@@ -59,7 +80,7 @@ function openDatabase($name) {
 	global $dataPath;
 
 	//no database change
-	if (getDatabaseName()==$name) {
+	if (getOpenedDatabase()==$name) {
 		$ret=true;
 		$dataFileName=$dataPath.$name."/data.txt";
 		ReadDB();
@@ -70,9 +91,8 @@ function openDatabase($name) {
 		foreach($dataBase as $db) {
 			if ($name==$db) {
 				$ret=true;
-				setScoolYear(substr($name,3,4));
-				setScoolClass(substr($name,0,3));
 				$dataFileName=$dataPath.$name."/data.txt";
+				setOpenedDatabase($name);
 				ReadDB();
 			}
 		}
@@ -84,11 +104,11 @@ function openDatabase($name) {
  * get person from database
  * * @return Person
  */
-function getPerson($id) {
+function getPerson($id,$dataBase=null) {
 	if (isset($id) && ($id>0)  ) { 
 		global $data;
-		if (sizeof($data)==0) {
-			readDB();
+		if (sizeof($data)==0 || null==getOpenedDatabase() || (null!=$dataBase && getOpenedDatabase()!=$dataBase)) {
+			openDatabase($dataBase);
 		}
 		foreach ($data as $l => $d) {	
 			if ($d["id"]==$id)
@@ -121,8 +141,8 @@ function getPersonIdx($id) {
  * returns user id from logged in user
  */
 function getPersonLogedOn() {
-	if ( isset($_SESSION['UID']) && $_SESSION['UID']>0 )  { 
-		return getPerson($_SESSION['UID']);
+	if ( null!=getLoggedInUserId())  { 
+		return getPerson(getLoggedInUserId(),getUserDatabaseName());
 	} else {
 		return getPersonDummy();
 	}
@@ -134,8 +154,8 @@ function getPersonLogedOn() {
  */
 function savePerson($person) {
 	global $data;
-	if (sizeof($data)==0) {
-		readDB();
+	if (sizeof($data)==0 || getOpenedDatabase()!=getAktDatabaseName()) {
+		openDatabase(getAktDatabaseName());
 	}
 	if (sizeof($person)>0) {
 		if (!userIsAdmin()) {
@@ -319,7 +339,7 @@ function readVoteData() {
 	for ($i=0;$i<sizeof($voteData);$i++)
 		unset( $voteData[$i]);			//delete old records
 
-	$fileName=$dataPath.getDatabaseName().$voteFileName;
+	$fileName=$dataPath.getAktDatabaseName().$voteFileName;
     if (file_exists($fileName)) {
 		$file=fopen($fileName ,"r");
 		$id=0;
@@ -364,7 +384,7 @@ function saveVoteData() {
 	global $voteData;
 	reset( $voteData);
 	global $voteFileName;
-	$fileName=$dataPath.getDatabaseName().$voteFileName;
+	$fileName=$dataPath.getAktDatabaseName().$voteFileName;
 	$file=fopen($fileName,"w");
 	fwrite($file,"#Vote Database File\r\n");
 	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
@@ -644,10 +664,32 @@ function saveTextData($database, $personId, $type, $privacy, $text) {
 
 //****************************** Tools *********************
 
+function getFieldAccessValue($field) {
+	if (userIsAdmin() || isAktUserTheLoggedInUser())
+		return getFieldValue($field);
+	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktDatabaseName()==getUserDatabaseName())
+		return getFieldValue($field);
+	else if (userIsLoggedOn() && getFieldCheckedScool($field)=="checked")
+		return getFieldValue($field);
+	else if (getFieldCheckedWord($field))
+		return getFieldValue($field);
+	else {
+		$len = strlen($field)/3;
+		if ($len>200) $len=200;
+		$ret = substr(getFieldValue($field),0,$len)."...<br /><br />A szöveg többi része védve van.<br />";
+		if (getFieldCheckedClass($field)=="checked") 
+			$ret =$ret."A Teljes szöveget csak bejelentkezek osztálytársak láthatják.";
+		if (getFieldCheckedScool($field)=="checked") 
+			$ret =$ret."A Teljes szöveget csak bejelentkezek iskolatársak láthatják.";
+		return $ret;
+	}
+}
+
 function getFieldValue($field) {
   if ($field=="") 
   	return "";
-  return ltrim($field,"~");
+  $ret = ltrim($field,"~");
+  return  $ret;
 }
 
 function getFieldCheckedWord($field) {
@@ -689,7 +731,7 @@ function getFieldChecked($field) {
 function showField($field) {
   if ($field=="") 
   	return false;
-  if (($field[0]!="~") || ( isset($_SESSION["UID"])) && ($_SESSION["UID"]>0) ) { 
+  if (($field[0]!="~") ||  userIsLoggedOn()) { 
   	if (ltrim($field,"~")!="") {
   		return true;
   	} else { 

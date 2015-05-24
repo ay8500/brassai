@@ -31,6 +31,8 @@ foreach($tabsCaption as $key => $Caption ) {
 	else
 		echo('<td class="tabCaption"><a class="tabCaptionText" href="javascript:changeTab('."'".$SCRIPT_NAME.'?tabOpen='.$key."'".');" >'.$Caption."</a></td>"."\r\n");
 }
-echo('<td class="tabEmpty"> &nbsp; </td>'."\r\n");
-echo('</tr>'."\r\n".'<tr><td  class="tabBody" colspan="'.(sizeof($tabsCaption)+1).'">'."\r\n");
 ?>
+<td class="tabEmpty"> &nbsp; </td>
+</tr>
+<tr><td  class="tabBody" colspan="<?php echo sizeof($tabsCaption)+1 ?>">
+

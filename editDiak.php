@@ -6,13 +6,6 @@ include_once 'ltools.php';
 //********* Edit person ****************
 
  
-//Change scool year and class if parameters are there 
-if (isset($_GET['scoolYear'])) {
-	$_SESSION['scoolYear']=$_GET['scoolYear'];
-} 
-if (isset($_GET['scoolClass']))  {
-	$_SESSION['scoolClass']=$_GET['scoolClass'];	
-}
 
 if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"]; 
 else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"]; 
@@ -24,25 +17,27 @@ $uid = 0;
 if (isset($_GET["uid"]) || isset($_POST["uid"])) {
 	if (isset($_GET["uid"])) $uid = $_GET["uid"];
 	if (isset($_POST["uid"])) $uid = $_POST["uid"];
-	$_SESSION['AktUID']=$uid;	//save actual person in case of tab changes 
+	setAktUserId($uid);	//save actual person in case of tab changes 
 }
 else {
 	if (isset($_GET["tabOpen"]) || isset($_POST["tabOpen"])) {
-		$uid=$_SESSION['AktUID'];	//tabs are changed
+		$uid=getAktUserId();	//tabs are changed
 	}
 	else {
-		if ( isset($_SESSION['UID']) && $_SESSION['UID']>0) { 
-			$uid=$_SESSION['UID'];$_SESSION['AktUID']=$uid;
+		if (userIsLoggedOn() ) {
+			setAktScoolYear(getUScoolYear());
+			setAktScoolClass(getUScoolClass());
+			$uid=getLoggedInUserId();setAktUserId(getLoggedInUserId());
 		}
 	}
 }
-$diak = getPerson($uid);
+$diak = getPerson($uid,getAktDatabaseName());
 
 
-$dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children","facebookid");
-$dataFieldCaption 	=array("Vezetéknév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FacebookID");
-$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30);
-$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false);
+$dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children","facebookid","admin");
+$dataFieldCaption 	=array("Vezetéknév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FacebookID","Role");
+$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30,60);
+$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false,false);
 	
 $resultDBoperation="";
 
@@ -120,7 +115,7 @@ if (($uid != 0) && getParam("action","")=="removefacebookconnection"  && userIsL
 
 //Delete Picture
 if (($uid != 0) && getParam("action","")=="deletePicture" && userIsLoggedOn()) {
-	deletePicture(getDatabaseName(), $uid,getParam("id", ""));
+	deletePicture(getAktDatabaseName(), $uid,getParam("id", ""));
 }
 
 
@@ -128,8 +123,8 @@ if (($uid != 0) && getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
-		$idx=savePicture(getScoolClass().getScoolYear(),$uid,"", "", true);
-		$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getScoolClass().getScoolYear()."/p".$uid."-".$idx.".".strtolower($fileName[1]);
+		$idx=savePicture(getAktDatabaseName(),$uid,"", "", true);
+		$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."/p".$uid."-".$idx.".".strtolower($fileName[1]);
 		//JPG
 		if (strcasecmp($fileName[1],"jpg")==0) {
 			if ($_FILES['userfile']['size']<2000000) {
@@ -153,6 +148,9 @@ if ($tabOpen==5)
 	$diakEditGeo = true;
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
 	$diakEditStorys = true;
+
+$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakja " .$diak["lastname"]." ".$diak["firstname"];
+
 
 include("homemenu.php"); 
 include_once("userManager.php"); 
@@ -178,10 +176,10 @@ if ($tabOpen==5) {
 			<?php if ($diak["birthname"]!="") echo('('.$diak["birthname"].')');?>
 </h2>
 
-<?PHP
+<?php
 
 //initialize tabs
-if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID']) ) 
+if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
@@ -190,17 +188,16 @@ include("tabs.php");
 
 
 <?PHP if ($tabOpen==0) { 
-	$diak = getPerson($uid);
 	//Edit variant of this page
-	echo('<table class="editpagetable" >');
-	if (userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
+	if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		//person data fields
+		echo('<table class="editpagetable" >');
 		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
 		echo('<tr><td></td><td class="highlight"></td><td class="highlight">Ha azt szeretnéd, hogy az adataidat csak mi az osztálytársak láthassuk, akkor jelöld meg öket!</td></tr>');
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
 		echo('');
 		$fieldCountToBeEdited = sizeof($dataFieldNames);
-		if (!userIsAdmin()) $fieldCountToBeEdited--;
+		if (!userIsAdmin()) $fieldCountToBeEdited -=2;
 		for ($i=0;$i<$fieldCountToBeEdited;$i++) {
 			if (isset($diak[$dataFieldNames[$i]])) {
 				echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
@@ -217,6 +214,7 @@ include("tabs.php");
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
 		echo('</form>');
+		echo('</table>');
 	
 	}
 	//Show read only data
@@ -249,12 +247,11 @@ include("tabs.php");
 		if(isset($d["homepage"]) && showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["homepage"])."</td></tr>";
 		echo "</table>";
 	}
-	echo('</table>');
 }
 
 //Change password, usename, facebook
 if ($tabOpen==6) {
-	if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
+	if ( userIsAdmin() || isAktUserTheLoggedInUser()) {
 ?> 
 	<table style="width:90%" class="editpagetable">
 		<tr><td colspan="3" style="text-align:center"><b><?php echo $resultDBoperation; ?></b></td></tr>
@@ -309,14 +306,9 @@ if ($tabOpen==5) {
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) { 
 	include("editDiakStorys.php");
 }
-echo('</div>');
+
 
 include 'homefooter.php';
 
 ?>
-<div id="pictureViewer" class="pictureView">
-	<img id="pictureToView" src="" />
-	<br>
-	<input type="button" value="Bezár" onclick="$('#pictureViewer').hide('slow');">
-</div>
 

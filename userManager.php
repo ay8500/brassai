@@ -1,5 +1,41 @@
 <?PHP
+	$_SESSION['lastReq']=date('d.m.Y H:i');
+
 	include_once("data.php");
+	
+	function getLoggedInUserId() {
+		if (!isset($_SESSION["uId"]))
+			return null;
+		return $_SESSION["uId"];
+	}
+	
+	function getUScoolYear() {
+		if (isset($_SESSION["uScoolYear"]))
+			return $_SESSION["uScoolYear"];
+		else 
+			return null;
+	}
+	
+	function getUScoolClass() {
+		if (isset($_SESSION["uScoolClass"]))
+			return $_SESSION["uScoolClass"];
+		else 
+			return null;
+	}
+	
+	
+	function setAktUserId($id) {
+		$_SESSION["aktUId"]=$id;
+	}
+	
+	function getAktUserId() {
+		return $_SESSION["aktUId"];
+	}
+	
+	function isAktUserTheLoggedInUser() {
+		return (getAktDatabaseName()==getUserDatabaseName() && getAktUserId()==getLoggedInUserId() );
+	}
+
 	
 	/**
 	 * Check login data in each client 
@@ -19,13 +55,12 @@
 						$usr["scoolYear"],
 						$usr["scoolClass"]);
 					$ret = true;
-					openDatabase(getDatabaseName());
 				break;
 				}
 			}
 		}
 		if (!userIsAdmin()) 
-			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],$user,$passw,$ret);
+			saveLogInInfo($_SESSION['uName'],$_SESSION['uId'],$user,$passw,$ret);
 		return $ret;
 	}
 
@@ -47,87 +82,74 @@
 						$usr["scoolYear"],
 						$usr["scoolClass"]);
 					$ret = true;
-					openDatabase(getDatabaseName());
 					break;
 				}
 			}
 		}
 		if (!userIsAdmin() && userIsLoggedOn())
-			saveLogInInfo($_SESSION['USER'],$_SESSION['UID'],"Facebook",$facebookId,$ret);
+			saveLogInInfo($_SESSION['uName'],$_SESSION['uId'],"Facebook",$facebookId,$ret);
 		return $ret;
 	}
 	
-	
 	function setUserInSession($admin, $user, $uid, $scoolYear, $scoolClass)
 	{
-		$_SESSION['ADMIN']=$admin;
-		$_SESSION['USER']=$user;
-		$_SESSION['UID']=$uid;
-		$_SESSION['scoolYear']=$scoolYear;
-		$_SESSION['scoolClass']=$scoolClass;
+		$_SESSION['uRole']=$admin;
+		$_SESSION['uName']=$user;
+		$_SESSION['uId']=$uid;
+		$_SESSION['uScoolYear']=$scoolYear;
+		$_SESSION['uScoolClass']=$scoolClass;
 	}
 	
-	/**
-	 * Returns the User ID from the logged in User
-	 * Equal 0 if no user loggen in 
-	 */
-	function getUserID () {
-		if (isset($_SESSION['UID']) )
-			return $_SESSION['UID'];
-		else
-			return 0;
-	}
-
 	/**
 	 * Logout user
 	 */
 	function logoutUser() {
-		//if (isset($_SESSION['scoolYear'])) session_destroy();
-		$_SESSION['ADMIN']="";
-		$_SESSION['USER']="";
-		$_SESSION['MAIL']="";
-		$_SESSION['UID']=0;
+		$_SESSION['uRole']="";
+		$_SESSION['uName']="";
+		$_SESSION['uId']=NULL;
+		$_SESSION['uScoolYear']="";
+		$_SESSION['uScoolClass']="";
 		$_SESSION['FacebookId'] = NULL;
 		$_SESSION['FacebookName'] = NULL;
 		$_SESSION['FacebookEmail'] =  NULL;
-		
 	}
 	
 	/**
 	 * a user is logged on
 	 */
 	function userIsLoggedOn() {
-		return ( isset($_SESSION['UID']) && $_SESSION['UID']>0 );		
+		return ( isset($_SESSION['uId']) && $_SESSION['uId']>-1 );	
+			
 	}
 	
 	/**
 	 * user is loggen in and he is an admin
 	 */
 	function userIsAdmin() {
-		if (isset($_SESSION['ADMIN'])) 
-			return (strncasecmp($_SESSION['ADMIN'],"admin",5)==0);
+		if (isset($_SESSION['uRole'])) 
+			return strpos($_SESSION['uRole'],"admin")===0;
 		else 
 			return false;
-		
 	}
 	
 	/**
 	 * user is logged in and he is an editor
 	 */
 	function userIsEditor() {
-		if (isset($_SESSION['ADMIN']))
-			return (strncasecmp($_SESSION['ADMIN'],"editor",6)==0);
-		else
+		if (isset($_SESSION['uRole']) && getAktDatabaseName()==getUserDatabaseName()) 
+			return strpos($_SESSION['uRole'],"editor")===0;
+		else 
 			return false;
 	}
+
 	
 	/**
 	 * user is logged in and he is an viewer
 	 */
 	function userIsViewer() {
-		if (isset($_SESSION['ADMIN']))
-			return (strncasecmp($_SESSION['ADMIN'],"viewer",6)==0);
-		else
+		if (isset($_SESSION['uRole'])) 
+			return strpos($_SESSION['uRole'],"viewer")===0;
+		else 
 			return false;
 	}
 	
@@ -139,7 +161,7 @@ function checkUserNameExists($id,$userName) {
 
 	$data=readUserAuthDB();
 
-	$actDataBase=$_SESSION['scoolClass'].$_SESSION['scoolYear'];
+	$actDataBase=getUserDatabaseName();
 	foreach ($data as $person) {
 		if ((strcasecmp($userName,$person['user'])==0)) {		//same username found
 			if ( !(($person["id"]==$id) && ($actDataBase==$person["scoolClass"].$person["scoolYear"])))  { 		//and username is not in the same record
@@ -217,7 +239,7 @@ function checkUserNameExists($id,$userName) {
 	function saveLogInInfo($user,$uid,$cuser,$cpassw,$result) {
 		$file=fopen("login.log","a");
 		if ($result) $res="true"; else $res="false";
-		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".$_SESSION['scoolYear'].$_SESSION['scoolClass']."\t".$res."\t".$uid."\t".$user."\t".$cuser."\t".$cpassw."\r\n");
+		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".getAktDatabaseName()."\t".$res."\t".$uid."\t".$user."\t".$cuser."\t".$cpassw."\r\n");
 		
 	}
 	

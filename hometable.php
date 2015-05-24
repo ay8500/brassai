@@ -1,11 +1,8 @@
 <?PHP 
 include("homemenu.php");
 
-//Change scool year and class if parameters are there 
-if (isset($_GET['scoolYear']))   { $_SESSION['scoolYear']=$_GET['scoolYear']; } 
-if (isset($_GET['scoolClass']))  { $_SESSION['scoolClass']=$_GET['scoolClass']; }
 
-$SiteTitle=$_SESSION['scoolYear']."-".$_SESSION['scoolClass'];
+$SiteTitle=getAktScoolYear()."-".getAKtScoolClass();
    //Parameter guests
    if (isset($_GET["guests"])) $guests = true; else $guests=false;
 	if ( $guests )
@@ -24,17 +21,18 @@ include_once("data.php");
 
 <table style="text-align:cleft;width:100%;" ><tr><td>
 <?php
-	
+
+openDatabase(getAktDatabaseName());
+
 foreach ($data as $l => $d)	
 { 
-	if (	(  $guests && (($d["admin"]=="viewer") || ($d["admin"]=="editor"))) || 
-			( !$guests &&  ($d["admin"]=="") )										) { 
+	if ( $guests== (strpos($d["admin"],"guest")===0 ) ) {
 		if ( userIsAdmin() || userIsEditor()) {
 			$personLink='editDiak.php?uid='.$d["id"];
 		}
 		else {
-			if (isset($_SESSION['UID']) && $_SESSION['UID']==$d["id"]) 
-				$personLink="editDiak.php";
+			if (getLoggedInUserId()==$d["id"]) 
+				$personLink="editDiak.php?uid=".$d["id"];
 			else { 
 				if ($_SERVER["SERVER_NAME"]=="localhost")
 					$personLink='editDiak.php?uid='.$d["id"];

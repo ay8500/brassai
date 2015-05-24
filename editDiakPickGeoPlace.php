@@ -1,5 +1,5 @@
 <?PHP
-	if ( userIsAdmin() || (userIsLoggedOn() && $uid==$_SESSION['UID'])) {
+	if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 ?>
 	<div id="map_canvas" style="width: 100%x; height: 400px;"></div>
 	<table class="editpagetable">

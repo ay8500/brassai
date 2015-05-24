@@ -5,36 +5,26 @@
 		$file=fopen("facebooklogin.log","a");
 		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".print_r($_SESSION,true)."\r\n");
 	}
-	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) { 
-		header("Location: index.php");
-	}	
 	$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
 	
 	include_once 'ltools.php';
 	include_once 'data.php';
+	
 	$scoolYear=getParam("scoolYearFb","");
 	$scoolClass=getParam("scoolClassFb","");
-	if ($scoolYear!="" && $scoolClass!="") {
-		setScoolYear($scoolYear);
-		setScoolClass($scoolClass);
-		openDatabase(getDatabaseName());
-	}
-	 
+	
 	$userId=getIntParam("userId",-1);
 	if ($userId>=0) {
 		$person = getPerson($userId);
 		$person["facebookid"]= $_SESSION["FacebookId"];
 		savePerson($person);
-		
-		//$data[$userId]["facebookid"] = $_SESSION["FacebookId"];
-		//saveDB();
 	}
 
 	include("homemenu.php"); 
 ?>
 <div class="sub_title">Bejelentkezés</div>
 <?PHP 
-if (isset($_SESSION['UID'])&&($_SESSION['UID']>0)) { 
+if (userIsLoggedOn()) { 
 	$person=getPersonLogedOn();
 ?>
 <div style="text-align:left">
@@ -82,7 +72,9 @@ else {
 	?>
 		<div class="sub_title" style="color:red">Sajnos a bejelentkezés nem sikerült. </div>
 		<div style="text-align:center">Lehetséges rosszul írtad be a beceneved vagy lejszavad. Probálkozz még egyszer!</div>
-	<?php }
+		<?php 
+		include("lostPassw.php");
+		}
 	elseif (isset($_GET["action"]) && ($_GET["action"]=="lostpassw")) {
 		include("lostPassw.php");
 	} elseif ($facebook) { 

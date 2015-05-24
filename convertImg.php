@@ -1,17 +1,21 @@
 <?php
+include_once 'sessionManager.php';
+//are we in a session?
+if ( !isset($_SESSION['lastReq']) ) {
+	http_response_code(401);
+	echo("Access not allowed!");
+	exit;
+}
 Header ("Content-type: image/png"); 
-include_once("sessionManager.php");
 include_once 'data.php';
 include_once 'ltools.php';
 
-//we are in a session
-if (!isset($_SESSION['scoolYear'])) exit;
 
 //file Name
 $file_name = getParam("file", "");
 $data = explode("-",$file_name);
 if ($file_name=="") exit; 
-$file_name="images/".getDatabaseName()."/p".$file_name.".jpg";
+$file_name="images/".getAktDatabaseName()."/p".$file_name.".jpg";
 
 
 if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = 200;
@@ -74,7 +78,7 @@ else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
 //visibility
-$picture = loadPictureAttributes(getDatabaseName(),$data[0],$data[1]);
+$picture = loadPictureAttributes(getAktDatabaseName(),$data[0],$data[1]);
 
 if (($picture["visibleforall"]!="true" && !userIsLoggedOn()) || ($picture["deleted"]=="true" && !userIsAdmin()) ) {
 	

@@ -17,11 +17,11 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 	}
 	else {
 		//Save only one record
-		if (isset($_SESSION['UID']) && $_SESSION['UID']>0)  {
+		if (userIsLoggedOn())  {
 			for ($i=0;$i<sizeof($fields);$i++) {
-				$vote[$fields[$i]]=$_GET[$fields[$i]."_".$_SESSION['UID']];
+				$vote[$fields[$i]]=$_GET[$fields[$i]."_".getLoggedInUserId()];
 			}
-			setVote($_SESSION['UID'],$vote);
+			setVote(getLoggedInUserId(),$vote);
 		}
 	}
 }
@@ -31,7 +31,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 <div style="text-align:center;">
 	<b>A 30 éves talákozonk 2015 ben lesz megtartva.</b>
 	Légyszíves
-	<?PHP if (!((isset($_SESSION['UID']))&&($_SESSION['UID']>0))) echo(' jelenkezz be '); ?> 
+	<?PHP if (!userIsLoggedOn()) echo(' jelenkezz be '); ?> 
 	és töltsd ki a táblázatot egyszerübb organizáció miatt.
 </div>
 	
@@ -45,7 +45,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		$vote=getVote($l);
 		if ($k) { $k=false; echo('<tr>'); } else { $k=true; echo('<tr style="background-color:#eedddd">');}
 		echo('<td>'.$d["lastname"].' '.$d["firstname"]);if ($d["birthname"]) echo(' ('.$d["birthname"].')'); echo('</td>');
-		if ( userIsAdmin() || userIsEditor() || (isset($_SESSION['UID']) && ($_SESSION['UID']==$l)) ) {
+		if ( userIsAdmin() || userIsEditor() ) {
 			echo("\r\n".'<td><input style="text" size="19" name="date_'.$l.'" value="'.$vote["date"].'"</td>');
 			echo('<td><input style="text" size="4" name="class_'.$l.'" value="'.$vote["class"].'"</td>');
 			echo('<td><input style="text" size="4" name="cemetery_'.$l.'" value="'.$vote["cemetery"].'"</td>');
