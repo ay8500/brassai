@@ -7,19 +7,6 @@
 <?php
 	include_once("sessionManager.php");
 
-	//Change scool year and class if parameters are there
-	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
-	if (isset($_GET['scoolClass']))  { setAktScoolClass($_GET['scoolClass']); }
-	
-	if (isset($_GET['key']))   {
-		$login = explode("-", encrypt_decrypt("decrypt", $_GET['key']));
-		if (sizeof($login)==3) {
-			setAktScoolClass($login[0]);
-			setAktScoolYear($login[1]);
-			$diak=getPerson($login[2],getAktDatabaseName());
-			setUserInSession("", $diak["user"],$login[2] , $login[1], $login[0]);
-		}
-	}
 	
 	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	include_once("config.php");

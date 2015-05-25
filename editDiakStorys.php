@@ -61,7 +61,7 @@
 			</div>
 			<?php } ?> 
 	<?php }  ?>
-	<div style="margin-top:10px; padding:5px;background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></div>
+	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxStatus"></div>
 </div>
 
 
@@ -82,6 +82,7 @@
 			type:"POST",
 			dataType: 'json',
 			success:function(data){
+			    $('#ajaxStatus').css("background-color","lightgreen");
 				$('#ajaxStatus').html(' Kimetés sikerült. ');
 				$('#ajaxStatus').show();
 				setTimeout(function(){
@@ -99,6 +100,7 @@
 		$.ajax({
 			url:"editDiakStoryMoreInfoRequest.php?title=<?php echo $title?>&tab=<?php echo $tab?>&code="+$("#code").val()+"&name="+$("#name").val(),
 			success:function(data){
+			    $('#ajaxStatus').css("background-color","lightgreen");
 				$('#ajaxStatus').html(' Üzenet sikeresen elküldve. ');
 				$('#ajaxStatus').show();
 				setTimeout(function(){

@@ -84,7 +84,7 @@ function sendTheMail($recipient,$text,$subject="") {
 	$empfaengerCC = array('');
 
 	/* recipient BCC */
-	$empfaengerBCC = array('<brassai@blue-l.de>');
+	$empfaengerBCC = array('brassai@blue-l.de');
 
 	/* sender */
 	$absender = 'brassai<brassai@blue-l.de>';
@@ -118,7 +118,7 @@ function sendTheMail($recipient,$text,$subject="") {
 	$empfaengerCCString = implode(',', $empfaengerCC);
 	$empfaengerBCCString = implode(',', $empfaengerBCC);
 
-	$headers .= 'Cc: ' . $empfaengerCCString . "\r\n";
+	//$headers .= 'Cc: ' . $empfaengerCCString . "\r\n";
 	$headers .= 'Bcc: ' . $empfaengerBCCString . "\r\n";
 
 	return mail($empfaengerString, $subject, $message, $headers);

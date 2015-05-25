@@ -67,19 +67,35 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 			<a href="getExcelData.php?data=All" target="excel">Összes adatok letöltése Excel formátumban</a>
 		</p>
 		<div><table >
-		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>Becenév</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
+		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>Becenév</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>Datum</td></tr>
 		<?PHP
-		for ($l=1;$l<=getDataSize();$l++) {
-			$d=getPerson($l);
-			if (($l % 2) ==0) 
-				echo '<tr style="background-color:#f8f8f8">';
-			else
-				echo '<tr style="background-color:#e8f0f0">';
-			echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font></td><td>".getFieldValue($d["user"])."</td><td>";
-			echo "<a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a>";
-			echo "<td>".getFieldValue($d["phone"])."</td><td>".getFieldValue($d["mobil"])."</td><td>".getFieldValue($d["skype"])."</td><td>".getFieldValue($d["ip"])."</td><td>".getFieldValue($d["date"])."</td>";
-			echo "</td></tr>";
+		for ($l=0;$l<sizeof($data);$l++) {
+			$d=$data[$l];
+			if (!(strpos($d["admin"],"guest")===0)) {
+				if (($l % 2) ==0) 
+					echo '<tr style="background-color:#f8f8f8">';
+				else
+					echo '<tr style="background-color:#e8f0f0">';
+				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font></td><td>".getFieldValue($d["user"])."</td><td>";
+				echo "<a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a>";
+				echo "<td>".getFieldValue($d["phone"])."</td><td>".getFieldValue($d["mobil"])."</td><td>".getFieldValue($d["skype"])."</td><td>".getFieldValue($d["date"])."</td>";
+				echo "</tr>";
+			}
 		
+		}
+		echo("<tr><td>Vendégek, Tanárok</td></tr>");
+		for ($l=0;$l<sizeof($data);$l++) {
+			$d=$data[$l];
+					if ((strpos($d["admin"],"guest")===0)) {
+				if (($l % 2) ==0) 
+					echo '<tr style="background-color:#f8f8f8">';
+				else
+					echo '<tr style="background-color:#e8f0f0">';
+				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font></td><td>".getFieldValue($d["user"])."</td><td>";
+				echo "<a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a>";
+				echo "<td>".getFieldValue($d["phone"])."</td><td>".getFieldValue($d["mobil"])."</td><td>".getFieldValue($d["skype"])."</td><td>".getFieldValue($d["date"])."</td>";
+				echo "</tr>";
+			}		
 		}
 		?>
 		</table></div>
@@ -87,7 +103,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 	
 	
 	<?PHP if ($tabOpen==2) {?>
-		<table style="width:70%;border-collapse:collapse" align="center" >
+		<table   >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
 		<?PHP
 		foreach ($data as $idx => $d) {

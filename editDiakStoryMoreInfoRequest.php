@@ -1,19 +1,22 @@
 <?php
 include_once 'sessionManager.php';
 include_once 'ltools.php';
+
+$code = getParam("code", "+");
+
+if ($code!=$_SESSION['SECURITY_CODE']) {
+	http_response_code(400);
+	echo ("Biztonságí cód nem helyes. Probáld még egyszer!");
+	return;
+}
+
 include_once 'data.php';
 include_once 'sendMail.php';
 
 $title = getParam("title", "");
 $tab = getParam("tab", "");
 $name = getParam("name", "");
-$code = getParam("code", "");
 
-if ($code!=$_SESSION['SECURITY_CODE']) {
-	http_response_code(401);
-	echo ("Biztonságí cód nem helyes. Probáld még egyszer!");
-	return;
-}
 
 if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) && $_SESSION["MoreRequestUid"]!=getAktUserId()) ) {
 
@@ -34,8 +37,9 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$text .="Légyszíves szakíts két perc időt és egészítsd ki az oldalt egy egyszerü kattintással a következö linkre.";
 	$text .='<a href="http://brassai.blue-l.de/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />'; 
 	$text .='Üdvözlettel '.$name;
-	
-	if (!sendTheMail($diak["email"],$text," Kérés kiegészítésre.")) {
+
+	sendTheMail("brassai@blue-l.de",$text," Kérés kiegészítésre."); 
+	if (!sendTheMail(getFieldValue($diak["email"]),$text," Kérés kiegészítésre.")) {
 		http_response_code(400);
 		echo ("Üzenet küldése sajnos nem sikerült. Probákozz késöbb újból.");
 		return;

@@ -296,6 +296,7 @@ if ($tabOpen==6) {
 //************** pictures
 if ($tabOpen==1) { 
 	include("editDiakPictures.php");
+	return ;
 }
 
 //*************** change geo place

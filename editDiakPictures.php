@@ -1,66 +1,3 @@
-<script type="text/javascript">
-	function deletePicture(uid,id) {
-    	if (confirm("Szeretnéd törölni a képet? Ha akarod akkor beáliíthatod, hogy egyes képeket csak az osztálytársaid lássák."))
-    		window.location.href="editDiak.php?tabOpen=1&action=deletePicture&id="+id+"&uid="+uid;    
-	}
-
-	function changeVisibility(uid,id) {
-		var c = $('#visibility'+id).attr('checked');
-		$.ajax({
-			url:"editDiakPictureVisibility.php?id="+id+"&attr="+c+"&uid="+uid,
-			type:"GET",
-			success:function(data){
-				$('#ajaxStatus').html(' Kimetés sikerült. ');
-				$('#ajaxStatus').show();
-				setTimeout(function(){
-				    $('#ajaxStatus').html('');
-				    $('#ajaxStatus').hide();
-				}, 2000);
-			},
-	    });
-	       
-   }
-
-	function clickRadio(id) {
-	    $('#pTitle').val($('#pTitle'+id).html());
-	    $('#pComment').val($('#pComment'+id).html());
-	}
-	
-	function changeTitle(uid) {
-		var t = $('#pTitle').val();
-		var c = $('#pComment').val();
-		var id = $('input[name=pictureid]:checked', '#formRadio').val();
-		if (id>0) {
-			$.ajax({
-				url:"editDiakPictureTitle.php?id="+(id-1)+"&title="+t+"&comment="+c+"&uid="+uid,
-				type:"GET",
-				dataType: 'json',
-				success:function(data){
-				    $('#pTitle'+data.id).html(data.title);
-				    $('#pComment'+data.id).html(data.comment);
-				    $('#pTitle').val( $('#pTitle'+data.id).html());
-					$('#pComment').val($('#pComment'+data.id).html());
-					$('#ajaxStatus').html(' Kimetés sikerült. ');
-					$('#ajaxStatus').show();
-					setTimeout(function(){
-					    $('#ajaxStatus').html('');
-					    $('#ajaxStatus').hide();
-					}, 2000);
-}
-			});
-		}
-	       
-	}
-
-	function showPicture(picture) {
-	    $('#pictureViewer').show('slow');
-	    var url = "convertImg.php?width=1024&file="+picture;
-	    $('#pictureToView').attr('src',url);
-	}
-   
-</script>
-
-
 <table class="editpagetable">
 	<tr><td colspan="3" style="text-align:center"><?PHP echo( $resultDBoperation ) ?></td></tr>
 	<?php if (isAktUserTheLoggedInUser() ) :?>
@@ -74,6 +11,8 @@
 		foreach ($pictures as $pict) {
 			if (   (   (userIsLoggedOn() || $pict["visibleforall"]=="true") && $pict["deleted"]!="true")  || userIsAdmin() ) {
 				$file=$uid."-".$pict["id"];
+				$checked="";
+				if ($pict["visibleforall"]=="true") $checked="checked";
 	?>
 			<div style="padding: 10px; display: inline-block;border-radius: 5px;border-style: outset; vertical-align: top;border-width: 1px">
 			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php  echo $file ?>');" >
@@ -86,11 +25,7 @@
 				<br />
 				<br />
 				<br />
-				<?php if ($pict["visibleforall"]=="true" ):?>
-					<div class="borderbutton borderbuttonworld" ><input checked type="checkbox"  onchange="changeVisibility('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
-				<?php else: ?>
-					<div class="borderbutton borderbuttonworld" ><input  type="checkbox"  onchange="changeVisibility('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
-				<?php endif ?>
+				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
 				<br />
 				<br />
 				<?php if ($pict["deleted"]!="true"): ?>
@@ -146,5 +81,76 @@
 	<br>
 	<input type="button" value="Bezár" onclick="$('#pictureViewer').hide('slow');">
 </div>
+<?php include 'homefooter.php';?>
 
+<script type="text/javascript">
+
+	$(function() {
+		$(document).keyup(function(e) {
+		    if (e.keyCode == 27)  
+	    		$('#pictureViewer').hide('slow');
+		});
+	});
+
+	function deletePicture(uid,id) {
+    	if (confirm("Szeretnéd törölni a képet? Ha akarod akkor beáliíthatod, hogy egyes képeket csak az osztálytársaid lássák."))
+    		window.location.href="editDiak.php?tabOpen=1&action=deletePicture&id="+id+"&uid="+uid;    
+	}
+
+	function changeVisibility(uid,id) {
+		var c = $('#visibility'+id).prop('checked');
+		$.ajax({
+			url:"editDiakPictureVisibility.php?id="+id+"&attr="+c+"&uid="+uid,
+			type:"GET",
+			success:function(data){
+				$('#ajaxStatus').html(' Kimetés sikerült. ');
+				$('#ajaxStatus').show();
+				setTimeout(function(){
+				    $('#ajaxStatus').html('');
+				    $('#ajaxStatus').hide();
+				}, 2000);
+			},
+	    });
+	       
+   }
+
+	function clickRadio(id) {
+	    $('#pTitle').val($('#pTitle'+id).html());
+	    $('#pComment').val($('#pComment'+id).html());
+	}
+	
+	function changeTitle(uid) {
+		var t = $('#pTitle').val();
+		var c = $('#pComment').val();
+		var id = $('input[name=pictureid]:checked', '#formRadio').val();
+		if (id>0) {
+			$.ajax({
+				url:"editDiakPictureTitle.php?id="+(id-1)+"&title="+t+"&comment="+c+"&uid="+uid,
+				type:"GET",
+				dataType: 'json',
+				success:function(data){
+				    $('#pTitle'+data.id).html(data.title);
+				    $('#pComment'+data.id).html(data.comment);
+				    $('#pTitle').val( $('#pTitle'+data.id).html());
+					$('#pComment').val($('#pComment'+data.id).html());
+					$('#ajaxStatus').html(' Kimetés sikerült. ');
+					$('#ajaxStatus').show();
+					setTimeout(function(){
+					    $('#ajaxStatus').html('');
+					    $('#ajaxStatus').hide();
+					}, 2000);
+}
+			});
+		}
+	       
+	}
+
+	function showPicture(picture) {
+	    var url = "convertImg.php?width=1024&file="+picture;
+	    $('#pictureToView').attr('src',url);
+	    $('#pictureViewer').show('slow');
+	    
+	}
+   
+</script>
 

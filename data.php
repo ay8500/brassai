@@ -138,11 +138,22 @@ function getPersonIdx($id) {
 }
 
 /**
- * returns user id from logged in user
+ * returns logged in person
  */
 function getPersonLogedOn() {
 	if ( null!=getLoggedInUserId())  { 
 		return getPerson(getLoggedInUserId(),getUserDatabaseName());
+	} else {
+		return getPersonDummy();
+	}
+}
+
+/**
+ * returns aktual person
+ */
+function getAktPerson() {
+	if ( null!=getAktUserId())  {
+		return getPerson(getAktUserId(),getAktDatabaseName());
 	} else {
 		return getPersonDummy();
 	}
@@ -248,8 +259,10 @@ function readDB()
 			$data[$id][$key]=$val;
 		fclose($file);
 	}
+	/*
 	else 
 		echo("Error:open database ".$dataFileName);
+	*/
 }
 
 
@@ -287,8 +300,10 @@ function readUserAuthDB()
 			}
 			fclose($file);
 		}
+		/*
 		else 
 			echo("Error:open database ".$dataFileName);
+		*/
 	}
 	return $data;
 }
