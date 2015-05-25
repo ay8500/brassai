@@ -63,7 +63,7 @@ function SendMail($uid,$text,$userData) {
 		
 		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
 		$text=str_replace("\"","&quot;",$text);
-		$text.='<hr/><p>Direkt link az én adataimhoz:<a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
+		$text.='<hr/><p>Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
 		if ($userData) {
 			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".$diak["passw"]."<br/></p>";
 		}
