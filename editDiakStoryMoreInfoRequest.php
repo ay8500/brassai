@@ -17,8 +17,7 @@ if ($code!=$_SESSION['SECURITY_CODE']) {
 
 if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) && $_SESSION["MoreRequestUid"]!=getAktUserId()) ) {
 
-	//TODO
-	//$_SESSION["MoreRequestUid"]=getAktUserId();
+	$_SESSION["MoreRequestUid"]=getAktUserId();
 	$row = array();
 	$row["userId"] = getAktUserId();
 	$row["year"] = getAktScoolYear();
@@ -30,15 +29,13 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$key=generateAktUserLoginKey();
 	
 	$text="Kedves ".$diak["lastname"]." ".$diak["firstname"].",<br /><br />";
-	$text .="ezt az üzenetet Brassai Sámuel liceum végzős diakjai honoldaláról azért kaptad, mert ".$name;
-	$text .="szertné ha többet olvashatna rólad a ".$title." oldalon.<br />< br/>";
+	$text .="ezt az üzenetet a -Brassai Sámuel liceum végzős diakjai- honoldaláról azért kaptad, mert ".$name;
+	$text .=" szertné ha többet olvashatna rólad az -".$title."- oldalon.<br /><br />";
 	$text .="Légyszíves szakíts két perc időt és egészítsd ki az oldalt egy egyszerü kattintással a következö linkre.";
 	$text .='<a href="http://brassai.blue-l.de/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />'; 
 	$text .='Üdvözlettel '.$name;
 	
-	//TODO
-	//$diak["email"]
-	if (!sendTheMail("levi@blue-l.de",$text,$title)) {
+	if (!sendTheMail($diak["email"],$text," Kérés kiegészítésre.")) {
 		http_response_code(400);
 		echo ("Üzenet küldése sajnos nem sikerült. Probákozz késöbb újból.");
 		return;
@@ -50,6 +47,6 @@ else {
 	echo ("Ennek a felhasználonak már küldtél üzenetet!");
 	return;
 }
-header('Content-Type: application/json');
-echo(json_encode($row));
+
+echo($text);
 ?>

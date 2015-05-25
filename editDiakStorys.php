@@ -4,13 +4,13 @@
 	
 	$tab=getIntParam("tabOpen", 0);
 	if ($tab==2) {
-		$title="Rövid életrajzom: továbbképzések munkahelyek.";
+		$title="Rövid életrajzom: továbbképzések munkahelyek";
 		$type="cv";
 	} elseif ($tab==3) {
-		$title="Kedvenc diákkori történetek.";
+		$title="Kedvenc diákkori történetek";
 		$type="story";
 	} elseif ($tab==4) {
-		$title="Ezt szeretem csinálni szabadidőmben.";
+		$title="Ezt szeretem csinálni szabadidőmben";
 		$type="spare";
 	} 
 	$text =loadTextData(getAktDatabaseName(), $uid, $type);
@@ -47,6 +47,8 @@
 		if ($okText!=null)
 			echo $okText;
 		else { 
+			$name="";
+			if (userIsLoggedOn()) $name=getPersonLogedOn()["user"];
 			?>
 			Ez az oldal jelenleg üres.<br />
 			Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
@@ -54,7 +56,7 @@
 				Biztonsági kód: <input id="code" type="text" size="6" value="" default="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
 			</div>
 			<div style="margin:15px">
-				Nevem: <input id="name" type="text" value="" default="Név">
+				Nevem: <input id="name" type="text" value="<?php echo $name ?>" default="Név">
 				<input id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
 			</div>
 			<?php } ?> 
