@@ -12,8 +12,8 @@ class SecurityImage
 		$text = "",
 		$num_dots,	// Num of noise dots to add
 		$chars = array("a","A","b","B","C","d","D","e","E","f","F","g","G","h","H","J",
-			   "K","L","m","M","n","N","P","Q","r","R","t","T","?","%","+","!","*","#","§",
-			   "U","V","W","X","Y","Z","1","2","3","4","5","6","7","8","9");
+			   "K","L","m","M","n","N","P","Q","r","R","t","T",
+			   "U","W","X","Y","Z","1","2","3","4","5","6","7","8","9");
 	
 		/**
 		 * Constructor, setup initial values.

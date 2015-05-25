@@ -291,8 +291,10 @@ function readUserAuthDB()
 			echo("Error:open database ".$dataFileName);
 	}
 	return $data;
-
 }
+
+
+
 
 /**
  *Save the databe to file 
@@ -675,13 +677,18 @@ function getFieldAccessValue($field) {
 		return getFieldValue($field);
 	else {
 		$len = strlen($field)/3;
-		if ($len>200) $len=200;
-		$ret = substr(getFieldValue($field),0,$len)."...<br /><br />A szöveg többi része védve van.<br />";
-		if (getFieldCheckedClass($field)=="checked") 
-			$ret =$ret."A Teljes szöveget csak bejelentkezek osztálytársak láthatják.";
-		if (getFieldCheckedScool($field)=="checked") 
-			$ret =$ret."A Teljes szöveget csak bejelentkezek iskolatársak láthatják.";
-		return $ret;
+		if ($len==0) {
+			return null;	
+		}
+		else {
+			if ($len>200) $len=200;
+			$ret = substr(getFieldValue($field),0,$len)."...<br /><br />A szöveg többi része védve van.<br />";
+			if (getFieldCheckedClass($field)=="checked") 
+				$ret =$ret."A Teljes szöveget csak bejelentkezek osztálytársak láthatják.";
+			if (getFieldCheckedScool($field)=="checked") 
+				$ret =$ret."A Teljes szöveget csak bejelentkezek iskolatársak láthatják.";
+			return $ret;
+		}
 	}
 }
 

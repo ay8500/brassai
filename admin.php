@@ -47,7 +47,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 			foreach ($data as $l => $d) {
 				echo('<div style="display:inline-block; margin-right:10px">');
 				if (strlen($d["email"])>2) 
-					echo('<input type="checkbox" name="D'.$l.'" checked />');
+					echo('<input type="checkbox" name="D'.$d["id"].'" checked />');
 				echo($d["lastname"].'&nbsp;'.$d["firstname"].' ');
 				echo("</div>");
 			}

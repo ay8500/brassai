@@ -22,7 +22,7 @@ function SendNewPassword($uid) {
 	global $sendMailMsg;
 	$diak = getPerson($uid);
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
-	$text.="Ezt az e-mail azért kapod mert kérésedre megvátoztak a bejelentkezési adataid.<br />";
+	$text.="Ezt az e-mail azért kapod mert kérdésedre megvátoztak a bejelentkezési adataid.<br />";
 	$text.="<p>";
 	$text.="Végzős osztály:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
 	$text.="Becenév:".$diak["user"]."<br/>";
@@ -30,7 +30,7 @@ function SendNewPassword($uid) {
 	$text.="</p><p>";
 	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vézös diákok honlapja</a>';
 	$text.="</p>";
-	$text.="<p>Üdvözlettel az adminsztátor.";
+	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendTheMail(getFieldValue($diak["email"]),$text);
 }
 
@@ -63,7 +63,10 @@ function SendMail($uid,$text,$userData) {
 		
 		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
 		$text=str_replace("\"","&quot;",$text);
-		$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".$diak["passw"]."<br/></p>";
+		$text.='<hr/><p>Direkt link az én adataimhoz:<a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
+		if ($userData) {
+			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".$diak["passw"]."<br/></p>";
+		}
 		sendTheMail(getFieldValue($diak["email"]),$text);
 		//echo($text);
 		$sendMailCount++;
@@ -81,7 +84,7 @@ function sendTheMail($recipient,$text,$subject="") {
 	$empfaengerCC = array('');
 
 	/* recipient BCC */
-	$empfaengerBCC = array('');
+	$empfaengerBCC = array('<brassai@blue-l.de>');
 
 	/* sender */
 	$absender = 'brassai<brassai@blue-l.de>';
@@ -95,6 +98,7 @@ function sendTheMail($recipient,$text,$subject="") {
 	/* Nachricht */
 	$message = '<html>
 	    <head>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	        <title>Brassai Samuel Liceum Vendiakok Honlapja</title>
 	    </head>
 	    <body>'.$text.'
@@ -103,21 +107,21 @@ function sendTheMail($recipient,$text,$subject="") {
 	';
 
 	// build mail header 
-	$headers = 'From:' . $absender . "\n";
-	$headers .= 'Reply-To:' . $reply . "\n"; 
-	$headers .= 'X-Mailer: PHP/' . phpversion() . "\n"; 
-	$headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\n"; 
-	$headers .= "Content-type: text/html\n";
+	$headers = 'From:' . $absender . "\r\n";
+	$headers .= 'Reply-To:' . $reply . "\r\n"; 
+	$headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n"; 
+	$headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n"; 
+	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
 	// extract mail recipients
 	$empfaengerString = implode(',', $empfaenger);
 	$empfaengerCCString = implode(',', $empfaengerCC);
 	$empfaengerBCCString = implode(',', $empfaengerBCC);
 
-	$headers .= 'Cc: ' . $empfaengerCCString . "\n";
-	$headers .= 'Bcc: ' . $empfaengerBCCString . "\n";
+	$headers .= 'Cc: ' . $empfaengerCCString . "\r\n";
+	$headers .= 'Bcc: ' . $empfaengerBCCString . "\r\n";
 
-	mail($empfaengerString, $subject, $message, $headers);
+	return mail($empfaengerString, $subject, $message, $headers);
 }
 
 /**

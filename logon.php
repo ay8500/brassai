@@ -64,11 +64,11 @@
 			else
 				$logOnMessage=getTextRes("LogInNewPasswNotEQ");
 		}
-		sendTheMail('code@blue-l.de',
+		/*sendTheMail('code@blue-l.de',
 			"<h2>Change Password</h2>".
 			"Datenbank:".getUserDatabaseName()."<br/>".
 			"Name:".$paramName."<br/>",
-			"Login result:".$logOnMessage," Change Password");
+			"Login result:".$logOnMessage," Change Password");*/
 	}
 
 function writeLogonBox() {

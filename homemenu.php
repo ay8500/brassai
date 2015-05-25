@@ -10,7 +10,17 @@
 	//Change scool year and class if parameters are there
 	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
 	if (isset($_GET['scoolClass']))  { setAktScoolClass($_GET['scoolClass']); }
-
+	
+	if (isset($_GET['key']))   {
+		$login = explode("-", encrypt_decrypt("decrypt", $_GET['key']));
+		if (sizeof($login)==3) {
+			setAktScoolClass($login[0]);
+			setAktScoolYear($login[1]);
+			$diak=getPerson($login[2],getAktDatabaseName());
+			setUserInSession("", $diak["user"],$login[2] , $login[1], $login[0]);
+		}
+	}
+	
 	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	include_once("config.php");
 	include_once("logon.php");
@@ -122,11 +132,14 @@
 			</tr>
 		</table>
 	<hr />
-	<?php echo getTextRes("Like") ?><br /><br />
+	<?php //echo getTextRes("Like") ?>
+	<?php  /*
+	<br /><br />
 	<g:plusone size="medium"></g:plusone>
 	<br /><br />
-	<div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="box_count" data-action="like" data-show-faces="false" data-share="true"></div>
+	<div class="fb-like" data-href="http://brassai.blue-l.de/hometable.php" data-layout="box_count" data-action="like" data-show-faces="false" data-share="true"></div>
 	<hr />
+	*/ ?>
 	<?PHP 
 		writeLogonBox(); 
 		foreach ($SupportedLang as $Language) {

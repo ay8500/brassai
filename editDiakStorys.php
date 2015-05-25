@@ -22,7 +22,7 @@
 	<form id="stroryForm" onsubmit="saveStory(); return false;">
 	<fieldset>
 		<textarea id="story" style="visibility:hidden; height:400px;" >
-
+<?php echo getFieldValue($text); ?>
 		</textarea>
 	</fieldset>
 	<br/>
@@ -34,19 +34,35 @@
 		</div> 
 		<div class="radiogroup">
 			<div style="display: inline-block; padding:5px" >
-				Ulóljára módósítva:<br />
+				Utóljára módósítva:<br />
 				<?php echo getTextDataDate(getAktDatabaseName(), $uid, $type)?>
 			</div>
 			<div style="display: inline-block; padding:5px" >
 				<input type="submit" value="<?php echo getTextRes("Save");?>" />
 			</div>
 		</div>
-	    &nbsp; <span style="padding:3px; background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></span>
 	</form>
 	<?php } else {
-		echo getFieldAccessValue($text); 
-	 } ?>
+		$okText=getFieldAccessValue($text);
+		if ($okText!=null)
+			echo $okText;
+		else { 
+			?>
+			Ez az oldal jelenleg üres.<br />
+			Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
+			<div style="margin:15px">
+				Biztonsági kód: <input id="code" type="text" size="6" value="" default="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
+			</div>
+			<div style="margin:15px">
+				Nevem: <input id="name" type="text" value="" default="Név">
+				<input id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
+			</div>
+			<?php } ?> 
+	<?php }  ?>
+	<div style="margin-top:10px; padding:5px;background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></div>
 </div>
+
+
 
 <?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 <script type="text/javascript">
@@ -76,3 +92,27 @@
 	}
 </script>
 <?php endif ?>
+<script>
+	function sendMoreInfoRequest() {
+		$.ajax({
+			url:"editDiakStoryMoreInfoRequest.php?title=<?php echo $title?>&tab=<?php echo $tab?>&code="+$("#code").val()+"&name="+$("#name").val(),
+			success:function(data){
+				$('#ajaxStatus').html(' Üzenet sikeresen elküldve. ');
+				$('#ajaxStatus').show();
+				setTimeout(function(){
+				    $('#ajaxStatus').html('');
+				    $('#ajaxStatus').hide();
+				}, 2000);
+			},
+			error:function(data){
+			    $('#ajaxStatus').css("background-color","lightcoral");
+				$('#ajaxStatus').html(data.responseText);
+				$('#ajaxStatus').show();
+				setTimeout(function(){
+			    	$('#ajaxStatus').html('');
+			    	$('#ajaxStatus').hide();
+				}, 5000);
+			}
+		});
+	}
+</script>

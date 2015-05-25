@@ -30,7 +30,7 @@
 				removeformatPasted: true
 			});
 
-			$('#story').trumbowyg('html','<?php echo getFieldValue($text); ?>');
+			//$('#story').trumbowyg('html','');
 		});
 		</script>
 	<?php endif?>

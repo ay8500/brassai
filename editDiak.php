@@ -309,6 +309,5 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 
 
 include 'homefooter.php';
-
 ?>
 
