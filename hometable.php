@@ -26,7 +26,7 @@ openDatabase(getAktDatabaseName());
 
 foreach ($data as $l => $d)	
 { 
-	if ( $guests== (strpos($d["admin"],"guest")===0 ) ) {
+	if ( $guests == isPersonGuest($d) ) {
 		if ( userIsAdmin() || userIsEditor()) {
 			$personLink='editDiak.php?uid='.$d["id"];
 		}

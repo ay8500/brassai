@@ -4,10 +4,13 @@ include("homemenu.php");
 include_once("data.php");
 include_once("userManager.php");
 
+
 if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
+	openDatabase(getAktDatabaseName());
 	if ( userIsAdmin() ) {
 		include_once ("sendMail.php");
-		for($uid=1;$uid<=getDataSize()+1;$uid++) {
+		for($i=0;$uid<sizeof($data);$i++) {
+			$uid=$data[$i]["id"];
 			if (isset($_GET["D".$uid])) {
 				SendMail($uid, $_GET["T"],isset($_GET["U"]) );
 			}
@@ -36,14 +39,15 @@ Ide kell írni a szöveget....
 Üdvözlettel <?php $dd=getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
 <p>
-Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.getUScoolYear().'&scoolClass='.getUScoolClass());?>>A kolozsvári Brassai Sámuel líceum <?PHP echo(getUScoolYear());?>-ben végzett diákjainak <?PHP echo(getUScoolClass());?></a> honlapjáról kaptad.
+Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.getAktScoolYear().'&scoolClass='.getAktScoolClass());?>>A kolozsvári Brassai Sámuel líceum <?PHP echo(getAktScoolYear());?>-ben végzett diákjainak <?PHP echo(getAktScoolClass());?></a> honlapjáról kaptad.
 </p>
 		</textarea>
 		<input type="submit" class="submit2" value="E-Mail küldés!" />
 		<input type="button" class="submit2" value="Mindenkit megjelöl" onclick="checkUncheckAll(true);"/>
 		<input type="button" class="submit2" value="Megjelöléseket töröl" onclick="checkUncheckAll(false);"/>
 		<p>
-		<?PHP
+		<?php
+			openDatabase(getAktDatabaseName());
 			foreach ($data as $l => $d) {
 				echo('<div style="display:inline-block; margin-right:10px">');
 				if (strlen($d["email"])>2) 
@@ -60,7 +64,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 	<?PHP } ?>
 	
 	
-	<?PHP if ($tabOpen==1) {?>
+	<?php if ($tabOpen==1) { ?>
 		<p style="text-align:center">
 			<!---a href="getExcelData.php?data=Kontakt" target="excel">Kontaklista letöltése Excel formátumban</a>
 			&nbsp;|&nbsp;-->
@@ -69,9 +73,10 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 		<div><table >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>Becenév</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>Datum</td></tr>
 		<?PHP
+		openDatabase(getAktDatabaseName());
 		for ($l=0;$l<sizeof($data);$l++) {
 			$d=$data[$l];
-			if (!(strpos($d["admin"],"guest")===0)) {
+			if (!isPersonGuest($d)) {
 				if (($l % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
@@ -86,7 +91,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 		echo("<tr><td>Vendégek, Tanárok</td></tr>");
 		for ($l=0;$l<sizeof($data);$l++) {
 			$d=$data[$l];
-					if ((strpos($d["admin"],"guest")===0)) {
+					if (isPersonGuest($d)) {
 				if (($l % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
@@ -106,8 +111,9 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 		<table   >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td><td>IP</td><td>Datum</td></tr>
 		<?PHP
+		openDatabase(getAktDatabaseName());
 		foreach ($data as $idx => $d) {
-			if ($d['admin']=="admin" || $d['admin']=="editor") {
+			if (strstr($d['admin'],"admin")!="" || strstr($d['admin'],"editor")!="") {
 				if (($idx % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
@@ -123,7 +129,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 	<?PHP } ?>
 <?PHP } 
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";
+	echo '<div style="margin:40px;">Adat hozzáférési jog hiányzik!</div>';
 ?>
 </td></tr></table>
 <script language="JavaScript" type="text/javascript">

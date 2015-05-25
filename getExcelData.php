@@ -4,13 +4,14 @@ header("Content-Disposition: attachment; filename=diakok.xls");
 header("Pragma: no-cache");
 header("Expires: 0");
 include_once("data.php");  
+openDatabase(getAktDatabaseName());
 ?>
 <table>
 <tr style="background-color:#ffffcb;font-weight:bold;"><td>Sz.</td><td>Név</td><td>Feleség/férj neve</td><td>Cím</td><td>Email</td><td>Telefon</td><td>Mobil</td><td>Skype</td><td>Munkahely</td><td>Beosztás</td><td>Gyerekek</td></tr>
 		<?PHP
 		for ($l=0;$l<sizeof($data);$l++) {
 			$d=$data[$l];
-			if (!(strpos($d["admin"],"guest")===0)) {
+			if (!isPersonGuest($d)) {
 				if (($l % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
@@ -30,7 +31,7 @@ include_once("data.php");
 		echo("<tr><td>Vendégek, Tanárok</td></tr>");
 		for ($l=0;$l<sizeof($data);$l++) {
 			$d=$data[$l];
-			if ((strpos($d["admin"],"guest")===0)) {
+			if (isPersonGuest($d)) {
 				if (($l % 2) ==0)
 					echo '<tr style="background-color:#f8f8f8">';
 				else

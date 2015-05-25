@@ -7,6 +7,7 @@
 	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
 	if (isset($_GET['scoolClass']))  { setAktScoolClass($_GET['scoolClass']); }
 	
+	//Crypted loginkey
 	if (isset($_GET['key']))   {
 		$login = explode("-", encrypt_decrypt("decrypt", $_GET['key']));
 		if (sizeof($login)==3) {
@@ -14,7 +15,7 @@
 			setAktScoolYear($login[1]);
 			setAktUserId($login[2]);
 			$diak=getPerson($login[2],getAktDatabaseName());
-			setUserInSession("", $diak["user"],$login[2] , $login[1], $login[0]);
+			setUserInSession($diak["admin"], $diak["user"],$login[2] , $login[1], $login[0]);
 		}
 	}
 	
@@ -144,7 +145,7 @@
 	 */
 	function userIsAdmin() {
 		if (isset($_SESSION['uRole'])) 
-			return strpos($_SESSION['uRole'],"admin")===0;
+			return strstr($_SESSION['uRole'],"admin")!="";
 		else 
 			return false;
 	}
@@ -154,7 +155,7 @@
 	 */
 	function userIsEditor() {
 		if (isset($_SESSION['uRole']) && getAktDatabaseName()==getUserDatabaseName()) 
-			return strpos($_SESSION['uRole'],"editor")===0;
+			return strstr($_SESSION['uRole'],"editor")!="";
 		else 
 			return false;
 	}
@@ -165,7 +166,7 @@
 	 */
 	function userIsViewer() {
 		if (isset($_SESSION['uRole'])) 
-			return strpos($_SESSION['uRole'],"viewer")===0;
+			return strstr($_SESSION['uRole'],"viewer")!="";
 		else 
 			return false;
 	}

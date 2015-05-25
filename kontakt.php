@@ -6,6 +6,7 @@ include_once("UserManager.php");
 
 if (userIsAdmin()) {
 	include_once("data.php");
+	openDatabase(getAktDatabaseName());
 ?>
 <p style="text-align:center">
 	<a href="getExcelData.php?data=Kontakt">Kontaklista letöltése Excel formátumban</a>&nbsp;|&nbsp;
@@ -14,7 +15,7 @@ if (userIsAdmin()) {
 <table style="width:70%;border-collapse:collapse" align="center" >
 	<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td>Telefon</td><td>Mobiltelefon</td><td>Skype</td></tr>
 	<?PHP
-	for ($l=1;$l<=getDataSize();$l++) {
+	for ($l=0;$l<sizeof($data);$l++) {
 		$d=getPerson($l);
 		if (($l % 2) ==0) 
 			echo '<tr style="background-color:#f8f8f8">';

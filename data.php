@@ -183,20 +183,10 @@ function savePerson($person) {
 }
 
 /**
- * Returns the count of persons in the database 
- * administrators, editors and viewers not included
+ * is the person a guest
  */
-function getDataSize() {
-	global $data;
-	if (sizeof($data)==0) {
-		readDB();
-	}
-	$ret=0;
-	foreach($data as $person) {
-		//count only persons whithout admin or editor rights
-		if ($person['admin']=="") $ret++;
-	}
-	return $ret;
+function isPersonGuest($person) {
+	return (strstr($person["admin"],"guest")!="");
 }
 
 /**
@@ -340,7 +330,7 @@ function saveDB() {
 
 $voteFields=array("date","class","cemetery","dinner","excursion","where");
 $voteData = array();
-$voteFileName = "\vote.txt";
+$voteFileName = "/vote.txt";
 
 function setVote($uid, $vote) {
 	global $voteData;
@@ -397,7 +387,6 @@ function getVoteDummy() {
 function saveVoteData() {
 	global $data;
 	global  $dataPath;
-	getDataSize();
 	global $voteData;
 	reset( $voteData);
 	global $voteFileName;

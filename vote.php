@@ -1,5 +1,6 @@
 <?PHP include("homemenu.php"); 
 include_once("data.php");
+openDatabase(getAktDatabaseName());
 readVoteData();
 
 //Vote data structure 
@@ -8,7 +9,7 @@ $fields=array("date","class","cemetery","dinner","excursion","where");
 if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 	//Save all data for admins
 	if ( userIsAdmin() || userIsEditor() ) {
-		for($uid=1;$uid<=getDataSize();$uid++) {
+		for($uid=0;$uid<sizeof($data);$uid++) {
 			for ($i=0;$i<sizeof($fields);$i++) {
 				$vote[$fields[$i]]=$_GET[$fields[$i]."_".$uid];
 			}
@@ -40,8 +41,8 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 <tr style="font-weight:bold"><td>Név</td><td>Dátum javaslat</td><td>Osztályfőnöki</td><td>Temető</td><td>Vacsora</td><td>Kirándulás</td><td>Hova?</td></tr>
 <?php
 	$k=false;
-	for ($l=1;$l<=getDataSize();$l++) {
-		$d=getPerson($l);
+	for ($l=0;$l<sizeof($data);$l++) {
+		$d=$data[$l];
 		$vote=getVote($l);
 		if ($k) { $k=false; echo('<tr>'); } else { $k=true; echo('<tr style="background-color:#eedddd">');}
 		echo('<td>'.$d["lastname"].' '.$d["firstname"]);if ($d["birthname"]) echo(' ('.$d["birthname"].')'); echo('</td>');

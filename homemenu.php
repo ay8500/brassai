@@ -18,7 +18,7 @@
 ?>
 	
     <meta name="viewport" content="width=device-width, initial-scale=1">	<title><?PHP echo($SiteTitle) ?></title>
-	<?PHP if (strpos(getenv("QUERY_STRING"),"=thumbnails")) { ?> 
+	<?PHP if (strstr(getenv("QUERY_STRING"),"=thumbnails")!="") { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
 		<meta name="robots" content="index,follow" />
