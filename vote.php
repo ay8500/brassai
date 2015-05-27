@@ -38,7 +38,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 	
 <form action="<?PHP echo($SCRIPT_NAME);?>" method="get"">
 <table align="center" class="pannel" style="width:850px">
-<tr style="font-weight:bold"><td>Név</td><td>Dátum javaslat</td><td>Osztályfőnöki</td><td>Temető</td><td>Vacsora</td><td>Kirándulás</td><td>Hova?</td></tr>
+<tr style="font-weight:bold"><td style="min-width:133px">Név</td><td>Dátum javaslat</td><td>Osztályfőnöki</td><td>Temető</td><td>Vacsora</td><td>Kirándulás</td><td>Hova?</td></tr>
 <?php
 	$k=false;
 	for ($l=0;$l<sizeof($data);$l++) {
@@ -46,7 +46,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		$vote=getVote($l);
 		if ($k) { $k=false; echo('<tr>'); } else { $k=true; echo('<tr style="background-color:#eedddd">');}
 		echo('<td>'.$d["lastname"].' '.$d["firstname"]);if ($d["birthname"]) echo(' ('.$d["birthname"].')'); echo('</td>');
-		if ( userIsAdmin() || userIsEditor() ) {
+		if ( userIsAdmin() || userIsEditor() || ($d["id"]==getLoggedInUserId() && getAktDatabaseName()==getUserDatabaseName()) ) {
 			echo("\r\n".'<td><input style="text" size="19" name="date_'.$l.'" value="'.$vote["date"].'"</td>');
 			echo('<td><input style="text" size="4" name="class_'.$l.'" value="'.$vote["class"].'"</td>');
 			echo('<td><input style="text" size="4" name="cemetery_'.$l.'" value="'.$vote["cemetery"].'"</td>');
