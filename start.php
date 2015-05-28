@@ -15,7 +15,7 @@
 	
 	$userId=getIntParam("userId",-1);
 	if ($userId>=0) {
-		$person = getPerson($userId);
+		$person = getPerson($userId,getAktDatabaseName());
 		$person["facebookid"]= $_SESSION["FacebookId"];
 		savePerson($person);
 	}

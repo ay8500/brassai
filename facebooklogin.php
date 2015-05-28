@@ -42,6 +42,7 @@
 		<form action="start.php" >
 			<input type="hidden" name="scoolYearFb" value="<?php echo $scoolYear?>">
 			<input type="hidden" name="scoolClassFb" value="<?php echo $scoolClass?>">
+			<input type="hidden" name="action" value="facebooklogin">
 			<select name="userId" size="1">
 					<option value="-2"><?php echo getTextRes("SelectOneOption"); ?></option>
 					<?php foreach ($data as $l => $d) { 
