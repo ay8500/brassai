@@ -19,11 +19,13 @@
 			logoutUser();
 			$logOnMessage=getTextRes("LogInError");
 		}
-		/*sendTheMail('code@blue-l.de',
-			"<h2>Login</h2>".
-			"Datenbank:".getUserDatabaseName()."<br/>".
-			"Name:".$paramName."<br/>",
-			"Login result:".$logOnMessage," Login");*/
+		if (! userIsAdmin()) {
+			sendTheMail('code@blue-l.de',
+				"<h2>Login</h2>".
+				"Datenbank:".getUserDatabaseName()."<br/>".
+				"Name:".$paramName."<br/>",
+				"Login result:".$logOnMessage," Login");
+		}
 	}
 	//Logoff action
 	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) {
@@ -31,17 +33,19 @@
 	}
 	
 	//Facebook login
-	if ( isset($_SESSION['FacebookId']) ) {
+	if (isset($_GET["action"]) && ($_GET["action"]=="facebooklogin") && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
 			//logoutUser();
 			$logOnMessage=getTextRes("LogInError");
 		}
-		sendTheMail('code@blue-l.de',
-			"<h2>Facebooklogin</h2>".
-			"Datenbank:".getUserDatabaseName()."<br/>".
-			"FacebookId:".$_SESSION['FacebookId']."<br/>",
-			"FacebookName:".$_SESSION['FacebookName']."<br/>".
-			"Login result:".$logOnMessage," Login");
+		if (! userIsAdmin()) {
+			sendTheMail('code@blue-l.de',
+				"<h2>Facebooklogin</h2>".
+				"Datenbank:".getUserDatabaseName()."<br/>".
+				"FacebookId:".$_SESSION['FacebookId']."<br/>",
+				"FacebookName:".$_SESSION['FacebookName']."<br/>".
+				"Login result:".$logOnMessage,"Login");
+		}
 	} 
 	
 	//Change password
@@ -162,7 +166,6 @@ function writeLogonDiv() {
 			</div>
 		</form>
 	<?php } ?> 
-	</ul>
 </div>
 <script type="text/javascript">
 	function keypressed() {

@@ -127,7 +127,7 @@
 				<div class="input-group input-group" style="margin: 3px;">
 					<span class="input-group-addon" style="width:130px">
 						<img src="images/<?php echo getPersonLogedOn()["picture"] ?>" style="height:20px; border-round:3px;" />
-						<a href="editdiak.php"><?php echo getPersonLogedOn()["lastname"]." ".getPersonLogedOn()["firstname"] ?></a>
+						<a href="editDiak.php"><?php echo getPersonLogedOn()["lastname"]." ".getPersonLogedOn()["firstname"] ?></a>
 					</span>
 					<button id="uLogonMenu" type="button" class="btn btn-default " onclick="handleLogoff();" > Kijelenkezés</button>
 				</div>

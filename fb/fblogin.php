@@ -61,7 +61,7 @@ if ( isset( $session ) ) {
 	print_r($ara);
 	*/
 	
-  header("Location: ../start.php");
+  header("Location: ../start.php?action=facebooklogin");
 } else {
   $loginUrl = $helper->getLoginUrl();
   //echo("not logged on");
