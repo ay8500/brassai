@@ -4,15 +4,15 @@
 
 	echo "<div id=\"statusbar\">";
 	echo(' <table border="0" style="width:100%"><tr><td>'."\r\n");
-	echo ('<b style="font-size:20px">'.getGalleryDescription()."</b>&nbsp;&nbsp;".$images_count.$TXT["PictCount"]."\r\n");
+	echo ('<b style="font-size:20px">'.getGalleryDescription()."</b>");
 	//Navigation
 	echo(' </td><td style="text-align:right">'."\r\n");
 	if ($slideshow_index>0) { 
-		echo "<a href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($slideshow_index-1)."\" title=\"".$TXT["MenuPrevPictTT"]."\">&lt;&lt; &nbsp;&nbsp;</a>"; 
+		echo "<a href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($slideshow_index-1)."\" title=\"".$TXT["MenuPrevPictTT"]."\">&nbsp;&nbsp;<button class=\"glyphicon glyphicon-chevron-left\"></button>&nbsp;&nbsp;</a>"; 
 	}
 	echo ($slideshow_index+1)."/$images_count &nbsp;";
 	if ($slideshow_index<($images_count-1)) { 
-		echo "<a href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($slideshow_index+1)."\" title=\"".$TXT["MenuNextPictTT"]."\">&gt;&gt;</a>"; 
+		echo "<a href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($slideshow_index+1)."\" title=\"".$TXT["MenuNextPictTT"]."\"><button class=\"glyphicon glyphicon-chevron-right\"></button></a>"; 
 	}
 	echo "&nbsp;&nbsp;<a href=\"$SCRIPT_NAME?view=thumbnails&gallery=$gallery&thumbnail_index=$thumbnail_index\" title=\"".$TXT["MenuThumbnails"]."\">".$TXT["MenuThumbnails"]."</a>"; 
 	echo "&nbsp;&nbsp;<a href=\"$SCRIPT_NAME?view=comment&gallery=$gallery&slideshow_index=$slideshow_index\" title=\"".$TXT["MenuComment"]."\">".$TXT["MenuComment"]."</a>"; 
@@ -20,7 +20,6 @@
 		echo "&nbsp;&nbsp;<a href=\"$SCRIPT_NAME?view=details&gallery=$gallery&slideshow_index=$slideshow_index\" title=\"".$TXT["MenuDetails"]."\">".$TXT["MenuDetails"]."</a>"; 
 	}
 ?>
-    <div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
 	</td></tr></table>
 	</div>
 	<div id="img_area">
@@ -34,7 +33,7 @@
 		echo "<a href=\"$gallery/".$images_array[$slideshow_index]."\"><img src=\"$gallery/.modified/$width"."_mod_".$images_array[$slideshow_index].".".$slideshow_filetype."\" title=\"".$images_array[$slideshow_index]."\" alt=\"".$images_array[$slideshow_index]."\" /></a>";
 	}
 	else {
-		echo "<img src=\"$gallery/.modified/$width"."_mod_".$images_array[$slideshow_index].".".$slideshow_filetype."\" title=\"".$images_array[$slideshow_index]."\" alt=\"".$images_array[$slideshow_index]."\" />";
+		echo "<img style=\"margin:auto\" class=\"img-responsive\" src=\"$gallery/.modified/$width"."_mod_".$images_array[$slideshow_index].".".$slideshow_filetype."\" title=\"".$images_array[$slideshow_index]."\" alt=\"".$images_array[$slideshow_index]."\" />";
 	}
 	echo("<p id=\"metaData\">");
 	writeMetaDataShort($images_array[$slideshow_index]); 

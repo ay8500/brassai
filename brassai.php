@@ -4,24 +4,11 @@ $SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az �
 include("homemenu.php"); 
 ?>
 
-<TABLE BORDER="1"><TR><TD>
-<TABLE>
-  <TR><TD>
-  <TABLE BORDER=1>
-   <TR><TD ALIGN="CENTER" WIDTH=300>
-    <img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/><br/>
-   <B><FONT SIZE=2>Brassai S&aacute;muel (1800-1897)</FONT></B>
-   </TD></TR>
-  </TABLE>
-  </TD><TD VALIGN="BOTTOM">
-  <I>
-    &quot;A tan&iacute;t&oacute;, mint a gazda, csak magvakat vet el,
-    melyb&otilde;l a tan&iacute;tv&aacute;ny elm&eacute;j&eacute;ben ismeretek
-    teremnek, mint a gabona s m&aacute;s term&eacute;k a f&ouml;ldben.&quot;
-  </I>
-  </TD></TR>
-</TABLE>
-</TD></TR><TR><TD>
+<div style="text-align: center;">
+ <div style="margin-left: auto;"><img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/></div>
+<div>Brassai S&aacute;muel (1800-1897)</div>
+</div>
+<div class="container-fluid">
 <h2 class="sub_title">Brassai Sámuel életrajzi adatai</h2>
 <p>- 1797., ill. 1800 június 15-én született Torockószentgyörgyön (saját bevallása szerint 1797-ben - hivatalos iratba nincs bejegyezve, mivel nagyapja keresztelte Torockószent-györgyön). Édesapja Brassai Sámuel, Torockószentgyörgyön iskolamester, unitárius pap. Édesanyja, Koncz Krisztina, unitárius papcsaládból származó tanult, igen mûvelt nő. A család 1827-ig lakik Torockószentgyörgyön, majd id. Brassai Sámuel Szentmihályfalvára költözik, itt lesz unitárius pap haláláig, 1837-ig.
 <p>- 1813: kisebb megszakításokkal 1820-ig a Kolozsvári Unitárius Kollégiumban tanul
@@ -54,6 +41,6 @@ include("homemenu.php");
 Brassai Sámuel hit- és életelveit a következõképpen foglalta össze:
 <br> <i>"Bízzál Isten szeretetében és támaszkodj az õ egységére, melyet a világmindenségben oly tökéletesen valósít meg. Legyen hited a te meggyõzõdésed szerint, de szereteted öleljen magához mindenkit. Kövesd Jézust és boldog leszel."</i>
 <p>(Dr. Boros György: Dr. Brassai Sámuel élete)
+</div>
 
-</TD></TR></TABLE>
 <?PHP  include ("homefooter.php");?>

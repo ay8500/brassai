@@ -3,29 +3,13 @@ $SiteTitle="A kolozsvári Brassai Sámuel líceum története 1993-ig";
 $SiteDescription="Az iskolánk története a XVI század és 1993 között";
 include("homemenu.php"); 
 ?>
-
+<div class="container-fluid">
 <h2 class="sub_title">Az iskolánk története</h2>
+<div style="text-align: center;">
+	<img class="img-responsive" style="margin: auto;" src="images/ISKOLA.JPG" width="400" height="388" alt="Az iskola épülete"/><br/>
+	A felvétel 1963 ban készült.
+</div>
 
-  <table style="width:100%;border-style:none;">
-  <tr>
-	<td>
-		  <h3><a name="#000">Tartalom:</a></h3>
-		  <ul>
-		    <li><a href="#001">Elöszó</a>
-			<li><a href="#001">Az iskola megalapítása</a>
-		    <li><a href="#002">Az első évtizedek</a>
-		    <li><a href="#003">A XVII. század</a>
-		    <li><a href="#004">Küzdelmes évek</a>	
-		    <li><a href="#005">Az iskola belső rendje</a>	
-		    <li><a href="#006">Az iskola a XVIII. században</a>	
-		    <li><a href="#007">1848 és az azt követő időszak</a>	
-		    <li><a href="#008">Az iskola az államosítás után</a>	
-		    <li><a href="#009">A líceum 1985 után:</a>	
-		  </ul>
-	</td>
-    <td><IMG src="images/ISKOLA.JPG" width="400" height="388" alt="Az iskola épülete"/><br/>
-	  A felvétel 1963 ban készült.</td>
-  </tr></TABLE>
 <hr>
   
 <h3><a href="#001">Elöszó</a></h3>
@@ -122,7 +106,5 @@ indítottak be. Mivel ezzel párhuzamosan a magyar osztályok számát csökkent
 <p>1993. szeptember 24-én avatják a Torockói Házat
 
 <h4><a href="#000">Vissza</a></h4>
-	</td>
-</tr>
-</table>
+</div>
 <?PHP  include ("homefooter.php");?>

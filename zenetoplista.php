@@ -9,7 +9,7 @@ include_once("userManager.php");
 
 <?PHP
    //Check the maximal amout of vote
-   $voteCount=getUserSongVoteCount(getDatabaseName(),getUserID());
+   $voteCount=getUserSongVoteCount(getAktDatabaseName(),getLoggedInUserId());
    if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
    if ($voteCount<$maxVoteCount)  
 	 $voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot csinálhatsz"; 
@@ -23,7 +23,7 @@ include_once("userManager.php");
    if (isset($_GET["interpret"])) $pinterpret = $_GET["interpret"]; else $pinterpret=0;
    if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
-   		$pinterpret=insertNewInterpret(getDatabaseName(),$pnewinterpret);
+   		$pinterpret=insertNewInterpret(getAktDatabaseName(),$pnewinterpret);
 	    $siteStatus="Az elöadó kimentve, most írd be a kendvenc zenéd címét.";
    }
    
@@ -37,13 +37,13 @@ include_once("userManager.php");
    if (isset($_GET["newVideo"])) $pnewVideo = $_GET["newVideo"]; else $pnewVideo="";
    if (isset($_GET["newLink"])) $pnewLink = $_GET["newLink"]; else $pnewLink="";
    if (($psong=="0") && ($pnewSong<>"" )) {
-   		$psong=insertNewSong(getDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
-   		insertVote(getDatabaseName(),getUserID(),$psong);
+   		$psong=insertNewSong(getAktDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
+   		insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
 	    $siteStatus="A zene és a szavazatod kimentve.";
    		$psong=0;$pinterpret=0;
    } 
    if ($psong>0) {
-   		insertVote(getDatabaseName(),getUserID(),$psong);
+   		insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
 	    $siteStatus="A szavazatod kimentve.";
    		$psong=0;$pinterpret=0;
    } 
@@ -51,15 +51,15 @@ include_once("userManager.php");
    //Parameter delete Vote
    if (isset($_GET["delVote"])) $delVote = $_GET["delVote"]; else $delVote=0;
    if ($delVote>0) {
-   		deleteVote(getDatabaseName(),getUserID(),$delVote);
+   		deleteVote(getAktDatabaseName(),getLoggedInUserId(),$delVote);
    		$psong=0;$pinterpret=0;
    }
    //TODO VoteCount twice in code
-   $voteCount=getUserSongVoteCount(getDatabaseName(),getUserID());
+   $voteCount=getUserSongVoteCount(getAktDatabaseName(),getLoggedInUserId());
    
    //The list of Songs
    //	if (userIsAdmin()) 
-		$topList= readTopList (getDatabaseName(),getUserID());
+		$topList= readTopList (getAktDatabaseName(),getLoggedInUserId());
 	//else
 	//	$topList = readVoteList(getDatabaseName(),getUserID()); 
    
@@ -116,7 +116,7 @@ function autoComplete (field, select, property, forcematch) {
   <tr><td>&nbsp;</td><td><?PHP echo($siteStatus); ?></td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
   <tr><td class="zenetext">Az adatbázisból:</td><td>
-    <?PHP $interpretList= readInterpretList(getDatabaseName()); ?>
+    <?PHP $interpretList= readInterpretList(getAktDatabaseName()); ?>
   <select name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" >
     <option value="0">...válassz!...</option>
   	 <?PHP
@@ -140,9 +140,9 @@ function autoComplete (field, select, property, forcematch) {
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
   <tr><td>&nbsp;</td><td><?PHP echo($siteStatus); ?></td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">Elöadó:</td><td style="font-weight: bold"><?PHP $i=readInterpret(getDatabaseName(),$pinterpret); echo($i['name']); ?></td></tr>
+  <tr><td class="zenetext">Elöadó:</td><td style="font-weight: bold"><?PHP $i=readInterpret(getAktDatabaseName(),$pinterpret); echo($i['name']); ?></td></tr>
   <tr><td class="zenetext">Az adatbázisból:</td><td>
-  <?PHP $songList= readSongList(getDatabaseName(),$pinterpret); ?>
+  <?PHP $songList= readSongList(getAktDatabaseName(),$pinterpret); ?>
   <select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';">
     <option value="0">...válassz!...</option>
   	 <?PHP
@@ -174,7 +174,7 @@ function autoComplete (field, select, property, forcematch) {
 </td></tr>
 
 <?PHP
-    $votersList=readVotersList(getDatabaseName());
+    $votersList=readVotersList(getAktDatabaseName());
 	$allVotes=0;
 	foreach ($votersList as $voter) {
 		$allVotes +=$voter["VotesCount"];
@@ -201,7 +201,7 @@ function autoComplete (field, select, property, forcematch) {
 				$voted='<a href="zenetoplista.php?delVote='.$v['song']['id'].'"><img border="0"  src="images/delete.gif" /> Mégsem tetszik törlöm.</a>';
 				$dh='<img src="images/DaumenHoch.png" title="Nekem tetszik :-)" />';
 			} else {
-				if (($voteCount<$maxVoteCount)&&(getUserID()>0))
+				if (($voteCount<$maxVoteCount)&&(getLoggedInUserId()>0))
 					$voted='<a href="zenetoplista.php?song='.$v['song']['id'].'"><img border="0" src="images/ok.gif" /> Ez is tetszik</a>';
 				else
 					$voted='';

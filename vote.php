@@ -28,8 +28,9 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 }
 ?>
 
-<div class="sub_title">30 éves Találkozó</div>
-<div style="text-align:center;">
+<div class="container-fluid">
+<h4>30 éves Találkozó</h4>
+<div call="well well-lg">
 	<b>A 30 éves talákozonk 2015 ben lesz megtartva.</b>
 	Légyszíves
 	<?PHP if (!userIsLoggedOn()) echo(' jelenkezz be '); ?> 
@@ -70,7 +71,5 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 ?>
 </table>
 </form>
-
-</td></tr></table>
-</body>
-</html>
+</div>
+<?php include 'homefooter.php';?>

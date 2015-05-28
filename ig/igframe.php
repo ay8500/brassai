@@ -280,18 +280,17 @@
 </div>
 </td>
 </tr></table>
+<div >
 <?PHP
-	echo("<table><tr>");
 	$i=1;
 	chdir("..");
 	$images_array = getGalleryImages($gallery);
 	foreach ($images_array as $image) {
-		echo("<td>");
 		//if (!is_file("./.thumbs/$thumbnail_size"."_thumb_".$image.".".$thumbnail_filetype)) { create_thumbnail($image); }
-		echo "<a style=\"font-size:9px\" title=\"".getPictureTitle($image)."\" href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($i-1)."\">".$i."</a>";
-		echo("</td>");
+		echo "<a style=\"font-size:9px; margin:5px;\" title=\"".getPictureTitle($image)."\" href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($i-1)."\">".$i."</a> ";
 		$i++;
-		if (fmod($i,55)==0) echo("</tr><tr>"); 
 	}
-	echo("</tr></table>");
 ?>
+    <div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
+
+</div>

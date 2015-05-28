@@ -46,9 +46,9 @@ foreach ($data as $l => $d)
 		echo "<img src=\"images/".$d["picture"].'" border="0" title="'.$d["lastname"].' '.$d["firstname"].'" />';
 		echo '</a>';
 		echo "</td><td valign=top>";
-		echo "<h3>".$d["lastname"].' '.$d["firstname"];
+		echo "<h4>".$d["lastname"].' '.$d["firstname"];
 			if ($d["birthname"]!="") echo("&nbsp;(".$d["birthname"].")");
-		echo("</h3>"); 
+		echo("</h4>"); 
 		echo "<table>\r\n";
 		echo "<tr><td valign=top align=right>Élettárs:</td><td>".$d["partner"]."</td></tr>";
 		echo "<tr><td valign=top align=right>Végzettség:</td><td>".$d["education"]."</td></tr>";

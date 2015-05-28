@@ -15,18 +15,14 @@
 				if ($pict["visibleforall"]=="true") $checked="checked";
 	?>
 			<div style="padding: 10px; display: inline-block;border-radius: 5px;border-style: outset; vertical-align: top;border-width: 1px">
-			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php  echo $file ?>');" >
-				<img style="width: 200px; height: 200px;" src="convertImg.php?color=eeeeee&thumb=true&file=<?php  echo $file ?>" />
+			<a style="display: inline-block;" title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php  echo $file ?>');" >
+				<img style="display: inline-block;width: 200px; height: 200px;" src="convertImg.php?color=eeeeee&thumb=true&file=<?php  echo $file ?>" />
 			</a>
 			<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 				<div style="display: inline-block;">
 				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo $pict["id"] +1 ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
 				<br />
-				<br />
-				<br />
-				<br />
 				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
-				<br />
 				<br />
 				<?php if ($pict["deleted"]!="true"): ?>
 					<div class="borderbutton" ><a onclick="deletePicture('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" title="Képet töröl"><img src="images/delete.gif" /></a></div>
@@ -77,10 +73,15 @@
 	
 </table>
 <div id="pictureViewer" class="pictureView">
-	<img id="pictureToView" src="" />
+	<img id="pictureToView" class="img-responsive" src="" />
 	<br>
-	<input type="button" value="Bezár" onclick="$('#pictureViewer').hide('slow');">
+	<button class="btn  btn-default glyphicon glyphicon-remove-circle" onclick="$('#pictureViewer').hide('fast');"> Bezár</button> 
 </div>
+
+</div>
+</td>
+</tr>
+</table>
 <?php include 'homefooter.php';?>
 
 <script type="text/javascript">

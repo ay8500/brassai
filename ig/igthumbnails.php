@@ -5,7 +5,7 @@
 		<table border="0" style="width:100%"><tr><td>
 <?php 
 		//Display gallery name and picture cout 
-		echo ('<b style="font-size:20px">'.getGalleryDescription()."</b>&nbsp;&nbsp;".$images_count.$TXT["PictCount"]."\r\n");
+		echo ('<b style="font-size:20px">'.getGalleryDescription()."</b>&nbsp;&nbsp;");
 		echo(' </td><td style="text-align:right">'."\r\n");
 		//Display paging link
 		
@@ -14,20 +14,17 @@
 			$images_array = $images_array[$thumbnail_index];
 			if ($images_count>$thumbnails_per_page) {
 				if ($thumbnail_index>0) { 
-					echo "<a href=\"$SCRIPT_NAME?view=thumbnails&amp;gallery=$gallery&amp;thumbnail_index=".($thumbnail_index-1)."\" title=\"".$TXT["MenuPrevPageTT"]."\">&lt;&lt; &nbsp;&nbsp;</a>"; 
+					echo "<a href=\"$SCRIPT_NAME?view=thumbnails&amp;gallery=$gallery&amp;thumbnail_index=".($thumbnail_index-1)."\" title=\"".$TXT["MenuPrevPageTT"]."\">&nbsp;&nbsp;<button class=\"glyphicon glyphicon-chevron-left\"></button>&nbsp;&nbsp;</a>"; 
 				}
 				echo ($thumbnail_index+1)."/".ceil($images_count/$thumbnails_per_page)." &nbsp;";
 				if ($thumbnail_index<(ceil($images_count/$thumbnails_per_page)-1)) { 
-					echo "<a href=\"$SCRIPT_NAME?view=thumbnails&amp;gallery=$gallery&amp;thumbnail_index=".($thumbnail_index+1)."\" title=\"".$TXT["MenuNextPageTT"]."\">&nbsp;&nbsp; &gt;&gt;</a>"; 
+					echo "<a href=\"$SCRIPT_NAME?view=thumbnails&amp;gallery=$gallery&amp;thumbnail_index=".($thumbnail_index+1)."\" title=\"".$TXT["MenuNextPageTT"]."\"><button class=\"glyphicon glyphicon-chevron-right\"></button>&nbsp;&nbsp;</a>"; 
 				}
 			}
 		}
 		//Display Slideshow link
 		echo "<a href=\"$SCRIPT_NAME?view=slideshow&gallery=$gallery\" title=\"".$TXT["MenuSlideshow"]."\">".$TXT["MenuSlideshow"]."</a>"; 
-		//Display Facebook link
 		?>
-		
-		<div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
 		
 		</td></tr></table>
 		</div>
@@ -44,7 +41,7 @@
 			//echo("</td>");
 			if ($i==$thumbnails_per_row) {
 				$i = 1;
-				echo "<br/>";
+				//echo "<br/>";
 				$row++;
 			}
 			else { $i++; }

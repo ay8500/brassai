@@ -75,8 +75,9 @@ if (userIsAdmin()) {
 
 <?PHP }
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";	
+	echo "<div>Adat hozzáférési jog hiányzik!</div>";
+	
+include 'homefooter.php';
 ?>
-</td></tr></table>
-</body>
-</html>
+
+

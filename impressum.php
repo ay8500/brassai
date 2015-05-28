@@ -2,16 +2,12 @@
 $SiteTitle="Impresszum";
 include_once("homemenu.php"); 
 ?>
-  <h2 class="sub_title">Impresszum</h2>
-  <table class="pannel" align="center" border="1" style="width:700px">
-    <tr><td>
-		<h1>Impresszum: </h1 >
+<div class="container-fluid">
+<h1>Impresszum: </h1 >
 		Weboldal tulajdonos <a href="Levente_Maier">Maier Levente</a><br/>
 		Bergstr. 33a<br/>
 		91790 Bergen<br/>
 		Germany<br/>
-	</td></tr>
-	<tr><td>
 		<p>A véndiákok weboldalai, illetve annak tartalma, vagy bármely részlete szerzői jogvédelem alá esnek.</p>
 		<p>Levente Maier írásbeli engedélye nélkül tilos a weboldalak tartalmának egészét vagy részeit bármilyen formában felhasználni, reprodukálni, átruházni, terjeszteni, átdolgozni, vagy tárolni.</p>
 		<p>Levente Maier fenntartja a jogot, hogy a véndiákok veboldalait bármikor módosítsa, vagy átdolgozza, illetve elérhetoségüket korlátozza, vagy megszüntesse. Levente Maier nem garantálja, hogy a weboldalakhoz való hozzáférés folyamatos vagy hibamentes lesz.</p>
@@ -24,9 +20,6 @@ include_once("homemenu.php");
 			Should you have any questions or comments regarding the technical issues of this web site<br/> please contact the webmaster at <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a><br>
 			Questions and requests concerning the content of this web site or the Brassai Samuel high school<br/> should be addressed to <a href="mailto:levente@blue-l.de">levente@blue-l.de</a>.
 		</p>
-	</td>
-	</tr><tr>
-	<td>
 		<p>
 			Az oldal németországban van hosztolva, emiatt a következő szöveg a törvények miatt kötelező.
 		</p>
@@ -50,6 +43,5 @@ include_once("homemenu.php");
 		<p>Die durch Cookies und Web Beacons erzeugten Informationen über die Benutzung dieser Website (einschließlich Ihrer IP-Adresse) und Auslieferung von Werbeformaten werden an einen Server von Google in den USA übertragen und dort gespeichert. Diese Informationen können von Google an Vertragspartner von Google weiter gegeben werden. Google wird Ihre IP-Adresse jedoch nicht mit anderen von Ihnen gespeicherten Daten zusammenführen.</p>
 		<p>Sie können die Installation der Cookies durch eine entsprechende Einstellung Ihrer Browser Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website voll umfänglich nutzen können. Durch die Nutzung dieser Website erklären Sie sich mit der Bearbeitung der über Sie erhobenen Daten durch Google in der zuvor beschriebenen Art und Weise und zu dem zuvor benannten Zweck einverstanden.</p>
 		<p><em>Quellverweis:</em> <a href="http://www.e-recht24.de/muster-disclaimer.htm" target="_blank">Disclaimer eRecht24</a></p>
-	</td></tr>
-</table>  
- <?PHP  include_once("homefooter.php");?>
+</div>
+<?PHP  include_once("homefooter.php");?>

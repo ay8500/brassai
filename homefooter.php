@@ -1,14 +1,28 @@
-</td>
-</tr>
-</table>
-
+<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
+  <div class="container">
+      <ul class="nav navbar-nav">
+        <?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
+				<li><a href="editDiak.php" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
+		<?PHP }  ?>	
+			<li><a href="gb.php" >Vendégkönyv</a></li>
+		<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
+			<li><a href="admin.php"  >Adminsztráció</a></li>
+		<?PHP }	?>
+			<?PHP if (userIsAdmin() ) { ?>
+				<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
+				<li><a href="logingData.php"  >Loging</a></li>
+			<?PHP }	?>
+		<li><a href="impressum.php"  >Impresszum</a></li>
+        
+        <li><a href="#">(c) 2015 Levi</a>
+      </ul>
+  </div>
+</nav>
 
 </body>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/ddsmoothmenu.js"></script>
-	<script type="text/javascript">
-	  ddsmoothmenu.init({	mainmenuid: 'smoothmenu', orientation: 'v', classname: 'ddsmoothmenu-v', contentsource: "markup" });
-	</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    
 	<?php if (isset($googleMap)) :?>
 		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
 		<script type="text/javascript" src="js/diakMap.js"></script>

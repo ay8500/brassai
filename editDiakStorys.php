@@ -21,7 +21,7 @@
 	<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>
 	<form id="stroryForm" onsubmit="saveStory(); return false;">
 	<fieldset>
-		<textarea id="story" style="visibility:hidden; height:400px;" >
+		<textarea id="story" style="visibility:hidden; height:400px;" onkeyup="fieldChanged();" >
 <?php echo getFieldValue($text); ?>
 		</textarea>
 	</fieldset>

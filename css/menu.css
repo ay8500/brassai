@@ -1,16 +1,14 @@
-	body		{ background-image:url('../images/b2.gif');background-repeat: repeat;font-family: sans-serif,arial;font-size:11px;color:black;
-					margin:0;padding:0;height:100%; border:none
-				}
+	body		{	line-height:normal;	}
 	form		{display:inline;}
 	.submit2	{ height:18px;font-size:10px;margin-right:20px;}
-	.input2		{ height:13px; font-size:10px;}
+	.aaainput2		{ height:13px; font-size:10px;}
 	.highlight 	{ background-color: #ffdddd;text-align:center}
 	.caption1   { font-weight: bold; text-align:right;}
-	.menu		{ background-color:#000000;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
-	.menu:hover	{ background-color:#606040;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
-	.nav		{ background-color:#000000;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
-	.nav:hover	{ background-color:#606040;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
-	.menus		{text-decoration: none; color: #ffffff; font-family: sans-serif,arial}
+	.aaamenu		{ background-color:#000000;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
+	.aaamenu:hover	{ background-color:#606040;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
+	.aaanav		{ background-color:#000000;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
+	.aaanav:hover	{ background-color:#606040;text-align:center;text-decoration: none; color: #ffffff; font-family: sans-serif,arial;font-size:11px}
+	.aaamenus		{text-decoration: none; color: #ffffff; font-family: sans-serif,arial}
 	.loginText 	{ text-align:left; font-size:12px; font-weight:bold}
 	.loginInput { text-align:left; font-size:10px;height:14px; }
 	.loginSubmit{ height:18px;font-size:10px;}
@@ -45,7 +43,7 @@
 	.borderbutton 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 19px;text-align: center;vertical-align:middle;}
 	.borderbuttonedit {background-image: url("../images/edit.gif");background-repeat: no-repeat;height: 39px;  background-position: 5px 20px;}
 	.borderbuttonworld {background-image: url("../images/world-16.png");background-repeat: no-repeat; height: 39px;  background-position: 5px 20px;}
-	.pictureView {border-radius: 6px; display:none;position: absolute; top:50px; left:50px;background-color: lightgray;z-index: 200;padding:20px}
+	.pictureView {border-radius: 6px; display:none;position: absolute; top:50px; left:5px;background-color: lightgray;z-index: 200;padding:20px}
 	
 	.cradio 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 39px;text-align: center;vertical-align:middle;display: inline-block;}
 	.radio_world {background-image: url("../images/world-16.png");background-repeat: no-repeat;height: 39px; background-position: 5px 20px;}
@@ -53,3 +51,82 @@
 	.radio_class {background-image: url("../images/friends.png");background-repeat: no-repeat;height: 39px; background-position: 5px 20px;}
 	.radiogroup { display:inline-block; padding: 7px; border-style: solid; border-width: 1px; vertical-align: middle; border-color: lightgray; border-radius: 5px; eight: 44px;}
 	.trumbowyg-editor {background-color: white;}
+	
+.table-sp>tbody>tr>td {
+	padding:3px;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+/****************** Browser width dependent content ****************************/
+
+@media ( max-width : 400px) {
+	#o400 {
+		display: none;
+	}
+}
+
+@media ( max-width : 480px) {
+	#o480 {
+		display: none;
+	}
+}
+
+@media ( max-width : 1024px) {
+	#o1024 {
+		display: none;
+	}
+}
+
+@media ( max-width : 1400px) {
+	#o1400 {
+		display: none;
+	}
+}
+

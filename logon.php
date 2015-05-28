@@ -1,8 +1,10 @@
 <?PHP
+	include_once 'sessionManager.php';
 	include_once("userManager.php");
 	include_once 'sendMail.php';
 
 	$logOnMessage="";
+
 	
 	//Logon action
 	if (isset($_GET["action"]) && ($_GET["action"]=="logon")) {
@@ -127,8 +129,6 @@ function writeLogonLine() {
 	<tr><td class="LogonLine">
 		<form action="start.php" method="get">
 			<input type="hidden" value="logoff" name="action" />
-			<input type="hidden" value="<?php echo $_SESSION['scoolClass'] ?>" name="scoolClass"/>
-			<input type="hidden" value="<?php echo $_SESSION['scoolYear'] ?>" name="scoolYear"/>
 			<?php echo getTextRes("LogInUser").":".$_SESSION['uName'] ?>
 			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" />
 		</form> 
@@ -136,4 +136,73 @@ function writeLogonLine() {
 	<?php
 	}
 }
-?>
+
+function writeLogonDiv() {
+	global $TXT;
+	if (!userIsLoggedOn()) {
+		?>
+<div class="panel panel-default" style="display:none;margin:auto;width:300px;" id="uLogon" >
+	<div class="panel-heading" >Bejelentkezés</div>
+	<form action="" method="get">
+		<input type="hidden" value="logon" name="action"/>
+		<div class="input-group input-group" style="margin: 3px;">
+    		<span class="input-group-addon" style="width:130px"><?php echo getTextRes("LogInUser"); ?></span>
+    		<input type="text" class="form-control" id="loUser" placeholder="">
+		</div>
+		<div class="input-group input-group" style="margin: 3px;">
+    		<span class="input-group-addon" style="width:130px"><?php echo getTextRes("LogInPassw"); ?></span>
+    		<input type="password" class="form-control" id="loPassw" placeholder="" onkeypress="keypressed();" >
+		</div>
+		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="logon();"><?php echo getTextRes("LogIn"); ?></button>
+		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="lostlogon();"><?php echo getTextRes("LogInLostData"); ?></button>
+		 </form>
+		<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
+			<div style="text-align:center; margin: 3px">
+			<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
+			</div>
+		</form>
+	<?php } ?> 
+	</ul>
+</div>
+<script type="text/javascript">
+	function keypressed() {
+		$('#loPassw').keyup(function(e){
+	    	if(e.keyCode == 13)
+	    	{
+	        	logon();
+	    	}
+		});
+	}
+		
+	function logon() {
+		$.ajax({
+			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
+			success:function(data){
+			    location.reload();
+			}
+		});
+			
+	}
+
+	function lostlogon() {
+		location.href="start.php?action=lostpassw";
+	}
+	
+	function handleLogoff() {
+		$.ajax({
+			url:"logon.php?action=logoff",
+			success:function(data){
+				if (location.href.search("editdiak.php")>0)
+					location.href="index.php";
+				else
+			    	location.reload();
+			}
+		});
+	}
+
+	function handleLogon() {
+	    $("#uLogon").show("slow");
+	}
+		
+</script>
+<?php } ?>

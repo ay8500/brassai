@@ -22,17 +22,15 @@ if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
     }
 </script> 
 
-<table class="tab" align="center">
-<tr>
-<?PHP
-foreach($tabsCaption as $key => $Caption ) {
-	if ($key==$tabOpen)
-		echo('<td class="tabActive">'.$Caption."</td>"."\r\n");
-	else
-		echo('<td class="tabCaption"><a class="tabCaptionText" href="javascript:changeTab('."'".$SCRIPT_NAME.'?tabOpen='.$key."'".');" >'.$Caption."</a></td>"."\r\n");
-}
-?>
-<td class="tabEmpty"> &nbsp; </td>
-</tr>
-<tr><td  class="tabBody" colspan="<?php echo sizeof($tabsCaption)+1 ?>">
+
+<ul class="nav nav-tabs nav-justified" role="tablist">
+<?php 
+	foreach($tabsCaption as $key => $Caption ) {
+		if ($key==$tabOpen)
+	        echo '<li class="active"><a href="#">'.$Caption.'</a></li>';
+		else
+         	echo '<li><a href="javascript:changeTab('."'".$SCRIPT_NAME.'?tabOpen='.$key."'".');" >'.$Caption.'</a></li>';
+	}
+?>       
+</ul>
 

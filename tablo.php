@@ -4,10 +4,11 @@ $SiteTitle="Ballagási tabló ".getAktDatabaseName();
 include("homemenu.php"); 
 ?>
 
-<h2 class="sub_title">A tanárok és diákok együtt a ballagási Tablón.</h2>
+<div class="container-fluid">
 
-  <table align="center" border="1">
-    <td><img src="images/tablo<?PHP echo(getAktDatabaseName());?>.jpg" ">
-  </table>  
+	<h2 class="sub_title">A tanárok és diákok együtt a ballagási Tablón.</h2>
+	<div></div>
+	<img class="img-responsive"style="margin: auto;" src="images/tablo<?PHP echo(getAktDatabaseName());?>.jpg" " />
+</div>
 
 <?php include 'homefooter.php'; ?> 

@@ -170,7 +170,7 @@ if ($tabOpen==5) {
 
 ?>
 <div itemscope itemtype="http://schema.org/Person">
-<h2 class="sub_title" >
+<h2 class="sub_title" style="text-align: left">
 		<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-round:3px;" />
 			<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
 			<?php if ($diak["birthname"]!="") echo('('.$diak["birthname"].')');?>
@@ -220,7 +220,8 @@ include("tabs.php");
 	//Show read only data
 	else {
 		$d=$diak;
-		echo "<table border=\"1\" ><tr><td width=150>\r\n" ;
+		echo ('<div class="well well-large">');
+		echo '<table  ><tr><td width=150>';
 		echo "<img src=\"images/".$d["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
 		echo "</td><td valign=top>";
 		echo "<table>\r\n";
@@ -245,7 +246,7 @@ include("tabs.php");
 		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
 		if(showField($d["facebook"])) echo "<tr><td valign=top align=right>Facebook:</td><td>".getFieldValue($d["facebook"])."</td></tr>";
 		if(isset($d["homepage"]) && showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["homepage"])."</td></tr>";
-		echo "</table>";
+		echo "</table></td></tr></table></div>";
 	}
 }
 
@@ -307,8 +308,12 @@ if ($tabOpen==5) {
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) { 
 	include("editDiakStorys.php");
 }
-
-
+?>
+</div>
+</td>
+</tr>
+</table>
+<?php 
 include 'homefooter.php';
 ?>
 
