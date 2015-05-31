@@ -205,7 +205,7 @@ function getPersonDummy() {
  * returns an empty authorisation 
  */
 function getUserAuthDummy() {
-	$datafields=array("id","user","passw","admin","scoolYear","scoolClass","facebookid");
+	$datafields=array("id","user","passw","admin","scoolYear","scoolClass","facebookid","email");
 	$p = array();
 	foreach ($datafields as $field) {
 		$p[$field]="";
@@ -281,8 +281,8 @@ function readUserAuthDB()
 							$data[$id]["scoolClass"]=$scoolClass;
 							$data[$id]["id"]=chop($b[1]);
 						} else {
-							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "facebookid") || ($b[0] == "admin")) {
-	    						$data[$id][$b[0]]=chop($b[1]);
+							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "email") || ($b[0] == "facebookid") || ($b[0] == "admin")) {
+	    						$data[$id][$b[0]]=getFieldValue($b[1]);
 							}
 						}
 					}
@@ -700,6 +700,7 @@ function getFieldValue($field) {
   if ($field=="") 
   	return "";
   $ret = ltrim($field,"~");
+  $ret = trim($ret);
   return  $ret;
 }
 

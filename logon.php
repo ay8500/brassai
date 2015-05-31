@@ -2,6 +2,7 @@
 	include_once 'sessionManager.php';
 	include_once("userManager.php");
 	include_once 'sendMail.php';
+	include_once 'config.php';
 
 	$logOnMessage="";
 
@@ -13,11 +14,18 @@
 		if (($paramName=="") || ($paramPassw=="")) { 
 			$paramName=""; $paramPassw="";
 			logoutUser();
-			$logOnMessage=getTextRes("LogInUserPassw");
+			http_response_code(400);
+			$logOnMessage =getTextRes("LogInError")."<br />".getTextRes("LogInUserPassw");
+			echo($logOnMessage);
 		}
-		if (!checkUserLogin($paramName,$paramPassw)) {
+		else if (!checkUserLogin($paramName,$paramPassw)) {
 			logoutUser();
-			$logOnMessage=getTextRes("LogInError");
+			http_response_code(401);
+			$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
+			echo($logOnMessage);
+		} else {
+			$logOnMessage = "Ok";
+			echo($logOnMessage);
 		}
 		if (! userIsAdmin()) {
 			sendTheMail('code@blue-l.de',
@@ -48,34 +56,6 @@
 		}
 	} 
 	
-	//Change password
-	if (isset($_GET["action"]) && ($_GET["action"]=="changepassword")) {
-		if (isset($_GET["paramName"])) $paramName=$_GET["paramName"]; else $paramName="";
-		if (isset($_GET["paramPassw"])) $paramPassw=$_GET["paramPassw"]; else $paramPassw="";
-		if (isset($_GET["paramPassw1"])) $paramPassw=$_GET["paramPassw1"]; else $paramPassw1="";
-		if (isset($_GET["paramPassw2"])) $paramPassw=$_GET["paramPassw2"]; else $paramPassw2="";
-		if (($paramName=="") || ($paramPassw=="")) { 
-			$paramName=""; $paramPassw="";
-			logoutUser();
-			$logOnMessage=getTextRes("LogInUserPassw");
-		}
-		if (!checkUserLogin($paramName,$paramPassw)) {
-			if (($paramPassw1==$paramPassw2)) { 
-				if (setUserPasswort()) {
-					$logOnMessage=getTextRes("LogInPasswChanged");
-					}
-				else
-					$logOnMessage=getTextRes("LogInNewPasswNotOK");
-			}
-			else
-				$logOnMessage=getTextRes("LogInNewPasswNotEQ");
-		}
-		/*sendTheMail('code@blue-l.de',
-			"<h2>Change Password</h2>".
-			"Datenbank:".getUserDatabaseName()."<br/>".
-			"Name:".$paramName."<br/>",
-			"Login result:".$logOnMessage," Change Password");*/
-	}
 
 function writeLogonBox() {
 		global $logOnMessage;
@@ -159,13 +139,14 @@ function writeLogonDiv() {
 		</div>
 		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="logon();"><?php echo getTextRes("LogIn"); ?></button>
 		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="lostlogon();"><?php echo getTextRes("LogInLostData"); ?></button>
-		 </form>
-		<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
-			<div style="text-align:center; margin: 3px">
-			<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
-			</div>
-		</form>
-	<?php } ?> 
+	</form>
+	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
+		<div style="text-align:center; margin: 3px">
+		<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
+		</div>
+	</form>
+	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxStatus"></div>	
+<?php } ?> 
 </div>
 <script type="text/javascript">
 	function keypressed() {
@@ -182,6 +163,15 @@ function writeLogonDiv() {
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
 			    location.reload();
+			},
+			error:function(data){
+			    $('#ajaxStatus').css("background-color","lightcoral");
+				$('#ajaxStatus').html(data.responseText);
+				$('#ajaxStatus').show();
+				setTimeout(function(){
+			    	$('#ajaxStatus').html('');
+			    	$('#ajaxStatus').hide('slow');
+				}, 3000);
 			}
 		});
 			

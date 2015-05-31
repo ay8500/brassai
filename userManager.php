@@ -60,7 +60,6 @@
 	 */
 	function checkUserLogin($user,$passw) {
 		$ret = false;
-		//logoutUser();
 		if (checkRequesterIP()) {
 			$ret=false;
 			$data=readUserAuthDB();
@@ -78,7 +77,7 @@
 			}
 		}
 		if (!userIsAdmin()) 
-			saveLogInInfo($_SESSION['uName'],$_SESSION['uId'],$user,$passw,$ret);
+			saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
 		return $ret;
 	}
 
@@ -105,7 +104,7 @@
 			}
 		}
 		if (!userIsAdmin() && userIsLoggedOn())
-			saveLogInInfo($_SESSION['uName'],$_SESSION['uId'],"Facebook",$facebookId,$ret);
+			saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
 		return $ret;
 	}
 	
@@ -221,18 +220,21 @@ function checkUserNameExists($id,$userName) {
 	 * -2 -> Passw to short, 
 	 * -3 -> Sequrity violation 
 	 */
-	function setUserPasswort($email, $newPassw) {
+	function resetUserPasswort($email, $newPassw) {
 		//Read the Database
-		readDB();
-		global $data;
+		$authData = readUserAuthDB();
+		$person = getPersonDummy();
 		$ret = -1;
 		if (strlen($newPassw)>3) { 
-			if (checkRequester()) {
+			if (checkRequesterIP()) {
 					//check user email
-					foreach($data as $key =>$person) {
-						if ((strcasecmp($person["email"],$email)==0) ) {
+					foreach($authData as $auth) {
+						if ((strcasecmp($auth["email"],$email)==0) ) {
+							setAktScoolClass($auth["scoolClass"]);
+							setAktScoolYear($auth["scoolYear"]);
+							$person = getPerson($auth["id"]);
 							$person["passw"]=$newPassw;
-							$ret = $key;
+							$ret = $auth["id"];
 							savePerson($person);
 							break;
 						}
@@ -241,7 +243,7 @@ function checkUserNameExists($id,$userName) {
 			else $ret = -3;
 		}
 		else $ret =-2;
-		saveLogInInfo("NewPassword","",$email,$newPassw,$ret);
+		saveLogInInfo("NewPassword",$person["id"],$email,$newPassw,$ret);
 		return $ret;
 	}
 	
@@ -261,7 +263,7 @@ function checkUserNameExists($id,$userName) {
 		$i = 0;
 		$password = "";
 		while ($i <= $length) {
-			$password .= $chars{mt_rand(0,strlen($chars))};
+			$password .= $chars{mt_rand(0,strlen($chars)-1)};
 			$i++;
 		}
 		return $password;
@@ -274,10 +276,10 @@ function checkUserNameExists($id,$userName) {
 	 * Save login information for statistics and sequrity reasons
 	 * parameter $user SaveData,SavePassw,SaveGeo, NewPassword, 
 	 */
-	function saveLogInInfo($user,$uid,$cuser,$cpassw,$result) {
+	function saveLogInInfo($action,$uid,$cuser,$cpassw,$result) {
 		$file=fopen("login.log","a");
 		if ($result) $res="true"; else $res="false";
-		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".getAktDatabaseName()."\t".$res."\t".$uid."\t".$user."\t".$cuser."\t".$cpassw."\r\n");
+		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".getUserDatabaseName()."\t".$res."\t".$uid."\t".$action."\t".$cuser."\t".$cpassw."\r\n");
 		
 	}
 	
@@ -295,18 +297,26 @@ function checkUserNameExists($id,$userName) {
 	/**
 	 * read login log in memory ($logdata[])
 	 */
-	function readLogingData() {
+	function readLogingData($action,$year) {
 		backupLoginData();
 		$logData = array();
-		$logDataField = array("IP","Date","Scool","Result","ID","User","CUser","Passw");
+		$logDataField = array("IP","Date","Scool","Result","ID","Action","CUser","Passw");
 		$file=fopen("login.log","r");
 		$i=0;
+		$type= explode(",",$action);
 		while (!feof($file)) {
 			$b = explode("\t",fgets($file));
-			foreach($logDataField as $idx => $field) {
-				if (isset($b[$idx])) $logData[$i][$logDataField[$idx]] = $b[$idx]; else $logData[$i][$logDataField[$idx]] ="";
+			if (sizeof($b)>=7) {
+				if (strpos($b[1],$year)>1 && ($type[0]==$b[5] || (isset($type[1]) && $type[1]==$b[5]) || (isset($type[2]) && $type[2]==$b[5]))) {
+					foreach($logDataField as $idx => $field) {
+						if (isset($b[$idx])) 
+							$logData[$i][$logDataField[$idx]] = $b[$idx]; 
+						else 
+							$logData[$i][$logDataField[$idx]] ="";
+					}
+				$i++;
+				}
 			}
-			$i++;
 		}
 		return $logData;
 	}

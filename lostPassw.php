@@ -9,7 +9,7 @@ $mail='';$myname="";$resultText='';$rights="";
 if (isset($_GET['action']) && ($_GET['action']=='newPassword')) {
 	if (isset($_GET['mail'])) $mail=$_GET['mail'];
 	if (checkEmail($mail)) {
-		$ret=setUserPasswort($mail, createPassword(8) );
+		$ret=resetUserPasswort($mail, createPassword(8) );
 		if ($ret>0) { 
 			SendNewPassword($ret);
 			$resultText='<div class="okay">Új jelszó a következő címre elküldve : '.$mail.'</div>';

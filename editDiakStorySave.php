@@ -19,6 +19,7 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) {
 	$row["privacy"] =$privacy;
 	
 	$row["story"] = substr($story,0,40)."...";
+	saveLogInInfo("SaveStory",$personId,"",$type,true);
 }
 else
 	$row["error"] = "Not authorized!";

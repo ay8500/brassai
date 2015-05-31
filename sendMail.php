@@ -24,11 +24,11 @@ function SendNewPassword($uid) {
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
 	$text.="Ezt az e-mail azért kapod mert kérdésedre megvátoztak a bejelentkezési adataid.<br />";
 	$text.="<p>";
-	$text.="Végzős osztály:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
+	$text.="Végzős osztály:".getAktDatabaseName().'-'.getAKtScoolClass()."<br/>";
 	$text.="Becenév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".$diak["passw"]."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vézös diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A vézös diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendTheMail(getFieldValue($diak["email"]),$text);

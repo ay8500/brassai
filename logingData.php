@@ -5,9 +5,8 @@
 <div class="sub_title">Loging</div>
 <?PHP
 if (userIsAdmin()) {  
-	$logData= readLogingData();
 	//initialise tabs
-	$tabsCaption=Array("Bejelentkezés","Adatmódosítás","Jelszó&nbsp;kérés","Sikertelen&nbsp;bejelentkezés","Facebook");
+	$tabsCaption=Array("Bejelentkezés","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");
 	include("tabs.php");
 	?>
 	
@@ -15,11 +14,12 @@ if (userIsAdmin()) {
 	<p align="center">
 	   Sikeres bejelentkezések:<br/>	
 	  <table align="center" border="1">
-	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td></tr>
+	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td><td>Passw</td></tr>
 	  	<?PHP
-	  	  foreach($logData as $slog) {
-	  	  	if ((strlen( $slog['User'])>0) && (substr( $slog['User'],0,4)!="Save") && ($slog['User']!="NewPassword") ) 
-			    echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td></tr>");
+	  		$logData= readLogingData("Login","2015");
+			foreach($logData as $slog) {
+				if ($slog["Result"]=="true")
+		    		echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td><td>".$slog['Passw']."</td></tr>");
 	  	  }
 	  	?>
 	 </table>  
@@ -27,47 +27,63 @@ if (userIsAdmin()) {
 	<?PHP }?>
 	<?PHP if ($tabOpen==1) { ?>
 	<p align="center">
-	   Adatok módosítva:<br/>	
+	   Sikertelen Bejelentkezés:<br/>	
 	  <table align="center" border="1">
-	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>Data</td><td>ID</td><td>User</td></tr>
+	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td><td>Passw</td></tr>
 	  	<?PHP
-	  	  foreach($logData as $slog) {
-	  	  	if ((strlen( $slog['User'])>0) && (substr( $slog['User'],0,4)=="Save")  ) 
-			    echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['User']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td></tr>");
+	  		$logData= readLogingData("Login","2015");
+			foreach($logData as $slog) {
+				if ($slog["Result"]=="false")
+		    		echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td><td>".$slog['Passw']."</td></tr>");
 	  	  }
 	  	?>
-	 </table>  
+	  	 </table>  
 	</p>
 	<?PHP }?>
 	<?PHP if ($tabOpen==2) { ?>
 	<p align="center">
-	   Jelszó kérése:<br/>	
+	   Adatok módosítva:<br/>	
 	  <table align="center" border="1">
-	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>User</td></tr>
+	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td><td>Action</td><td>Type</td></tr>
 	  	<?PHP
-	  	  foreach($logData as $slog) {
-	  	  	if ((strlen( $slog['User'])>0) && (strpos($slog['User'],"assword")>0)  ) 
-			    echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['CUser']."</td></tr>");
+	  		$logData= readLogingData("SaveData,SaveGeo,SaveStory","2015");
+			foreach($logData as $slog) {
+		    	echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td><td>".$slog['Action']."</td><td>".$slog['Passw']."</td></tr>");
 	  	  }
 	  	?>
-	 </table>  
+	  	 </table>  
+	</p>
+	<?PHP }?>
+	<?PHP if ($tabOpen==3) { ?>
+	<p align="center">
+	   Bejelenkezési adatok módosítása:<br/>	
+	  <table align="center" border="1">
+	  <table align="center" border="1">
+	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td><td>Action</td><td>Passw</td></tr>
+	  	<?PHP
+	  		$logData= readLogingData("SavePassw,SaveUsername,NewPassword","2015");
+			foreach($logData as $slog) {
+		    	echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td><td>".$slog['Action']."</td><td>".$slog['Passw']."</td></tr>");
+	  	  }
+	  	?>
+	   	 </table>  
+	</p>
+	<?PHP }?>
+	<?PHP if ($tabOpen==4) { ?>
+	<p align="center">
+	   Facebook:<br/>	
+	  <table align="center" border="1">
+	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>ID</td><td>User</td></tr>
+	  	<?PHP
+	  		$logData= readLogingData("Facebook","2015");
+			foreach($logData as $slog) {
+		    	echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td></tr>");
+	  	  }
+	  	?>
+	  	 </table>  
 	</p>
 	<?PHP }?>
 	
-	<?PHP if ($tabOpen==3) { ?>
-	<p align="center">
-	   Sikertelen Bejelentkezés:<br/>	
-	  <table align="center" border="1">
-	    <tr><td>IP</td><td>Date</td><td>Scool</td><td>Result</td><td>User</td><td>Passw</td></tr>
-	  	<?PHP
-	  	  foreach($logData as $slog) {
-	  	  	if ((strlen( $slog['User'])==0)  ) 
-			    echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['CUser']."</td><td>".$slog['Passw']."</td></tr>");
-	  	  }
-	  	?>
-	 </table>  
-	</p>
-	<?PHP }?>
 	
 	</td></tr></table>
 	<p>	<a href="generateSitemap.php">Sitemap</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="generateSitemap.php?htacces=true">htacces</a>

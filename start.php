@@ -75,7 +75,7 @@ else {
 		<?php 
 		include("lostPassw.php");
 		}
-	elseif (isset($_GET["action"]) && ($_GET["action"]=="lostpassw")) {
+	elseif (isset($_GET["action"]) && ($_GET["action"]=="lostpassw" || $_GET["action"]=="newUser") || $_GET["action"]=="newPassword") {
 		include("lostPassw.php");
 	} elseif ($facebook) { 
 		include("facebooklogin.php");
