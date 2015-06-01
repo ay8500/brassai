@@ -1,4 +1,4 @@
-<?PHP
+<?php
 if (!isset($SiteTitle))
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum vén diakjai";
 $SupportedLang = array("hu"); //First language ist the default language
@@ -10,13 +10,13 @@ if (isset($_GET["language"]))  {
 	$_SESSION['LANG']=$_GET["language"];
 }
 
-    $LangFile = "Lang_".$_SESSION['LANG'].".php";
-    if(file_exists($LangFile))
-        include $LangFile;
-    else
-        include "Lang_".$SupportedLang[0].".php";
-    
-    
+$LangFile = "Lang_".$_SESSION['LANG'].".php";
+if(file_exists($LangFile))
+	include $LangFile;
+else
+	include "Lang_".$SupportedLang[0].".php";
+
+
 function getTextRes($index) {
 	global $TXT;
 	if (isset($TXT[$index]))

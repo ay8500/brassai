@@ -1,6 +1,6 @@
 <?PHP
 
-$width				= 860;
+$width				= 1200;
 $thumbnails_per_row	= 5;
 $thumbnail_indexing	= TRUE;
 $thumbnails_per_page= 15;

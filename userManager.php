@@ -7,7 +7,7 @@
 	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
 	if (isset($_GET['scoolClass']))  { setAktScoolClass($_GET['scoolClass']); }
 	
-	//Crypted loginkey
+	//Login if crypted loginkey present and correct
 	if (isset($_GET['key']))   {
 		$login = explode("-", encrypt_decrypt("decrypt", $_GET['key']));
 		if (sizeof($login)==3) {
@@ -19,14 +19,20 @@
 		}
 	}
 	
-
-	
+	/**
+	 * get the user id form logged in user
+	 * @return NULL if no user logged on
+	 */
 	function getLoggedInUserId() {
 		if (!isset($_SESSION["uId"]))
 			return null;
 		return $_SESSION["uId"];
 	}
 	
+	/**
+	 * get user scool year
+	 * @return NULL if no user logged on
+	 */
 	function getUScoolYear() {
 		if (isset($_SESSION["uScoolYear"]))
 			return $_SESSION["uScoolYear"];
@@ -34,6 +40,10 @@
 			return null;
 	}
 	
+	/**
+	 * get user scool class
+	 * @return NULL if no user logged on
+	 */
 	function getUScoolClass() {
 		if (isset($_SESSION["uScoolClass"]))
 			return $_SESSION["uScoolClass"];
@@ -41,15 +51,26 @@
 			return null;
 	}
 	
-	
+	/**
+	 * set aktual viewed user id
+	 * @param user id
+	 */
 	function setAktUserId($id) {
 		$_SESSION["aktUId"]=$id;
 	}
 	
+	/**
+	 * get aktual viewed user id
+	 * @return unknown
+	 */
 	function getAktUserId() {
 		return $_SESSION["aktUId"];
 	}
 	
+	/**
+	 * are the logged in user and aktual viewed user the same?
+	 * @return boolean
+	 */
 	function isAktUserTheLoggedInUser() {
 		return (getAktDatabaseName()==getUserDatabaseName() && getAktUserId()==getLoggedInUserId() );
 	}
@@ -59,6 +80,7 @@
 	 * Check login data in each client 
 	 */
 	function checkUserLogin($user,$passw) {
+		//TODO Read the clients one by one 
 		$ret = false;
 		if (checkRequesterIP()) {
 			$ret=false;
@@ -85,8 +107,8 @@
 	 * Check facebook login data in each client
 	 */
 	function checkFacebookUserLogin($facebookId) {
+		//TODO Read the clients one by one 
 		$ret = false;
-		//logoutUser();
 		if (checkRequesterIP()) {
 			$ret=false;
 			$data=readUserAuthDB();
@@ -108,6 +130,14 @@
 		return $ret;
 	}
 	
+	/**
+	 * save user informations in the session
+	 * @param User role $admin
+	 * @param User name $user
+	 * @param User id $uid
+	 * @param Scool year $scoolYear
+	 * @param Scool class $scoolClass
+	 */
 	function setUserInSession($admin, $user, $uid, $scoolYear, $scoolClass)
 	{
 		$_SESSION['uRole']=$admin;
@@ -140,7 +170,7 @@
 	}
 	
 	/**
-	 * user is loggen in and he is an admin
+	 * user is loggen in and is a admin
 	 */
 	function userIsAdmin() {
 		if (isset($_SESSION['uRole'])) 
@@ -150,7 +180,7 @@
 	}
 	
 	/**
-	 * user is logged in and he is an editor
+	 * user is logged in and is a editor
 	 */
 	function userIsEditor() {
 		if (isset($_SESSION['uRole']) && getAktDatabaseName()==getUserDatabaseName()) 
@@ -161,7 +191,7 @@
 
 	
 	/**
-	 * user is logged in and he is an viewer
+	 * user is logged in and is a viewer
 	 */
 	function userIsViewer() {
 		if (isset($_SESSION['uRole'])) 
@@ -171,8 +201,8 @@
 	}
 
 	/**
-	 * generate an login key for the aktual user
-	 * @return Ambigous <boolean, string>
+	 * generate a login key for the aktual user
+	 * @return key string
 	 */
 	function generateAktUserLoginKey() {
 		$message= getAKtScoolClass()."-".getAktScoolYear()."-".getAktUserId();
@@ -291,11 +321,12 @@ function checkUserNameExists($id,$userName) {
 	 * this is a safety funtion to prevent automatic loging of password crack
 	 */
 	function checkRequesterIP() {
+		//TODO protection against hacking attaks 
 		return true;
 	}
 
 	/**
-	 * read login log in memory ($logdata[])
+	 * read login log  
 	 */
 	function readLogingData($action,$year) {
 		backupLoginData();
@@ -325,9 +356,15 @@ function checkUserNameExists($id,$userName) {
 	 * create a log backup file if the file is to big or to old
 	 */
 	function backupLoginData() {
-		//todo
+		//TODO
 	}
 	
+	/**
+	 * Krypt or encrypt a string
+	 * @param unknown $action
+	 * @param unknown $string
+	 * @return string
+	 */
 	function encrypt_decrypt($action, $string) {
 		$output = false;
 	
@@ -351,5 +388,5 @@ function checkUserNameExists($id,$userName) {
 	
 		return $output;
 	}
-	
+
 ?>

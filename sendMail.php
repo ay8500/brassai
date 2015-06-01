@@ -7,16 +7,18 @@ $sendMailMsg = "";
 //Count of sent mails
 $sendMailCount = 0;
 
-//Automatic send option
+//Automatic send option not usesd yet
+/*
 $action=""; if (isset($_POST["action"])) $action=$_POST["action"];
 if ($action == 'sendMail')
 {
 
 }
+*/
 
 /**
  * Send new password
- * todo: use mail template instea of had coded text
+ * todo: use mail template instead of hard coded text
  */
 function SendNewPassword($uid) {
 	global $sendMailMsg;
@@ -28,7 +30,7 @@ function SendNewPassword($uid) {
 	$text.="Becenév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".$diak["passw"]."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A vézös diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendTheMail(getFieldValue($diak["email"]),$text);
@@ -45,7 +47,7 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights) {
 	$text.="Hamarosan még egy emailt fogsz kapni a bejelentkezési becenévvel és jelszóval.<br/>";
 	$text.="Mail címed: ".$mail."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A vézös diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.";
 	sendTheMail($mail,$text);
@@ -135,6 +137,4 @@ function checkEmail($email) {
   return false;
 }
 
-
 ?>
- 
