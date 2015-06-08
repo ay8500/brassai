@@ -52,9 +52,11 @@
 			?>
 			Ez az oldal jelenleg üres.<br />
 			Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
-			<div style="margin:15px">
-				Biztonsági kód: <input id="code" type="text" size="6" value="" default="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
-			</div>
+			
+				<div style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+					Biztonsági kód: <input id="code" type="text" size="6" value="" default="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
+				</div>
+			
 			<div style="margin:15px">
 				Nevem: <input id="name" type="text" value="<?php echo $name ?>" default="Név">
 				<input id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >

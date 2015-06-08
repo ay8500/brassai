@@ -1,10 +1,11 @@
 <?php
 include_once 'sessionManager.php';
+include_once 'userManager.php';
 include_once 'ltools.php';
 
 $code = getParam("code", "+");
 
-if ($code!=$_SESSION['SECURITY_CODE']) {
+if (!userIsLoggedOn() && $code!=$_SESSION['SECURITY_CODE']) {
 	http_response_code(400);
 	echo ("Biztonságí cód nem helyes. Probáld még egyszer!");
 	return;

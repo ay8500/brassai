@@ -53,81 +53,96 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 	   $resultText='<div class="error">Mail cím nem helyes!</div>';
 }
 ?>
-<div style="text-align:left">
-<table style="width:600px" class="pannel" align="center">
-	<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
-	<input type="hidden"  name="action" value="newPassword" />
-	<tr style="font-size:12px; font-weight:bold">
-		<td rowspan="3"><img style="widht:60px;height:60px" src="images/szomoru.png"/></td><td> Elfelejtettem a jelszavam, szeretnék az email címemre egy újjat.</td>
-	</tr>
-	<tr>
-		<td>Akkor használd ezt a funktiót ha már ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.</td>
-	</tr>
-	<tr>
-		<td>E-Mail címem: <input type="text" name="mail" value="<?PHP echo($mail); ?>" />&nbsp;&nbsp;&nbsp; 
-		<br/><input class="submit2" type="submit" value="Szeretnék új jelszót!" /></td>  
-	</tr>
-	<tr>
-		<td colspan="2" ><hr /></td>  
-	</tr>
-	</form>
-	<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
-	<input type="hidden"  name="action" value="newUser" />
+<div class="container-fluid">
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><h4>Elfelejtettem a jelszavam, szeretnék az email címemre egy újjat.</h4></div>
+  		<div class="panel-body">
+			<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
+				<input type="hidden"  name="action" value="newPassword" />
+  				<div class="alert alert-warning">
+					Akkor használd ezt a funktiót ha már felhasználó vagy és ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.
+				</div>
+				<div class="input-group"> 
+  					<span style="min-width:150px; text-align:right" class="input-group-addon">E-Mail címem:</span> 
+					<input type="text" name="mail" value="<?PHP echo($mail); ?>" class="form-control" /> 
+				</div>  
+				<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-envelope"></span> Szeretnék új jelszót</button>
+			</form>
+		</div>
+	</div>
 	
-	<tr style="font-size:12px; font-weight:bold">
-		<td rowspan="5"><img style="widht:60px;height:60px" src="images/beszedes.png"/><td> Új vagyok ezen az oldalon szeretnék én is bejelentkezni.</td>
-	</tr>
-	<tr>
-		<td>Ird be az e-mail címedet és rövidesen megkapod a megadott címre a bejelentkezési adatokat.</td>
-	</tr>
-	<tr>
-		<td>E-Mail címem: <input type="text" name="mail" value="<?PHP echo($mail); ?>" />&nbsp;&nbsp;&nbsp;
-		<br />Nevem: <input type="text" name="myname" value="<?PHP echo($myname); ?>" size="40"/>
-		</td>  
-	</tr>
-	<tr>
-		<td>Az <?PHP echo(getAktScoolYear()); ?>-ben végzett <?PHP echo(getAKtScoolClass());?> osztálynak az oldalait szeretném használni mint:
-		<select name="rights" size="1">
-			<option value="">...válassz!...</option>
-			<option value="user">Véndiák</option>
-			<option value="editor">Osztály felelős</option>
-			<option value="editor">Osztályfőnök</option>
-			<option value="viewer">Tanár</option>
-		</select>
-	</tr>
-	<tr>
-		<td><input class="submit2" type="submit" value="Szeretnék bejelentkezni!" /></td>
-	</tr>
-	</form> 
-	<tr>
-		<td colspan="2" ><hr /></td>  
-	</tr>
-	<tr style="font-size:12px; font-weight:bold">
-		<td rowspan="2"><img style="widht:60px;height:60px" src="images/vicces.png"/><td> Vannak bejelenkezési adataim de nem sikerül bekerülni.</td>
-	</tr>
-	<tr>
-		<td>Ne add fel hamar a harcot a technika ellen, próbáld meg még egyszer.
-		<br/>Tippek:
-		<ul>
-		<li>A becenév nem tartalmaz ékezetes betüket!</li> 
-		<li>Esetleg használd a kopirozás-beillesztés <a  target="_blank" href="http://en.wikipedia.org/wiki/Cut,_copy,_and_paste">(C&amp;P)</a> technikát a jelszó beadására.</li>
-		<li>Az adatok csak a te osztályodra vonatkoznak!</li> 
-		</ul> 
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2"><hr /></td>  
-	</tr>
-	<tr style="font-size:12px; font-weight:bold">
-	   <td rowspan="2"><img style="widht:60px;height:60px" src="images/mosolygo.png"/><td>Segitséget kérek:</td>
-	</tr> 
-	<tr><td>Küldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre ha bármilyen kérdésed van.</td></tr>
-	<tr>
-		<td colspan="2" ><hr /></td>  
-	</tr>
-	<tr>
-		<td colspan="2"><?PHP echo($resultText); ?></td>
-	</tr>
-</table>
+	<div class="panel panel-default">
+  		<div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni.</h4></div>
+  		<div class="panel-body">
+  			<div class="alert alert-warning">
+				Te is a Brassai Sámuel liceumban végeztél és szeretnél volt osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
+			</div>
+  			<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
+				<input type="hidden"  name="action" value="newUser" />
+				<div class="input-group"> 
+  					<span  style="min-width:150px; text-align:right" class="input-group-addon">E-Mail címem</span> 
+					<input type="text" name="mail" value="<?PHP echo($mail); ?>"  class="form-control" 	/>
+				</div>
+				<div class="input-group"> 
+  					<span style="min-width:150px; text-align:right" class="input-group-addon">Nevem</span>
+					<input type="text" name="myname" value="<?PHP echo($myname); ?>" class="form-control" 	/>
+				</div>
+				<div class="input-group"> 
+  					<span style="min-width:150px; text-align:right" class="input-group-addon">Beosztás</span>
+					<select name="rights" size="1" class="form-control" >
+						<option value="">...válassz!...</option>
+						<option value="user">Végzős véndiák</option>
+						<option value="user">Véndiák</option>
+						<option value="editor">Osztály felelős</option>
+						<option value="editor">Osztályfőnök</option>
+						<option value="viewer">Tanár</option>
+						<option value="viewer">Barát</option>
+					</select>
+				</div>
+				<div class="input-group"> 
+  					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
+					<select name="rights" size="1" class="form-control" >
+						<option value="">...válassz!...</option>
+						<?php for ($i=2000;$i>1955;$i--) {?>
+							<option value="<?php echo $i?>"><?php echo $i?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<div class="input-group"> 
+  					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási osztály</span>
+					<select name="rights" size="1" class="form-control" >
+						<option value="">...válassz!...</option>
+						<option value="12A">12A</option>
+						<option value="12B">12B</option>
+						<option value="12C">12C</option>
+						<option value="12D">12D</option>
+						<option value="13A">13A (esti tagozat)</option>
+						<option value="13B">13B (esti tagozat)</option>
+					</select>
+				</div>
+				<button class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-user"></span> Szeretnék bejelentkezni</button>
+				
+			</form>
+		</div>
+	</div>
+	
+	<div class="panel panel-default">
+  		<div class="panel-heading"><h4>Vannak bejelenkezési adataim de nem sikerül bejelentkezni.</h4></div>
+  		<div class="panel-body">
+  			<div class="alert alert-warning">
+				Ne add fel hamar a harcot a technika ellen, próbáld meg még egyszer.
+				Tippek:
+				<ul>
+					<li>A becenév nem tartalmaz ékezetes betüket.</li> 
+					<li>Esetleg használd a kopirozás-beillesztés <a  target="_blank" href="http://en.wikipedia.org/wiki/Cut,_copy,_and_paste">(C&amp;P)</a> technikát a jelszó beadására.</li>
+				</ul>
+				Küldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre ha bármilyen kérdésed van.
+			</div>
+		</div> 
+	</div>
+
+	<div><?PHP echo($resultText); ?></div>
+
 </div>
 

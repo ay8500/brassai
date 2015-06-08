@@ -129,12 +129,12 @@
 						<img src="images/<?php echo getPersonLogedOn()["picture"] ?>" style="height:20px; border-round:3px;" />
 						<a href="editDiak.php"><?php echo getPersonLogedOn()["lastname"]." ".getPersonLogedOn()["firstname"] ?></a>
 					</span>
-					<button id="uLogonMenu" type="button" class="btn btn-default " onclick="handleLogoff();" > Kijelenkezés</button>
+					<button id="uLogonMenu" type="button" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelenkezés</button>
 				</div>
 			</form>
 			<?php } else {?>
 			<form class="navbar-form navbar-right" role="search">
-				<button id="uLogonMenu" type="button" class="glyphicon glyphicon-user btn btn-default " onclick="handleLogon();" > Bejelenkezés</button>
+				<button id="uLogonMenu" type="button" class="btn btn-default " onclick="handleLogon();" ><span class="glyphicon glyphicon-log-in"></span> Bejelenkezés</button>
 			</form>
 			<?php } ?>
 		</ul>

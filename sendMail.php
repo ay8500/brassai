@@ -43,11 +43,11 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights) {
 	$text='<p style="font-weight: bold;">Kedeves '.$lastname." ".$firstname.'</p>';
 	$text.="Ezt az e-mail azért kapod mert bejelentkezési adatokat kértél.<br />";
 	$text.="<p>";
-	$text.="Végzős osztály:".$_SESSION['scoolYear'].'-'.$_SESSION['scoolClass']."<br/>";
+	$text.="Végzős osztály:".getAKtScoolClass().'-'.getAktScoolYear()."<br/>";
 	$text.="Hamarosan még egy emailt fogsz kapni a bejelentkezési becenévvel és jelszóval.<br/>";
 	$text.="Mail címed: ".$mail."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$_SESSION['scoolYear'].'&scoolClass='.$_SESSION['scoolClass'].'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.";
 	sendTheMail($mail,$text);

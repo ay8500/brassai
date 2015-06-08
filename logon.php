@@ -122,20 +122,21 @@ function writeLogonLine() {
 }
 
 function writeLogonDiv() {
-	global $TXT;
 	if (!userIsLoggedOn()) {
 		?>
-<div class="panel panel-default" style="display:none;margin:auto;width:300px;" id="uLogon" >
-	<div class="panel-heading" >Bejelentkezés</div>
+<div class="panel panel-default" style="display:none;margin:auto;width:220px;" id="uLogon" >
+	<div class="panel-heading" >
+		Bejelentkezés<span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeLogin();"></span>
+	</div>
 	<form action="" method="get">
 		<input type="hidden" value="logon" name="action"/>
 		<div class="input-group input-group" style="margin: 3px;">
-    		<span class="input-group-addon" style="width:130px"><?php echo getTextRes("LogInUser"); ?></span>
-    		<input type="text" class="form-control" id="loUser" placeholder="">
+    		<span class="input-group-addon" style="width:30px"><span class="glyphicon glyphicon-user"></span></span>
+    		<input type="text" class="form-control" id="loUser" placeholder="<?php echo getTextRes("LogInUser"); ?>">
 		</div>
 		<div class="input-group input-group" style="margin: 3px;">
-    		<span class="input-group-addon" style="width:130px"><?php echo getTextRes("LogInPassw"); ?></span>
-    		<input type="password" class="form-control" id="loPassw" placeholder="" onkeypress="keypressed();" >
+    		<span class="input-group-addon" style="width:30px"><span class="glyphicon glyphicon-lock"></span></span>
+    		<input type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?> onkeypress="keypressed();" >
 		</div>
 		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="logon();"><?php echo getTextRes("LogIn"); ?></button>
 		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="lostlogon();"><?php echo getTextRes("LogInLostData"); ?></button>
@@ -195,6 +196,10 @@ function writeLogonDiv() {
 
 	function handleLogon() {
 	    $("#uLogon").show("slow");
+	}
+
+	function closeLogin() {
+		$("#uLogon").hide("slow");
 	}
 		
 </script>
