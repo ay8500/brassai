@@ -43,17 +43,46 @@
 				btns: ['viewHTML','formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists','|', 'horizontalRule'],
 				removeformatPasted: true
 			});
-
-			//$('#story').trumbowyg('html','');
 		});
 		</script>
 	<?php endif?>
-	
+	<script>
+		
+		$( document ).ready(function() {
+	    	$(window).resize(function() {
+				onResize();
+			});
+		});
+		onResize();
+		var logoTimer;
+		var logoTop=-20;
+		var logoDirection =-1;
+		
+		function onResize() {
+
+			var h= 	removePX($(".sub_title").css("height"))+
+					removePX($(".appltitle").css("height"))+
+					removePX($("#main-menu").css("height"))+32;
+			var hh = removePX($("#homelogo").css("height"));
+		    
+		    $(".homeLogo").css("height",(h)+"px");
+		    clearInterval(logoTimer);
+		    logoTimer = setInterval(function() { 
+			    $("#homelogo").css("top",logoTop+"px");
+			    logoTop=logoTop+logoDirection;
+			    if (logoTop<h-hh) 	logoDirection=1;
+			    if( logoTop>=0) 	logoDirection=-1;
+			}, 50);
+		}
+
+		function removePX(p) {
+			return parseInt(p.substr(0,p.length-2));
+		}
+				
+		
+	</script>
 	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
 	<noscript><img src="http://s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
-	
-	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-20252557-2']);
@@ -65,15 +94,4 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	</script>
-	
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-  		var js, fjs = d.getElementsByTagName(s)[0];
-  		if (d.getElementById(id)) return;
-  		js = d.createElement(s); js.id = id;
-  		js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.3&appId=1606012466308740";
-  		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-	</script>
-	
 </html>

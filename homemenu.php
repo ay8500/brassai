@@ -1,23 +1,18 @@
+<?php
+	include_once("sessionManager.php");
+	include_once("config.php");
+	include_once("logon.php");
+	include_once("data.php");
+	$SCRIPT_NAME = getenv("SCRIPT_NAME");
+	//Image gallery Menue
+	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
+?>
 <!DOCTYPE html>
 <html lang="hu">
   <head>
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<?php
-	include_once("sessionManager.php");
-
-	
-	$SCRIPT_NAME = getenv("SCRIPT_NAME");
-	include_once("config.php");
-	include_once("logon.php");
-	include_once("data.php");
-	
-	//Image gallery Menue
-	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
-?>
-	
     <title><?PHP echo($SiteTitle) ?></title>
 	<?PHP if (strstr(getenv("QUERY_STRING"),"=thumbnails")!="") { ?> 
 		<meta name="robots" content="noindex,follow" />
@@ -42,33 +37,30 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->	 
 	<link rel="stylesheet" type="text/css" href="css/menu.css" />
-	
 	<?php if (isset($diakEditStorys)) :?>
 		<link rel="stylesheet" href="editor/ui/trumbowyg.min.css">
 	<?php endif?>
-	
  </head>
 <body>
+<div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
 <nav id="main-menu" class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <button type="button" class="navbar-toggle" style="float:none;" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.php">Start</a>
     </div>
-
-		
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
 			<li class="dropdown">
 				<a href="index.php" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
 				<ul class="dropdown-menu">
+					<li><a href="index.php">Üdvözlet</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
@@ -134,7 +126,7 @@
 			</form>
 			<?php } else {?>
 			<form class="navbar-form navbar-right" role="search">
-				<button id="uLogonMenu" type="button" class="btn btn-default " onclick="handleLogon();" ><span class="glyphicon glyphicon-log-in"></span> Bejelenkezés</button>
+				<button id="uLogonMenu" type="button" class="btn btn-default " onclick="handleLogon();" ><span class="navbar-font glyphicon glyphicon-log-in" > Bejelenkezés</span><span> </span></button>
 			</form>
 			<?php } ?>
 		</ul>
@@ -142,8 +134,10 @@
 </div>
 </nav>
 
-<?PHP 
-		writeLogonDiv();
-	?>
-	<td  id="topLine"><h1 class="appltitle">A kolozsvári Brassai Sámuel líceum <?PHP echo(getAktScoolYear()) ?>-ben végzett diákjai <?PHP echo(getAktScoolClass()) ?></h1></td>
+<?PHP writeLogonDiv();	?>
+<div id="topLine"><h1 class="appltitle">
+	<span id="o1024" >A kolozsvári </span>
+	Brassai Sámuel líceum <span id="o400" >egykori </span>diákjai 
+	<span id="o480" ><?PHP echo(getAktScoolYear()." ".getAktScoolClass()) ?></span>
+</h1></div>
 

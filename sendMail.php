@@ -39,15 +39,15 @@ function SendNewPassword($uid) {
 /**
  * send mail to new user
  */
-function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights) {
+function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class) {
 	$text='<p style="font-weight: bold;">Kedeves '.$lastname." ".$firstname.'</p>';
 	$text.="Ezt az e-mail azért kapod mert bejelentkezési adatokat kértél.<br />";
 	$text.="<p>";
-	$text.="Végzős osztály:".getAKtScoolClass().'-'.getAktScoolYear()."<br/>";
+	$text.="Végzős osztály:".$year.'-'.$class."<br/>";
 	$text.="Hamarosan még egy emailt fogsz kapni a bejelentkezési becenévvel és jelszóval.<br/>";
 	$text.="Mail címed: ".$mail."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$year.'&scoolClass='.$class.'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.";
 	sendTheMail($mail,$text);

@@ -3,13 +3,13 @@ $SiteTitle="Brassai Sámuel életrajza";
 $SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai";
 include("homemenu.php"); 
 ?>
+<h2 class="sub_title">Brassai Sámuel életrajzi adatai</h2>
 
 <div style="text-align: center;">
  <div style="margin-left: auto;"><img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/></div>
 <div>Brassai S&aacute;muel (1800-1897)</div>
 </div>
 <div class="container-fluid">
-<h2 class="sub_title">Brassai Sámuel életrajzi adatai</h2>
 <p>- 1797 illetve 1800 június 15-én született Torockószentgyörgyön (saját bevallása szerint 1797-ben - hivatalos iratba nincs bejegyezve, mivel nagyapja keresztelte Torockószent-györgyön). Édesapja Brassai Sámuel, Torockószentgyörgyön iskolamester, unitárius pap. Édesanyja, Koncz Krisztina, unitárius papcsaládból származó tanult, igen művelt nő. A család 1827-ig lakik Torockószentgyörgyön, majd idősebb Brassai Sámuel Szentmihályfalvára költözik, itt lesz unitárius pap haláláig, 1837-ig.</p>
 <p>- 1813: kisebb megszakításokkal 1820-ig a Kolozsvári Unitárius Kollégiumban tanul</p>
 <p>- 1821: Zsibón a Wesselényi Miklós meghívására rendezi ennek könyvtárát </p>

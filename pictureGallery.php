@@ -6,6 +6,7 @@
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndikok képtára: ".$gallery;
 	include("homemenu.php"); 
 ?>
+<div class="sub_title">Emlékeik képekben</div>
 <?PHP /*
 	<table style="width:100%;height:100%;">
 		<tr style="width:100%;height:100%">

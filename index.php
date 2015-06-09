@@ -3,8 +3,8 @@ include_once("sessionManager.php");
 include_once("data.php");
 include("homemenu.php");
 ?>
+<h2 class="sub_title">Szeretettel köszöntünk a véndiákok honlapján</h2>
 <div class="container-fluid">
-	<h2 class="sub_title">Szeretettel köszöntünk a véndiákok honlapján</h2>
 	<div style="text-align: center;">
 		<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>
 		<div style="font-size:12px;font-weight:bold">Brassai Sámuel (1800-1897)</div>

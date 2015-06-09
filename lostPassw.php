@@ -31,9 +31,8 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 		if (isset($_GET['myname'])) $myname=$_GET['myname'];
 		$xname=split(' ',$myname);
 		if (isset($xname[0]) && isset($xname[1])) {
-			if (isset($_GET['rights'])) $rights=$_GET['rights'];
 			if (strlen($rights)>0) {			 
-				$ret=createNewUser($myname,$mail,$passw,$rights);
+				$ret=createNewUser($myname,$mail,$passw,getParam("rights", ""),getParam("class", ""),getParam("year",""));
 				if ($ret==0) {
 					sendNewUserMail($xname[1],$xname[0],$mail,$passw,$rights);
 					$resultText='<div class="okay">Sikeres bejelentkezés, hamarosan e-mailt fogsz kapni: ' .$mail.'</div>';
@@ -102,7 +101,7 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
-					<select name="rights" size="1" class="form-control" >
+					<select name="year" size="1" class="form-control" >
 						<option value="">...válassz!...</option>
 						<?php for ($i=2000;$i>1955;$i--) {?>
 							<option value="<?php echo $i?>"><?php echo $i?></option>
@@ -111,7 +110,7 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási osztály</span>
-					<select name="rights" size="1" class="form-control" >
+					<select name="class" size="1" class="form-control" >
 						<option value="">...válassz!...</option>
 						<option value="12A">12A</option>
 						<option value="12B">12B</option>
