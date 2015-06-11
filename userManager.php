@@ -80,26 +80,24 @@
 	 * Check login data in each client 
 	 */
 	function checkUserLogin($user,$passw) {
-		//TODO Read the clients one by one 
 		$ret = false;
 		if (checkRequesterIP()) {
 			$ret=false;
-			$data=readUserAuthDB();
-			foreach($data as $key =>$usr) {
-				if ((strcasecmp($usr["user"],$user)==0) && ($passw==$usr["passw"])) {
-					setUserInSession(
-						$usr["admin"],
-						$usr["user"],
-						$usr["id"],
-						$usr["scoolYear"],
-						$usr["scoolClass"]);
-					$ret = true;
-				break;
-				}
-			}
+			$diak["user"]=$user;
+			$diak["passw"]=$passw;
+			$usr =getGlobalUser($diak,"compairUserPassw");
+			if (null != $usr) {
+				setUserInSession(
+					$usr["admin"],
+					$usr["user"],
+					$usr["id"],
+					$usr["scoolYear"],
+					$usr["scoolClass"]);
+				$ret = true;
+				if (!userIsAdmin()) 
+					saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
+			}		
 		}
-		if (!userIsAdmin()) 
-			saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
 		return $ret;
 	}
 
@@ -107,27 +105,23 @@
 	 * Check facebook login data in each client
 	 */
 	function checkFacebookUserLogin($facebookId) {
-		//TODO Read the clients one by one 
 		$ret = false;
 		if (checkRequesterIP()) {
 			$ret=false;
-			$data=readUserAuthDB();
-			foreach($data as $key =>$usr) {
-				if ($usr["facebookid"]==$facebookId) {
-					setUserInSession(
-						$usr["admin"],
-						$usr["user"],
-						$usr["id"],
-						$usr["scoolYear"],
-						$usr["scoolClass"]);
-					$ret = true;
-					break;
-				}
-			}
+			$diak["facebook"]=$facebookId;
+			$usr =getGlobalUser($diak,"compairFacebookId");
+			if (null != $usr) {
+				setUserInSession(
+					$usr["admin"],
+					$usr["user"],
+					$usr["id"],
+					$usr["scoolYear"],
+					$usr["scoolClass"]);
+				$ret = true;
+				if (!userIsAdmin() && userIsLoggedOn())
+					saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
+			}		
 		}
-		if (!userIsAdmin() && userIsLoggedOn())
-			saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
-		return $ret;
 	}
 	
 	/**
@@ -225,17 +219,10 @@
  */
 function checkUserNameExists($id,$userName) {
 	$ret=false;
-
-	$data=readUserAuthDB();
-
-	$actDataBase=getUserDatabaseName();
-	foreach ($data as $person) {
-		if ((strcasecmp($userName,$person['user'])==0)) {		//same username found
-			if ( !(($person["id"]==$id) && ($actDataBase==$person["scoolClass"].$person["scoolYear"])))  { 		//and username is not in the same record
-				$ret= true;
-				break;
-			}
-		}
+	$diak["user"]=$userName;
+	$usr =getGlobalUser($diak,"compairUser");
+	if (null != $usr) {
+		$ret = true;
 	}
 	return $ret;
 }
@@ -258,22 +245,20 @@ function checkUserNameExists($id,$userName) {
 		if (strlen($newPassw)>3) { 
 			if (checkRequesterIP()) {
 					//check user email
-					foreach($authData as $auth) {
-						if ((strcasecmp($auth["email"],$email)==0) ) {
-							setAktScoolClass($auth["scoolClass"]);
-							setAktScoolYear($auth["scoolYear"]);
-							$person = getPerson($auth["id"]);
-							$person["passw"]=$newPassw;
-							$ret = $auth["id"];
-							savePerson($person);
-							break;
-						}
+					$diak["email"]=$email;
+					$usr =getGlobalUser($diak,"compairEmail");
+					if (null != $usr) {
+						setAktScoolClass($usr["scoolClass"]);
+						setAktScoolYear($usr["scoolYear"]);
+						$usr["passw"]=$newPassw;
+						$ret = $usr["id"];
+						savePerson($usr);
 					}
 			}
 			else $ret = -3;
 		}
 		else $ret =-2;
-		saveLogInInfo("NewPassword",$person["id"],$email,$newPassw,$ret);
+		saveLogInInfo("NewPassword",$usr["user"],$email,$newPassw,$ret);
 		return $ret;
 	}
 	

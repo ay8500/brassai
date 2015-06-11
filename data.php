@@ -7,10 +7,12 @@ include_once("userManager.php");
 
 $data = array();
 
-//List of databases
-$dataBase=Array("12A1985","12B1985");
-$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
+//List of databases are the subdirectorys in folder /data
 $dataPath = "data/";
+chdir($dataPath);
+$dataBase = array_filter(glob('*'), 'is_dir');
+chdir("..");
+$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
 $openedDatebase="";
 
 
@@ -82,8 +84,8 @@ function openDatabase($name) {
 	//no database change
 	if (getOpenedDatabase()==$name) {
 		$ret=true;
-		$dataFileName=$dataPath.$name."/data.txt";
-		ReadDB();
+		//$dataFileName=$dataPath.$name."/data.txt";
+		//ReadDB();
 	}
 	//database change
 	else {
@@ -186,19 +188,21 @@ function savePerson($person) {
  * is the person a guest
  */
 function isPersonGuest($person) {
-	return (strstr($person["admin"],"guest")!="");
+	return (isset($person["admin"]) && strstr($person["admin"],"guest")!="");
 }
 
 /**
  * returns an empty person
  */
 function getPersonDummy() {
+	/*
 	global $datafields;
 	$p = array();
 	foreach ($datafields as $field) {
 		$p[$field]="";
 	}
 	return $p;
+	*/
 }
 
 /**
@@ -255,6 +259,44 @@ function readDB()
 	*/
 }
 
+
+function compairUserPassw($d1,$d2) {
+	return strtolower($d1["user"])==strtolower($d2["user"]) && $d1["passw"]==$d2["passw"];
+}
+
+function compairFacbookId($d1,$d2) {
+	return strtolower($d1["facebook"])==strtolower($d2["facebook"]);
+}
+
+function compairEmail($d1,$d2) {
+	if (!isset($d1["email"]) || !isset($d2["email"]))
+		return false;
+	return getFieldValue($d1["email"])==getFieldValue($d2["email"]);
+}
+
+function compairUser($d1,$d2) {
+	return strtolower($d1["user"])==strtolower($d2["user"]);
+}
+
+/**
+ * Read user in all Databases using comparator
+  */
+function getGlobalUser($diak,$compair) {
+	global $dataBase;
+	global $dataPath;
+	global $data;
+	foreach($dataBase as $db) {
+		openDatabase($db);
+		foreach ($data as $person) {
+			if ($compair($person,$diak)) {
+				$person["scoolYear"]=substr($db,3,4);
+				$person["scoolClass"]=substr($db,0,3);
+				return $person;
+			}
+		}
+	}
+	return null;
+}
 
 /**
  * Read in the userlist
@@ -323,6 +365,13 @@ function saveDB() {
 		   		fwrite($file,$key."=".$val."\r\n");
 		}
 	}
+	fclose($file);
+	
+	$file=fopen($dataFileName.".json","w");
+	$data["LastIp"]=$_SERVER["REMOTE_ADDR"];
+	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
+	$data["changeDate"]=date('d.m.Y H:i');
+	fwrite($file,json_encode($data));
 	fclose($file);
 }
 
@@ -729,9 +778,17 @@ function getFieldCheckedClass($field) {
 		return "";
 }
 			
+function getFieldValueNull($diak,$field) {
+	if ( !isset($diak[$field]) || $diak[$field]=="")
+		return "";
+	$ret = ltrim($diak[$field],"~");
+	$ret = trim($ret);
+	return  $ret;
+}
 
-function getFieldChecked($field) {
-  if ($field=="") 
+
+function getFieldChecked($diak,$field) {
+  if (null== $field && $field=="") 
   	return "";
   if ($field[0]=="~") return "checked";
   else return "";
@@ -740,11 +797,11 @@ function getFieldChecked($field) {
 /*
  * is a field content printable
  */
-function showField($field) {
-  if ($field=="") 
+function showField($diak,$field) {
+  if (!isset($diak[$field]) || $diak[$field]=="") 
   	return false;
-  if (($field[0]!="~") ||  userIsLoggedOn()) { 
-  	if (ltrim($field,"~")!="") {
+  if (($diak[$field][0]!="~") ||  userIsLoggedOn()) { 
+  	if (ltrim($diak[$field],"~")!="") {
   		return true;
   	} else { 
   		return false;

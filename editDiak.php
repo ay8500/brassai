@@ -36,8 +36,8 @@ $diak = getPerson($uid,getAktDatabaseName());
 
 $dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children","facebookid","admin");
 $dataFieldCaption 	=array("Vezetéknév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FacebookID","Role");
-$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30,60);
-$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false,false);
+$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30,60,40);
+$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false,false,false);
 	
 $resultDBoperation="";
 
@@ -173,7 +173,7 @@ if ($tabOpen==5) {
 <h2 class="sub_title" style="text-align: left">
 		<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-round:3px;" />
 			<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
-			<?php if ($diak["birthname"]!="") echo('('.$diak["birthname"].')');?>
+			<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
 </h2>
 
 <?php
@@ -199,14 +199,14 @@ include("tabs.php");
 		$fieldCountToBeEdited = sizeof($dataFieldNames);
 		if (!userIsAdmin()) $fieldCountToBeEdited -=2;
 		for ($i=0;$i<$fieldCountToBeEdited;$i++) {
-			if (isset($diak[$dataFieldNames[$i]])) {
+			//if (isset($diak[$dataFieldNames[$i]])) {
 				echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
 				if ($dataFieldVisible[$i]) 
-					echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak[$dataFieldNames[$i]]).' title="Jelöld meg és akkor csak a bejelentkezett osztálytársak lássák!" /></td>');
+					echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="Jelöld meg és akkor csak a bejelentkezett osztálytársak lássák!" /></td>');
 				else 
 					echo('<td class="highlight">&nbsp;</td>');
-				echo('<td><input type="text" value="'.getFieldValue($diak[$dataFieldNames[$i]]).'" name="'.$dataFieldNames[$i].'" size="'.$dataFieldLengths[$i].'" class="input2" onchange="fieldChanged();" /></td></tr>'."\r\n");
-			}
+				echo('<td><input type="text" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" size="'.$dataFieldLengths[$i].'" class="input2" onchange="fieldChanged();" /></td></tr>'."\r\n");
+			//}
 		}
 		echo('<tr><td colspan="3"> </td></tr>');
 		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="'.getTextRes("Save").'" title="Adatok kimentése" /></td></tr>');
@@ -225,27 +225,25 @@ include("tabs.php");
 		echo "<img src=\"images/".$d["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
 		echo "</td><td valign=top>";
 		echo "<table>\r\n";
-		echo "<tr><td valign=top align=right>Élettárs:</td><td>".$d["partner"]."</td></tr>";
-		echo "<tr><td valign=top align=right>Végzettség:</td><td>".$d["education"]."</td></tr>";
-		if(showField($d["employer"])) 
-			echo "<tr><td valign=top align=right>Munkahely:</td><td><div itemprop=\"worksFor\" itemscope itemtype=\"http://schema.org/Organization\"><span itemprop=\"Name\">".getFieldValue($d["employer"])."</span></div></td></tr>";
-		if(showField($d["function"])) 
-			echo "<tr><td valign=top align=right>Beosztás:</td><td><span itemprop=\"jobTitle\">".getFieldValue($d["function"])."</span></td></tr>";
-		echo "<tr><td valign=top align=right>Gyerekek:</td><td>".$d["children"]."</td></tr>";
-		if(showField($d["address"])||showField($d["place"])||showField($d["zipcode"])) { 
+		if(showField($d,"partner"))		echo "<tr><td valign=top align=right>Élettárs:</td><td>".$d["partner"]."</td></tr>";
+		if(showField($d,"education"))	echo "<tr><td valign=top align=right>Végzettség:</td><td>".$d["education"]."</td></tr>";
+		if(showField($d,"employer"))	echo "<tr><td valign=top align=right>Munkahely:</td><td><div itemprop=\"worksFor\" itemscope itemtype=\"http://schema.org/Organization\"><span itemprop=\"Name\">".getFieldValue($d["employer"])."</span></div></td></tr>";
+		if(showField($d,"function"))	echo "<tr><td valign=top align=right>Beosztás:</td><td><span itemprop=\"jobTitle\">".getFieldValue($d["function"])."</span></td></tr>";
+		if(showField($d,"children"))	echo "<tr><td valign=top align=right>Gyerekek:</td><td>".$d["children"]."</td></tr>";
+		if(showField($d,"address")||showField($d,"place")||showField($d,"zipcode")) { 
 			echo ("<tr><td valign=top align=right>Cím:</td><td><div itemprop=\"address\" itemscope itemtype=\"http://schema.org/PostalAddress\">");
-			if(showField($d["address"])) echo('<span itemprop="streetAddress">'.getFieldValue($d["address"])."</span>, ");
-			if(showField($d["zipcode"])) echo('<span itemprop="postalCode">'.getFieldValue($d["zipcode"])."</span> ");
-			if(showField($d["place"]))   echo('<span itemprop="addressLocality">'.getFieldValue($d["place"]).'</span>');
+			if(showField($d,"address")) echo('<span itemprop="streetAddress">'.getFieldValue($d["address"])."</span>, ");
+			if(showField($d,"zipcode")) echo('<span itemprop="postalCode">'.getFieldValue($d["zipcode"])."</span> ");
+			if(showField($d,"place"))   echo('<span itemprop="addressLocality">'.getFieldValue($d["place"]).'</span>');
 			echo("</div></td></tr>");
 		}
-		if(showField($d["country"])) echo "<tr><td valign=top align=right>Ország:</td><td>".getFieldValue($d["country"])."</td></tr>";
-		if(showField($d["phone"])) echo "<tr><td valign=top align=right>Telefon:</td><td>".getFieldValue($d["phone"])."</td></tr>";
-		if(showField($d["mobil"])) echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
-		if(showField($d["email"])) echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
-		if(showField($d["skype"])) echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
-		if(showField($d["facebook"])) echo "<tr><td valign=top align=right>Facebook:</td><td>".getFieldValue($d["facebook"])."</td></tr>";
-		if(isset($d["homepage"]) && showField($d["homepage"])) echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["homepage"])."</td></tr>";
+		if(showField($d,"country")) 	echo "<tr><td valign=top align=right>Ország:</td><td>".getFieldValue($d["country"])."</td></tr>";
+		if(showField($d,"phone")) 		echo "<tr><td valign=top align=right>Telefon:</td><td>".getFieldValue($d["phone"])."</td></tr>";
+		if(showField($d,"mobil")) 		echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
+		if(showField($d,"email")) 		echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
+		if(showField($d,"skype")) 		echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
+		if(showField($d,"facebook"))	echo "<tr><td valign=top align=right>Facebook:</td><td>".getFieldValue($d["facebook"])."</td></tr>";
+		if(showField($d,"homepage"))	echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["homepage"])."</td></tr>";
 		echo "</table></td></tr></table></div>";
 	}
 }

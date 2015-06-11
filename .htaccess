@@ -44,6 +44,7 @@ RewriteRule Gergely_Eszter editDiak.php?uid=&scoolYear=1985&scoolClass=12A
 RewriteRule Gruber_Oszkar editDiak.php?uid=19&scoolYear=1985&scoolClass=12A
 RewriteRule Kali_Sandor editDiak.php?uid=20&scoolYear=1985&scoolClass=12A
 RewriteRule Maier_Levente editDiak.php?uid=21&scoolYear=1985&scoolClass=12A
+RewriteRule Levente_Maier editDiak.php?uid=21&scoolYear=1985&scoolClass=12A
 RewriteRule Kalmar_Levente editDiak.php?uid=&scoolYear=1985&scoolClass=12A
 RewriteRule Kiss_Edit editDiak.php?uid=22&scoolYear=1985&scoolClass=12A
 RewriteRule Krull_Klara editDiak.php?uid=23&scoolYear=1985&scoolClass=12A
@@ -73,6 +74,7 @@ RewriteRule Balazs_Attila editDiak.php?uid=1&scoolYear=1985&scoolClass=12B
 RewriteRule Fodor_Eva editDiak.php?uid=2&scoolYear=1985&scoolClass=12B
 RewriteRule Balog_Eva editDiak.php?uid=&scoolYear=1985&scoolClass=12B
 RewriteRule Bodo_Istvan editDiak.php?uid=3&scoolYear=1985&scoolClass=12B
+RewriteRule Bodo_Steven editDiak.php?uid=3&scoolYear=1985&scoolClass=12B
 RewriteRule Boros_Edit editDiak.php?uid=4&scoolYear=1985&scoolClass=12B
 RewriteRule Both_Melinda editDiak.php?uid=5&scoolYear=1985&scoolClass=12B
 RewriteRule Chiorean_Krisztina editDiak.php?uid=6&scoolYear=1985&scoolClass=12B
@@ -101,7 +103,7 @@ RewriteRule Kudor_Eva editDiak.php?uid=&scoolYear=1985&scoolClass=12B
 RewriteRule Lazar_Gabriella editDiak.php?uid=24&scoolYear=1985&scoolClass=12B
 RewriteRule Lenard_Jozsef editDiak.php?uid=25&scoolYear=1985&scoolClass=12B
 RewriteRule Yogi_Jozsef editDiak.php?uid=&scoolYear=1985&scoolClass=12B
-RewriteRule Marton-Ã…sgrim_Aniko editDiak.php?uid=26&scoolYear=1985&scoolClass=12B
+RewriteRule Marton-Asgrim_Aniko editDiak.php?uid=26&scoolYear=1985&scoolClass=12B
 RewriteRule Marton_Aniko editDiak.php?uid=&scoolYear=1985&scoolClass=12B
 RewriteRule Berger_Maria editDiak.php?uid=27&scoolYear=1985&scoolClass=12B
 RewriteRule Molnar_Maria editDiak.php?uid=&scoolYear=1985&scoolClass=12B
