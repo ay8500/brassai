@@ -3,14 +3,16 @@
 	include_once("userManager.php");
 	include_once 'sendMail.php';
 	include_once 'config.php';
+	include_once 'ltools.php';
 
 	$logOnMessage="";
 
 	
 	//Logon action
-	if (isset($_GET["action"]) && ($_GET["action"]=="logon")) {
-		if (isset($_GET["paramName"])) $paramName=trim($_GET["paramName"]); else $paramName="";
-		if (isset($_GET["paramPassw"])) $paramPassw=trim($_GET["paramPassw"]); else $paramPassw="";
+	//TODO
+	if (getParam("action","")=="logon") {
+		$paramName=getParam("paramName","");
+		$paramPassw=getParam("paramPassw","");
 		if (($paramName=="") || ($paramPassw=="")) { 
 			$paramName=""; $paramPassw="";
 			logoutUser();
@@ -36,12 +38,12 @@
 		}
 	}
 	//Logoff action
-	if (isset($_GET["action"]) && ($_GET["action"]=="logoff")) {
+	if (getParam("action","")=="logoff") {
 		logoutUser();
 	}
 	
 	//Facebook login
-	if (isset($_GET["action"]) && ($_GET["action"]=="facebooklogin") && isset($_SESSION['FacebookId'])) {
+	if (getParam("action","")=="facebooklogin" && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
 			//logoutUser();
 			$logOnMessage=getTextRes("LogInError");
@@ -163,7 +165,8 @@ function writeLogonDiv() {
 		$.ajax({
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
-			    location.reload();
+			    //location.reload();
+			    location.href="start.php";
 			},
 			error:function(data){
 			    $('#ajaxStatus').css("background-color","lightcoral");

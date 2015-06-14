@@ -76,7 +76,10 @@
 		}
 
 		function removePX(p) {
-			return parseInt(p.substr(0,p.length-2));
+			if (null!=p)
+				return parseInt(p.substr(0,p.length-2));
+			else
+				return 0;
 		}
 				
 		

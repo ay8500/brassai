@@ -421,7 +421,7 @@ function readVotersList($database)
 						$newVoter["UID"]=$uid;
 						$newVoter["VotesCount"]=1;
 						$person=getPerson($uid);
-						if ($person["admin"]=="") {
+						if (!isset($person["admin"]) || $person["admin"]=="") {
 					   	  $newVoter["Name"]=$person["lastname"].' '.$person["firstname"];
 						  $votersList[$id++]=$newVoter;
 						}

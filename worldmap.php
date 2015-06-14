@@ -38,7 +38,7 @@ include("homemenu.php");
 					<a href="javascript:zoomMap(6);">Europa</a>
 					<a href="javascript:zoomMap(7);">Az egész világ</a>
 				</div>				
-				<?php //<div id="txtPerson" style="text-align:center;font-size:12px; margin:10px">Osztálytárs a térképen:</div> ?>
+				<div id="txtPerson" style="text-align:center;font-size:12px; margin:10px">Osztálytárs a térképen:</div> 
 			</div>
 		</td>
 	</tr>

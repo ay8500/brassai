@@ -46,7 +46,8 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		$d=$data[$l];
 		$vote=getVote($l);
 		if ($k) { $k=false; echo('<tr>'); } else { $k=true; echo('<tr style="background-color:#eedddd">');}
-		echo('<td>'.$d["lastname"].' '.$d["firstname"]);if ($d["birthname"]) echo(' ('.$d["birthname"].')'); echo('</td>');
+		echo('<td>'.$d["lastname"].' '.$d["firstname"]);
+		if (showField($d,"birthname")) echo(' ('.$d["birthname"].')'); echo('</td>');
 		if ( userIsAdmin() || userIsEditor() || ($d["id"]==getLoggedInUserId() && getAktDatabaseName()==getUserDatabaseName()) ) {
 			echo("\r\n".'<td><input style="text" size="19" name="date_'.$l.'" value="'.$vote["date"].'"</td>');
 			echo('<td><input style="text" size="4" name="class_'.$l.'" value="'.$vote["class"].'"</td>');

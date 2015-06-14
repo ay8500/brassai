@@ -9,8 +9,7 @@ $lng2=$_GET["lng2"];
 $points = Array();
 
 $i=0;
-for ($l=0;$l<sizeof($data);$l++) {
-	$d=getPerson($l);
+foreach ($data as $d)  {
 	if (!isPersonGuest($d)) {
 		if (($d["geolat"]!="") && ($d["geolng"]!="")) {
 			//if ( ($d["geolat"]>$lat1) && ($d["geolat"]<$lat2) && ($d["geolng"]>$lng1) && ($d["geolng"]<$lng2) ) {
@@ -19,7 +18,7 @@ for ($l=0;$l<sizeof($data);$l++) {
 				else
 					$random=rand(1,10)/100;
 				$points[$i]["name"]=$d["lastname"]." ".$d["firstname"];
-				if ($d["birthname"]!="") $points[$i]["name"] = $points[$i]["name"]." (".$d["birthname"].")";
+				if (showField($d, "birthname")) $points[$i]["name"] = $points[$i]["name"]." (".$d["birthname"].")";
 				$points[$i]["lat"]=$d["geolat"]+$random;
 				$points[$i++]["lng"]=$d["geolng"]+$random;
 			//}

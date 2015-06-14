@@ -60,6 +60,7 @@
 			<li class="dropdown">
 				<a href="index.php" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
 				<ul class="dropdown-menu">
+					<li><a href="start.php">Start</a></li>
 					<li><a href="index.php">Üdvözlet</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>

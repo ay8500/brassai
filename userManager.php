@@ -265,7 +265,7 @@ function checkUserNameExists($id,$userName) {
 	/**
 	 * create a new user
 	 */
-	function createNewUser($myname,$email,$passw,$rights) {
+	function createNewUser($myname,$email,$passw,$role,$year,$class) {
 		// todo
 		return 0;
 	}

@@ -195,14 +195,13 @@ function isPersonGuest($person) {
  * returns an empty person
  */
 function getPersonDummy() {
-	/*
-	global $datafields;
 	$p = array();
-	foreach ($datafields as $field) {
-		$p[$field]="";
-	}
+	$p["firstname"]="";
+	$p["lastname"]="";
+	$p["picture"]="avatar.jpg";
+	$p["geolat"]="46.7719";
+	$p["geolen"]="23.5924";
 	return $p;
-	*/
 }
 
 /**
@@ -360,8 +359,9 @@ function saveDB() {
 		if (strlen($person['user'])==0) $person['user']=getPersonLink($person['lastname'],$person['firstname']);
 		if (strlen($person['passw'])==0) $person['passw']=createPassword(8);
 		fwrite($file,"\r\n");
+		fwrite($file,"id=".$person["id"]."\r\n");     //id is the first element
 		while (list($key, $val) = each($person)) {
-			if ($val!="")
+			if ($val!="" && $key!="id")
 		   		fwrite($file,$key."=".$val."\r\n");
 		}
 	}
@@ -492,7 +492,11 @@ function getListofPictures($database,$personID, $vorAll) {
 	global $pictureFolder;
 	$idx = 0;
 	$images_array = array();
-	$directory = dir($pictureFolder.$database);	
+	//Check if directory exists and create if not	
+	if (!file_exists($pictureFolder.$database)) {
+    	mkdir($pictureFolder.$database, 0777, true);
+	}
+	$directory = dir($pictureFolder.$database);
 	while ($file = $directory->read()) {
 		if (in_array(strtolower(substr($file, -4)), array(".jpg",".gif","png"))) {
 			if (strpos($file,$personID.'-')==1) {

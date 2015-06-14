@@ -2,11 +2,21 @@
 include_once("data.php");		//the database
 include_once("sendMail.php");	//send mail
 include_once("userManager.php");//login logoff
+include_once 'ltools.php';
+
+$arRole = array(	"...válassz!...",
+					"Végzős véndiák vagyok, a Brassai Sámuel líceumban ballagtam.",
+					"Véndiák vagyok, egykori Brassaista vagyok, nem ott ballagtam.",
+					"Osztály felelős vagyok. Szeretném az osztálytársaim adatait szerkeszteni.",
+					"Osztályfőnök voltam a végzős osztályban.",
+					"Tanár vagyok illetve voltam a Brassai Sámuel líceumban.",
+					"Sok jó barátom van a véndiákok között.");
+$arRoleValue = array(	"", "viewer", "viewer", "editor", "editor", "guest", "guest");
 
 $mail='';$myname="";$resultText='';$rights="";
 
 //change the password
-if (isset($_GET['action']) && ($_GET['action']=='newPassword')) {
+if (getParam('action','')=='newPassword') {
 	if (isset($_GET['mail'])) $mail=$_GET['mail'];
 	if (checkEmail($mail)) {
 		$ret=resetUserPasswort($mail, createPassword(8) );
@@ -24,23 +34,32 @@ if (isset($_GET['action']) && ($_GET['action']=='newPassword')) {
 }
 
 //new user
-if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
-	if (isset($_GET['mail'])) $mail=$_GET['mail'];
+if (getParam('action','')=='newUser') {
+	$mail=getParam('mail',"");
 	if (checkEmail($mail)) {
 		$passw= createPassword(8); 
 		if (isset($_GET['myname'])) $myname=$_GET['myname'];
 		$xname=split(' ',$myname);
 		if (isset($xname[0]) && isset($xname[1])) {
-			if (strlen($rights)>0) {			 
-				$ret=createNewUser($myname,$mail,$passw,getParam("rights", ""),getParam("class", ""),getParam("year",""));
-				if ($ret==0) {
-					sendNewUserMail($xname[1],$xname[0],$mail,$passw,$rights);
-					$resultText='<div class="okay">Sikeres bejelentkezés, hamarosan e-mailt fogsz kapni: ' .$mail.'</div>';
-				}
-		    	else if ($ret==-1)
-		    		$resultText='<div class="error">Mailcím az adatbankban már létezik!</div>';
-		    	else
-		    		$resultText='<div class="error">Bejelentkezés sikertelen!</div>';
+			if (intval(getParam("role", ""))>0) {	
+				if (strlen(getParam("year", ""))>0) {
+					if (strlen(getParam("class", ""))>0) {
+						$r=intval(getParam("role", ""));
+						$ret=createNewUser($myname,$mail,$passw,$arRoleValue[$r],getParam("class", ""),getParam("year",""));
+						if ($ret==0) {
+							sendNewUserMail($xname[1],$xname[0],$mail,$passw,$arRoleValue[$r],getParam("class", ""),getParam("year",""));
+							$resultText='<div class="okay">Sikeres bejelentkezés, hamarosan e-mailt fogsz kapni: ' .$mail.'</div>';
+						}
+				    	else if ($ret==-1)
+				    		$resultText='<div class="error">Mailcím az adatbankban már létezik!</div>';
+		    			else
+		    				$resultText='<div class="error">Bejelentkezés sikertelen!</div>';
+					}
+		    		else
+		    			$resultText='<div class="error">Válassz egy osztályt!</div>';
+		    	}
+		    	else 
+		    		$resultText='<div class="error">Válaszd ki melyik évben volt a ballagás!</div>';
 			}
 			else
 				$resultText='<div class="error">Válaszd ki milyen szereped van az osztályban!</div>';
@@ -71,6 +90,8 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 		</div>
 	</div>
 	
+	<div><?PHP echo($resultText); ?></div>
+	
 	<div class="panel panel-default">
   		<div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni.</h4></div>
   		<div class="panel-body">
@@ -89,28 +110,26 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Beosztás</span>
-					<select name="rights" size="1" class="form-control" >
-						<option value="">...válassz!...</option>
-						<option value="user">Végzős véndiák</option>
-						<option value="user">Véndiák</option>
-						<option value="editor">Osztály felelős</option>
-						<option value="editor">Osztályfőnök</option>
-						<option value="viewer">Tanár</option>
-						<option value="viewer">Barát</option>
+					<select id="role" name="role" size="1" class="form-control" >
+						<?php foreach ($arRole as $i => $r) {
+							if (getParam("role", "")==$i) $selected="selected"; else $selected="";
+							echo('<option '.$selected.' value="'.$i.'">'.$r.'</option>');
+						}?>
 					</select>
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
-					<select name="year" size="1" class="form-control" >
-						<option value="">...válassz!...</option>
-						<?php for ($i=2000;$i>1955;$i--) {?>
-							<option value="<?php echo $i?>"><?php echo $i?></option>
-						<?php } ?>
+					<select id="year" name="year" size="1" class="form-control" >
+						<option value="0">...válassz!...</option>
+						<?php for ($i=2000;$i>1955;$i--) {
+							if (getParam("year", "")==$i) $selected="selected"; else $selected="";
+							echo('<option '.$selected.' value="'.$i.'">'.$i.'</option>');
+						} ?>
 					</select>
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási osztály</span>
-					<select name="class" size="1" class="form-control" >
+					<select id="class" name="class" size="1" class="form-control" >
 						<option value="">...válassz!...</option>
 						<option value="12A">12A</option>
 						<option value="12B">12B</option>
@@ -141,7 +160,6 @@ if (isset($_GET['action']) && ($_GET['action']=='newUser')) {
 		</div> 
 	</div>
 
-	<div><?PHP echo($resultText); ?></div>
 
 </div>
 

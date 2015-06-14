@@ -20,7 +20,9 @@
 					<input type="hidden" value="<?PHP echo($tabOpen); ?>" name="tabOpen" />
 					Koordináták:<br />
 					<input type="text" size="24" name="geolat" class="input2" />&nbsp;Szélesség<br/>
-					<input type="text" size="24" name="geolng" class="input2" />&nbsp;Hosszúság&nbsp;&nbsp;&nbsp;<input type="submit" class="submit2" value="Geokoordinátákat módósít" title="" />
+					<input type="text" size="24" name="geolng" class="input2" />&nbsp;Hosszúság
+					&nbsp;&nbsp;&nbsp;
+					<input type="submit" class="submit2" value="Geokoordinátákat módósít" title="" />
 				</form>
 			</td>
 		</tr>

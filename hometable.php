@@ -1,17 +1,11 @@
 <?PHP 
 include_once 'sessionManager.php';
-$SiteTitle=$_SESSION['aktScoolYear']."-".$_SESSION['aktScoolClass'];
-   //Parameter guests
-   if (isset($_GET["guests"])) $guests = true; else $guests=false;
-	if ( $guests )
-		$SiteTitle=$SiteTitle.' tanárok, vendégek, jó barátok, régi volt osztálytársak';
-	else
-		$SiteTitle=$SiteTitle.' osztálytársak';
-
 include("homemenu.php");
 include_once("data.php");
+include_once 'ltools.php';
 
-if ( $guests )
+$guests = getParam("guests", "")=="true";
+if ($guests )
 	echo('<h2 class="sub_title">Tanárok, régi volt osztálytársak, vendégek, jó barátok.</h2>');
 else
 	echo('<h2 class="sub_title">Osztálytársak</h2>');
@@ -68,12 +62,10 @@ foreach ($data as $l => $d)
 		if(showField($d,"facebook"))	echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.urldecode(getFieldValue($d["facebook"])).'">'.urldecode(getFieldValue($d["facebook"]))."</a></td></tr>";
 		if(showField($d,"homepage"))	echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
 		//echo '<tr><td valign=top align=right><a href="'.$personLink.'">Több info</a></td><td>&nbsp;</td></tr>';
-  	echo "</table>";
-  echo "</td></tr></table>\r\n";
-  }
-
+	  	echo "</table>";
+		echo "</td></tr></table>\r\n";
+	}
 }
- echo("</div>");
- 
 ?>
+</div>
 <?php  include ("homefooter.php");?>
