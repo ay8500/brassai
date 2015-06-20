@@ -27,10 +27,10 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 	}
 }
 ?>
+<h4 class="sub_title" >30 éves Találkozó</h4>
 
 <div class="container-fluid">
-<h4>30 éves Találkozó</h4>
-<div call="well well-lg">
+<div class="well well-lg">
 	<b>A 30 éves talákozonk 2015 ben lesz megtartva.</b>
 	Légyszíves
 	<?PHP if (!userIsLoggedOn()) echo(' jelenkezz be '); ?> 

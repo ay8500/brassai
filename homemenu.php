@@ -6,6 +6,7 @@
 	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
+	
 ?>
 <!DOCTYPE html>
 <html lang="hu">

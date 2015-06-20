@@ -277,20 +277,29 @@ function compairUser($d1,$d2) {
 	return strtolower($d1["user"])==strtolower($d2["user"]);
 }
 
+function compairUserLink($d1,$d2) {
+	return getPersonLink($d1["lastname"],$d1["firstname"])==getPersonLink($d2["lastname"],$d2["firstname"]);
+}
+
+
 /**
  * Read user in all Databases using comparator
   */
-function getGlobalUser($diak,$compair) {
+function getGlobalUser($diak,$compair, $scoolYear=null, $scoolClass=null) {
 	global $dataBase;
 	global $dataPath;
 	global $data;
 	foreach($dataBase as $db) {
-		openDatabase($db);
-		foreach ($data as $person) {
-			if ($compair($person,$diak)) {
-				$person["scoolYear"]=substr($db,3,4);
-				$person["scoolClass"]=substr($db,0,3);
-				return $person;
+		if ((null==$scoolClass && null==$scoolYear) ||
+			($scoolClass.$scoolYear==$db)) 
+		{
+			openDatabase($db);
+			foreach ($data as $person) {
+				if ($compair($person,$diak)) {
+					$person["scoolYear"]=substr($db,3,4);
+					$person["scoolClass"]=substr($db,0,3);
+					return $person;
+				}
 			}
 		}
 	}
@@ -818,8 +827,8 @@ function showField($diak,$field) {
 
 //generate normalised person link
 
-function getPersonLink($fn,$ln) {
-   return getNormalisedChars($fn).'_'.getNormalisedChars($ln);
+function getPersonLink($ln,$fn) {
+   return getNormalisedChars($ln).'_'.getNormalisedChars($fn);
 }
 
 function getNormalisedChars($s) {

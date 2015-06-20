@@ -314,10 +314,5 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 }
 ?>
 </div>
-</td>
-</tr>
-</table>
-<?php 
-include 'homefooter.php';
-?>
+<?php include 'homefooter.php'; ?>
 

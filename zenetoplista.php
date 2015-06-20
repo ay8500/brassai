@@ -225,5 +225,4 @@ function autoComplete (field, select, property, forcematch) {
 
 </td></tr></table>
 
- <?PHP  //include ?>
-</td></tr></table></body></html>
+ <?PHP  include "homefooter.php" ?>

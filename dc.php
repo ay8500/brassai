@@ -16,10 +16,17 @@ else if (sizeof($qs)>1) {
 	print_r($qs);
 }
 else {
+	$diak["lastname"]="";
+	$diak["firstname"]="";
+	$usr =getGlobalUser($diak,"compairUserLink",$scoolYear,$scoolClass);
+	if (null != $usr) {
+		include ("editDiak.php");
+		exit();
+	}
 	header("status: 404"); 
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum: Hiba oldal";
-	
-	include_once("homemenu.php"); 
+
+	//echo(include_once("homemenu.php")); 
 	?>
 	
 	<h2 class="sub_title">Sajnos ez az oldal nem létezik ezen a szerveren.</h2>
@@ -27,7 +34,7 @@ else {
 	<?PHP
 	echo($su[1]." ");echo($su[2]." ");echo($su[3]." ");
 	
-	include_once("homefooter.php");
+	//include_once("homefooter.php");
  }
 ?>
 

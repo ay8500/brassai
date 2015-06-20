@@ -81,9 +81,8 @@
 			else
 				return 0;
 		}
-				
-		
 	</script>
+
 	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
 	<noscript><img src="http://s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 	<script type="text/javascript">

@@ -42,8 +42,8 @@ if (getParam('action','')=='newUser') {
 		$xname=split(' ',$myname);
 		if (isset($xname[0]) && isset($xname[1])) {
 			if (intval(getParam("role", ""))>0) {	
-				if (strlen(getParam("year", ""))>0) {
-					if (strlen(getParam("class", ""))>0) {
+				if (strlen(getParam("year", ""))>0 || intval(getParam("role", ""))>4) {
+					if (strlen(getParam("class", ""))>0 || intval(getParam("role", ""))>4) {
 						$r=intval(getParam("role", ""));
 						$ret=createNewUser($myname,$mail,$passw,$arRoleValue[$r],getParam("class", ""),getParam("year",""));
 						if ($ret==0) {
@@ -65,7 +65,7 @@ if (getParam('action','')=='newUser') {
 				$resultText='<div class="error">Válaszd ki milyen szereped van az osztályban!</div>';
 		}
 		else
-			$resultText='<div class="error">Család és vezektékneved hibás!</div>';
+			$resultText='<div class="error">Ird be család és keresztneved!</div>';
 	}
 	else
 	   $resultText='<div class="error">Mail cím nem helyes!</div>';
@@ -106,38 +106,40 @@ if (getParam('action','')=='newUser') {
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Nevem</span>
-					<input type="text" name="myname" value="<?PHP echo($myname); ?>" class="form-control" 	/>
+					<input type="text" name="myname" placeholder="Családnév keresztnév" value="<?PHP echo($myname); ?>" class="form-control" 	/>
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Beosztás</span>
-					<select id="role" name="role" size="1" class="form-control" >
+					<select id="role" name="role" size="1" class="form-control" onchange="changedRole();">
 						<?php foreach ($arRole as $i => $r) {
 							if (getParam("role", "")==$i) $selected="selected"; else $selected="";
 							echo('<option '.$selected.' value="'.$i.'">'.$r.'</option>');
 						}?>
 					</select>
 				</div>
-				<div class="input-group"> 
-  					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
-					<select id="year" name="year" size="1" class="form-control" >
-						<option value="0">...válassz!...</option>
-						<?php for ($i=2000;$i>1955;$i--) {
-							if (getParam("year", "")==$i) $selected="selected"; else $selected="";
-							echo('<option '.$selected.' value="'.$i.'">'.$i.'</option>');
-						} ?>
-					</select>
-				</div>
-				<div class="input-group"> 
-  					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási osztály</span>
-					<select id="class" name="class" size="1" class="form-control" >
-						<option value="">...válassz!...</option>
-						<option value="12A">12A</option>
-						<option value="12B">12B</option>
-						<option value="12C">12C</option>
-						<option value="12D">12D</option>
-						<option value="13A">13A (esti tagozat)</option>
-						<option value="13B">13B (esti tagozat)</option>
-					</select>
+				<div id="grpyearclass">
+					<div class="input-group" id="grpyear"> 
+	  					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
+						<select id="year" name="year" size="1" class="form-control" >
+							<option value="0">...válassz!...</option>
+							<?php for ($i=2000;$i>1955;$i--) {
+								if (getParam("year", "")==$i) $selected="selected"; else $selected="";
+								echo('<option '.$selected.' value="'.$i.'">'.$i.'</option>');
+							} ?>
+						</select>
+					</div>
+					<div class="input-group" id="grpclass"> 
+	  					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási osztály</span>
+						<select id="class" name="class" size="1" class="form-control" >
+							<option value="">...válassz!...</option>
+							<option value="12A">12A</option>
+							<option value="12B">12B</option>
+							<option value="12C">12C</option>
+							<option value="12D">12D</option>
+							<option value="13A">13A (esti tagozat)</option>
+							<option value="13B">13B (esti tagozat)</option>
+						</select>
+					</div>
 				</div>
 				<button class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-user"></span> Szeretnék bejelentkezni</button>
 				
@@ -160,6 +162,14 @@ if (getParam('action','')=='newUser') {
 		</div> 
 	</div>
 
-
 </div>
 
+<script type="text/javascript">
+	function changedRole () {
+		if ($("#role").val()>4) {
+			$("#grpyearclass").hide("slow");
+		} else {
+			$("#grpyearclass").show("slow");
+}
+	}
+</script>

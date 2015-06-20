@@ -63,7 +63,7 @@
 			</div>
 			<?php } ?> 
 	<?php }  ?>
-	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxStatus"></div>
+	<div id="ajaxStatuss" style="margin-top:10px; padding:5px; border-radius:4px; display: anone;">Ok</div>
 </div>
 
 
@@ -77,7 +77,7 @@
 		    type:"<?php  echo $type; ?>",
 		    privacy:$('input[name=privacy]:checked', '#stroryForm').val(),
 		    story: $("#story").val()
-		}
+		};
 		$('#ajaxStatus').html('küldés...');
 		$.ajax({
 			url:"editDiakStorySave.php",
@@ -111,13 +111,16 @@
 				}, 2000);
 			},
 			error:function(data){
-			    $('#ajaxStatus').css("background-color","lightcoral");
-				$('#ajaxStatus').html(data.responseText);
+			    //$('#ajaxStatus').css("background-color","lightcoral");
+				$('#ajaxStatuss').html(data.responseText);
 				$('#ajaxStatus').show();
+				/*
 				setTimeout(function(){
 			    	$('#ajaxStatus').html('');
 			    	$('#ajaxStatus').hide();
-				}, 5000);
+				}, 5000);*/
+				alert(data.responseText);
+				
 			}
 		});
 	}

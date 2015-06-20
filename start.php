@@ -30,6 +30,7 @@
 			<div class="panel-heading"><h4>Véndiák Újdonságok:</h4></div>
 			<div class="panel-body">
 			<ul id="newData">
+			<li>1985 12A Barabási Jenö Facebook felhasználó kapcsolatot létesített</li>
 			<li>1985 12B Bodó Steven (István) Személyes adatait módósította. </li>
 			</ul>
 			</div>
