@@ -6,10 +6,8 @@
 	include_once 'ltools.php';
 
 	$logOnMessage="";
-
 	
 	//Logon action
-	//TODO
 	if (getParam("action","")=="logon") {
 		$paramName=getParam("paramName","");
 		$paramPassw=getParam("paramPassw","");
@@ -148,7 +146,7 @@ function writeLogonDiv() {
 		<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
 		</div>
 	</form>
-	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxStatus"></div>	
+	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxLStatus"></div>	
 <?php } ?> 
 </div>
 <script type="text/javascript">
@@ -169,12 +167,12 @@ function writeLogonDiv() {
 			    location.href="start.php";
 			},
 			error:function(data){
-			    $('#ajaxStatus').css("background-color","lightcoral");
-				$('#ajaxStatus').html(data.responseText);
-				$('#ajaxStatus').show();
+			    $('#ajaxLStatus').css("background-color","lightcoral");
+				$('#ajaxLStatus').html(data.responseText);
+				$('#ajaxLStatus').show();
 				setTimeout(function(){
-			    	$('#ajaxStatus').html('');
-			    	$('#ajaxStatus').hide('slow');
+			    	$('#ajaxLStatus').html('');
+			    	$('#ajaxLStatus').hide('slow');
 				}, 3000);
 			}
 		});

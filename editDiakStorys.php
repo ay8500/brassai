@@ -48,22 +48,27 @@
 			echo $okText;
 		else { 
 			$name="";
-			if (userIsLoggedOn()) $name=getPersonLogedOn()["user"];
+			if (userIsLoggedOn()) {
+				$p =getPersonLogedOn();
+				$name=$p["user"];
+			}
 			?>
 			Ez az oldal jelenleg üres.<br />
 			Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
 			
-				<div style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-					Biztonsági kód: <input id="code" type="text" size="6" value="" default="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
-				</div>
-			
-			<div style="margin:15px">
-				Nevem: <input id="name" type="text" value="<?php echo $name ?>" default="Név">
-				<input id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
+			<div style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+				Biztonsági kód: <input id="code" type="text" size="6" value="" placeholder="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
 			</div>
+			
+			<div style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+				Nevem: <input id="name" type="text" value="<?php echo $name ?>" placeholder="Név">
+			</div>
+			<div style="margin:15px">
+				<input id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
+			</div>	
 			<?php } ?> 
 	<?php }  ?>
-	<div id="ajaxStatuss" style="margin-top:10px; padding:5px; border-radius:4px; display: anone;">Ok</div>
+	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px; display: anone;"></div>
 </div>
 
 
@@ -84,13 +89,7 @@
 			type:"POST",
 			dataType: 'json',
 			success:function(data){
-			    $('#ajaxStatus').css("background-color","lightgreen");
-				$('#ajaxStatus').html(' Kimetés sikerült. ');
-				$('#ajaxStatus').show();
-				setTimeout(function(){
-				    $('#ajaxStatus').html('');
-				    $('#ajaxStatus').hide();
-				}, 2000);
+				showAjaxStatus(' Kimetés sikerült. ',"lightgreen");
 			},
 			data:data
 		});
@@ -102,26 +101,21 @@
 		$.ajax({
 			url:"editDiakStoryMoreInfoRequest.php?title=<?php echo $title?>&tab=<?php echo $tab?>&code="+$("#code").val()+"&name="+$("#name").val(),
 			success:function(data){
-			    $('#ajaxStatus').css("background-color","lightgreen");
-				$('#ajaxStatus').html(' Üzenet sikeresen elküldve. ');
-				$('#ajaxStatus').show();
-				setTimeout(function(){
-				    $('#ajaxStatus').html('');
-				    $('#ajaxStatus').hide();
-				}, 2000);
+				showAjaxStatus(' Üzenet sikeresen elküldve. ',"lightgreen");
 			},
 			error:function(data){
-			    //$('#ajaxStatus').css("background-color","lightcoral");
-				$('#ajaxStatuss').html(data.responseText);
-				$('#ajaxStatus').show();
-				/*
-				setTimeout(function(){
-			    	$('#ajaxStatus').html('');
-			    	$('#ajaxStatus').hide();
-				}, 5000);*/
-				alert(data.responseText);
-				
+				showAjaxStatus(data.responseText,"lightcoral");
 			}
 		});
+	}
+
+	function showAjaxStatus(m,color) {
+	    $('#ajaxStatus').css("background-color",color);
+		$('#ajaxStatus').html(m);
+		$('#ajaxStatus').show();
+		setTimeout(function(){
+	    	$('#ajaxStatus').html('');
+	    	$('#ajaxStatus').hide();
+		}, 4000);
 	}
 </script>

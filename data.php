@@ -260,11 +260,19 @@ function readDB()
 
 
 function compairUserPassw($d1,$d2) {
-	return strtolower($d1["user"])==strtolower($d2["user"]) && $d1["passw"]==$d2["passw"];
+	if (isset($d1["user"]) && isset($d2["user"]) && isset($d1["passw"]) && isset($d2["passw"])) {
+		return strtolower($d1["user"])==strtolower($d2["user"]) && $d1["passw"]==$d2["passw"];
+	}
+	else 
+		return false;
 }
 
 function compairFacbookId($d1,$d2) {
-	return strtolower($d1["facebook"])==strtolower($d2["facebook"]);
+	if (isset($d1["facebook"]) && isset($d2["facebook"]) ) {
+		return strtolower($d1["facebook"])==strtolower($d2["facebook"]);
+	}
+	else
+		return false;
 }
 
 function compairEmail($d1,$d2) {
@@ -274,12 +282,18 @@ function compairEmail($d1,$d2) {
 }
 
 function compairUser($d1,$d2) {
+	if (!isset($d1["user"]) || !isset($d2["user"]))
+		return false;
 	return strtolower($d1["user"])==strtolower($d2["user"]);
 }
 
 function compairUserLink($d1,$d2) {
-	return getPersonLink($d1["lastname"],$d1["firstname"])==getPersonLink($d2["lastname"],$d2["firstname"]);
-}
+	if (isset($d1["lastname"]) && isset($d2["lastname"]) && isset($d1["firstname"]) && isset($d2["firstname"])) {
+		return getPersonLink($d1["lastname"],$d1["firstname"])==getPersonLink($d2["lastname"],$d2["firstname"]);
+	}
+	else
+		return false;
+	}
 
 
 /**
