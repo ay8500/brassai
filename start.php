@@ -30,8 +30,16 @@
 			<div class="panel-heading"><h4>Véndiák Újdonságok:</h4></div>
 			<div class="panel-body">
 			<ul id="newData">
-			<li>1985 12A Barabási Jenö Facebook felhasználó kapcsolatot létesített</li>
+			<li>1985 12A Barabási Jenő Facebook felhasználó kapcsolatot létesített</li>
 			<li>1985 12B Bodó Steven (István) Személyes adatait módósította. </li>
+			<li>1985 12A Hinschütz Enikő (Bereczki) Személyes adatait módósította. </li>
+			<li>1985 12B Berger Mária (Molnár) Személyes adatait módósította. </li>
+			<li>1985 12A Kiss Edit Személyes adatait módósította. </li>
+			<li>1985 12B Deák Attila Személyes adatait módósította. </li>
+			<li>1985 12B Deák Attila Személyes adatait módósította. </li>
+			<li>1985 12B Márton Åsgrim Anikó (Márton) Személyes adatait módósította. </li>
+			<li>1985 12B Darai Gabriella (Pallos) Személyes adatait módósította. </li>
+			<li>1985 12A Benedek Zsolt Személyes adatait módósította. </li>
 			</ul>
 			</div>
 		</div>

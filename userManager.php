@@ -267,6 +267,10 @@ function checkUserNameExists($id,$userName) {
 	 */
 	function createNewUser($myname,$email,$passw,$role,$year,$class) {
 		// todo
+		$diak["email"]=$email;
+		$usr =getGlobalUser($diak,"compairEmail");
+		if (null!=$usr)
+			return -1;
 		return 0;
 	}
 	

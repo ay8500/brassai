@@ -384,7 +384,7 @@ function saveDB() {
 		fwrite($file,"\r\n");
 		fwrite($file,"id=".$person["id"]."\r\n");     //id is the first element
 		while (list($key, $val) = each($person)) {
-			if ($val!="" && $key!="id")
+			if (null!=$val && $val!="" && $key!="id")
 		   		fwrite($file,$key."=".$val."\r\n");
 		}
 	}
