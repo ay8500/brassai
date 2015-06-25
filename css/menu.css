@@ -2,7 +2,7 @@
 	form		{display:inline;}
 	.submit2	{ height:18px;font-size:10px;margin-right:20px;}
 	.aaainput2		{ height:13px; font-size:10px;}
-	.highlight 	{ background-color: #ffdddd;text-align:center}
+	#highlight 	{ background-color: #ffdddd;text-align:center}
 	.caption1   { font-weight: bold; text-align:right;}
 	.loginText 	{ text-align:left; font-size:12px; font-weight:bold}
 	.loginInput { text-align:left; font-size:10px;height:14px; }

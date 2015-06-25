@@ -191,6 +191,14 @@ function isPersonGuest($person) {
 	return (isset($person["admin"]) && strstr($person["admin"],"guest")!="");
 }
 
+function isPersonAdmint($person) {
+	return (isset($person["admin"]) && strstr($person["admin"],"admin")!="");
+}
+
+function isPersonEditor($person) {
+	return (isset($person["admin"]) && strstr($person["admin"],"editor")!="");
+}
+
 /**
  * returns an empty person
  */
@@ -278,7 +286,7 @@ function compairFacbookId($d1,$d2) {
 function compairEmail($d1,$d2) {
 	if (!isset($d1["email"]) || !isset($d2["email"]))
 		return false;
-	return getFieldValue($d1["email"])==getFieldValue($d2["email"]);
+	return getFieldValue($d1,"email")==getFieldValue($d2,"email");
 }
 
 function compairUser($d1,$d2) {
@@ -346,7 +354,7 @@ function readUserAuthDB()
 							$data[$id]["id"]=chop($b[1]);
 						} else {
 							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "email") || ($b[0] == "facebookid") || ($b[0] == "admin")) {
-	    						$data[$id][$b[0]]=getFieldValue($b[1]);
+	    						$data[$id][$b[0]]=getFieldValue($b,1);
 							}
 						}
 					}
@@ -772,10 +780,17 @@ function getFieldAccessValue($field) {
 	}
 }
 
-function getFieldValue($field) {
-  if ($field=="") 
-  	return "";
-  $ret = ltrim($field,"~");
+function getFieldValue($person,$field=null) {
+	if (null==$field) {
+ 		if ($person=="") 
+  			return "";
+		  $ret = ltrim($person,"~");
+	}
+	else {
+  		if (!isset($person[$field]) || $person[$field]=="") 
+  			return "";
+		  $ret = ltrim($person[$field],"~");
+	}
   $ret = trim($ret);
   return  $ret;
 }
@@ -815,9 +830,9 @@ function getFieldValueNull($diak,$field) {
 
 
 function getFieldChecked($diak,$field) {
-  if (null== $field && $field=="") 
+  if (null== $field || null==$diak || !isset($diak[$field]) ) 
   	return "";
-  if ($field[0]=="~") return "checked";
+  if ($diak[$field][0]=="~") return "checked";
   else return "";
 }
 

@@ -35,7 +35,7 @@ $diak = getPerson($uid,getAktDatabaseName());
 
 
 $dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children","facebookid","admin");
-$dataFieldCaption 	=array("Családnév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FacebookID","Role");
+$dataFieldCaption 	=array("Családnév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FB-ID","Role");
 $dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30,60,40);
 $dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false,false,false);
 	
@@ -197,39 +197,44 @@ include("tabs.php");
 	//Edit variant of this page
 	if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		//person data fields
-		echo('<table class="editpagetable" >');
-		echo('<tr><td colspan="3" style="text-align:center">'.$resultDBoperation.'</td></tr>');
-		echo('<tr><td></td><td class="highlight"></td><td class="highlight">Ha azt szeretnéd, hogy az adataidat csak mi az osztálytársak láthassuk, akkor jelöld meg öket!</td></tr>');
+		echo('<div class="container-fluid">');
+		echo('<div class="well">');
+			echo "<img src=\"images/".$diak["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
+		echo('</div>');
+		echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
+		echo('<div style="min-height:30px" class="input-group">');
+      	echo('<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>');
+      	echo('<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>');
+		echo('<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak mi az osztálytársak láthassuk, akkor jelöld meg öket!" />');
+   		echo('</div>');	
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
-		echo('');
 		$fieldCountToBeEdited = sizeof($dataFieldNames);
 		if (!userIsAdmin()) $fieldCountToBeEdited -=2;
 		for ($i=0;$i<$fieldCountToBeEdited;$i++) {
-			//if (isset($diak[$dataFieldNames[$i]])) {
-				echo('<tr><td class="caption1">'.$dataFieldCaption[$i].'</td>'."\r\n");
-				if ($dataFieldVisible[$i]) 
-					echo('<td class="highlight"><input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="Jelöld meg és akkor csak a bejelentkezett osztálytársak lássák!" /></td>');
-				else 
-					echo('<td class="highlight">&nbsp;</td>');
-				echo('<td><input type="text" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" size="'.$dataFieldLengths[$i].'" class="input2" onchange="fieldChanged();" /></td></tr>'."\r\n");
-			//}
+			echo('<div class="input-group">');
+      		echo('<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">'.$dataFieldCaption[$i].'</span>');
+			echo('<span style="width:40px" id="highlight" class="input-group-addon">');
+      			if ($dataFieldVisible[$i])
+        			echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." >');
+      		echo('</span>');
+      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" />');
+    		echo('</div>');	
 		}
-		echo('<tr><td colspan="3"> </td></tr>');
-		echo('<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="submit2" value="'.getTextRes("Save").'" title="Adatok kimentése" /></td></tr>');
+		echo('<button type="submit" class="btn btn-default" title="Adatok kimentése" ><span class="glyphicon glyphicon-save"></span>'.getTextRes("Save").'</button>');
 		echo('<input type="hidden" value="changediak" name="action" />');
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
 		echo('</form>');
-		echo('</table>');
+		echo('</div>');
 	
 	}
 	//Show read only data
 	else {
 		$d=$diak;
+		echo('<div class="container-fluid">');
 		echo ('<div class="well well-large">');
-		echo '<table  ><tr><td width=150>';
-		echo "<img src=\"images/".$d["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
-		echo "</td><td valign=top>";
+			echo "<img src=\"images/".$d["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
+		echo "</div>";
 		echo "<table>\r\n";
 		if(showField($d,"partner"))		echo "<tr><td valign=top align=right>Élettárs:</td><td>".$d["partner"]."</td></tr>";
 		if(showField($d,"education"))	echo "<tr><td valign=top align=right>Végzettség:</td><td>".$d["education"]."</td></tr>";

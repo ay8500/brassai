@@ -50,7 +50,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 			openDatabase(getAktDatabaseName());
 			foreach ($data as $l => $d) {
 				echo('<div style="display:inline-block; margin-right:10px">');
-				if (strlen($d["email"])>2) 
+				if (isset($d["email"]) && strlen($d["email"])>2) 
 					echo('<input type="checkbox" name="D'.$d["id"].'" checked />');
 				echo($d["lastname"].'&nbsp;'.$d["firstname"].' ');
 				echo("</div>");
@@ -85,9 +85,9 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 					echo '<tr style="background-color:#f8f8f8">';
 				else
 					echo '<tr style="background-color:#e8f0f0">';
-				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font>".'</td><td  id="o1024">'.getFieldValue($d["user"])."</td><td>";
-				echo "<a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a>";
-				echo '<td  id="o400">'.getFieldValue($d["phone"]).'</td><td  id="o480">'.getFieldValue($d["mobil"]).'</td><td  id="o1024">'.getFieldValue($d["skype"]).'</td><td  id="o1024">'.getFieldValue($d["ip"]).'</td><td  id="o1024">'.getFieldValue($d["date"])."</td>";
+				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font>".'</td><td  id="o1024">'.getFieldValue($d,"user")."</td><td>";
+				echo "<a href=mailto:".getFieldValue($d,"email").">".getFieldValue($d,"email")."</a>";
+				echo '<td  id="o400">'.getFieldValue($d,"phone").'</td><td  id="o480">'.getFieldValue($d,"mobil").'</td><td  id="o1024">'.getFieldValue($d,"skype").'</td><td  id="o1024">'.getFieldValue($d,"ip").'</td><td  id="o1024">'.getFieldValue($d,"date")."</td>";
 				echo "</tr>";
 			}
 		
@@ -100,9 +100,9 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 					echo '<tr style="background-color:#f8f8f8">';
 				else
 					echo '<tr style="background-color:#e8f0f0">';
-				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font>".'</td><td  id="o1024">'.getFieldValue($d["user"])."</td><td>";
-				echo "<a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a>";
-				echo '<td  id="o400">'.getFieldValue($d["phone"]).'</td><td  id="o480">'.getFieldValue($d["mobil"]).'</td><td  id="o1024">'.getFieldValue($d["skype"]).'</td><td  id="o1024">'.getFieldValue($d["ip"]).'</td><td  id="o1024">'.getFieldValue($d["date"])."</td>";
+				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font>".'</td><td  id="o1024">'.getFieldValue($d,"user")."</td><td>";
+				echo "<a href=mailto:".getFieldValue($d,"email").">".getFieldValue($d,"email")."</a>";
+				echo '<td  id="o400">'.getFieldValue($d,"phone").'</td><td  id="o480">'.getFieldValue($d,"mobil").'</td><td  id="o1024">'.getFieldValue($d,"skype").'</td><td  id="o1024">'.getFieldValue($d,"ip").'</td><td  id="o1024">'.getFieldValue($d,"date")."</td>";
 				echo "</tr>";
 			}		
 		}
@@ -117,14 +117,14 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 		<?PHP
 		openDatabase(getAktDatabaseName());
 		foreach ($data as $idx => $d) {
-			if (strstr($d['admin'],"admin")!="" || strstr($d['admin'],"editor")!="") {
+			if (isPersonAdmint($d) || isPersonEditor($d))  {
 				if (($idx % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
 					echo '<tr style="background-color:#e8f0f0">';
 				echo "<td valign=top align=right>".$d["lastname"].' '.$d["firstname"]."</font></td><td>";
-				echo "<a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a>";
-				echo '<td  id="o400">'.getFieldValue($d["phone"]).'</td><td  id="o480">'.getFieldValue($d["mobil"]).'</td><td  id="o1024">'.getFieldValue($d["skype"]).'</td><td  id="o1024">'.getFieldValue($d["ip"]).'</td><td  id="o1024">'.getFieldValue($d["date"])."</td>";
+				echo "<a href=mailto:".getFieldValue($d,"email").">".getFieldValue($d,"email")."</a>";
+				echo '<td  id="o400">'.getFieldValue($d,"phone").'</td><td  id="o480">'.getFieldValue($d,"mobil").'</td><td  id="o1024">'.getFieldValue($d,"skype").'</td><td  id="o1024">'.getFieldValue($d,"ip").'</td><td  id="o1024">'.getFieldValue($d,"date")."</td>";
 				echo "</td></tr>";
 			}
 		}

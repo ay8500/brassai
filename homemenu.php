@@ -116,16 +116,17 @@
 			  	<?php } ?>
 			  	</ul>
 			</li>
-			<?php if (userIsLoggedOn()) {?>
-			<form class="navbar-form navbar-right" role="search">
-				<div class="input-group input-group" style="margin: 3px;">
-					<span class="input-group-addon" style="width:130px">
-						<img src="images/<?php echo getPersonLogedOn()["picture"] ?>" style="height:20px; border-round:3px;" />
-						<a href="editDiak.php"><?php echo getPersonLogedOn()["lastname"]." ".getPersonLogedOn()["firstname"] ?></a>
-					</span>
-					<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelenkezés</button>
-				</div>
-			</form>
+			<?php if (userIsLoggedOn()) {
+				$person=getPersonLogedOn();?>
+				<form class="navbar-form navbar-right" role="search">
+					<div class="input-group input-group" style="margin: 3px;">
+						<span class="input-group-addon" style="width:130px">
+							<img src="images/<?php echo $person["picture"] ?>" style="height:20px; border-round:3px;" />
+							<a href="editDiak.php"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
+						</span>
+						<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelenkezés</button>
+					</div>
+				</form>
 			<?php } else {?>
 			<form class="navbar-form navbar-right" role="search" action="">
 				<div class="input-group input-group" style="margin: 3px;">

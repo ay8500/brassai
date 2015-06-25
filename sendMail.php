@@ -31,7 +31,7 @@ function SendNewPassword($uid) {
 	$text.="Jelszó:".$diak["passw"]."<br/>";
 	$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a>';
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendTheMail(getFieldValue($diak["email"]),$text);
@@ -44,14 +44,14 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class)
 	$text='<p style="font-weight: bold;">Kedeves '.$lastname." ".$firstname.'</p>';
 	$text.="Ezt az e-mail azért kapod mert bejelentkeztél a Brassai Sámuel véndiákok honoldalára.<br />";
 	$text.="<p>Ennek nagyön örvendünk, és köszöjük érdeklődésed. </p>";
-	$text.="<p>A véndiákok honoldala lehetőséget nyújt neked, volt iskola- és osztálytásaiddel kapcsolatba lépjél. Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.</p>";
+	$text.="<p>A véndiákok honoldala lehetőséget nyújt neked, volt iskola- és osztálytásaiddal kapcsolatba lépjél. Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.</p>";
 	$text.="<p>";
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
 	$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
 	$text.="Mail címed: ".$mail."<br/>";
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scollYear='.$year.'&scoolClass='.$class.'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.$year.'&scoolClass='.$class.'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
 	sendTheMail($mail,$text);
