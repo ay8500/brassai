@@ -23,7 +23,7 @@ if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
 </script> 
 
 
-<ul class="nav nav-tabs nav-justified" role="tablist">
+<ul class="nav nav-pills nav-justified" role="tablist">
 <?php 
 	foreach($tabsCaption as $key => $Caption ) {
 		if ($key==$tabOpen)

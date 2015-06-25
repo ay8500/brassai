@@ -287,7 +287,9 @@
 	$images_array = getGalleryImages($gallery);
 	foreach ($images_array as $image) {
 		//if (!is_file("./.thumbs/$thumbnail_size"."_thumb_".$image.".".$thumbnail_filetype)) { create_thumbnail($image); }
-		echo "<a style=\"font-size:9px; margin:5px;\" title=\"".getPictureTitle($image)."\" href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($i-1)."\">".$i."</a> ";
+		echo '<span class="igLinks">';
+		echo "<a style=\"font-size:12px; \" title=\"".getPictureTitle($image)."\" href=\"$SCRIPT_NAME?view=slideshow&amp;gallery=$gallery&amp;slideshow_index=".($i-1)."\">".$i."</a> ";
+		echo '</span>';
 		$i++;
 	}
 ?>

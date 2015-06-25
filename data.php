@@ -830,10 +830,12 @@ function getFieldValueNull($diak,$field) {
 
 
 function getFieldChecked($diak,$field) {
-  if (null== $field || null==$diak || !isset($diak[$field]) ) 
+  if (null== $field || null==$diak || !isset($diak[$field]) || $diak[$field]=="" ) 
   	return "";
-  if ($diak[$field][0]=="~") return "checked";
-  else return "";
+  $c=$diak[$field];
+  if ($c[0]=="~") 
+  	return "checked";
+  return "";
 }
 
 /*
@@ -849,7 +851,7 @@ function showField($diak,$field) {
   		return false;
   	}
   }
-  else return false;
+  return false;
 
 }
 

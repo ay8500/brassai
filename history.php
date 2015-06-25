@@ -18,7 +18,7 @@ function readHistoryList($elements) {
 		   $tabopen="&tabOpen=".$history["type"];
 		else 
 			$tabopen ="";
-		$ret .= '<a href="editdiak.php?uid='.$history["uid"].'&scoolYear='.$history["scoolyear"].'&scoolClass='.$history["scoolclass"].$tabopen.'" >';
+		$ret .= '<a href="editDiak.php?uid='.$history["uid"].'&scoolYear='.$history["scoolyear"].'&scoolClass='.$history["scoolclass"].$tabopen.'" >';
 		$diak = getPerson($history["uid"],$history["scoolclass"].$history["scoolyear"]);
 		$ret .= $diak["lastname"]." ".$diak["firstname"]." ";
 		if (isset($diak["birthname"]))

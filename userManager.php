@@ -16,6 +16,8 @@
 			setAktUserId($login[2]);
 			$diak=getPerson($login[2],getAktDatabaseName());
 			setUserInSession($diak["admin"], $diak["user"],$login[2] , $login[1], $login[0]);
+			if (!userIsAdmin()) 
+				saveLogInInfo("Login",$_SESSION['uId'],$diak["user"],"","");
 		}
 	}
 	

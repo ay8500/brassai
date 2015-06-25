@@ -13,7 +13,7 @@ $arRole = array(	"...válassz!...",
 					"Sok jó barátom van a véndiákok között. Szeretnék én is velük kapcsolatot felvenni.");
 $arRoleValue = array(	"", "viewer", "viewer", "editor", "editor", "guest", "guest");
 
-$arClass = array("12A","12B","12C","12D","12E","12F","13A","13B","13C","13D","13E","13F");
+$arClass = array("12A","12B","12C","12D","12E","12F","12G","13A","13B","13C","13D","13E","13F","13G");
 
 $mail='';$myname="";$resultText='';$rights="";
 

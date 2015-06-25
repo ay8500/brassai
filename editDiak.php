@@ -194,69 +194,53 @@ include("tabs.php");
 
 
 <?PHP if ($tabOpen==0) { 
-	//Edit variant of this page
-	if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
+	//Edit or only view variant this page
+	$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser());
 		//person data fields
-		echo('<div class="container-fluid">');
-		echo('<div class="well">');
-			echo "<img src=\"images/".$diak["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
-		echo('</div>');
-		echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
+	echo('<div class="container-fluid">');
+	echo('<div class="well">');
+		echo "<img src=\"images/".$diak["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
+	echo('</div>');
+	echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
+	if ($edit) {
 		echo('<div style="min-height:30px" class="input-group">');
       	echo('<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>');
       	echo('<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>');
-		echo('<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak mi az osztálytársak láthassuk, akkor jelöld meg öket!" />');
+		echo('<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak az osztálytársaid lássák, akkor jelöld meg öket!" />');
    		echo('</div>');	
 		echo('<form action="'.$SCRIPT_NAME.'" method="get">');
-		$fieldCountToBeEdited = sizeof($dataFieldNames);
-		if (!userIsAdmin()) $fieldCountToBeEdited -=2;
-		for ($i=0;$i<$fieldCountToBeEdited;$i++) {
+	}
+	$fieldCountToBeEdited = sizeof($dataFieldNames);
+	if (!userIsAdmin()) $fieldCountToBeEdited -=2;
+	for ($i=0;$i<$fieldCountToBeEdited;$i++) {
+		if ($edit || (!$edit && showField($diak,$dataFieldNames[$i]))) {
 			echo('<div class="input-group">');
-      		echo('<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">'.$dataFieldCaption[$i].'</span>');
-			echo('<span style="width:40px" id="highlight" class="input-group-addon">');
-      			if ($dataFieldVisible[$i])
-        			echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." >');
-      		echo('</span>');
-      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" />');
-    		echo('</div>');	
+	      	echo('<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">'.$dataFieldCaption[$i].'</span>');
+			if ($edit) {
+	      		echo('<span style="width:40px" id="highlight" class="input-group-addon">');
+	      			if ($dataFieldVisible[$i])
+	        			echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." >');
+	      		echo('</span>');
+			}
+	      	echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" />');
+	    	echo('</div>');	
 		}
+	}
+	if ($edit) {
 		echo('<button type="submit" class="btn btn-default" title="Adatok kimentése" ><span class="glyphicon glyphicon-save"></span>'.getTextRes("Save").'</button>');
 		echo('<input type="hidden" value="changediak" name="action" />');
 		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
 		echo('</form>');
-		echo('</div>');
-	
 	}
-	//Show read only data
-	else {
-		$d=$diak;
-		echo('<div class="container-fluid">');
-		echo ('<div class="well well-large">');
-			echo "<img src=\"images/".$d["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
-		echo "</div>";
-		echo "<table>\r\n";
-		if(showField($d,"partner"))		echo "<tr><td valign=top align=right>Élettárs:</td><td>".$d["partner"]."</td></tr>";
-		if(showField($d,"education"))	echo "<tr><td valign=top align=right>Végzettség:</td><td>".$d["education"]."</td></tr>";
-		if(showField($d,"employer"))	echo "<tr><td valign=top align=right>Munkahely:</td><td><div itemprop=\"worksFor\" itemscope itemtype=\"http://schema.org/Organization\"><span itemprop=\"Name\">".getFieldValue($d["employer"])."</span></div></td></tr>";
-		if(showField($d,"function"))	echo "<tr><td valign=top align=right>Beosztás:</td><td><span itemprop=\"jobTitle\">".getFieldValue($d["function"])."</span></td></tr>";
-		if(showField($d,"children"))	echo "<tr><td valign=top align=right>Gyerekek:</td><td>".$d["children"]."</td></tr>";
+	echo('</div>');
+/*	
 		if(showField($d,"address")||showField($d,"place")||showField($d,"zipcode")) { 
-			echo ("<tr><td valign=top align=right>Cím:</td><td><div itemprop=\"address\" itemscope itemtype=\"http://schema.org/PostalAddress\">");
-			if(showField($d,"address")) echo('<span itemprop="streetAddress">'.getFieldValue($d["address"])."</span>, ");
-			if(showField($d,"zipcode")) echo('<span itemprop="postalCode">'.getFieldValue($d["zipcode"])."</span> ");
-			if(showField($d,"place"))   echo('<span itemprop="addressLocality">'.getFieldValue($d["place"]).'</span>');
-			echo("</div></td></tr>");
-		}
-		if(showField($d,"country")) 	echo "<tr><td valign=top align=right>Ország:</td><td>".getFieldValue($d["country"])."</td></tr>";
-		if(showField($d,"phone")) 		echo "<tr><td valign=top align=right>Telefon:</td><td>".getFieldValue($d["phone"])."</td></tr>";
-		if(showField($d,"mobil")) 		echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
-		if(showField($d,"email")) 		echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
-		if(showField($d,"skype")) 		echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
-		if(showField($d,"facebook"))	echo "<tr><td valign=top align=right>Facebook:</td><td>".getFieldValue($d["facebook"])."</td></tr>";
-		if(showField($d,"homepage"))	echo "<tr><td valign=top align=right>Honoldal:</td><td>".getFieldValue($d["homepage"])."</td></tr>";
-		echo "</table></td></tr></table></div>";
-	}
+			<div itemprop=\"address\" itemscope itemtype=\"http://schema.org/PostalAddress\">");
+			<span itemprop="streetAddress">'.getFieldValue($d["address"])."</span>, ");
+			<span itemprop="postalCode">'.getFieldValue($d["zipcode"])."</span> ");
+			<span itemprop="addressLocality">'.getFieldValue($d["place"]).'</span>');
+*/
 }
 
 //Change password, usename, facebook

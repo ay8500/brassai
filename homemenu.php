@@ -29,7 +29,7 @@
 	<?PHP } else { ?>
 		<meta name="description" content="<?PHP echo($SiteTitle) ?>" />
 	<?PHP } ?>
-	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok" />
+	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztályfelelös ballagás" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />
 	
 	<link href="css/bootstrap.min.css" rel="stylesheet">

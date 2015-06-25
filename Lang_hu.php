@@ -18,7 +18,7 @@ $TXT["Like"]				="Ez az oldal tetszik !";
 
 //Todo other languages
 $TXT["Save"]    			="Kiment";
-$TXT["NextPage"]    			="tovább";
+$TXT["NextPage"]    		="tovább";
 $TXT["SelectOneOption"]		="... válassz!...";
 
 $TXT["FacebookLoginOk"]		="Facebook bejelentkezés sikeres.";
