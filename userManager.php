@@ -96,10 +96,22 @@
 					$usr["scoolYear"],
 					$usr["scoolClass"]);
 				$ret = true;
-				if (!userIsAdmin()) 
-					saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
+			}
+			else {
+				$diak["email"]=$user;
+				$usr =getGlobalUser($diak,"compairEmailPassw");
+				if (null != $usr) {
+					setUserInSession(
+						$usr["admin"],
+						$usr["user"],
+						$usr["id"],
+						$usr["scoolYear"],
+						$usr["scoolClass"]);
+					$ret = true;
 			}		
 		}
+		if (!userIsAdmin()) 
+			saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
 		return $ret;
 	}
 
