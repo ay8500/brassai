@@ -277,7 +277,7 @@ function compairUserPassw($d1,$d2) {
 
 function compairEmailPassw($d1,$d2) {
 	if (isset($d1["email"]) && isset($d2["email"]) && isset($d1["passw"]) && isset($d2["passw"])) {
-		return strtolower($d1["email"])==strtolower($d2["email"]) && $d1["passw"]==$d2["passw"];
+		return strtolower(getFieldValue($d2,"email"))==strtolower(getFieldValue($d1,"email")) && $d1["passw"]==$d2["passw"];
 	}
 	else 
 		return false;

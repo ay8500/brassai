@@ -108,10 +108,15 @@
 						$usr["scoolYear"],
 						$usr["scoolClass"]);
 					$ret = true;
-			}		
+				}		
+			}
 		}
-		if (!userIsAdmin()) 
-			saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
+		if (!userIsAdmin()) {
+			if (isset($_SESSION['uId']))
+				saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
+			else 
+				saveLogInInfo("Login","",$user,$passw,$ret);
+		}
 		return $ret;
 	}
 
