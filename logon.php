@@ -9,29 +9,31 @@
 	
 	//Logon action
 	if (getParam("action","")=="logon") {
-		$paramName=getParam("paramName","");
-		$paramPassw=getParam("paramPassw","");
-		if (($paramName=="") || ($paramPassw=="")) { 
+		$paramName=getParam("paramName");
+		$paramPassw=getParam("paramPassw");
+		if ((null==$paramName) || (null==$paramPassw)) { 
 			$paramName=""; $paramPassw="";
 			logoutUser();
 			http_response_code(400);
 			$logOnMessage =getTextRes("LogInError")."<br />".getTextRes("LogInUserPassw");
+			saveLogInInfo("Login","","","","false");
 			echo($logOnMessage);
 		}
 		else if (!checkUserLogin($paramName,$paramPassw)) {
 			logoutUser();
 			http_response_code(401);
 			$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
+			saveLogInInfo("Login","",$paramName,$paramPassw,"false");
 			echo($logOnMessage);
 		} else {
+			saveLogInInfo("Login",getLoggedInUserId(),"","","true");
 			$logOnMessage = "Ok";
 			echo($logOnMessage);
 		}
 		if (! userIsAdmin()) {
-			sendTheMail('code@blue-l.de',
+			sendHtmlMail(null,
 				"<h2>Login</h2>".
-				"Datenbank:".getUserDatabaseName()."<br/>".
-				"Name:".$paramName."<br/>",
+				"Parameter:".$paramName." : ".$paramPassw."<br/>".
 				"Login result:".$logOnMessage," Login");
 		}
 	}
@@ -47,79 +49,17 @@
 			$logOnMessage=getTextRes("LogInError");
 		}
 		if (! userIsAdmin()) {
-			sendTheMail('code@blue-l.de',
+			saveLogInInfo("Facebook",getLoggedInUserId(),$_SESSION['FacebookId'],"","true");
+			sendHtmlMail(null,
 				"<h2>Facebooklogin</h2>".
 				"Datenbank:".getUserDatabaseName()."<br/>".
-				"FacebookId:".$_SESSION['FacebookId']."<br/>",
+				"FacebookId:".$_SESSION['FacebookId']."<br/>".
 				"FacebookName:".$_SESSION['FacebookName']."<br/>".
 				"Login result:".$logOnMessage,"Login");
 		}
 	} 
 	
 
-function writeLogonBox() {
-		global $logOnMessage;
-		global $SCRIPT_NAME;
-		global $SupportedLang;
-		global $TXT;
-		if ( !userIsLoggedOn()) {
-?>
-	<form action="start.php" method="get">
-		<input type="hidden" value="logon" name="action"/>
-		<div class="loginText"><?php echo getTextRes("LogInUser") ?></div>
-		<div><input class="loginInput" type="text" size="12" name="paramName" /></div>
-		<div class="loginText"><?php echo getTextRes("LogInPassw") ?></div>
-		<div><input class="loginInput" type="password" size="12" name="paramPassw" /></div><br/>
-		<div><input class="loginSubmit" type="submit" value="<?php echo getTextRes("LogIn") ?>" /></div><br/>
-	</form> 
-	<form action="start.php" method="get">
-		<input type="hidden" value="lostpassw" name="action"/>
-		<div><input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogInLostData")?>" /></div>
-	</form>
-	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
-		<input class="loginFacebookSubmitH" type="submit"  value="" />
-	</form>
-	<?php  } else { ?>
-	<form action="index.php" method="get">
-		<input type="hidden" value="logoff" name="action" />
-		<div class="loginText"><?php echo getTextRes("LogInUser").":".$_SESSION['uName'] ?></div>
-		<div><input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" /></div><br/>
-	</form>
-<?php } ?>
-	<div class="loginError"><?php echo $logOnMessage ?></div><br/>
-<?php 
-}
-	
-function writeLogonLine() {
-	global $TXT;
-	if (!userIsLoggedOn()) {
-	?>
-	<tr><td class="LogonLine">
-		<form action="start.php" method="get">
-			<input type="hidden" value="logon" name="action"/>
-			<?php echo getTextRes("LogInUser"); ?><input class="loginInput" type="text" size="12" name="paramName" />
-			<?php echo getTextRes("LogInPassw"); ?><input class="loginInput" type="password" size="12" name="paramPassw" />
-			<input class="loginSubmit" type="submit" value="<?php echo getTextRes("LogIn"); ?>" />
-		</form>
-		<form action="start.php" method="get">
-			<input type="hidden" value="lostpassw" name="action"/>
-			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogInLostData") ?>" />
-		</form>
-		<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
-			&nbsp;&nbsp;<input class="loginFacebookSubmit" type="submit"  value="" />
-		</form>
-	</td></tr>
-	<?php  } else { ?>
-	<tr><td class="LogonLine">
-		<form action="start.php" method="get">
-			<input type="hidden" value="logoff" name="action" />
-			<?php echo getTextRes("LogInUser").":".$_SESSION['uName'] ?>
-			&nbsp;&nbsp;<input class="loginSubmit" type="submit"  value="<?php echo getTextRes("LogOut") ?>" />
-		</form> 
-	</td></tr>
-	<?php
-	}
-}
 
 function writeLogonDiv() {
 	if (!userIsLoggedOn()) {
@@ -154,6 +94,7 @@ function writeLogonDiv() {
 		$('#loPassw').keyup(function(e){
 	    	if(e.keyCode == 13)
 	    	{
+	    		closeLogin();
 	        	logon();
 	    	}
 		});

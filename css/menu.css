@@ -1,7 +1,5 @@
 	body		{	line-height:normal;	}
 	form		{display:inline;}
-	.submit2	{ height:18px;font-size:10px;margin-right:20px;}
-	.aaainput2		{ height:13px; font-size:10px;}
 	#highlight 	{ background-color: #ffdddd;text-align:center}
 	.caption1   { font-weight: bold; text-align:right;}
 	.loginText 	{ text-align:left; font-size:12px; font-weight:bold}
@@ -35,10 +33,10 @@
 	.borderbuttonworld {background-image: url("../images/world-16.png");background-repeat: no-repeat; height: 39px;  background-position: 5px 20px;}
 	.pictureView {border-radius: 6px; display:none;position: absolute; top:50px; left:5px;background-color: lightgray;z-index: 200;padding:20px}
 	
-	.cradio 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 39px;text-align: center;vertical-align:middle;display: inline-block;}
-	.radio_world {background-image: url("../images/world-16.png");background-repeat: no-repeat;height: 39px; background-position: 5px 20px;}
-	.radio_scool {background-image: url("../images/study.png");background-repeat: no-repeat;height: 39px;background-position: 5px 20px;}
-	.radio_class {background-image: url("../images/friends.png");background-repeat: no-repeat;height: 39px; background-position: 5px 20px;}
+	.cradio 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 39px;text-align: center;vertical-align:bottom; display: inline-block;}
+	.radio_world {background-image: url("../images/world-16.png");background-repeat: no-repeat;background-position: 5px 20px;}
+	.radio_scool {background-image: url("../images/study.png");background-repeat: no-repeat; background-position: 5px 20px;}
+	.radio_class {background-image: url("../images/friends.png");background-repeat: no-repeat; background-position: 5px 20px;}
 	.radiogroup { display:inline-block; padding: 7px; border-style: solid; border-width: 1px; vertical-align: middle; border-color: lightgray; border-radius: 5px; eight: 44px;}
 	.trumbowyg-editor {background-color: white;}
 	

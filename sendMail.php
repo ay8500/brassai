@@ -34,7 +34,7 @@ function SendNewPassword($uid) {
 	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
-	sendTheMail(getFieldValue($diak["email"]),$text);
+	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
 }
 
 /**
@@ -50,13 +50,12 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class)
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
 	$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
 	$text.="Mail címed: ".$mail."<br/>";
+	$text.="<p>Szerep: ".$rights."</p>";
 	$text.="</p><p>";
 	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.$year.'&scoolClass='.$class.'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
-	sendTheMail($mail,$text);
-	$text.="<p>Szerep: ".$rights."</p>";
-	sendTheMail("brassai@blue-l.de",$text);
+	sendHtmlMail($mail,$text," új bejelenkezés");
 }
 
 /**
@@ -73,25 +72,16 @@ function SendMail($uid,$text,$userData) {
 		if ($userData) {
 			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".$diak["passw"]."<br/></p>";
 		}
-		sendTheMail(getFieldValue($diak["email"]),$text);
-		//echo($text);
+		sendHtmlMail(getFieldValue($diak["email"]),$text);
 		$sendMailCount++;
 		$sendMailMsg="Elködött mailek száma:".$sendMailCount;
 }
 
+
 /**
  * send text to recipient
  */
-function sendTheMail($recipient,$text,$subject="") {
-	/* recipient */
-	$empfaenger = array('<'.$recipient.'>');
-
-	/* recipient CC */
-	$empfaengerCC = array('');
-
-	/* recipient BCC */
-	$empfaengerBCC = array('brassai@blue-l.de');
-
+function sendHtmlMail($recipient,$text,$subject="") {
 	/* sender */
 	$absender = 'brassai<brassai@blue-l.de>';
 
@@ -99,7 +89,7 @@ function sendTheMail($recipient,$text,$subject="") {
 	$reply = '';
 
 	/* subject */
-	$subject = 'Brassai Samuel Liceum Vendiakok Honlapja '.$subject;
+	$subject = 'Brassai Samuel Líceum Vendiakok Honlapja '.$subject;
 
 	/* Nachricht */
 	$message = '<html>
@@ -119,15 +109,11 @@ function sendTheMail($recipient,$text,$subject="") {
 	$headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n"; 
 	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
-	// extract mail recipients
-	$empfaengerString = implode(',', $empfaenger);
-	$empfaengerCCString = implode(',', $empfaengerCC);
-	$empfaengerBCCString = implode(',', $empfaengerBCC);
-
-	//$headers .= 'Cc: ' . $empfaengerCCString . "\r\n";
-	$headers .= 'Bcc: ' . $empfaengerBCCString . "\r\n";
-
-	return mail($empfaengerString, $subject, $message, $headers);
+	mail("code@blue-l.de", $subject, $message, $headers);
+	if (null!=$recipient)
+		return mail($recipient, $subject, $message, $headers);
+	else 
+		return false;
 }
 
 /**

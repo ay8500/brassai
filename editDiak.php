@@ -110,12 +110,14 @@ if (($uid != 0) && getParam("action","")=="changeuser" && userIsLoggedOn()) {
 //Remove Facebook connection
 if (($uid != 0) && getParam("action","")=="removefacebookconnection"  && userIsLoggedOn()) {
 	$diak["facebookid"]="";
+	saveLogInInfo("FacebookDelete",$uid,$diak["user"],"",true);
 	savePerson($diak);
 }
 
 //Delete Picture
 if (($uid != 0) && getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 	deletePicture(getAktDatabaseName(), $uid,getParam("id", ""));
+	saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
 }
 
 
@@ -131,16 +133,19 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 				if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 					resizeImage($uploadfile,1200,1024);
 					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen feltöltve.";
+					saveLogInInfo("PictureUpload",$uid,$diak["user"],$idx,true);
 				} else
 					$resultDBoperation=$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.";
 			}
 			else {
 				$resultDBoperation=$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.";
+				saveLogInInfo("PictureUpload",$uid,$diak["user"],"to big",false);			
 			} 	
 		}
-		else
+		else {
 			$resultDBoperation=$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.";
-				
+			saveLogInInfo("PictureUpload",$uid,$diak["user"],"only jpg",false);
+		}	
 	}
 }
 
@@ -297,7 +302,7 @@ if ($tabOpen==1) {
 if ($tabOpen==5) { 
 	include("editDiakPickGeoPlace.php");
 }
-//************** change options
+//************** change storys cv, scool trory, sparetime
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) { 
 	include("editDiakStorys.php");
 }

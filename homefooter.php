@@ -4,7 +4,6 @@
         <?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
 				<li><a href="editDiak.php" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
 		<?PHP }  ?>	
-			<li><a href="gb.php" >Vendégkönyv</a></li>
 		<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
 			<li><a href="admin.php"  >Adminsztráció</a></li>
 		<?PHP }	?>
@@ -40,8 +39,9 @@
 				fullscreenable: false,
 				closable: false,
 				lang: "hu",
-				btns: ['viewHTML','formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists','|', 'horizontalRule'],
-				removeformatPasted: true
+				btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists','|', 'horizontalRule'],
+				removeformatPasted: true,
+				autogrow: true
 			});
 		});
 		</script>

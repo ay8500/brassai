@@ -9,7 +9,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	openDatabase(getAktDatabaseName());
 	if ( userIsAdmin() ) {
 		include_once ("sendMail.php");
-		for($i=0;$uid<sizeof($data);$i++) {
+		for($i=0;$i<sizeof($data);$i++) {
 			$uid=$data[$i]["id"];
 			if (isset($_GET["D".$uid])) {
 				SendMail($uid, $_GET["T"],isset($_GET["U"]) );
@@ -20,7 +20,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 ?>
 
 <div class="container-fluid">   
-<h4>Adminisztráció</h4>
+<h2 class="sub_title" >Adminisztráció</h2>
 <?PHP
 $tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
 include("tabs.php");
@@ -29,7 +29,6 @@ include("tabs.php");
 <?PHP if (userIsAdmin() || (userIsEditor()) ) { ?>
 	<?PHP if ($tabOpen==0) {?>
 	<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" name="mail">
-		<input type="checkbox" name="U"/> Bejelentkezési adatokat is küld? <br/>
 		<textarea id="story" name="T" style="width:95%;height:300px" wrap="off" onchange="fieldChanged();">
 <b>Kedves %%name%%</b><br/>
 <p>
@@ -42,9 +41,10 @@ Ide kell írni a szöveget....
 Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear='.getAktScoolYear().'&scoolClass='.getAktScoolClass());?>>A kolozsvári Brassai Sámuel líceum <?PHP echo(getAktScoolYear());?>-ben végzett diákjainak <?PHP echo(getAktScoolClass());?></a> honlapjáról kaptad.
 </p>
 		</textarea>
-		<input type="submit" class="submit2" value="E-Mail küldés!" />
-		<input type="button" class="submit2" value="Mindenkit megjelöl" onclick="checkUncheckAll(true);"/>
-		<input type="button" class="submit2" value="Megjelöléseket töröl" onclick="checkUncheckAll(false);"/>
+		<input type="checkbox" name="U"/> Bejelentkezési adatokat is elküld.<br/>
+		<button class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-envelope"></span> E-Mail küldés!</button>
+		<button type="button" class="btn btn-default" onclick="checkUncheckAll(true);"><span class="glyphicon glyphicon-check"></span> Mindenkit megjelöl</button>
+		<button type="button" class="btn btn-default" onclick="checkUncheckAll(false);"><span class="glyphicon glyphicon-unchecked"></span> Megjelöléseket töröl</button>
 		<p>
 		<?php
 			openDatabase(getAktDatabaseName());
@@ -135,7 +135,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('scoolYear=
 else
 	echo '<div style="margin:40px;">Adat hozzáférési jog hiányzik!</div>';
 ?>
-</td></tr></table>
+</div>
 <script language="JavaScript" type="text/javascript">
 	function checkUncheckAll(state) {
 		for(var z=0; z < document.mail.elements.length; z++) {
@@ -146,6 +146,4 @@ else
      	}
     }
 </script>
-<?php
-include 'homefooter.php';
-?>
+<?php include 'homefooter.php'; ?>

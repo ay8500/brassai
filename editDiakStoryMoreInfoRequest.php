@@ -48,8 +48,7 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$text .='<a href="http://brassai.blue-l.de/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />'; 
 	$text .='Üdvözlettel '.$name;
 
-	sendTheMail("brassai@blue-l.de",$text,"Brassai Sámuel líceum véndiákjai. Kérés kiegészítésre."); 
-	if (!sendTheMail(getFieldValue($diak["email"]),$text,"Brassai Sámuel líceum véndiákjai. Kérés kiegészítésre.")) {
+	if (!sendHtmlMail(getFieldValue($diak["email"]),$text,"Brassai Sámuel líceum véndiákjai. Kérés kiegészítésre.")) {
 		http_response_code(400);
 		echo ("Üzenet küldése sajnos nem sikerült. Probákozz késöbb újból.");
 		return;

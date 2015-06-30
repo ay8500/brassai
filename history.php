@@ -63,9 +63,9 @@ function writeHistory($type) {
 		$history["ip"]=$_SERVER["REMOTE_ADDR"];
 		$history["date"]=date('d.m.Y H:i');
 		$history["type"]=$type;
-		$history["uid"]=getAktUserId();
-		$history["scoolyear"]=getAktScoolYear();
-		$history["scoolclass"]=getAKtScoolClass();
+		$history["uid"]=getLoggedInUserId();
+		$history["scoolyear"]=getUScoolYear();
+		$history["scoolclass"]=getUScoolClass();
 		prepend($histroy);
 	}
 }

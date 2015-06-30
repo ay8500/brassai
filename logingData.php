@@ -18,7 +18,7 @@ if (userIsAdmin()) {
 	  	<?PHP
 	  		$logData= readLogingData("Login","2015");
 			foreach($logData as $slog) {
-				if ($slog["Result"]=="true")
+				if ($slog["Result"]!="false")
 		    		echo("<tr><td>".$slog['IP']."</td><td>".$slog['Date']."</td><td>".$slog['Scool']."</td><td>".$slog['Result']."</td><td>".$slog['ID']."</td><td>".$slog['CUser']."</td><td>".$slog['Passw']."</td></tr>");
 	  	  }
 	  	?>

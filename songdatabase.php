@@ -284,7 +284,7 @@ function insertVote($database,$userID,$song) {
 		$mailSong=readSong($database,$song);
 		$mailInterpret=readInterpret($database,$mailSong['interpretId']);
 		$mailPerson=getPersonLogedOn();
-		sendTheMail('code@blue-l.de',$database."<br/>".$mailPerson["firstname"].$mailPerson["lastname" ]."<br/>".$mailInterpret["name"]."<br/>".$mailSong["name"]."<br/>");
+		sendHtmlMail('code@blue-l.de',$database."<br/>".$mailPerson["firstname"].$mailPerson["lastname" ]."<br/>".$mailInterpret["name"]."<br/>".$mailSong["name"]."<br/>","Song Database");
 	} 
 }
 

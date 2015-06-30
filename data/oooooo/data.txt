@@ -1,0 +1,30 @@
+#Database File
+#Last IP:::1
+#Change Date:25.06.2015 16:47
+
+
+id=2
+firstname=Administrátor
+lastname=System
+picture=avatar.jpg
+geolat=46.7719
+geolen=23.5924
+user=admin
+passw=levi-kvar-67
+date=12.06.2015 22:12
+ip=::1
+geolng=23.5924
+admin=admin guest
+email=webmaster@blue-l.de
+
+id=12
+firstname=Vendég
+lastname=Iskola
+picture=avatar.jpg
+geolat=46.7719
+geolen=23.5924
+geolng=23.5924
+user=guest
+passw=guest
+admin=guest
+date=14.06.2015 22:36

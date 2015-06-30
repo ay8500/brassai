@@ -18,16 +18,16 @@ function getPostParam($name,$def) {
 /**
  * Safety paramateter read 
  */
-function getParam($name,$def) {
+function getParam($name,$def=null) {
 	if (isset($_POST[$name]))
 		return getPostParam($name,$def);
 	else
 		return getGetParam($name,$def);
 }
 
-function getIntParam($name,$def) {
-	$ret = getParam($name,"");
-	if ($ret!="")
+function getIntParam($name,$def=0) {
+	$ret = getParam($name);
+	if (null!=$ret)
 		return (int)$ret;
 	else
 		return $def;

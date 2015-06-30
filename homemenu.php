@@ -116,6 +116,9 @@
 			  	<?php } ?>
 			  	</ul>
 			</li>
+			<li>
+				<a href="message.php">Ünzenőfal</a>
+			</li>
 			<?php if (userIsLoggedOn()) {
 				$person=getPersonLogedOn();?>
 				<form class="navbar-form navbar-right" role="search">

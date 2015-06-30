@@ -69,19 +69,22 @@ define('DELETE_FILES',false);
  */
 define('EXCLUDE', serialize(array(
 	'.git',
-	'data/12A1985data.txt',
-	'data/12A1985vote.txt',
-	'data/12B1985data.txt',
-	'data/12B1985vote.txt',
+	'data/oooooo/data.txt',
+	'data/12A1985/data.txt',
+	'data/12A1985/vote.txt',
+	'data/12B1985/data.txt',
+	'data/12B1985/vote.txt',
 	'login.log',
 	'access.log',
-	'data/12B1985songvote.txt',
-	'data/12A1985songvote.txt',
-	'data/12B1985song.txt',
-	'data/12A1985song.txt',
-	'data/12B1985interpret.txt',
-	'data/12A1985interpret.txt',
-	'gb/data.xml'
+	'data/12B1985/songvote.txt',
+	'data/12A1985/songvote.txt',
+	'data/12B1985/song.txt',
+	'data/12A1985/song.txt',
+	'data/12B1985/interpret.txt',
+	'data/12A1985/interpret.txt',
+	'gb/data.xml',
+	'data/history.json',
+	'data/message.json'
 )));
 
 /**
