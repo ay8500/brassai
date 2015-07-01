@@ -40,7 +40,7 @@
 ?>
 
 		<div class="panel panel-default">
-			<div class="panel-heading"><h4>Véndiák Újdonságok:</h4></div>
+			<div class="panel-heading"><h4><span class="glyphicon glyphicon-user"></span> Véndiák Újdonságok:</h4></div>
 			<div class="panel-body">
 			<ul id="newData">
 			<?php echo (readHistoryList(20)); ?>
@@ -48,9 +48,10 @@
 			</div>
 		</div>
 		<div class="panel panel-default">
-			<div class="panel-heading"><h4>Honoldal Újdonságok:</h4></div>
+			<div class="panel-heading"><h4><span class="glyphicon glyphicon-home"></span> Honoldal Újdonságok:</h4></div>
 				<div class="panel-body">
 					<ul>
+						<li>Junius 2015: Üzenőfal híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
 						<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
 						<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>
 						<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>

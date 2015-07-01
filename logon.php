@@ -66,20 +66,22 @@ function writeLogonDiv() {
 		?>
 <div class="panel panel-default" style="display:none;margin:auto;width:220px;" id="uLogon" >
 	<div class="panel-heading" >
-		Bejelentkezés<span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeLogin();"></span>
+		<b>Bejelentkezés</b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeLogin();"></span>
 	</div>
 	<form action="" method="get">
 		<input type="hidden" value="logon" name="action"/>
 		<div class="input-group input-group" style="margin: 3px;">
-    		<span class="input-group-addon" style="width:30px"><span class="glyphicon glyphicon-user"></span></span>
+    		<span class="input-group-addon" style="width:30px" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
     		<input type="text" class="form-control" id="loUser" placeholder="<?php echo getTextRes("LogInUser"); ?>">
 		</div>
 		<div class="input-group input-group" style="margin: 3px;">
-    		<span class="input-group-addon" style="width:30px"><span class="glyphicon glyphicon-lock"></span></span>
-    		<input type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?> onkeypress="keypressed();" >
+    		<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
+    		<input type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
 		</div>
-		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="logon();"><?php echo getTextRes("LogIn"); ?></button>
-		 <button type="button" class="btn btn-default" style="margin: 3px;" onclick="lostlogon();"><?php echo getTextRes("LogInLostData"); ?></button>
+		<div style="text-align:center; margin: 3px">
+			<button type="button" class="btn btn-default" style="margin: 3px;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo getTextRes("LogIn"); ?></button>
+		 	<button type="button" class="btn btn-default" style="margin: 3px;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
+		</div>
 	</form>
 	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
 		<div style="text-align:center; margin: 3px">
@@ -90,17 +92,11 @@ function writeLogonDiv() {
 <?php } ?> 
 </div>
 <script type="text/javascript">
-	var logingon=false;
-	function keypressed() {
-		$('#loPassw').keyup(function(e){
-	    	if(e.keyCode == 13 && logingon==false)
-	    	{
-		    	logingon = true;
-	    		closeLogin();
-	        	logon();
-	    	}
-		});
-	}
+	document.onkeydown=function(){
+	    if(window.event.keyCode=='13'){
+	        logon();
+	    }
+	};
 		
 	function logon() {
 		$.ajax({
@@ -108,10 +104,8 @@ function writeLogonDiv() {
 			success:function(data){
 			    //location.reload();
 			    location.href="start.php";
-			    logingon=false;
 			},
 			error:function(data){
-				logingon=false;
 			    $('#ajaxLStatus').css("background-color","lightcoral");
 				$('#ajaxLStatus').html(data.responseText);
 				$('#ajaxLStatus').show();
