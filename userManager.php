@@ -2,6 +2,7 @@
 	$_SESSION['lastReq']=date('d.m.Y H:i');
 
 	include_once("data.php");
+	include_once 'sendMail.php';
 	
 	//Change scool year and class if parameters are there
 	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
@@ -131,7 +132,7 @@
 		$ret = false;
 		if (checkRequesterIP()) {
 			$ret=false;
-			$diak["facebook"]=$facebookId;
+			$diak["facebookid"]=$facebookId;
 			$usr =getGlobalUser($diak,"compairFacebookId");
 			if (null != $usr) {
 				setUserInSession(

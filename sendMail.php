@@ -110,10 +110,10 @@ function sendHtmlMail($recipient,$text,$subject="") {
 	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
 	mail("code@blue-l.de", $subject, $message, $headers);
-	if (null!=$recipient)
+	if (isset($recipient)) {
 		return mail($recipient, $subject, $message, $headers);
-	else 
-		return false;
+	}
+	return false;
 }
 
 /**

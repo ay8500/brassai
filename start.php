@@ -34,7 +34,7 @@
 	}
 	elseif (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || getParam("action","")=="newPassword") {
 		include("lostPassw.php");
-	} elseif ($facebook) { 
+	} elseif ($facebook && !userIsLoggedOn()) { 
 		include("facebooklogin.php");
 	} else { 
 ?>

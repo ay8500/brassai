@@ -1,6 +1,6 @@
 #Database File
-#Last IP:212.95.198.186
-#Change Date:30.06.2015 19:25
+#Last IP:::1
+#Change Date:01.07.2015 11:29
 
 
 id=2
@@ -520,15 +520,15 @@ function=~JAVA software fejlesztő osztály vezető
 children=Zsuzsa - 1992, Tamás - 1996
 geolng=11.149191856384277
 user=Levi
-passw=S7PBMsIfp
+passw=levi67
 admin=admin
-date=30.06.2015 19:25
+date=01.07.2015 01:13
 ip=212.95.198.186
 facebook=https://www.facebook.com/levente.maier
-facebookid=965038823537045
 homepage=http://levi.blue-l.de
 scoolYear=1985
 scoolClass=12A
+facebookid=965038823537045
 
 id=22
 firstname=Edit
@@ -625,9 +625,8 @@ function=szociológus
 geolng=19.0557861328125
 user=kovlaci
 passw=uz34fxw
-date=05.05.2015 01:07
-ip=::1
-facebookid=a965038823537045
+date=01.07.2015 01:17
+ip=212.95.198.186
 
 id=26
 firstname=Júlia-Kármen
@@ -960,7 +959,9 @@ email=~eva.ferenczy-vass@gmx.de
 skype=~vadvirag67
 geolng=9.127922058105468
 user=vass_eva
-passw=piros1985
+passw=nAg6gkys2
 admin=guest
-date=27.07.2010 11:47
-ip=127.0.0.1
+date=01.07.2015 11:29
+ip=::1
+scoolYear=1985
+scoolClass=12A

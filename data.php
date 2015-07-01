@@ -283,9 +283,9 @@ function compairEmailPassw($d1,$d2) {
 		return false;
 }
 
-function compairFacbookId($d1,$d2) {
-	if (isset($d1["facebook"]) && isset($d2["facebook"]) ) {
-		return strtolower($d1["facebook"])==strtolower($d2["facebook"]);
+function compairFacebookId($d1,$d2) {
+	if (isset($d1["facebookid"]) && isset($d2["facebookid"]) ) {
+		return strtolower($d1["facebookid"])==strtolower($d2["facebookid"]);
 	}
 	else
 		return false;
