@@ -1,6 +1,6 @@
 #Database File
-#Last IP:::1
-#Change Date:01.07.2015 11:29
+#Last IP:212.95.198.186
+#Change Date:01.07.2015 14:13
 
 
 id=2
@@ -510,7 +510,7 @@ address=Bergstrasse 33
 zipcode=91790
 place=Bergen /Thalmannsfeld
 country=Németország
-phone=~0049-9147-95033
+phone=0049-9147-95033
 mobil=~0049-170-7979113
 email=~levente@blue-l.de
 skype=l_e_v_e_n_t_e
@@ -959,9 +959,9 @@ email=~eva.ferenczy-vass@gmx.de
 skype=~vadvirag67
 geolng=9.127922058105468
 user=vass_eva
-passw=nAg6gkys2
+passw=kolozsvar1985
 admin=guest
-date=01.07.2015 11:29
+date=01.07.2015 10:39
 ip=::1
 scoolYear=1985
 scoolClass=12A

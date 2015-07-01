@@ -9,30 +9,28 @@ function readMessageList($elements, $pricacy) {
 		if (isset($message["uid"])) {
 			$diak=getPerson($message["uid"],$message["scoolclass"].$message["scoolyear"]);
 		}
-		$ret .= '<div style="margin:4px; display:table-row">';
-		$ret .= '<div style="float:left; border-style:solid; border-radius:5px; border-width:1px;   margin-right: 10px; ">';
-		if (null!=$diak && isset($diak["picture"])) {
-			$ret .= '<img src="images/'.$diak["picture"].'" style="height:40px; border-radius:5px;" />';
-		} else { 
-			$ret .= '<img src="images/avatar.jpg" style="height:40px; border-radius:5px;"  />';
-		}
-		$ret .= '<div style="display: inline-block;width: 118px;vertical-align: middle;">';
-		if (isset($message["uid"])) {
-			$ret .= '<a href="editDiak.php?uid='.$message["uid"].'&scoolYear='.$message["scoolyear"].'&scoolClass='.$message["scoolclass"].'" >';
-			$ret .= $diak["lastname"]." ".$diak["firstname"]." ";
-			if (isset($diak["birthname"]))
-				$ret .='('.$diak["birthname"].") ";
-			$ret .='</a>';		
-		}
-		else 
-			$ret .= $message["name"];
-		$ret .= '</div>'; 
-		$ret .= '</div>'; 
-		$ret .= '<div style="display:table;">';
-		$ret .= html_entity_decode($message["text"]);
-		if (isset($message["comment"]))
-			$ret .= '<br /><b>Kommentár: </b>'.html_entity_decode($message["comment"]);
-		$ret .= '</div>';
+		$ret .= '<div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">';
+			if (null!=$diak && isset($diak["picture"])) {
+				$ret .= '<img src="images/'.$diak["picture"].'" style="height:40px; border-radius:5px;" />';
+			} else { 
+				$ret .= '<img src="images/avatar.jpg" style="height:40px; border-radius:5px;"  />';
+			}
+			$ret .= '<div style="display: inline-block;vertical-align: bottom;">';
+				if (isset($message["uid"])) {
+					$ret .= '<a href="editDiak.php?uid='.$message["uid"].'&scoolYear='.$message["scoolyear"].'&scoolClass='.$message["scoolclass"].'" >';
+					$ret .= $diak["lastname"]." ".$diak["firstname"]." ";
+					if (isset($diak["birthname"]))
+						$ret .='('.$diak["birthname"].") ";
+					$ret .='</a>';		
+				}
+				else 
+					$ret .= $message["name"];
+			$ret .= '</div>'; 
+			$ret .= '<div style="margin:10px">';
+				$ret .= html_entity_decode($message["text"]);
+				if (isset($message["comment"]))
+					$ret .= '<br /><b>Kommentár: </b>'.html_entity_decode($message["comment"]);
+			$ret .= '</div>';
 		$ret .= '</div><div style="width:100%; height:3px;"></div>';
 		$ret .= '<div style="margin-bottom:25px; ">';
 		$ret .= 'Datum:'.$message["date"]." ";

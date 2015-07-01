@@ -90,10 +90,12 @@ function writeLogonDiv() {
 <?php } ?> 
 </div>
 <script type="text/javascript">
+	var logingon=false;
 	function keypressed() {
 		$('#loPassw').keyup(function(e){
-	    	if(e.keyCode == 13)
+	    	if(e.keyCode == 13 && logingon==false)
 	    	{
+		    	logingon = true;
 	    		closeLogin();
 	        	logon();
 	    	}
@@ -106,8 +108,10 @@ function writeLogonDiv() {
 			success:function(data){
 			    //location.reload();
 			    location.href="start.php";
+			    logingon=false;
 			},
 			error:function(data){
+				logingon=false;
 			    $('#ajaxLStatus').css("background-color","lightcoral");
 				$('#ajaxLStatus').html(data.responseText);
 				$('#ajaxLStatus').show();

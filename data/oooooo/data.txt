@@ -1,6 +1,6 @@
 #Database File
-#Last IP:::1
-#Change Date:25.06.2015 16:47
+#Last IP:212.95.198.186
+#Change Date:01.07.2015 14:19
 
 
 id=2
@@ -15,7 +15,9 @@ date=12.06.2015 22:12
 ip=::1
 geolng=23.5924
 admin=admin guest
-email=webmaster@blue-l.de
+birthname=Levi
+country=Németország
+email=code@blue-l.de
 
 id=12
 firstname=Vendég
@@ -23,8 +25,11 @@ lastname=Iskola
 picture=avatar.jpg
 geolat=46.7719
 geolen=23.5924
-geolng=23.5924
 user=guest
 passw=guest
 admin=guest
 date=14.06.2015 22:36
+place=Kolozsvár
+email=brassai@blue-l.de
+education=éretségiztem a Brassai Sámuel líceumban.
+function=véndiák
