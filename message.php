@@ -77,7 +77,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 
 <?PHP
 if (userIsLoggedOn()) {
-	$tabsCaption=Array("cak osztálytársak","csak iskolatársak","mindenkinek");
+	$tabsCaption=Array("osztálytársaknak","iskolatársaknak","mindenkinek");
 	include("tabs.php");
 	echo(readMessageList(20,$tabOpen));
 }

@@ -127,13 +127,13 @@
 							<img src="images/<?php echo $person["picture"] ?>" style="height:20px; border-round:3px;" />
 							<a href="editDiak.php"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
 						</span>
-						<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelenkezés</button>
+						<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelentkezés</button>
 					</div>
 				</form>
 			<?php } else {?>
 			<form class="navbar-form navbar-right" role="search" action="">
 				<div class="input-group input-group" style="margin: 3px;">
-					<button type="button" id="uLogonMenu" class="btn btn-default " onclick="handleLogon();" ><span class="glyphicon glyphicon-log-in" ></span> Bejelenkezés</button>
+					<button type="button" id="uLogonMenu" class="btn btn-default " onclick="handleLogon();" ><span class="glyphicon glyphicon-log-in" ></span> Bejelentkezés</button>
 				</div>
 			</form>
 			<?php } ?>
