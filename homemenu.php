@@ -97,7 +97,12 @@
 									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">Székelykő</a></li>
 								</ul>
 							</li>
-							<li><a href="talalk30.php">30-éves Találkozó</a></li>
+							<li class="dropdown-submenu"><a href="#">30-éves Találkozó</a>
+								<ul class="dropdown-menu">
+									<li><a href="talalk30.php">Programajánlat</a></li>
+									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30">Dilbina vízesés</a></li>
+								</ul>
+							</li>
 						</ul>
 					</li>
 					<?PHP endif  ?>

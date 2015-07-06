@@ -208,7 +208,7 @@ function getPersonDummy() {
 	$p["lastname"]="";
 	$p["picture"]="avatar.jpg";
 	$p["geolat"]="46.7719";
-	$p["geolen"]="23.5924";
+	$p["geolng"]="23.5924";
 	return $p;
 }
 
