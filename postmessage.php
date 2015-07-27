@@ -34,7 +34,7 @@ function readMessageList($elements, $pricacy) {
 		$ret .= '</div><div style="width:100%; height:3px;"></div>';
 		$ret .= '<div style="margin-bottom:25px; ">';
 		$ret .= 'Datum:'.$message["date"]." ";
-		if ($message["ip"]==$_SERVER["REMOTE_ADDR"] || 
+		if ($message["ip"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
 			(isset($message["uid"]) &&
 			$message["uid"]==getLoggedInUserId() &&
 			$message["scoolyear"]==getUScoolYear() &&
@@ -139,6 +139,19 @@ function prepend($msg) {
   fclose($fp);
   unlink($filename);
   rename($tmpname, $filename);
+}
+
+function checkMessageContent($msg) {
+	$msg = " ".strtolower($msg)." ";
+	$rr = array(":",",",".","(",")","?","!");
+	$msg = str_replace($rr, " ", $msg);
+	$whiteList = array(" lessz ", " volt "," jó "," rossz "," hogy "," az "," a ", "és "," én ","tól ","ból ", " itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi " );
+	$count = 0;
+	foreach ($whiteList as $s)
+		$count += substr_count($msg, $s);
+	if ($count==0)
+		return false;
+	return (($count+0.01)/strlen($msg) > 1/100);
 }
 
 ?>

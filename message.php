@@ -8,7 +8,10 @@ include 'postmessage.php';
 $error=null;
 if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 	if (userIsLoggedOn()) {
-		writeMessage(getParam("T"), getParam("privacy"), null);
+		if (checkMessageContent(getParam("T"))) {
+			writeMessage(getParam("T"), getParam("privacy"), getParam("name"));
+		} else 
+			$error="A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.";
 	}
 	else {
 		if (null==getParam("name") || strlen(getParam("name"))<3) {
@@ -16,9 +19,10 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 		} else if (getParam("code", "")!=$_SESSION['SECURITY_CODE']) {
 			$error="Biztonsági kód nem helyes. Probálkozz újból!";
 		}
-		else {
+		else if (checkMessageContent(getParam("T"))) {
 			writeMessage(getParam("T"), getParam("privacy"), getParam("name"));
-		}
+		} else 
+			$error="A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.";
 	}
 }
 
