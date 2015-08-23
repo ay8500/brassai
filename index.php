@@ -15,7 +15,7 @@ include("homemenu.php");
 		</div>
 		<hr />
 		<div>  			
-			Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2015. május 28.</b>-án.
+			Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2015. agusztus 23.</b>-án.
 		</div>
 	</div>
 </div>

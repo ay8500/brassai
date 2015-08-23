@@ -99,8 +99,11 @@
 							</li>
 							<li class="dropdown-submenu"><a href="#">30-éves Találkozó</a>
 								<ul class="dropdown-menu">
+									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30">Osztályfőnöki</a></li>
+									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30T">Temetőben</a></li>
+									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30Torocko">Torockón</a></li>
+									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30BuvoPatak">Buvó Patak</a></li>
 									<li><a href="talalk30.php">Programajánlat</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30">Dilbina vízesés</a></li>
 								</ul>
 							</li>
 						</ul>
