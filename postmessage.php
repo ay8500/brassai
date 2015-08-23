@@ -143,9 +143,9 @@ function prepend($msg) {
 
 function checkMessageContent($msg) {
 	$msg = " ".strtolower($msg)." ";
-	$rr = array(":",",",".","(",")","?","!");
+	$rr = array("-",":",",",".","(",")","?","!");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(" lessz ", " volt "," jó "," rossz "," hogy "," az "," a ", "és "," én ","tól ","ból ", " itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi " );
+	$whiteList = array(" lessz ", " volt "," jó "," rossz "," hogy "," az "," ahoz ", "és "," én ","tól ","ból ", " itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi " );
 	$count = 0;
 	foreach ($whiteList as $s)
 		$count += substr_count($msg, $s);
