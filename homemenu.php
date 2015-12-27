@@ -110,7 +110,7 @@
 					</li>
 					<?PHP endif  ?>
 					<?php if (getAktScoolYear()==1985 && getAKtScoolClass()=='12B') : ?>
-					<li><a href="vote.php">30-éves Találkozó</a></li>
+					<?php //<li><a href="vote.php">30-éves Találkozó</a></li> ?>
 					<?PHP endif  ?>	
 				</ul>
       		</li>

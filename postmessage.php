@@ -1,6 +1,12 @@
 <?php
 include_once 'sendMail.php';
 
+/**
+ * Read the messages from json message file and return it as a html list
+ * @param unknown $elements
+ * @param unknown $pricacy
+ * @return string
+ */
 function readMessageList($elements, $pricacy) {
 	$h=readMessage($elements,$pricacy);
 	$ret="";
@@ -45,6 +51,11 @@ function readMessageList($elements, $pricacy) {
 	return $ret;
 }
 
+/**
+ * Read messages
+ * @param unknown $elements
+ * @param number $privacy
+ */
 function readMessage($elements,$privacy=2) {
 	$ar_privacy = array ("class","scool","world");
 	$ret = array();
@@ -67,6 +78,9 @@ function readMessage($elements,$privacy=2) {
 	return $ret;
 }
 
+/**
+ * the nex id for the message
+ */
 function getNextMessageId() {
 	$file=fopen("data/message.json","r");
 	while (!feof($file) ) {
@@ -77,6 +91,11 @@ function getNextMessageId() {
 	return 0;
 }
 
+
+/**
+ * Delete one message from the message json file
+ * @param unknown $id
+ */
 function deleteMessage($id) {
 	$ret = array();
 	$filer=fopen("data/message.json","r");
@@ -106,6 +125,10 @@ function deleteMessage($id) {
 
 
 /**
+ * Write message in the json message File
+ * @param unknown $text
+ * @param unknown $privacy
+ * @param unknown $name
  */
 function writeMessage($text,$privacy,$name) {
 	$message = array();
@@ -128,6 +151,11 @@ function writeMessage($text,$privacy,$name) {
 	
 }
 
+
+/**
+ * Insert the message at the beginning of the json message file
+ * @param unknown $msg
+ */
 function prepend($msg) {
   $string=json_encode($msg)."\r\n";
   $context = stream_context_create();
@@ -141,11 +169,15 @@ function prepend($msg) {
   rename($tmpname, $filename);
 }
 
+/**
+ * Check if the message is hungarian human
+ * @param unknown $msg
+ */
 function checkMessageContent($msg) {
 	$msg = " ".strtolower($msg)." ";
 	$rr = array("-",":",",",".","(",")","?","!");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(" lessz ", " volt "," jó "," rossz "," hogy "," az "," ahoz ", "és "," én ","tól ","ból ", " itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi " );
+	$whiteList = array(" lessz ", " volt "," jó "," rossz "," hogy "," az "," ahoz ", "és "," én ","tól ","ból ", " itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi ", "ellemes ", "ünnepek", "kiván", "oldog ", "arácsony", "usvét" );
 	$count = 0;
 	foreach ($whiteList as $s)
 		$count += substr_count($msg, $s);
