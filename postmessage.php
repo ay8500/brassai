@@ -171,19 +171,20 @@ function prepend($msg) {
 
 /**
  * Check if the message is hungarian human
- * @param unknown $msg
+ * @param unknown $message
  */
-function checkMessageContent($msg) {
-	$msg = " ".strtolower($msg)." ";
+function checkMessageContent($message) {
+	$msg = " ".strtolower(strip_tags($message))." ";
 	$rr = array("-",":",",",".","(",")","?","!");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(" lessz ", " volt "," jó "," rossz "," hogy "," az "," ahoz ", "és "," én ","tól ","ból ", " itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi ", "ellemes ", "ünnepek", "kiván", "oldog ", "arácsony", "usvét" );
+	$whiteList = array(" lessz ", " volt "," a "," rossz "," hogy "," az "," ahoz "," itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi ", "ellemes ", "nnepek",  "oldog ", "csony", "hus" );
 	$count = 0;
-	foreach ($whiteList as $s)
+	foreach ($whiteList as $s) {
 		$count += substr_count($msg, $s);
+	}
 	if ($count==0)
 		return false;
-	return (($count+0.01)/strlen($msg) > 1/100);
+	return (($count+0.01)/strlen($msg) > 1/1000);
 }
 
 ?>
