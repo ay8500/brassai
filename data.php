@@ -121,7 +121,7 @@ function getPerson($id,$dataBase=null) {
 }
 
 /**
- * Resturns the person index in the data
+ * Returns the person index in the data
  * @param person id
  * @return index:integer
  */
@@ -137,6 +137,20 @@ function getPersonIdx($id) {
 		}
 	}
 	return -1;
+}
+
+/**
+ * Returns the nex free id in the aktual database
+ */
+function getNextFreeId() {
+	$ret = 0;
+	global $data;
+	foreach ($data as $l => $d) {
+		if (intval($d["id"])>$ret)
+			$ret=intval($d["id"]);
+	}
+	return $ret+1;
+	
 }
 
 /**
@@ -204,11 +218,15 @@ function isPersonEditor($person) {
  */
 function getPersonDummy() {
 	$p = array();
+	$p["id"]=getNextFreeId();
 	$p["firstname"]="";
 	$p["lastname"]="";
 	$p["picture"]="avatar.jpg";
 	$p["geolat"]="46.7719";
 	$p["geolng"]="23.5924";
+	$p["user"]=createPassword(8);
+	$p["passw"]=createPassword(8);
+	$p["admin"]="";
 	return $p;
 }
 
@@ -379,7 +397,30 @@ function readUserAuthDB()
 }
 
 
+function deleteDiak($id,$db) {
+	$ret = Array();
+	if (isset($id) && ($id>0)  ) {
+		//Database
+		openDatabase($db);
+		global $data;
 
+		foreach ($data as $l => $d) {
+			if ($d["id"]!=$id)
+				array_push($ret, $d);
+		}
+		$data = $ret;
+		saveDB();
+		
+		//Pictures 
+		//TODO
+		$pl=getListofPictures($db, $id, true);
+		foreach ($pl as $p) {
+			deletePicture($db, $id, $p["id"]);
+		}
+	}
+	
+	
+}
 
 /**
  *Save the databe to file 
@@ -406,11 +447,13 @@ function saveDB() {
 	}
 	fclose($file);
 	
+	//Just for fun save the data as json file
+	$json = $data;
 	$file=fopen($dataFileName.".json","w");
-	$data["LastIp"]=$_SERVER["REMOTE_ADDR"];
+	$json["LastIp"]=$_SERVER["REMOTE_ADDR"];
 	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
-	$data["changeDate"]=date('d.m.Y H:i');
-	fwrite($file,json_encode($data));
+	$json["changeDate"]=date('d.m.Y H:i');
+	fwrite($file,json_encode($json));
 	fclose($file);
 }
 
@@ -538,7 +581,7 @@ function getListofPictures($database,$personID, $vorAll) {
 	$directory = dir($pictureFolder.$database);
 	while ($file = $directory->read()) {
 		if (in_array(strtolower(substr($file, -4)), array(".jpg",".gif","png"))) {
-			if (strpos($file,$personID.'-')==1) {
+			if (substr($file,0,1)=="p" && strpos($file,$personID.'-')==1) {
 				//get the file id from file name
 				$fileSplit = split('[.-]',$file);
 				$idx=$fileSplit[1];
@@ -575,7 +618,13 @@ function getListofPictures($database,$personID, $vorAll) {
 }
 
 
-function savePicture($database,$personID,$title, $comment, $vorAll){
+/**
+ * returns the nex id for the name of a picture 
+ * @param unknown $database
+ * @param unknown $personID
+ * @return number
+ */
+function getNextPictureId($database,$personID){
 	//Next id
 	global $pictureFolder;
 	$nextId = 0;
@@ -588,8 +637,6 @@ function savePicture($database,$personID,$title, $comment, $vorAll){
 		}
 	}
 	$directory->close();
-	
-	setPictureAttributes($database,$personID,$nextId,$title,$comment,"false");
 	return $nextId;
 }
 

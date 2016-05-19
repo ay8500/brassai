@@ -1,6 +1,4 @@
 <?PHP
-	$_SESSION['lastReq']=date('d.m.Y H:i');
-
 	include_once("data.php");
 	include_once 'sendMail.php';
 	
@@ -238,21 +236,37 @@
 		return encrypt_decrypt("encrypt",$message);
 	}
 
-/**
- * check if the username is unique in the database
- */
-function checkUserNameExists($id,$userName) {
-	$ret=false;
-	$diak["user"]=$userName;
-	$usr =getGlobalUser($diak,"compairUser");
-	if (null != $usr) {
-		$ret = true;
+	/**
+	 * check if the username is unique in the database
+	 */
+	function checkUserNameExists($id,$userName) {
+		$diak["user"]=$userName;
+		$usr =getGlobalUser($diak,"compairUser");
+		if (null != $usr) {
+			if ( $usr["id"]==$id) 
+				return false;
+			else 
+				return true;
+		}
+		return false;
 	}
-	return $ret;
-}
+	
+		
+	/**
+	 * create a new user
+	 */
+	function checkUserEmailExists($id,$email) {
+		$diak["email"]=$email;
+		$usr =getGlobalUser($diak,"compairEmail");
+		if (null!=$usr) {
+			if ( $usr["id"]==$id)
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
 
-	
-	
 	/**
 	 * Set user password
 	 * return value 
@@ -286,17 +300,6 @@ function checkUserNameExists($id,$userName) {
 		return $ret;
 	}
 	
-	/**
-	 * create a new user
-	 */
-	function createNewUser($myname,$email,$passw,$role,$year,$class) {
-		// todo
-		$diak["email"]=$email;
-		$usr =getGlobalUser($diak,"compairEmail");
-		if (null!=$usr)
-			return -1;
-		return 0;
-	}
 	
 	/**
 	 * Create a random password

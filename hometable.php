@@ -12,26 +12,37 @@ else
 
 ?>
 <div class="container-fluid">
+<?php if (userIsAdmin() || userIsEditor() ) {?>
+<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
+	<form action="editDiak.php">
+		<?php if ($guests) {?>
+			<input type="hidden" name="action" value="newguest" />
+			<input type="submit" value="Névsor bövítése új tanárral,vendéggel, jó baráttal"/>
+		<?php } else {?>
+			<input type="hidden" name="action" value="newdiak" />
+			<input type="submit" value="Névsor bövítése új véndiákkal "/>
+		<?php }?>
+	</form>
+</div>
+<?php } ?>
+
 <?php
 
 openDatabase(getAktDatabaseName());
 
+$resultDBoperation="";
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && (userIsEditor() || userIsAdmin()) ) {
+	deleteDiak(getGetParam("uid",""),getGetParam("db",""));
+	$resultDBoperation='<div class="okay">Véndiák sikeresen törölve!</div>';
+}
+
+echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
+
 foreach ($data as $l => $d)	
 { 
 	if ( $guests == isPersonGuest($d) ) {
-		if ( userIsAdmin() || userIsEditor()) {
-			$personLink='editDiak.php?uid='.$d["id"];
-		}
-		else {
-			if (getLoggedInUserId()==$d["id"]) 
-				$personLink="editDiak.php?uid=".$d["id"];
-			else { 
-				if ($_SERVER["SERVER_NAME"]=="localhost")
-					$personLink='editDiak.php?uid='.$d["id"];
-				else 
-					$personLink=getPersonLink($d["lastname"],$d["firstname"]);
-			}
-		}
+
+		$personLink="editDiak.php?uid=".$d["id"];
 		
 		echo "<table border=0 width=100%><tr><td width=170>\r\n" ;
 		echo '<a href="'.$personLink.'">';

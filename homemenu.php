@@ -144,7 +144,7 @@
 					<div class="input-group input-group" style="margin: 3px;">
 						<span class="input-group-addon" style="width:130px">
 							<img src="images/<?php echo $person["picture"] ?>" style="height:20px; border-round:3px;" />
-							<a href="editDiak.php"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
+							<a href="editDiak.php?uid=<?php echo(getLoggedInUserId());?>&scoolYear=<?php echo(getUScoolYear());?>&scoolClass=<?php echo(getUScoolClass());?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
 						</span>
 						<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelentkezés</button>
 					</div>

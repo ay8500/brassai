@@ -17,11 +17,11 @@ function readMessageList($elements, $pricacy) {
 		}
 		$ret .= '<div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">';
 			if (null!=$diak && isset($diak["picture"])) {
-				$ret .= '<img src="images/'.$diak["picture"].'" style="height:40px; border-radius:5px;" />';
+				$ret .= '<img src="images/'.$diak["picture"].'" style="height:40px; border-radius:5px;margin:2px" />';
 			} else { 
-				$ret .= '<img src="images/avatar.jpg" style="height:40px; border-radius:5px;"  />';
+				$ret .= '<img src="images/avatar.jpg" style="height:40px; border-radius:5px;;margin:2px"  />';
 			}
-			$ret .= '<div style="display: inline-block;vertical-align: bottom;">';
+			$ret .= '<div style="display: inline-block;vertical-align: bottom;margin-left:5px">';
 				if (isset($message["uid"])) {
 					$ret .= '<a href="editDiak.php?uid='.$message["uid"].'&scoolYear='.$message["scoolyear"].'&scoolClass='.$message["scoolclass"].'" >';
 					$ret .= $diak["lastname"]." ".$diak["firstname"]." ";

@@ -14,36 +14,43 @@ else $tabOpen=0;
 //focus the person and get his data from the database
 include_once("data.php");
 $uid = 0;
+//if user id is delivered over pos or get parameter
 if (isset($_GET["uid"]) || isset($_POST["uid"])) {
 	if (isset($_GET["uid"])) $uid = $_GET["uid"];
 	if (isset($_POST["uid"])) $uid = $_POST["uid"];
 	setAktUserId($uid);	//save actual person in case of tab changes 
 }
 else {
+	//tabs are changed
 	if (isset($_GET["tabOpen"]) || isset($_POST["tabOpen"])) {
-		$uid=getAktUserId();	//tabs are changed
+		$uid=getAktUserId();	
 	}
 	else {
-		if (userIsLoggedOn() ) {
-			setAktScoolYear(getUScoolYear());
-			setAktScoolClass(getUScoolClass());
-			$uid=getLoggedInUserId();setAktUserId(getLoggedInUserId());
-		}
+		$uid=getAktUserId();
 	}
 }
 $diak = getPerson($uid,getAktDatabaseName());
 
-
 $dataFieldNames 	=array("lastname","firstname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","facebook","homepage","education","employer","function","children","facebookid","admin");
-$dataFieldCaption 	=array("Családnév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FB-ID","Role");
-$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30,60,40);
-$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false,false,false);
-	
+$dataFieldCaption 	=array("Családnév","Keresztnév","Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","E-Mail","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek","FB-ID","Jogok");
+$dataFieldLengths 	=array(40,40,40,40,	70,6,50,50,30,30,50,20,60,60,60,60,60,60,20,30,60,40,40,40,40,40,40);
+$dataFieldVisible	=array(false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,true,true, false,false,false,false,false,false,false,false,false);
+if (userIsAdmin()) {
+	array_push($dataFieldNames, "id", "user", "passw", "geolat", "geolng");
+	array_push($dataFieldCaption, "ID", "Felhasználó", "Jelszó", "X", "Y");
+}
+
 $resultDBoperation="";
+
+//create new diak
+if (($uid != 0) && (getParam("action","")=="newdiak" || getParam("action","")=="newguest") &&  userIsLoggedOn() ) {
+	$diak = getPersonDummy();	
+}
+
 
 //Retrive changed data and save it 
 if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
-	$resultDBoperation='<div class="okay">Adatok sikeresen módósítva!</div>';
+	$diak = getPerson($uid,getAktDatabaseName());
 	for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 		$tilde="";
 		if ($dataFieldVisible[$i]) {
@@ -53,9 +60,14 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 		if (isset($_GET[$dataFieldNames[$i]]))
 			$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
 	}
-	savePerson($diak);
-	if (!userIsAdmin()) 
-		saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
+	if (checkUserEmailExists($diak["id"],$diak["email"])) {
+		$resultDBoperation='<div class="error">E-Mail cím már létezik az adatbankban!</div>';
+	} else {
+		savePerson($diak);
+		$resultDBoperation='<div class="okay">Adatok sikeresen módósítva!</div>';
+		if (!userIsAdmin()) 
+			saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
+	}
 }
 //Save geo data
 if (($uid != 0) && getParam("action","")=="changegeo" && userIsLoggedOn()) {
@@ -122,11 +134,19 @@ if (($uid != 0) && getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 
 
 //Upload Image
-if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
+if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
-		$idx=savePicture(getAktDatabaseName(),$uid,"", "", true);
-		$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."/p".$uid."-".$idx.".".strtolower($fileName[1]);
+		$idx=getNextPictureId(getAktDatabaseName(),$uid,"", "", true);
+		if ($_POST["action"]=="upload_diak") {
+			$pFileName=getAktDatabaseName()."/d".$uid."-".$idx.".".strtolower($fileName[1]);
+			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
+			$diak['picture']=$pFileName;
+			savePerson($diak);
+		} else {
+			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."/p".$uid."-".$idx.".".strtolower($fileName[1]);
+			setPictureAttributes(getAktDatabaseName(),$uid,$idx,"","","false");
+		}
 		//JPG
 		if (strcasecmp($fileName[1],"jpg")==0) {
 			if ($_FILES['userfile']['size']<2000000) {
@@ -134,8 +154,9 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload") ) {
 					resizeImage($uploadfile,1200,1024);
 					$resultDBoperation=$fileName[0].".".$fileName[1]." sikeresen feltöltve.";
 					saveLogInInfo("PictureUpload",$uid,$diak["user"],$idx,true);
-				} else
+				} else {
 					$resultDBoperation=$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.";
+				}
 			}
 			else {
 				$resultDBoperation=$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.";
@@ -181,8 +202,8 @@ if ($tabOpen==5) {
 
 ?>
 <div itemscope itemtype="http://schema.org/Person">
-<h2 class="sub_title" style="text-align: left">
-		<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-round:3px;" />
+<h2 class="sub_title" style="text-align: left;margin-left:20px">
+		<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-radius:3px;" />
 			<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
 			<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
 </h2>
@@ -194,6 +215,8 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() )
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
+if (getParam("action","")=="newdiak" || getParam("action","")=="newguest")
+	$tabsCaption=Array("Semélyes&nbsp;adatok");
 include("tabs.php");
 ?>
 
@@ -202,12 +225,30 @@ include("tabs.php");
 	//Edit or only view variant this page
 	$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser());
 	//person data fields
-	echo('<div class="container-fluid">');
-	echo('<div class="well">');
-		echo('<div class="diak_picture">');
-			echo "<img src=\"images/".$diak["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" class=\"diak_image effect8\" />";
-		echo('</div>');
-	echo('</div>');
+	?>
+	<div class="container-fluid">
+		<div class="well">
+		<div class="diak_picture" style="display: inline-block;">
+			<img src="images/<?php echo($diak["picture"]);?>" border="0" alt="" itemprop="image" class="diak_image" />
+		</div>
+		<?php if ($edit && getParam("action","")!="newdiak" && getParam("action","")!="newguest") {   //Change Profile Image?>
+		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
+			<form enctype="multipart/form-data" action="editDiak.php" method="post">
+				<span>Válassz egy új képet max. 2MByte</span>
+				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
+				<button style="margin-top:5px;" type="submit" class="btn btn-default" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-save"></span> Feltölt</button>
+				<input type="hidden" value="upload_diak" name="action" />
+				<input type="hidden" value="<?PHP echo($uid) ?>" name="uid" />
+				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
+			</form>
+		</div>
+		<?php if (getLoggedInUserId()<>$diak["id"]) {  //Don't delete myself?>
+		<div style="display: inline-block;margin:15px;vertical-align: bottom;"">
+			<button onclick="deleteDiak(<?php echo("'".getAktDatabaseName()."','".$diak["id"]."'");?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Diákot véglegesen kitöröl!</button>
+		</div>
+		<?php } }?>
+	</div>
+	<?php 
 	echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
 	if ($edit) {
 		echo('<div style="min-height:30px" class="input-group">');
@@ -234,9 +275,9 @@ include("tabs.php");
 		}
 	}
 	if ($edit) {
-		echo('<button type="submit" class="btn btn-default" title="Adatok kimentése" ><span class="glyphicon glyphicon-save"></span>'.getTextRes("Save").'</button>');
+		echo('<button style="margin-top:5px;margin-bottom:5px;" type="submit" class="btn btn-default" title="Adatok kimentése" ><span class="glyphicon glyphicon-save"></span>'.getTextRes("Save").'</button>');
 		echo('<input type="hidden" value="changediak" name="action" />');
-		echo('<input type="hidden" value="'.$uid.'" name="uid" />');
+		echo('<input type="hidden" value="'.$diak["id"].'" name="uid" />');
 		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
 		echo('</form>');
 	}
@@ -310,5 +351,14 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 }
 ?>
 </div>
+
+<script type="text/javascript">
+	function deleteDiak(db,id) {
+		if (confirm("Biztos kiakarod véglegesen törölni ezt a véndiákot?")) {
+			window.location.href="hometable.php?uid="+id+"&db="+db+"&action=delete_diak";
+		}
+	}
+</script>
+
 <?php include 'homefooter.php'; ?>
 
