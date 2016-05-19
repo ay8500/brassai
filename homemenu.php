@@ -117,11 +117,22 @@
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">A többi osztályok</a>
 			  	<ul class="dropdown-menu">
-				<?php if (getAktScoolYear()==1985 && getAKtScoolClass()=='12A') { ?>
-			  		<li><a href="hometable.php?scoolYear=1985&scoolClass=12B">Párhuzamos osztály 12B</a></li>
-			  	<?php  } else {  ?>
-			  		<li><a href="hometable.php?scoolYear=1985&scoolClass=12A">Párhuzamos osztály 12A</a></li>
-			  	<?php } ?>
+			  	<?php
+			  		$classes = Array();
+			  		foreach($dataBase as $db) {
+			  			if ($db!="oooooo")
+			  				array_push($classes, substr($db,3,4)." ".substr($db,0,3));
+			  		}
+			  		sort($classes);
+			  		foreach($classes as $db) {
+			  			if (getAktScoolYear()==substr($db, 0,4) && getAKtScoolClass()==substr($db, 5,3)) 
+			  				$aktualClass="actual_class_in_menu";
+			  			else 
+			  				$aktualClass="";
+			  			?>
+			  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?scoolYear=<?php echo(substr($db, 0,4));?>&scoolClass=<?php echo(substr($db, 5,3));?>"><?php echo($db); ?></a></li>
+			  		<?php }
+			  	?>
 			  	</ul>
 			</li>
 			<li>

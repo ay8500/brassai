@@ -1,0 +1,31 @@
+#Database File
+#Last IP:2.173.25.35
+#Change Date:23.08.2015 20:49
+
+id=100
+firstname=Peter
+lastname=Kiss
+picture=../data/12A1971/kiss_peter.jpg
+geolat=46.76996843356982
+geolng=23.556747436523438
+geolen=23.5924
+birthname=
+partner=
+address=~
+zipcode=~
+place=Stuttgart
+country=Németország
+phone=~
+mobil=~
+email=~mmpkiss@gmail.com
+skype=~
+education=
+employer=
+function=
+children=
+user=kissp
+passw=ag56rt32
+admin=editor
+facebook=https://www.facebook.com/peter.kiss.5076
+homepage=~
+

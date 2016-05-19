@@ -138,6 +138,21 @@
     border-radius: 6px 0 6px 6px;
 }
 
+.diak_image {
+	width:200px;
+	border-radius: 10px;
+}
+
+.diak_image_medium {
+	width:150px;
+	border-radius: 5px;
+	margin-bottom:5px;
+}
+
+.actual_class_in_menu {
+    background-color: beige;
+}
+
 /****************** Browser width dependent content ****************************/
 
 @media ( max-width : 400px) {

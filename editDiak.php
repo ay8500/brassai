@@ -201,10 +201,12 @@ include("tabs.php");
 <?PHP if ($tabOpen==0) { 
 	//Edit or only view variant this page
 	$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser());
-		//person data fields
+	//person data fields
 	echo('<div class="container-fluid">');
 	echo('<div class="well">');
-		echo "<img src=\"images/".$diak["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" />";
+		echo('<div class="diak_picture">');
+			echo "<img src=\"images/".$diak["picture"]."\" border=\"0\" alt=\"\" itemprop=\"image\" class=\"diak_image effect8\" />";
+		echo('</div>');
 	echo('</div>');
 	echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
 	if ($edit) {

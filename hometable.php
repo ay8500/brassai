@@ -33,9 +33,9 @@ foreach ($data as $l => $d)
 			}
 		}
 		
-		echo "<table border=0 width=100%><tr><td width=150>\r\n" ;
+		echo "<table border=0 width=100%><tr><td width=170>\r\n" ;
 		echo '<a href="'.$personLink.'">';
-		echo "<img src=\"images/".$d["picture"].'" border="0" title="'.$d["lastname"].' '.$d["firstname"].'" />';
+		echo "<img src=\"images/".$d["picture"].'" border="0" title="'.$d["lastname"].' '.$d["firstname"].'" class="diak_image_medium" />';
 		echo '</a>';
 		echo "</td><td valign=top>";
 		echo "<h4>".$d["lastname"].' '.$d["firstname"];
