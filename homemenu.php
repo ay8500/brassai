@@ -70,7 +70,7 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktScoolYear()."-".getAKtScoolClass()) ?><b class="caret"></b></a>
 				<ul class="dropdown-menu multi-level">
-					<li><a href="hometable.php">Diákok</a></li>
+					<li><a href="hometable.php">Véndiákok</a></li>
 					<li><a href="hometable.php?guests=true">Vendégek és tanárok</a></li>
 					<li><a href="worldmap.php">Térkép</a></li>
 					<li><a href="tablo.php">Tabló</a></li>

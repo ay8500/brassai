@@ -69,7 +69,10 @@
 	 * @return unknown
 	 */
 	function getAktUserId() {
-		return $_SESSION["aktUId"];
+		if (isset($_SESSION["aktUId"]))
+			return $_SESSION["aktUId"];
+		else 
+			return null;
 	}
 	
 	/**
@@ -253,7 +256,8 @@
 	
 		
 	/**
-	 * create a new user
+	 * Check if a email address allready exists in the db
+	 * the id is the current user id, this will be ignored if not null
 	 */
 	function checkUserEmailExists($id,$email) {
 		$diak["email"]=$email;

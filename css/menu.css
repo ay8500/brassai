@@ -13,8 +13,6 @@
 	.pannel		{background-color:#eeeeee }
 	
 	.editpagetable 	{margin:10px; border-style:none;border-collapse:collapse; }
-	.error			{text-align:center;color:red;font-weight: bold;height:20px;}
-	.okay			{text-align:center;color:green;height:20px;}
 	
 	.dia			{border-width:1px;border-color:#333333;border-style:solid;padding:3px }
 	
@@ -136,6 +134,15 @@
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
+}
+
+/***********************************************************************************/
+
+.resultDBoperation{
+	margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .diak_image {

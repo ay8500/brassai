@@ -16,10 +16,16 @@ else if (sizeof($qs)>1) {
 	print_r($qs);
 }
 else {
-	$diak["lastname"]="";
-	$diak["firstname"]="";
+	$nameList = explode("_", $su[1]);
+	$diak["lastname"]=$nameList[0];
+	$diak["firstname"]=$nameList[1];
+	//TODO
+	$scoolYear=null;
+	$scoolClass=null;
+	include_once('data.php');
 	$usr =getGlobalUser($diak,"compairUserLink",$scoolYear,$scoolClass);
 	if (null != $usr) {
+		setAktUserId($usr["id"]);
 		include ("editDiak.php");
 		exit();
 	}

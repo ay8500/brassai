@@ -79,8 +79,8 @@ function writeLogonDiv() {
     		<input type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
 		</div>
 		<div style="text-align:center; margin: 3px">
-			<button type="button" class="btn btn-default" style="margin: 3px;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo getTextRes("LogIn"); ?></button>
-		 	<button type="button" class="btn btn-default" style="margin: 3px;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
+			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo getTextRes("LogIn"); ?></button>
+		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
 		</div>
 	</form>
 	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
@@ -102,8 +102,8 @@ function writeLogonDiv() {
 		$.ajax({
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
-			    //location.reload();
-			    location.href="start.php";
+			    location.reload();
+			    //location.href="start.php";
 			},
 			error:function(data){
 			    $('#ajaxLStatus').css("background-color","lightcoral");
@@ -111,7 +111,7 @@ function writeLogonDiv() {
 				$('#ajaxLStatus').show();
 				setTimeout(function(){
 			    	$('#ajaxLStatus').html('');
-			    	$('#ajaxLStatus').hide('slow');
+			    	$('#ajaxLStatus').slideUp('slow');
 				}, 3000);
 			}
 		});
@@ -135,11 +135,11 @@ function writeLogonDiv() {
 	}
 
 	function handleLogon() {
-	    $("#uLogon").show("slow");
+	    $("#uLogon").slideDown("slow");
 	}
 
 	function closeLogin() {
-		$("#uLogon").hide("slow");
+		$("#uLogon").slideUp("slow");
 	}
 		
 </script>

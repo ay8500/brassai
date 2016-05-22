@@ -48,9 +48,16 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class)
 	$text.="<p>";
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
-	$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
+	if ($passw=="") {
+		$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
+	} else {
+		$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a>';
+		$text.="Jelszavad:".$passw."<br/>";
+	}
 	$text.="Mail címed: ".$mail."<br/>";
-	$text.="<p>Szerep: ".$rights."</p>";
+	if ($rights!="") {
+		$text.="<p>Szerep: ".$rights."</p>";
+	}
 	$text.="</p><p>";
 	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.$year.'&scoolClass='.$class.'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";

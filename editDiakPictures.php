@@ -1,5 +1,5 @@
+<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <table class="editpagetable">
-	<tr><td colspan="3" style="text-align:center"><?PHP echo( $resultDBoperation ) ?></td></tr>
 	<?php if (isAktUserTheLoggedInUser() ) :?>
 		<tr><td colspan="3"><p style="text-align:left" ><h2>Képes album:</h2>A feltöltött képeket csak az osztálytársaid látják. Ha akkarod eggyeseket megjelölhetsz és akkor mindenki látni fogja.</p></td></tr>
 	<?php endif ?>
@@ -14,9 +14,9 @@
 				$checked="";
 				if ($pict["visibleforall"]=="true") $checked="checked";
 	?>
-			<div style="padding: 10px; display: inline-block;border-radius: 5px;border-style: outset; vertical-align: top;border-width: 1px">
+			<div style="padding: 10px; display: inline-block;border-radius: 5px;border-style: outset; vertical-align: top;border-width: 1px; background-color: white">
 			<a style="display: inline-block;" title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php  echo $file ?>');" >
-				<img style="display: inline-block;width: 200px; height: 200px;" src="convertImg.php?color=eeeeee&thumb=true&file=<?php  echo $file ?>" />
+				<img style="display: inline-block;width: 200px; height: 200px;" src="convertImg.php?color=ffffff&thumb=true&file=<?php  echo $file ?>" />
 			</a>
 			<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 				<div style="display: inline-block;">
@@ -47,11 +47,12 @@
 		<table>
 			<form>
 				<tr><td colspan="3">Megjelölt kép</td><td></td>
-				<tr><td>A kép címe:</td><td><input type="text" id="pTitle" size="40"/></td></tr>
+				<tr><td>A kép címe:</td><td><input type="text" id="pTitle" size="40" class="form-control" /></td></tr>
 				<tr>
-					<td>A kép tartalma:</td><td><input type="text" id="pComment" size="40"/></td>
+					<td>A kép tartalma:</td>
+					<td><input type="text" id="pComment" size="40" class="form-control" /></td>
 					<td>
-						<input type="button" value="kiment"  style="width:70px" class="submit2"  onclick="changeTitle(<?PHP echo($uid) ?>)"/>
+						<input type="button" value="kiment"  style="width:70px;" class="btn btn-default"  onclick="changeTitle(<?PHP echo($uid) ?>)"/>
 						&nbsp; <span style="padding:3px; background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></span>
 					</td>
 				</tr>
@@ -60,8 +61,8 @@
 			<tr><td colspan="3"><hr>Kép feltöltése</td></td>
 			<tr>
 				<form enctype="multipart/form-data" action="editDiak.php" method="post">
-					<td>Válassz egy képet max. 2MByte</td><td><input class="submit2" name="userfile" type="file" size="44" accept=".jpg" /></td>	
-					<td><input class="submit2"  style="width:70px" type="submit" value="feltölt"/></td>
+					<td>Válassz egy képet max. 2MByte</td><td><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></td>	
+					<td><input class="btn btn-default"  style="width:70px" type="submit" value="feltölt"/></td>
 					<input type="hidden" value="upload" name="action" />
 					<input type="hidden" value="<?PHP echo($uid) ?>" name="uid" />
 					<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
@@ -82,6 +83,8 @@
 </td>
 </tr>
 </table>
+	</div>
+</div>
 <?php include 'homefooter.php';?>
 
 <script type="text/javascript">

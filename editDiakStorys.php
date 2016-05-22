@@ -16,7 +16,6 @@
 	$text =loadTextData(getAktDatabaseName(), $uid, $type);
 ?>		
 
-<div style="padding: 10px;">
 	<h3><?php  echo $title; ?></h3>
 	<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>
 	<form id="stroryForm" onsubmit="saveStory(); return false;">
@@ -38,7 +37,7 @@
 				<?php echo getTextDataDate(getAktDatabaseName(), $uid, $type)?>
 			</div>
 			<div style="display: inline-block; padding:5px" >
-				<input type="submit" value="<?php echo getTextRes("Save");?>" />
+				<input type="submit" class="btn btn-default" value="<?php echo getTextRes("Save");?>" />
 			</div>
 		</div>
 	</form>
@@ -53,23 +52,28 @@
 				$name=$p["user"];
 			}
 			?>
-			Ez az oldal jelenleg üres.<br />
+			<h4>Ez az oldal jelenleg üres.</h4>
 			Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
 			
-			<div style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-				Biztonsági kód: <input id="code" type="text" size="6" value="" placeholder="Kód"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /><br />
+			<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+				<span style="min-width:110px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
+				<input id="code" type="text" size="6" value="" placeholder="Kód" class="form-control"/>
+				<div class="input-group-btn">
+					<img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" />
+				</div>
 			</div>
 			
-			<div style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-				Nevem: <input id="name" type="text" value="<?php echo $name ?>" placeholder="Név">
+			<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+				<span style="min-width:110px; text-align:right" class="input-group-addon" >Nevem:</span>
+				<input id="name" type="text" value="<?php echo $name ?>" placeholder="Név" class="form-control" />
 			</div>
+			
 			<div style="margin:15px">
-				<input id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
+				<input class="btn btn-default" id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
 			</div>	
 			<?php } ?> 
 	<?php }  ?>
 	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px; display: anone;"></div>
-</div>
 
 
 

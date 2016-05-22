@@ -4,43 +4,62 @@ include("homemenu.php");
 include_once("data.php");
 include_once 'ltools.php';
 
+openDatabase(getAktDatabaseName());
+
+$resultDBoperation="";
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && (userIsEditor() || userIsAdmin()) ) {
+	deleteDiak(getGetParam("uid",""),getGetParam("db",""));
+	$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
+}
+
+// Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
 if ($guests )
 	echo('<h2 class="sub_title">Tanárok, régi volt osztálytársak, vendégek, jó barátok.</h2>');
 else
 	echo('<h2 class="sub_title">Osztálytársak</h2>');
 
+	
+// Toolbar for new schoolmate or guests
 ?>
 <div class="container-fluid">
-<?php if (userIsAdmin() || userIsEditor() ) {?>
-<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
-	<form action="editDiak.php">
-		<?php if ($guests) {?>
-			<input type="hidden" name="action" value="newguest" />
-			<input type="submit" value="Névsor bövítése új tanárral,vendéggel, jó baráttal"/>
-		<?php } else {?>
-			<input type="hidden" name="action" value="newdiak" />
-			<input type="submit" value="Névsor bövítése új véndiákkal "/>
+	<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
+		<form action="editDiak.php">
+		<?php if (userIsAdmin() || userIsEditor() ) {?>
+			<?php if ($guests) {?>
+				<input type="hidden" name="action" value="newguest" />
+				<input type="submit" value="Névsor bővítése új tanárral,vendéggel, jó baráttal"/>
+			<?php } else {?>
+				<input type="hidden" name="action" value="newdiak" />
+				<input type="submit" value="Névsor bővítése új véndiákkal "/>
+			<?php }?>
+		<?php } else if (!userIsLoggedOn()) { ?>
+			<?php if ($guests) {?>
+				<input type="hidden" name="action" value="submit_newguest" />
+				<input type="submit" value="Névsor bővítése" title="Szeretnék én is ezen a listán mit tanár, barát vagy ismerős szerepelni"/>
+			<?php } else {?>
+				<input type="hidden" name="action" value="submit_newdiak" />
+				<input type="submit" value="Névsor bővítése" title="Én is ebben az osztályban végeztem, szeretnék én is ezen a listán lenni."/>
+			<?php }?>
 		<?php }?>
-	</form>
-</div>
-<?php } ?>
+		</form>
+		<?php if(!$guests) {?>
+			Véndiákok száma:
+		<?php  } else { ?>
+			Vendégek száma:
+		<?php } ?> 
+		<?php echo(getCountOfActivePersons($guests));?>
+	</div>
 
+
+<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <?php
 
-openDatabase(getAktDatabaseName());
 
-$resultDBoperation="";
-if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && (userIsEditor() || userIsAdmin()) ) {
-	deleteDiak(getGetParam("uid",""),getGetParam("db",""));
-	$resultDBoperation='<div class="okay">Véndiák sikeresen törölve!</div>';
-}
-
-echo('<div style="text-align:center">'.$resultDBoperation.'</div>');
 
 foreach ($data as $l => $d)	
 { 
-	if ( $guests == isPersonGuest($d) ) {
+	if ( $guests == isPersonGuest($d) && isPersonActive($d)) {
 
 		$personLink="editDiak.php?uid=".$d["id"];
 		

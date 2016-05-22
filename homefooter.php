@@ -44,14 +44,19 @@
 		});
 		</script>
 	<?php endif?>
+	
 	<script>
 		
 		$( document ).ready(function() {
 	    	$(window).resize(function() {
 				onResize();
 			});
+
+			onResize();
+
+			setTimeout(clearDbMessages, 8000);
+		
 		});
-		onResize();
 		var logoTimer;
 		var logoTop=-20;
 		var logoDirection =-1;
@@ -79,6 +84,11 @@
 			else
 				return 0;
 		}
+
+		function clearDbMessages() {
+			if ($(".resultDBoperation").html()!="")
+				$(".resultDBoperation").slideUp("slow");
+		}		
 	</script>
 
 	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
@@ -94,4 +104,5 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	</script>
+
 </html>

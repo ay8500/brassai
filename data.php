@@ -103,6 +103,31 @@ function openDatabase($name) {
 
 
 /**
+ * Get count of active persons<br />
+ * @param $guest <b>true</b> if you want to count the entrys markt as guest
+ */
+function getCountOfActivePersons($guest) {
+	$ret=0;
+	global $data;
+	foreach ($data as $l => $d)
+	{
+		
+		if (isPersonActive($d) && isPersonGuest($d)==$guest) $ret++;
+	}
+	return $ret;
+}
+
+/**
+ * Check if a person have the aktiv status
+ */
+function isPersonActive($d) {
+	if (!isset($d["active"]))
+		return true;
+	
+	return ($d["active"]=="true");
+}
+
+/**
  * get person from database
  * * @return Person
  */
@@ -197,6 +222,8 @@ function savePerson($person) {
 		saveDB();
 	}
 }
+
+
 
 /**
  * is the person a guest
