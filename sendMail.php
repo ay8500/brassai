@@ -29,7 +29,7 @@ function SendNewPassword($uid) {
 	$text.="Végzős osztály:".getAktDatabaseName().'-'.getAKtScoolClass()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".$diak["passw"]."<br/>";
-	$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a>';
+	$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
 	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
@@ -40,7 +40,7 @@ function SendNewPassword($uid) {
 /**
  * send mail to new user
  */
-function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class) {
+function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,$uid=null) {
 	$text='<p style="font-weight: bold;">Kedeves '.$lastname." ".$firstname.'</p>';
 	$text.="Ezt az e-mail azért kapod mert bejelentkeztél a Brassai Sámuel véndiákok honoldalára.<br />";
 	$text.="<p>Ennek nagyön örvendünk, és köszöjük érdeklődésed. </p>";
@@ -48,10 +48,12 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class)
 	$text.="<p>";
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
+	if (isset($uid) && null!=$uid) {
+		$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
+	}
 	if ($passw=="") {
 		$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
 	} else {
-		$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a>';
 		$text.="Jelszavad:".$passw."<br/>";
 	}
 	$text.="Mail címed: ".$mail."<br/>";

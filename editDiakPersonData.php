@@ -54,15 +54,20 @@ if ( $submitsave ) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Új adat kimentése sikertelen.</div>';
 	} else {
 		savePerson($diak);
-		sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear());
-		$resultDBoperation='<div class="alert alert-success" >Személy sikeresen kimetve!<br/>Köszönjük szépen a bizalmadat a Véndiákok oldala iránt<br/>Bejelentkezési adatok a megadott mailcímre el vannak küldve.</div>';
+		sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
 		if (!userIsAdmin())
 			saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
 	}
+	//Something went wrong we stay on the submit page
 	if ($resultDBoperation!="") {
 		$action=substr($action, 0,strlen($action)-5);
 		$submit = true;
 		$submitsave = false;
+	//New user is saved we leave the submit page.
+	} else {
+		$submit = false;
+		$submitsave = false;
+		$resultDBoperation='<div class="alert alert-success" >Személy sikeresen kimetve!<br/>Köszönjük szépen a bizalmadat a Véndiákok oldala iránt<br/>Bejelentkezési adatok a megadott mailcímre el vannak küldve.</div>';
 	}
 }
 

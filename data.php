@@ -142,7 +142,7 @@ function getPerson($id,$dataBase=null) {
 				return $d;
 		}
 	}
-	return getPersonDummy();
+	return null;
 }
 
 /**

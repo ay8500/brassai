@@ -155,22 +155,24 @@ if ($tabOpen==5) {
 }
 
 
-?>
-<div itemscope itemtype="http://schema.org/Person">
-<h2 class="sub_title" style="text-align: left;margin-left:20px">
-		<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-radius:3px;" />
-			<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
-			<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
-</h2>
-
-<?php
+if (strstr(getGetParam("action", ""),"new")=="" ){?>
+	<div itemscope itemtype="http://schema.org/Person">
+	<h2 class="sub_title" style="text-align: left;margin-left:20px">
+			<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-radius:3px;" />
+				<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
+				<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
+	</h2>
+	</div>
+<?php } else { ?>
+	<div style="margin-bottom: 15px">&nbsp;</div>
+<?php }
 
 //initialize tabs
 if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
-if (getParam("action","")=="newdiak" || getParam("action","")=="newguest" || getParam("action","")=="submit_newdiak" || getParam("action","")=="submit_newguest")
+if (getParam("action","")=="newdiak" || getParam("action","")=="newguest" || getParam("action","")=="submit_newdiak" || getParam("action","")=="submit_newguest" || getParam("action","")=="submit_newdiak_save" || getParam("action","")=="submit_newguest_save")
 	$tabsCaption=Array("Új személy adatai");
 include("tabs.php");
 ?>
