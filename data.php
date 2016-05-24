@@ -305,10 +305,27 @@ function readDB()
 			$data[$id][$key]=$val;
 		fclose($file);
 	}
-	/*
 	else 
-		echo("Error:open database ".$dataFileName);
-	*/
+		die("Error:open database ".$dataFileName);
+	usort($data, "compareAlphabetical");
+}
+
+/**
+ * Compare classmates
+ * "firstname","lastname","birthname"
+ * @param unknown $a
+ * @param unknown $b
+ */
+function compareAlphabetical($a,$b) {
+	if (isset($a["birthname"]) && $a["birthname"]!="") 
+		$aa=$a["birthname"]." ".$a["firstname"];
+	else
+		$aa=$a["lastname"]." ".$a["firstname"];
+	if (isset($b["birthname"]) && $b["birthname"]!="")
+		$bb=$b["birthname"]." ".$b["firstname"];
+	else
+		$bb=$b["lastname"]." ".$b["firstname"];
+	return strcmp($aa, $bb);
 }
 
 

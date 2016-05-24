@@ -52,48 +52,53 @@ else
 	</div>
 
 
-<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
+	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
+
+<style>
+      .fields div span { font-weight: bold;width: 90px;text-align: right;display: inline-block; }
+      .fields {vertical-align: text-top;}
+      .element{display: inline-block;    background-color: #E5E9EA;
+    padding: 10px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    vertical-align: top;}
+</style>
+
 <?php
-
-
-
 foreach ($data as $l => $d)	
 { 
 	if ( $guests == isPersonGuest($d) && isPersonActive($d)) {
 
-		$personLink="editDiak.php?uid=".$d["id"];
+		$personLink="editDiak.php?uid=".$d["id"];?>
 		
-		echo "<table border=0 width=100%><tr><td width=170>\r\n" ;
-		echo '<a href="'.$personLink.'">';
-		echo "<img src=\"images/".$d["picture"].'" border="0" title="'.$d["lastname"].' '.$d["firstname"].'" class="diak_image_medium" />';
-		echo '</a>';
-		echo "</td><td valign=top>";
-		echo "<h4>".$d["lastname"].' '.$d["firstname"];
-		if(showField($d,"birthname"))  	echo("&nbsp;(".$d["birthname"].")");
-		echo("</h4>"); 
-		echo "<table>\r\n";
-		if(showField($d,"partner")) 	echo "<tr><td valign=top align=right>Élettárs:</td><td>".$d["partner"]."</td></tr>";
-		if(showField($d,"education")) 	echo "<tr><td valign=top align=right>Végzettség:</td><td>".$d["education"]."</td></tr>";
-		if(showField($d,"employer")) 	echo "<tr><td valign=top align=right>Munkahely:</td><td>".getFieldValue($d["employer"])."</td></tr>";
-		if(showField($d,"function")) 	echo "<tr><td valign=top align=right>Beosztás:</td><td>".getFieldValue($d["function"])."</td></tr>";
-		if(showField($d,"children")) 	echo "<tr><td valign=top align=right>Gyerekek:</td><td>".$d["children"]."</td></tr>";
-		if(showField($d,"address")||showField($d,"place")||showField($d,"zipcode")) { 
-			echo ("<tr><td valign=top align=right>Cím:</td><td>");
-			if(showField($d,"address")) echo(getFieldValue($d["address"]).", ");
-			if(showField($d,"zipcode")) echo(getFieldValue($d["zipcode"])." ");
-			if(showField($d,"place"))   echo(getFieldValue($d["place"]));
-			echo("</td></tr>");
-		}
-		if(showField($d,"country")) 	echo "<tr><td valign=top align=right>Ország:</td><td>".getFieldValue($d["country"])."</td></tr>";
-		if(showField($d,"phone")) 		echo "<tr><td valign=top align=right>Telefon:</td><td>".getFieldValue($d["phone"])."</td></tr>";
-		if(showField($d,"mobil")) 		echo "<tr><td valign=top align=right>Mobil:</td><td>".getFieldValue($d["mobil"])."</td></tr>";
-		if(showField($d,"email")) 		echo "<tr><td valign=top align=right>E-Mail:</td><td><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></td></tr>";
-		if(showField($d,"skype")) 		echo "<tr><td valign=top align=right>Skype:</td><td>".getFieldValue($d["skype"])."</td></tr>";
-		if(showField($d,"facebook"))	echo '<tr><td valign=top align=right>Facebook:</td><td><a href="'.urldecode(getFieldValue($d["facebook"])).'">'.urldecode(getFieldValue($d["facebook"]))."</a></td></tr>";
-		if(showField($d,"homepage"))	echo '<tr><td valign=top align=right>Honoldal:</td><td><a href="'.urldecode(getFieldValue($d["homepage"])).'">'.urldecode(getFieldValue($d["homepage"]))."</a></td></tr>";
-		//echo '<tr><td valign=top align=right><a href="'.$personLink.'">Több info</a></td><td>&nbsp;</td></tr>';
-	  	echo "</table>";
-		echo "</td></tr></table>\r\n";
+		<div class="element">
+		
+		<div style="display: inline-block; width:160px;">
+			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>">
+				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="diak_image_medium" />
+			</a>
+		</div>
+		<div style="display: inline-block;max-width:300px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+			<h4>
+				<?php echo $d["lastname"].' '.$d["firstname"];
+					if(showField($d,"birthname")) echo("&nbsp;(".$d["birthname"].")");
+				?>
+			</h4>
+			<div class="fields"> 
+				<?php 
+				if(showField($d,"partner")) 	echo "<div><span>Élettárs:</span>".$d["partner"]."</div>";
+				if(showField($d,"education")) 	echo "<div><span>Végzettség:</span>".$d["education"]."</div>";
+				if(showField($d,"employer")) 	echo "<div><span>Munkahely:</span>".getFieldValue($d["employer"])."</div>";
+				if(showField($d,"function")) 	echo "<div><span>Beosztás:</span>".getFieldValue($d["function"])."</div>";
+				if(showField($d,"children")) 	echo "<div><span>Gyerekek:</span>".$d["children"]."</div>";
+				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
+				if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";
+				?>
+	  		</div>
+		</div>
+		
+		</div>
+		<?php 
 	}
 }
 ?>
