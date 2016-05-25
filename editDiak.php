@@ -134,7 +134,6 @@ $SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakja " .$diak["lastna
 
 
 include("homemenu.php"); 
-include_once("userManager.php"); 
 
 //Set person geo and data to be used in diakEditGeo.js
 if ($tabOpen==5) {

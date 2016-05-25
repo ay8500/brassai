@@ -215,9 +215,16 @@ function savePerson($person) {
 			$person['ip']=$_SERVER["REMOTE_ADDR"];
 		}
 		reset($person);
-		while (list($key, $val) = each($person)) {
-		   $data[getPersonIdx($person["id"])][$key]=$val;
-		   //echo('Name='.$key.'Value='.$val);
+		$idx=getPersonIdx($person["id"]);
+		if ($idx!=-1) {
+			while (list($key, $val) = each($person)) {
+			   $data[$idx][$key]=$val;
+			   //echo('Name='.$key.'Value='.$val);
+			}
+			
+		}
+		else {
+			array_push($data,$person);
 		}
 		saveDB();
 	}
@@ -245,7 +252,6 @@ function isPersonEditor($person) {
  */
 function getPersonDummy() {
 	$p = array();
-	$p["id"]=getNextFreeId();
 	$p["firstname"]="";
 	$p["lastname"]="";
 	$p["picture"]="avatar.jpg";
@@ -254,6 +260,20 @@ function getPersonDummy() {
 	$p["user"]=createPassword(8);
 	$p["passw"]=createPassword(8);
 	$p["admin"]="";
+	return $p;
+}
+
+/**
+ * returns an empty person
+ */
+function createNewPerson($db,$guest) {
+	openDatabase($db);
+	$p = getPersonDummy();
+	$p["id"]=getNextFreeId();
+	if($guest)
+		$p["admin"]="guest";
+	global $data;
+	array_push($data, $p);
 	return $p;
 }
 

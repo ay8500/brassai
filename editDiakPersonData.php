@@ -34,8 +34,8 @@ if (userIsAdmin()) {
 
 
 //create new person in case of submittin a new one
-if ( ($action=="newdiak" || $action=="newguest" || $action=="submit_newguest" || $action=="submit_newdiak") ) {
-	$diak = getPersonDummy();
+if ( ($action=="newdiak" || $action=="newguest" || $action=="submit_newguest" || $action=="submit_newdiak") || $action=="submit_newguest_save" || $action=="submit_newdiak_save")  {
+	$diak = createNewPerson(getAktDatabaseName(),$guest);
 }
 
 
@@ -44,8 +44,6 @@ if ( $submitsave ) {
 	$diak["lastname"]=getGetParam("lastname", "");
 	$diak["firstname"]=getGetParam("firstname", "");;
 	$diak["email"]=getGetParam("email", "");
-	if($guest)
-		$diak["admin"]="guest";
 	//while submiting a new person no user is logged on so lets check if the user is human
 	if (getGetParam("code", "")!=$_SESSION['SECURITY_CODE']) {
 		$resultDBoperation='<div class="alert alert-warning">Bíztonsági kód nem helyes!<br/> Probáld még egyszer.</div>';
@@ -59,6 +57,7 @@ if ( $submitsave ) {
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3)&& !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Új adat kimentése sikertelen.</div>';
 	} else {
+		openDatabase(getAktDatabaseName());
 		savePerson($diak);
 		sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
 		if (!userIsAdmin())
@@ -80,8 +79,9 @@ if ( $submitsave ) {
 //Retrive changed data and save it
 if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	$diak = getPerson($uid,getAktDatabaseName());
-	if ($guest)
-		$diak["admin"]="guest";
+	if ($diak==null) {
+		$diak = createNewPerson(getAktDatabaseName(),$guest);
+	}
 	for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 		$tilde="";
 		if ($dataCheckFieldVisible[$i]) {
@@ -103,6 +103,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 	} else {
+		openDatabase(getAktDatabaseName());
 		savePerson($diak);
 		$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
 		if (!userIsAdmin())

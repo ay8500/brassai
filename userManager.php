@@ -286,7 +286,6 @@
 	function resetUserPasswort($email, $newPassw) {
 		//Read the Database
 		$authData = readUserAuthDB();
-		$person = getPersonDummy();
 		$ret = -1;
 		if (strlen($newPassw)>3) { 
 			if (checkRequesterIP()) {
