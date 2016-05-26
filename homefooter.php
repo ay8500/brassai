@@ -2,7 +2,6 @@
   <div class="container">
       <ul class="nav navbar-nav">
         <?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
-        		$personLink="editDiak.php?uid=".$d["id"]."&scoolYear=".$d["scoolYear"]."&scoolClass=".$d["scoolClass"];?>
 				<li><a href="editDiak.php?uid=<?php echo getLoggedInUserId()?>&scoolYear=<?php echo getUScoolYear()?>&scoolClass=<?php echo getUScoolClass()?>" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
 		<?PHP }  ?>	
 		<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
