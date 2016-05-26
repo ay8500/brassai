@@ -50,11 +50,7 @@
 	border-color: lightgrey;
 }	
 	
-	
-.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
-  color: #fff;
-  background-color: #A1A1A1;
-}	
+
 .table-sp>tbody>tr>td {
 	padding:3px;
 }
@@ -73,6 +69,11 @@
 }
 
 /* Menu */
+	
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  color: #fff;
+  background-color: #A1A1A1;
+}	
 
 .navbar-default .navbar-nav>li>a {
 	color:black;
@@ -86,7 +87,6 @@
 	display: table-footer-group;
 }
 
-/* Submenu */
 
 .dropdown-submenu {
     position: relative;

@@ -393,6 +393,35 @@ function compairUserLink($d1,$d2) {
 		return false;
 	}
 
+/**
+ * Search for person lastname and firstname 
+ * @param unknown $name
+ */
+function searchForPerson($name) {
+	$ret = array();
+	if( strlen($name)>1) {
+		global $dataBase;
+		global $dataPath;
+		global $data;
+		foreach($dataBase as $db) {
+			if ($db!="oooooo") 
+			{
+				openDatabase($db);
+				foreach ($data as $person) {
+					if (strstr($person["lastname"], $name)!="" ||
+						strstr($person["firstname"], $name)!="" ||
+						(isset($person["birthname"]) && strstr($person["birthname"], $name)!="")) {
+						$person["scoolYear"]=substr($db,3,4);
+						$person["scoolClass"]=substr($db,0,3);
+						array_push($ret, $person);
+					}
+				}
+			}
+		}
+		usort($ret, "compareAlphabetical");
+	}
+	return $ret;
+}
 
 /**
  * Read user in all Databases using comparator

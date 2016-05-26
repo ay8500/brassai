@@ -61,11 +61,13 @@
 		var logoTop=-20;
 		var logoDirection =-1;
 		
-		function onResize() {
+		function onResize(hplus) {
 
 			var h= 	removePX($(".sub_title").css("height"))+
 					removePX($(".appltitle").css("height"))+
 					removePX($("#main-menu").css("height"))+32;
+			if (null!=hplus)
+				h +=hplus;
 			var hh = removePX($("#homelogo").css("height"));
 		    
 		    $(".homeLogo").css("height",(h)+"px");

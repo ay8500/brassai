@@ -57,11 +57,7 @@ else
 <style>
       .fields div span { font-weight: bold;width: 90px;text-align: right;display: inline-block; }
       .fields {vertical-align: text-top;}
-      .element{display: inline-block;    background-color: #E5E9EA;
-    padding: 10px;
-    border-radius: 7px;
-    margin-bottom: 10px;
-    vertical-align: top;}
+      .element{display: inline-block; background-color: #E5E9EA;  padding: 10px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
 </style>
 
 <?php

@@ -92,11 +92,6 @@ function writeLogonDiv() {
 <?php } ?> 
 </div>
 <script type="text/javascript">
-	document.onkeydown=function(){
-	    if(window.event.keyCode=='13'){
-	        logon();
-	    }
-	};
 		
 	function logon() {
 		$.ajax({
@@ -126,8 +121,8 @@ function writeLogonDiv() {
 		$.ajax({
 			url:"logon.php?action=logoff",
 			success:function(data){
-				if (location.href.search("editdiak.php")>0)
-					location.href="index.php";
+				if (location.href.search("editDiak.php")>0)
+					location.href="hometable.php";
 				else
 			    	location.reload();
 			}
@@ -135,11 +130,14 @@ function writeLogonDiv() {
 	}
 
 	function handleLogon() {
+	    closeSearch();
 	    $("#uLogon").slideDown("slow");
+	    onResize(220);
 	}
 
 	function closeLogin() {
 		$("#uLogon").slideUp("slow");
+		onResize(0);
 	}
 		
 </script>

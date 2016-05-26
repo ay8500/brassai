@@ -112,12 +112,15 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 }
 
 
-//person data fields
+
 ?>
+	<?php //Person picture?>
 	<div class="diak_picture" style="display: inline-block;">
 		<img src="images/<?php echo($diak["picture"]);?>" border="0" alt="" itemprop="image" class="diak_image" />
 	</div>
-	<?php if ($edit && $action!="newdiak" && $action!="newguest") {   //Change Profile Image?>
+	
+	<?php //Person picture download?>
+	<?php if ($edit && $action!="newdiak" && $action!="newguest") {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
 				<span>Válassz egy új képet max. 2MByte</span>
@@ -134,24 +137,29 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 		</div>
 		<?php } ?>
 	<?php } ?>
+	
+	<?php //Save Button?>
 	<?php if ($edit) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
 		</div>
 	<?php } ?>
+	
+	<?php //Secutiry code and create new person button?>
 	<?php if ($submit) {?>
-		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
+		<div style="display: inline-block;margin-bottom:15px;vertical-align: bottom; width:275px">
 			<div class="input-group input-group-sl" >
-				<span style="min-width:110px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
+				<span style="min-width:80px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
 				<input id="code" type="text" size="6" value="" placeholder="Kód" class="form-control"/>
 				<div class="input-group-btn">
-					<img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" />
+					<img style="width:100px" class="form-control" alt="security code" src="SecurityImage/SecurityImage.php" />
 				</div>
 			</div>
 			<div>&nbsp;</div>
 			<button onclick="$('#idcode').val($('#code').val());$('#form_action').val('<?php echo($action);?>_save');document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Új személy létrehozása!</button>
 		</div>
 	<?php }?>
+	
 	
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
@@ -171,11 +179,12 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 			<?php if ($edit || $submit) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		<span style="width:40px" id="highlight" class="input-group-addon">
 	      		<?php if ($dataCheckFieldVisible[$i]) {
-	        		echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." >');
+	        		echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
 	      		} ?>
 	      		</span>
 	      		<?php   
-		    	echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" />');
+	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="validateEmailInput(this);" ' : $emc="";
+	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.'/>');
 			} else {
 				if (showField($diak,$dataFieldNames[$i])) {
 					$itemprop=$dataItemProp[$i]==""?"":'itemprop="'.$dataItemProp[$i].'"';
@@ -190,13 +199,27 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	</div>
 	<?php 
 	if ($edit || $submit) {
-		//echo('<button style="margin-top:5px;margin-bottom:5px;" type="submit" class="btn btn-default" title="Adatok kimentése" ><span class="glyphicon glyphicon-floppy-disk"></span>'.getTextRes("Save").'</button>');
-		echo('<input id="form_action" type="hidden" value="changediak" name="action" />');
-		echo('<input type="hidden" value="'.$diak["id"].'" name="uid" />');
-		echo('<input id="idcode" type="hidden" value="" name="code" />');
-		echo('<input type="hidden" value="'.$tabOpen.'" name="tabOpen" />');
+		echo('<input type="hidden" name="action"	value="changediak" id="form_action" />');
+		echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
+		echo('<input type="hidden" name="code"		value=""  id="idcode" />');
+		echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
 		echo('</form>');
 	}
-	echo('</div>');
 
 ?>
+<script>
+	function validateEmailInput(sender,button) { 
+		if (validateEmail(sender.value)) {
+			sender.style.color="green";
+			$(button).removeClass("disabled");
+		} else {
+			sender.style.color="red";
+			$(button).addClass("disabled");
+		}
+	} 
+	
+	function validateEmail(mail) {
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(mail);
+	}
+</script>

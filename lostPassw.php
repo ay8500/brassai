@@ -88,13 +88,13 @@ function checkFirstName($name) {
 			<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
 				<input type="hidden"  name="action" value="newPassword" />
   				<div class="alert alert-info">
-					Akkor használd ezt a funktiót ha már felhasználó vagy és ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.
+					Akkor használd ezt a funkciót, ha már felhasználó vagy és ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">E-Mail címem:</span> 
-					<input type="text" name="mail" value="<?PHP echo($mail); ?>" class="form-control" /> 
+					<input type="text" name="mail" value="<?PHP echo($mail); ?>" class="form-control" onkeyup="validateEmailInput(this,'#send_passw');" /> 
 				</div>  
-				<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-envelope"></span> Szeretnék új jelszót</button>
+				<button class="btn btn-default" type="submit" id="send_passw"><span class="glyphicon glyphicon-envelope"></span> Szeretnék új jelszót</button>
 			</form>
 		</div>
 	</div>
@@ -112,7 +112,7 @@ function checkFirstName($name) {
 				<input type="hidden"  name="action" value="newUser" />
 				<div class="input-group"> 
   					<span  style="min-width:150px; text-align:right" class="input-group-addon">E-Mail címem</span> 
-					<input type="text" name="mail" value="<?PHP echo($mail); ?>"  class="form-control" 	/>
+					<input type="text" name="mail" value="<?PHP echo($mail); ?>"  class="form-control" 	onkeyup="validateEmailInput(this,'#new_user');" />
 				</div>
 				<div class="input-group"> 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Nevem</span>
@@ -149,7 +149,7 @@ function checkFirstName($name) {
 						</select>
 					</div>
 				</div>
-				<button class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-user"></span> Szeretnék bejelentkezni</button>
+				<button class="btn btn-default" type="submit" id="new_user"><span class="glyphicon glyphicon-user"></span> Szeretnék bejelentkezni</button>
 				
 			</form>
 		</div>
@@ -159,10 +159,11 @@ function checkFirstName($name) {
   		<div class="panel-heading"><h4>Vannak bejelenkezési adataim de nem sikerül bejelentkezni.</h4></div>
   		<div class="panel-body">
   			<div class="alert alert-info">
-				Ne add fel hamar a harcot a technika ellen, próbáld meg még egyszer.
+				Ne add fel hamar a harcot az internet ellen, próbáld meg még egyszer.
 				Tippek:
 				<ul>
-					<li>A becenév nem tartalmaz ékezetes betüket.</li> 
+					<li>A becenév nem tartalmaz ékezetes betüket.</li>
+					<li>E-mail címedet is használhatod mint felhasználó név.</li>
 					<li>Esetleg használd a kopirozás-beillesztés <a  target="_blank" href="http://en.wikipedia.org/wiki/Cut,_copy,_and_paste">(C&amp;P)</a> technikát a jelszó beadására.</li>
 				</ul>
 				Küldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre ha bármilyen kérdésed vagy megjegyzésed van.
@@ -178,6 +179,23 @@ function checkFirstName($name) {
 			$("#grpyearclass").hide("slow");
 		} else {
 			$("#grpyearclass").show("slow");
-}
+		}
 	}
+
+	function validateEmailInput(sender,button) { 
+	    	if (validateEmail(sender.value)) {
+	    		sender.style.color="green";
+	    		$(button).removeClass("disabled");
+	    	} else {
+	    		sender.style.color="red";
+	    		$(button).addClass("disabled");
+	    	}
+  	} 
+
+	function validateEmail(mail) {
+	   	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	   	return re.test(mail);
+	}
+	
+		
 </script>

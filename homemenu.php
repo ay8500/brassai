@@ -138,6 +138,9 @@
 			<li>
 				<a href="message.php">Ünzenőfal</a>
 			</li>
+			<li>
+				<a href="#" onclick="showSearchBox();"><span class="glyphicon glyphicon-search"></span> Keres</a>
+			</li>
 			<?php if (userIsLoggedOn()) {
 				$person=getPersonLogedOn();?>
 				<form class="navbar-form navbar-right" role="search">
@@ -162,9 +165,45 @@
 </nav>
 
 <?PHP writeLogonDiv();	?>
-<div id="topLine"><h1 class="appltitle">
-	<span id="o1024" >A kolozsvári </span>
-	Brassai Sámuel líceum <span id="o400" >egykori </span>diákjai 
-	<span id="o480" ><?PHP echo(getAktScoolYear()." ".getAktScoolClass()) ?></span>
-</h1></div>
 
+<div class="panel panel-default" style="display:none;margin:auto;width:220px;" id="uSearch" >
+	<div class="panel-heading" >
+		<b>Keresgélés</b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeSearch();"></span>
+	</div>
+	<form action="search.php" method="get">
+		<input type="hidden" value="search" name="action"/>
+		<div class="input-group input-group" style="margin: 3px;">
+    		<span class="input-group-addon" style="width:30px" title="Véndiak neve"><span class="glyphicon glyphicon-search"></span></span>
+    		<input type="text" class="form-control"  placeholder="családnév keresztnév" id="srcText" name="srcText" value="<?php echo getGetParam("srcText", "")?>">
+		</div>
+		<div style="text-align:center; margin: 3px">
+			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="search();"><span class="glyphicon glyphicon-log-in"></span> Keres</button>
+		</div>
+	</form>
+</div>
+
+<div id="topLine">
+	<h1 class="appltitle">
+		<span id="o1024" >A kolozsvári </span>
+		Brassai Sámuel líceum <span id="o400" >egykori </span>diákjai 
+		<span id="o480" ><?PHP echo(getAktScoolYear()." ".getAktScoolClass()) ?></span>
+	</h1>
+</div>
+
+<script type="text/javascript">
+	function showSearchBox() {
+	    closeLogin();
+		$("#uSearch").slideDown("slow");
+		onResize(135);
+	}
+	
+	function closeSearch() {
+		$("#uSearch").slideUp("slow");
+		onResize(0);
+	}
+
+	function search() {
+		document.location.href="search.php?srcText="+$("#srcText").val();
+	}
+	
+</script>
