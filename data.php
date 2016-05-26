@@ -408,9 +408,9 @@ function searchForPerson($name) {
 			{
 				openDatabase($db);
 				foreach ($data as $person) {
-					if (strstr($person["lastname"], $name)!="" ||
-						strstr($person["firstname"], $name)!="" ||
-						(isset($person["birthname"]) && strstr($person["birthname"], $name)!="")) {
+					if (stristr($person["lastname"], $name)!="" ||
+						stristr($person["firstname"], $name)!="" ||
+						(isset($person["birthname"]) && stristr($person["birthname"], $name)!="")) {
 						$person["scoolYear"]=substr($db,3,4);
 						$person["scoolClass"]=substr($db,0,3);
 						array_push($ret, $person);

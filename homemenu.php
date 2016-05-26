@@ -138,9 +138,11 @@
 			<li>
 				<a href="message.php">Ünzenőfal</a>
 			</li>
-			<li>
-				<a href="#" onclick="showSearchBox();"><span class="glyphicon glyphicon-search"></span> Keres</a>
-			</li>
+			<form class="navbar-form navbar-left" role="search" action="">
+				<div class="input-group input-group" style="margin: 3px;">
+					<button type="button" id="uLogonMenu" class="btn btn-default " onclick="showSearchBox();" ><span class="glyphicon glyphicon-search" ></span> Keres</button>
+				</div>
+			</form>
 			<?php if (userIsLoggedOn()) {
 				$person=getPersonLogedOn();?>
 				<form class="navbar-form navbar-right" role="search">

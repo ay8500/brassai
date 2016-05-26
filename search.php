@@ -4,7 +4,7 @@ $SiteDescription="Brassaista Véndiákok találata";
 include("homemenu.php");
 
 
-$name=getGetParam("srcText", "");
+$name=html_entity_decode(getGetParam("srcText", ""));
 $personList=searchForPerson($name);
 
 ?>
