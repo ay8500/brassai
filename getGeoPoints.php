@@ -12,15 +12,23 @@ $i=0;
 foreach ($data as $d)  {
 	if (!isPersonGuest($d)) {
 		if (($d["geolat"]!="") && ($d["geolng"]!="")) {
-			//if ( ($d["geolat"]>$lat1) && ($d["geolat"]<$lat2) && ($d["geolng"]>$lng1) && ($d["geolng"]<$lng2) ) {
-				if ( userIsLoggedOn() )
-					$random=0;
-				else
-					$random=rand(1,10)/100;
+			
+			if ( userIsLoggedOn() ) {
+				$xrandom=0;
+				$yrandom=0;
+			} else {
+				$xrandom=rand(-5,5)/100;
+				$yrandom=rand(-5,5)/100;
+			}
+				
+			/*if ( floatval($d["geolat"])+$xrandom>floatval($lat1) && 
+				 floatval($d["geolat"])+$xrandom<floatval($lat2) && 
+				 floatval($d["geolng"])+$yrandom>floatval($lng1) && 
+				 floatval($d["geolng"])+$yrandom<floatval($lng2) ) {*/
 				$points[$i]["name"]=$d["lastname"]." ".$d["firstname"];
 				if (showField($d, "birthname")) $points[$i]["name"] = $points[$i]["name"]." (".$d["birthname"].")";
-				$points[$i]["lat"]=$d["geolat"]+$random;
-				$points[$i++]["lng"]=$d["geolng"]+$random;
+				$points[$i]["lat"]=$d["geolat"]+$xrandom;
+				$points[$i++]["lng"]=$d["geolng"]+$yrandom;
 			//}
 		}
 	}
