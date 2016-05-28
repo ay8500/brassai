@@ -177,10 +177,11 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
 			<?php if ($edit || $submit) {?>
-				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		<span style="width:40px" id="highlight" class="input-group-addon">
-	      		<?php if ($dataCheckFieldVisible[$i]) {
-	        		echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
-	      		} ?>
+				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
+				<span style="width:40px" id="highlight" class="input-group-addon">
+		      		<?php if ($dataCheckFieldVisible[$i]) {
+		        		echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
+		      		} ?>
 	      		</span>
 	      		<?php   
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="validateEmailInput(this);" ' : $emc="";

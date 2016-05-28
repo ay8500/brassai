@@ -24,7 +24,7 @@
 	include_once 'history.php';
 ?>
 
-<div class="sub_title">Start</div>
+<div class="sub_title">Újdonságok</div>
 	<div class="container-fluid">
 	<?php if (getParam("action","")=="logon") { ?>
 		<div class="sub_title" style="color:red">Sajnos a bejelentkezés nem sikerült. </div>

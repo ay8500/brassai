@@ -61,8 +61,8 @@
 			<li class="dropdown">
 				<a href="index.php" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="start.php">Start</a></li>
-					<li><a href="index.php">Üdvözlet</a></li>
+					<li><a href="index.php">Start</a></li>
+					<li><a href="start.php">Újdonságok</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
@@ -109,9 +109,7 @@
 						</ul>
 					</li>
 					<?PHP endif  ?>
-					<?php if (getAktScoolYear()==1985 && getAKtScoolClass()=='12B') : ?>
-					<?php //<li><a href="vote.php">30-éves Találkozó</a></li> ?>
-					<?PHP endif  ?>	
+					<li><a href="vote.php">A következő Találkozó</a></li>
 				</ul>
       		</li>
 			<li class="dropdown">

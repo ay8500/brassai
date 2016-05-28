@@ -103,9 +103,7 @@ function autoComplete (field, select, property, forcematch) {
 <td>
 
 <?PHP 
-	//if ( ($voteCount<$maxVoteCount) && (getUserID()>0)  ) 
-	//if ( (getUserID()>0)  )
-	if (false) 
+	if ( $voteCount<$maxVoteCount && userIsLoggedOn()  ) 
 	{
 ?>
 <div><form action="zenetoplista.php">

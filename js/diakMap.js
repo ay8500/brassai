@@ -6,6 +6,8 @@ $(document).ready(function() {
     if (GBrowserIsCompatible()) {
         application = new MyApplication();
         zoomMap(7);
+        
+        setTimeout( function(){fillPoints()},500);
     }
 });
 
@@ -34,6 +36,7 @@ function MyApplication() {
         var center = new GLatLng(41,-42);
         this.map.setCenter(center, 2);
 	GEvent.bind(this.map, "dragend", this, this.onMapDragEnd);
+
     }
 }
     

@@ -543,9 +543,10 @@ function saveDB() {
 	//Just for fun save the data as json file
 	$json = $data;
 	$file=fopen($dataFileName.".json","w");
-	$json["LastIp"]=$_SERVER["REMOTE_ADDR"];
-	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
+	$json["lastIp"]=$_SERVER["REMOTE_ADDR"];
 	$json["changeDate"]=date('d.m.Y H:i');
+	$json["changeUserId"]=getLoggedInUserId();
+	$json["changeUserDb"]=getUserDatabaseName();
 	fwrite($file,json_encode($json));
 	fclose($file);
 }
@@ -554,23 +555,20 @@ function saveDB() {
 
 $voteFields=array("date","class","cemetery","dinner","excursion","where");
 $voteData = array();
-$voteFileName = "/vote.txt";
 
 function setVote($uid, $vote) {
 	global $voteData;
 	$voteData[$uid] = $vote;
-	saveVoteData();
 }
 
-function readVoteData() {
+function readVoteData($db,$years) {
 	global $voteData;
 	global $dataPath;
-	global $voteFileName;
 
 	for ($i=0;$i<sizeof($voteData);$i++)
 		unset( $voteData[$i]);			//delete old records
 
-	$fileName=$dataPath.getAktDatabaseName().$voteFileName;
+	$fileName=$dataPath.$db.'/'.$years.'vote.txt';
     if (file_exists($fileName)) {
 		$file=fopen($fileName ,"r");
 		$id=0;
@@ -608,29 +606,38 @@ function getVoteDummy() {
 	return $p;
 }
 
-function saveVoteData() {
+function saveVoteData($db,$years) {
 	global $data;
 	global  $dataPath;
 	global $voteData;
 	reset( $voteData);
-	global $voteFileName;
-	$fileName=$dataPath.getAktDatabaseName().$voteFileName;
-	$file=fopen($fileName,"w");
+	$fileName=$dataPath.$db.'/'.$years.'vote';
+	
+	$file=fopen($fileName.".txt","w");
 	fwrite($file,"#Vote Database File\r\n");
 	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
 	fwrite($file,"#Change Date:".date('d.m.Y H:i')."\r\n\r\n");
-	$i=1;
 	foreach ($data as $person) {
 		reset($person);
 		fwrite($file,"\r\n");
-		fwrite($file,"id=".$i."\r\n");
-		$vote=$voteData[$i];
+		fwrite($file,"id=".$person["id"]."\r\n");
+		$vote=getVote($person["id"]);
 		while (list($key, $val) = each($vote)) {
 		   fwrite($file,$key."=".$val."\r\n");
 		}
-		$i++;
 	}
 	fclose($file);
+	
+	//Just for fun save the data as json file
+	$json = $voteData;
+	$file=fopen($fileName.".json","w");
+	$json["lastIp"]=$_SERVER["REMOTE_ADDR"];
+	$json["changeDate"]=date('d.m.Y H:i');
+	$json["changeUserId"]=getLoggedInUserId();
+	$json["changeUserDb"]=getUserDatabaseName();
+	fwrite($file,json_encode($json));
+	fclose($file);
+	
 }
 
 //*********************[ Picture database]**************************************
