@@ -97,10 +97,19 @@ function readInterpretList($database)
 		}
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
 	usort( $data, 'CompareInterpret');
 	return $data;
+}
+
+
+function getInterpretFromList($interpretList,$id)
+{
+	$ret= array();
+	foreach ($interpretList as $interpret) {
+		if ($interpret["id"]==$id)
+			return $interpret;
+	}
+	return $ret;
 }
 
 /**
@@ -123,10 +132,9 @@ function readInterpret($database,$id)
 		}
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
 	return $data;
 }
+
 
 /**
  * insert a new interpret in the database
@@ -147,9 +155,6 @@ function insertNewInterpret($database,$newinterpret)
 		fwrite($file,$newid.'='.$newinterpret."\r\n");
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
-	
 	return $newid;
 }
 
@@ -179,11 +184,19 @@ function readSongList($database,$interpret)
 		}
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
 	usort( $data, 'CompareSong');
 	return $data;
 }
+
+function getSongFromList($songList,$id) {
+	$ret = array();
+	foreach ($songList as $song) {
+		if ($song["id"]==$id)
+			return $song;
+	}
+	return $ret;
+}
+
 
 /**
  * read song from the database
@@ -208,10 +221,9 @@ function readSong($database,$id)
 		}
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
 	return $data;
 }
+
 
 /**
  * insert a new song in the database
@@ -225,15 +237,12 @@ function insertNewSong($database, $interpretId, $newSong,$newVideo, $newLink) {
 	}
 	$newid +=1;
 
-	$FileName=$dataPath.$database.'song.txt'; 
+	$FileName=$dataPath.$database.'/song.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"a");
 		fwrite($file,$newid.'|'.$interpretId.'|'.$newSong.'|'.$newVideo.'|'.$newLink."\r\n");
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
-	
 	return $newid;
 }
  
@@ -241,6 +250,7 @@ function insertNewSong($database, $interpretId, $newSong,$newVideo, $newLink) {
  * insert a vote to the database
  */
 function insertVote($database,$userID,$song) {
+	$insert = false;
 	global $dataPath;
 	if (($database<>"") && ($userID>0) && ($song>0)) {	
 		$data=readVoteList($database,$userID);
@@ -285,50 +295,56 @@ function insertVote($database,$userID,$song) {
 		$mailInterpret=readInterpret($database,$mailSong['interpretId']);
 		$mailPerson=getPersonLogedOn();
 		sendHtmlMail('code@blue-l.de',$database."<br/>".$mailPerson["firstname"].$mailPerson["lastname" ]."<br/>".$mailInterpret["name"]."<br/>".$mailSong["name"]."<br/>","Song Database");
+		$insert = true;
 	} 
+	return $insert;
 }
 
 /**
  * delete vote from the database
  */
 function deleteVote($database,$userID,$song) {
+	$deleted = false;
 	global $dataPath;
-  $data=readVoteList($database,$userID);
-  $songFound = false;
-  // find song in the vote list
-  foreach($data as $index => $vote ) {
-  	if ($vote['song']['id']==$song) {
-  		$songFound = true;
-  		$userList = explode(",",$vote['user']);
-  		$newUserList="";
-  		foreach($userList as $user) {
-  			$user=rtrim($user,"\r\n");
-  			//only the vote from other user are relevant
-  			if ($user<>$userID) {
-  				if ($newUserList=="") $separator=""; else $separator=",";
-  				$newUserList= $newUserList.$separator.$user;
-  			}
-  		}
-  		$data[$index]['user']=$newUserList;
-  	}
-  } 
-  
-   	$FileName=$dataPath.$database.'/songvote.txt'; 
-	$file=fopen($FileName ,"w");
-	sort($data);
-	foreach($data as $vote) {
-		if ($vote['user']<>"")
-			fwrite($file,$vote['song']['id']."=".rtrim($vote['user'],"\r\n")."\r\n");
-	}
-	fclose($file);
- 
-  	
+	$data=readVoteList($database,$userID);
+	// find song in the vote list
+	foreach($data as $index => $vote ) {
+		if ($vote['song']['id']==$song) {
+	  		$userList = explode(",",$vote['user']);
+	  		$newUserList="";
+	  		foreach($userList as $user) {
+	  			$user=rtrim($user,"\r\n");
+	  			//only the vote from other user are relevant
+	  			if ($user<>$userID) {
+	  				if ($newUserList=="") $separator=""; else $separator=",";
+	  				$newUserList= $newUserList.$separator.$user;
+	  			} else {
+	  				$deleted=true;
+	  			}
+	  		}
+			$data[$index]['user']=$newUserList;
+		}
+	} 
+
+	if ($deleted) {
+	   	$FileName=$dataPath.$database.'/songvote.txt'; 
+		$file=fopen($FileName ,"w");
+		sort($data);
+		foreach($data as $vote) {
+			if ($vote['user']<>"")
+				fwrite($file,$vote['song']['id']."=".rtrim($vote['user'],"\r\n")."\r\n");
+		}
+		fclose($file);
+	} 
+  	return $deleted;
 }
 
 
 /**
  * get the count of user votes
+ * Deprecated use readVotersList
  */
+
 function getUserSongVoteCount($database,$userID){
 	$data=readVoteList($database,$userID);
 	$count=0;
@@ -346,6 +362,9 @@ function readVoteList($database,$userId)
 {
 	global $dataPath;
 	$data = array();
+	
+	$songList=readSongList($database, 0);
+	$interpretList=readInterpretList($database);
 
 	$FileName=$dataPath.$database.'/songvote.txt'; 
     if (file_exists($FileName)) {
@@ -353,9 +372,9 @@ function readVoteList($database,$userId)
 		$id=0;
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
-			if (isset($b[1])) { 
-				$data[$id]['song']= readSong($database,$b[0]);
-				$data[$id]['interpret']=readInterpret($database,$data[$id]['song']['interpretId']);
+			if (isset($b[1]) && intval($b[0]>0)) { 
+				$data[$id]['song']= getSongFromList($songList,$b[0]);
+				$data[$id]['interpret']=getInterpretFromList($interpretList,$data[$id]['song']['interpretId']);
 				$data[$id]['user']=$b[1];
 				$data[$id]['voted']=false;
 				$userIds = explode (",",$b[1]);
@@ -372,11 +391,10 @@ function readVoteList($database,$userId)
 		}
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
 	usort( $data, 'CompareVote');
 	return $data;
 }
+
 
 
 /**
@@ -390,7 +408,7 @@ function readTopList($database,$userId)
 }	
 
 /**
- * read the list of the voters
+ * read the list of the voters and count the votes for each person
  */
 function readVotersList($database)
 {
@@ -403,6 +421,7 @@ function readVotersList($database)
 		$id=0;
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
+			$songId=intval($b[0]);
 			if (isset($b[1])) { 
 				$userIds = explode (",",$b[1]);
 				foreach($userIds as $uid) {
@@ -414,6 +433,9 @@ function readVotersList($database)
 						if ($voter["UID"]==$uid) {
 							$foundInTheVotersList=true;
 							$votersList[$index]["VotesCount"]++;
+							if (!isset($votersList[$index]["Songlist"]))
+								$votersList[$index]["Songlist"]=array();
+							array_push($votersList[$index]["Songlist"],$songId);
 						}
 					}
 					
@@ -421,6 +443,8 @@ function readVotersList($database)
 						$newVoter["UID"]=$uid;
 						$newVoter["VotesCount"]=1;
 						$person=getPerson($uid);
+						$newVoter["Songlist"]=array();
+						array_push($newVoter["Songlist"],$songId);
 						if (!isset($person["admin"]) || $person["admin"]=="") {
 					   	  $newVoter["Name"]=$person["lastname"].' '.$person["firstname"];
 						  $votersList[$id++]=$newVoter;
@@ -432,8 +456,6 @@ function readVotersList($database)
 		}
 		fclose($file);
 	}
-	else 
-		echo ("Error:open database ".$FileName);
 	usort( $votersList, 'CompareVoters');
 	return $votersList;
 }

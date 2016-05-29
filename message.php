@@ -44,7 +44,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 <div class="dropdown" style="margin-bottom: 10px;">
  	<button onclick="showMessage();" class="btn btn-default" type="button" >
 	<span class="glyphicon glyphicon-pencil"></span>
- 	Új üzenet 
+ 	Írj egy új üzenet! 
  	<span class="caret"></span>
   </button>
 </div>

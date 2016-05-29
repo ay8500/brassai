@@ -110,6 +110,7 @@
 					</li>
 					<?PHP endif  ?>
 					<li><a href="vote.php">A következő Találkozó</a></li>
+					<li><a href="zenetoplista.php">Zenetoplista</a></li>
 				</ul>
       		</li>
 			<li class="dropdown">

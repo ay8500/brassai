@@ -4,7 +4,7 @@ $SiteDescription="Brassaista Véndiákok találata";
 include("homemenu.php");
 
 
-$name=html_entity_decode(getGetParam("srcText", ""));
+$name=trim(html_entity_decode(getGetParam("srcText", "")));
 $personList=searchForPerson($name);
 
 ?>
@@ -43,7 +43,7 @@ foreach ($personList as $l => $d)
 				<?php 
 				echo "<div><span>Ballagási év:</span>".$d["scoolYear"]."</div>";
 				echo "<div><span>Osztály:</span>".$d["scoolClass"]."</div>";
-				echo "<div>&nbsp:</div>";
+				echo "<div>&nbsp;</div>";
 				if(showField($d,"partner")) 	echo "<div><span>Élettárs:</span>".$d["partner"]."</div>";
 				if(showField($d,"children")) 	echo "<div><span>Gyerekek:</span>".$d["children"]."</div>";
 				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";

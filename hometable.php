@@ -28,18 +28,18 @@ else
 		<?php if (userIsAdmin() || userIsEditor() ) {?>
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="newguest" />
-				<input type="submit" value="Névsor bővítése új tanárral,vendéggel, jó baráttal"/>
+				<input class="btn btn-default" type="submit" value="Névsor bővítése új tanárral,vendéggel, jó baráttal"/>
 			<?php } else {?>
 				<input type="hidden" name="action" value="newdiak" />
-				<input type="submit" value="Névsor bővítése új véndiákkal "/>
+				<input class="btn btn-default" type="submit" value="Névsor bővítése új véndiákkal "/>
 			<?php }?>
 		<?php } else if (!userIsLoggedOn()) { ?>
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="submit_newguest" />
-				<input type="submit" value="Névsor bővítése" title="Szeretnék én is ezen a listán mit tanár, barát vagy ismerős szerepelni"/>
+				<input class="btn btn-default" type="submit" value="Bővítsd a névsort" title="Szeretnék én is ezen a listán mit tanár, barát vagy ismerős szerepelni"/>
 			<?php } else {?>
 				<input type="hidden" name="action" value="submit_newdiak" />
-				<input type="submit" value="Névsor bővítése" title="Én is ebben az osztályban végeztem, szeretnék én is ezen a listán lenni."/>
+				<input class="btn btn-default" type="submit" value="Bővítsd a névsort" title="Én is ebben az osztályban végeztem, szeretnék én is ezen a listán lenni."/>
 			<?php }?>
 		<?php }?>
 		</form>

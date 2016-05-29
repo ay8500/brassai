@@ -15,7 +15,7 @@ include("homemenu.php");
 			<li><a href="worldmap.php?scoolYear=1985&scoolClass=12A">Térképen</a> látható szétszóródása az osztálytársaknak.</li>
 			<li>Találkozók szervezésére alkalmas <a href="vote.php?scoolYear=1985&scoolClass=12A">szavazati lista</a>.</li>
 			<li>Osztályfelelősők körlevelet (E-mail) küldhetnek volt osztálytársuknak.</li>
-			<li>Zenetoplista</li> 
+			<li><a href="zenetoplista.php?scoolYear=1985&scoolClass=12A">Zenetoplista</a></li> 
 		 </ul>
 	</div>
 	<div  style="padding:15px;" class="col-sm-6" >

@@ -1,71 +1,263 @@
 <?PHP 
-
-
 $SiteTitle="A véndiákok ezt hallgatják szívesen";
 include("homemenu.php");
 include("songdatabase.php");
-include_once("userManager.php"); 
-?>
+include_once("userManager.php");
+$resultDBoperation="";
 
-<?PHP
-   //Check the maximal amout of vote
-   $voteCount=getUserSongVoteCount(getAktDatabaseName(),getLoggedInUserId());
-   if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
-   if ($voteCount<$maxVoteCount)  
-	 $voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot csinálhatsz"; 
-   else 
-   	 $voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
+//action  delete vote
+$delVote = intval(getGetParam("delVote", "-1"));
+if ($delVote>=0) {
+   	if (deleteVote(getAktDatabaseName(),getLoggedInUserId(),$delVote))
+		$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidból törölve!</div>';
+	else 
+		$resultDBoperation='<div class="alert alert-warning" >Szavazat törlése nem sikerült.</div>';
+   	$psong=0;$pinterpret=0;
+}
 
-   //Site Status 
-   $siteStatus="Válaszd ki a kedvenc elöadód, ha nem találod a listában akkor írd be a lenti mezöbe.";
+
+ //Site Status 
+ $siteStatus="Válaszd ki a kedvenc elöadód, ha nem találod a listában akkor írd be a lenti mezöbe.";
 
    //Parameter Interpret
    if (isset($_GET["interpret"])) $pinterpret = $_GET["interpret"]; else $pinterpret=0;
    if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
    		$pinterpret=insertNewInterpret(getAktDatabaseName(),$pnewinterpret);
-	    $siteStatus="Az elöadó kimentve, most írd be a kendvenc zenéd címét.";
+   		$resultDBoperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
    }
    
-   //Site Status 
-   if ($pinterpret>0) {
-	   $siteStatus="Válaszd ki a kedvenc énkedet, ha nem találod a listában akkor írd be a lenti mezöbe.";
-   }
    //Parameter Song
-   if (isset($_GET["song"])) $psong = $_GET["song"]; else $psong=0;
+   $psong=intval(getGetParam("song", "0"));
    if (isset($_GET["newSong"])) $pnewSong = $_GET["newSong"]; else $pnewSong="";
    if (isset($_GET["newVideo"])) $pnewVideo = $_GET["newVideo"]; else $pnewVideo="";
    if (isset($_GET["newLink"])) $pnewLink = $_GET["newLink"]; else $pnewLink="";
    if (($psong=="0") && ($pnewSong<>"" )) {
    		$psong=insertNewSong(getAktDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
    		insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
-	    $siteStatus="A zene és a szavazatod kimentve.";
+   		$resultDBoperation='<div class="alert alert-success" >Zene és a szavezatod sikeresen kimentve.</div>';
    		$psong=0;$pinterpret=0;
    } 
    if ($psong>0) {
-   		insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
-	    $siteStatus="A szavazatod kimentve.";
+   		if (insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong))
+			$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
+		else 
+			$resultDBoperation='<div class="alert alert-warning" >Szavazat nem sikerült.</div>';
    		$psong=0;$pinterpret=0;
    } 
-
-   //Parameter delete Vote
-   if (isset($_GET["delVote"])) $delVote = $_GET["delVote"]; else $delVote=0;
-   if ($delVote>0) {
-   		deleteVote(getAktDatabaseName(),getLoggedInUserId(),$delVote);
-   		$psong=0;$pinterpret=0;
-   }
-   //TODO VoteCount twice in code
-   $voteCount=getUserSongVoteCount(getAktDatabaseName(),getLoggedInUserId());
-   
-   //The list of Songs
-   //	if (userIsAdmin()) 
-		$topList= readTopList (getAktDatabaseName(),getLoggedInUserId());
-	//else
-	//	$topList = readVoteList(getDatabaseName(),getUserID()); 
-   
+	
+   //Read voters List
+	$votersList=readVotersList(getAktDatabaseName());
+	$allVotes=0;
+	$voteCount=0;
+	foreach ($votersList as $voter) {
+		if (trim($voter["Name"])!="")
+			$allVotes +=$voter["VotesCount"];
+		if (trim($voter["UID"])==getLoggedInUserId())
+			$voteCount =$voter["VotesCount"];
+	}
+	
+	//Check the maximal amout of vote
+	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
+	if (userIsLoggedOn()) {
+		if ($voteCount<$maxVoteCount)  
+			$voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot adhatsz"; 
+		else 
+			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
+	} else
+		$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod top 100-as zenelistályához.";
 ?>
 
-<script language="JavaScript1.2">
+
+<div class="sub_title">A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.</div>
+<div class="container-fluid">
+	<div class="well">
+		<?php echo $voteStatus?>
+	</div>
+	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
+
+	<?php if ( $voteCount<$maxVoteCount && userIsLoggedOn()  ) { ?>
+	<form action="zenetoplista.php">
+	<div class="panel panel-default">
+		<?php if (!($pinterpret>0)) { ?>
+			<div class="panel-heading">
+				<label id="dbDetails">Szavazat: Válaszd ki az előadót</label> 
+			</div>
+			<div class="form-group navbar-form">
+				Válaszd ki a kedvenc előadód, ha nem találod a listában akkor írd be a lenti mezőbe.
+ 	 		</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Az adatbázisból </label>
+				<select name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" class="form-control">
+					<option value="0">...válassz!...</option>
+					<?php
+						$interpretList= readInterpretList(getAktDatabaseName()); 
+						foreach ($interpretList as $interpret)	{
+							if ($interpret['id']==$pinterpret) $def="selected"; else $def="";
+							echo('<option value='.$interpret['id'].' '.$def.' >'.$interpret['name'].'</option>');
+						} 
+					?>	 
+				</select>
+			</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="newinterpret" id="search_left">vagy írj be egy újat <br />Például: ABBA, Hungaria, Vangelis stb.</label>
+	    	   	<input name="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)" class="form-control" />
+	    	</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" ></label>
+	    		<button class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span> Tovább</button>
+	    	</div>
+			<?php } else {?> 
+			<div class="panel-heading">
+				<label id="dbDetails">Szavazat: Válaszd ki az éneket</label> 
+			</div>
+			<div class="form-group navbar-form">
+				Válaszd ki a kedvenc énkedet, ha nem találod a listában akkor írd be a lenti mezőbe.
+ 	 		</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Előadó</label>
+	    	   	<input readonly class="form-control" value="<?php echo (readInterpret(getAktDatabaseName(),$pinterpret)["name"]);?>"/>
+	    	</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Az adatbázisból </label>
+				<select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';" class="form-control" />
+					<option value="0">...válassz!...</option>
+				  	 <?php
+				  	 	$songList= readSongList(getAktDatabaseName(),$pinterpret);
+						foreach ($songList as $song) 
+						{
+							if ($song['id']==$psong) $def="selected"; else $def="";
+							echo('<option value='.$song['id'].' '.$def.' >'.$song['name'].'</option>');
+						} 
+					 ?>	 
+				</select>
+			</div> 	 		
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="interpret" >vagy írj be egy újat<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
+	    	   	<input name="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control"/>
+	    	</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="interpret" >Youtube link vagy cód</label>
+		    	<input name="newVideo" type="text" size="50" class="form-control" />
+		    </div>
+  			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" for="interpret" >Honoldal<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
+  				<input name="newLink" type="text" size="50" class="form-control" />
+  			</div>
+			<div class="form-group navbar-form navbar">
+	    	   	<label style="min-width:300px;" ></label>
+	    		<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
+	    		<button class="btn btn-default" onclick="document.location.href='zenetoplista.php?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
+	    	</div>
+	    	 <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />	
+			<?php } ?>
+		</div>
+		</form>
+	<?php } ?>
+
+	
+<div class="col-sm-3">	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotes); ?></label> 
+		</div>
+		<div class="form-group navbar-form navbar">
+			<table>
+			  <?php foreach ($votersList as $voter) {
+			     	if (trim($voter["Name"])!="" && intval($voter["VotesCount"])>0) { ?>
+			     		<tr>
+			     			<td><img src="images/<?php echo getPerson($voter["UID"])["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" /></td>
+			     			<td><?php echo $voter["Name"]?></td>
+			     			<td>&nbsp;</td>
+			     			<td style="padding-left:15px;"><?php echo $voter["VotesCount"]?></td>
+			     		</tr>
+			     	<?php }
+			  } ?>
+			</table>
+		</div>
+	</div>
+</div>
+
+<?php 
+  	 	$topList= readTopList (getAktDatabaseName(),getLoggedInUserId());
+		
+  	 	if (sizeof($topList)<25)
+  	 		$listLength=sizeof($topList);
+  	 	else if (userIsLoggedOn())
+  	 		$listLength=100;
+  	 	else if (userIsAdmin())
+  	 		$listLength=sizeof($topList)-1;
+  	 	else
+  	 		$listLength=25;
+?>
+<div class="col-sm-9">	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<label id="dbDetails">Top <?php echo $listLength?> zenelista</label> 
+		</div>
+		<div class="form-group navbar-form navbar">
+			<table>
+			   <tr class="zenecaption">
+				<?php if (userIsAdmin()) :?>
+				   	<td>&nbsp;</td>
+				<?php  endif;?>
+			   	<td>&nbsp;</td>
+			   	<td style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span></td>
+			   	<td class="hidden-xs">Elöadó</td>
+			   	<td>Ének</td>
+			   	<?php if (userIsLoggedOn()) :?>
+			   		<td>Szavaz</td>
+			   	<?php endif;?>
+			   	<td class="hidden-xs">Youtube</td>
+			   	<td class="visible-xs" style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-film"></span></td>
+			   	<td class="hidden-xs" style="padding-left:10px;">Honoldal</td>
+			  </tr>
+			   <?php
+				for ($i=0;$i<$listLength;$i++) {
+					$v=$topList[$i];
+					$dh='&nbsp;';
+					if  ($v['voted']) {
+						$voted='<a href="zenetoplista.php?delVote='.$v['song']['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
+						$dh='<span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span>';
+					} else {
+						if (($voteCount<$maxVoteCount)&&(getLoggedInUserId()>0))
+							$voted='<a href="zenetoplista.php?song='.$v['song']['id'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
+						else
+							$voted='';
+					}
+					if (strlen($v['song']['video'])>5) 
+						$YouTubeLink='<a href="zenePlayer.php?link='.$v['song']['video'].'"><span class="glyphicon glyphicon-film"></span></a>';
+					else 
+						$YouTubeLink="&nbsp;";
+					if (strlen($v['song']['link'])>5) 
+						$wwwLink='<a target="song" href="'.$v['song']['link'].'" title="Honoldal"><span class="glyphicon glyphicon-link"></span></a>';
+					else 
+						$wwwLink='<a target="song" href="http://www.google.de/search?q='.$v['interpret']['name'].' '.$v['song']['name'].'" title="Megkeresem"><span class="glyphicon glyphicon-search"></span></a>';
+					?>
+					<tr>
+						<?php if (userIsAdmin()) :?>
+							<td><?php echo --$v["votes"]?></td>
+						<?php endif;?>
+						<td><?php echo $i+1?></td>
+						<td><?php echo $dh?></td>
+						<td class="hidden-xs"><?php echo $v['interpret']['name']?></td>
+						<td><?php echo $v['song']['name']?></td>
+						<?php if (userIsLoggedOn()) :?>
+							<td style="text-align: center;"><?php echo $voted?></td>
+						<?php endif;?>
+						<td style="text-align: center;"><?php echo $YouTubeLink?></td>
+						<td class="hidden-xs " style="text-align: center;"><?php echo$wwwLink?></td>
+					</tr>
+			<?php }?> 
+			</table>
+		</div>
+	</div>
+</div>
+
+</div>
+ <?PHP  include "homefooter.php" ?>
+
+ <script language="JavaScript1.2">
 function autoComplete (field, select, property, forcematch) {
 	var found = false;
 	for (var i = 0; i < select.options.length; i++) {
@@ -95,132 +287,4 @@ function autoComplete (field, select, property, forcematch) {
 		}
 	}
 </script>
-
-<div class="sub_title">A 25-éves Találkozó zene toplistája<!---a target="wikipedia" href="http://hu.wikipedia.org/wiki/A_szoftverkiad%C3%A1s_%C3%A9letciklusa#B.C3.A9ta">(beta)</a---></div>
-<table class="editpagetable"><tr><td width="250px">
-<!-- img src="images/music.jpg" /--->
-</td>
-<td>
-
-<?PHP 
-	if ( $voteCount<$maxVoteCount && userIsLoggedOn()  ) 
-	{
-?>
-<div><form action="zenetoplista.php">
-<table class="zene">
-  <?PHP if (!($pinterpret>0)) { ?>
-  <tr><td class="zenetab">Válaszd ki az elöadot</td><td class="zenetabout">&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td><?PHP echo($siteStatus); ?></td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">Az adatbázisból:</td><td>
-    <?PHP $interpretList= readInterpretList(getAktDatabaseName()); ?>
-  <select name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" >
-    <option value="0">...válassz!...</option>
-  	 <?PHP
-		foreach ($interpretList as $interpret) 
-		{
-			if ($interpret['id']==$pinterpret) $def="selected"; else $def="";
-			echo('<option value='.$interpret['id'].' '.$def.' >'.$interpret['name'].'</option>');
-		} 
-	 ?>	 
-  </select>
-  </td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">vagy írj be egy újat:<br/>Például ABBA, Hungaria, Vangelis stb.</td>
-      <td><input name="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)">
-  </td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td><input type="submit" value="tovább" /></td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-<?PHP } else { ?>
-  <tr><td class="zenetab">Válaszd ki az éneket</td><td class="zenetabout">&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td><?PHP echo($siteStatus); ?></td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">Elöadó:</td><td style="font-weight: bold"><?PHP $i=readInterpret(getAktDatabaseName(),$pinterpret); echo($i['name']); ?></td></tr>
-  <tr><td class="zenetext">Az adatbázisból:</td><td>
-  <?PHP $songList= readSongList(getAktDatabaseName(),$pinterpret); ?>
-  <select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';">
-    <option value="0">...válassz!...</option>
-  	 <?PHP
-		foreach ($songList as $song) 
-		{
-			if ($song['id']==$psong) $def="selected"; else $def="";
-			echo('<option value='.$song['id'].' '.$def.' >'.$song['name'].'</option>');
-		} 
-	 ?>	 
-  </select>
-  </td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td class="zenetext">vagy írj be egy újat<br/>Például: Létezem, A Kör stb.</td>
-      <td><input name="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)">
-  </td></tr>
-  <tr><td class="zenetext">Youtube</td> <td><input name="newVideo" type="text" size="50" />
-  <tr><td class="zenetext">Honoldal</td> <td><input name="newLink" type="text" size="50" />
-  </td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td><td>  <input type="submit" value="Ez az én kedvencem!" /></td></tr>
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-  <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />	
-<?PHP } ?>
-</table>
-</form></div>
-<?PHP } else { ?>
-
-<?PHP } ?>	
-</td></tr>
-
-<?PHP
-    $votersList=readVotersList(getAktDatabaseName());
-	$allVotes=0;
-	foreach ($votersList as $voter) {
-		$allVotes +=$voter["VotesCount"];
-	}
-?>
-<tr><td valign="top">
-<table  class="zenevoters" >
-  <tr><td colspan="2"><b>Szavazatok száma:<?PHP echo($allVotes); ?></b><hr/></td></tr>
-  <?PHP
-     foreach ($votersList as $voter) {
-     	echo("<tr><td>".$voter["Name"]."</td><td>".$voter["VotesCount"]."</td></tr>");
-     }
-  ?>
-</table>
-</td><td>
-<table  class="zene" width="750px" align="center">
-   <tr class="zenecaption"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>Elöadó</td><td>Ének</td><td>Bejelölés</td><td>Youtube Link</td><td>Honoldal</td></tr>
-  	 <?PHP
-		$i=1;
-		foreach ($topList as $v) 
-		{	
-			$dh='&nbsp;';
-			if  ($v['voted']) {
-				$voted='<a href="zenetoplista.php?delVote='.$v['song']['id'].'"><img border="0"  src="images/delete.gif" /> Mégsem tetszik törlöm.</a>';
-				$dh='<img src="images/DaumenHoch.png" title="Nekem tetszik :-)" />';
-			} else {
-				if (($voteCount<$maxVoteCount)&&(getLoggedInUserId()>0))
-					$voted='<a href="zenetoplista.php?song='.$v['song']['id'].'"><img border="0" src="images/ok.gif" /> Ez is tetszik</a>';
-				else
-					$voted='';
-			}
-			if (strlen($v['song']['video'])>5) 
-				$YouTubeLink='<a href="zenePlayer.php?link='.$v['song']['video'].'">YouTube</a>';
-			else 
-				$YouTubeLink="&nbsp;";
-			if (strlen($v['song']['link'])>5) 
-				$wwwLink='<a target="song" href="'.$v['song']['link'].'" >Honoldal...</a>';
-			else 
-				$wwwLink='<a target="song" href="http://www.google.de/search?q='.$v['interpret']['name'].' '.$v['song']['name'].'">Megkeresem...</a>';
-			if (userIsAdmin())
-				$rank=--$v["votes"]; 
-			else
-				$rank="&nbsp;";
-			echo('<tr><td>'.$rank.'</td><td>'.$i++.'</td><td>'.$dh.'</td><td>'.$v['interpret']['name'].'</td><td>'.$v['song']['name'].'</td><td>'. $voted .'</td><td>'.$YouTubeLink.'</td><td>'.$wwwLink.'</td></tr>');
-		} 
-	 ?>	 
-</table>
-
-</td></tr></table>
-
- <?PHP  include "homefooter.php" ?>
+ 
