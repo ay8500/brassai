@@ -445,7 +445,7 @@ function readVotersList($database)
 						$person=getPerson($uid);
 						$newVoter["Songlist"]=array();
 						array_push($newVoter["Songlist"],$songId);
-						if (!isset($person["admin"]) || $person["admin"]=="") {
+						if (!isset($person["admin"]) || strstr($person["admin"],"admin")!="admin") {
 					   	  $newVoter["Name"]=$person["lastname"].' '.$person["firstname"];
 						  $votersList[$id++]=$newVoter;
 						}
