@@ -5,9 +5,12 @@ include("songdatabase.php");
 include_once("userManager.php");
 $resultDBoperation="";
 
+//User can make changes in the toplist
+$edit = (userIsLoggedOn() && getAktDatabaseName()==getUserDatabaseName()) || userIsAdmin();
+
 //action  delete vote
 $delVote = intval(getGetParam("delVote", "-1"));
-if ($delVote>=0) {
+if ($delVote>=0 && $edit) {
    	if (deleteVote(getAktDatabaseName(),getLoggedInUserId(),$delVote))
 		$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidból törölve!</div>';
 	else 
@@ -32,13 +35,13 @@ if ($delVote>=0) {
    if (isset($_GET["newSong"])) $pnewSong = $_GET["newSong"]; else $pnewSong="";
    if (isset($_GET["newVideo"])) $pnewVideo = $_GET["newVideo"]; else $pnewVideo="";
    if (isset($_GET["newLink"])) $pnewLink = $_GET["newLink"]; else $pnewLink="";
-   if (($psong=="0") && ($pnewSong<>"" )) {
+   if (($psong=="0") && ($pnewSong<>"" && $edit )) {
    		$psong=insertNewSong(getAktDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
    		insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
    		$resultDBoperation='<div class="alert alert-success" >Zene és a szavezatod sikeresen kimentve.</div>';
    		$psong=0;$pinterpret=0;
    } 
-   if ($psong>0) {
+   if ($psong>0 && $edit) {
    		if (insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong))
 			$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
 		else 
@@ -59,13 +62,17 @@ if ($delVote>=0) {
 	
 	//Check the maximal amout of vote
 	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
-	if (userIsLoggedOn()) {
+	if ($edit) {
 		if ($voteCount<$maxVoteCount)  
 			$voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot adhatsz"; 
 		else 
 			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
-	} else
-		$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod top 100-as zenelistályához.";
+	} else {
+		if (userIsLoggedOn())
+			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?scoolYear='.getUScoolYear().'&scoolClass='.getUScoolClass().'">An én osztályom toplistálya</a>';
+		else
+			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod top 100-as zenelistályához.";
+	}
 ?>
 
 
@@ -76,7 +83,7 @@ if ($delVote>=0) {
 	</div>
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 
-	<?php if ( $voteCount<$maxVoteCount && userIsLoggedOn()  ) { ?>
+	<?php if ( $voteCount<$maxVoteCount && $edit ) { ?>
 	<form action="zenetoplista.php">
 	<div class="panel panel-default">
 		<?php if (!($pinterpret>0)) { ?>
@@ -204,9 +211,9 @@ if ($delVote>=0) {
 			   	<td>&nbsp;</td>
 			   	<td style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span></td>
 			   	<td class="hidden-xs">Elöadó</td>
-			   	<td>Ének</td>
-			   	<?php if (userIsLoggedOn()) :?>
-			   		<td>Szavaz</td>
+			   	<td style="padding-left:5px;">Ének</td>
+			   	<?php if ($edit) :?>
+			   		<td style="padding-left:5px;padding-right:5px;">Szavaz</td>
 			   	<?php endif;?>
 			   	<td class="hidden-xs">Youtube</td>
 			   	<td class="visible-xs" style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-film"></span></td>
@@ -239,10 +246,10 @@ if ($delVote>=0) {
 							<td><?php echo --$v["votes"]?></td>
 						<?php endif;?>
 						<td><?php echo $i+1?></td>
-						<td><?php echo $dh?></td>
+						<td style="padding-left:5px;padding-right:5px;"><?php echo $dh?></td>
 						<td class="hidden-xs"><?php echo $v['interpret']['name']?></td>
-						<td><?php echo $v['song']['name']?></td>
-						<?php if (userIsLoggedOn()) :?>
+						<td style="padding-left:5px;"><?php echo $v['song']['name']?></td>
+						<?php if ($edit) :?>
 							<td style="text-align: center;"><?php echo $voted?></td>
 						<?php endif;?>
 						<td style="text-align: center;"><?php echo $YouTubeLink?></td>

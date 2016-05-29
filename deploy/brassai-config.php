@@ -78,11 +78,9 @@ define('EXCLUDE', serialize(array(
 	'access.log',
 	'data/12B1985/songvote.txt',
 	'data/12A1985/songvote.txt',
-	'data/12B1985/song.txt',
-	'data/12A1985/song.txt',
-	'data/12B1985/interpret.txt',
-	'data/12A1985/interpret.txt',
 	'gb/data.xml',
+	'data/song.json',
+	'data/interpret.json',
 	'data/history.json',
 	'data/message.json'
 )));

@@ -83,7 +83,7 @@ function readInterpretList($database)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'/interpret.txt'; 
+	$FileName=$dataPath.'interpret.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		$id=0;
@@ -120,7 +120,7 @@ function readInterpret($database,$id)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'/interpret.txt'; 
+	$FileName=$dataPath.'interpret.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		while (!feof($file)) {
@@ -149,12 +149,12 @@ function insertNewInterpret($database,$newinterpret)
 	}
 	$newid +=1;
 
-	$FileName=$dataPath.$database.'/interpret.txt'; 
-    if (file_exists($FileName)) {
+	$FileName=$dataPath.'interpret.txt'; 
+    //if (file_exists($FileName)) {
 		$file=fopen($FileName ,"a");
 		fwrite($file,$newid.'='.$newinterpret."\r\n");
 		fclose($file);
-	}
+	//}
 	return $newid;
 }
 
@@ -167,7 +167,7 @@ function readSongList($database,$interpret)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'/song.txt'; 
+	$FileName=$dataPath.'song.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		$id=0;
@@ -206,7 +206,7 @@ function readSong($database,$id)
 	global $dataPath;
 	$data = array();
 
-	$FileName=$dataPath.$database.'/song.txt'; 
+	$FileName=$dataPath.'song.txt'; 
     if (file_exists($FileName)) {
 		$file=fopen($FileName ,"r");
 		while (!feof($file)) {
@@ -237,12 +237,12 @@ function insertNewSong($database, $interpretId, $newSong,$newVideo, $newLink) {
 	}
 	$newid +=1;
 
-	$FileName=$dataPath.$database.'/song.txt'; 
-    if (file_exists($FileName)) {
+	$FileName=$dataPath.'song.txt'; 
+    //if (file_exists($FileName)) {
 		$file=fopen($FileName ,"a");
 		fwrite($file,$newid.'|'.$interpretId.'|'.$newSong.'|'.$newVideo.'|'.$newLink."\r\n");
 		fclose($file);
-	}
+	//}
 	return $newid;
 }
  
