@@ -86,8 +86,8 @@ foreach ($data as $l => $d)
 				if(showField($d,"education")) 	echo "<div><span>Végzettség:</span>".$d["education"]."</div>";
 				if(showField($d,"employer")) 	echo "<div><span>Munkahely:</span>".getFieldValue($d["employer"])."</div>";
 				if(showField($d,"function")) 	echo "<div><span>Beosztás:</span>".getFieldValue($d["function"])."</div>";
-				if(showField($d,"children")) 	echo "<div><span>Gyerekek:</span>".$d["children"]."</div>";
 				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
+				if(showField($d,"place")) 	echo "<div><span>Város:</span>".$d["place"]."</div>";
 				if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";
 				?>
 	  		</div>

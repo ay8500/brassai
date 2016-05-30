@@ -157,7 +157,7 @@ if ($tabOpen==5) {
 if (strstr(getGetParam("action", ""),"new")=="" ){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
-			<img src="images/<?php echo $diak["picture"] ?>" style="height:30px; border-radius:3px;" />
+			<img src="images/<?php echo $diak["picture"] ?>" class="diak_image_icon" />
 				<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
 				<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
 	</h2>

@@ -149,13 +149,35 @@
 .diak_image {
 	width:200px;
 	border-radius: 10px;
+	filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
 }
+
 
 .diak_image_medium {
 	width:150px;
 	border-radius: 5px;
 	margin-bottom:5px;
+	filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
 }
+
+.diak_image_icon , .diak_image_sicon{
+	height:30px;
+	border-radius: 3px;
+	filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+
+.diak_image_sicon {
+	height:20px;
+}
+
+.diak_image:hover, .diak_image_medium:hover, .diak_image_icon:hover, .diak_image_sicon:hover {
+	filter: grayscale(0%);
+    -webkit-filter: grayscale(0%);
+}
+
 
 .actual_class_in_menu {
     background-color: beige;

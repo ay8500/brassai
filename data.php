@@ -325,8 +325,6 @@ function readDB()
 			$data[$id][$key]=$val;
 		fclose($file);
 	}
-	else 
-		die("Error:open database ".$dataFileName);
 	usort($data, "compareAlphabetical");
 }
 
@@ -408,9 +406,9 @@ function searchForPerson($name) {
 			{
 				openDatabase($db);
 				foreach ($data as $person) {
-					if (stristr($person["lastname"], $name)!="" ||
-						stristr($person["firstname"], $name)!="" ||
-						(isset($person["birthname"]) && stristr($person["birthname"], $name)!="")) {
+					if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
+						stristr(html_entity_decode($person["firstname"]), $name)!="" ||
+						(isset($person["birthname"]) && stristr(html_entity_decode($person["birthname"]), $name)!="")) {
 						$person["scoolYear"]=substr($db,3,4);
 						$person["scoolClass"]=substr($db,0,3);
 						array_push($ret, $person);
@@ -481,10 +479,6 @@ function readUserAuthDB()
 			}
 			fclose($file);
 		}
-		/*
-		else 
-			echo("Error:open database ".$dataFileName);
-		*/
 	}
 	return $data;
 }
@@ -728,6 +722,9 @@ function getNextPictureId($database,$personID){
 	//Next id
 	global $pictureFolder;
 	$nextId = 0;
+	if (!file_exists($pictureFolder.$database)) {
+		mkdir($pictureFolder.$database, 0777, true);
+	}
 	$directory = dir($pictureFolder.$database);	
 	while ($file = $directory->read()) {
 		if (in_array(strtolower(substr($file, -4)), array(".jpg",".gif","png"))) {
