@@ -1,4 +1,4 @@
-#Database File
+﻿#Database File
 #Last IP:87.134.89.141
 #Change Date:31.05.2016 10:52
 
@@ -14,7 +14,7 @@ passw=tr12321
 geolen=23.5924
 birthname=András
 partner=Sándor
-address=~Szőlő út 96
+address=~Szőlő út 96.
 zipcode=~407505
 place=~Tordaszentlászló
 country=~Románia
