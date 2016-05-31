@@ -16,7 +16,8 @@
 	include_once 'data.php';
 	
 	$scoolClass=getParam("scoolClassFb","");
-	openDatabase(substr($scoolClass,5,3).substr($scoolClass,0,4));
+	if ($scoolClass!="")
+		openDatabase(substr($scoolClass,5,3).substr($scoolClass,0,4));
 	
 	$userId=getIntParam("userId",-1);
 	if ($userId>=0) {
@@ -29,21 +30,15 @@
 	include_once 'history.php';
 ?>
 
-<div class="sub_title">Újdonságok</div>
-	<div class="container-fluid">
-	<?php if (getParam("action","")=="logon") { ?>
-		<div class="sub_title" style="color:red">Sajnos a bejelentkezés nem sikerült. </div>
-		<div style="text-align:center">Lehetséges rosszul írtad be a beceneved vagy lejszavad. Probálkozz még egyszer!</div>
 	<?php 
-		include("lostPassw.php");
-	}
-	elseif (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || getParam("action","")=="newPassword") {
+	if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || getParam("action","")=="newPassword") {
 		include("lostPassw.php");
 	} elseif ($facebook && !userIsLoggedOn()) { 
 		include("facebooklogin.php");
 	} else { 
-?>
-
+	?>
+	<div class="sub_title">Újdonságok</div>
+	<div class="container-fluid">
 		<div class="panel panel-default">
 			<div class="panel-heading"><h4><span class="glyphicon glyphicon-user"></span> Véndiák Újdonságok:</h4></div>
 			<div class="panel-body">

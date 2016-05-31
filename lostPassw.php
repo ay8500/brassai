@@ -80,6 +80,7 @@ function checkFirstName($name) {
 	return true;
 }
 ?>
+<div class="sub_title">Bejelentkezni szeretnék!</div>
 <div class="container-fluid">
 
 	<div class="panel panel-default">
@@ -172,6 +173,7 @@ function checkFirstName($name) {
 	</div>
 
 </div>
+
 
 <script type="text/javascript">
 	function changedRole () {

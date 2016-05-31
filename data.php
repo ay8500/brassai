@@ -219,12 +219,13 @@ function getAktPerson() {
 /**
  * Set person data
  */
-function savePerson($person) {
+function savePerson($person,$db=null) {
 	global $data;
-	if (sizeof($data)==0 || getOpenedDatabase()!=getAktDatabaseName()) {
-		openDatabase(getAktDatabaseName());
+	if( $db!=null) {
+		openDatabase($db);
 	}
-	if (sizeof($person)>0) {
+
+	if (sizeof($person)>0 || sizeof($data)>0) {
 		if (!userIsAdmin()) {
 			$person['date']=date('d.m.Y H:i');
 			$person['ip']=$_SERVER["REMOTE_ADDR"];

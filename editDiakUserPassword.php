@@ -23,7 +23,7 @@
 			<input type="hidden" value="<?php echo $uid; ?>" name="uid" />
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
-		<?php if (isset($_SESSION['FacebookId']) && $diak["facebookid"]==$_SESSION['FacebookId']) : ?>		
+		<?php if (isset($_SESSION['FacebookId']) && isset($diak["facebookid"]) && $diak["facebookid"]==$_SESSION['FacebookId']) : ?>		
 		<tr><td colspan="3"><hr/> </td></tr>
 		<tr><td colspan="3">
 			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo $_SESSION["FacebookName"] ?>" Facebook felhasználóval.<br />

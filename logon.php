@@ -122,9 +122,11 @@ function writeLogonDiv() {
 			url:"logon.php?action=logoff",
 			success:function(data){
 				if (location.href.search("editDiak.php")>0)
-					location.href="hometable.php";
-				else
-			    	location.reload();
+					location.href="editDiak.php";
+				else if (location.href.search("start.php")>0)
+					location.href="start.php";
+				else 
+					location.reload();
 			}
 		});
 	}

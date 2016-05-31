@@ -1,0 +1,51 @@
+#Database File
+#Last IP:::1
+#Change Date:31.05.2016 15:32
+
+
+id=3
+firstname=Ildikó
+lastname=Bereczky
+picture=avatar.jpg
+geolat=46.7719
+geolng=23.5924
+user=vaC2pT3Ec
+passw=qVnb7rsaP
+
+id=2
+firstname=Ildikó
+lastname=Biró
+picture=avatar.jpg
+geolat=46.7719
+geolng=23.5924
+user=hQrbPjNHf
+passw=pt5qmIJZV
+
+id=1
+firstname=Csaba
+lastname=Kiss
+picture=avatar.jpg
+geolat=46.7719
+geolng=23.5924
+user=V6Rbus37P
+passw=KxZhmwv93
+
+id=5
+firstname=Judith
+lastname=Nagy
+picture=avatar.jpg
+geolat=46.7719
+geolng=23.5924
+user=3YSvKYUrR
+passw=CX7mRZwME
+
+id=4
+firstname=Mária
+lastname=Szlávits
+picture=avatar.jpg
+geolat=46.7719
+geolng=23.5924
+user=eRzPTjKbY
+passw=ktW9eGgE8
+date=31.05.2016 15:28
+ip=::1

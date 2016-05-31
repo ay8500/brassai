@@ -1,35 +1,39 @@
 #Database File
-#Last IP:212.95.198.186
-#Change Date:01.07.2015 14:19
+#Last IP:87.134.89.141
+#Change Date:26.05.2016 23:48
 
-
-id=2
-firstname=Administrátor
-lastname=System
-picture=avatar.jpg
-geolat=46.7719
-geolen=23.5924
-user=admin
-passw=levi-kvar-67
-date=12.06.2015 22:12
-ip=::1
-geolng=23.5924
-admin=admin guest
-birthname=Levi
-country=Németország
-email=code@blue-l.de
 
 id=12
 firstname=Vendég
 lastname=Iskola
 picture=avatar.jpg
 geolat=46.7719
-geolen=23.5924
+geolng=23.5924
 user=guest
 passw=guest
 admin=guest
+geolen=23.5924
 date=14.06.2015 22:36
 place=Kolozsvár
 email=brassai@blue-l.de
 education=éretségiztem a Brassai Sámuel líceumban.
 function=véndiák
+country=Románia
+homepage=brassai.blue-l.de
+
+id=2
+firstname=Administrátor
+lastname=System
+picture=oooooo/d2-0.jpg
+geolat=46.7719
+geolng=23.5924
+user=admin
+passw=levi1967-kvar
+admin=admin editor guest
+geolen=23.5924
+date=12.06.2015 22:12
+ip=::1
+birthname=Levi
+country=Németország
+email=code@blue-l.de
+function=Szoftver fejlesztő
