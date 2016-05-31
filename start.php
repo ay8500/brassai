@@ -1,5 +1,10 @@
 <?PHP 
 	include_once 'sessionManager.php';
+	//Test facebook
+	/*
+	$_SESSION['FacebookId']="965038823537235";
+	$_SESSION["FacebookName"]="Teszt";
+	*/
 	$facebook = isset($_SESSION['FacebookId']);
 	if ($facebook) {
 		$file=fopen("facebooklogin.log","a");
@@ -10,12 +15,12 @@
 	include_once 'ltools.php';
 	include_once 'data.php';
 	
-	$scoolYear=getParam("scoolYearFb","");
 	$scoolClass=getParam("scoolClassFb","");
+	openDatabase(substr($scoolClass,5,3).substr($scoolClass,0,4));
 	
 	$userId=getIntParam("userId",-1);
 	if ($userId>=0) {
-		$person = getPerson($userId,getAktDatabaseName());
+		$person = getPerson($userId,substr($scoolClass,5,3).substr($scoolClass,0,4));
 		$person["facebookid"]= $_SESSION["FacebookId"];
 		savePerson($person);
 	}

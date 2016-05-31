@@ -13,11 +13,26 @@ chdir($dataPath);
 $dataBase = array_filter(glob('*'), 'is_dir');
 chdir("..");
 $datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
-$openedDatebase="";
+$openedDatebase=null;
 
 
 //select the database
 openDatabase( getAktDatabaseName() ) ;
+
+
+/*
+ * Database List
+ */
+function getDatabaseList() {
+	$classes = Array();
+	global $dataBase;
+	foreach($dataBase as $db) {
+		if ($db!="oooooo")
+			array_push($classes, substr($db,3,4)." ".substr($db,0,3));
+	}
+	sort($classes);
+	return $classes;
+}
 
 function getOpenedDatabase() {
 	global $openedDatabase;

@@ -117,12 +117,7 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">A többi osztályok</a>
 			  	<ul class="dropdown-menu">
 			  	<?php
-			  		$classes = Array();
-			  		foreach($dataBase as $db) {
-			  			if ($db!="oooooo")
-			  				array_push($classes, substr($db,3,4)." ".substr($db,0,3));
-			  		}
-			  		sort($classes);
+			  		$classes = getDatabaseList();
 			  		foreach($classes as $db) {
 			  			if (getAktScoolYear()==substr($db, 0,4) && getAKtScoolClass()==substr($db, 5,3)) 
 			  				$aktualClass="actual_class_in_menu";
