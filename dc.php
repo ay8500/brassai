@@ -3,12 +3,11 @@ include_once 'ltools.php';
 
 //$su = explode("/",$_SERVER["REDIRECT_REDIRECT_SCRIPT_URL"]);
 
-if(getGetParam("p", "")!="") {
+if(getGetParam("p", "")=="") {
 	$qs = explode("-",$_SERVER["REQUEST_URI"]) ;
 } else {
 	$qs = explode("-",getGetParam("p", ""));
 }
-
 /*
 if  (($su[1]=='Levi') || ($su[1]=='levi'))  {
   header('Location:Maier_Levente');
@@ -25,7 +24,8 @@ if (sizeof($qs)>2) {
 	setAktScoolYear(substr($qs[1],3,4));
 	setAktScoolClass(substr($qs[1],0,3));
 	setAktUserId($qs[2]);
-	$diak=getPerson($qs[2],$qs[1]);
+	openDatabase($qs[1]);
+	$diak=getPerson($qs[2]);
 	if ($diak==null) {
 		error();
 		exit;
