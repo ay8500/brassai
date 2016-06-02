@@ -99,8 +99,6 @@ function openDatabase($name) {
 	//no database change
 	if (getOpenedDatabase()==$name) {
 		$ret=true;
-		//$dataFileName=$dataPath.$name."/data.txt";
-		//ReadDB();
 	}
 	//database change
 	else {
@@ -114,6 +112,7 @@ function openDatabase($name) {
 			}
 		}
 	}
+	return $ret;
 }
 
 
@@ -1032,7 +1031,8 @@ function getPersonLink($ln,$fn) {
 
 function getNormalisedChars($s) {
   $trans = array (
-  	" "=>"-", "â"=>"a", "ä"=>"a","â"=>"a", "á"=>"a", "à"=>"a",
+  	" "=>"_","-"=>"_",
+  	"â"=>"a", "ä"=>"a","â"=>"a", "á"=>"a", "à"=>"a",
   	"é"=>"e", "è"=>"e", 
   	"í "=>"i", "ì"=>"i", "Í"=>"I","Ì"=>"I",
   	"ó"=>"o", "ò"=>"o", "ö"=>"o","ő"=>"o", "õ"=>"o",

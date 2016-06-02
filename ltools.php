@@ -44,4 +44,18 @@ function httpHeader($booleanResult) {
 	}
 }
 
+/**
+ * Is the server the localhost?
+ * @return true if localhost
+ */
+function localhost() {
+	$whitelist = array('127.0.0.1','::1');
+	
+	if(in_array($_SERVER['REMOTE_ADDR'], $whitelist))
+		return true;
+
+	return false;
+	
+}
+
 ?>
