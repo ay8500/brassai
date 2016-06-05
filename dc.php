@@ -1,7 +1,15 @@
 <?php
+$su= explode("?",$_SERVER["REQUEST_URI"]);
+$su = explode("/",$su[0]);
+
+if (sizeof($su)>2) {
+	$location ="Location: http://brassai.blue-l.de/".$su[1];
+	for ($i=2;$i<sizeof($su);$location .="-".$su[$i++]);
+	header($location);
+	die();
+}
 include_once 'ltools.php';
 
-//$su = explode("/",$_SERVER["REDIRECT_REDIRECT_SCRIPT_URL"]);
 
 if(getGetParam("p", "")=="") {
 	$qs = explode("-",$_SERVER["REQUEST_URI"]) ;
@@ -21,31 +29,38 @@ else if  ($su[1]=='impressum') {
 if (sizeof($qs)>2) {
 	include_once("sessionManager.php");
 	include_once ('userManager.php');
-	setAktScoolYear(substr($qs[1],3,4));
-	setAktScoolClass(substr($qs[1],0,3));
-	setAktUserId($qs[2]);
-	openDatabase($qs[1]);
-	$diak=getPerson($qs[2]);
-	if ($diak==null) {
-		error();
-		exit;
-	} else {
-		include ("editDiak.php");
-		exit();
+	if (openDatabase($qs[1])) {
+		setAktScoolYear(substr($qs[1],3,4));
+		setAktScoolClass(substr($qs[1],0,3));
+		setAktUserId($qs[2]);
+		$diak=getPerson($qs[2]);
+		if ($diak==null) {
+			error();
+			exit;
+		} else {
+			header("status: 200"); 
+			include ("editDiak.php");
+			exit();
+		}
 	}
-} else {
-	error();
-	exit;
-}
+} 
+error();
+exit;
 
 function error() { 
 	header("status: 404"); 
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum: Hiba oldal";
-	//echo(include_once("homemenu.php")); 
+	$siteHeader="<link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>";
+	include_once("homemenu.php"); 
 	?>
 	<h2 class="sub_title">Sajnos ez az oldal nem létezik ezen a szerveren.</h2>
+	<div style="background-image: url('images/kretatabla.jpg');background-size: cover;height: 600px;margin: 20px;border-radius: 30px;">	
+		<div style="font-family: Satisfy;text-align: center;vertical-align:middle;color:white;padding-top:100px">
+			<h1>Sajnos ez az oldal nem létezik ezen a szerveren.</h1>
+			<h2>Keresett oldal: <?php echo $_SERVER["REQUEST_URI"]?></h2>
+		</div>
+	</div>
 	<?php
-		//echo("Keresett oldal: ".$su[1]." ");echo($su[2]." ");echo($su[3]." ");
-		//include_once("homefooter.php");
+		include_once("homefooter.php");
 }	
 

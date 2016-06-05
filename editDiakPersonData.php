@@ -173,7 +173,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 		echo('<form action="'.$SCRIPT_NAME.'" method="get" name="edit_form" >');
 	}
 	?>
-	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
 			<?php if ($edit || $submit) {?>
@@ -192,7 +192,9 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 					?>
 					<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
 					<?php
-					echo('<input type="text" '.$itemprop.' class="form-control" readonly value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'" />');
+					$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	getFieldValueNull($diak,$dataFieldNames[$i]));
+					$fieldString = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $fieldString);
+					echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.$fieldString.'</div>');
 				 }
 			}?>
 		</div>	

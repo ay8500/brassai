@@ -3,6 +3,8 @@ if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"];
 else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"]; 
 else $tabOpen=0;
 if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
+if (!isset($tabUrl)) 
+	$tabUrl=$SCRIPT_NAME;
 ?>
 
 <script language="JavaScript" type="text/javascript">
@@ -29,7 +31,7 @@ if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
 		if ($key==$tabOpen)
 	        echo '<li class="active"><a href="#">'.$Caption.'</a></li>';
 		else
-         	echo '<li><a href="javascript:changeTab('."'".$SCRIPT_NAME.'?tabOpen='.$key."'".');" >'.$Caption.'</a></li>';
+         	echo '<li><a href="javascript:changeTab('."'".$tabUrl.'?tabOpen='.$key."'".');" >'.$Caption.'</a></li>';
 	}
 ?>       
 </ul>

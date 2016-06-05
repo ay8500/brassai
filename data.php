@@ -358,7 +358,7 @@ function compareAlphabetical($a,$b) {
 		$bb=$b["birthname"]." ".$b["firstname"];
 	else
 		$bb=$b["lastname"]." ".$b["firstname"];
-	return strcmp($aa, $bb);
+	return strcmp(getNormalisedChars($aa), getNormalisedChars($bb));
 }
 
 

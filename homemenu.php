@@ -41,6 +41,9 @@
 	<?php if (isset($diakEditStorys)) :?>
 		<link rel="stylesheet" href="editor/ui/trumbowyg.min.css">
 	<?php endif?>
+	<?php if (isset($siteHeader)) { 
+		echo $siteHeader;
+	}?>
  </head>
 <body>
 <div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>

@@ -173,6 +173,7 @@ else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
 if (getParam("action","")=="newdiak" || getParam("action","")=="newguest" || getParam("action","")=="submit_newdiak" || getParam("action","")=="submit_newguest" || getParam("action","")=="submit_newdiak_save" || getParam("action","")=="submit_newguest_save")
 	$tabsCaption=Array("Új személy adatai");
+$tabUrl="editDiak.php";
 ?>
 
 <div class="container-fluid">
