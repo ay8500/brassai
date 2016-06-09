@@ -7,13 +7,27 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		if (isset($_GET["geolat"])) $diak["geolat"]=$_GET["geolat"];
 		if (isset($_GET["geolng"])) $diak["geolng"]=$_GET["geolng"];
 	
-		savePerson($diak);
+		savePerson($diak,getAktDatabaseName());
 		if (!userIsAdmin())
 			saveLogInInfo("SaveGeo",$uid,$diak["user"],"",true);
-			$resultDBoperation='<div class="alert alert-success">Geokoordináták sikeresen módósítva!</div>';
+		$resultDBoperation='<div class="alert alert-success">Geokoordináták sikeresen módósítva!</div>';
 	}
+?>	
+	<script language="JavaScript" type="text/javascript">
+		var diak='<b><?php echo $diak["lastname"]." ".$diak["firstname"]?></b><br />';
+		diak +='<?php echo( getFieldValue($diak["address"]));?><br />';
+		diak +='<?php echo( getFieldValue($diak["zipcode"]));?>';
+		diak +='<?php echo( getFieldValue($diak["place"]))?><br />';
+		<?php if ($diak["geolat"]!="") {?>
+			var centerx = '<?php echo $diak["geolat"]?>'; 
+			var centery = '<?php echo $diak["geolng"]?>';
+		<?php } else {?>
+			var centerx =46.771919; 
+			var centery = 23.592248;
+		<?php } ?>
+	</script>
 	
-?>
+	
 	<div id="map_canvas" style="width: 100%x; height: 400px;"></div>
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	

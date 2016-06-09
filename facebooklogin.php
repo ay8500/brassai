@@ -2,7 +2,7 @@
 
 <div class="sub_title">Bejelentkezni szeretnék!</div>
 <div class="container-fluid">
-
+<div class="well">
 	<?php // Facebook username and picture?>
 	<div style="text-align: center;">
 		<div style="width:500px; background-color:#eeeeee">
@@ -69,4 +69,5 @@
 		</div>
 	<?php }?>
 	</div>
+</div>
 </div>

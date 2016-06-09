@@ -1,4 +1,10 @@
-<?PHP
+<?php
+//*********************** TABS ***********************************************************
+//** Usage
+// $tabsCaption=Array("Tab Caption 1","Tab Caption "");
+// include("tabs.php");
+// if ($tabOpen==0) {......}
+
 if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"]; 
 else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"]; 
 else $tabOpen=0;
@@ -12,6 +18,10 @@ if (!isset($tabUrl))
     
     function fieldChanged() {
     	changed = true;
+    }
+
+    function fieldSaved() {
+    	changed = false;
     }
     
     function changeTab(link) {

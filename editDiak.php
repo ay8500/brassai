@@ -137,19 +137,6 @@ include("homemenu.php");
 
 //Set person geo and data to be used in diakEditGeo.js
 if ($tabOpen==5) {
-	echo('<script language="JavaScript" type="text/javascript">'."\r\n");
-	echo("\t".'var diak="<b>');
-	if (showField($diak, "birthname")) echo($diak["birthname"].' ');
-	echo($diak["firstname"].'</b> '.$diak["lastname"].' <br/>');
-	if (showField($diak, "address")) 	echo( getFieldValue($diak["address"]).'<br />');
-	if (showField($diak, "zipcode")) echo( getFieldValue($diak["zipcode"]).'&nbsp;');
-	if (showField($diak, "place")) echo( getFieldValue($diak["place"]));
-	echo('";'."\r\n");
-	if ($diak["geolat"]!="")
-		echo("\t".'var centerx = '.$diak["geolat"].'; var centery ='.$diak["geolng"].";"."\r\n");
-	else
-		echo("\tvar centerx =46.771919; var centery = 23.592248;"."\r\n");
-	echo("</script>"."\r\n");
 
 }
 

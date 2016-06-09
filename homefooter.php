@@ -29,7 +29,7 @@
 		<script type="text/javascript" src="js/diakEditGeo.js"></script>
 	<?php endif?>
 	<?php if (isset($diakEditStorys)) :?>
-		<script src="editor/trumbowyg.min.js"></script>
+		<script type="text/javascript" src="editor/trumbowyg.min.js"></script>
 		<script type="text/javascript" src="editor/langs/hu.min.js"></script>
 		<script >
 		$( document ).ready(function() {

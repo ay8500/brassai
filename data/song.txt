@@ -1,4 +1,4 @@
-1|1|A kör|xUBjPAgP0UE|http://www.edda.hu/
+﻿1|1|A kör|xUBjPAgP0UE|http://www.edda.hu/
 2|1|Elhagyom a várost|Uifyuifn-us|http://www.edda.hu/
 3|3|Modern románc|I9Rhc7_EoMs|http://www.dollyroll.hu/
 4|1|Szálljunk fel!|O342iUVhJIs|http://www.edda.hu/
@@ -167,23 +167,27 @@
 175|96|Rush Rush|0IPbMVLZX6g|
 176|97|Nothing\'s gonna stop us now||
 177|18|220 felett||
-178|98|Játszom|http://www.youtube.com/watch?v=NhgiAuSUBCc|
-179|13|Mond kis kócos|http://www.youtube.com/watch?v=O9KN8H8d_Wg|
-180|22|Megamix|http://www.youtube.com/watch?v=eC-hB_5L0uA|
-181|99|I Like Chopin|http://www.youtube.com/watch?v=grGjD1rTNyg|
-182|100|Walk of life|http://www.youtube.com/watch?v=d-ScbqH1Fz0|
-183|101|Especially for You|http://www.youtube.com/watch?v=pOpdzS0CY8M|
-184|38|Billie Jean|http://www.youtube.com/watch?v=o3OB7B-Dwok|
-185|46|Sharazan|http://www.youtube.com/watch?v=CNql2t5hW2M|
-186|102|Balla Balla|http://www.youtube.com/watch?v=sl2At5A9SJ4|
-187|102|Balla Balla|http://www.youtube.com/watch?v=sl2At5A9SJ4|
-188|102|Balla Balla|http://www.youtube.com/watch?v=sl2At5A9SJ4|
-189|102|Balla Balla|http://www.youtube.com/watch?v=sl2At5A9SJ4|
-190|103|Swing the mood|http://www.youtube.com/watch?v=cIOPS05GMBI&feature=related|
-191|103|Swing the mood|http://www.youtube.com/watch?v=cIOPS05GMBI&feature=related|
+178|98|Játszom|NhgiAuSUBCc|
+179|13|Mond kis kócos|O9KN8H8d_Wg|
+180|22|Megamix|eC-hB_5L0uA|
+181|99|I Like Chopin|grGjD1rTNyg|
+182|100|Walk of life|d-ScbqH1Fz0|
+183|101|Especially for You|pOpdzS0CY8M|
+184|38|Billie Jean|o3OB7B-Dwok|
+185|46|Sharazan|CNql2t5hW2M|
+186|102|Balla Balla|sl2At5A9SJ4|
+191|103|Swing the mood|cIOPS05GMBI|
 192|104|You are woman|Xh_1pYNabc0|
-193|105|Megamix|http://www.youtube.com/watch?v=UpLaZWC2s5k&feature=related|
-194|106|Ilyenek voltunk|http://www.youtube.com/watch?v=H24NOQHnpMM|
-195|107|Kalmár||
-196|108|Kalmárka||
+193|105|Megamix|UpLaZWC2s5k|
+194|106|Ilyenek voltunk|H24NOQHnpMM|
 197|108|Ostóba Programm||
+198|14|Chiquitita|e9OK3KIgvtM|
+199|46|Sempre Sempre|G25exVFwweU|
+200|8|Ohio|kAJRN6mt1g8|
+201|79|Happy Nation|HWjCStB6k4o|
+202|104|Lady in black|tM_1swMfgcg|
+203|1|Erdély felé|dOOc9vzQ2yY|
+204|109|Meglépett Piroska|dRUD33JWYMM|
+205|109|Fiatalon nem jó szépet szeretni|hSqPBc8TFyM|
+206|7|Neked írom a dalt|KIpGuoIw4nA|
+207|7|Miénk itt a tér|KDwKaQQT90I|

@@ -18,34 +18,36 @@
 
 	<h3><?php  echo $title; ?></h3>
 	<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>
-	<form id="stroryForm" onsubmit="saveStory(); return false;">
-	<fieldset>
-		<textarea id="story" style="visibility:hidden; height:400px;" onkeyup="fieldChanged();" >
+		<form id="stroryForm" onsubmit="saveStory(); return false;">
+		<fieldset onkeyup="fieldChanged();" >
+			<textarea id="story" style="visibility:hidden; height:400px;" >
 <?php echo getFieldValue($text); ?>
-		</textarea>
-	</fieldset>
-	<br/>
-		<div class="radiogroup">
-			<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt a szöveget?</div>
-			<div title="Az egész világ" class="cradio radio_world"><input type="radio" name="privacy" value="world" <?php echo getFieldCheckedWord($text)?> onclick="saveStory();" /></div>
-			<div title="Az iskolatársak" class="cradio radio_scool"><input type="radio" name="privacy" value="scool" <?php echo getFieldCheckedScool($text)?> onclick="saveStory();" /></div>
-			<div title="Az osztálytársak" class="cradio radio_class"><input type="radio" name="privacy" value="class" <?php echo getFieldCheckedClass($text)?> onclick="saveStory();" /></div>
-		</div> 
-		<div class="radiogroup">
-			<div style="display: inline-block; padding:5px" >
-				Utóljára módósítva:<br />
-				<?php echo getTextDataDate(getAktDatabaseName(), $uid, $type)?>
+			</textarea>
+		</fieldset>
+		<br/>
+			<div class="radiogroup">
+				<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt a szöveget?</div>
+				<div title="Az egész világ" class="cradio radio_world"><input type="radio" name="privacy" value="world" <?php echo getFieldCheckedWord($text)?> onclick="saveStory();" /></div>
+				<div title="Az iskolatársak" class="cradio radio_scool"><input type="radio" name="privacy" value="scool" <?php echo getFieldCheckedScool($text)?> onclick="saveStory();" /></div>
+				<div title="Az osztálytársak" class="cradio radio_class"><input type="radio" name="privacy" value="class" <?php echo getFieldCheckedClass($text)?> onclick="saveStory();" /></div>
+			</div> 
+			<div class="radiogroup">
+				<div style="display: inline-block; padding:5px" >
+					Utóljára módósítva:<br />
+					<?php echo getTextDataDate(getAktDatabaseName(), $uid, $type)?>
+				</div>
+				<div style="display: inline-block; padding:5px" >
+					<input type="submit" class="btn btn-default" value="<?php echo getTextRes("Save");?>" />
+				</div>
 			</div>
-			<div style="display: inline-block; padding:5px" >
-				<input type="submit" class="btn btn-default" value="<?php echo getTextRes("Save");?>" />
-			</div>
-		</div>
-	</form>
+		</form>
 	<?php } else {
 		$okText=getFieldAccessValue($text);
-		if ($okText!=null)
+		if ($okText!=null) {
+			$okText = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	$okText);
+			$okText = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $okText);
 			echo $okText;
-		else { 
+		} else { 
 			$name="";
 			if (userIsLoggedOn()) {
 				$p =getPersonLogedOn();
@@ -81,6 +83,7 @@
 <script type="text/javascript">
 
 	function saveStory() {
+	    fieldSaved();
 		var data = {
 			id: "<?php echo $uid; ?>",
 		    type:"<?php  echo $type; ?>",

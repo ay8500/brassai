@@ -184,7 +184,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 		      		} ?>
 	      		</span>
 	      		<?php   
-	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="validateEmailInput(this);" ' : $emc="";
+	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
 	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.'/>');
 			} else {
 				if (showField($diak,$dataFieldNames[$i])) {
