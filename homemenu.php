@@ -66,56 +66,59 @@
 				<ul class="dropdown-menu">
 					<li><a href="index.php">Start</a></li>
 					<li><a href="start.php">Újdonságok</a></li>
+					<li><a href="hometable.php?scoolYear=teachers&scoolClass=ooo">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
       		</li>
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktScoolYear()."-".getAKtScoolClass()) ?><b class="caret"></b></a>
-				<ul class="dropdown-menu multi-level">
-					<li><a href="hometable.php">Véndiákok</a></li>
-					<li><a href="hometable.php?guests=true">Vendégek és tanárok</a></li>
-					<li><a href="worldmap.php">Térkép</a></li>
-					<li><a href="tablo.php">Tabló</a></li>
-					<?php if (getAktScoolYear()=="1985" && getAKtScoolClass()=='12A') : ?>
-					<li class="dropdown-submenu"><a>Régi képek</a>
-						<ul class="dropdown-menu">
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=BALLAGAS">Ballagás</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=LASTDAYS">Utolsó órák</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=EMLEKEK">Emlékek</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=SzepIdok">Kirándulások és bulik</a></li>
-						</ul>
-					</li>
-					<li class="dropdown-submenu"><a href="#">Találkozók</a>
-						<ul class="dropdown-menu">
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK10">10-éves Találkozó</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK15">15-éves Találkozó</a></li>
-							<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK20">20-éves Találkozó</a></li>
-							<li class="dropdown-submenu"><a href="#">25-éves Találkozó</a>
-								<ul class="dropdown-menu">
-									<li><a href="zenetoplista.php">Zenetoplista</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25">Az iskolánkban</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25T">Torockói panzió</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">Székelykő</a></li>
-								</ul>
-							</li>
-							<li class="dropdown-submenu"><a href="#">30-éves Találkozó</a>
-								<ul class="dropdown-menu">
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30">Osztályfőnöki</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30T">Temetőben</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30Torocko">Torockón</a></li>
-									<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30BuvoPatak">Buvó Patak</a></li>
-									<li><a href="talalk30.php">Programajánlat</a></li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<?PHP endif  ?>
-					<li><a href="vote.php">A következő Találkozó</a></li>
-					<li><a href="zenetoplista.php">Zenetoplista</a></li>
-				</ul>
-      		</li>
+      		<?php if (getAktClassName()!="") {?>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName());?><b class="caret"></b></a>
+					<ul class="dropdown-menu multi-level">
+						<li><a href="hometable.php">Véndiákok</a></li>
+						<li><a href="hometable.php?guests=true">Vendégek és tanárok</a></li>
+						<li><a href="worldmap.php">Térkép</a></li>
+						<li><a href="tablo.php">Tabló</a></li>
+						<?php if (getAktScoolYear()=="1985" && getAKtScoolClass()=='12A') : ?>
+						<li class="dropdown-submenu"><a>Régi képek</a>
+							<ul class="dropdown-menu">
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=BALLAGAS">Ballagás</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=LASTDAYS">Utolsó órák</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=EMLEKEK">Emlékek</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=SzepIdok">Kirándulások és bulik</a></li>
+							</ul>
+						</li>
+						<li class="dropdown-submenu"><a href="#">Találkozók</a>
+							<ul class="dropdown-menu">
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK10">10-éves Találkozó</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK15">15-éves Találkozó</a></li>
+								<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK20">20-éves Találkozó</a></li>
+								<li class="dropdown-submenu"><a href="#">25-éves Találkozó</a>
+									<ul class="dropdown-menu">
+										<li><a href="zenetoplista.php">Zenetoplista</a></li>
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25">Az iskolánkban</a></li>
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25T">Torockói panzió</a></li>
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">Székelykő</a></li>
+									</ul>
+								</li>
+								<li class="dropdown-submenu"><a href="#">30-éves Találkozó</a>
+									<ul class="dropdown-menu">
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30">Osztályfőnöki</a></li>
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30T">Temetőben</a></li>
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30Torocko">Torockón</a></li>
+										<li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30BuvoPatak">Buvó Patak</a></li>
+										<li><a href="talalk30.php">Programajánlat</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<?PHP endif  ?>
+						<li><a href="vote.php">A következő Találkozó</a></li>
+						<li><a href="zenetoplista.php">Zenetoplista</a></li>
+					</ul>
+	      		</li>
+	      	<?php } ?>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">A többi osztályok</a>
 			  	<ul class="dropdown-menu">
@@ -185,7 +188,7 @@
 	<h1 class="appltitle">
 		<span id="o1024" >A kolozsvári </span>
 		Brassai Sámuel líceum <span id="o400" >egykori </span>diákjai 
-		<span id="o480" ><?PHP echo(getAktScoolYear()." ".getAktScoolClass()) ?></span>
+		<span id="o480" ><?PHP echo(getAktClassName()) ?></span>
 	</h1>
 </div>
 
