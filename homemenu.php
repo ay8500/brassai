@@ -66,7 +66,7 @@
 				<ul class="dropdown-menu">
 					<li><a href="index.php">Start</a></li>
 					<li><a href="start.php">Újdonságok</a></li>
-					<li><a href="hometable.php?scoolYear=teachers&scoolClass=ooo">Tanáraink</a></li>
+					<li><a href="hometable.php?scoolYear=teac&scoolClass=ooo">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
@@ -120,7 +120,7 @@
 	      		</li>
 	      	<?php } ?>
 			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#">A többi osztályok</a>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok</a>
 			  	<ul class="dropdown-menu">
 			  	<?php
 			  		$classes = getDatabaseList();

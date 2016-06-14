@@ -79,7 +79,7 @@ foreach ($data as $l => $d)
 	if ( $guests == isPersonGuest($d) && isPersonActive($d)) {
 
 		if (userIsLoggedOn() || localhost()) {
-			$personLink="editDiak.php?uid=".$d["id"];
+			$personLink="editDiak.php?uid=".$d["id"].'&scoolYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass();
 		} else {
 			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".getAktDatabaseName()."-".$d["id"];
 		}

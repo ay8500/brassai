@@ -27,7 +27,7 @@ function getDatabaseList() {
 	$classes = Array();
 	global $dataBase;
 	foreach($dataBase as $db) {
-		if ($db!="oooooo" && $db!="oooteachers")
+		if (strstr($db,"ooo")=="")
 			array_push($classes, substr($db,3,4)." ".substr($db,0,3));
 	}
 	sort($classes);
@@ -90,7 +90,7 @@ function getUserDatabaseName()
  * The name of the aktual class
  */
 function getAktClassName() {
-	if (getAktScoolYear()!="teachers")
+	if (strstr(getAktScoolYear(),"teac")=="")
 		return getAktScoolYear()."-".getAKtScoolClass();
 	else
 		return "";
@@ -360,7 +360,11 @@ function readDB()
  * @param unknown $b
  */
 function compareAlphabetical($a,$b) {
-	if (isset($a["birthname"]) && $a["birthname"]!="") 
+	if (strstr($a["lastname"],"Dr. ")!="")
+		$a["lastname"]=substr($a["lastname"], 4);
+	if (strstr($b["lastname"],"Dr. ")!="")
+		$b["lastname"]=substr($b["lastname"], 4);
+		if (isset($a["birthname"]) && $a["birthname"]!="") 
 		$aa=$a["birthname"]." ".$a["firstname"];
 	else
 		$aa=$a["lastname"]." ".$a["firstname"];
@@ -427,7 +431,7 @@ function searchForPerson($name) {
 		global $dataPath;
 		global $data;
 		foreach($dataBase as $db) {
-			if ($db!="oooooo") 
+			if (strstr($db,"ooo")=="") 
 			{
 				openDatabase($db);
 				foreach ($data as $person) {
