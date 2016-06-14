@@ -27,7 +27,7 @@ function getDatabaseList() {
 	$classes = Array();
 	global $dataBase;
 	foreach($dataBase as $db) {
-		if ($db!="oooooo" && $db!="oootea")
+		if ($db!="oooooo" && $db!="oooteachers")
 			array_push($classes, substr($db,3,4)." ".substr($db,0,3));
 	}
 	sort($classes);

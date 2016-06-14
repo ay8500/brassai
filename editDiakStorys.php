@@ -14,6 +14,7 @@
 		$type="spare";
 	} 
 	$text =loadTextData(getAktDatabaseName(), $uid, $type);
+	$person =getPerson($uid,getAktDatabaseName());
 ?>		
 
 	<h3><?php  echo $title; ?></h3>
@@ -55,25 +56,27 @@
 			}
 			?>
 			<h4>Ez az oldal jelenleg üres.</h4>
-			Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
-			
-			<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-				<span style="min-width:110px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
-				<input id="code" type="text" size="6" value="" placeholder="Kód" class="form-control"/>
-				<div class="input-group-btn">
-					<img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" />
+			<?php if (isset($person["email"]) && $person["email"]!="") {?>
+				Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
+				
+				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+					<span style="min-width:110px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
+					<input id="code" type="text" size="6" value="" placeholder="Kód" class="form-control"/>
+					<div class="input-group-btn">
+						<img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" />
+					</div>
 				</div>
-			</div>
-			
-			<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-				<span style="min-width:110px; text-align:right" class="input-group-addon" >Nevem:</span>
-				<input id="name" type="text" value="<?php echo $name ?>" placeholder="Név" class="form-control" />
-			</div>
-			
-			<div style="margin:15px">
-				<input class="btn btn-default" id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
-			</div>	
+				
+				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+					<span style="min-width:110px; text-align:right" class="input-group-addon" >Nevem:</span>
+					<input id="name" type="text" value="<?php echo $name ?>" placeholder="Név" class="form-control" />
+				</div>
+				
+				<div style="margin:15px">
+					<input class="btn btn-default" id="more" type="button" value="Szeretnék többet olvasni róla!" onclick="sendMoreInfoRequest();" >
+				</div>	
 			<?php } ?> 
+		<?php } ?>
 	<?php }  ?>
 	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px; display: anone;"></div>
 

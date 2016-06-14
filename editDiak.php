@@ -154,7 +154,9 @@ if (strstr(getGetParam("action", ""),"new")=="" ){?>
 <?php }
 
 //initialize tabs
-if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
+if (getAktClassName()=="")
+	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajz");
+else if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
