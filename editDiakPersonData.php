@@ -116,7 +116,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 ?>
 	<?php //Person picture?>
 	<div class="diak_picture" style="display: inline-block;">
-		<img src="images/<?php echo($diak["picture"]);?>" border="0" alt="" itemprop="image" class="diak_image" />
+		<img src="images/<?php echo($diak["picture"]);?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
 	</div>
 	
 	<?php //Person picture download?>
@@ -131,7 +131,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
 			</form>
 		</div>
-		<?php if (getLoggedInUserId()<>$diak["id"]) {  //Don't delete myself?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] && getUserDatabaseName()==getAktDatabaseName())) {  //Don't delete myself?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="deleteDiak(<?php echo("'".getAktDatabaseName()."','".$diak["id"]."'");?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Diákot véglegesen kitöröl!</button>
 		</div>

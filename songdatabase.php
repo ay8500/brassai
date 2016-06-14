@@ -89,10 +89,11 @@ function readInterpretList($database)
 		$id=0;
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
-			if (isset($b[1])) { 
-				$data[$id]['id']=$b[0];
+			$iid =intval(trim($b[0]));
+			if (isset($b[1])) {
 				$data[$id]['name']=$b[1];
-				$id +=1;
+				$data[$id]['id']=$iid;
+				$id++;
 			}
 		}
 		fclose($file);
@@ -144,18 +145,26 @@ function insertNewInterpret($database,$newinterpret)
 	global $dataPath;
 	$data = readInterpretList($database);
 	$newid=0;
+	$found=false;
 	foreach ($data as $i) {
-	   if ($i['id']>$newid) $newid=$i['id'];	
+	   if ($i['id']>$newid) 
+	   		$newid=$i['id'];
+	   if (trim(strtolower($i["name"]))==trim(strtolower($newinterpret)))
+	   		$found=true;
 	}
 	$newid +=1;
 
-	$FileName=$dataPath.'interpret.txt'; 
-    //if (file_exists($FileName)) {
-		$file=fopen($FileName ,"a");
-		fwrite($file,$newid.'='.$newinterpret."\r\n");
-		fclose($file);
-	//}
-	return $newid;
+	if ($found==false) {
+		$FileName=$dataPath.'interpret.txt'; 
+	    //if (file_exists($FileName)) {
+			$file=fopen($FileName ,"a");
+			fwrite($file,$newid.'='.$newinterpret."\r\n");
+			fclose($file);
+		//}
+		return $newid;
+	} else {
+		return -1;
+	}
 }
 
 /**
@@ -174,8 +183,8 @@ function readSongList($database,$interpret)
 		while (!feof($file)) {
 			$b = explode("|",fgets($file));
 			if ( (isset($b[1])) && (($interpret==$b[1])||$interpret==0)   ) {
-				$data[$id]['id']=$b[0];
-				$data[$id]['interpretId']=$b[1];
+				$data[$id]['id']=intval($b[0]);
+				$data[$id]['interpretId']=intval($b[1]);
 				$data[$id]['name']=$b[2];
 				if  (isset($b[3])) $data[$id]['video']=$b[3]; else $data[$id]['video']="";
 				if  (isset($b[4])) $data[$id]['link']=$b[4]; else $data[$id]['link']="";
@@ -232,18 +241,26 @@ function insertNewSong($database, $interpretId, $newSong,$newVideo, $newLink) {
 	global $dataPath;
 	$data = readSongList($database,0); 	
 	$newid=0;
+	$found=false;
 	foreach ($data as $i) {
-	   if ($i['id']>$newid) $newid=$i['id'];	
+	   if ($i['id']>$newid) 
+	   		$newid=$i['id'];	
+	   if (trim(strtolower($i["name"]))==trim(strtolower($newSong)))
+	   		$found=true;
 	}
 	$newid +=1;
 
-	$FileName=$dataPath.'song.txt'; 
-    //if (file_exists($FileName)) {
-		$file=fopen($FileName ,"a");
-		fwrite($file,$newid.'|'.$interpretId.'|'.$newSong.'|'.$newVideo.'|'.$newLink."\r\n");
-		fclose($file);
-	//}
-	return $newid;
+	if ($found==false) {
+		$FileName=$dataPath.'song.txt'; 
+	    //if (file_exists($FileName)) {
+			$file=fopen($FileName ,"a");
+			fwrite($file,$newid.'|'.$interpretId.'|'.$newSong.'|'.$newVideo.'|'.$newLink."\r\n");
+			fclose($file);
+		//}
+		return $newid;
+	} else {
+		return -1;
+	}
 }
  
 /**
@@ -372,21 +389,25 @@ function readVoteList($database,$userId)
 		$id=0;
 		while (!feof($file)) {
 			$b = explode("=",fgets($file));
-			if (isset($b[1]) && intval($b[0]>0)) { 
-				$data[$id]['song']= getSongFromList($songList,$b[0]);
-				$data[$id]['interpret']=getInterpretFromList($interpretList,$data[$id]['song']['interpretId']);
-				$data[$id]['user']=$b[1];
-				$data[$id]['voted']=false;
-				$userIds = explode (",",$b[1]);
-				$countVotesPerUser=0;
-				foreach($userIds as $uid) {
-					$countVotesPerUser++;
-					if ( rtrim($uid,"\r\n")==$userId) {
-						$data[$id]['voted']=true;
+			$sid=intval($b[0]);
+			if (isset($b[1]) && $sid>0) { 
+				$song = getSongFromList($songList,$sid);
+				if (isset($song['interpretId'])) {
+					$data[$id]['song']=$song; 
+					$data[$id]['interpret']=getInterpretFromList($interpretList,$song['interpretId']);
+					$data[$id]['user']=$b[1];
+					$data[$id]['voted']=false;
+					$userIds = explode (",",$b[1]);
+					$countVotesPerUser=0;
+					foreach($userIds as $uid) {
+						$countVotesPerUser++;
+						if ( rtrim($uid,"\r\n")==$userId) {
+							$data[$id]['voted']=true;
+						}
 					}
+					$data[$id]['votes']=$countVotesPerUser;
+					$id++;
 				}
-				$data[$id]['votes']=$countVotesPerUser;
-				$id++;
 			}
 		}
 		fclose($file);

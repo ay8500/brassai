@@ -1,4 +1,5 @@
-﻿1|1|A kör|xUBjPAgP0UE|http://www.edda.hu/
+﻿
+1|1|A kör|xUBjPAgP0UE|http://www.edda.hu/
 2|1|Elhagyom a várost|Uifyuifn-us|http://www.edda.hu/
 3|3|Modern románc|I9Rhc7_EoMs|http://www.dollyroll.hu/
 4|1|Szálljunk fel!|O342iUVhJIs|http://www.edda.hu/
@@ -55,7 +56,7 @@
 57|3|Ábrándos szép napok|pADXe3JHuRo|http://www.dollyroll.hu/
 58|3|Arrivederci Amore|CTjNhH4V0Rk|http://www.dollyroll.hu/
 60|21|How Deep Is Your Love|0vgwk8tUT5k|
-63|34|My Heart Will Go On|zmbw8OycJrE|
+63|34|Parler à mon père|_LTsjwiTN7w|
 64|40|I Can\'t Dance-Genesis |UoSU0BoEUQM|
 65|41|Old Time Rock N\' Roll|SsSVcRYh8dE|
 66|22|Marie Marie|fIV73t2FpOg|
@@ -180,7 +181,7 @@
 192|104|You are woman|Xh_1pYNabc0|
 193|105|Megamix|UpLaZWC2s5k|
 194|106|Ilyenek voltunk|H24NOQHnpMM|
-197|108|Ostóba Programm||
+197|108|Hello|YQHsXMglC9A|
 198|14|Chiquitita|e9OK3KIgvtM|
 199|46|Sempre Sempre|G25exVFwweU|
 200|8|Ohio|kAJRN6mt1g8|
@@ -191,3 +192,14 @@
 205|109|Fiatalon nem jó szépet szeretni|hSqPBc8TFyM|
 206|7|Neked írom a dalt|KIpGuoIw4nA|
 207|7|Miénk itt a tér|KDwKaQQT90I|
+208|107|Utazás|_u-KeWaf7W8|
+209|109|Nincsen hibád!|xv1GqGphNXE|
+210|37| I Wanna Dance With Somebody|eH3giaIzONA|
+211|110|It Must Have Been Love|k2C5TjS2sh4|
+212|110|Listen To Your Heart|yCC_b5WHLX0|
+213|110|Spending My Time|eG0IYV6G0I0|
+214|110|Fading Like A Flower|8fGLiIvKKys|
+215|111|Azért vannak a jó barátok|JHJyJ9xYEFA|
+216|111|Egyszer véget ér|-ZVQmLWS5ls|
+
+217|1|Égek felé kiáltottam|2lmas7LY5UU|

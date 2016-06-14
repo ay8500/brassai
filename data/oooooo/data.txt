@@ -1,6 +1,6 @@
-#Database File
+﻿#Database File
 #Last IP:87.134.89.141
-#Change Date:26.05.2016 23:48
+#Change Date:02.06.2016 18:12
 
 
 id=12
@@ -37,3 +37,5 @@ birthname=Levi
 country=Németország
 email=code@blue-l.de
 function=Szoftver fejlesztő
+
+

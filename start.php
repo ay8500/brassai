@@ -1,10 +1,10 @@
 <?PHP 
 	include_once 'sessionManager.php';
 	//Test facebook
-	/*
+	
 	$_SESSION['FacebookId']="965038823537235";
 	$_SESSION["FacebookName"]="Teszt";
-	*/
+	
 	$facebook = isset($_SESSION['FacebookId']);
 	if ($facebook) {
 		$file=fopen("facebooklogin.log","a");

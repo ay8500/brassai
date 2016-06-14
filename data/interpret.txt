@@ -1,4 +1,5 @@
-﻿1=Edda Müvek
+﻿
+1=Edda Müvek
 2=R-Go
 3=Dolly Roll
 4=Hungária
@@ -105,3 +106,6 @@
 107=Szörényi Levente
 108=Adel
 109=Knock Out
+110=Roxette
+111=Máthé Péter
+

@@ -7,7 +7,7 @@ include_once 'ltools.php';
 openDatabase(getAktDatabaseName());
 
 $resultDBoperation="";
-if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && (userIsEditor() || userIsAdmin()) ) {
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getUserDatabaseName()==getAktDatabaseName()) || userIsAdmin()) ) {
 	deleteDiak(getGetParam("uid",""),getGetParam("db",""));
 	$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
 }

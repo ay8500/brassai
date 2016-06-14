@@ -27,7 +27,10 @@ if ($delVote>=0 && $edit) {
    if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
    		$pinterpret=insertNewInterpret(getAktDatabaseName(),$pnewinterpret);
-   		$resultDBoperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
+   		if ($pinterpret>=0) 
+   			$resultDBoperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
+   		else
+   			$resultDBoperation='<div class="alert alert-warning" >Előadó az adatbankban már létezik! Kimentés nem volt szükséges.</div>';
    }
    
    //Parameter Song
@@ -37,9 +40,14 @@ if ($delVote>=0 && $edit) {
    if (isset($_GET["newLink"])) $pnewLink = $_GET["newLink"]; else $pnewLink="";
    if (($psong=="0") && ($pnewSong<>"" && $edit )) {
    		$psong=insertNewSong(getAktDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
-   		insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
-   		$resultDBoperation='<div class="alert alert-success" >Zene és a szavezatod sikeresen kimentve.</div>';
-   		$psong=0;$pinterpret=0;
+   		if ($psong>=0) {
+   			insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
+   			$resultDBoperation='<div class="alert alert-success" >Zene és a szavezatod sikeresen kimentve.</div>';
+   			$psong=0;$pinterpret=0;
+   		} else {
+   			$resultDBoperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
+   			$psong=0;
+   		}
    } 
    if ($psong>0 && $edit) {
    		if (insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong))
