@@ -206,10 +206,33 @@
 	 * user is logged in and is a editor
 	 */
 	function userIsEditor() {
-		if (isset($_SESSION['uRole']) && getAktDatabaseName()==getUserDatabaseName()) 
+		//User is editor in his own db
+		if (isset($_SESSION['uRole']) && getAktDatabaseName()==getUserDatabaseName()) {
 			return strstr($_SESSION['uRole'],"editor")!="";
-		else 
-			return false;
+		} else { 
+			//User is teacher and editor
+			if (isset($_SESSION['uRole']) && strstr(getUserDatabaseName(),"teac")!="") { 
+				if (strstr($_SESSION['uRole'],"editor")!="") {
+					$p=getPerson(getLoggedInUserId(),getUserDatabaseName());
+					openDatabase(getAktDatabaseName());
+					if (isset($p["children"])) {
+						$c=explode(",", $p["children"]);
+						$ret = false;
+						foreach ($c as $cc) {
+							if (substr($cc,0,3)==getAKtScoolClass() && substr($cc,3,4)==getAktScoolYear()) 
+								$ret=true;
+						}
+						return $ret;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 	}
 
 	

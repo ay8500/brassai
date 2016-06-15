@@ -71,7 +71,7 @@
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
       		</li>
-      		<?php if (getAktClassName()!="") {?>
+      		<?php if (!isTeachersDb()) {?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName());?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">

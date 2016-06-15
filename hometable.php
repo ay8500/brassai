@@ -14,11 +14,11 @@ if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor(
 
 // Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
-if (getAktClassName()=="") {
+if (isTeachersDb()) {
 	echo('<h2 class="sub_title">Tanáraink</h2>');
 } else {
 	if ($guests )
-		echo('<h2 class="sub_title">Tanárok, régi volt osztálytársak, vendégek, jó barátok.</h2>');
+		echo('<h2 class="sub_title">Nem végzős osztálytársak, vendégek, jó barátok.</h2>');
 	else
 		echo('<h2 class="sub_title">Osztálytársak</h2>');
 }
@@ -31,8 +31,8 @@ if (getAktClassName()=="") {
 		<?php if (userIsAdmin() || userIsEditor() ) {?>
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="newguest" />
-				<input class="btn btn-default" type="submit" value="Névsor bővítése új tanárral,vendéggel, jó baráttal"/>
-			<?php } else if (getAktClassName()!="") {?>
+				<input class="btn btn-default" type="submit" value="Névsor bővítése új vendéggel, jó baráttal"/>
+			<?php } else if (!isTeachersDb()) {?>
 				<input type="hidden" name="action" value="newdiak" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új véndiákkal "/>
 			<?php } else  {?>
@@ -42,8 +42,8 @@ if (getAktClassName()=="") {
 		<?php } else if (!userIsLoggedOn()) { ?>
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="submit_newguest" />
-				<input class="btn btn-default" type="submit" value="Bővítsd a névsort" title="Szeretnék én is ezen a listán mit tanár, barát vagy ismerős szerepelni"/>
-			<?php } else if (getAktClassName()!="") {?>
+				<input class="btn btn-default" type="submit" value="Bővítsd a névsort" title="Szeretnék én is ezen a listán mint barát vagy ismerős szerepelni"/>
+			<?php } else if (!isTeachersDb()) {?>
 				<input type="hidden" name="action" value="submit_newdiak" />
 				<input class="btn btn-default" type="submit" value="Bővítsd a vándiákok névsorát" title="Én is ebben az osztályban végeztem, szeretnék én is ezen a listán lenni."/>
 			<?php } else {?>
@@ -54,7 +54,7 @@ if (getAktClassName()=="") {
 		</form>
 		<?php if($guests) {?>
 			Vendégek száma:
-		<?php } else if (getAktClassName()!="") {?>
+		<?php } else if (!isTeachersDb()) {?>
 			Véndiákok száma:
 		<?php  } else { ?>
 			Tanárok száma:
@@ -83,7 +83,7 @@ foreach ($data as $l => $d)
 		} else {
 			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".getAktDatabaseName()."-".$d["id"];
 		}
-		if ($d["admin"]=="rip")
+		if (strstr($d["admin"],"rip")!="")
 			$rip="rip";
 		else 
 			$rip="";
@@ -104,7 +104,7 @@ foreach ($data as $l => $d)
 			</h4>
 			<div class="fields"> 
 				<?php 
-				if (getAktClassName()!='') {
+				if (!isTeachersDb()) {
 					if(showField($d,"partner")) 	echo "<div><span>Élettárs:</span>".$d["partner"]."</div>";
 					if(showField($d,"education")) 	echo "<div><span>Végzettség:</span>".$d["education"]."</div>";
 					if(showField($d,"employer")) 	echo "<div><span>Munkahely:</span>".getFieldValue($d["employer"])."</div>";
@@ -113,7 +113,13 @@ foreach ($data as $l => $d)
 					if(showField($d,"place")) 		echo "<div><span>Város:</span>".$d["place"]."</div>";
 					if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";
 				} else {
-					if(showField($d,"function")) 	echo "<div><span>Tantárgy:</span>".getFieldValue($d["function"])."</div>";
+					if (isset($d["function"]))		echo "<div><span>Tantárgy:</span>".getFieldValue($d["function"])."</div>";
+					if (isset($d["children"])) {	echo "<div><span>Osztályfönök:</span>";
+													$c = explode(",", getFieldValue($d["children"]));
+													foreach ($c as $cc) 
+														echo(' <a href="hometable.php?scoolYear='.substr($cc,3,4).'&scoolClass='.substr($cc,0,3).'">'.$cc.'</a> ');
+													echo "</div>";
+					}
 					if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
 					if(showField($d,"place")) 		echo "<div><span>Város:</span>".$d["place"]."</div>";
 					if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";

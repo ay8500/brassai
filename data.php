@@ -90,10 +90,17 @@ function getUserDatabaseName()
  * The name of the aktual class
  */
 function getAktClassName() {
-	if (strstr(getAktScoolYear(),"teac")=="")
-		return getAktScoolYear()."-".getAKtScoolClass();
+	if (isTeachersDb())
+		return '';
 	else
-		return "";
+		return getAktScoolYear()."-".getAKtScoolClass();
+}
+
+/**
+ * return true if the teachers database is the actual database 
+ */
+function isTeachersDb() {
+	return strstr(getAktScoolYear(),"teac")!="";
 }
 
 /**

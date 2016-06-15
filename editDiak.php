@@ -154,7 +154,7 @@ if (strstr(getGetParam("action", ""),"new")=="" ){?>
 <?php }
 
 //initialize tabs
-if (getAktClassName()=="")
+if (isTeachersDb())
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajz");
 else if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
@@ -204,7 +204,7 @@ $tabUrl="editDiak.php";
 
 <script type="text/javascript">
 	function deleteDiak(db,id) {
-		if (confirm("Biztos kiakarod véglegesen törölni ezt a véndiákot?")) {
+		if (confirm("Személy végleges törölését kérem konfirmálni!")) {
 			window.location.href="hometable.php?uid="+id+"&db="+db+"&action=delete_diak";
 		}
 	}

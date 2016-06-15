@@ -31,6 +31,10 @@ if (userIsAdmin()) {
 	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
 }
+if (isTeachersDb() ) {
+	$dataFieldCaption[16]="Tantárgy";
+	$dataFieldCaption[17]="Osztályfönök";
+}
 
 
 //create new person in case of submittin a new one
@@ -131,9 +135,10 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
 			</form>
 		</div>
-		<?php if (!(getLoggedInUserId()==$diak["id"] && getUserDatabaseName()==getAktDatabaseName())) {  //Don't delete myself?>
+		<?php  //Don't delete myself?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] && getUserDatabaseName()==getAktDatabaseName())) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="deleteDiak(<?php echo("'".getAktDatabaseName()."','".$diak["id"]."'");?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Diákot véglegesen kitöröl!</button>
+			<button onclick="deleteDiak(<?php echo("'".getAktDatabaseName()."','".$diak["id"]."'");?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
 		</div>
 		<?php } ?>
 	<?php } ?>
@@ -147,10 +152,10 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	
 	<?php //Secutiry code and create new person button?>
 	<?php if ($submit) {?>
-		<div style="display: inline-block;margin-bottom:15px;vertical-align: bottom; width:275px">
+		<div style="display: inline-block;margin-bottom:15px;vertical-align: bottom; width:295px">
 			<div class="input-group input-group-sl" >
 				<span style="min-width:80px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
-				<input id="code" type="text" size="6" value="" placeholder="Kód" class="form-control"/>
+				<input id="code" type="text"  value="" placeholder="Kód" class="form-control"/>
 				<div class="input-group-btn">
 					<img style="width:100px" class="form-control" alt="security code" src="SecurityImage/SecurityImage.php" />
 				</div>
@@ -168,7 +173,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 		echo('<div style="min-height:30px" class="input-group">');
       	echo('<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>');
       	echo('<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>');
-		echo('<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak az osztálytársaid lássák, akkor jelöld meg öket!" />');
+		echo('<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />');
    		echo('</div>');	
 		echo('<form action="'.$SCRIPT_NAME.'" method="get" name="edit_form" >');
 	}
@@ -194,7 +199,15 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 					<?php
 					$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	getFieldValueNull($diak,$dataFieldNames[$i]));
 					$fieldString = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $fieldString);
-					echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.$fieldString.'</div>');
+					if (isTeachersDb() && $dataFieldNames[$i]=="children") {
+						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
+						echo('<div  class="form-control" style="height:auto;">');
+						foreach ($c as $cc)
+							echo('<a href="hometable.php?scoolYear='.substr($cc,3,4).'&scoolClass='.substr($cc,0,3).'">'.$cc.'</a> ');
+						echo('</div>');
+					} else {
+						echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.$fieldString.'</div>');
+					}
 				 }
 			}?>
 		</div>	
@@ -210,6 +223,8 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	}
 
 ?>
+
+
 <script>
 	function validateEmailInput(sender,button) { 
 		if (validateEmail(sender.value)) {
