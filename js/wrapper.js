@@ -1,8 +1,6 @@
 $( document ).ready(function() {
     $("#wrapper").append('<div id="wrapper_frame"></div>');
-    for (var i=1;i<=countWrapper;i++){
-	getWrapperData(); 
-    }
+    getWrapperData(); 
     initWrapper();
     setInterval(slide, 5000);
 });
@@ -43,11 +41,34 @@ function addWrapperDiv(id) {
             html +=d.name;
             html +='</h4>';
             html +='<div class="fields">'; 
-            html +='<div><span>Végzös osztály:</span><a href="hometable.php?scoolYear='+idx[1]+'&scoolClass='+idx[0]+'">'+idx[0]+'-'+idx[1]+'</a></div>';
-            if (d.education!=null)
-        	html +='<div><span>Végzettség:</span><br/>&nbsp;&nbsp;&nbsp;'+d.education+'</div>';
+            if (idx[1]=="teac") {
+        	html +='<div><span>Tanár:</span>'+d['function']+'</div>';
+        	if (d.children!=null) {
+        	    html +='<div><span>Osztályfőnök:</span>';
+        	    var kx= d.children.split(",");
+        	    for (var k=0;k<kx.length;k++) {
+        		html +='<a href="hometable.php?scoolYear='+kx[k].substring(3,7)+'&scoolClass='+kx[k].substring(0,3)+'">'+kx[k]+'</a>&nbsp;';
+        	    }
+        	    html +='</div>';
+        	}
+            } else {
+        	html +='<div><span>Végzős osztály:</span><a href="hometable.php?scoolYear='+idx[1]+'&scoolClass='+idx[0]+'">'+idx[0]+'-'+idx[1]+'</a></div>';
+            }
+            if (d.place!=null)
+        	html +='<div><span>Helyiség:</span><br/>&nbsp;&nbsp;&nbsp;'+d.place+'</div>';
             if (d.employer!=null)
         	html +='<div><span>Munkahely:</span><br/>&nbsp;&nbsp;&nbsp;'+d.employer+'</div>';
+            html +='<div style="margin-top:5px">';
+            if(d.email!=null)
+        	html +='<a href="mailto:'+d.email+'"><img src="images/email.png" /></a>';
+            if (d.facebook!=null)
+        	html +='&nbsp;<a target="_new" href='+d.facebook+'><img src="images/facebook.png" /></a>';
+            if (d.twitter!=null)
+        	html +='&nbsp;<a target="_new" href='+d.twitter+'><img src="images/twitter.png" /></a>';
+            if (d.homepage!=null)
+        	html +='&nbsp;<a target="_new" href='+d.homepage+'><img src="images/www.png" /></a>';
+            html +='</div>';
+
             html +='</div>';
             html +='</div>';
             $("#wrapper_frame").append(html);
@@ -85,6 +106,8 @@ function getWrapperData() {
  	success:function(person){
  	    data.push(person);
  	    initWrapper();
+ 	    if (data.length<countWrapper)
+ 		getWrapperData();
  	}
      });
 

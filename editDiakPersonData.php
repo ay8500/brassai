@@ -20,10 +20,10 @@ $dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
 $dataItemProp       =array("","","");
 $dataCheckFieldVisible	=array(false,false,true);
 if (!$submit && !$submitsave) {
-	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country","phone","mobil","skype","facebook","homepage","education","employer","function","children");
-	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry","","","","","","","","","","","");
-	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible, false,false,true,true,true,true,true,true,true,true,true,false,true,true, false,false);
+	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country","phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
+	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry","","","","","","","","","","","","");
+	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
+	array_push($dataCheckFieldVisible, false,false,true,true,false,false,true,true,true,false,false,true,true,false,true,true, false,false);
 }
 if (userIsAdmin()) {
 	array_push($dataFieldNames, "facebookid","admin","id", "user", "passw", "geolat", "geolng");

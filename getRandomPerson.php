@@ -10,27 +10,56 @@ $idArray = explode(",", $idList);
 
 
 $p=getRandomPerson();
-while ($p["picture"]=="avatar.jpg" || notUnique($idArray,$p["class"],$p["year"],$p["id"])) {
+$i=0;
+while (($p["picture"]=="avatar.jpg" || 
+		notUnique($idArray,$p["class"],$p["year"],$p["id"]) ||
+		sizeof($data)<8
+		) && 
+		$i++<10)
+{
 	$p=getRandomPerson();
 }
 
 $person = Array();
 
-$person["name"]=$p["firstname"]."&nbsp".$p["lastname"];
+$person["name"]=$p["lastname"]." ".$p["firstname"];
 $person["id"]=$p["class"]."-".$p["year"]."-".$p["id"];
 $person["image"]=$p["picture"];
 if (isset($p["education"]) && showField($p,"education")) 
 	$person["education"]=getFieldValue($p,"education");
 if (isset($p["employer"]) && showField($p,"employer"))
 	$person["employer"]=getFieldValue($p,"employer");
-
-
+if (isset($p["country"]) && showField($p,"country"))
+	$person["place"]=getFieldValue($p,"country");
+else
+	$person["place"]="";
+if (isset($p["place"]) && showField($p,"place"))
+	$person["place"] .=" ".getFieldValue($p,"place");
+if (strlen($person["place"])<5)
+	unset($person["place"]);
+if (isset($p["facebook"]) && showField($p,"facebook"))
+	$person["facebook"]=getFieldValue($p,"facebook");
+if (isset($p["email"]) && showField($p,"email"))
+	$person["email"]=getFieldValue($p,"email");
+if (isset($p["twitter"]) && showField($p,"twitter"))
+	$person["twitter"]=getFieldValue($p,"twitter");
+if (isset($p["homepage"]) && showField($p,"homepage"))
+	$person["homepage"]=getFieldValue($p,"homepage");
+if (isset($p["function"]) && showField($p,"function"))
+	$person["function"]=getFieldValue($p,"function");
+if (isset($p["children"]) && showField($p,"children"))
+	$person["children"]=getFieldValue($p,"children");
+	
 
 echo(json_encode($person));
 
+/**
+ * Get a random person  
+ */
 function getRandomPerson() {
 	global $data;
 	$dblist = getDatabaseList();
+	array_push($dblist,"teac ooo");
 	
 	$dbidx=rand(0,sizeof($dblist)-1);
 	
@@ -45,6 +74,11 @@ function getRandomPerson() {
 	return $p;
 }
 
+/**
+ * Person identifikation is allready in the idArray
+ * @param $idArray list of ids
+ * @param Person id:  $class-$year-$id
+ */
 function notUnique($idArray,$class,$year,$id) {
 	foreach ($idArray as $idtext) {
 		if ($idtext==$class."-".$year."-".$id) {

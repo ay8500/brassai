@@ -109,9 +109,6 @@ foreach ($data as $l => $d)
 					if(showField($d,"education")) 	echo "<div><span>Végzettség:</span>".$d["education"]."</div>";
 					if(showField($d,"employer")) 	echo "<div><span>Munkahely:</span>".getFieldValue($d["employer"])."</div>";
 					if(showField($d,"function")) 	echo "<div><span>Beosztás:</span>".getFieldValue($d["function"])."</div>";
-					if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
-					if(showField($d,"place")) 		echo "<div><span>Város:</span>".$d["place"]."</div>";
-					if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";
 				} else {
 					if (isset($d["function"]))		echo "<div><span>Tantárgy:</span>".getFieldValue($d["function"])."</div>";
 					if (isset($d["children"])) {	echo "<div><span>Osztályfönök:</span>";
@@ -120,10 +117,19 @@ foreach ($data as $l => $d)
 														echo(' <a href="hometable.php?scoolYear='.substr($cc,3,4).'&scoolClass='.substr($cc,0,3).'">'.$cc.'</a> ');
 													echo "</div>";
 					}
-					if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
-					if(showField($d,"place")) 		echo "<div><span>Város:</span>".$d["place"]."</div>";
-					if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";
 				}
+				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
+				if(showField($d,"place")) 		echo "<div><span>Város:</span>".getFieldValue($d["place"])."</div>";
+				echo('<div style="margin-top:5px"><span></span>');
+					if(showField($d,"email"))
+						echo '<a href="mailto:'.getFieldValue($d["email"]).'"><img src="images/email.png" /></a>';
+					if (isset($d["facebook"]) && strlen($d["facebook"])>8)
+						echo '&nbsp;<a target="_new" href='.getFieldValue($d["facebook"]).'><img src="images/facebook.png" /></a>';
+					if (isset($d["twitter"]) && strlen($d["twitter"])>8)
+						echo '&nbsp;<a target="_new" href='.getFieldValue($d["twitter"]).'><img src="images/twitter.png" /></a>';
+					if (isset($d["homepage"]) && strlen($d["homepage"])>8)
+						echo '&nbsp;<a target="_new" href='.getFieldValue($d["homepage"]).'><img src="images/www.png" /></a>';
+				echo("</div>");
 				?>
 	  		</div>
 		</div>

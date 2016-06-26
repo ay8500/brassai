@@ -12,7 +12,7 @@ $dataPath = "data/";
 chdir($dataPath);
 $dataBase = array_filter(glob('*'), 'is_dir');
 chdir("..");
-$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid");
+$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","homepage","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid","twitter");
 $openedDatebase=null;
 
 
@@ -980,6 +980,7 @@ function getFieldValue($person,$field=null) {
 		  $ret = ltrim($person[$field],"~");
 	}
   $ret = trim($ret);
+  $ret= str_replace("%3D", "=", $ret); 
   return  $ret;
 }
 

@@ -10,7 +10,7 @@ include("homemenu.php");
 <h2 class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján</h2>
 <div class="container-fluid">
 	<div  style="padding:15px;" class="col-sm-6" >
-		<h4>Használd ezt az oldalt ingyenesen, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!</h4>
+		<h4>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!</h4>
 		Lehetőségeid a véndiákok oldalán:
 		<ul>
 			<li><a href="message.php">Üzenetek</a> küldése volt osztálytársaknak, volt iskolatársaknak vagy az egész világnak.</li>
