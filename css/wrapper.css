@@ -1,0 +1,23 @@
+#wrapper{
+	width:100%;
+	overflow: hidden;
+	position: relative;
+}
+
+#wrapper>div{
+	width:3000px;
+	display: block;
+	position:relative;
+	left: 0px;
+}
+
+#wrapper>div>div {
+	display:inline-block;
+	min-height: 200px;
+    background-color: #eeeeee;
+    border-radius: 10px;
+    margin-right: 10px;
+    position: relative;
+    left: 0px;
+    padding: 10px;
+}
