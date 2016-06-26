@@ -9,18 +9,20 @@
 		$pictures = getListofPictures(getAktDatabaseName(),$uid, false) ;
 		$notDeletedPictures=1;
 		foreach ($pictures as $pict) {
-			if (   (   (userIsLoggedOn() || $pict["visibleforall"]=="true") && $pict["deleted"]!="true")  || userIsAdmin() ) {
+			if (  $pict["deleted"]!="true"  || userIsAdmin() ) {
 				$file=$uid."-".$pict["id"];
 				$checked="";
 				if ($pict["visibleforall"]=="true") $checked="checked";
 	?>
-			<div style="padding: 10px; display: inline-block;border-radius: 5px;border-style: outset; vertical-align: top;border-width: 1px; background-color: white">
-			<a style="display: inline-block;" title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php  echo $file ?>');" >
-				<img style="display: inline-block;width: 200px; height: 200px;" src="convertImg.php?color=ffffff&thumb=true&file=<?php  echo $file ?>" />
+			<div style="padding: 10px;margin: 10px; display: inline-block;border-radius: 10px;border-style: outset; vertical-align: top;border-width: 1px; background-color: white">
+			<div style="display: inline-block;border-radius:10px;" >
+			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php echo $file?>');" >
+				<img style="width:200px; height:200px;" src="convertImg.php?color=ffffff&thumb=true&file=<?php echo $file?>" />
 			</a>
+			</div>
 			<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 				<div style="display: inline-block;">
-				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo $pict["id"] +1 ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
+				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo ($pict["id"]+1); ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
 				<br />
 				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
 				<br />

@@ -14,7 +14,7 @@ include("homemenu.php");
 		Lehetőségeid a véndiákok oldalán:
 		<ul>
 			<li><a href="message.php">Üzenetek</a> küldése volt osztálytársaknak, volt iskolatársaknak vagy az egész világnak.</li>
-			<li><a href="hometable.php">Nésorok</a> ápolása <a href="hometable.php?scoolYear=teac&scoolClass=ooo">Tanáraink</a> </li>
+			<li><a href="hometable.php">Véndiákok</a> és <a href="hometable.php?scoolYear=teac&scoolClass=ooo">Tanáraink</a> névsorának ápolása</li>
 			<li>Személyes <a href="editDiak.php?uid=21&tabOpen=0&scoolYear=1985&scoolClass=12A">adatok</a> beállítása, <a href="editDiak.php?uid=21&tabOpen=3&scoolYear=1985&scoolClass=12A">történetek</a> megosztása és <a href="editDiak.php?uid=21&tabOpen=1&scoolYear=1985&scoolClass=12A">képek</a> feltötése. Természetesen Te határozod meg ki láthatja ezeket az információkat.</li>
 			<li><a href="worldmap.php?scoolYear=1985&scoolClass=12A">Térképen</a> látható szétszóródása az osztálytársaknak.</li>
 			<li>Találkozók szervezésére alkalmas <a href="vote.php?scoolYear=1985&scoolClass=12A">szavazati lista</a>.</li>

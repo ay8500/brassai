@@ -6,42 +6,63 @@ if ( !isset($_SESSION['lastReq']) ) {
 	echo("Access not allowed!");
 	exit;
 }
-Header ("Content-type: image/png"); 
 include_once 'data.php';
 include_once 'ltools.php';
 
 
-//file Name
+//file Name without extensions
 $file_name = getParam("file", "");
+if ($file_name=="") {
+	echo("Missing parameter file!");
+	exit; 
+}
+
+//filename userId-pictureId
 $data = explode("-",$file_name);
-if ($file_name=="") exit; 
-$file_name="images/".getAktDatabaseName()."/p".$file_name.".jpg";
+if (sizeof($data)!=2) {
+	echo("Wrong parameter file!");
+	exit;
+}
+$databaseName = getAktDatabaseName();
+if ($data[0]=="all")
+	$databaseName = $databaseName . 'group';
+$file_name="images/".$databaseName."/p".$file_name.".jpg";
 
 
+//Width
 if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = 200;
+
+//Thumb
 $Thumb = false; if ((isset($_GET['thumb'])) && ($_GET['thumb']=="true")) $Thumb = true;
+
+//Color
 $color ="ffffff"; if (isset($_GET['color'])) $color=($_GET['color']); 
 
  
+/*
+//check the file's extension
 $limitedext = array(".gif",".jpg",".png",".jpeg",".bmp");		
 
-//check the file's extension
 $ext = strrchr($file_name,'.');
 $ext = strtolower($ext);
 
-//uh-oh! the file extension is not allowed!
+//the file extension is not allowed!
 if (!in_array($ext,$limitedext)) {
 	exit();
 }
+*/
 
-if($ext== ".jpeg" || $ext == ".jpg"){
+
+//if($ext== ".jpeg" || $ext == ".jpg"){
 	$new_img = imagecreatefromjpeg($file_name);
+/*
 }elseif($ext == ".png" ){
 	$new_img = imagecreatefrompng($file_name);
 }elseif($ext == ".gif"){
 	$new_img = imagecreatefromgif($file_name);
 }
-
+*/
+	
 //list the width and height and keep the height ratio.
 
 list($width, $height) = getimagesize($file_name);
@@ -51,17 +72,11 @@ list($width, $height) = getimagesize($file_name);
 $imgratio=$width/$height;
 
 if ($imgratio>1){
-
-$newwidth = $ThumbWidth;
-
-$newheight = $ThumbWidth/$imgratio;
-
+	$newwidth = $ThumbWidth;
+	$newheight = $ThumbWidth/$imgratio;
 }else{
-
-$newheight = $ThumbWidth;
-
-$newwidth = $ThumbWidth*$imgratio;
-
+	$newheight = $ThumbWidth;
+	$newwidth = $ThumbWidth*$imgratio;
 }
 
 //function for resize image.
@@ -78,18 +93,19 @@ else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
 //visibility
-$picture = loadPictureAttributes(getAktDatabaseName(),$data[0],$data[1]);
+$picture = loadPictureAttributes($databaseName,$data[0],$data[1]);
 
-if (($picture["visibleforall"]!="true" && !userIsLoggedOn()) || ($picture["deleted"]=="true" && !userIsAdmin()) ) {
-	
-}
-else {
-	//the resizing is going on here!
+if ($picture["deleted"]!="true" || userIsAdmin()) {
+	//resizing the image
 	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+	if ($picture["visibleforall"]!="true" && !userIsLoggedOn()  ) {
+		imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 6,true);
+		imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
+	}
 }
 
-//finally, save the image
-
+//finally, return the image
+Header ("Content-type: image/png");
 ImageJpeg ($resized_img,null,80);
 
 ImageDestroy ($resized_img);

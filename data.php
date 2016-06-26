@@ -972,7 +972,7 @@ function getFieldValue($person,$field=null) {
 	if (null==$field) {
  		if ($person=="") 
   			return "";
-		  $ret = ltrim($person,"~");
+		$ret = ltrim($person,"~");
 	}
 	else {
   		if (!isset($person[$field]) || $person[$field]=="") 

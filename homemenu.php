@@ -78,7 +78,7 @@
 						<li><a href="hometable.php">Véndiákok</a></li>
 						<li><a href="hometable.php?guests=true">Vendégek és barátok</a></li>
 						<li><a href="worldmap.php">Térkép</a></li>
-						<li><a href="tablo.php">Tabló</a></li>
+						<li><a href="tablo.php">Tabló és csoportképek</a></li>
 						<?php if (getAktScoolYear()=="1985" && getAKtScoolClass()=='12A') : ?>
 						<li class="dropdown-submenu"><a>Régi képek</a>
 							<ul class="dropdown-menu">
