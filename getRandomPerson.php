@@ -11,11 +11,11 @@ $idArray = explode(",", $idList);
 
 $p=getRandomPerson();
 $i=0;
-while (($p["picture"]=="avatar.jpg" || 
-		notUnique($idArray,$p["class"],$p["year"],$p["id"]) ||
-		sizeof($data)<8
+while (($p["picture"]=="avatar.jpg" || 								//No Empty pictures
+		notUnique($idArray,$p["class"],$p["year"],$p["id"]) ||		//Unique entrys
+		sizeof($data)<8												//More than 8 entrys in the db
 		) && 
-		$i++<10)
+		$i++<10)													//Check only 10 times
 {
 	$p=getRandomPerson();
 }
@@ -73,6 +73,34 @@ function getRandomPerson() {
 	
 	return $p;
 }
+
+
+/**
+ * Get a random picture
+ */
+/*
+function getRandomPicture() {
+	global $data;
+	$dblist = getDatabaseList();
+	
+	$allPictures = Array();
+	foreach ($dblist as $dbname) {
+		$pictures = getListofPictures($dbName.'group','all', false) ;
+		array_push($allPictures, $pictures);
+	}
+	$dbidx=rand(0,sizeof($allPictures)-1);
+
+	openDatabase(substr($dblist[$dbidx],5,3).substr($dblist[$dbidx],0,4));
+
+	$idx=rand(0,sizeof($data)-1);
+
+	$p=$data[$idx];
+	$p["class"]=substr($dblist[$dbidx],5,3);
+	$p["year"]=substr($dblist[$dbidx],0,4);
+
+	return $p;
+}
+*/
 
 /**
  * Person identifikation is allready in the idArray

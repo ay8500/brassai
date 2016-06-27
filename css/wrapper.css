@@ -1,11 +1,11 @@
 #wrapper{
-	width:100%;
 	overflow: hidden;
 	position: relative;
+	margin:10px;
 }
 
 #wrapper>div{
-	width:3000px;
+	width:4000px;
 	display: block;
 	position:relative;
 	left: 0px;

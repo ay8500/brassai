@@ -1,39 +1,51 @@
+/**
+ * (c) 2016 Levente Maier  
+ */
+
+var countWrapper=5;		//Wrappen in line
+var wrapperWidth=700;		//Max wrapper width
+wrapperSlideCorrection=30;
+
+var aktWrapper=0;
+var animate=false;
+var resizeToDo=false;
+var data = new Array();
+
 $( document ).ready(function() {
     $("#wrapper").append('<div id="wrapper_frame"></div>');
     getWrapperData(); 
-    initWrapper();
     setInterval(slide, 5000);
 });
 
 $( window ).resize(function() {
-    initWrapper();
+    if (!animate) 
+	resizeWrapper();
+    else
+	resizeToDo=true;
 });
 
-var countWrapper=4;
-var aktWrapper=1;
-var data = new Array();
 
-function initWrapper() {
+function resizeWrapper() {
     aktWrapper=1;
     $("#wrapper_frame").empty();
 
-    for (var i=1;i<=countWrapper;i++){
+    for (var i=0;i<countWrapper;i++){
 	addWrapperDiv(i);
     }
 }
 
 function addWrapperDiv(id) {
-    if (data.length==countWrapper) {
-	var d = data[id-1];
+    if (data.length>=id+1) {
+	var d = data[id];
 	var idx= d.id.split("-"); 
 	if (idx.length==3) {
-            var w=$("#wrapper").width();
-            var width=Math.round(-0.5+w/Math.round(0.5+w/600));
+            var w=$("#wrapper").width()-parseInt($("#wrapper").css("margin-right").replace("px",""));
+            var width=Math.round(-0.5+w/Math.round(0.5+w/wrapperWidth));
             
             var html='<div style="width:'+width+'px" id="wrapper'+aktWrapper +'">';
             html +='<div style="display: inline-block; width:160px;">';
             html +='<a href="editDiak.php?uid='+idx[2]+'&amp;scoolYear='+idx[1]+'&amp;scoolClass='+idx[0]+'" title="'+d.name+'">';
-            html +='<img src="images/'+data[id-1].image+'" border="0" title="'+d.name+'" class="diak_image_medium ">';
+            html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium ">';
             html +='</a>';
             html +='</div>';
             html +='<div style="display: inline-block;max-width:56%;vertical-align: top;margin-bottom:10px;">';
@@ -79,20 +91,25 @@ function addWrapperDiv(id) {
 
 function slide() {
     var ws='#wrapper'+(aktWrapper-countWrapper);
+    animate=true;
     $(ws).animate(
-	{"marginLeft" : "-="+($(ws).width()+25)+"px" ,opacity: 0.25}, 
-	1500,
+	{"marginLeft" : "-="+($(ws).width()+wrapperSlideCorrection)+"px" ,opacity: 0.15}, 
+    	1500,
         function() {
-            getWrapperData();
-            addWrapperDiv(countWrapper);
+	    getWrapperData();
             $(ws).remove();
-        });
-
+            animate=false;
+            if (resizeToDo)
+        	resizeWrapper();
+        }
+    );
 }
 
 function getWrapperData() {
+    //taake care that the first element is removed if the max count of wrapper element are reached
     if (data.length==countWrapper)
 	data.shift();
+    //Collect the id from the list to retreve a different one
     var ids="";
     for (var i=0;i<data.length;i++) {
 	if (i!=0)
@@ -105,7 +122,8 @@ function getWrapperData() {
  	async:true,
  	success:function(person){
  	    data.push(person);
- 	    initWrapper();
+ 	    addWrapperDiv(data.length-1);
+ 	    //if the max count not reached call the function recursive
  	    if (data.length<countWrapper)
  		getWrapperData();
  	}

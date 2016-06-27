@@ -1,21 +1,20 @@
-<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
-  <div class="container">
-      <ul class="nav navbar-nav">
-        <?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
-				<li><a href="editDiak.php?uid=<?php echo getLoggedInUserId()?>&scoolYear=<?php echo getUScoolYear()?>&scoolClass=<?php echo getUScoolClass()?>" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
-		<?PHP }  ?>	
-		<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
-			<li><a href="admin.php"  >Adminsztráció</a></li>
-		<?PHP }	?>
-			<?PHP if (userIsAdmin() ) { ?>
-				<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
-				<li><a href="logingData.php"  >Loging</a></li>
+<div class="container-fluid" style="width: 100%;background: #f8f8f8">
+	<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
+	      <ul class="nav navbar-nav">
+	        <?PHP if (userIsLoggedOn()) {	 $person=getPersonLogedOn(); ?>
+					<li><a href="editDiak.php?uid=<?php echo getLoggedInUserId()?>&scoolYear=<?php echo getUScoolYear()?>&scoolClass=<?php echo getUScoolClass()?>" title="<?PHP echo ($person["lastname"].' '.$person["firstname"] ) ?>">Az én adataim</a></li>
+			<?PHP }  ?>	
+			<?PHP if (userIsAdmin() || (userIsEditor())) { ?>
+				<li><a href="admin.php"  >Adminsztráció</a></li>
 			<?PHP }	?>
-		<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a><span style="display: inline-block;">(c) 2016 Levi</span></li>
-      </ul>
-  </div>
-</nav>
-
+				<?PHP if (userIsAdmin() ) { ?>
+					<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
+					<li><a href="logingData.php"  >Loging</a></li>
+				<?PHP }	?>
+			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">(c) 2016 Levi</span></li>
+	      </ul>
+	</nav>
+</div>
 </body>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

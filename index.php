@@ -7,7 +7,7 @@ $siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css" /> 
 
 include("homemenu.php");
 ?>
-<h2 class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján</h2>
+<div class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján</div>
 <div class="container-fluid">
 	<div  style="padding:15px;" class="col-sm-6" >
 		<h4>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!</h4>
@@ -31,9 +31,10 @@ include("homemenu.php");
 		   	mint a gabona s más termék a földben.&quot;
 		</div>
 	</div>
+	<div>&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-			Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2016. április 23.</b>-án.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2016. április 23.</b>-án.
 	</div>
 </div>
 <?php  include ("homefooter.php");?>
