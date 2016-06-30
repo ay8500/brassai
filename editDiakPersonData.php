@@ -33,7 +33,7 @@ if (userIsAdmin()) {
 }
 if (isTeachersDb() ) {
 	$dataFieldCaption[16]="Tantárgy";
-	$dataFieldCaption[17]="Osztályfönök";
+	$dataFieldCaption[18]="Osztályfönök";
 }
 
 

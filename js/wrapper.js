@@ -4,7 +4,7 @@
 
 var countWrapper=5;		//Wrappen in line
 var wrapperWidth=700;		//Max wrapper width
-wrapperSlideCorrection=30;
+var wrapperSlideCorrection=30;	//This is a correction value of horizontal sliding
 
 var aktWrapper=0;
 var animate=false;
@@ -18,20 +18,23 @@ $( document ).ready(function() {
 });
 
 $( window ).resize(function() {
-    if (!animate) 
-	resizeWrapper();
-    else
-	resizeToDo=true;
+    if (!animate) {
+	resizeWrapper();	//risize only if the wrapper not sliding
+    } else {
+	resizeToDo=true;	//while slide animation don't resize the wrapper
+    }
 });
 
 
 function resizeWrapper() {
     aktWrapper=1;
-    $("#wrapper_frame").empty();
+    $("#wrapper_frame").empty();	//delete all wrapper divs
 
     for (var i=0;i<countWrapper;i++){
-	addWrapperDiv(i);
+	addWrapperDiv(i);		//create them with the new size
     }
+
+    resizeToDo=false;
 }
 
 function addWrapperDiv(id) {
@@ -42,13 +45,13 @@ function addWrapperDiv(id) {
             var w=$("#wrapper").width()-parseInt($("#wrapper").css("margin-right").replace("px",""));
             var width=Math.round(-0.5+w/Math.round(0.5+w/wrapperWidth));
             
-            var html='<div style="width:'+width+'px" id="wrapper'+aktWrapper +'">';
+            var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
             html +='<div style="display: inline-block; width:160px;">';
             html +='<a href="editDiak.php?uid='+idx[2]+'&amp;scoolYear='+idx[1]+'&amp;scoolClass='+idx[0]+'" title="'+d.name+'">';
             html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium ">';
             html +='</a>';
             html +='</div>';
-            html +='<div style="display: inline-block;max-width:56%;vertical-align: top;margin-bottom:10px;">';
+            html +='<div style="display: inline-block;max-width:50%;vertical-align: top;margin-bottom:10px;">';
             html +='<h4>';
             html +=d.name;
             html +='</h4>';
@@ -59,7 +62,7 @@ function addWrapperDiv(id) {
         	    html +='<div><span>Osztályfőnök:</span>';
         	    var kx= d.children.split(",");
         	    for (var k=0;k<kx.length;k++) {
-        		html +='<a href="hometable.php?scoolYear='+kx[k].substring(3,7)+'&scoolClass='+kx[k].substring(0,3)+'">'+kx[k]+'</a>&nbsp;';
+        		html +='<a href="hometable.php?scoolYear='+kx[k].substring(3,7)+'&scoolClass='+kx[k].substring(0,3)+'">'+kx[k]+'</a> ';
         	    }
         	    html +='</div>';
         	}
@@ -99,23 +102,25 @@ function slide() {
 	    getWrapperData();
             $(ws).remove();
             animate=false;
-            if (resizeToDo)
+            if (resizeToDo) {
         	resizeWrapper();
+            }
         }
     );
 }
 
 function getWrapperData() {
-    //taake care that the first element is removed if the max count of wrapper element are reached
+    //take care that the first element is removed if the max count of wrapper element are reached
     if (data.length==countWrapper)
 	data.shift();
-    //Collect the id from the list to retreve a different one
+    //collect the id from the list to retrieve a different one
     var ids="";
     for (var i=0;i<data.length;i++) {
 	if (i!=0)
 	    ids +=",";
 	ids +=data[i].id;
     }
+    //get new data
     $.ajax({
 	url:"getRandomPerson.php?ids="+ids,
  	type:"GET",

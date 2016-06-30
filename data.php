@@ -984,6 +984,15 @@ function getFieldValue($person,$field=null) {
   return  $ret;
 }
 
+function getFieldValueNull($diak,$field) {
+	if ( !isset($diak[$field]) || $diak[$field]=="")
+		return "";
+	$ret = ltrim($diak[$field],"~");
+	$ret = trim($ret);
+	$ret= str_replace("%3D", "=", $ret); 
+	return  $ret;
+}
+
 function getFieldCheckedWord($field) {
 	if (strlen($field)>1 && $field[0]=="~" && $field[1]=="~") #
 		return "checked";
@@ -1008,15 +1017,6 @@ function getFieldCheckedClass($field) {
 	else 
 		return "";
 }
-			
-function getFieldValueNull($diak,$field) {
-	if ( !isset($diak[$field]) || $diak[$field]=="")
-		return "";
-	$ret = ltrim($diak[$field],"~");
-	$ret = trim($ret);
-	return  $ret;
-}
-
 
 function getFieldChecked($diak,$field) {
   if (null== $field || null==$diak || !isset($diak[$field]) || $diak[$field]=="" ) 
