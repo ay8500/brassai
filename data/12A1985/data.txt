@@ -1,20 +1,20 @@
 #Database File
-#Last IP:::1
-#Change Date:14.06.2016 10:11
+#Last IP:87.135.68.22
+#Change Date:26.06.2016 16:52
 
 
 id=2
 firstname=Gizella
 lastname=Tamás
 picture=DIAK_1.GIF
-geolat=46.79723912881808
-geolng=23.52447509765625
+geolat=46.70879427751824
+geolng=23.435211181640625
 user=Gizu
 passw=tr12321
 geolen=23.5924
 birthname=András
 partner=Sándor
-address=~Szőlő út 96.
+address=~Szőlő út 96
 zipcode=~407505
 place=~Tordaszentlászló
 country=~Románia
@@ -33,8 +33,8 @@ id=3
 firstname=Dorottya
 lastname=Varga
 picture=DIAK_2.GIF
-geolat=47.63895090621011
-geolng=19.03684973716736
+geolat=47.63893557098788
+geolng=19.03681755065918
 user=dori
 passw=dr1234
 geolen=23.5924
@@ -52,8 +52,8 @@ education=Budapesti Tanítóképző Főiskola - Angol Müveltségterületi Képz
 employer=Sashegyi Sándor Általános Iskola - Pomáz
 function=Angol tanár
 children=Réka - 2000
-date=14.06.2016 10:11
-ip=::1
+date=09.02.2009 19:16
+ip=84.1.58.138
 facebook=https://www.facebook.com/dorottya.varga.92
 homepage=~
 
@@ -321,7 +321,7 @@ geolen=23.5924
 partner=Júlia
 address=~Szepes u.22
 zipcode=~1185
-place=~Budapest
+place=Budapest
 country=Magyarország
 phone=~00-36-1-2946110
 mobil=~00-36-30-9820020
@@ -335,6 +335,7 @@ date=13.02.2009 23:41
 ip=87.175.229.73
 facebook=https://www.facebook.com/kdonath67
 homepage=~
+twitter=https://twitter.com/kdonath
 
 id=14
 firstname=Ildikó
@@ -384,7 +385,6 @@ date=31.05.2016 10:41
 ip=87.134.89.141
 phone=~
 skype=~
-facebookid=752638691500520
 
 id=16
 firstname=Ágnes
@@ -433,10 +433,10 @@ mobil=~0040-723-159000
 email=~veres.agnes@eke.ma
 skype=~agikisasszony
 education=Kolozsvári Müszaki Egyetem - építészmérnök
-employer=Etnokulturális Kisebbségek Forrásközpontja, Kolozsvár  http://www.eke.ma/
-function=program-koordinátor (jelenleg 2 évig főállású anya)
+employer=Etnokulturális Kisebbségek Forrásközpontja, Kolozsvár http://www.eke.ma
+function=országos titkár
 children=Zsófia-2009  Kende-2009
-facebook=Facebook: https://www.facebook.com/agnes.veres.9619
+facebook=https://www.facebook.com/agnes.veres.9619
 homepage=~
 
 id=18
@@ -519,8 +519,8 @@ id=21
 firstname=Levente
 lastname=Maier
 picture=DIAK_19.GIF
-geolat=49.06638722185396
-geolng=11.149191856384277
+geolat=49.06627475191758
+geolng=11.149406433105469
 user=Levi
 passw=levi67
 admin=editor
@@ -533,10 +533,10 @@ place=Bergen /Thalmannsfeld
 country=Németország
 phone=0049-9147-95033
 mobil=~0049-170-7979113
-email=levente@blue-l.de
+email=~levente@blue-l.de
 skype=l_e_v_e_n_t_e
 education=Adatfeldolgozási technikus
-employer=IT2media GmbH & Co. KG. Nürnberg
+employer=IT2media GmbH & Co. KG. Nürnberg http://www.it2media.com
 function=~JAVA software fejlesztő osztály vezető
 children=Zsuzsa - 1992, Tamás - 1996
 date=29.05.2016 22:52
@@ -546,6 +546,7 @@ homepage=http://levi.blue-l.de
 scoolYear=1985
 scoolClass=12A
 facebookid=965038823537045
+twitter=https://twitter.com/ay8500
 
 id=22
 firstname=Edit
