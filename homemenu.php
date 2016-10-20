@@ -7,6 +7,13 @@
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
+	if (getGetParam("classid", "")!="") {
+		$classId=intval(getGetParam("classid", ""));
+		$class=$db->getClassById($classId);
+		setAktClass($classId);
+	}
+	
+	
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -66,20 +73,20 @@
 				<ul class="dropdown-menu">
 					<li><a href="index.php">Start</a></li>
 					<li><a href="start.php">Újdonságok</a></li>
-					<li><a href="hometable.php?scoolYear=teac&scoolClass=ooo">Tanáraink</a></li>
+					<li><a href="hometable.php?classid=0">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
       		</li>
-      		<?php if (!isTeachersDb()) {?>
+      		<?php if (getAktClass()!=0) {?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName());?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">
-						<li><a href="hometable.php">Véndiákok</a></li>
-						<li><a href="hometable.php?guests=true">Vendégek és barátok</a></li>
+						<li><a href="hometable.php?classid=<?php echo getAktClass(); ?>">Véndiákok</a></li>
+						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClass(); ?>">Vendégek és barátok</a></li>
 						<li><a href="worldmap.php">Térkép</a></li>
 						<li><a href="tablo.php">Tabló és csoportképek</a></li>
-						<?php if (getAktScoolYear()=="1985" && getAKtScoolClass()=='12A') : ?>
+						<?php if ( getAktClass()==$db->getClassByText("1985 12A")) : ?>
 						<li class="dropdown-submenu"><a>Régi képek</a>
 							<ul class="dropdown-menu">
 								<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
@@ -123,14 +130,14 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok</a>
 			  	<ul class="dropdown-menu">
 			  	<?php
-			  		$classes = getDatabaseList();
-			  		foreach($classes as $db) {
-			  			if (getAktScoolYear()==substr($db, 0,4) && getAKtScoolClass()==substr($db, 5,3)) 
+			  		$classes = $db->getClassList();
+			  		foreach($classes as $class) {
+			  			if (getAktClass()==$class["id"]) 
 			  				$aktualClass="actual_class_in_menu";
 			  			else 
 			  				$aktualClass="";
 			  			?>
-			  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?scoolYear=<?php echo(substr($db, 0,4));?>&scoolClass=<?php echo(substr($db, 5,3));?>"><?php echo($db); ?></a></li>
+			  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($class["id"]);?>"><?php echo($class["text"]); ?></a></li>
 			  		<?php }
 			  	?>
 			  	</ul>

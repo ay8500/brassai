@@ -2,19 +2,22 @@
 	include_once 'ltools.php';
 	include_once 'data.php';
 	
+	$person=$db->getPersonByID($personid);
+	
 	$tab=getIntParam("tabOpen", 0);
 	if ($tab==2) {
 		$title="Rövid életrajzom: továbbképzések munkahelyek";
 		$type="cv";
+		$text = $person["cv"];
 	} elseif ($tab==3) {
 		$title="Kedvenc diákkori történetek";
 		$type="story";
+		$text = $person["story"];
 	} elseif ($tab==4) {
 		$title="Ezt szeretem csinálni szabadidőmben";
 		$type="spare";
+		$text = $person["aboutMe"];
 	} 
-	$text =loadTextData(getAktDatabaseName(), $uid, $type);
-	$person =getPerson($uid,getAktDatabaseName());
 ?>		
 
 	<h3><?php  echo $title; ?></h3>
@@ -35,7 +38,7 @@
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >
 					Utóljára módósítva:<br />
-					<?php echo getTextDataDate(getAktDatabaseName(), $uid, $type)?>
+					<?php echo getTextDataDate(getAktDatabaseName(), $personid, $type)?>
 				</div>
 				<div style="display: inline-block; padding:5px" >
 					<input type="submit" class="btn btn-default" value="<?php echo getTextRes("Save");?>" />
@@ -88,7 +91,7 @@
 	function saveStory() {
 	    fieldSaved();
 		var data = {
-			id: "<?php echo $uid; ?>",
+			id: "<?php echo $personid; ?>",
 		    type:"<?php  echo $type; ?>",
 		    privacy:$('input[name=privacy]:checked', '#stroryForm').val(),
 		    story: $("#story").val()

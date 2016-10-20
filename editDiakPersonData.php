@@ -31,7 +31,7 @@ if (userIsAdmin()) {
 	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
 }
-if (isTeachersDb() ) {
+if ($classId==0 ) {
 	$dataFieldCaption[16]="Tantárgy";
 	$dataFieldCaption[18]="Osztályfönök";
 }
@@ -39,7 +39,7 @@ if (isTeachersDb() ) {
 
 //create new person in case of submittin a new one
 if ( ($action=="newdiak" || $action=="newguest" || $action=="submit_newguest" || $action=="submit_newdiak") || $action=="submit_newguest_save" || $action=="submit_newdiak_save")  {
-	$diak = createNewPerson(getAktDatabaseName(),$guest);
+	$diak = createNewPerson(getAktClassName(),$guest);
 }
 
 
@@ -61,11 +61,10 @@ if ( $submitsave ) {
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3)&& !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Új adat kimentése sikertelen.</div>';
 	} else {
-		openDatabase(getAktDatabaseName());
 		savePerson($diak);
 		sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
 		if (!userIsAdmin())
-			saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
+			saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 	}
 	//Something went wrong we stay on the submit page
 	if ($resultDBoperation!="") {
@@ -81,8 +80,8 @@ if ( $submitsave ) {
 }
 
 //Retrive changed data and save it
-if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
-	$diak = getPerson($uid,getAktDatabaseName());
+if (($personid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
+	$diak = getPerson($personid,getAktDatabaseName());
 	if ($diak==null) {
 		$diak = createNewPerson(getAktDatabaseName(),$guest);
 	}
@@ -107,11 +106,10 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 	} else {
-		openDatabase(getAktDatabaseName());
 		savePerson($diak);
 		$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
 		if (!userIsAdmin())
-			saveLogInInfo("SaveData",$uid,$diak["user"],"",true);
+			saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 	}
 }
 
@@ -131,12 +129,12 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
 				<button style="margin-top:5px;" type="submit" class="btn btn-default" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-save"></span> Feltölt</button>
 				<input type="hidden" value="upload_diak" name="action" />
-				<input type="hidden" value="<?PHP echo($uid) ?>" name="uid" />
+				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
 			</form>
 		</div>
 		<?php  //Don't delete myself?>
-		<?php if (!(getLoggedInUserId()==$diak["id"] && getUserDatabaseName()==getAktDatabaseName())) { ?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] && getAktClass()==getLoggedInUserClassId())) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="deleteDiak(<?php echo("'".getAktDatabaseName()."','".$diak["id"]."'");?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
 		</div>
@@ -199,7 +197,7 @@ if (($uid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
 					<?php
 					$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	getFieldValueNull($diak,$dataFieldNames[$i]));
 					$fieldString = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $fieldString);
-					if (isTeachersDb() && $dataFieldNames[$i]=="children") {
+					if ($classId==0  && $dataFieldNames[$i]=="children") {
 						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
 						echo('<div  class="form-control" style="height:auto;">');
 						foreach ($c as $cc)

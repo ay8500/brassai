@@ -57,19 +57,24 @@ echo(json_encode($person));
  * Get a random person  
  */
 function getRandomPerson() {
-	global $data;
-	$dblist = getDatabaseList();
-	array_push($dblist,"teac ooo");
+	global $db;
+	$classList=$db->getClassList();
+	$rec=array();
+	$rec["graduationYear"]="teac";
+	$rec["name"]="ooo";
+	$rec["id"]="0";
+	array_push($classList, $rec);
 	
-	$dbidx=rand(0,sizeof($dblist)-1);
+	$class=$classList[rand(0,sizeof($classList)-1)];
 	
-	openDatabase(substr($dblist[$dbidx],5,3).substr($dblist[$dbidx],0,4));
+	
+	$data=$db->getPersonListByClassId($class["id"]);
 	
 	$idx=rand(0,sizeof($data)-1);
 	
 	$p=$data[$idx];
-	$p["class"]=substr($dblist[$dbidx],5,3);
-	$p["year"]=substr($dblist[$dbidx],0,4);
+	$p["class"]=$class["name"];
+	$p["year"]=$class["graduationYear"];
 	
 	return $p;
 }

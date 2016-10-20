@@ -22,7 +22,7 @@
 </style>
 <?php 
 include_once("data.php");
-$SiteTitle="Ballagási tabló és csoportképek".getAktDatabaseName();
+$SiteTitle="Ballagási tabló és csoportképek".getAktClassName();
 include("homemenu.php"); 
 
 $resultDBoperation="";
@@ -72,7 +72,7 @@ if (userIsLoggedOn() && isset($_POST["action"]) && ($_POST["action"]=="upload" |
 	}
 }
 
-$pictures = getListofPictures(getAktDatabaseName().'group','all', false) ;
+$pictures = getListofPictures(getAktClassName().'group','all', false) ;
 $notDeletedPictures=0;
 foreach ($pictures as $pict) {
 	if ( $pict["deleted"]!="true" ) {
@@ -114,13 +114,12 @@ foreach ($pictures as $pict) {
 	
 			<div style="margin-bottom: -25px;padding: 10px; display: block;border-radius: 10px;background-color: #e8e8e8" >
 				<a style="display: inline-block;vertical-align: top;" title="<?php echo $pict["title"] ?>"  >
-					<img class="img-responsive" style="display: inline-block;" src="convertImg.php?width=1024&thumb=false&file=<?php echo $file ?>" />
+					<img style="display: inline-block;min-width: 350px" src="convertImg.php?width=350&thumb=false&file=<?php echo $file ?>" />
 				</a>
-			</div>
-			<div style="width: auto;height: 51px;margin: 0 20px 0 20px; position: relative;top: -45px;background-color: white;border-radius: 7px;padding: 5px;opacity: 0.8;" onmouseover="showToolbar('<?php  echo $file ?>');" onmouseout="hideToolbar('<?php  echo $file ?>');">
-				<div id="text_<?php  echo $file ?>">
-				<b><span id="pTitle<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
-				<span id="pComment<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
+				<div style="display: inline-block;width: 350px;margin: 0 20px 0 20px; background-color: white;border-radius: 7px;padding: 5px;" onmouseover="showToolbar('<?php  echo $file ?>');" onmouseout="hideToolbar('<?php  echo $file ?>');">
+					<div id="text_<?php  echo $file ?>">
+					<b><span id="pTitle<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
+					<span id="pComment<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
 				</div>
 				<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 					<div style="display:none;" id="toolbar_<?php  echo $file ?>" >
@@ -136,7 +135,7 @@ foreach ($pictures as $pict) {
 						</div> 
 					</div>
 				<?php endif ?>
-				</div>
+			</div>
 	<?php 
 		}
 	}

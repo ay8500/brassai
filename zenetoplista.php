@@ -6,7 +6,7 @@ include_once("userManager.php");
 $resultDBoperation="";
 
 //User can make changes in the toplist
-$edit = (userIsLoggedOn() && getAktDatabaseName()==getUserDatabaseName()) || userIsAdmin();
+$edit = (userIsLoggedOn() && getAktClass()==getLoggedInUserClassId()) || userIsAdmin();
 
 //action  delete vote
 $delVote = intval(getGetParam("delVote", "-1"));

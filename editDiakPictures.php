@@ -6,11 +6,11 @@
 	<tr><td colspan="3">
 	<form id="formRadio">
 	<?php
-		$pictures = getListofPictures(getAktDatabaseName(),$uid, false) ;
+		$pictures = getListofPictures(getAktClassName(),$personid, false) ;
 		$notDeletedPictures=1;
 		foreach ($pictures as $pict) {
 			if (  $pict["deleted"]!="true"  || userIsAdmin() ) {
-				$file=$uid."-".$pict["id"];
+				$file=$personid."-".$pict["id"];
 				$checked="";
 				if ($pict["visibleforall"]=="true") $checked="checked";
 	?>
@@ -24,10 +24,10 @@
 				<div style="display: inline-block;">
 				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo ($pict["id"]+1); ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
 				<br />
-				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
+				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($personid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
 				<br />
 				<?php if ($pict["deleted"]!="true"): ?>
-					<div class="borderbutton" ><a onclick="deletePicture('<?PHP echo($uid) ?>',<?php echo $pict["id"] ?>);" title="Képet töröl"><img src="images/delete.gif" /></a></div>
+					<div class="borderbutton" ><a onclick="deletePicture('<?PHP echo($personid) ?>',<?php echo $pict["id"] ?>);" title="Képet töröl"><img src="images/delete.gif" /></a></div>
 				<?php endif ?> 
 				</div>
 			<?php endif ?>
@@ -54,7 +54,7 @@
 					<td>A kép tartalma:</td>
 					<td><input type="text" id="pComment" size="40" class="form-control" /></td>
 					<td>
-						<input type="button" value="kiment"  style="width:70px;" class="btn btn-default"  onclick="changeTitle(<?PHP echo($uid) ?>)"/>
+						<input type="button" value="kiment"  style="width:70px;" class="btn btn-default"  onclick="changeTitle(<?PHP echo($personid) ?>)"/>
 						&nbsp; <span style="padding:3px; background-color: lightgreen; border-radius:4px; display: none;" id="ajaxStatus"></span>
 					</td>
 				</tr>
@@ -66,7 +66,7 @@
 					<td>Válassz egy képet max. 2MByte</td><td><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></td>	
 					<td><input class="btn btn-default"  style="width:70px" type="submit" value="feltölt"/></td>
 					<input type="hidden" value="upload" name="action" />
-					<input type="hidden" value="<?PHP echo($uid) ?>" name="uid" />
+					<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 					<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
 				</form>
 			</tr>

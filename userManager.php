@@ -3,8 +3,7 @@
 	include_once 'sendMail.php';
 	
 	//Change scool year and class if parameters are there
-	if (isset($_GET['scoolYear']))   { setAktScoolYear($_GET['scoolYear']); }
-	if (isset($_GET['scoolClass']))  { setAktScoolClass($_GET['scoolClass']); }
+	if (isset($_GET['classid']))   { setAktClass($_GET['classid']); }
 	
 	//Login if crypted loginkey present and correct
 	if (isset($_GET['key']))   {
@@ -35,29 +34,16 @@
 	function getLoggedInUserId() {
 		if (!isset($_SESSION["uId"]))
 			return null;
-		return $_SESSION["uId"];
+		return intval($_SESSION["uId"]);
 	}
 	
-	/**
-	 * get user scool year
-	 * @return NULL if no user logged on
-	 */
-	function getUScoolYear() {
-		if (isset($_SESSION["uScoolYear"]))
-			return $_SESSION["uScoolYear"];
+	function getLoggedInUserClassId() {
+		global $db;
+		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
+		if ($loggedInUser!=null)
+			return intval($loggedInUser["classID"]);
 		else 
-			return null;
-	}
-	
-	/**
-	 * get user scool class
-	 * @return NULL if no user logged on
-	 */
-	function getUScoolClass() {
-		if (isset($_SESSION["uScoolClass"]))
-			return $_SESSION["uScoolClass"];
-		else 
-			return null;
+			return -1;
 	}
 	
 	/**
@@ -84,7 +70,7 @@
 	 * @return boolean
 	 */
 	function isAktUserTheLoggedInUser() {
-		return (getAktDatabaseName()==getUserDatabaseName() && getAktUserId()==getLoggedInUserId() );
+		return (getAktUserId()==getLoggedInUserId() );
 	}
 
 	
@@ -102,9 +88,7 @@
 				setUserInSession(
 					$usr["admin"],
 					$usr["user"],
-					$usr["id"],
-					$usr["scoolYear"],
-					$usr["scoolClass"]);
+					$usr["id"]);
 				$ret = true;
 			}
 			else {
@@ -114,9 +98,7 @@
 					setUserInSession(
 						$usr["admin"],
 						$usr["user"],
-						$usr["id"],
-						$usr["scoolYear"],
-						$usr["scoolClass"]);
+						$usr["id"]);
 					$ret = true;
 				}		
 			}
@@ -161,13 +143,11 @@
 	 * @param Scool year $scoolYear
 	 * @param Scool class $scoolClass
 	 */
-	function setUserInSession($admin, $user, $uid, $scoolYear, $scoolClass)
+	function setUserInSession($admin, $user, $uid )
 	{
 		$_SESSION['uRole']=$admin;
 		$_SESSION['uName']=$user;
 		$_SESSION['uId']=$uid;
-		$_SESSION['uScoolYear']=$scoolYear;
-		$_SESSION['uScoolClass']=$scoolClass;
 	}
 	
 	/**
@@ -177,8 +157,6 @@
 		$_SESSION['uRole']="";
 		$_SESSION['uName']="";
 		$_SESSION['uId']=NULL;
-		$_SESSION['uScoolYear']="";
-		$_SESSION['uScoolClass']="";
 		$_SESSION['FacebookId'] = NULL;
 		$_SESSION['FacebookName'] = NULL;
 		$_SESSION['FacebookEmail'] =  NULL;
@@ -206,20 +184,21 @@
 	 * user is logged in and is a editor
 	 */
 	function userIsEditor() {
+		global $db;
 		//User is editor in his own db
-		if (isset($_SESSION['uRole']) && getAktDatabaseName()==getUserDatabaseName()) {
+		if (isset($_SESSION['uRole']) && getAktClass()==getLoggedInUserClassId()) {
 			return strstr($_SESSION['uRole'],"editor")!="";
 		} else { 
+			$p=$db->getPersonByID(getLoggedInUserId());
 			//User is teacher and editor
-			if (isset($_SESSION['uRole']) && strstr(getUserDatabaseName(),"teac")!="") { 
+			if ($p["isTeacher"]==1) { 
 				if (strstr($_SESSION['uRole'],"editor")!="") {
-					$p=getPerson(getLoggedInUserId(),getUserDatabaseName());
-					openDatabase(getAktDatabaseName());
 					if (isset($p["children"])) {
 						$c=explode(",", $p["children"]);
 						$ret = false;
+						$class = $db->getClassById(getAktClass());
 						foreach ($c as $cc) {
-							if (substr($cc,0,3)==getAKtScoolClass() && substr($cc,3,4)==getAktScoolYear()) 
+							if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"]) 
 								$ret=true;
 						}
 						return $ret;
@@ -355,7 +334,7 @@
 	function saveLogInInfo($action,$uid,$cuser,$cpassw,$result) {
 		$file=fopen("login.log","a");
 		if ($result) $res="true"; else $res="false";
-		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".getUserDatabaseName()."\t".$res."\t".$uid."\t".$action."\t".$cuser."\t".$cpassw."\r\n");
+		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".getAktClassName()."\t".$res."\t".$uid."\t".$action."\t".$cuser."\t".$cpassw."\r\n");
 		
 	}
 	

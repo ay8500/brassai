@@ -4,196 +4,52 @@
  */
 
 include_once("userManager.php");
+include_once 'dbDAO.class.php';
+
+$db = new dbDAO;
+
 
 $data = array();
 
 //List of databases are the subdirectorys in folder /data
 $dataPath = "data/";
-chdir($dataPath);
-$dataBase = array_filter(glob('*'), 'is_dir');
-chdir("..");
 $datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","homepage","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid","twitter");
 $openedDatebase=null;
 
 
-//select the database
-openDatabase( getAktDatabaseName() ) ;
-
-
-/*
- * Database List
- */
-function getDatabaseList() {
-	$classes = Array();
-	global $dataBase;
-	foreach($dataBase as $db) {
-		if (strstr($db,"ooo")=="")
-			array_push($classes, substr($db,3,4)." ".substr($db,0,3));
-	}
-	sort($classes);
-	return $classes;
-}
-
-function getOpenedDatabase() {
-	global $openedDatabase;
-	return $openedDatabase;
-}
-
-function setOpenedDatabase($dataBaseName) {
-	global $openedDatabase;
-	$openedDatabase = $dataBaseName;
-}
-
 //aktual used scoolyear and class
-function getAktScoolYear() {
-	if (isset($_SESSION['aktScoolYear'])) 
-		return $_SESSION['aktScoolYear'];
-	else
-		return "1985";
+function getAktClass() {
+	global $db;
+	if (isset($_SESSION['aktClass'])) 
+		return intval($_SESSION['aktClass']);
+	else {
+		$class =$db->getClassByText("1985 12A");
+		if ($class!=null) {
+			$_SESSION['aktClass']=$class["id"];
+			return $class["id"];
+		}
+		else die("Default class not found!");
+	}
 }
 
-function getAKtScoolClass() {
-	if (isset($_SESSION['aktScoolClass']))
-		return $_SESSION['aktScoolClass'];
-	else
-		return "12A";
+
+function setAktClass($classId) {
+	$_SESSION['aktClass']=$classId;
 }
 
-function setAktScoolYear($year) {
-	$_SESSION['aktScoolYear']=$year;
-}
-
-function setAktScoolClass($class) {
-	$_SESSION['aktScoolClass']=$class;
-}
-
-/**
- * get aktual DabaseName
- */
-function getAktDatabaseName()
-{
-	if (null!=getAktScoolClass() && null!=getAktScoolYear())
-		return  getAKtScoolClass().getAktScoolYear();
-	else 
-		return "12A1985";
-}
-
-function getUserDatabaseName() 
-{
-	if (null!=getUScoolClass() && null!=getUScoolYear())
-		return  getUScoolClass().getUScoolYear();
-	else 
-		return "";
-}
 
 /**
  * The name of the aktual class
  */
 function getAktClassName() {
-	if (isTeachersDb())
-		return '';
+	global $db;
+	$class=$db->getClassById(getAktClass());
+	if ($class!=null)
+		return $class["text"];
 	else
-		return getAktScoolYear()."-".getAKtScoolClass();
+		return "";
 }
 
-/**
- * return true if the teachers database is the actual database 
- */
-function isTeachersDb() {
-	return strstr(getAktScoolYear(),"teac")!="";
-}
-
-/**
- * open the specific database name = class+year eg. 12A1985
- * @return true if the database don't changed
- */
-function openDatabase($name) {
-	global $dataFileName;
-	global $dataBase;
-	global $data;
-	global $dataPath;
-
-	//no database change
-	if (getOpenedDatabase()==$name) {
-		$ret=true;
-	}
-	//database change
-	else {
-		$ret=false;
-		foreach($dataBase as $db) {
-			if ($name==$db) {
-				$ret=true;
-				$dataFileName=$dataPath.$name."/data.txt";
-				setOpenedDatabase($name);
-				ReadDB();
-			}
-		}
-	}
-	return $ret;
-}
-
-
-/**
- * Get count of active persons<br />
- * @param $guest <b>true</b> if you want to count the entrys markt as guest
- */
-function getCountOfActivePersons($guest) {
-	$ret=0;
-	global $data;
-	foreach ($data as $l => $d)
-	{
-		
-		if (isPersonActive($d) && isPersonGuest($d)==$guest) $ret++;
-	}
-	return $ret;
-}
-
-/**
- * Check if a person have the aktiv status
- */
-function isPersonActive($d) {
-	if (!isset($d["active"]))
-		return true;
-	
-	return ($d["active"]=="true");
-}
-
-/**
- * get person from database
- * * @return Person
- */
-function getPerson($id,$dataBase=null) {
-	if (isset($id) && ($id>0)  ) { 
-		global $data;
-		if (sizeof($data)==0 || null==getOpenedDatabase() || (null!=$dataBase && getOpenedDatabase()!=$dataBase)) {
-			openDatabase($dataBase);
-		}
-		foreach ($data as $l => $d) {	
-			if ($d["id"]==$id)
-				return $d;
-		}
-	}
-	return null;
-}
-
-/**
- * Returns the person index in the data
- * @param person id
- * @return index:integer
- */
-function getPersonIdx($id) {
-	if (isset($id) && ($id>0)  ) { 
-		global $data;
-		if (sizeof($data)==0) {
-			readDB();
-		}
-		foreach ($data as $l => $d) {	
-			if ($d["id"]==$id)
-				return $l;
-		}
-	}
-	return -1;
-}
 
 /**
  * Returns the nex free id in the aktual database
@@ -214,9 +70,9 @@ function getNextFreeId() {
  */
 function getPersonLogedOn() {
 	if ( null!=getLoggedInUserId())  { 
-		return getPerson(getLoggedInUserId(),getUserDatabaseName());
+		return getPerson(getLoggedInUserId());
 	} else {
-		return getPersonDummy();
+		return null;
 	}
 }
 
@@ -227,7 +83,7 @@ function getAktPerson() {
 	if ( null!=getAktUserId())  {
 		return getPerson(getAktUserId(),getAktDatabaseName());
 	} else {
-		return getPersonDummy();
+		return null;
 	}
 }
 
@@ -268,15 +124,15 @@ function savePerson($person,$db=null) {
  * is the person a guest
  */
 function isPersonGuest($person) {
-	return (isset($person["admin"]) && strstr($person["admin"],"guest")!="");
+	return (isset($person["role"]) && strstr($person["role"],"guest")!="");
 }
 
 function isPersonAdmint($person) {
-	return (isset($person["admin"]) && strstr($person["admin"],"admin")!="");
+	return (isset($person["role"]) && strstr($person["role"],"admin")!="");
 }
 
 function isPersonEditor($person) {
-	return (isset($person["admin"]) && strstr($person["admin"],"editor")!="");
+	return (isset($person["role"]) && strstr($person["role"],"editor")!="");
 }
 
 /**
@@ -292,6 +148,11 @@ function getPersonDummy() {
 	$p["user"]=createPassword(8);
 	$p["passw"]=createPassword(8);
 	$p["admin"]="";
+	$p["birthname"]=null;$p["partner"]=null;$p["email"]=null;$p["ip"]=null;
+	$p["address"]=null;$p["zipcode"]=null;$p["place"]=null;$p["country"]=null;
+	$p["phone"]=null;$p["mobil"]=null;$p["skype"]=null;$p["email"]=null;
+	$p["employer"]=null;$p["function"]=null;$p["education"]=null;$p["children"]=null;
+	$p["facebookid"]=null;$p["facebook"]=null;$p["homepage"]=null;$p["twitter"]=null;
 	return $p;
 }
 
@@ -299,7 +160,6 @@ function getPersonDummy() {
  * returns an empty person
  */
 function createNewPerson($db,$guest) {
-	openDatabase($db);
 	$p = getPersonDummy();
 	$p["id"]=getNextFreeId();
 	if($guest)
@@ -321,44 +181,6 @@ function getUserAuthDummy() {
 	return $p;
 }
 
-/**
- * Read the Database into the Memory
- */
-function readDB()
-{
-	global $data;
-	
-	while (count($data)>0) array_pop($data);  //delete old records
-	
-	global $dataFileName;
-    if (file_exists($dataFileName)) {
-		$file=fopen($dataFileName ,"r");
-		$person = NULL;
-		$id=0;
-		while (!feof($file)) {
-			$b = explode("=",fgets($file));
-			if (isset($b[0])&&isset($b[1])) {
-				if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
-					if ($b[0]=="id") {
-						if (isset($person)) {
-							while (list($key, $val) = each($person)) 
-								$data[$id][$key]=$val;
-							$id++;
-							$person=getPersonDummy();
-						}
-						else 
-							$person=getPersonDummy();
-					}
-					$person[$b[0]]=chop($b[1]);
-				}
-			}
-		}
-		while (list($key, $val) = each($person)) 
-			$data[$id][$key]=$val;
-		fclose($file);
-	}
-	usort($data, "compareAlphabetical");
-}
 
 /**
  * Compare classmates
@@ -427,40 +249,11 @@ function compairUserLink($d1,$d2) {
 		return false;
 	}
 
-/**
- * Search for person lastname and firstname 
- * @param unknown $name
- */
-function searchForPerson($name) {
-	$ret = array();
-	if( strlen($name)>1) {
-		global $dataBase;
-		global $dataPath;
-		global $data;
-		foreach($dataBase as $db) {
-			if (strstr($db,"ooo")=="") 
-			{
-				openDatabase($db);
-				foreach ($data as $person) {
-					if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
-						stristr(html_entity_decode($person["firstname"]), $name)!="" ||
-						(isset($person["birthname"]) && stristr(html_entity_decode($person["birthname"]), $name)!="")) {
-						$person["scoolYear"]=substr($db,3,4);
-						$person["scoolClass"]=substr($db,0,3);
-						array_push($ret, $person);
-					}
-				}
-			}
-		}
-		usort($ret, "compareAlphabetical");
-	}
-	return $ret;
-}
 
 /**
  * Read user in all Databases using comparator
   */
-function getGlobalUser($diak,$compair, $scoolYear=null, $scoolClass=null) {
+function oldlevigetGlobalUser($diak,$compair, $scoolYear=null, $scoolClass=null) {
 	global $dataBase;
 	global $dataPath;
 	global $data;
@@ -484,7 +277,7 @@ function getGlobalUser($diak,$compair, $scoolYear=null, $scoolClass=null) {
 /**
  * Read in the userlist
  */
-function readUserAuthDB()
+function oldlevireadUserAuthDB()
 {
 	global $dataBase;
 	global $dataPath;
@@ -570,15 +363,6 @@ function saveDB() {
 	}
 	fclose($file);
 	
-	//Just for fun save the data as json file
-	$json = $data;
-	$file=fopen($dataFileName.".json","w");
-	$json["lastIp"]=$_SERVER["REMOTE_ADDR"];
-	$json["changeDate"]=date('d.m.Y H:i');
-	$json["changeUserId"]=getLoggedInUserId();
-	$json["changeUserDb"]=getUserDatabaseName();
-	fwrite($file,json_encode($json));
-	fclose($file);
 }
 
 //*********************[ Vote database]**************************************
@@ -656,16 +440,6 @@ function saveVoteData($db,$years) {
 		   fwrite($file,$key."=".$val."\r\n");
 		}
 	}
-	fclose($file);
-	
-	//Just for fun save the data as json file
-	$json = $voteData;
-	$file=fopen($fileName.".json","w");
-	$json["lastIp"]=$_SERVER["REMOTE_ADDR"];
-	$json["changeDate"]=date('d.m.Y H:i');
-	$json["changeUserId"]=getLoggedInUserId();
-	$json["changeUserDb"]=getUserDatabaseName();
-	fwrite($file,json_encode($json));
 	fclose($file);
 	
 }
@@ -900,7 +674,7 @@ function resizeImage($fileName,$maxWidth,$maxHight)
 function loadTextData($database, $personId, $type) {
 	global $dataPath;
 	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
-	$ret="";
+	$ret=null;
 	if (file_exists($fileName)) {
 		$file=fopen($fileName,"r");
 		while (!feof($file)) {
@@ -945,7 +719,7 @@ function saveTextData($database, $personId, $type, $privacy, $text) {
 function getFieldAccessValue($field) {
 	if (userIsAdmin() || isAktUserTheLoggedInUser())
 		return getFieldValue($field);
-	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktDatabaseName()==getUserDatabaseName())
+	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClass()==getLoggedInUserClassId())
 		return getFieldValue($field);
 	else if (userIsLoggedOn() && getFieldCheckedScool($field)=="checked")
 		return getFieldValue($field);

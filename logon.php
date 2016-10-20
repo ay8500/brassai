@@ -52,7 +52,6 @@
 			saveLogInInfo("Facebook",getLoggedInUserId(),$_SESSION['FacebookId'],"","true");
 			sendHtmlMail(null,
 				"<h2>Facebooklogin</h2>".
-				"Datenbank:".getUserDatabaseName()."<br/>".
 				"FacebookId:".$_SESSION['FacebookId']."<br/>".
 				"FacebookName:".$_SESSION['FacebookName']."<br/>".
 				"Login result:".$logOnMessage,"Login");

@@ -13,31 +13,32 @@ else $tabOpen=0;
 
 //focus the person and get his data from the database
 include_once("data.php");
-$uid = 0;
 //if user id is delivered over pos or get parameter
 if (isset($_GET["uid"]) || isset($_POST["uid"])) {
-	if (isset($_GET["uid"])) $uid = $_GET["uid"];
-	if (isset($_POST["uid"])) $uid = $_POST["uid"];
-	setAktUserId($uid);	//save actual person in case of tab changes 
+	if (isset($_GET["uid"])) $personid = $_GET["uid"];
+	if (isset($_POST["uid"])) $personid = $_POST["uid"];
+	setAktUserId($personid);	//save actual person in case of tab changes
 }
 else {
 	//tabs are changed
 	if (isset($_GET["tabOpen"]) || isset($_POST["tabOpen"])) {
-		$uid=getAktUserId();	
+		$personid=getAktUserId();	
 	}
 	else {
-		$uid=getAktUserId();
+		$personid=getAktUserId();
 	}
 }
-$diak = getPerson($uid,getAktDatabaseName());
-
+$diak = $db->getPersonByID($personid);
+$classId=$diak["classID"];
+$class=$db->getClassById($classId);
+setAktClass($class["id"]);
 
 $resultDBoperation="";
 
 
 
 //Change password
-if (($uid != 0) && getParam("action","")=="changepassw" && userIsLoggedOn()) {
+if (getParam("action","")=="changepassw" && userIsLoggedOn()) {
 	
 	if (isset($_GET["newpwd1"])) $newpwd1=$_GET["newpwd1"]; else $newpwd1="";
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
@@ -55,15 +56,15 @@ if (($uid != 0) && getParam("action","")=="changepassw" && userIsLoggedOn()) {
 }
 
 //Change user name
-if (($uid != 0) && getParam("action","")=="changeuser" && userIsLoggedOn()) {
+if (getParam("action","")=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
-		if (!checkUserNameExists($uid,$user)) { 
+		if (!checkUserNameExists($personid,$user)) { 
 			$diak["user"]=$user;
 			$_SESSION["USER"]=$user;
 			savePerson($diak);
 			if (!userIsAdmin()) 
-				saveLogInInfo("SaveUsername",$uid,$diak["user"],"",true);
+				saveLogInInfo("SaveUsername",$personid,$diak["user"],"",true);
 			$resultDBoperation='<div class="alert alert-success">Becenév módosíva!</div>';
 		}
 		else
@@ -74,33 +75,33 @@ if (($uid != 0) && getParam("action","")=="changeuser" && userIsLoggedOn()) {
 }
 
 //Remove Facebook connection
-if (($uid != 0) && getParam("action","")=="removefacebookconnection"  && userIsLoggedOn()) {
+if (getParam("action","")=="removefacebookconnection"  && userIsLoggedOn()) {
 	$diak["facebookid"]="";
-	saveLogInInfo("FacebookDelete",$uid,$diak["user"],"",true);
+	saveLogInInfo("FacebookDelete",$personid,$diak["user"],"",true);
 	savePerson($diak);
 }
 
 //Delete Picture
-if (($uid != 0) && getParam("action","")=="deletePicture" && userIsLoggedOn()) {
-	deletePicture(getAktDatabaseName(), $uid,getParam("id", ""));
+if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
+	deletePicture(getAktDatabaseName(), $personid,getParam("id", ""));
 	$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 	saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
 }
 
 
 //Upload Image
-if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
+if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
-		$idx=getNextPictureId(getAktDatabaseName(),$uid,"", "", true);
+		$idx=getNextPictureId(getAktDatabaseName(),$personid,"", "", true);
 		if ($_POST["action"]=="upload_diak") {
-			$pFileName=getAktDatabaseName()."/d".$uid."-".$idx.".".strtolower($fileName[1]);
+			$pFileName=getAktDatabaseName()."/d".$personid."-".$idx.".".strtolower($fileName[1]);
 			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
 			$diak['picture']=$pFileName;
 			savePerson($diak);
 		} else {
-			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."/p".$uid."-".$idx.".".strtolower($fileName[1]);
-			setPictureAttributes(getAktDatabaseName(),$uid,$idx,"","","false");
+			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
+			setPictureAttributes(getAktDatabaseName(),$personid,$idx,"","","false");
 		}
 		//JPG
 		if (strcasecmp($fileName[1],"jpg")==0) {
@@ -108,19 +109,19 @@ if (($uid != 0) && isset($_POST["action"]) && ($_POST["action"]=="upload" || $_P
 				if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 					resizeImage($uploadfile,1200,1024);
 					$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
-					saveLogInInfo("PictureUpload",$uid,$diak["user"],$idx,true);
+					saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
 				} else {
 					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
 				}
 			}
 			else {
 				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
-				saveLogInInfo("PictureUpload",$uid,$diak["user"],"to big",false);			
+				saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
 			} 	
 		}
 		else {
 			$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
-			saveLogInInfo("PictureUpload",$uid,$diak["user"],"only jpg",false);
+			saveLogInInfo("PictureUpload",$personid,$diak["user"],"only jpg",false);
 		}	
 	}
 }
@@ -154,9 +155,9 @@ if (strstr(getGetParam("action", ""),"new")=="" ){?>
 <?php }
 
 //initialize tabs
-if (isTeachersDb())
+if ($classId==0)
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajz");
-else if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
+elseif ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");

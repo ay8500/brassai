@@ -5,7 +5,7 @@ include("homemenu.php");
 
 
 $name=trim(html_entity_decode(getGetParam("srcText", "")));
-$personList=searchForPerson($name);
+$personList=$db->searchForPerson($name);
 
 ?>
 <style>
@@ -20,9 +20,8 @@ $personList=searchForPerson($name);
 		Véndiákok száma:<?php echo sizeof($personList)?> Keresett szó:"<?php echo $name?>"
 	</div>
 <?php 
-foreach ($personList as $l => $d)	
+foreach ($personList as $d)	
 { 
-	if ( isPersonActive($d)) {
 
 		$personLink="editDiak.php?uid=".$d["id"]."&scoolYear=".$d["scoolYear"]."&scoolClass=".$d["scoolClass"];?>
 		
@@ -54,7 +53,6 @@ foreach ($personList as $l => $d)
 		
 		</div>
 		<?php 
-	}
 }
 ?>
 

@@ -10,7 +10,6 @@ if (sizeof($su)>2) {
 }
 include_once 'ltools.php';
 
-
 if(getGetParam("p", "")=="") {
 	$qs = explode("-",$_SERVER["REQUEST_URI"]) ;
 } else {
@@ -26,14 +25,12 @@ else if  ($su[1]=='impressum') {
   include_once('impressum.php');
 }
 */
-if (sizeof($qs)>2) {
+if (sizeof($qs)>1) {
 	include_once("sessionManager.php");
 	include_once ('userManager.php');
-	if (openDatabase($qs[1])) {
-		setAktScoolYear(substr($qs[1],3,4));
-		setAktScoolClass(substr($qs[1],0,3));
-		setAktUserId($qs[2]);
-		$diak=getPerson($qs[2]);
+	include_once 'data.php';
+	setAktUserId($qs[1]);
+		$diak=$db->getPersonByID($qs[1]);
 		if ($diak==null) {
 			error();
 			exit;

@@ -8,12 +8,13 @@ include_once 'sendMail.php';
  * @return string
  */
 function readMessageList($elements, $pricacy) {
+	global $db;
 	$h=readMessage($elements,$pricacy);
 	$ret="";
 	foreach ($h as $message) {
 		$diak=null;
 		if (isset($message["uid"])) {
-			$diak=getPerson($message["uid"],$message["scoolclass"].$message["scoolyear"]);
+			$diak=$db->getPersonByID($message["uid"]);
 		}
 		$ret .= '<div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">';
 			if (null!=$diak && isset($diak["picture"])) {

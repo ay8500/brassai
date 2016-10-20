@@ -17,7 +17,7 @@
 		
 	
 	<?php // Show the available classes from the db?>
-	<?php if ( $scoolClass=="") {?>
+	<?php if ( $schoolClass=="") {?>
 		<div style="background-color: #eeeeee; width:500px" >
 			<div class="sub_title"><?php echo getTextRes("FacebookLoginOk"); ?> </div>
 			<form action="start.php"  >
@@ -26,9 +26,9 @@
 					<select name="scoolClassFb" size="1">
 						<option value=""><?php echo getTextRes("SelectOneOption"); ?></option>
 						<?php 
-							$classes=getDatabaseList();
+							$classes=$db->getClassList();
 							foreach ($classes as $class) {
-								echo('<option>'.$class.'</option>');
+								echo('<option>'.$class["text"].'</option>');
 							}
 						?>
 					</select>
@@ -42,19 +42,21 @@
 	<br/>
 	
 	<?php // choose a person to be linkt with ?>
-	<?php if  ($scoolClass!="") {
-		openDatabase(substr($scoolClass,5,3).substr($scoolClass,0,4));
+	<?php if  ($schoolClass!="") {
 		?>
 		<div style="background-color: #eeeeee; width:500px;" >
 			<br />
 			<div><?php echo getTextRes("SelectUser"); ?></div>
 			<br />
 			<form action="start.php" >
-				<input type="hidden" name="scoolClassFb" value="<?php echo $scoolClass?>">
+				<input type="hidden" name="scoolClassFb" value="<?php echo $schoolClass?>">
 				<input type="hidden" name="action" value="facebooklogin">
 				<select name="userId" size="1">
 						<option value="-2"><?php echo getTextRes("SelectOneOption"); ?></option>
-						<?php foreach ($data as $l => $d) { 
+						<?php 
+							$classId = $db->getClassByText($schoolClass);
+							$data=$db->getPersonListByClassId($classId);
+							foreach ($data as $l => $d) { 
 							if ($d["facebookid"]=="") { ?>
 								<option value="<?php echo $d["id"] ?>"><?php echo $d["lastname"].' '.$d["firstname"] ?> </option>
 						<?php } } ?>	

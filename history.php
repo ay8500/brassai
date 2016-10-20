@@ -2,6 +2,7 @@
 
 
 function readHistoryList($elements) {
+	global $db;
 	$arType =array ("Személyes adatait módosította.",
 					"Új képet töltött fel.",
 					"Életrajzát kiegészítette.",
@@ -19,7 +20,7 @@ function readHistoryList($elements) {
 		else 
 			$tabopen ="";
 		$ret .= '<a href="editDiak.php?uid='.$history["uid"].'&scoolYear='.$history["scoolyear"].'&scoolClass='.$history["scoolclass"].$tabopen.'" >';
-		$diak = getPerson($history["uid"],$history["scoolclass"].$history["scoolyear"]);
+		$diak = $db->getPersonByID($history["uid"]);
 		$ret .= $diak["lastname"]." ".$diak["firstname"]." ";
 		if (isset($diak["birthname"]))
 			$ret .=$diak["birthname"]." ";

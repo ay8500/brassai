@@ -93,7 +93,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 				if (showField($d,"birthname")) echo(' ('.$d["birthname"].')');?>
 			</td>
 			<?php 
-			if ( userIsAdmin() || userIsEditor() || ($d["id"]==getLoggedInUserId() && getAktDatabaseName()==getUserDatabaseName()) ) { 
+			if ( userIsAdmin() || userIsEditor() || ($d["id"]==getLoggedInUserId() && getAktClass()==getLoggedInUserClassId()) ) { 
 				$dis="";$ro="";
 			} else {
 				$dis="disabled";$ro="readonly";

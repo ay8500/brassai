@@ -4,17 +4,16 @@ include("homemenu.php");
 include_once("data.php");
 include_once 'ltools.php';
 
-openDatabase(getAktDatabaseName());
 
 $resultDBoperation="";
-if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getUserDatabaseName()==getAktDatabaseName()) || userIsAdmin()) ) {
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getAktClass()==getLoggedInUserClassId()) || userIsAdmin()) ) {
 	deleteDiak(getGetParam("uid",""),getGetParam("db",""));
 	$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
 }
 
 // Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
-if (isTeachersDb()) {
+if (getAktClass()==0) {
 	echo('<h2 class="sub_title">Tanáraink</h2>');
 } else {
 	if ($guests )
@@ -43,7 +42,7 @@ if (isTeachersDb()) {
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="submit_newguest" />
 				<input class="btn btn-default" type="submit" value="Bővítsd a névsort" title="Szeretnék én is ezen a listán mint barát vagy ismerős szerepelni"/>
-			<?php } else if (!isTeachersDb()) {?>
+			<?php } else if (getAktClass()!=0) {?>
 				<input type="hidden" name="action" value="submit_newdiak" />
 				<input class="btn btn-default" type="submit" value="Bővítsd a vándiákok névsorát" title="Én is ebben az osztályban végeztem, szeretnék én is ezen a listán lenni."/>
 			<?php } else {?>
@@ -54,12 +53,12 @@ if (isTeachersDb()) {
 		</form>
 		<?php if($guests) {?>
 			Vendégek száma:
-		<?php } else if (!isTeachersDb()) {?>
+		<?php } else if (getAktClass()!=0) {?>
 			Véndiákok száma:
 		<?php  } else { ?>
 			Tanárok száma:
 		<?php } ?> 
-		<?php echo(getCountOfActivePersons($guests));?>
+		<?php echo($db->getCountOfPersons(getAktClass(), $guests));?>
 	</div>
 
 
@@ -74,16 +73,17 @@ if (isTeachersDb()) {
 
 
 <?php
-foreach ($data as $l => $d)	
+$personList=$db->getPersonListByClassId(getAktClass());
+foreach ($personList as $d)	
 { 
-	if ( $guests == isPersonGuest($d) && isPersonActive($d)) {
+	if ( $guests == isPersonGuest($d) ) {
 
 		if (userIsLoggedOn() || localhost()) {
-			$personLink="editDiak.php?uid=".$d["id"].'&scoolYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass();
+			$personLink="editDiak.php?uid=".$d["id"];
 		} else {
-			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".getAktDatabaseName()."-".$d["id"];
+			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
 		}
-		if (strstr($d["admin"],"rip")!="")
+		if (strstr($d["role"],"rip")!="")
 			$rip="rip";
 		else 
 			$rip="";
@@ -104,7 +104,7 @@ foreach ($data as $l => $d)
 			</h4>
 			<div class="fields"> 
 				<?php 
-				if (!isTeachersDb()) {
+				if (getAktClass()!=0) {
 					if(showField($d,"partner")) 	echo "<div><span>Élettárs:</span>".$d["partner"]."</div>";
 					if(showField($d,"education")) 	echo "<div><span>Végzettség:</span>".$d["education"]."</div>";
 					if(showField($d,"employer")) 	echo "<div><span>Munkahely:</span>".getFieldValue($d["employer"])."</div>";
@@ -114,7 +114,8 @@ foreach ($data as $l => $d)
 					if (isset($d["children"])) {	echo "<div><span>Osztályfönök:</span>";
 													$c = explode(",", getFieldValue($d["children"]));
 													foreach ($c as $cc) 
-														echo(' <a href="hometable.php?scoolYear='.substr($cc,3,4).'&scoolClass='.substr($cc,0,3).'">'.$cc.'</a> ');
+														$class= $db->getClassByText($cc);
+														echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
 													echo "</div>";
 					}
 				}
