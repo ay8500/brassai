@@ -12,7 +12,7 @@ $submitsave = $action=="submit_newguest_save" || $action=="submit_newdiak_save";
 $guest=$action=="submit_newguest" || $action=="submit_newguest_save";
 
 //Edit or only view variant this page
-$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() );
+$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || getGetParam("anonymousEditor", "")=="true");
 
 //preparation of the field to be edited and the itemprop characteristic
 $dataFieldNames 	=array("lastname","firstname","email");
@@ -26,7 +26,7 @@ if (!$submit && !$submitsave) {
 	array_push($dataCheckFieldVisible, false,false,true,true,false,false,true,true,true,false,false,true,true,false,true,true, false,false);
 }
 if (userIsAdmin()) {
-	array_push($dataFieldNames, "facebookid","admin","id", "user", "passw", "geolat", "geolng");
+	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng");
 	array_push($dataItemProp,"","","","","","","");
 	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
@@ -43,7 +43,7 @@ if ( ($action=="newdiak" || $action=="newguest" || $action=="submit_newguest" ||
 }
 
 
-//save the person data
+//save the new person data
 if ( $submitsave ) {
 	$diak["lastname"]=getGetParam("lastname", "");
 	$diak["firstname"]=getGetParam("firstname", "");;
@@ -61,7 +61,7 @@ if ( $submitsave ) {
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3)&& !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Új adat kimentése sikertelen.</div>';
 	} else {
-		savePerson($diak);
+		savePersonLevi($diak);
 		sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
 		if (!userIsAdmin())
 			saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
@@ -80,10 +80,10 @@ if ( $submitsave ) {
 }
 
 //Retrive changed data and save it
-if (($personid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn() ) {
-	$diak = getPerson($personid,getAktDatabaseName());
+if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
+	$diak = $db->getPersonByID($personid);
 	if ($diak==null) {
-		$diak = createNewPerson(getAktDatabaseName(),$guest);
+		$diak = createNewPerson(getAktClass(),$guest);
 	}
 	for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 		$tilde="";
@@ -99,17 +99,21 @@ if (($personid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn()
 	if (checkUserEmailExists($diak["id"],$diak["email"])) {
 		$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
 	//Validate the mail address if no admin logged on
-	} elseif (filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
+	} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">E-Mail nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
 	} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok  sikertelen.</div>';
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 	} else {
-		savePerson($diak);
-		$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
-		if (!userIsAdmin())
-			saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+		$ret = $db->savePerson($diak);
+		if ($ret>=0) {
+			$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
+			if (!userIsAdmin())
+				saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+		} else {
+			$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült!</div>';
+		}
 	}
 }
 
@@ -133,20 +137,28 @@ if (($personid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn()
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
 			</form>
 		</div>
-		<?php  //Don't delete myself?>
-		<?php if (!(getLoggedInUserId()==$diak["id"] && getAktClass()==getLoggedInUserClassId())) { ?>
+		<?php //Don't delete myself and if no user logged on?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] ) && getLoggedInUserId()>0) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="deleteDiak(<?php echo("'".getAktDatabaseName()."','".$diak["id"]."'");?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
+			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
 		</div>
 		<?php } ?>
 	<?php } ?>
 	
-	<?php //Save Button?>
+	<?php //Save button?>
 	<?php if ($edit) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
 		</div>
 	<?php } ?>
+	
+	<?php //Anonymous user edit button?>
+	<?php if (!$edit) {?>
+		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
+			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
+		</div>
+	<?php } ?>
+	
 	
 	<?php //Secutiry code and create new person button?>
 	<?php if ($submit) {?>
@@ -200,8 +212,10 @@ if (($personid != 0) && getParam("action","")=="changediak" &&  userIsLoggedOn()
 					if ($classId==0  && $dataFieldNames[$i]=="children") {
 						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
 						echo('<div  class="form-control" style="height:auto;">');
-						foreach ($c as $cc)
-							echo('<a href="hometable.php?scoolYear='.substr($cc,3,4).'&scoolClass='.substr($cc,0,3).'">'.$cc.'</a> ');
+						foreach ($c as $cc) {
+							$class= $db->getClassByText($cc);
+							echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
+						}
 						echo('</div>');
 					} else {
 						echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.$fieldString.'</div>');

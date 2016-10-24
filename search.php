@@ -22,10 +22,9 @@ $personList=$db->searchForPerson($name);
 <?php 
 foreach ($personList as $d)	
 { 
-
-		$personLink="editDiak.php?uid=".$d["id"]."&scoolYear=".$d["scoolYear"]."&scoolClass=".$d["scoolClass"];?>
+	$personLink="editDiak.php?uid=".$d["id"];?>
 		
-		<div class="element">
+	<div class="element">
 		
 		<div style="display: inline-block; width:160px;">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>">
@@ -47,15 +46,12 @@ foreach ($personList as $d)
 				if(showField($d,"children")) 	echo "<div><span>Gyerekek:</span>".$d["children"]."</div>";
 				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
 				if(showField($d,"email")) 		echo "<div><span>E-Mail:</span><a href=mailto:".getFieldValue($d["email"]).">".getFieldValue($d["email"])."</a></div>";
+				if($d["changeForID"]!=null)		echo "<div><span>.</span></div>";
 				?>
 	  		</div>
 		</div>
-		
-		</div>
-		<?php 
-}
-?>
-
+	</div>
+	<?php } ?>
 </div>
 
 
@@ -64,7 +60,7 @@ foreach ($personList as $d)
 <script type="text/javascript">
 	$( document ).ready(function() {
 		if ("<?php echo getGetParam("srcText", "")?>"!="") {
-		    showSearchBox();
+		    showSearchBox(true);
 		}
 	});
 

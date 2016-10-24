@@ -6,27 +6,28 @@
 	<tr><td colspan="3">
 	<form id="formRadio">
 	<?php
-		$pictures = getListofPictures(getAktClassName(),$personid, false) ;
-		$notDeletedPictures=1;
+		$notDeletedPictures=0;
+		$pictures = $db->getListofPictures($personid,"person",2,2) ;
 		foreach ($pictures as $pict) {
-			if (  $pict["deleted"]!="true"  || userIsAdmin() ) {
-				$file=$personid."-".$pict["id"];
+			if (  $pict["isDeleted"]==0  || userIsAdmin() ) {
+				$file=$pict["file"];
 				$checked="";
-				if ($pict["visibleforall"]=="true") $checked="checked";
+				if ($pict["isVisibleForAll"]==1) $checked="checked";
+				$notDeletedPictures++;
 	?>
 			<div style="padding: 10px;margin: 10px; display: inline-block;border-radius: 10px;border-style: outset; vertical-align: top;border-width: 1px; background-color: white">
 			<div style="display: inline-block;border-radius:10px;" >
-			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php echo $file?>');" >
+			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php echo $file?>',<?php echo $pict["isVisibleForAll"]==1 || userIsAdmin()?1:0 ?>);" href="#">
 				<img style="width:200px; height:200px;" src="convertImg.php?color=ffffff&thumb=true&file=<?php echo $file?>" />
 			</a>
 			</div>
 			<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 				<div style="display: inline-block;">
-				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo ($pict["id"]+1); ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
+				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo ($pict["id"]); ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
 				<br />
 				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($personid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
 				<br />
-				<?php if ($pict["deleted"]!="true"): ?>
+				<?php if ($pict["isDeleted"]==0): ?>
 					<div class="borderbutton" ><a onclick="deletePicture('<?PHP echo($personid) ?>',<?php echo $pict["id"] ?>);" title="Képet töröl"><img src="images/delete.gif" /></a></div>
 				<?php endif ?> 
 				</div>
@@ -59,7 +60,7 @@
 					</td>
 				</tr>
 			</form>
-			<?php if ($notDeletedPictures<24 || userIsAdmin()) :?>
+			<?php if ($notDeletedPictures<100 || userIsAdmin()) :?>
 			<tr><td colspan="3"><hr>Kép feltöltése</td></td>
 			<tr>
 				<form enctype="multipart/form-data" action="editDiak.php" method="post">
@@ -76,8 +77,10 @@
 	
 </table>
 <div id="pictureViewer" class="pictureView">
+	<button class="btn  btn-default glyphicon glyphicon-remove-circle" onclick="$('#pictureViewer').hide('fast');"> Bezár</button> 
+	<br/>
 	<img id="pictureToView" class="img-responsive" src="" />
-	<br>
+	<br/>
 	<button class="btn  btn-default glyphicon glyphicon-remove-circle" onclick="$('#pictureViewer').hide('fast');"> Bezár</button> 
 </div>
 
@@ -151,10 +154,14 @@
 	       
 	}
 
-	function showPicture(picture) {
+	function showPicture(picture,visibleforall) {
+		if(visibleforall==1) {
 	    var url = "convertImg.php?width=1024&file="+picture;
-	    $('#pictureToView').attr('src',url);
-	    $('#pictureViewer').show('slow');
+	    	$('#pictureToView').attr('src',url);
+	    	$('#pictureViewer').show('slow');
+		} else {
+			alert("Ezt a képet csak bejelentkezett osztály vagy iskolatársak tekinthetik meg.");
+		}
 	    
 	}
    

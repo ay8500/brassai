@@ -33,7 +33,7 @@
 	 */
 	function getLoggedInUserId() {
 		if (!isset($_SESSION["uId"]))
-			return null;
+			return -1;
 		return intval($_SESSION["uId"]);
 	}
 	
@@ -78,25 +78,23 @@
 	 * Check login data in each client 
 	 */
 	function checkUserLogin($user,$passw) {
+		global $db;
 		$ret = false;
-		if (checkRequesterIP()) {
+		if (checkRequesterIP("login")) {
 			$ret=false;
-			$diak["user"]=$user;
-			$diak["passw"]=$passw;
-			$usr =getGlobalUser($diak,"compairUserPassw");
-			if (null != $usr) {
+			$usr = $db->getPersonByUser($user);
+			if (null != $usr && $usr["passw"]==$passw) {
 				setUserInSession(
-					$usr["admin"],
+					$usr["role"],
 					$usr["user"],
 					$usr["id"]);
 				$ret = true;
 			}
 			else {
-				$diak["email"]=$user;
-				$usr =getGlobalUser($diak,"compairEmailPassw");
-				if (null != $usr) {
+				$usr =$db->getPersonByEmail($user);
+				if (null != $usr && $usr["passw"]==$passw) {
 					setUserInSession(
-						$usr["admin"],
+						$usr["role"],
 						$usr["user"],
 						$usr["id"]);
 					$ret = true;
@@ -116,23 +114,23 @@
 	 * Check facebook login data in each client
 	 */
 	function checkFacebookUserLogin($facebookId) {
+		global $db;
 		$ret = false;
-		if (checkRequesterIP()) {
+		if (checkRequesterIP("facebook")) {
 			$ret=false;
 			$diak["facebookid"]=$facebookId;
-			$usr =getGlobalUser($diak,"compairFacebookId");
+			$usr =$db->getPersonByFacobookId($facebookId);
 			if (null != $usr) {
 				setUserInSession(
-					$usr["admin"],
+					$usr["role"],
 					$usr["user"],
-					$usr["id"],
-					$usr["scoolYear"],
-					$usr["scoolClass"]);
+					$usr["id"]);
 				$ret = true;
 				if (!userIsAdmin() && userIsLoggedOn())
 					saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
 			}		
 		}
+		return $ret;
 	}
 	
 	/**
@@ -230,27 +228,23 @@
 	 * @return key string
 	 */
 	function generateAktUserLoginKey() {
-		$message= getAKtScoolClass()."-".getAktScoolYear()."-".getAktUserId();
-		
-		return encrypt_decrypt("encrypt",$message);
+		return generateUserLoginKey(getAktUserId());
 	}
 	
 	/**
 	 * generate an login key for the a user in the aktual database
-	 * @return Ambigous <boolean, string>
+	 * @return key string
 	 */
 	function generateUserLoginKey($uid) {
-		$message= getAKtScoolClass()."-".getAktScoolYear()."-".$uid;
-		
-		return encrypt_decrypt("encrypt",$message);
+		return encrypt_decrypt("encrypt",$uid);
 	}
 
 	/**
 	 * check if the username is unique in the database
 	 */
 	function checkUserNameExists($id,$userName) {
-		$diak["user"]=$userName;
-		$usr =getGlobalUser($diak,"compairUser");
+		global $db;
+		$usr = $db->getPersonByUser($userName);
 		if (null != $usr) {
 			if ( $usr["id"]==$id) 
 				return false;
@@ -266,10 +260,10 @@
 	 * the id is the current user id, this will be ignored if not null
 	 */
 	function checkUserEmailExists($id,$email) {
-		$diak["email"]=$email;
-		$usr =getGlobalUser($diak,"compairEmail");
+		global $db;
+		$usr = $db->getPersonByEmail($email);
 		if (null!=$usr) {
-			if ( $usr["id"]==$id)
+			if ( $usr["id"]==$id || (isset($usr["idForSave"]) && $usr["idForSave"]==$id))
 				return false;
 			else
 				return true;
@@ -286,20 +280,14 @@
 	 * -3 -> Sequrity violation 
 	 */
 	function resetUserPasswort($email, $newPassw) {
-		//Read the Database
-		$authData = readUserAuthDB();
 		$ret = -1;
 		if (strlen($newPassw)>3) { 
-			if (checkRequesterIP()) {
-					//check user email
-					$diak["email"]=$email;
-					$usr =getGlobalUser($diak,"compairEmail");
-					if (null != $usr) {
-						setAktScoolClass($usr["scoolClass"]);
-						setAktScoolYear($usr["scoolYear"]);
-						$usr["passw"]=$newPassw;
+			if (checkRequesterIP("newpassword")) {
+				global $db;
+				$usr = $db->getPersonByEmail($email);
+				if (null != $usr) {
+						$db->savePersonField($usr["id"],"passw",$newPassw);
 						$ret = $usr["id"];
-						savePerson($usr);
 					}
 			}
 			else $ret = -3;
@@ -345,7 +333,8 @@
 	 * if the IP can't login more then 10 time on a day then return value will set to false 
 	 * this is a safety funtion to prevent automatic loging of password crack
 	 */
-	function checkRequesterIP() {
+	function checkRequesterIP($action) {
+		//Action types: change,upload,login,newpassword,facebook
 		//TODO protection against hacking attaks 
 		return true;
 	}

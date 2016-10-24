@@ -17,18 +17,6 @@ if ($file_name=="") {
 	exit; 
 }
 
-//filename userId-pictureId
-$data = explode("-",$file_name);
-if (sizeof($data)!=2) {
-	echo("Wrong parameter file!");
-	exit;
-}
-$databaseName = getAktDatabaseName();
-if ($data[0]=="all")
-	$databaseName = $databaseName . 'group';
-$file_name="images/".$databaseName."/p".$file_name.".jpg";
-
-
 //Width
 if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = 200;
 
@@ -93,17 +81,17 @@ else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
 //visibility
-$picture = loadPictureAttributes($databaseName,$data[0],$data[1]);
-
-if ($picture["deleted"]!="true" || userIsAdmin()) {
-	//resizing the image
-	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
-	if ($picture["visibleforall"]!="true" && !userIsLoggedOn()  ) {
-		imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 6,true);
-		imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
+$picture = $db->getPictureByFileName($file_name); 
+if (sizeof($picture>0)) {
+	if ($picture["isDeleted"]==0 || userIsAdmin()) {
+		//resizing the image
+		imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+		if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
+			imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 6,true);
+			imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
+		}
 	}
 }
-
 //finally, return the image
 Header ("Content-type: image/png");
 ImageJpeg ($resized_img,null,80);

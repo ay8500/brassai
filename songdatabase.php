@@ -184,7 +184,7 @@ function readSongList($database,$interpret)
 			$b = explode("|",fgets($file));
 			if ( (isset($b[1])) && (($interpret==$b[1])||$interpret==0)   ) {
 				$data[$id]['id']=intval($b[0]);
-				$data[$id]['interpretId']=intval($b[1]);
+				$data[$id]['interpretID']=intval($b[1]);
 				$data[$id]['name']=$b[2];
 				if  (isset($b[3])) $data[$id]['video']=$b[3]; else $data[$id]['video']="";
 				if  (isset($b[4])) $data[$id]['link']=$b[4]; else $data[$id]['link']="";
@@ -380,11 +380,12 @@ function readVoteList($database,$userId)
 	global $dataPath;
 	$data = array();
 	
-	$songList=readSongList($database, 0);
-	$interpretList=readInterpretList($database);
 
 	$FileName=$dataPath.$database.'/songvote.txt'; 
     if (file_exists($FileName)) {
+		$songList=readSongList($database, 0);
+		$interpretList=readInterpretList($database);
+    	
 		$file=fopen($FileName ,"r");
 		$id=0;
 		while (!feof($file)) {
@@ -392,9 +393,9 @@ function readVoteList($database,$userId)
 			$sid=intval($b[0]);
 			if (isset($b[1]) && $sid>0) { 
 				$song = getSongFromList($songList,$sid);
-				if (isset($song['interpretId'])) {
+				if (isset($song['interpretID'])) {
 					$data[$id]['song']=$song; 
-					$data[$id]['interpret']=getInterpretFromList($interpretList,$song['interpretId']);
+					$data[$id]['interpret']=getInterpretFromList($interpretList,$song['interpretID']);
 					$data[$id]['user']=$b[1];
 					$data[$id]['voted']=false;
 					$userIds = explode (",",$b[1]);
@@ -434,6 +435,7 @@ function readTopList($database,$userId)
 function readVotersList($database)
 {
 	global $dataPath;
+	global $db;
 	$votersList = array();
 
 	$FileName=$dataPath.$database.'/songvote.txt'; 
@@ -463,7 +465,7 @@ function readVotersList($database)
 					if ($foundInTheVotersList==false) {
 						$newVoter["UID"]=$uid;
 						$newVoter["VotesCount"]=1;
-						$person=getPerson($uid);
+						$person=$db->getPersonByID($uid);
 						$newVoter["Songlist"]=array();
 						array_push($newVoter["Songlist"],$songId);
 						if (!isset($person["admin"]) || strstr($person["admin"],"admin")!="admin") {

@@ -8,9 +8,10 @@
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
 	if (getGetParam("classid", "")!="") {
-		$classId=intval(getGetParam("classid", ""));
-		$class=$db->getClassById($classId);
-		setAktClass($classId);
+		$class=$db->getClassByText(getGetParam("classid", ""));
+		if ($class==null)
+			$class=$db->getClassById(getGetParam("classid", ""));
+		setAktClass($class["id"]);
 	}
 	
 	
@@ -127,18 +128,20 @@
 	      		</li>
 	      	<?php } ?>
 			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok</a>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok<b class="caret"></b></a>
 			  	<ul class="dropdown-menu">
 			  	<?php
 			  		$classes = $db->getClassList();
 			  		foreach($classes as $class) {
-			  			if (getAktClass()==$class["id"]) 
-			  				$aktualClass="actual_class_in_menu";
-			  			else 
-			  				$aktualClass="";
-			  			?>
-			  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($class["id"]);?>"><?php echo($class["text"]); ?></a></li>
-			  		<?php }
+			  			if ($class["id"]>0) {
+				  			if (getAktClass()==$class["id"]) 
+				  				$aktualClass="actual_class_in_menu";
+				  			else 
+				  				$aktualClass="";
+				  			?>
+				  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($class["id"]);?>"><?php echo($class["text"]); ?></a></li>
+			  		<?php 	}
+			  			}
 			  	?>
 			  	</ul>
 			</li>
@@ -156,7 +159,7 @@
 					<div class="input-group input-group" style="margin: 3px;">
 						<span class="input-group-addon" style="width:130px">
 							<img src="images/<?php echo $person["picture"] ?>"  class="diak_image_sicon"/>
-							<a href="editDiak.php?uid=<?php echo(getLoggedInUserId());?>&scoolYear=<?php echo(getUScoolYear());?>&scoolClass=<?php echo(getUScoolClass());?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
+							<a href="editDiak.php?uid=<?php echo(getLoggedInUserId());?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
 						</span>
 						<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelentkezés</button>
 					</div>
@@ -200,9 +203,12 @@
 </div>
 
 <script type="text/javascript">
-	function showSearchBox() {
+	function showSearchBox(noAnimation) {
 	    closeLogin();
-		$("#uSearch").slideDown("slow");
+		if (noAnimation==null || noAnimation==false)
+			$("#uSearch").slideDown("slow");
+		else
+		    $("#uSearch").show();
 		onResize(135);
 	}
 	

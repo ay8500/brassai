@@ -31,7 +31,7 @@ else {
 $diak = $db->getPersonByID($personid);
 $classId=$diak["classID"];
 $class=$db->getClassById($classId);
-setAktClass($class["id"]);
+setAktClass($classId);
 
 $resultDBoperation="";
 
@@ -44,11 +44,14 @@ if (getParam("action","")=="changepassw" && userIsLoggedOn()) {
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
 		if ($newpwd1==$newpwd2) {
-			$diak['passw']=$newpwd1;
-			savePerson($diak);
-			if (!userIsAdmin()) 
-				saveLogInInfo("SavePassw",$uid,$diak["user"],"",true);
-			$resultDBoperation='<div class="alert alert-success"">Jelszó módosíva!</div>';
+			$ret=$db->savePersonField(getAktUserId(), "passw", $newpwd1);
+			if ($ret>=0) {
+				if (!userIsAdmin()) 
+					saveLogInInfo("SavePassw",$diak["id"],$diak["user"],"",true);
+				$resultDBoperation='<div class="alert alert-success"">Jelszó módosíva!</div>';
+			} else {
+				$resultDBoperation='<div class="alert alert-warning">Jelszó kimentése nem sikerült!</div>';
+			}
 		}
 		else $resultDBoperation='<div class="alert alert-warning">Jelszó ismétlése hibás!</div>';
 	}
@@ -60,12 +63,15 @@ if (getParam("action","")=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
 		if (!checkUserNameExists($personid,$user)) { 
-			$diak["user"]=$user;
-			$_SESSION["USER"]=$user;
-			savePerson($diak);
-			if (!userIsAdmin()) 
-				saveLogInInfo("SaveUsername",$personid,$diak["user"],"",true);
-			$resultDBoperation='<div class="alert alert-success">Becenév módosíva!</div>';
+			$ret=$db->savePersonField(getAktUserId(),'user', $user);
+			if ($ret>=0) {
+				$_SESSION["USER"]=$user;
+				if (!userIsAdmin()) 
+					saveLogInInfo("SaveUsername",$personid,$diak["user"],"",true);
+				$resultDBoperation='<div class="alert alert-success">Becenév módosíva!</div>';
+			} else {
+				$resultDBoperation='<div class="alert alert-warning">Becenév módosítása nem sikerült!</div>';
+			}
 		}
 		else
 			$resultDBoperation='<div class="alert alert-warning">Becenév már létezik válassz egy másikat!</div>';
@@ -77,15 +83,18 @@ if (getParam("action","")=="changeuser" && userIsLoggedOn()) {
 //Remove Facebook connection
 if (getParam("action","")=="removefacebookconnection"  && userIsLoggedOn()) {
 	$diak["facebookid"]="";
+	$db->savePersonField($diak["id"], getLoggedInUserId(), "facebookid", "");
 	saveLogInInfo("FacebookDelete",$personid,$diak["user"],"",true);
-	savePerson($diak);
 }
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
-	deletePicture(getAktDatabaseName(), $personid,getParam("id", ""));
-	$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
-	saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
+	if (deletePicture(getParam("id", "")>=0)) {
+		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+		saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
+	} else {
+		$resultDBoperation='<div class="alert alert-warning" >Kép törlés sikertelen!</div>';
+	}
 }
 
 
@@ -93,36 +102,40 @@ if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
-		$idx=getNextPictureId(getAktDatabaseName(),$personid,"", "", true);
-		if ($_POST["action"]=="upload_diak") {
-			$pFileName=getAktDatabaseName()."/d".$personid."-".$idx.".".strtolower($fileName[1]);
-			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
-			$diak['picture']=$pFileName;
-			savePerson($diak);
-		} else {
-			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
-			setPictureAttributes(getAktDatabaseName(),$personid,$idx,"","","false");
-		}
-		//JPG
-		if (strcasecmp($fileName[1],"jpg")==0) {
-			if ($_FILES['userfile']['size']<2000000) {
-				if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-					resizeImage($uploadfile,1200,1024);
-					$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
-					saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
-				} else {
-					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+		$idx=$db->getNextPictureId("picture");
+		if (checkRequesterIP("upload")) {
+			if ($_POST["action"]=="upload_diak") {
+				$pFileName=getAktClassFolder()."/d".$personid."-".$idx.".".strtolower($fileName[1]);
+				$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
+				$diak['picture']=$pFileName;
+				$db->savePersonField($personid, "picture", $pFileName);
+			} else {
+				$uploadfile="./images/".getAktClassFolder()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
+				$db->savePictureField(null, $personid, null,null,$uploadfile, 1, "", "", date("Y-m-d H:i:s"));
+			}
+			//JPG
+			if (strcasecmp($fileName[1],"jpg")==0) {
+				if ($_FILES['userfile']['size']<2000000) {
+					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+						resizeImage($uploadfile,1200,1024);
+						$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
+						saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
+					} else {
+						$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+					}
 				}
+				else {
+					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
+					saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
+				} 	
 			}
 			else {
-				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
-				saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
-			} 	
+				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
+				saveLogInInfo("PictureUpload",$personid,$diak["user"],"only jpg",false);
+			}
+		} else {
+			$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Sajnáljuk, de tul sok képet probálsz feltölteni!<br/> Kérünk fordulj a rendszergazdához, ha tovább szeretnéd folytatni ezt az akciót.</div>";
 		}
-		else {
-			$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
-			saveLogInInfo("PictureUpload",$personid,$diak["user"],"only jpg",false);
-		}	
 	}
 }
 
@@ -155,7 +168,7 @@ if (strstr(getGetParam("action", ""),"new")=="" ){?>
 <?php }
 
 //initialize tabs
-if ($classId==0)
+if (getAktClass()==0 && !userIsAdmin())
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajz");
 elseif ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");

@@ -19,251 +19,85 @@ class dbDAO {
 		$this->dataBase->disconnect();
 	}
 
-	public function getClassById($classid) {
-		$sql="select * from class where id =".$classid;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			return $this->dataBase->fetchRow();
-		} else
-			return null;
+//************************ Class ******************************************* 	
+
+	public function getClassById($id) {
+		return $this->getEntryById("class", $id);
 	}
 	
 	public function getClassByText($text) {
-		$sql="select * from class where text ='".$text."'";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			return $this->dataBase->fetchRow();
-		} else
-			return null;
+		return $this->getEntryByField("class", "text",$text);
 	}
 	
-	/**
-	 * Save class
-	 * @param $id
-	 * @param $schoolID
-	 * @param $name
-	 * @param $graduationYear
-	 * @param $text
-	 * @param $headTeacherID
-	 * @return 0=Ok, -1=Error, 1=Alert:class already exists
-	 */
-	public function saveClass($id, $ip, $schoolID, $name, $graduationYear, $text=null,$headTeacherID=null ) {
-		$data = array();
-		$i=0;
-		$data[$i]["field"]="schoolID";$data[$i]["type"]="n";$data[$i++]["value"]=$schoolID;
-		$data[$i]["field"]="name";$data[$i]["type"]="s";$data[$i++]["value"]=trim($name);
-		$data[$i]["field"]="graduationYear";$data[$i]["type"]="n";$data[$i++]["value"]=trim($graduationYear);
-		if ($text==null) {
-			$data[$i]["field"]="text";$data[$i]["type"]="s";$data[$i++]["value"]=trim($graduationYear)." ".trim($name);
-		} else {
-			$data[$i]["field"]="text";$data[$i]["type"]="s";$data[$i++]["value"]=trim($text);
-		}
-		if ($headTeacherID!=null) {
-			$data[$i]["field"]="$headTeacherID";$data[$i]["type"]="n";$data[$i++]["value"]=$headTeacherID;
-		}
-		$data[$i]["field"]="changeDate";$data[$i]["type"]="d";$data[$i++]["value"]=date("Y-m-d H:i:s");
-		if ($ip!=null) {
-			$data[$i]["field"]="changeIP";$data[$i]["type"]="s";$data[$i++]["value"]=$ip;
-		}
-		
-		if ($id==null) {
-			$sql="select * from class where name='".trim($name)."' and graduationYear=".trim($graduationYear);
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()>0) {
-				$row=$this->dataBase->fetchRow();
-				$this->dataBase->update("class",$data,"id",$row["id"]);
-				return 1;
-			} else {
-				$this->dataBase->insert("class",$data);
-				return 0;
-			}
-		} else {
-			$sql="select * from class where id=".$id;
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()>0) {
-				$this->dataBase->update("class",$data,"id",$id);
-				return 0;
-			} else {
-				return -1;
-			}
-		}
+	public function saveClass($class ) {
+		$where="name='".$this->dataBase->replaceSpecialChars($class["name"])."' and graduationYear=".$class["graduationYear"];
+		return $this->saveEntry("class", $class,$where);
 	}
 	
 	public function getClassList() {
-		$sql="select * from class where changeIP is null";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			return $this->dataBase->getRowList();
-		} else {
-			return null;
-		}
+		return   $this->getElementList("class");
 	}
 	
+	/**
+	 * Use in combination with getQueryRow if you want to make a loop over all personen 
+	 * @return NULL
+	 */
 	public function queryPersons() { 	
-		$sql="select * from person where changesForPersonID is null";
+		$sql="select * from person where changeForID is null";
 		$this->dataBase->query($sql);
 		return $this->dataBase->count();
 	}
 	
-	
+	/**
+	 * Use in combination with queryPersons if you want to make a loop over all personen 
+	 * @return NULL
+	 */
 	public function getQueryRow () {
 		return $this->dataBase->fetchRow();
 	}
 	
-	public function savePerson(	$id,$changesForPersonID,$classID,$userID,$isTeacher,$firstname,$lastname,$picture,$geolat,$geolng,
-								$user,$passw,$role,$birthname,$partner,$address,$zipcode,$place,$country,
-								$phone,$mobil,$email,$skype,$education,$employer,$function,$children,
-								$ip,$facebook,$homepage,$facebookid,$twitter) {
-		$data = array();
-		$i=0;
-		if($changesForPersonID!=null) {
-			$data[$i]["field"]="changesForPersonID";$data[$i]["type"]="n";$data[$i++]["value"]=$changesForPersonID;
-		}
-		$data[$i]["field"]="classID";$data[$i]["type"]="n";$data[$i++]["value"]=$classID;
-		$data[$i]["field"]="firstname";$data[$i]["type"]="s";$data[$i++]["value"]=$firstname;
-		$data[$i]["field"]="lastname";$data[$i]["type"]="s";$data[$i++]["value"]=$lastname;
-		$data[$i]["field"]="picture";$data[$i]["type"]="s";$data[$i++]["value"]=$picture;
-		$data[$i]["field"]="geolat";$data[$i]["type"]="s";$data[$i++]["value"]=$geolat;
-		$data[$i]["field"]="geolng";$data[$i]["type"]="s";$data[$i++]["value"]=$geolng;
-		$data[$i]["field"]="user";$data[$i]["type"]="s";$data[$i++]["value"]=$user;
-		$data[$i]["field"]="passw";$data[$i]["type"]="s";$data[$i++]["value"]=$passw;
-		$data[$i]["field"]="role";$data[$i]["type"]="s";$data[$i++]["value"]=$role;
-		$data[$i]["field"]="birthname";$data[$i]["type"]="s";$data[$i++]["value"]=$birthname;
-		$data[$i]["field"]="partner";$data[$i]["type"]="s";$data[$i++]["value"]=$partner;
-		$data[$i]["field"]="address";$data[$i]["type"]="s";$data[$i++]["value"]=$address;
-		$data[$i]["field"]="zipcode";$data[$i]["type"]="s";$data[$i++]["value"]=$zipcode;
-		$data[$i]["field"]="place";$data[$i]["type"]="s";$data[$i++]["value"]=$place;
-		$data[$i]["field"]="country";$data[$i]["type"]="s";$data[$i++]["value"]=$country;
-		$data[$i]["field"]="phone";$data[$i]["type"]="s";$data[$i++]["value"]=$phone;
-		$data[$i]["field"]="mobil";$data[$i]["type"]="s";$data[$i++]["value"]=$mobil;
-		$data[$i]["field"]="email";$data[$i]["type"]="s";$data[$i++]["value"]=$email;
-		$data[$i]["field"]="skype";$data[$i]["type"]="s";$data[$i++]["value"]=$skype;
-		$data[$i]["field"]="education";$data[$i]["type"]="s";$data[$i++]["value"]=$education;
-		$data[$i]["field"]="employer";$data[$i]["type"]="s";$data[$i++]["value"]=$employer;
-		$data[$i]["field"]="function";$data[$i]["type"]="s";$data[$i++]["value"]=$function;
-		$data[$i]["field"]="children";$data[$i]["type"]="s";$data[$i++]["value"]=$children;
-		$data[$i]["field"]="facebook";$data[$i]["type"]="s";$data[$i++]["value"]=$facebook;
-		$data[$i]["field"]="homepage";$data[$i]["type"]="s";$data[$i++]["value"]=$homepage;
-		$data[$i]["field"]="twitter";$data[$i]["type"]="s";$data[$i++]["value"]=$twitter;
-		$data[$i]["field"]="facebookid";$data[$i]["type"]="s";$data[$i++]["value"]=$facebookid;
-		$data[$i]["field"]="changeIP";$data[$i]["type"]="s";$data[$i++]["value"]=$ip;
-		$data[$i]["field"]="changeDate";$data[$i]["type"]="d";$data[$i++]["value"]=date("Y-m-d H:i:s");
-		$data[$i]["field"]="changeUserID";$data[$i]["type"]="n";$data[$i++]["value"]=$userID;
-		$data[$i]["field"]="isTeacher";$data[$i]["type"]="n";$data[$i++]["value"]=$isTeacher;
-		
-		if ($id==null) {
-			$sql="select * from person where user='".trim($user)."' and changesForPersonID is null";
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==1) {
-				$row=$this->dataBase->fetchRow();
-				$this->dataBase->update("person",$data,"id",$row["id"]);
-				return 1;
-			} else if ($this->dataBase->count()==0) {
-				$this->dataBase->insert("person",$data);
-				return 0;
-			} else if ($this->dataBase->count()>1) {
-				return -2;
-			}
-		} else {
-			$sql="select * from person where id=".$id;
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()>0) {
-				$this->dataBase->update("person",$data,"id",$id);
-				return 0;
-			} else {
-				return -1;
-			}
-		}
-	}
-		
-	public function savePersonTextData($personId, $userIP, $userID, $type, $privacy, $text) {
-		if($personId==null || $text==null)
-			return -3;
-		
-		if ($privacy=="world") $text="~~".$text;
-		if ($privacy=="scool") $text="~".$text;
-
-		$data = array();
-		$i=0;
-		if ($type=="story") {
-			$data[$i]["field"]="story";$data[$i]["type"]="s";$data[$i++]["value"]=$text;
-		}
-		else if ($type=="cv") {
-			$data[$i]["field"]="cv";$data[$i]["type"]="s";$data[$i++]["value"]=$text;
-		}
-		else if ($type=="aboutMe") {
-			$data[$i]["field"]="aboutMe";$data[$i]["type"]="s";$data[$i++]["value"]=$text;
-		} else
-			return -4;
-		
-		if($userIP!=null) {
-			$data[$i]["field"]="changeIP";$data[$i]["type"]="s";$data[$i++]["value"]=$userIP;
-		}
-		if($userID>=0) {
-			$data[$i]["field"]="changeUserID";$data[$i]["type"]="n";$data[$i++]["value"]=$userID;
-		}
-		$data[$i]["field"]="changeDate";$data[$i]["type"]="d";$data[$i++]["value"]=date("Y-m-d H:i:s");
-		
-		//This is  an anonymuschange
-		if ($userID<0) {
-			$sql="select * from person where changesForPersonID=".$personId." and changeIP ='".trim($userIP)."'";
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==0) {
-				$d=$this->getPersonByID($personId);
-				$db->savePerson(null, $personId, $d["classID"],$userID, $d["isTeacher"], $d["firstname"], $d["lastname"], $d["picture"], $d["geolat"], $d["geolng"], $d["user"], $d["passw"], $d["role"], $d["birthname"], $d["partner"], $d["address"], $d["zipcode"], $d["place"], $d["country"], $d["phone"], $d["mobil"], $d["email"], $d["skype"], $d["education"], $d["employer"], $d["function"], $d["children"], $userIP, $d["facebook"], $d["homepage"], $d["facebookid"], $d["twitter"]);
-			}
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==1) {
-				$row=$this->dataBase->fetchRow();
-				$this->dataBase->update("person",$data,"id",$row["id"]);
-				return 1;
-			} else  {
-				return -2;
-			}
-		} else {
-			$this->dataBase->update("person",$data,"id",$personId);
-			return 0;
-		}
-			
+//************************** Person *******************************************	
+	
+	public function savePerson($person,$whereSecondPrimaryKey=null) {
+		return $this->saveEntry("person", $person,$whereSecondPrimaryKey);
 	}
 	
-	public function getPersonByUser($username) {
-		if ($username==null || trim($username)=="")
-			return null;
-		$sql="select * from person where user ='".trim($username)."' and changesForPersonID is null";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			$row = $this->dataBase->fetchRow();
-			$personid=intval($row["id"]);
-		} else
-			return null;
-					
-			
-		$sql="select * from person where changeIP ='".$_SERVER["REMOTE_ADDR"]."' and changesForPersonID=".$personid;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			return $this->dataBase->fetchRow();
-		} else {
-			return $this->getPersonByID($personid);
+	public function savePersonField($personId,$fieldName,$fieldValue) {
+		if ($fieldName==null || $fieldName=="")
+			return -1;
+		$person=$this->getPersonByID($personId);
+		if ($person!=null) {
+			$person[$fieldName]=$fieldValue;
+			$this->savePerson($person);
 		}
 	}
-		
-	public function getPersonByID($personid) {
-		if ($personid==null || trim($personid)=="")
-			return null;
 
-		$sql="select * from person where changeIP ='".$_SERVER["REMOTE_ADDR"]."' and changesForPersonID=".trim($personid);
+	public function getPersonByUser($username) {
+		return $this->getEntryByField("person", "user", $username);
+	}
+
+	public function getPersonByEmail($email) {
+		if ($email==null || trim($email)=="")
+			return null;
+		$person = $this->getEntryByField("person", "email", $email);
+		if ($person==null)
+			$person = $this->getEntryByField("person", "email", "~".$email);
+		return $person;
+	}
+	
+	public function getPersonByFacobookId($fbid) {
+		if ($fbid==null || trim($fbid)=="")
+			return null;
+		$sql="select * from person where facebookid ='".trim($fbid)."' and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
-			return $this->dataBase->fetchRow();
-		} else {
-			$sql="select * from person where id =".trim($personid)." and changesForPersonID is null";
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==1) {
-				return $this->dataBase->fetchRow();
-			} else
-				return null;
-		}
+			return  $this->dataBase->fetchRow();
+		} else
+			return null;
+	}
+	
+	public function getPersonByID($personid) {
+		return $this->getEntryById("person", $personid);
 	}
 	
 	/**
@@ -274,15 +108,33 @@ class dbDAO {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
-	
+			
 			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";  
 			$sql .=" (classID != 0 or isTeacher = 1)";
+			$sql .=" and person.changeForID is null";
 			$this->dataBase->query($sql);
-	
 			while ($person=$this->dataBase->fetchRow()) {
 				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
 					stristr(html_entity_decode($person["firstname"]), $name)!="" ||
 					(isset($person["birthname"]) && stristr(html_entity_decode($person["birthname"]), $name)!="")) {
+					array_push($ret, $person);
+				}
+			}
+			
+			//Reorganise the list with the self change entrys
+			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";
+			$sql .=" (classID != 0 or isTeacher = 1)";
+			$sql .=" and person.changeForID is not null";
+			$sql .=" and person.changeIP ='".$_SERVER["SERVER_ADDR"]."'";
+			$this->dataBase->query($sql);
+			while ($person=$this->dataBase->fetchRow()) {
+				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
+					stristr(html_entity_decode($person["firstname"]), $name)!="" ||
+					(isset($person["birthname"]) && stristr(html_entity_decode($person["birthname"]), $name)!="")) {
+					
+					$arrayIdx = array_search($person["changeForID"], array_column($ret,"id"));
+					unset($ret[$arrayIdx]);	
+					$person["id"]=$person["changeForID"];
 					array_push($ret, $person);
 				}
 			}
@@ -292,22 +144,36 @@ class dbDAO {
 	}
 	
 	public function getPersonListByClassId($classId) {
-		$ret = array();
-		$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person left join  class on class.id=person.classID where ";
-		$sql .=" classID = ".$classId;
-		$sql .=" and changesForPersonID is null ";
-		if ($classId==0)
-			$sql .=" and isTeacher = 1";
-		$this->dataBase->query($sql);
-		
-		while ($person=$this->dataBase->fetchRow()) {
-			if (true) {
-				array_push($ret, $person);
-			}
-		}
+		$ret = $this->getElementList("person","classID=".$classId);
 		usort($ret, "compareAlphabetical");
 		return $ret;
 	}	
+	
+	public function getPersonListToBeChecked() {
+		$sql="select c.*, o.id as changeForIDjoin from person as c left join person as o on c.changeForID=o.id   where c.changeForID is not null";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$ret= $this->dataBase->getRowList();
+			usort($ret, "compareAlphabetical");
+			return $ret;
+		} else 
+			return array();
+	}	
+	
+	public function deletePersonEntry( $id) {
+		$this->dataBase->delete("person", "id", $id);
+	}
+	
+	public function acceptChangeForPerson($id) {
+		$p=$this->dataBase->querySignleRow("select * from person where id=".$id);
+		if (sizeof($p)>0) {
+			$p["id"]=$p["changeForID"];
+			unset($p["changeForID"]);
+			$this->dataBase->delete("person", "id", $id);
+			$this->updateEntry("person", $p);
+		}
+	}
+	
 	
 	public function getCountOfPersons($classId,$guests) {
 		$ret = array();
@@ -317,14 +183,336 @@ class dbDAO {
 			$sql .=" and role like '%guest%'";
 		else
 			$sql .=" and not(role like '%guest%')";
-		$sql .=" and changesForPersonID is null ";
+		$sql .=" and changeForID is null ";
 		if ($classId==0)
 			$sql .=" and isTeacher = 1";
 		$this->dataBase->query($sql);
 		return $this->dataBase->count();
-		
 	}
-		
 	
+//******************** Picture DAO *******************************************
+	
+	public function savePicture($picture,$whereSecondPrimaryKey=null) {
+		return $this->saveEntry("picture", $picture,$whereSecondPrimaryKey);
+	}
+	
+	public function savePictureField($id,$personId,$classId,$schoolId,$file,$isVisibleForAll,$title,$comment,$uploadDate,$isDeleted=0) 
+	{
+		$picture = array();
+		$picture["id"]=$id;
+		if ($personId!=null)
+			$picture["personID"]=$personId;
+		if ($classId!=null)
+			$picture["classID"]=$classId;
+		if ($schoolId!=null)
+			$picture["schoolID"]=$schoolId;
+		if ($file!=null)
+			$picture["file"]=$file;
+		if ($isVisibleForAll!=null)
+			$picture["isVisibleForAll"]=$isVisibleForAll;
+		if ($title!=null)
+			$picture["title"]=$title;
+		if ($comment!=null)
+			$picture["comment"]=$comment;
+		if ($isDeleted!=null)
+			$picture["isDeleted"]=$isDeleted;
+		if ($uploadDate!=null)
+			$picture["uploadDate"]=$uploadDate;
+		return $this->savePicture($picture);		
+	}
+	
+	public function getListOfPictures($id,$type,$isDeleted,$isVisibleForAll) {
+		$sql="select * from picture ";
+		if ($type=="person")
+			$sql.="where personId=".$id;
+		if ($type=="class")
+			$sql.="where classId=".$id;
+		if ($type=="school")
+			$sql.="where schoolId=".$id;
+			if ($isDeleted<2) {
+			$sql.=" and isDeleted=".$isDeleted;}
+		if ($isVisibleForAll<2) {
+			$sql.=" and isVisibleForAll=".$isVisibleForAll; }
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
+		}
+	}
+	
+	public function getPictureByFileName($filename) {
+		$sql="select * from picture where file='".$filename."'";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			return $this->dataBase->fetchRow();
+		} else {
+			return array();
+		}
+	}
+	
+	public function getPictureById($id) {
+		$sql="select * from picture where id=".$id;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			return $this->dataBase->fetchRow();
+		} else {
+			return array();
+		}
+	}
+	
+	public function getNextPictureId() {
+		return $this->dataBase->getNextAutoIncrement("picture");
+	}
+
+//******************** Vote DAO *******************************************
+	
+	public function getVote($personId,$meetAfterYear) {
+		$sql="select * from vote where personID =".$personId." and meetAfterYear=".$meetAfterYear;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->fetchRow();
+		} else {
+			$ret = array();
+			$ret["eventDay"]="";
+			$ret["isSchool"]="";
+			$ret["isCemetery"]="";
+			$ret["isDinner"]="";
+			$ret["isExcursion"]="";
+			$ret["place"]="";
+			
+			return $ret;
+		}
+	}
+	
+	public function saveVote($entry) {
+		return $this->saveEntry("vote", $entry,"personID=".$entry["personID"]." and meetAfterYear=".$entry["meetAfterYear"]);
+	}
+
+	
+//******************** Song and Message DAO *******************************************
+
+	public function saveMessage($entry) {
+		return $this->saveEntry("message", $entry, "text ='".$this->dataBase->replaceSpecialChars($entry["text"])."'");
+	}
+	
+	public function saveSongVote($entry) {
+		return $this->saveEntry("songvote", $entry, "personID =".$entry["personID"]." and songID=".$entry["songID"]);
+	}
+	
+	
+	public function saveInterpret($entry) {
+		return $this->saveEntry("interpret", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
+	}
+
+	public function saveSong($entry) {
+		return $this->saveEntry("song", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
+	}
+	
+	public function getSongById($id) {
+		return $this->getEntryById("song", $id);
+	}
+	
+	public function getSongByName($name) {
+		return $this->getEntryByField("song","name", $name);
+	}
+	
+	public function getInterpretById($id) {
+		return $this->getEntryById("interpret", $id);
+	}
+	
+	public function getInterpretByName($name) {
+		return $this->getEntryByField("interpret", "name",$name);
+	}
+	
+	public function getSongList() {
+		return $this->getElementList("song");
+	}
+
+	public function getInterpretList() {
+		return $this->getElementList("interpret");
+	}
+	
+//********************* Private ******************************************	
+	
+	private function getElementList($table,$where=null) {
+		$ret=array();
+		$sql="select id from ".$table." where changeForID is null";
+		if ($where!=null)
+			$sql.=" and ".$where;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$rows = $this->dataBase->getRowList();
+			foreach ($rows as $row) {
+				array_push($ret, $this->getEntryById($table, $row["id"]));
+			}
+		}
+		return $ret;
+	}
+	
+	
+	/**
+	 * Returns a signle entry from a table in consideration of the anonymous changes
+	 * @param unknown $table
+	 * @param unknown $whereField
+	 * @param unknown $whereValue
+	 */
+	private function getEntryById($table,$id) {
+		//First get the entry by the id
+		$sql="select * from ".$table.' where id='.$id." and changeForID is null";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			$entry = $this->dataBase->fetchRow();
+			//Check if a changed version for the ip is available
+			$sql="select * from ".$table." where changeIP='".$_SERVER["SERVER_ADDR"]."' and changeForID =".$id;
+			$this->dataBase->query($sql);
+			if ($this->dataBase->count()==1) {
+				$row = $this->dataBase->fetchRow();
+				$row["idForSave"]=$row["id"];
+				$row["id"]=$entry["id"];
+				return $row;
+			}
+			return $entry;
+		} else {
+			$sql="select * from ".$table.' where id='.$id." and changeIP='".$_SERVER["SERVER_ADDR"]."' and changeForID is not null";
+			$this->dataBase->query($sql);
+			if ($this->dataBase->count()==1) {
+				$entry = $this->dataBase->fetchRow();
+				return $entry;
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	private function getEntryByField($table,$fieldName,$fieldValue) {
+		$sql="select * from ".$table." where ".$fieldName."='".trim($fieldValue)."' and changeForID is null";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			$entry = $this->dataBase->fetchRow();
+			return $this->getEntryById($table, $entry["id"]);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Insert or update a table entry
+	 * If the entry has a sekond primary key exists then force an update
+	 * If user is anonymous create a new entry as a change   
+	 * @param unknown $table
+	 * @param unknown $entry
+	 * @param unknown $whereSecondPrimaryKey
+	 */
+	private function saveEntry($table,$entry,$whereSecondPrimaryKey=null) {
+		//Build the change data array
+		$data = array();
+		foreach ($entry as $fieldName=>$fieldValue) {
+			if ($fieldName!="id" && $fieldName!="changeForID") {
+				$data =$this->dataBase->insertFieldInArray($data,$fieldName, $fieldValue);
+			}
+		}
+		$data =$this->dataBase->changeFieldInArray($data,"changeIP", $_SERVER["SERVER_ADDR"]);
+		$data =$this->dataBase->changeFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
+		if (getLoggedInUserId()>=0) {
+			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", getLoggedInUserId());
+		} else {
+			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", null);
+			if ($entry["id"]>=0) 
+				$data =$this->dataBase->changeFieldInArray($data,"changeForID", $entry["id"]);
+			else 
+				$data =$this->dataBase->changeFieldInArray($data,"changeForID", -1);
+		}
+		
+		//Update
+		if (!($entry["id"]==-1)) {
+			$dbEntry = $this->getEntryById($table, $entry["id"]);
+			if ($dbEntry!=null) {
+				if (isset($dbEntry["idForSave"]) && $dbEntry["idForSave"]!=null) {
+					//Update the copy
+					$data =$this->dataBase->deleteFieldInArray($data,"idForSave");
+					if ($this->dataBase->update($table,$data,"id",$dbEntry["idForSave"]))
+						return $dbEntry["idForSave"];
+					else 
+						return -6;
+				} else {
+					if (getLoggedInUserId()>=0  ) {
+						//Update the entry
+						if ($this->dataBase->update($table,$data,"id",$dbEntry["id"]))							
+							return $dbEntry["id"];
+						else 
+							return -5;
+					} else {
+						//Insert a copy
+						$data = $this->dataBase->changeFieldInArray($data, "changeForID", $entry["id"]);
+						if ($this->dataBase->insert($table,$data))
+							return 0;
+						else 
+							return -4;
+					}
+				}
+				return $dbEntry["id"];
+			} else 
+				return -1;
+			
+		} 
+		//Insert
+		else {
+			if ($whereSecondPrimaryKey!=null) {
+				$sql="select * from ".$table." where ".$whereSecondPrimaryKey." and changeForID is null";
+				$this->dataBase->query($sql);
+				if ($this->dataBase->count()==1) {
+					$row=$this->dataBase->fetchRow();
+					//Found a entry to update 
+					if ($this->dataBase->update($table,$data,"id",$row["id"]))
+						return $row["id"];
+					else 
+						return -7;
+				} if ($this->dataBase->count()>1) {
+					return -8;
+				} else {
+					//Insert
+					$this->dataBase->insert($table,$data);
+					$sql="select * from ".$table." where ".$whereSecondPrimaryKey." and changeForID is null";
+					$this->dataBase->query($sql);
+					if ($this->dataBase->count()==1) {
+						$row=$this->dataBase->fetchRow();
+						return $row["id"];
+					} else
+						return -9;
+				}
+			} else {
+				if (getLoggedInUserId()>=0) {
+					//Insert
+					if ($this->dataBase->insert($table,$data))
+						return 0;
+					else 
+						return -1;
+				} else {
+					//Insert a Copy
+					$data = $this->dataBase->changeFieldInArray($data, "changeForID", -1);
+					if ($this->dataBase->insert($table,$data))
+						return 0;
+					else 
+						return -4;
+				}
+			}
+		}
+	
+	}
+	
+	private function updateEntry($table,$entry) {
+		//Build the change data array
+		$data = array();
+		foreach ($entry as $fieldName=>$fieldValue) {
+			if ($fieldName!="id" && $fieldName!="changeForID") {
+				$data =$this->dataBase->insertFieldInArray($data,$fieldName, $fieldValue);
+			}
+		}
+		if ($this->dataBase->update($table,$data,"id",$entry["id"]))
+			return 0;
+		else
+			return -1;
+	}
 }
 ?>

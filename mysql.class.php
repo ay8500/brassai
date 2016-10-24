@@ -21,6 +21,11 @@ class MySqlDb {
     if (is_resource($this->connection))				
         mysqli_close($this->connection);
   }
+  
+  public function commit() {
+  	return mysqli_commit($this->connection);
+  }
+  
  
   /* Execute a query get results with $this->fetchRow() and $this->count() */
   public function query($query) {
@@ -36,12 +41,23 @@ class MySqlDb {
 	//}
 	return 0;
   }
+
+  /* Execute a query that return a single row*/
+  public function querySignleRow($query) {
+  	$this->result=mysqli_query($this->connection,$query)  or die(mysqli_error($this->connection));
+  	if ($this->count()==1)
+  		return $this->fetchRow();
+  	else 
+  		return array();
+  }
+  
   
   /* fech a query result row */	 
   public function fetchRow() {
   	return mysqli_fetch_assoc($this->result);
   }
   
+  /* get result list as an array */
   public function getRowList() {
   		$ret=array();
   		while ($row = mysqli_fetch_assoc($this->result)) {
@@ -128,20 +144,20 @@ class MySqlDb {
 	public function update($table, $data, $whereField="", $whereValue="") {
 	  	$sql="update ".$table." set ";
 	  	$notFirstElement=false;
-	  	for ($i=0;$i<sizeof($data);$i++) {
+	  	foreach ($data as $d) {
 	  		if ($notFirstElement) $sql .=",";
 	  		$notFirstElement = true;
-	  		$sql .="`".$data[$i]["field"]."`=";
-	  		if ($data[$i]["type"]!="n") $sql .="'";
-	  		if ($data[$i]["type"]!="n") 
-	  			$sql .=$this->replaceSpecialChars($data[$i]["value"]);
+	  		$sql .="`".$d["field"]."`=";
+	  		if ($d["type"]!="n") $sql .="'";
+	  		if ($d["type"]!="n") 
+	  			$sql .=$this->replaceSpecialChars($d["value"]);
 	  		else { 
-		  		if ($data[$i]["value"]!="")
-	  				$sql .=$data[$i]["value"];
+		  		if ($d["value"]!="")
+	  				$sql .=$d["value"];
 				else
 					$sql .=0;
 	  		}
-	  		if ($data[$i]["type"]!="n") $sql .="'";
+	  		if ($d["type"]!="n") $sql .="'";
 	  	}
 	  	if ($whereField!="") {
 			$sql.=" where ".$whereField."=".$whereValue;
@@ -156,7 +172,8 @@ class MySqlDb {
 	   	}
 	}
    	  
-   	  public function delete($table, $whereField, $whereValue) {
+	/* delete */
+   	public function delete($table, $whereField, $whereValue) {
    	  	$sql="delete from ".$table." where ".$whereField."=".$whereValue;
    	  	if ($this->result=mysqli_query($this->connection,$sql)) {
    	  		return true;
@@ -165,17 +182,77 @@ class MySqlDb {
    	  		echo (mysqli_error());
    	  		return false;
    	  	}
-   	  }
+	}
    	  
-   	  private function mysqli_result($res, $row, $field=0) {
+	public function getNextAutoIncrement($table) {
+		$sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='".$table."'";
+		return $this->queryInt($sql);
+	}
+   	  
+	private function mysqli_result($res, $row, $field=0) {
    	  	$res->data_seek($row);
    	  	$datarow = $res->fetch_array();
    	  	return $datarow[$field];
-   	  }
+	}
    	  
-   	  private function replaceSpecialChars($s) {
-   	  	return str_replace("'", "\'", $s);
-   	  }
+	public function replaceSpecialChars($s) {
+   	  	return str_replace("'", "&Apos;", $s);
+	}
+	
+	public function rereplaceSpecialChars($s) {
+		return str_replace("&Apos;", "'", $s);
+	}
+	
+	public function createFieldArray($type,$name,$value) {
+		$ret = array();
+		$ret["field"]=$name;
+		$ret["type"]=$type;
+		$ret["value"]=$value;
+		return $ret;
+	}
    	  
+	public function insertFieldInArray($array,$fieldName,$fieldValue) {
+		$type=null;
+		//Ends with id, year oder start with is => integer
+		if (preg_match('/id\\z/i', $fieldName)  || preg_match('/Year\\z/', $fieldName)  || preg_match('/\\Ais/', $fieldName) ) {
+			$type="n";}
+		//Ends with date => date
+		else if (preg_match('/Date\\z/i', $fieldName)) {
+			$type="d";}
+		//its a string
+		else /*if ($fieldValue!=null) */{
+			$type="s";
+			$fieldValue=$this->replaceSpecialChars($fieldValue);
+		}
+		if ($type!=null) {
+			$ret = array();
+			$ret["field"]=$fieldName;
+			$ret["type"]=$type;
+			$ret["value"]=$fieldValue;
+			array_push($array, $ret);
+		}
+		return $array;
+	}
+	
+	public function changeFieldInArray($fieldArray,$fieldName,$fieldValue) {
+		$arrayIdx = array_search($fieldName, array_column($fieldArray,"field"));
+		if (!$arrayIdx===false) {
+			$fieldArray[$arrayIdx]["value"]=$fieldValue;
+			return $fieldArray;
+		} else {
+			return $this->insertFieldInArray($fieldArray,$fieldName,$fieldValue);
+		}
+	}
+
+	public function deleteFieldInArray($fieldArray,$fieldName) {
+		$arrayIdx = array_search($fieldName, array_column($fieldArray,"field"));
+		if (!$arrayIdx===false) {
+			unset($fieldArray[$arrayIdx]);
+		}
+		return $fieldArray;
+	}
+	
+	
+	
 }
 ?>

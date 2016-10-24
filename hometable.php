@@ -31,7 +31,7 @@ if (getAktClass()==0) {
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="newguest" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új vendéggel, jó baráttal"/>
-			<?php } else if (!isTeachersDb()) {?>
+			<?php } else if (getAktClass()!=0) {?>
 				<input type="hidden" name="action" value="newdiak" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új véndiákkal "/>
 			<?php } else  {?>
@@ -113,9 +113,10 @@ foreach ($personList as $d)
 					if (isset($d["function"]))		echo "<div><span>Tantárgy:</span>".getFieldValue($d["function"])."</div>";
 					if (isset($d["children"])) {	echo "<div><span>Osztályfönök:</span>";
 													$c = explode(",", getFieldValue($d["children"]));
-													foreach ($c as $cc) 
+													foreach ($c as $cc) {
 														$class= $db->getClassByText($cc);
 														echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
+													}
 													echo "</div>";
 					}
 				}

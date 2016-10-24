@@ -25,9 +25,9 @@ if ($scoolClass!="")
 
 $userId=getIntParam("userId",-1);
 if ($userId>=0) {
-	$person = getPerson($userId,substr($scoolClass,5,3).substr($scoolClass,0,4));
+	$person = $db->getPersonByID($userId);
 	$person["facebookid"]= $_SESSION["FacebookId"];
-	savePerson($person);
+	$db->savePerson($person);
 }
 
 include("homemenu.php");

@@ -58,7 +58,7 @@ if ($delVote>=0 && $edit) {
    } 
 	
    //Read voters List
-	$votersList=readVotersList(getAktDatabaseName());
+	$votersList=readVotersList(getAktClassFolder());
 	$allVotes=0;
 	$voteCount=0;
 	foreach ($votersList as $voter) {

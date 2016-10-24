@@ -66,10 +66,10 @@ function readMessage($elements,$privacy=2) {
 		$json = json_decode($b,true);
 		if(	$json["privacy"]==$ar_privacy[$privacy] &&
 			( !isset($json["deleted"]) || $json["deleted"]!="true") &&
-			(	($privacy==0 &&
-			    $json["scoolyear"] == getUScoolYear() &&
-			    $json["scoolclass"] == getUScoolClass() )  
-			 || $privacy!=0)
+			(	//($privacy==0 &&
+			    //$json["scoolyear"] == getUScoolYear() &&
+			   // $json["scoolclass"] == getUScoolClass() )  
+			  $privacy!=0)
 			) 
 		{
 			array_push($ret, $json);

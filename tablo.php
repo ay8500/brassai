@@ -21,6 +21,9 @@
 }
 </style>
 <?php 
+include_once("sessionManager.php");
+include_once ('userManager.php');
+include_once 'ltools.php';
 include_once("data.php");
 $SiteTitle="Ballagási tabló és csoportképek".getAktClassName();
 include("homemenu.php"); 
@@ -29,26 +32,24 @@ $resultDBoperation="";
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
-	deletePicture(getAktDatabaseName(), $uid,getParam("id", ""));
-	$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
-	saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
+	if (deletePicture($uid,getParam("id", ""))>=0) {
+		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+		saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
+	} else {
+		$resultDBoperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
+	}
 }
 
 
 //Upload Image
-if (userIsLoggedOn() && isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
+if (userIsLoggedOn() && isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
-		$idx=getNextPictureId(getAktDatabaseName()."group","all","", "", true);
-		if ($_POST["action"]=="upload_diak") {
-			$pFileName=getAktDatabaseName()."/d".$uid."-".$idx.".".strtolower($fileName[1]);
-			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
-			$diak['picture']=$pFileName;
-			savePerson($diak);
-		} else {
-			$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktDatabaseName()."group/pall"."-".$idx.".".strtolower($fileName[1]);
-			setPictureAttributes(getAktDatabaseName().'group','all',$idx,"","","true");
-		}
+		$idx=$db->getNextPictureId();
+
+		$uploadfile="./images/".getAktClassFolder()."/c-".$idx.".".strtolower($fileName[1]);
+		$db->savePictureField(null, null,getAktClass(),null, $uploadfile, 1, "", "", date("Y-m-d H:i:s"));
+		
 		//JPG
 		if (strcasecmp($fileName[1],"jpg")==0) {
 			if ($_FILES['userfile']['size']<2000000) {
@@ -72,14 +73,14 @@ if (userIsLoggedOn() && isset($_POST["action"]) && ($_POST["action"]=="upload" |
 	}
 }
 
-$pictures = getListofPictures(getAktClassName().'group','all', false) ;
 $notDeletedPictures=0;
+
+$pictures = $db->getListOfPictures(getAktClass(), "class", 2, 2);
 foreach ($pictures as $pict) {
-	if ( $pict["deleted"]!="true" ) {
+	if ( $pict["isDeleted"]==0 ) {
 		$notDeletedPictures++;
 	}
 }
-	
 
 ?>
 
@@ -106,10 +107,10 @@ foreach ($pictures as $pict) {
 	
 	<?php 
 		foreach ($pictures as $pict) {
-			if ( $pict["deleted"]!="true"  || userIsAdmin() ) {
-				$file="all-".$pict["id"];
+			if ( $pict["isDeleted"]==0  || userIsAdmin() ) {
+				$file=$pict["file"];
 				$checked="";
-				if ($pict["visibleforall"]=="true") $checked="checked";
+				if ($pict["isVisibleForAll"]==1) $checked="checked";
 	?>
 	
 			<div style="margin-bottom: -25px;padding: 10px; display: block;border-radius: 10px;background-color: #e8e8e8" >

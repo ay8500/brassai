@@ -9,12 +9,8 @@ include_once 'dbDAO.class.php';
 $db = new dbDAO;
 
 
-$data = array();
-
-//List of databases are the subdirectorys in folder /data
-$dataPath = "data/";
-$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","homepage","education","employer","function","children","picture","geolat","geolng","user","passw","admin","date","ip","facebook","facebookid","twitter");
-$openedDatebase=null;
+$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","homepage","education","employer","function","children","picture","geolat","geolng","user","passw","role","date","ip","facebook","facebookid","twitter");
+$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate","deleted");
 
 
 //aktual used scoolyear and class
@@ -41,36 +37,38 @@ function setAktClass($classId) {
 /**
  * The name of the aktual class
  */
+function getAktClassFolder() {
+	global $db;
+	$class=$db->getClassById(getAktClass());
+	if ($class!=null)
+		return $class["name"].$class["graduationYear"];
+	else
+		return "";
+}
+
+/**
+ * The name of the aktual class
+ */
 function getAktClassName() {
 	global $db;
 	$class=$db->getClassById(getAktClass());
 	if ($class!=null)
-		return $class["text"];
+		if ($class["id"]==0)
+			return "";
+		else
+			return $class["text"];
 	else
 		return "";
 }
 
 
 /**
- * Returns the nex free id in the aktual database
- */
-function getNextFreeId() {
-	$ret = 0;
-	global $data;
-	foreach ($data as $l => $d) {
-		if (intval($d["id"])>$ret)
-			$ret=intval($d["id"]);
-	}
-	return $ret+1;
-	
-}
-
-/**
  * returns logged in person
  */
 function getPersonLogedOn() {
+	global $db;
 	if ( null!=getLoggedInUserId())  { 
-		return getPerson(getLoggedInUserId());
+		return $db->getPersonByID(getLoggedInUserId());
 	} else {
 		return null;
 	}
@@ -80,45 +78,13 @@ function getPersonLogedOn() {
  * returns aktual person
  */
 function getAktPerson() {
+	global $db;
 	if ( null!=getAktUserId())  {
-		return getPerson(getAktUserId(),getAktDatabaseName());
+		return $db->getPersonByID(getAktUserId());
 	} else {
 		return null;
 	}
 }
-
-
-/**
- * Set person data
- */
-function savePerson($person,$db=null) {
-	global $data;
-	if( $db!=null) {
-		openDatabase($db);
-	}
-
-	if (sizeof($person)>0 || sizeof($data)>0) {
-		if (!userIsAdmin()) {
-			$person['date']=date('d.m.Y H:i');
-			$person['ip']=$_SERVER["REMOTE_ADDR"];
-		}
-		reset($person);
-		$idx=getPersonIdx($person["id"]);
-		if ($idx!=-1) {
-			while (list($key, $val) = each($person)) {
-			   $data[$idx][$key]=$val;
-			   //echo('Name='.$key.'Value='.$val);
-			}
-			
-		}
-		else {
-			array_push($data,$person);
-		}
-		saveDB();
-	}
-}
-
-
 
 /**
  * is the person a guest
@@ -147,39 +113,28 @@ function getPersonDummy() {
 	$p["geolng"]="23.5924";
 	$p["user"]=createPassword(8);
 	$p["passw"]=createPassword(8);
-	$p["admin"]="";
+	$p["role"]="";
+	/*
 	$p["birthname"]=null;$p["partner"]=null;$p["email"]=null;$p["ip"]=null;
 	$p["address"]=null;$p["zipcode"]=null;$p["place"]=null;$p["country"]=null;
 	$p["phone"]=null;$p["mobil"]=null;$p["skype"]=null;$p["email"]=null;
 	$p["employer"]=null;$p["function"]=null;$p["education"]=null;$p["children"]=null;
 	$p["facebookid"]=null;$p["facebook"]=null;$p["homepage"]=null;$p["twitter"]=null;
+	*/
 	return $p;
 }
 
 /**
  * returns an empty person
  */
-function createNewPerson($db,$guest) {
+function createNewPerson($classID,$guest) {
 	$p = getPersonDummy();
-	$p["id"]=getNextFreeId();
+	$p["classID"]=$classID;
 	if($guest)
-		$p["admin"]="guest";
-	global $data;
-	array_push($data, $p);
+		$p["role"]="guest";
 	return $p;
 }
 
-/**
- * returns an empty authorisation 
- */
-function getUserAuthDummy() {
-	$datafields=array("id","user","passw","admin","scoolYear","scoolClass","facebookid","email");
-	$p = array();
-	foreach ($datafields as $field) {
-		$p[$field]="";
-	}
-	return $p;
-}
 
 
 /**
@@ -204,31 +159,6 @@ function compareAlphabetical($a,$b) {
 	return strcmp(getNormalisedChars($aa), getNormalisedChars($bb));
 }
 
-
-function compairUserPassw($d1,$d2) {
-	if (isset($d1["user"]) && isset($d2["user"]) && isset($d1["passw"]) && isset($d2["passw"])) {
-		return strtolower($d1["user"])==strtolower($d2["user"]) && $d1["passw"]==$d2["passw"];
-	}
-	else 
-		return false;
-}
-
-function compairEmailPassw($d1,$d2) {
-	if (isset($d1["email"]) && isset($d2["email"]) && isset($d1["passw"]) && isset($d2["passw"])) {
-		return strtolower(getFieldValue($d2,"email"))==strtolower(getFieldValue($d1,"email")) && $d1["passw"]==$d2["passw"];
-	}
-	else 
-		return false;
-}
-
-function compairFacebookId($d1,$d2) {
-	if (isset($d1["facebookid"]) && isset($d2["facebookid"]) ) {
-		return strtolower($d1["facebookid"])==strtolower($d2["facebookid"]);
-	}
-	else
-		return false;
-}
-
 function compairEmail($d1,$d2) {
 	if (!isset($d1["email"]) || !isset($d2["email"]))
 		return false;
@@ -249,358 +179,18 @@ function compairUserLink($d1,$d2) {
 		return false;
 	}
 
-
-/**
- * Read user in all Databases using comparator
-  */
-function oldlevigetGlobalUser($diak,$compair, $scoolYear=null, $scoolClass=null) {
-	global $dataBase;
-	global $dataPath;
-	global $data;
-	foreach($dataBase as $db) {
-		if ((null==$scoolClass && null==$scoolYear) ||
-			($scoolClass.$scoolYear==$db)) 
-		{
-			openDatabase($db);
-			foreach ($data as $person) {
-				if ($compair($person,$diak)) {
-					$person["scoolYear"]=substr($db,3,4);
-					$person["scoolClass"]=substr($db,0,3);
-					return $person;
-				}
-			}
-		}
-	}
-	return null;
+function setPictureVisibleForAll($pictureId, $visibleforall){
+	global $db;
+	$picture=$db->getPictureById($pictureId);
+	$picture["isVisibleForAll"]=$visibleforall?1:0;
+	$db->savePicture($picture);
 }
 
-/**
- * Read in the userlist
- */
-function oldlevireadUserAuthDB()
-{
-	global $dataBase;
-	global $dataPath;
-	$data=array();
-	$id=-1;
-	foreach($dataBase as $db) {
-		$scoolYear=substr($db,3,4);$scoolClass=substr($db,0,3);
-		$dataFileName=$dataPath.$db."/data.txt";
-	    if (file_exists($dataFileName)) {
-			$file=fopen($dataFileName ,"r");
-			while (!feof($file)) {
-				$b = explode("=",fgets($file));
-				if (isset($b[0])&&isset($b[1])) {
-					if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
-						if ($b[0]=="id") {
-							$id++;
-							$data[$id]=getUserAuthDummy();
-							$data[$id]["scoolYear"]=$scoolYear;
-							$data[$id]["scoolClass"]=$scoolClass;
-							$data[$id]["id"]=chop($b[1]);
-						} else {
-							if (($b[0] == "user") || ($b[0] == "passw") || ($b[0] == "email") || ($b[0] == "facebookid") || ($b[0] == "admin")) {
-	    						$data[$id][$b[0]]=getFieldValue($b,1);
-							}
-						}
-					}
-				}
-			}
-			fclose($file);
-		}
-	}
-	return $data;
-}
-
-
-function deleteDiak($id,$db) {
-	$ret = Array();
-	if (isset($id) && ($id>0)  ) {
-		//Database
-		openDatabase($db);
-		global $data;
-
-		foreach ($data as $l => $d) {
-			if ($d["id"]!=$id)
-				array_push($ret, $d);
-		}
-		$data = $ret;
-		saveDB();
-		
-		//Pictures 
-		//TODO
-		$pl=getListofPictures($db, $id, true);
-		foreach ($pl as $p) {
-			deletePicture($db, $id, $p["id"]);
-		}
-	}
-	
-	
-}
-
-/**
- *Save the databe to file 
- */
-function saveDB() {
-	global $data;
-	reset( $data);
-	global $dataFileName;
-	$file=fopen($dataFileName,"w");
-	fwrite($file,"#Database File\r\n");
-	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
-	fwrite($file,"#Change Date:".date('d.m.Y H:i')."\r\n\r\n");
-	$i=1;
-	foreach ($data as $person) {
-		reset($person);
-		if (strlen($person['user'])==0) $person['user']=getPersonLink($person['lastname'],$person['firstname']);
-		if (strlen($person['passw'])==0) $person['passw']=createPassword(8);
-		fwrite($file,"\r\n");
-		fwrite($file,"id=".$person["id"]."\r\n");     //id is the first element
-		while (list($key, $val) = each($person)) {
-			if (null!=$val && $val!="" && $key!="id")
-		   		fwrite($file,$key."=".$val."\r\n");
-		}
-	}
-	fclose($file);
-	
-}
-
-//*********************[ Vote database]**************************************
-
-$voteFields=array("date","class","cemetery","dinner","excursion","where");
-$voteData = array();
-
-function setVote($uid, $vote) {
-	global $voteData;
-	$voteData[$uid] = $vote;
-}
-
-function readVoteData($db,$years) {
-	global $voteData;
-	global $dataPath;
-
-	for ($i=0;$i<sizeof($voteData);$i++)
-		unset( $voteData[$i]);			//delete old records
-
-	$fileName=$dataPath.$db.'/'.$years.'vote.txt';
-    if (file_exists($fileName)) {
-		$file=fopen($fileName ,"r");
-		$id=0;
-		while (!feof($file)) {
-			$b = explode("=",fgets($file));
-			if (isset($b[0])&&isset($b[1])) {
-				if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
-					if ($b[0]=="id") {
-						$id =chop($b[1]);
-						$voteData[$id]=getVoteDummy();
-					} else {
-						$voteData[$id][$b[0]]=chop($b[1]);
-					}
-				}
-			}
-		}
-		fclose($file);
-	}
-}
-
-function getVote($uid) {
-	global $voteData;
-	if (isset($voteData[$uid]))
-   		return $voteData[$uid];
-	else
-		return  getVoteDummy();
-}
-
-function getVoteDummy() {
-	global $voteFields;
-	$p = array();
-	foreach ($voteFields as $field) {
-		$p[$field]="";
-	}
-	return $p;
-}
-
-function saveVoteData($db,$years) {
-	global $data;
-	global  $dataPath;
-	global $voteData;
-	reset( $voteData);
-	$fileName=$dataPath.$db.'/'.$years.'vote';
-	
-	$file=fopen($fileName.".txt","w");
-	fwrite($file,"#Vote Database File\r\n");
-	fwrite($file,"#Last IP:".$_SERVER["REMOTE_ADDR"]."\r\n");
-	fwrite($file,"#Change Date:".date('d.m.Y H:i')."\r\n\r\n");
-	foreach ($data as $person) {
-		reset($person);
-		fwrite($file,"\r\n");
-		fwrite($file,"id=".$person["id"]."\r\n");
-		$vote=getVote($person["id"]);
-		while (list($key, $val) = each($vote)) {
-		   fwrite($file,$key."=".$val."\r\n");
-		}
-	}
-	fclose($file);
-	
-}
-
-//*********************[ Picture database]**************************************
-//each person can have more than one picture with the following attributes:
-// title, comment, visibleforall, date, uploaddate, ip
-// the pictures are save in a folder named like the database
-// picture name: the letter p plus personid-pictureid.jpg
-// the pictures are saved in a maximal resolution of 1200x1024
-
-$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate","deleted");
-$pictures = array();
-$pictureFolder = "./images/";
-
-function getPictureDummy() {
-	global $PictureFields;
-	$p = array();
-	foreach ($PictureFields as $field) {
-		if($field=="visibleforall")
-			$p[$field]="false";
-		if($field=="deleted")
-			$p[$field]="false";
-		elseif($field=="date" || $field=="lastChangeDate")
-		$p["lastChangeDate"]=date('d.m.Y H:i');
-		else
-			$p[$field]="";
-	}
-	return $p;
-}
-
-/* getListofPictures
-* The filen name structure: the letter "p".DataBaseRecord."-".ImgageIndex eg. p12-4.jpf
-*/ 
-function getListofPictures($database,$personID, $vorAll) {
-	global $pictureFolder;
-	$idx = 0;
-	$images_array = array();
-	//Check if directory exists and create if not	
-	if (!file_exists($pictureFolder.$database)) {
-    	mkdir($pictureFolder.$database, 0777, true);
-	}
-	$directory = dir($pictureFolder.$database);
-	while ($file = $directory->read()) {
-		if (in_array(strtolower(substr($file, -4)), array(".jpg",".gif","png"))) {
-			if (substr($file,0,1)=="p" && strpos($file,$personID.'-')==1) {
-				//get the file id from file name
-				$fileSplit = split('[.-]',$file);
-				$idx=$fileSplit[1];
-				$images_array[$idx]["File"] = $file;	
-				$picture = loadPictureAttributes($database,$personID,$idx);
-				while (list($key, $val) = each($picture)) {
-	   				$images_array[$idx][$key]=$val;
-				}
-				$idx++;
-			}
-		}
-		
-	}
-	$directory->close();
-	/*
-	$directory = glob($pictureFolder.$database."/p".$personID."-*.jpg");	
-	usort($directory, function($a, $b) {
-		return filemtime($a) < filemtime($b);
-	});
-	foreach ($directory as $file) {
-		$fileSplit = split('[.-]',basename($file));
-		echo($fileSplit[1]);
-		$idx=$fileSplit[1];
-		$images_array[$idx]["File"] = $file;
-		$picture = loadPictureAttributes($database,$personID,$idx);
-		while (list($key, $val) = each($picture)) {
-			$images_array[$idx][$key]=$val;
-		}
-		$idx++;
-		
-	}
-	*/
-	return $images_array;
-}
-
-
-/**
- * returns the nex id for the name of a picture 
- * @param unknown $database
- * @param unknown $personID
- * @return number
- */
-function getNextPictureId($database,$personID){
-	//Next id
-	global $pictureFolder;
-	$nextId = 0;
-	if (!file_exists($pictureFolder.$database)) {
-		mkdir($pictureFolder.$database, 0777, true);
-	}
-	$directory = dir($pictureFolder.$database);	
-	while ($file = $directory->read()) {
-		if (in_array(strtolower(substr($file, -4)), array(".jpg",".gif","png"))) {
-			if (strpos($file,$personID.'-')==1) {
-				$nextId++;
-			}			
-		}
-	}
-	$directory->close();
-	return $nextId;
-}
-
-function loadPictureAttributes($database,$personId,$pictureId) {
-	global $pictureFolder;
-	$picture=getPictureDummy();
-	$fileName =$pictureFolder.$database."/".$personId."-".$pictureId.".txt";
-	//if (!file_exists($fileName)) {
-	//	setPictureAttributes($database,$personId,$pictureId,"","","false");
-	//}
-    if (file_exists($fileName)) {
-		$file=fopen($fileName,"r");
-		while (!feof($file)) {
-			$b = explode("=",fgets($file));
-			if (isset($b[0])&&isset($b[1])) {
-				if(($b[0]!="")&&($b[1]!="")&&$b[0][0]!="#") {
-					$picture[$b[0]]=chop($b[1]);
-				}
-			}
-		}
-		fclose($file);
-	}
-	$picture["id"]=$pictureId;
-	return $picture;
-}
-
-function setPictureAttributes($database,$personID,$pictureId,$title,$comment, $visibleforall=null) {
-	$picture=loadPictureAttributes($database,$personID,$pictureId);
-	$picture["title"]=$title;
-	$picture["comment"]=$comment;
-	if ($visibleforall!=null)
-		$picture["visibleforall"]=$visibleforall;
-	savePictureAttributes($database,$personID,$pictureId,$picture);
-}
-
-function setPictureVisibleForAll($database,$personID,$pictureId, $visibleforall){
-	$picture=loadPictureAttributes($database,$personID,$pictureId);
-	$picture["visibleforall"]=$visibleforall;
-	savePictureAttributes($database,$personID,$pictureId,$picture);
-}
-
-function deletePicture($database,$personID,$pictureId) {
-	$picture=loadPictureAttributes($database,$personID,$pictureId);
-	$picture["deleted"]="true";
-	savePictureAttributes($database,$personID,$pictureId,$picture);
-}
-
-function savePictureAttributes($database,$personID,$pictureId,$picture) {
-	global $pictureFolder;
-	$file=fopen($pictureFolder.$database."/".$personID."-".$pictureId.".txt","w");
-	$picture["lastChangeDate"]=date('d.m.Y H:i');
-	$picture["lastIp"]=$_SERVER["REMOTE_ADDR"];
-	fwrite($file,"#Picture Metafile\r\n");
-	while (list($key, $val) = each($picture)) {
-		fwrite($file,$key."=".$val."\r\n");
-	}
-	fclose($file);
+function deletePicture($pictureId) {
+	global $db;
+	$picture=$db->getPictureById($pictureId);
+	$picture["isDeleted"]=1;
+	return $db->savePicture($picture);
 }
 
 /* resize image
@@ -660,57 +250,6 @@ function resizeImage($fileName,$maxWidth,$maxHight)
 
 	ImageDestroy ($resized_img);
 	ImageDestroy ($new_img);
-}
-
-//****************************** TextData *********************
-
-/**
- * load text data 
- * @param unknown $database
- * @param unknown $personId
- * @param unknown $type cv; story; spare
- * @return unknown
- */
-function loadTextData($database, $personId, $type) {
-	global $dataPath;
-	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
-	$ret=null;
-	if (file_exists($fileName)) {
-		$file=fopen($fileName,"r");
-		while (!feof($file)) {
-			$ret .= fgets($file);
-		}
-		fclose($file);
-	}
-	return $ret;
-}
-
-function getTextDataDate($database, $personId, $type) {
-	global $dataPath;
-	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
-	$ret="";
-	if (file_exists($fileName)) {
-		// if ($_SESSION['LANG']=="hu"
-		$ret=date ("Y.m.d. H:i:s.",filemtime($fileName));
-	}
-	return $ret;
-}
-/**
- * Save text data
- * @param unknown $database
- * @param unknown $personId
- * @param unknown $type
- * @param unknown $text
- */
-function saveTextData($database, $personId, $type, $privacy, $text) {
-	global $dataPath;
-	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
-	$file=fopen($fileName,"w");
-	if ($privacy=="world") fwrite($file,"~~"); 
-	if ($privacy=="scool") fwrite($file,"~"); 
-	//if ($privacy=="class") fwrite($file,"");
-	fwrite($file,$text);
-	fclose($file);
 }
 
 

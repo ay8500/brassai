@@ -1,3 +1,4 @@
+<?php $diak = $db->getPersonByID($personid);?>
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser()) { ?>
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<table style="width:90%" class="editpagetable">
@@ -6,7 +7,7 @@
 			<tr><td class="caption1">Becenév</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="<?php  echo $diak["user"] ?>" /></td></tr>
 			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="btn btn-default" value="Új becenév!" title="Új becenév kimentése" /></td></tr>
 			<input type="hidden" value="changeuser" name="action" />
-			<input type="hidden" value="<?php echo $uid; ?>" name="uid" />
+			<input type="hidden" value="<?php echo getAktUserId(); ?>" name="uid" />
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
 		<tr><td colspan="3"><hr/> </td></tr>
@@ -20,7 +21,7 @@
 			</td></tr>
 			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="btn btn-default" value="Új jelszó!" title="Új jelszó kimentése" /></td></tr>
 			<input type="hidden" value="changepassw" name="action" />
-			<input type="hidden" value="<?php echo $uid; ?>" name="uid" />
+			<input type="hidden" value="<?php echo getAktUserId(); ?>" name="uid" />
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
 		<?php if (isset($_SESSION['FacebookId']) && isset($diak["facebookid"]) && $diak["facebookid"]==$_SESSION['FacebookId']) : ?>		

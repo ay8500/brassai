@@ -12,7 +12,7 @@ $idArray = explode(",", $idList);
 $p=getRandomPerson();
 $i=0;
 while (($p["picture"]=="avatar.jpg" || 								//No Empty pictures
-		notUnique($idArray,$p["class"],$p["year"],$p["id"]) ||		//Unique entrys
+		notUnique($idArray,$p["id"]) ||								//Unique entrys
 		sizeof($data)<8												//More than 8 entrys in the db
 		) && 
 		$i++<10)													//Check only 10 times
@@ -23,7 +23,9 @@ while (($p["picture"]=="avatar.jpg" || 								//No Empty pictures
 $person = Array();
 
 $person["name"]=$p["lastname"]." ".$p["firstname"];
-$person["id"]=$p["class"]."-".$p["year"]."-".$p["id"];
+$person["id"]=$p["id"];
+$person["classID"]=$p["classID"];
+$person["classText"]=$p["classText"];
 $person["image"]=$p["picture"];
 if (isset($p["education"]) && showField($p,"education")) 
 	$person["education"]=getFieldValue($p,"education");
@@ -59,22 +61,16 @@ echo(json_encode($person));
 function getRandomPerson() {
 	global $db;
 	$classList=$db->getClassList();
-	$rec=array();
-	$rec["graduationYear"]="teac";
-	$rec["name"]="ooo";
-	$rec["id"]="0";
-	array_push($classList, $rec);
 	
 	$class=$classList[rand(0,sizeof($classList)-1)];
-	
+	//$class=$classList[0];
 	
 	$data=$db->getPersonListByClassId($class["id"]);
 	
 	$idx=rand(0,sizeof($data)-1);
 	
 	$p=$data[$idx];
-	$p["class"]=$class["name"];
-	$p["year"]=$class["graduationYear"];
+	$p["classText"]=$class["text"];
 	
 	return $p;
 }
@@ -112,9 +108,9 @@ function getRandomPicture() {
  * @param $idArray list of ids
  * @param Person id:  $class-$year-$id
  */
-function notUnique($idArray,$class,$year,$id) {
+function notUnique($idArray,$id) {
 	foreach ($idArray as $idtext) {
-		if ($idtext==$class."-".$year."-".$id) {
+		if ($idtext==$id) {
 			return true;
 		}
 			

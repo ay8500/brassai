@@ -37,10 +37,6 @@
 			</div> 
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >
-					Utóljára módósítva:<br />
-					<?php echo getTextDataDate(getAktDatabaseName(), $personid, $type)?>
-				</div>
-				<div style="display: inline-block; padding:5px" >
 					<input type="submit" class="btn btn-default" value="<?php echo getTextRes("Save");?>" />
 				</div>
 			</div>

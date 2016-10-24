@@ -38,7 +38,7 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$row["title"] = $title;
 	$row["tab"] = $tab;
 	
-	$diak=getPerson(getAktUserId(),getAktDatabaseName());
+	$diak=$db->getPersonByID(getAktUserId());
 	$key=generateAktUserLoginKey();
 	
 	$text="Kedves ".$diak["lastname"]." ".$diak["firstname"].",<br /><br />";

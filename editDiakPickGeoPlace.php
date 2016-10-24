@@ -2,15 +2,22 @@
 if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 
 	//Save geo data
-	if (($uid != 0) && getParam("action","")=="changegeo" && userIsLoggedOn()) {
+	if (getParam("action","")=="changegeo" && userIsLoggedOn()) {
 	
-		if (isset($_GET["geolat"])) $diak["geolat"]=$_GET["geolat"];
-		if (isset($_GET["geolng"])) $diak["geolng"]=$_GET["geolng"];
+		$geolat=getGetParam("geolat", "46.7719");
+		$geolng=getGetParam("geolng", "23.5923");
 	
-		savePerson($diak,getAktDatabaseName());
-		if (!userIsAdmin())
-			saveLogInInfo("SaveGeo",$uid,$diak["user"],"",true);
-		$resultDBoperation='<div class="alert alert-success">Geokoordináták sikeresen módósítva!</div>';
+		$r1 = $db->savePersonField($diak["id"], "geolat", $geolat);
+		$r2 = $db->savePersonField($diak["id"], "geolng", $geolng);
+		if ($r1>=0 && $r2>=0) {
+			if (!userIsAdmin())
+				saveLogInInfo("SaveGeo",$diak["id"],$diak["user"],"",true);
+			$resultDBoperation='<div class="alert alert-success">Geokoordináták sikeresen módósítva!</div>';
+			$diak["geolat"]=$geolat;
+			$diak["geolng"]=$geolng;
+		} else {
+			$resultDBoperation='<div class="alert alert-warning">Geokoordináták módósítása nem sikerült!</div>';
+		}
 	}
 ?>	
 	<script language="JavaScript" type="text/javascript">
@@ -47,7 +54,7 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 	</div>
 	<form action="<?PHP echo($SCRIPT_NAME); ?>" method="get" name="geo">
 		<input type="hidden" value="changegeo" name="action" />
-		<input type="hidden" value="<?PHP echo($uid)?>" name="uid" />
+		<input type="hidden" value="<?PHP echo(getAktUserId())?>" name="uid" />
 		<input type="hidden" value="<?PHP echo($tabOpen); ?>" name="tabOpen" />
 		Koordináták:<br />
 		<div class="input-group input-group-sl">

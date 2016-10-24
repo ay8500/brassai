@@ -21,17 +21,18 @@ if ($action == 'sendMail')
  * todo: use mail template instead of hard coded text
  */
 function SendNewPassword($uid) {
+	global $db;
 	global $sendMailMsg;
-	$diak = getPerson($uid);
+	$diak = $db->getPersonByID($uid);
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
 	$text.="Ezt az e-mail azért kapod mert kérdésedre megvátoztak a bejelentkezési adataid.<br />";
 	$text.="<p>";
-	$text.="Végzős osztály:".getAktDatabaseName().'-'.getAKtScoolClass()."<br/>";
+	$text.="Végzős osztály:".getAktClassName()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".$diak["passw"]."<br/>";
 	$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.getAktScoolYear().'&scoolClass='.getAKtScoolClass().'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?classid='.getAktClass().'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
@@ -71,9 +72,10 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,
  *send mail  
  */
 function SendMail($uid,$text,$userData) {
+		global $db;
 		global $sendMailCount;
 		global $sendMailMsg;
-		$diak = getPerson($uid);
+		$diak = $db->getPersonByID($uid);
 		
 		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
 		$text=str_replace("\"","&quot;",$text);
