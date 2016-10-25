@@ -102,9 +102,11 @@ foreach ($pictures as $pict) {
 			</form>
 		</div>
 		<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-		<?php endif ?>
-	<?php endif ?>
-	
+		<?php endif; ?>
+	<?php endif; ?>
+	<?php if ($notDeletedPictures==0) :?>
+			<div class="alert alert-warning" >Jelenleg nincsenek képek feltöltve!</div>
+	<?php endif;?>
 	<?php 
 		foreach ($pictures as $pict) {
 			if ( $pict["isDeleted"]==0  || userIsAdmin() ) {

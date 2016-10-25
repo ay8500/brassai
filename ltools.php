@@ -16,7 +16,7 @@ function getPostParam($name,$def) {
 }
 
 /**
- * Safety paramateter read 
+ * Safety paramateter read default value can be specified othewise is NULL 
  */
 function getParam($name,$def=null) {
 	if (isset($_POST[$name]))
@@ -25,6 +25,9 @@ function getParam($name,$def=null) {
 		return getGetParam($name,$def);
 }
 
+/**
+ * Read an integer paramateter.Default value can be specified othewise is 0 
+ */
 function getIntParam($name,$def=0) {
 	$ret = getParam($name);
 	if (null!=$ret)

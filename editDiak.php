@@ -3,16 +3,13 @@
 include_once("sessionManager.php");
 include_once ('userManager.php');
 include_once 'ltools.php';
-//********* Edit person ****************
-
- 
+include_once("data.php");
 
 if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"]; 
 else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"]; 
 else $tabOpen=0;
 
 //focus the person and get his data from the database
-include_once("data.php");
 //if user id is delivered over pos or get parameter
 if (isset($_GET["uid"]) || isset($_POST["uid"])) {
 	if (isset($_GET["uid"])) $personid = $_GET["uid"];
@@ -20,26 +17,19 @@ if (isset($_GET["uid"]) || isset($_POST["uid"])) {
 	setAktUserId($personid);	//save actual person in case of tab changes
 }
 else {
-	//tabs are changed
-	if (isset($_GET["tabOpen"]) || isset($_POST["tabOpen"])) {
-		$personid=getAktUserId();	
-	}
-	else {
-		$personid=getAktUserId();
-	}
+	$personid=getAktUserId();	
 }
-$diak = $db->getPersonByID($personid);
-$classId=$diak["classID"];
-$class=$db->getClassById($classId);
-setAktClass($classId);
+if ($personid!=null && $personid>0) {
+	$diak = $db->getPersonByID($personid);
+	$classId=$diak["classID"];
+	$class=$db->getClassById($classId);
+	setAktClass($classId);
+}
 
 $resultDBoperation="";
 
-
-
 //Change password
 if (getParam("action","")=="changepassw" && userIsLoggedOn()) {
-	
 	if (isset($_GET["newpwd1"])) $newpwd1=$_GET["newpwd1"]; else $newpwd1="";
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
@@ -144,23 +134,19 @@ if ($tabOpen==5)
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
 	$diakEditStorys = true;
 
-$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakja " .$diak["lastname"]." ".$diak["firstname"];
-
-
+if ($personid!=null)
+	$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakja " .$diak["lastname"]." ".$diak["firstname"];
+else 
+	$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakjai";
+	
 include("homemenu.php"); 
 
-//Set person geo and data to be used in diakEditGeo.js
-if ($tabOpen==5) {
-
-}
-
-
-if (strstr(getGetParam("action", ""),"new")=="" ){?>
+if (strstr(getParam("action"),"new")=="" ){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
-			<img src="images/<?php echo $diak["picture"] ?>" class="diak_image_icon" />
-				<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
-				<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
+	<img src="images/<?php echo $diak["picture"] ?>" class="diak_image_icon" />
+	<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
+	<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
 	</h2>
 	</div>
 <?php } else { ?>
@@ -184,34 +170,27 @@ $tabUrl="editDiak.php";
 	<div class="well">
 
 		<?php
-		
 		//Personal Data
 		if ($tabOpen==0) {
 			include("editDiakPersonData.php");
 		}
-		
 		//Pictures
 		if ($tabOpen==1) { 
 			include("editDiakPictures.php");
 			return ;
 		}
-		
 		//Change storys cv, scool trory, sparetime
 		if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 			include("editDiakStorys.php");
 		}
-		
-		
 		//Change geo place
 		if ($tabOpen==5) { 
 			include("editDiakPickGeoPlace.php");
 		}
-		
 		//Change password, usename, facebook
 		if ($tabOpen==6) {
 			include("editDiakUserPassword.php");
 		}
-		
 		?>
 	</div>
 </div>
@@ -219,7 +198,7 @@ $tabUrl="editDiak.php";
 <script type="text/javascript">
 	function deleteDiak(db,id) {
 		if (confirm("Személy végleges törölését kérem konfirmálni!")) {
-			window.location.href="hometable.php?uid="+id+"&db="+db+"&action=delete_diak";
+			window.location.href="hometable.php?uid="+id+"&action=delete_diak";
 		}
 	}
 </script>

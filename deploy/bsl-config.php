@@ -44,7 +44,7 @@ define('BRANCH', 'master');
  *
  * @var string Full path including the trailing slash
  */
-define('TARGET_DIR', '/kunden/homepages/0/d17746683/htdocs/brassai');
+define('TARGET_DIR', '/kunden/homepages/0/d17746683/htdocs/bsl');
 
 /**
  * Whether to delete the files that are not in the repository but are on the

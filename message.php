@@ -5,42 +5,54 @@ include_once("data.php");
 include_once("userManager.php");
 include 'postmessage.php';
 
-$error=null;
+$resultDBoperation="";
+$paramName=getParam("name", "");
+$paramText=getParam("T", "");
+
 if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 	if (userIsLoggedOn()) {
-		if (checkMessageContent(getParam("T"))) {
-			writeMessage(getParam("T"), getParam("privacy"), getParam("name"));
+		if (checkMessageContent($paramText)) {
+			if (writeMessage($paramText, getParam("privacy"), getLoggedInUserName())>=0) {
+				$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+				$paramName="";
+				$paramText="";
+			} else {
+				$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+			}
 		} else 
-			$error="A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.";
+			$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
 	}
 	else {
-		if (null==getParam("name") || strlen(getParam("name"))<3) {
-			$error="Írd be család és keresztneved!";
-		} else if (getParam("code", "")!=$_SESSION['SECURITY_CODE']) {
-			$error="Biztonsági kód nem helyes. Probálkozz újból!";
+		if (strlen($paramName)<4) {
+			$resultDBoperation='<div class="alert alert-warning" >Írd be család és keresztneved!</div>';
 		}
-		else if (checkMessageContent(getParam("T"))) {
-			writeMessage(getParam("T"), getParam("privacy"), getParam("name"));
+		else if (checkMessageContent($paramText)) {
+			if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
+				$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+				$paramName="";
+				$paramText="";
+			} else {
+				$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+			}
 		} else 
-			$error="A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.";
+			$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
 	}
 }
 
 if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 	$id=getIntParam("id",-1);
 	if ($id!=-1) {
-		deleteMessage($id);
+		if (deleteMessage($id)>=0)
+			$resultDBoperation='<div class="alert alert-success" > Az üzenet ki lett törölve!</div>';
+		else
+			$resultDBoperation='<div class="alert alert-warning" > Az üzenet törlése nem sikerült!</div>';
 	}
 }
 ?>
 
 <div class="container-fluid">   
 <h2 class="sub_title" >Üzenöfal</h2>
-<?php if (null!=$error){?>
-	<div class="alert alert-warning" role="alert">
-		<?php echo($error);?>
-	</div>
-<?php } ?>
+<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <div class="dropdown" style="margin-bottom: 10px;">
  	<button onclick="showMessage();" class="btn btn-default" type="button" >
 	<span class="glyphicon glyphicon-pencil"></span>
@@ -48,20 +60,16 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
  	<span class="caret"></span>
   </button>
 </div>
-	<div id="message" style="display: none; margin-bottom: 10px;">
+	<div id="message" style="margin-bottom: 10px;">
 		<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" >
 			<?php if (!userIsLoggedOn()) {?>
 			<div class="input-group">
 				<span style="min-width:120px; text-align:right" class="input-group-addon" id="basic-addon1">Név</span>
-				<input type="text" class="form-control input-lg" value="<?php echo(getParam("name", ""))?>" name="name" placeholder="családnév keresztnév"/>
-			</div>
-			<div class="input-group">
-				<span style="min-width:120px; text-align:right" class="input-group-addon" id="basic-addon1"><img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" /></span>
-				<input type="text" class="form-control input-lg" value="" name="code" placeholder="biztonságí kód" />
+				<input type="text" class="form-control input-lg" value="<?php echo($paramName)?>" name="name" placeholder="családnév keresztnév"/>
 			</div>
 			<?php } ?>
 			<?php $text="~" ?>
-			<textarea id="story" name="T" onchange="textChanged();" ><?php echo(getParam("T", ""));?></textarea>
+			<textarea id="story" name="T" onchange="textChanged();" ><?php echo($paramText);?></textarea>
 			<?php if (userIsLoggedOn()) {?>
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt az üzenetet?</div>
@@ -80,13 +88,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 	</div>		
 
 <?PHP
-if (userIsLoggedOn()) {
-	$tabsCaption=Array("osztálytársaknak","iskolatársaknak","mindenkinek");
-	include("tabs.php");
-	echo(readMessageList(20,$tabOpen));
-}
-else 
-	echo(readMessageList(20,2));
+	echo(readMessageList(100));
 ?>
 	
 </div>

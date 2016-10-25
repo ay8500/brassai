@@ -21,14 +21,12 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 
 <div class="container-fluid">   
 <h2 class="sub_title" >Adminisztráció</h2>
-<?PHP
-$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
-include("tabs.php");
-?>
 
-<?PHP if (userIsAdmin() || (userIsEditor()) ) { ?>
-	<?PHP if ($tabOpen==0) {?>
-	<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" name="mail">
+<?php if (userIsAdmin() || (userIsEditor()) ) { 
+	$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
+	include("tabs.php");
+	if ($tabOpen==0) {?>
+	<form action="<?php echo($SCRIPT_NAME);?>" method="get" name="mail">
 		<textarea id="story" name="T" style="width:95%;height:300px" wrap="off" onchange="fieldChanged();">
 <b>Kedves %%name%%</b><br/>
 <p>
@@ -131,8 +129,9 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 	<?PHP } ?>
 <?PHP } 
 else
-	echo '<div style="margin:40px;">Adat hozzáférési jog hiányzik!</div>';
-?>
+	?>
+	<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>
+
 </div>
 <script language="JavaScript" type="text/javascript">
 	function checkUncheckAll(state) {

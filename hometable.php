@@ -27,37 +27,20 @@ if (getAktClass()==0) {
 <div class="container-fluid">
 	<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
 		<form action="editDiak.php">
-		<?php if (userIsAdmin() || userIsEditor() ) {?>
 			<?php if ($guests) {?>
 				<input type="hidden" name="action" value="newguest" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új vendéggel, jó baráttal"/>
+				Vendégek száma:
 			<?php } else if (getAktClass()!=0) {?>
-				<input type="hidden" name="action" value="newdiak" />
+				<input type="hidden" name="action" value="newperson" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új véndiákkal "/>
+				Véndiákok száma:
 			<?php } else  {?>
-				<input type="hidden" name="action" value="newdiak" />
+				<input type="hidden" name="action" value="newteacher" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új tanárral "/>
-			<?php }?>
-		<?php } else if (!userIsLoggedOn()) { ?>
-			<?php if ($guests) {?>
-				<input type="hidden" name="action" value="submit_newguest" />
-				<input class="btn btn-default" type="submit" value="Bővítsd a névsort" title="Szeretnék én is ezen a listán mint barát vagy ismerős szerepelni"/>
-			<?php } else if (getAktClass()!=0) {?>
-				<input type="hidden" name="action" value="submit_newdiak" />
-				<input class="btn btn-default" type="submit" value="Bővítsd a vándiákok névsorát" title="Én is ebben az osztályban végeztem, szeretnék én is ezen a listán lenni."/>
-			<?php } else {?>
-				<input type="hidden" name="action" value="submit_newdiak" />
-				<input class="btn btn-default" type="submit" value="Bővítsd a tanárok névsorát" title="Szeretnék én is ezen a listán mit tanár szerepelni"/>
-			<?php }?>
-		<?php }?>
+				Tanárok száma:
+			<?php } ?>
 		</form>
-		<?php if($guests) {?>
-			Vendégek száma:
-		<?php } else if (getAktClass()!=0) {?>
-			Véndiákok száma:
-		<?php  } else { ?>
-			Tanárok száma:
-		<?php } ?> 
 		<?php echo($db->getCountOfPersons(getAktClass(), $guests));?>
 	</div>
 

@@ -66,7 +66,10 @@ function addWrapperDiv(id) {
     	    	html +='</div>';
             }
         } else {
-            html +='<div><span>Végzős osztály:</span><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div>';
+            if (d.isGuest==0)
+        	html +='<div><span>Végzős osztály:</span><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div>';
+            else
+        	html +='<div><span>Vendég jó barát:</span><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div>';
         }
         if (d.place!=null)
     	html +='<div><span>Helyiség:</span><br/>&nbsp;&nbsp;&nbsp;'+d.place+'</div>';

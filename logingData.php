@@ -93,7 +93,7 @@ if (userIsAdmin()) {
 
 <?PHP }
 else
-	echo "<div>Adat hozzáférési jog hiányzik!</div>";
+	echo '<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>';
 	
 include 'homefooter.php';
 ?>

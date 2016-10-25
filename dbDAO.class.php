@@ -8,7 +8,7 @@ class dbDAO {
 
 	public function __construct(){
 		//Connect to the DB
-		if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0) {
+		if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
 			$this->dataBase = new MySqlDb('db652851844.db.1and1.com','db652851844','dbo652851844','levi1967');
 		} else { 
 			$this->dataBase = new MySqlDb('localhost',"db652851844",'root','root');
@@ -57,7 +57,12 @@ class dbDAO {
 	}
 	
 //************************** Person *******************************************	
-	
+	/**
+	 * Insert or update a person
+	 * If the person has a sekond primary key exists then force an update
+	 * If user is anonymous create a new entry as a change   
+	 * @return integer if negativ an error occurs
+	 */
 	public function savePerson($person,$whereSecondPrimaryKey=null) {
 		return $this->saveEntry("person", $person,$whereSecondPrimaryKey);
 	}
@@ -72,8 +77,12 @@ class dbDAO {
 		}
 	}
 
-	public function getPersonByUser($username) {
-		return $this->getEntryByField("person", "user", $username);
+	/**
+	 * get a person by unsername
+	 * @return NULL is no person found 
+	 */
+	public function getPersonByUser($username,$nullChangeForID=true) {
+		return $this->getEntryByField("person", "user", $username,$nullChangeForID);
 	}
 
 	public function getPersonByEmail($email) {
@@ -96,6 +105,9 @@ class dbDAO {
 			return null;
 	}
 	
+	/**
+	 * Returns a signle person in consideration of the anonymous changes or NULL if no entry found
+	 */
 	public function getPersonByID($personid) {
 		return $this->getEntryById("person", $personid);
 	}
@@ -143,6 +155,9 @@ class dbDAO {
 		return $ret;
 	}
 	
+	/**
+	 * gel the list of classmates 
+	 */
 	public function getPersonListByClassId($classId) {
 		$ret = $this->getElementList("person","classID=".$classId);
 		usort($ret, "compareAlphabetical");
@@ -160,18 +175,29 @@ class dbDAO {
 			return array();
 	}	
 	
+	/**
+	 * Delete person from database 
+	 * @return boolean
+	 */
 	public function deletePersonEntry( $id) {
 		$this->dataBase->delete("person", "id", $id);
 	}
 	
+	/**
+	 * Accept the anonymous changes for a person
+	 * @return boolean
+	 */
 	public function acceptChangeForPerson($id) {
 		$p=$this->dataBase->querySignleRow("select * from person where id=".$id);
 		if (sizeof($p)>0) {
 			$p["id"]=$p["changeForID"];
 			unset($p["changeForID"]);
-			$this->dataBase->delete("person", "id", $id);
-			$this->updateEntry("person", $p);
-		}
+			if ($this->dataBase->delete("person", "id", $id))
+				return $this->updateEntry("person", $p)>=0;
+			else 
+				return false;
+		} else 
+			return false;
 	}
 	
 	
@@ -188,6 +214,10 @@ class dbDAO {
 			$sql .=" and isTeacher = 1";
 		$this->dataBase->query($sql);
 		return $this->dataBase->count();
+	}
+	
+	public function getPersonIdListWithPicture() {
+		return $this->getIdList("person","picture is not null and picture not like '%avatar%'");
 	}
 	
 //******************** Picture DAO *******************************************
@@ -290,16 +320,11 @@ class dbDAO {
 	}
 
 	
-//******************** Song and Message DAO *******************************************
+//******************** Song  DAO *******************************************
 
-	public function saveMessage($entry) {
-		return $this->saveEntry("message", $entry, "text ='".$this->dataBase->replaceSpecialChars($entry["text"])."'");
-	}
-	
 	public function saveSongVote($entry) {
 		return $this->saveEntry("songvote", $entry, "personID =".$entry["personID"]." and songID=".$entry["songID"]);
 	}
-	
 	
 	public function saveInterpret($entry) {
 		return $this->saveEntry("interpret", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
@@ -332,30 +357,117 @@ class dbDAO {
 	public function getInterpretList() {
 		return $this->getElementList("interpret");
 	}
+
+//********************* Message ******************************************
+
+	public function getMessages($count) {
+		return $this->getElementList("message",null,$count,"changeDate desc");
+	}
+	
+	/**
+	Returns a signle entry or NULL if no entry found
+	 */
+	public function getMessage($id) {
+		return $this->getEntryById("message", $id);		
+	}
+
+	public function setMessageAsDeleted($id) {
+		$entry=array();
+		$entry["id"]=$id;
+		$entry["isDeleted"]=1;
+		return $this->updateEntry("message", $entry);
+	}
+	
+	public function saveMessage($entry) {
+		return $this->saveEntry("message", $entry, "text ='".$this->dataBase->replaceSpecialChars($entry["text"])."'");
+	}
+	
+	public function saveNewMessage($entry) {
+		$entry["id"]=-1;
+		return $this->saveEntry("message", $entry);
+	}
+	
+	public function getMessageListToBeChecked()
+	{
+		$sql="select message.*, person.lastname, person.firstname, person.birthname from message left join person on message.changeUserID=person.id  where message.changeForID is not null or isDeleted=1";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$ret= $this->dataBase->getRowList();
+			return $ret;
+		} else
+			return array();
+	}
+	
+	/**
+	 * Delete message from the db
+	 * @return boolean
+	 */
+	public function deleteMessageEntry( $id) {
+		return $this->dataBase->delete("message", "id", $id);
+	}
+	
+	/**
+	 * Accept the anonymous message entrys 
+	 * @return integer, negativ value in case of on error 
+	 */
+	public function acceptChangeForMessage($id) {
+		$p=$this->dataBase->querySignleRow("select * from message where id=".$id);
+		if (sizeof($p)>0) {
+			$p["id"]=-1;
+			unset($p["changeForID"]);
+			if ($this->dataBase->delete("message", "id", $id)) {
+				$newid = $this->saveEntry("message",$p,"text='".$p["text"]."'");
+				if ($newid>=0) {
+					$update = array();
+					$update["id"]=$newid;
+					$update["changeUserID"]=-1;
+					return $this->updateEntry("message", $update);
+				} else
+					return $newid;
+			} else
+				return  -12;
+		} else
+			return -11;
+	}
+	
 	
 //********************* Private ******************************************	
 	
-	private function getElementList($table,$where=null) {
+	/**
+	 * get a array of elements, or an empty array if no elements found
+	 */
+	private function getElementList($table,$where=null,$limit=null,$orderby=null) {
+		$rows=$this->getIdList($table,$where,$limit,$orderby);
 		$ret=array();
-		$sql="select id from ".$table." where changeForID is null";
-		if ($where!=null)
-			$sql.=" and ".$where;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$rows = $this->dataBase->getRowList();
-			foreach ($rows as $row) {
-				array_push($ret, $this->getEntryById($table, $row["id"]));
-			}
+		foreach ($rows as $row) {
+			array_push($ret, $this->getEntryById($table, $row["id"]));
 		}
 		return $ret;
 	}
 	
+	/**
+	 * get a array of ids, or an empty array if no ids found
+	 */
+	private function getIdList($table,$where=null,$limit=null,$orderby=null) {
+		$sql="select id from ".$table." where ( changeForID is null ";
+		$sql.=" or (changeForID =-1 and changeIP='".$_SERVER["SERVER_ADDR"]."') )";
+		if ($where!=null)
+			$sql.=" and ".$where;
+		if ($orderby!=null)
+			$sql.=" order by ".$orderby;
+		if ($limit!=null)
+			$sql.=" limit ".$limit;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
+		}
+	}
+	
 	
 	/**
-	 * Returns a signle entry from a table in consideration of the anonymous changes
-	 * @param unknown $table
-	 * @param unknown $whereField
-	 * @param unknown $whereValue
+	 * Returns a signle entry from a table in consideration of the anonymous changes or NULL if no entry found
 	 */
 	private function getEntryById($table,$id) {
 		//First get the entry by the id
@@ -385,8 +497,14 @@ class dbDAO {
 		}
 	}
 	
-	private function getEntryByField($table,$fieldName,$fieldValue) {
-		$sql="select * from ".$table." where ".$fieldName."='".trim($fieldValue)."' and changeForID is null";
+	/**
+	 * get a db entry by a field
+	 * @return NULL is no entry found 
+	 */
+	private function getEntryByField($table,$fieldName,$fieldValue,$nullChangeForID=true) {
+		$sql="select * from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
+		if ($nullChangeForID)
+			$sql .=" and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
 			$entry = $this->dataBase->fetchRow();
@@ -400,9 +518,7 @@ class dbDAO {
 	 * Insert or update a table entry
 	 * If the entry has a sekond primary key exists then force an update
 	 * If user is anonymous create a new entry as a change   
-	 * @param unknown $table
-	 * @param unknown $entry
-	 * @param unknown $whereSecondPrimaryKey
+	 * @return integer if negativ an error occurs
 	 */
 	private function saveEntry($table,$entry,$whereSecondPrimaryKey=null) {
 		//Build the change data array
@@ -501,6 +617,9 @@ class dbDAO {
 	
 	}
 	
+	/**
+	 * update one entry returns -1 for anny error
+	 */
 	private function updateEntry($table,$entry) {
 		//Build the change data array
 		$data = array();

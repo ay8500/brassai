@@ -96,8 +96,8 @@ function writeLogonDiv() {
 		$.ajax({
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
-			    location.reload();
-			    //location.href="start.php";
+				url=location.href.replace("action","location");
+				location.href=url;
 			},
 			error:function(data){
 			    $('#ajaxLStatus').css("background-color","lightcoral");
@@ -120,12 +120,8 @@ function writeLogonDiv() {
 		$.ajax({
 			url:"logon.php?action=logoff",
 			success:function(data){
-				if (location.href.search("editDiak.php")>0)
-					location.href="editDiak.php";
-				else if (location.href.search("start.php")>0)
-					location.href="start.php";
-				else 
-					location.reload();
+				url=location.href.replace("action","location");
+				location.href=url;
 			}
 		});
 	}

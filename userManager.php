@@ -46,6 +46,17 @@
 			return -1;
 	}
 	
+	function getLoggedInUserName() {
+		global $db;
+		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
+		if ($loggedInUser!=null) {
+			return getPersonName($loggedInUser);
+		} 
+		else
+			return "Anonim felhasználó";
+	}
+	
+	
 	/**
 	 * set aktual viewed user id
 	 * @param user id

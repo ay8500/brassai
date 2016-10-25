@@ -10,7 +10,7 @@ class MySqlDb {
   public function __construct($host=NULL, $database=NULL, $user=NULL, $pass=NULL){
 	$this->connection = mysqli_connect($host,$user,$pass,$database);
 	if (mysqli_connect_errno()) {
-		die('Database connection: ' . mysqli_error($this->connection));
+		die('Database connection:'.$host. ":" . mysqli_error($this->connection));
 	}
 	//if (!is_resource($this->connection))	             die('Database connection: ' . mysqli_error($this->connection));
   	//if (!mysqli_select_db($database, $this->connection))	 die('Database connection: ' . mysqli_error());

@@ -7,8 +7,8 @@
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
-	if (getGetParam("classid", "")!="") {
-		$class=$db->getClassByText(getGetParam("classid", ""));
+	if (getParam("classid", "")!="") {
+		$class=$db->getClassByText(getParam("classid",""));
 		if ($class==null)
 			$class=$db->getClassById(getGetParam("classid", ""));
 		setAktClass($class["id"]);

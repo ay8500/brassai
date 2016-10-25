@@ -11,14 +11,9 @@ $idArray = explode(",", $idList);
 
 $p=getRandomPerson();
 $i=0;
-while (($p["picture"]=="avatar.jpg" || 								//No Empty pictures
-		notUnique($idArray,$p["id"]) ||								//Unique entrys
-		sizeof($data)<8												//More than 8 entrys in the db
-		) && 
-		$i++<10)													//Check only 10 times
-{
+//Check only 10 times to get a different person
+while (notUnique($idArray,$p["id"]) && $i++<10)		
 	$p=getRandomPerson();
-}
 
 $person = Array();
 
@@ -51,6 +46,7 @@ if (isset($p["function"]) && showField($p,"function"))
 	$person["function"]=getFieldValue($p,"function");
 if (isset($p["children"]) && showField($p,"children"))
 	$person["children"]=getFieldValue($p,"children");
+$person["isGuest"]= isPersonGuest($p)?1:0;
 	
 
 echo(json_encode($person));
@@ -60,48 +56,18 @@ echo(json_encode($person));
  */
 function getRandomPerson() {
 	global $db;
-	$classList=$db->getClassList();
+	$personList=$db->getPersonIdListWithPicture();
 	
-	$class=$classList[rand(0,sizeof($classList)-1)];
-	//$class=$classList[0];
+	$idrow=$personList[rand(0,sizeof($personList)-1)];
 	
-	$data=$db->getPersonListByClassId($class["id"]);
-	
-	$idx=rand(0,sizeof($data)-1);
-	
-	$p=$data[$idx];
+	$p=$db->getPersonByID($idrow["id"]);
+	$class=$db->getClassById(getAktClass());
 	$p["classText"]=$class["text"];
 	
 	return $p;
 }
 
 
-/**
- * Get a random picture
- */
-/*
-function getRandomPicture() {
-	global $data;
-	$dblist = getDatabaseList();
-	
-	$allPictures = Array();
-	foreach ($dblist as $dbname) {
-		$pictures = getListofPictures($dbName.'group','all', false) ;
-		array_push($allPictures, $pictures);
-	}
-	$dbidx=rand(0,sizeof($allPictures)-1);
-
-	openDatabase(substr($dblist[$dbidx],5,3).substr($dblist[$dbidx],0,4));
-
-	$idx=rand(0,sizeof($data)-1);
-
-	$p=$data[$idx];
-	$p["class"]=substr($dblist[$dbidx],5,3);
-	$p["year"]=substr($dblist[$dbidx],0,4);
-
-	return $p;
-}
-*/
 
 /**
  * Person identifikation is allready in the idArray

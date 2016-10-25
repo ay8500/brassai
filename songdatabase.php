@@ -88,7 +88,7 @@ function readInterpretList($database)
 		$file=fopen($FileName ,"r");
 		$id=0;
 		while (!feof($file)) {
-			$b = explode("=",fgets($file));
+			$b = preg_split('[=]',fgets($file));//
 			$iid =intval(trim($b[0]));
 			if (isset($b[1])) {
 				$data[$id]['name']=$b[1];

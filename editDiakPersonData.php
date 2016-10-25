@@ -2,57 +2,47 @@
 //Submit a new user
 $action=getGetParam("action","");
 
-//Attempt to subnit a new person 
-$submit = $action=="submit_newguest" || $action=="submit_newdiak";
+//Create a new person
+$newperson = $action=="newperson" || $action=="newguest" || $action=="newteacher"; 
 
-//Save the new person
-$submitsave = $action=="submit_newguest_save" || $action=="submit_newdiak_save";
-
-//Guest or normal user (Guest have in the admin field the value guest)
-$guest=$action=="submit_newguest" || $action=="submit_newguest_save";
 
 //Edit or only view variant this page
-$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || getGetParam("anonymousEditor", "")=="true");
+$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || getParam("anonymousEditor")=="true" || $action=="changediak");
 
-//preparation of the field to be edited and the itemprop characteristic
-$dataFieldNames 	=array("lastname","firstname","email");
-$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
-$dataItemProp       =array("","","");
-$dataCheckFieldVisible	=array(false,false,true);
-if (!$submit && !$submitsave) {
-	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country","phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
-	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry","","","","","","","","","","","","");
-	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország","Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible, false,false,true,true,false,false,true,true,true,false,false,true,true,false,true,true, false,false);
-}
-if (userIsAdmin()) {
-	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng");
-	array_push($dataItemProp,"","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
-}
-if ($classId==0 ) {
-	$dataFieldCaption[16]="Tantárgy";
-	$dataFieldCaption[18]="Osztályfönök";
-}
 
 
 //create new person in case of submittin a new one
-if ( ($action=="newdiak" || $action=="newguest" || $action=="submit_newguest" || $action=="submit_newdiak") || $action=="submit_newguest_save" || $action=="submit_newdiak_save")  {
-	$diak = createNewPerson(getAktClassName(),$guest);
+if ( $newperson ) {
+	$diak = getPersonDummy();
+	$diak["id"] = -1;
+	$diak["classID"] = getAktClass();
+	if($action=="newteacher")
+		$diak["isTeacher"]=1;
+	else
+		$diak["isTeacher"]=0;
+	if($action=="newguest")
+		$diak["role"]="guest new";
+	else 
+		$diak["role"]="new";
+	if ($db->savePerson($diak)==0) {
+		$p=$db->getPersonByUser($diak["user"],false);
+		if ($p!=null) {
+			$diak["id"]=$p['id'];
+		}
+		else
+			$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült!</div>';
+	} else
+		$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült!</div>';
 }
 
 
 //save the new person data
-if ( $submitsave ) {
-	$diak["lastname"]=getGetParam("lastname", "");
-	$diak["firstname"]=getGetParam("firstname", "");;
-	$diak["email"]=getGetParam("email", "");
-	//while submiting a new person no user is logged on so lets check if the user is human
-	if (getGetParam("code", "")!=$_SESSION['SECURITY_CODE']) {
-		$resultDBoperation='<div class="alert alert-warning">Bíztonsági kód nem helyes!<br/> Probáld még egyszer.</div>';
+if ( false && checkRequesterIP("change")) {
+	$diak["lastname"]=getParam("lastname", "");
+	$diak["firstname"]=getParam("firstname", "");;
+	$diak["email"]=getParam("email", "");
 	//No dublicate email address is allowed
-	} elseif (checkUserEmailExists(null,$diak["email"]) ) {
+	if (checkUserEmailExists(null,$diak["email"]) ) {
 		$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban <br/>Új adat kimentése sikertelen.</div>';
 	} elseif (filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">E-Mail nem helyes! <br/>Új adat kimentése sikertelen.</div>';
@@ -61,62 +51,82 @@ if ( $submitsave ) {
 	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3)&& !userIsAdmin()) {
 		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Új adat kimentése sikertelen.</div>';
 	} else {
-		savePersonLevi($diak);
-		sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
-		if (!userIsAdmin())
-			saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
-	}
-	//Something went wrong we stay on the submit page
-	if ($resultDBoperation!="") {
-		$action=substr($action, 0,strlen($action)-5);
-		$submit = true;
-		$submitsave = false;
-	//New user is saved we leave the submit page.
-	} else {
-		$submit = false;
-		$submitsave = false;
-		$resultDBoperation='<div class="alert alert-success" >Személy sikeresen kimetve!<br/>Köszönjük szépen a bizalmadat a Véndiákok oldala iránt<br/>Bejelentkezési adatok a megadott mailcímre el vannak küldve.</div>';
+		if ($db->savePerson($diak)>=0) {
+			sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
+			if (!userIsAdmin())
+				saveLogInInfo("SaveNewPerson",$diak["lastname"],$diak["user"],"",true);
+			$resultDBoperation='<div class="alert alert-success" >Személy sikeresen kimetve!<br/>Köszönjük szépen a bizalmadat a Véndiákok oldala iránt<br/>Bejelentkezési adatok a megadott mailcímre el vannak küldve.</div>';
+		} else {
+			$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült!</div>';
+		}
 	}
 }
+
+//preparation of the field to be edited and the itemprop characteristic
+$dataFieldNames 	=array("lastname","firstname","email");
+$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
+$dataItemProp       =array("","","");
+$dataCheckFieldVisible	=array(false,false,true);
+if($newperson || strstr($diak["role"],"new")!="")  {
+	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country");
+	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
+	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
+	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
+}
+if ($action=="") {
+	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
+	array_push($dataItemProp,"","","","","","","","","","","","");
+	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
+	array_push($dataCheckFieldVisible, true,true,true,false,false,true,true,false,true,true, false,false);
+}
+if (userIsAdmin()) {
+	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng");
+	array_push($dataItemProp,"","","","","","","");
+	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
+	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
+}
+if (isset($classId) && $classId==0 ) {
+	$dataFieldCaption[16]="Tantárgy";
+	$dataFieldCaption[18]="Osztályfönök";
+}
+
 
 //Retrive changed data and save it
-if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
+if ($action=="changediak" && checkRequesterIP("change") ) {
 	$diak = $db->getPersonByID($personid);
-	if ($diak==null) {
-		$diak = createNewPerson(getAktClass(),$guest);
-	}
-	for ($i=0;$i<sizeof($dataFieldNames);$i++) {
-		$tilde="";
-		if ($dataCheckFieldVisible[$i]) {
-			if (isset($_GET["cb_".$dataFieldNames[$i]])) 
-				$tilde="~";
+	if ($diak!=null) {
+		for ($i=0;$i<sizeof($dataFieldNames);$i++) {
+			$tilde="";
+			if ($dataCheckFieldVisible[$i]) {
+				if (isset($_GET["cb_".$dataFieldNames[$i]])) 
+					$tilde="~";
+			}
+			//save the fields in the person array
+			if (isset($_GET[$dataFieldNames[$i]]))
+				$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
 		}
-		//save the fields in the person array
-		if (isset($_GET[$dataFieldNames[$i]]))
-			$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
-	}
-	//No dublicate email address is allowed
-	if (checkUserEmailExists($diak["id"],$diak["email"])) {
-		$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
-	//Validate the mail address if no admin logged on
-	} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-		$resultDBoperation='<div class="alert alert-warning">E-Mail nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
-	} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
-		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok  sikertelen.</div>';
-	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
-		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
-	} else {
-		$ret = $db->savePerson($diak);
-		if ($ret>=0) {
-			$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
-			if (!userIsAdmin())
-				saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+		//No dublicate email address is allowed
+		if (checkUserEmailExists($diak["id"],$diak["email"])) {
+			$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
+		//Validate the mail address if no admin logged on
+		} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
+			$resultDBoperation='<div class="alert alert-warning">E-Mail nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
+		} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
+			$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
+		} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
+			$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 		} else {
-			$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült!</div>';
+			$ret = $db->savePerson($diak);
+			if ($ret>=0) {
+				$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
+				if (!userIsAdmin())
+					saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+			} else {
+				$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült!</div>';
+			}
 		}
 	}
 }
-
 
 
 ?>
@@ -126,7 +136,7 @@ if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
 	</div>
 	
 	<?php //Person picture download?>
-	<?php if ($edit && $action!="newdiak" && $action!="newguest") {  ?>
+	<?php if ($edit || $newperson) {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
 				<span>Válassz egy új képet max. 2MByte</span>
@@ -137,6 +147,8 @@ if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
 			</form>
 		</div>
+	<?php } ?>
+   <?php if ($edit) {  ?>	
 		<?php //Don't delete myself and if no user logged on?>
 		<?php if (!(getLoggedInUserId()==$diak["id"] ) && getLoggedInUserId()>0) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
@@ -146,40 +158,23 @@ if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
 	<?php } ?>
 	
 	<?php //Save button?>
-	<?php if ($edit) {?>
+	<?php if ($edit || $newperson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
 		</div>
 	<?php } ?>
 	
 	<?php //Anonymous user edit button?>
-	<?php if (!$edit) {?>
+	<?php if (!$edit && !$newperson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
 		</div>
 	<?php } ?>
 	
-	
-	<?php //Secutiry code and create new person button?>
-	<?php if ($submit) {?>
-		<div style="display: inline-block;margin-bottom:15px;vertical-align: bottom; width:295px">
-			<div class="input-group input-group-sl" >
-				<span style="min-width:80px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
-				<input id="code" type="text"  value="" placeholder="Kód" class="form-control"/>
-				<div class="input-group-btn">
-					<img style="width:100px" class="form-control" alt="security code" src="SecurityImage/SecurityImage.php" />
-				</div>
-			</div>
-			<div>&nbsp;</div>
-			<button onclick="$('#idcode').val($('#code').val());$('#form_action').val('<?php echo($action);?>_save');document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Új személy létrehozása!</button>
-		</div>
-	<?php }?>
-	
-	
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
 	<?php 
-	if ($edit || $submit) {
+	if ($edit || $newperson) {
 		echo('<div style="min-height:30px" class="input-group">');
       	echo('<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>');
       	echo('<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>');
@@ -191,7 +186,7 @@ if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
 	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
-			<?php if ($edit || $submit) {?>
+			<?php if ($edit || $newperson) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
 				<span style="width:40px" id="highlight" class="input-group-addon">
 		      		<?php if ($dataCheckFieldVisible[$i]) {
@@ -226,10 +221,9 @@ if (getParam("action","")=="changediak" && checkRequesterIP("change") ) {
 	<?php } ?>
 	</div>
 	<?php 
-	if ($edit || $submit) {
+	if ($edit || $newperson) {
 		echo('<input type="hidden" name="action"	value="changediak" id="form_action" />');
 		echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
-		echo('<input type="hidden" name="code"		value=""  id="idcode" />');
 		echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
 		echo('</form>');
 	}

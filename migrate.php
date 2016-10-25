@@ -1,5 +1,5 @@
-
 <h2>Bassai classmate database migration to MySQL</h2>
+<h3>Okt. 2016 Levi</h3>
 <?php
 session_start();
 $_SESSION["uId"]="0";
@@ -12,9 +12,9 @@ $data=array();
 $pictureFolder = "./images/";
 $dataPath = "data/";
 
-$onlyError=true;
-$migrateSongs=false;
-$migratePictures=false;
+$onlyError=false;
+$migrateSongs=true;
+$migratePictures=true;
 
 
 //***********migrate song interprets ******************************
@@ -40,8 +40,10 @@ if($migrateSongs) {
 			$ret=$songs[$s]["dbid"]=$db->saveSong($song);
 			echores("Song:".$song["name"], $ret);
 		}
-		else 
-			die ("interpret not found");
+		else {
+			echores("Interpret not found:",-1);
+			print_r($song);
+		}
 	}
 	
 	$interpretsdb=$db->getInterpretList();
@@ -110,11 +112,20 @@ foreach ($classList as $class) {
 		echores("Name:".$d["lastname"]." ".$d["firstname"],$ret);
 		//Textfiles
 		$person=$db->getPersonByUser($d["user"]);
-		$privacy="class";
-		$person["story"]=loadTextData($class["name"].$class["graduationYear"], $d["id"], "story");
-		$person["cv"]=$text=loadTextData($class["name"].$class["graduationYear"], $d["id"], "cv");
-		$person["aboutMe"]=$text=loadTextData($class["name"].$class["graduationYear"], $d["id"], "spare");
+		$txt=loadTextData($class["name"].$class["graduationYear"], $personid, "story");
+		if ($txt!=null) {
+			$person["story"]=$txt;
+			echores("Text:".substr($txt,0,25),1); }
+		$txt=loadTextData($class["name"].$class["graduationYear"], $personid, "cv");
+		if ($txt!=null) {
+			$person["cv"]=$txt;
+			echores("Text:".substr($txt,0,25),1); }
+		$txt=loadTextData($class["name"].$class["graduationYear"], $personid, "spare");
+		if ($txt!=null) {
+			$person["aboutMe"]=$txt;
+			echores("Text:".substr($txt,0,25),1); }
 		//Pictures
+		$db->savePerson($person);
 		if($migratePictures) {
 			$pictures = getListofPictures($class["name"].$class["graduationYear"],$personid ); 
 			foreach ($pictures as $picture) {
@@ -139,8 +150,12 @@ foreach ($classList as $class) {
 					$v["id"]=-1;
 					$v["personID"]=$person["id"];
 					$v["songID"]=getNewSongId($vote["song"]["id"]);
-					$ret = $db->saveSongVote($v);
-					echores("&nbsp;&nbsp;&nbsp;&nbsp;Songvote:".$person["lastname"], $ret);
+					if ($v["songID"]!=-1) { 
+						$ret = $db->saveSongVote($v);
+						echores("&nbsp;&nbsp;&nbsp;&nbsp;Songvote:".$person["lastname"], $ret);
+					}
+					else
+						echores("&nbsp;&nbsp;&nbsp;&nbsp;Songvote:".$person["lastname"], -1);
 				}
 			}
 		}
@@ -154,8 +169,16 @@ foreach ($messages as $message) {
 		$m=array();
 		$m["id"]=-1;
 		$m["text"]=$message["text"];
+		if (isset($message["comment"]))
+			$m["comment"]=$message["comment"];
+		if (isset($message["name"]))
+			$m["name"]=$message["name"];
 		$m["privacy"]=$message["privacy"];
-		$_SESSION["uId"]=array_search($message["uid"], array_column($data, "dbid"));
+		$uid=getNewUserId($message["uid"]);
+		if ($uid>0) 
+			$_SESSION["uId"]=$uid;
+		else 
+			$_SESSION["uId"]=1;
 		if (isset($message["deleted"]))
 			$m["isDeleted"]=$message["deleted"]=="true"?1:0;
 		else
@@ -193,6 +216,16 @@ function getNewSongId($id) {
 	}
 	return -1;
 }
+
+function getNewUserId($id) {
+	global $data;
+	foreach ($data as $d) {
+		if($id==$d["id"])
+			return $d["dbid"];
+	}
+	return -1;
+}
+
 //***********The old Databas functions *****************************
 
 /*
@@ -286,6 +319,7 @@ function loadTextData($database, $personId, $type) {
 	$fileName =$dataPath."/".$database."/".$personId."-".$type.".txt";
 	$ret=null;
 	if (file_exists($fileName)) {
+		$ret ="";
 		$file=fopen($fileName,"r");
 		while (!feof($file)) {
 			$ret .= fgets($file);
@@ -311,7 +345,7 @@ function getListofPictures($database,$personID ) {
 		if (in_array(strtolower(substr($file, -4)), array(".jpg",".gif","png"))) {
 			if (substr($file,0,1)=="p" && strpos($file,$personID.'-')==1) {
 				//get the file id from file name
-				$fileSplit = split('[.-]',$file);
+				$fileSplit = preg_split('[.-]',$file); 
 				$idx=$fileSplit[1];
 				$images_array[$idx]["File"] = $file;
 				$picture = loadPictureAttributes($database,$personID,$idx);
@@ -331,9 +365,6 @@ function loadPictureAttributes($database,$personId,$pictureId) {
 	global $pictureFolder;
 	$picture=getPictureDummy();
 	$fileName =$pictureFolder.$database."/".$personId."-".$pictureId.".txt";
-	//if (!file_exists($fileName)) {
-	//	setPictureAttributes($database,$personId,$pictureId,"","","false");
-	//}
 	if (file_exists($fileName)) {
 		$file=fopen($fileName,"r");
 		while (!feof($file)) {

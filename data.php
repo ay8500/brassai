@@ -114,26 +114,9 @@ function getPersonDummy() {
 	$p["user"]=createPassword(8);
 	$p["passw"]=createPassword(8);
 	$p["role"]="";
-	/*
-	$p["birthname"]=null;$p["partner"]=null;$p["email"]=null;$p["ip"]=null;
-	$p["address"]=null;$p["zipcode"]=null;$p["place"]=null;$p["country"]=null;
-	$p["phone"]=null;$p["mobil"]=null;$p["skype"]=null;$p["email"]=null;
-	$p["employer"]=null;$p["function"]=null;$p["education"]=null;$p["children"]=null;
-	$p["facebookid"]=null;$p["facebook"]=null;$p["homepage"]=null;$p["twitter"]=null;
-	*/
 	return $p;
 }
 
-/**
- * returns an empty person
- */
-function createNewPerson($classID,$guest) {
-	$p = getPersonDummy();
-	$p["classID"]=$classID;
-	if($guest)
-		$p["role"]="guest";
-	return $p;
-}
 
 
 
@@ -358,8 +341,17 @@ function showField($diak,$field) {
 }
 
 
-//generate normalised person link
+function getPersonName($person) {
+	if ($person!=null) {
+		$ret = $person["lastname"]." ".$person["firstname"];
+		if (isset($person["birthname"]) && trim($person["birthname"])!="")
+			$ret .= " (".trim($person["birthname"]).")";
+		return $ret;
+	}
+	return '';
+}
 
+//generate normalised person link
 function getPersonLink($ln,$fn) {
    return getNormalisedChars($ln).'_'.getNormalisedChars($fn);
 }
