@@ -1,4 +1,13 @@
 <?php
+/* |Framework fields | id | changeUserID | changeDate | changeIP | changeForID |
+*  |normal entry     | *  | *            | *          | *        | NULL        |  
+*  |anonymous change | *  | NULL         | *          | *        | *           |  
+*  |anonymous new    | *  | NULL         | *          | *        | NULL        |  
+
+select all 				where changeUserID is not null
+select where anonymous	where changeUserID is null and IP=* 
+
+*/
 include_once 'mysql.class.php';
 include_once 'logger.class.php';
 
@@ -124,6 +133,7 @@ class dbDAO {
 			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";  
 			$sql .=" (classID != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is null";
+			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["SERVER_ADDR"]."')";
 			$this->dataBase->query($sql);
 			while ($person=$this->dataBase->fetchRow()) {
 				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
@@ -146,7 +156,6 @@ class dbDAO {
 					
 					$arrayIdx = array_search($person["changeForID"], array_column($ret,"id"));
 					unset($ret[$arrayIdx]);	
-					$person["id"]=$person["changeForID"];
 					array_push($ret, $person);
 				}
 			}
@@ -159,13 +168,15 @@ class dbDAO {
 	 * gel the list of classmates 
 	 */
 	public function getPersonListByClassId($classId) {
-		$ret = $this->getElementList("person","classID=".$classId);
+		$where ="classID=".$classId;
+		$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["SERVER_ADDR"]."')";
+		$ret = $this->getElementList("person",$where);
 		usort($ret, "compareAlphabetical");
 		return $ret;
 	}	
 	
 	public function getPersonListToBeChecked() {
-		$sql="select c.*, o.id as changeForIDjoin from person as c left join person as o on c.changeForID=o.id   where c.changeForID is not null";
+		$sql="select c.*, o.id as changeForIDjoin from person as c left join person as o on c.changeForID=o.id   where c.changeUserID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$ret= $this->dataBase->getRowList();
@@ -180,7 +191,7 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function deletePersonEntry( $id) {
-		$this->dataBase->delete("person", "id", $id);
+		return $this->dataBase->delete("person", "id", $id);
 	}
 	
 	/**
@@ -190,12 +201,18 @@ class dbDAO {
 	public function acceptChangeForPerson($id) {
 		$p=$this->dataBase->querySignleRow("select * from person where id=".$id);
 		if (sizeof($p)>0) {
-			$p["id"]=$p["changeForID"];
-			unset($p["changeForID"]);
-			if ($this->dataBase->delete("person", "id", $id))
+			if (isset($p["changeForID"])) {
+				$p["id"]=$p["changeForID"];
+				unset($p["changeForID"]);
+				$p["changeUserID"]=getAktUserId();
+				if ($this->dataBase->delete("person", "id", $id))
+					return $this->updateEntry("person", $p)>=0;
+				else 
+					return false;
+			} else {
+				$p["changeUserID"]=getAktUserId();
 				return $this->updateEntry("person", $p)>=0;
-			else 
-				return false;
+			}
 		} else 
 			return false;
 	}
@@ -210,6 +227,7 @@ class dbDAO {
 		else
 			$sql .=" and not(role like '%guest%')";
 		$sql .=" and changeForID is null ";
+		$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["SERVER_ADDR"]."')";
 		if ($classId==0)
 			$sql .=" and isTeacher = 1";
 		$this->dataBase->query($sql);
@@ -217,7 +235,10 @@ class dbDAO {
 	}
 	
 	public function getPersonIdListWithPicture() {
-		return $this->getIdList("person","picture is not null and picture not like '%avatar%'");
+		$where="picture is not null and picture not like '%avatar%'";
+		$where .=" and (changeUserID is not null or changeIP ='".$_SERVER["SERVER_ADDR"]."')";
+		
+		return $this->getIdList("person",$where);
 	}
 	
 //******************** Picture DAO *******************************************
@@ -468,9 +489,11 @@ class dbDAO {
 	
 	/**
 	 * Returns a signle entry from a table in consideration of the anonymous changes or NULL if no entry found
+	 * even if the copy is returned the id will be from the original
+	 * @return the entry of null if not found
 	 */
 	private function getEntryById($table,$id) {
-		//First get the entry by the id
+		//First get the original entry by the id
 		$sql="select * from ".$table.' where id='.$id." and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
@@ -479,21 +502,17 @@ class dbDAO {
 			$sql="select * from ".$table." where changeIP='".$_SERVER["SERVER_ADDR"]."' and changeForID =".$id;
 			$this->dataBase->query($sql);
 			if ($this->dataBase->count()==1) {
-				$row = $this->dataBase->fetchRow();
-				$row["idForSave"]=$row["id"];
-				$row["id"]=$entry["id"];
-				return $row;
+				return  $this->dataBase->fetchRow();
 			}
 			return $entry;
-		} else {
-			$sql="select * from ".$table.' where id='.$id." and changeIP='".$_SERVER["SERVER_ADDR"]."' and changeForID is not null";
+		//Try to get the copy
+		} else { 
+			$sql="select * from ".$table.' where id='.$id." and changeForID is not null and changeIP='".$_SERVER["SERVER_ADDR"]."'";
 			$this->dataBase->query($sql);
 			if ($this->dataBase->count()==1) {
-				$entry = $this->dataBase->fetchRow();
-				return $entry;
-			} else {
+				return $this->dataBase->fetchRow();
+			} else 
 				return null;
-			}
 		}
 	}
 	
@@ -501,10 +520,9 @@ class dbDAO {
 	 * get a db entry by a field
 	 * @return NULL is no entry found 
 	 */
-	private function getEntryByField($table,$fieldName,$fieldValue,$nullChangeForID=true) {
+	private function getEntryByField($table,$fieldName,$fieldValue) {
 		$sql="select * from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
-		if ($nullChangeForID)
-			$sql .=" and changeForID is null";
+		$sql .=" and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
 			$entry = $this->dataBase->fetchRow();
@@ -533,44 +551,36 @@ class dbDAO {
 		if (getLoggedInUserId()>=0) {
 			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", getLoggedInUserId());
 		} else {
-			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", null);
-			if ($entry["id"]>=0) 
-				$data =$this->dataBase->changeFieldInArray($data,"changeForID", $entry["id"]);
-			else 
-				$data =$this->dataBase->changeFieldInArray($data,"changeForID", -1);
+			$data =$this->dataBase->setFieldInArrayToNull($data,"changeUserID");
 		}
 		
 		//Update
-		if (!($entry["id"]==-1)) {
-			$dbEntry = $this->getEntryById($table, $entry["id"]);
-			if ($dbEntry!=null) {
-				if (isset($dbEntry["idForSave"]) && $dbEntry["idForSave"]!=null) {
-					//Update the copy
-					$data =$this->dataBase->deleteFieldInArray($data,"idForSave");
-					if ($this->dataBase->update($table,$data,"id",$dbEntry["idForSave"]))
-						return $dbEntry["idForSave"];
+		if ($entry["id"]>=0) {
+			//User is loggen on
+			if (getLoggedInUserId()>=0) {
+				//Update the entry
+				if ($this->dataBase->update($table,$data,"id",$entry["id"]))							
+					return $dbEntry["id"];
+				else 
+					return -5;
+			//Anonymous user
+			} else {
+				$dbentry=$this->getEntryById($table, $entry["id"]);
+				if(isset($dbentry["changeUserID"])) {
+					//Insert an anonymous copy 
+					$data =$this->dataBase->changeFieldInArray($data,"changeForID", $entry["id"]);
+					if ($this->dataBase->insert($table,$data))
+						return $this->dataBase->getInsertedId();
 					else 
-						return -6;
+						return -4;
 				} else {
-					if (getLoggedInUserId()>=0  ) {
-						//Update the entry
-						if ($this->dataBase->update($table,$data,"id",$dbEntry["id"]))							
-							return $dbEntry["id"];
-						else 
-							return -5;
-					} else {
-						//Insert a copy
-						$data = $this->dataBase->changeFieldInArray($data, "changeForID", $entry["id"]);
-						if ($this->dataBase->insert($table,$data))
-							return 0;
-						else 
-							return -4;
-					}
+					//Update the anonymous entry
+					if ($this->dataBase->update($table,$data,"id",$entry["id"]))							
+						return $dbentry["id"];
+					else 
+						return -7;
 				}
-				return $dbEntry["id"];
-			} else 
-				return -1;
-			
+			}
 		} 
 		//Insert
 		else {
@@ -586,32 +596,13 @@ class dbDAO {
 						return -7;
 				} if ($this->dataBase->count()>1) {
 					return -8;
-				} else {
-					//Insert
-					$this->dataBase->insert($table,$data);
-					$sql="select * from ".$table." where ".$whereSecondPrimaryKey." and changeForID is null";
-					$this->dataBase->query($sql);
-					if ($this->dataBase->count()==1) {
-						$row=$this->dataBase->fetchRow();
-						return $row["id"];
-					} else
-						return -9;
 				}
 			} else {
-				if (getLoggedInUserId()>=0) {
-					//Insert
-					if ($this->dataBase->insert($table,$data))
-						return 0;
-					else 
-						return -1;
-				} else {
-					//Insert a Copy
-					$data = $this->dataBase->changeFieldInArray($data, "changeForID", -1);
-					if ($this->dataBase->insert($table,$data))
-						return 0;
-					else 
-						return -4;
-				}
+				//Insert
+				if ($this->dataBase->insert($table,$data))
+					return $this->dataBase->getInsertedId();
+				else 
+					return -1;
 			}
 		}
 	

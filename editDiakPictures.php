@@ -7,7 +7,7 @@
 	<form id="formRadio">
 	<?php
 		$notDeletedPictures=0;
-		$pictures = $db->getListofPictures($personid,"person",2,2) ;
+		$pictures = $db->getListofPictures(getPersonId($diak),"person",2,2) ;
 		foreach ($pictures as $pict) {
 			if (  $pict["isDeleted"]==0  || userIsAdmin() ) {
 				$file=$pict["file"];

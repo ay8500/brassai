@@ -10,82 +10,51 @@ $newperson = $action=="newperson" || $action=="newguest" || $action=="newteacher
 $edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || getParam("anonymousEditor")=="true" || $action=="changediak");
 
 
-
 //create new person in case of submittin a new one
 if ( $newperson ) {
 	$diak = getPersonDummy();
-	$diak["id"] = -1;
+	$diak["id"] = -1; 
 	$diak["classID"] = getAktClass();
-	if($action=="newteacher")
-		$diak["isTeacher"]=1;
+	$action=="newteacher" ? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
+	$action=="newguest"   ? $diak["role"]="guest"	:	$diak["role"]="";
+	$newid = $db->savePerson($diak);
+	if ($newid>=0)
+		$diak["id"]=$newid; 
 	else
-		$diak["isTeacher"]=0;
-	if($action=="newguest")
-		$diak["role"]="guest new";
-	else 
-		$diak["role"]="new";
-	if ($db->savePerson($diak)==0) {
-		$p=$db->getPersonByUser($diak["user"],false);
-		if ($p!=null) {
-			$diak["id"]=$p['id'];
-		}
-		else
-			$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült!</div>';
-	} else
-		$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült!</div>';
+		$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült! Hibakód:4912</div>';
 }
 
 
-//save the new person data
-if ( false && checkRequesterIP("change")) {
-	$diak["lastname"]=getParam("lastname", "");
-	$diak["firstname"]=getParam("firstname", "");;
-	$diak["email"]=getParam("email", "");
-	//No dublicate email address is allowed
-	if (checkUserEmailExists(null,$diak["email"]) ) {
-		$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban <br/>Új adat kimentése sikertelen.</div>';
-	} elseif (filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-		$resultDBoperation='<div class="alert alert-warning">E-Mail nem helyes! <br/>Új adat kimentése sikertelen.</div>';
-	} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" )&& !userIsAdmin()) {
-		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Új adat kimentése sikertelen.</div>';
-	} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3)&& !userIsAdmin()) {
-		$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Új adat kimentése sikertelen.</div>';
-	} else {
-		if ($db->savePerson($diak)>=0) {
-			sendNewUserMail($diak["firstname"],$diak["lastname"],$diak["email"],$diak["passw"],"",getAKtScoolClass(),getAktScoolYear(),$diak["id"]);
-			if (!userIsAdmin())
-				saveLogInInfo("SaveNewPerson",$diak["lastname"],$diak["user"],"",true);
-			$resultDBoperation='<div class="alert alert-success" >Személy sikeresen kimetve!<br/>Köszönjük szépen a bizalmadat a Véndiákok oldala iránt<br/>Bejelentkezési adatok a megadott mailcímre el vannak küldve.</div>';
-		} else {
-			$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült!</div>';
-		}
-	}
-}
 
 //preparation of the field to be edited and the itemprop characteristic
 $dataFieldNames 	=array("lastname","firstname","email");
 $dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
 $dataItemProp       =array("","","");
 $dataCheckFieldVisible	=array(false,false,true);
-if($newperson || strstr($diak["role"],"new")!="")  {
+$dataFieldObl			=array(true,true,true);
+if(true)  { //Name
 	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country");
 	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
 	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
 	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
+	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
+	array_push($dataFieldObl		, false,false,false,false,false,false);
 }
-if ($action=="") {
+if (true) { //Communication
 	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
 	array_push($dataItemProp,"","","","","","","","","","","","");
 	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible, true,true,true,false,false,true,true,false,true,true, false,false);
+	array_push($dataCheckFieldVisible,true ,true ,true ,false,false,true ,true ,false,true ,true ,false,false);
+	array_push($dataFieldObl		, false,false,false,false,false,false,false,false,false,false,false,false);
 }
-if (userIsAdmin()) {
+if (userIsAdmin()) { //only for admin
 	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng");
 	array_push($dataItemProp,"","","","","","","");
 	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,false,false,false,false,false,false);
 }
-if (isset($classId) && $classId==0 ) {
+if (isset($classId) && $classId==0 ) { //Teachers
 	$dataFieldCaption[16]="Tantárgy";
 	$dataFieldCaption[18]="Osztályfönök";
 }
@@ -110,7 +79,7 @@ if ($action=="changediak" && checkRequesterIP("change") ) {
 			$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
 		//Validate the mail address if no admin logged on
 		} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-			$resultDBoperation='<div class="alert alert-warning">E-Mail nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
+			$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
 		} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
 			$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
 		} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
@@ -122,9 +91,11 @@ if ($action=="changediak" && checkRequesterIP("change") ) {
 				if (!userIsAdmin())
 					saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 			} else {
-				$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült!</div>';
+				$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
 			}
 		}
+	} else {
+		$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
 	}
 }
 
@@ -186,7 +157,9 @@ if ($action=="changediak" && checkRequesterIP("change") ) {
 	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
-			<?php if ($edit || $newperson) {?>
+			<?php
+			//Inpufields
+			if ($edit || $newperson) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
 				<span style="width:40px" id="highlight" class="input-group-addon">
 		      		<?php if ($dataCheckFieldVisible[$i]) {
@@ -195,7 +168,9 @@ if ($action=="changediak" && checkRequesterIP("change") ) {
 	      		</span>
 	      		<?php   
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.'/>');
+	      		$dataFieldObl[$i] ? $obl="kötelező mező" : $obl="";
+	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+	      	//Display fields
 			} else {
 				if (showField($diak,$dataFieldNames[$i])) {
 					$itemprop=$dataItemProp[$i]==""?"":'itemprop="'.$dataItemProp[$i].'"';

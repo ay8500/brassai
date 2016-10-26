@@ -95,7 +95,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 	foreach ($data as $d)	
 	{ 
 		$l=$d["id"];
-		$vote=$db->getVote($d["id"],$classMeetingCount);
+		$vote=$db->getVote(getPersonId($d),$classMeetingCount);
 		if ($k) { $k=false; echo('<tr class="disabled" >'); } else { $k=true; echo('<tr class="disabled" style="background-color:#dddddd">');}?>
 		<td>
 			<img src="images/<?php echo $d["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" />
@@ -124,7 +124,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 			<?php endif; ?>
 		</td>
 		<input type="hidden" value="vote" name="action" />
-		<input type="hidden" value="<?php echo $d["id"]?>" name="personID_<?php echo $l?>" />
+		<input type="hidden" value="<?php echo getPersonId($d)?>" name="personID_<?php echo $l?>" />
 		<input type="hidden" value="<?php echo getAktClass()?>" name="classID_<?php echo $l?>" />
 		<input type="hidden" value="<?php echo $classMeetingCount?>" name="meetAfterYear_<?php echo $l?>" />
 		</tr>

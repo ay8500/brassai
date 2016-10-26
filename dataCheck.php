@@ -9,7 +9,7 @@ if (userIsAdmin()) {
   	if (getParam("action")=="deletePersonChange") {
   		$ret =$db->deletePersonEntry($id);
 	} 	
-  	if (getParam("action")=="acceptChangePerson") {
+  	if (getParam("action")=="acceptPersonChange") {
   		$ret =$db->acceptChangeForPerson($id);
 	} 	
 	if (getParam("action")=="deleteMessageChange") {
@@ -51,11 +51,10 @@ if (userIsAdmin()) {
 	   			echo("<td>".$l["changeIP"]."</td>");
 	  			if ($l["changeForIDjoin"]!=null) {
 	   				echo('<td><button class="btn btn-default" onclick="editChange('.$l["id"].');"><span class="glyphicon glyphicon-edit"></span></button></td>');
-	   				echo('<td><button class="btn btn-default" onclick="acceptChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
 	   			}else{
 	   				echo("<td></td>");
-	   				echo("<td></td>");
 	   			}
+	   			echo('<td><button class="btn btn-default" onclick="acceptChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
 	   			echo('<td><button class="btn btn-default" onclick="deleteChange('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
 	   			echo("</tr>");
 	  		}

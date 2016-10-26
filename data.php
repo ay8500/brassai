@@ -351,6 +351,13 @@ function getPersonName($person) {
 	return '';
 }
 
+function getPersonId($person) {
+	if (isset($person["changeForID"]))
+		return $person["changeForID"];
+	else
+		return $person["id"];
+}
+
 //generate normalised person link
 function getPersonLink($ln,$fn) {
    return getNormalisedChars($ln).'_'.getNormalisedChars($fn);

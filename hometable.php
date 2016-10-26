@@ -7,8 +7,10 @@ include_once 'ltools.php';
 
 $resultDBoperation="";
 if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getAktClass()==getLoggedInUserClassId()) || userIsAdmin()) ) {
-	deleteDiak(getGetParam("uid",""),getGetParam("db",""));
-	$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
+	if ($db->deletePersonEntry(getIntParam("uid" )))
+		$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
+	else
+		$resultDBoperation='<div class="alert alert-warning">Véndiák törölése sikertelen! Hibakód:9811</div>';
 }
 
 // Title of the page schoolmate or guests

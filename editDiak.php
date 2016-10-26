@@ -21,9 +21,11 @@ else {
 }
 if ($personid!=null && $personid>0) {
 	$diak = $db->getPersonByID($personid);
-	$classId=$diak["classID"];
-	$class=$db->getClassById($classId);
-	setAktClass($classId);
+	if ($diak!=null) {
+		$classId=$diak["classID"];
+		$class=$db->getClassById($classId);
+		setAktClass($classId);
+	}
 }
 
 $resultDBoperation="";
@@ -196,7 +198,7 @@ $tabUrl="editDiak.php";
 </div>
 
 <script type="text/javascript">
-	function deleteDiak(db,id) {
+	function deleteDiak(id) {
 		if (confirm("Személy végleges törölését kérem konfirmálni!")) {
 			window.location.href="hometable.php?uid="+id+"&action=delete_diak";
 		}

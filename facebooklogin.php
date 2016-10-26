@@ -58,7 +58,7 @@
 							$data=$db->getPersonListByClassId($classId);
 							foreach ($data as $l => $d) { 
 							if ($d["facebookid"]=="") { ?>
-								<option value="<?php echo $d["id"] ?>"><?php echo $d["lastname"].' '.$d["firstname"] ?> </option>
+								<option value="<?php echo getPersonId($d) ?>"><?php echo $d["lastname"].' '.$d["firstname"] ?> </option>
 						<?php } } ?>	
 				</select>
 				<br />
