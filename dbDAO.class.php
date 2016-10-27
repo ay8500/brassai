@@ -133,7 +133,7 @@ class dbDAO {
 			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";  
 			$sql .=" (classID != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is null";
-			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["SERVER_ADDR"]."')";
+			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 			$this->dataBase->query($sql);
 			while ($person=$this->dataBase->fetchRow()) {
 				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
@@ -147,7 +147,7 @@ class dbDAO {
 			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";
 			$sql .=" (classID != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is not null";
-			$sql .=" and person.changeIP ='".$_SERVER["SERVER_ADDR"]."'";
+			$sql .=" and person.changeIP ='".$_SERVER["REMOTE_ADDR"]."'";
 			$this->dataBase->query($sql);
 			while ($person=$this->dataBase->fetchRow()) {
 				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
@@ -169,7 +169,7 @@ class dbDAO {
 	 */
 	public function getPersonListByClassId($classId) {
 		$where ="classID=".$classId;
-		$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["SERVER_ADDR"]."')";
+		$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		$ret = $this->getElementList("person",$where);
 		usort($ret, "compareAlphabetical");
 		return $ret;
@@ -227,7 +227,7 @@ class dbDAO {
 		else
 			$sql .=" and not(role like '%guest%')";
 		$sql .=" and changeForID is null ";
-		$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["SERVER_ADDR"]."')";
+		$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		if ($classId==0)
 			$sql .=" and isTeacher = 1";
 		$this->dataBase->query($sql);
@@ -236,7 +236,7 @@ class dbDAO {
 	
 	public function getPersonIdListWithPicture() {
 		$where="picture is not null and picture not like '%avatar%'";
-		$where .=" and (changeUserID is not null or changeIP ='".$_SERVER["SERVER_ADDR"]."')";
+		$where .=" and (changeUserID is not null or changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		
 		return $this->getIdList("person",$where);
 	}
@@ -471,7 +471,7 @@ class dbDAO {
 	 */
 	private function getIdList($table,$where=null,$limit=null,$orderby=null) {
 		$sql="select id from ".$table." where ( changeForID is null ";
-		$sql.=" or (changeForID =-1 and changeIP='".$_SERVER["SERVER_ADDR"]."') )";
+		$sql.=" or (changeForID =-1 and changeIP='".$_SERVER["REMOTE_ADDR"]."') )";
 		if ($where!=null)
 			$sql.=" and ".$where;
 		if ($orderby!=null)
@@ -499,7 +499,7 @@ class dbDAO {
 		if ($this->dataBase->count()==1) {
 			$entry = $this->dataBase->fetchRow();
 			//Check if a changed version for the ip is available
-			$sql="select * from ".$table." where changeIP='".$_SERVER["SERVER_ADDR"]."' and changeForID =".$id;
+			$sql="select * from ".$table." where changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id;
 			$this->dataBase->query($sql);
 			if ($this->dataBase->count()==1) {
 				return  $this->dataBase->fetchRow();
@@ -507,7 +507,7 @@ class dbDAO {
 			return $entry;
 		//Try to get the copy
 		} else { 
-			$sql="select * from ".$table.' where id='.$id." and changeForID is not null and changeIP='".$_SERVER["SERVER_ADDR"]."'";
+			$sql="select * from ".$table.' where id='.$id." and changeForID is not null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
 			$this->dataBase->query($sql);
 			if ($this->dataBase->count()==1) {
 				return $this->dataBase->fetchRow();
@@ -546,7 +546,7 @@ class dbDAO {
 				$data =$this->dataBase->insertFieldInArray($data,$fieldName, $fieldValue);
 			}
 		}
-		$data =$this->dataBase->changeFieldInArray($data,"changeIP", $_SERVER["SERVER_ADDR"]);
+		$data =$this->dataBase->changeFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
 		$data =$this->dataBase->changeFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
 		if (getLoggedInUserId()>=0) {
 			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", getLoggedInUserId());

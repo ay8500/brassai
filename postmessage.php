@@ -81,7 +81,7 @@ function deleteMessage($id) {
 		return -1;
 	if (userIsAdmin() || 
 		(userIsLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
-		$message["changeIP"]==$_SERVER["SERVER_ADDR"] ) {
+		$message["changeIP"]==$_SERVER["REMOTE_ADDR"] ) {
 			
 		return $db->setMessageAsDeleted($id);
 	}
