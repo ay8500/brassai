@@ -93,7 +93,7 @@ if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 //Upload Image
 if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
-		$fileName = explode( ".", basename( $_FILES['userfile']['name']));
+		$fileName = preg_split( "/[.]/", basename( $_FILES['userfile']['name']));
 		$idx=$db->getNextPictureId("picture");
 		if (checkRequesterIP("upload")) {
 			if ($_POST["action"]=="upload_diak") {
@@ -103,7 +103,14 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]==
 				$db->savePersonField($personid, "picture", $pFileName);
 			} else {
 				$uploadfile="./images/".getAktClassFolder()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
-				$db->savePictureField(null, $personid, null,null,$uploadfile, 1, "", "", date("Y-m-d H:i:s"));
+				$picture = array();
+				$picture["id"]=-1;
+				$picture["personID"]=$personid;
+				$picture["file"]=$uploadfile;
+				$picture["isVisibleForAll"]=1;
+				$picture["isDeleted"]=0;
+				$picture["uploadDate"]=date("Y-m-d H:i:s");
+				$db->savePicture($picture);
 			}
 			//JPG
 			if (strcasecmp($fileName[1],"jpg")==0) {

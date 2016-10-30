@@ -43,6 +43,8 @@
 	.message_scool {background-image: url("../images/study.png");background-repeat: no-repeat; background-position: 5px 5px;}
 	.message_class {background-image: url("../images/friends.png");background-repeat: no-repeat; background-position: 5px 5px;}
     .message_text {background-color: white;padding: 5px;border-radius: 5px;}
+    
+    .acceptField {max-width:300px;max-height:300px;}
 	
 .igLinks {
 	width:48px;

@@ -10,13 +10,17 @@ $comment = getParam("comment", "");
 
 if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 
-	setPictureAttributes(getAktDatabaseName(),$uid,$id,$title,$comment);
-	
+	$p=$db->getPictureById($id);
+	$p["title"]=$title;
+	$p["comment"]=$comment;
 	$row = array();
 	$row["title"] = $title;
 	$row["comment"] = $comment;
 	$row["id"] = $id;
 	$row["uid"] = $uid;
+	if ($db->savePicture($p)>0) {
+		$row["error"] = "Error saving the picture";
+	}
 }
 else
 	$row["error"] = "Not authorized!";

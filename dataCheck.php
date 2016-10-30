@@ -6,19 +6,20 @@ $resultDBoperation="";
 if (userIsAdmin()) {
 	$id=getIntParam("id"); 
 	$ret=false;
+	$show=false;
   	if (getParam("action")=="deletePersonChange") {
-  		$ret =$db->deletePersonEntry($id);
+  		$ret =$db->deletePersonEntry($id);$show=true;
 	} 	
   	if (getParam("action")=="acceptPersonChange") {
-  		$ret =$db->acceptChangeForPerson($id);
+  		$ret =$db->acceptChangeForPerson($id);$show=true;
 	} 	
 	if (getParam("action")=="deleteMessageChange") {
-  		$ret =$db->deleteMessageEntry($id);
+  		$ret =$db->deleteMessageEntry($id);$show=true;
 	} 	
 	if (getParam("action")=="acceptMessageChange") {
-  		$ret =$db->acceptChangeForMessage($id)>=0;
+  		$ret =$db->acceptChangeForMessage($id)>=0;$show=true;
 	} 	
-	if (getParam("action","")!="") {
+	if ($show) {
 		if ($ret===true) {
 			$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
 		else {
@@ -59,6 +60,46 @@ if (userIsAdmin()) {
 	   			echo("</tr>");
 	  		}
 	  	?>
+	  	<?php 
+	  	if ((getParam("action")=="showPersonChange" || getParam("action")=="acceptPersonFieldChange") && userIsAdmin()) {
+	  		$cp=$db->getPersonByID($id,false);
+	  		$op=$db->getPersonByID($cp["changeForID"],true);
+	  		if (getParam("action")=="acceptPersonFieldChange") {
+	  			$field=getParam("field");
+	  			$op[$field]=$cp[$field];
+	  			if ($db->savePerson($op)>=0) {
+					$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
+				else {
+					$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+	  		}
+		?>
+			<table align="center" border="1">
+	    		<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+	    			<td>Mezö</td><td>Eredeti érték</td><td>Módosított érték</td><td>Akció</td>
+	    		</tr>
+	    		<?php foreach ($op as $field=>$value) {
+	    			$s=$cp[$field]!=$value?' style="background-color:yellow;"':'';
+	    		?>
+	    			<tr>
+	    				<td ><?php echo $field ?></td>
+	    				<?php if ($field!="picture") {?>
+	    					<td class="acceptField"><?php echo $value ?></td>
+	    					<td class="acceptField" <?php echo $s?>><?php echo $cp[$field]?></td>
+	    				<?php } else {?>
+		    				<td class="acceptField"><img class="acceptField" src="images/<?php echo $value ?>" /></td>
+		    				<td class="acceptField"><img class="acceptField" src="images/<?php echo $cp[$field]?>"/></td>
+	    				<?php }?>
+	    				<td >
+	    					<?php if (strstr($field,"change")=="" && $field!="id" && $cp[$field]!=$value) :?>
+	    						<button class="btn btn-default" onclick="acceptFieldChange(<?php echo $id ?>,'<?php echo $field?>');"><span class="glyphicon glyphicon-edit"></span></button>
+	    					<?php endif;?>
+	    				</td>
+	    			</tr>
+	    		<?php }	?>
+			</table>
+		<?php 
+	  	}
+		?>
 	 </table>  
 	</p>
 	<?php }?>
@@ -73,7 +114,9 @@ if (userIsAdmin()) {
 	<p align="center">
 	   Üzenetek:<br/>	
 	  <table align="center" border="1">
-	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;"><td>Név</td><td>szöveg</td><td>Datum</td><td>Ip</td><td colspan="3">Akció</td></tr>
+	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+	    	<td>Név</td><td>szöveg</td><td>Datum</td><td>Ip</td><td colspan="2">Akció</td>
+	    </tr>
 	  	<?php
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
@@ -81,7 +124,6 @@ if (userIsAdmin()) {
 	   			echo("<td>".html_entity_decode($l["text"])."</td>");
 	   			echo("<td>".$l["changeDate"]."</td>");
 	   			echo("<td>".$l["changeIP"]."</td>");
-   				echo('<td><button class="btn btn-default" onclick="editMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-edit"></span></button></td>');
    				if ($l["isDeleted"]==0)
    					echo('<td><button class="btn btn-default" onclick="acceptMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
    				else
@@ -106,16 +148,16 @@ include 'homefooter.php';
 		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deletePersonChange&id="+id;
 	}
 	function editChange(id) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=editPersonChange&id="+id;
+		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=showPersonChange&id="+id;
 	}
 	function acceptChange(id) {
 		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptPersonChange&id="+id;
 	}
+	function acceptFieldChange(id,field) {
+		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptPersonFieldChange&id="+id+"&field="+field;
+	}
 	function deleteMessageChange(id) {
 		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deleteMessageChange&id="+id;
-	}
-	function editMessageChange(id) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=editMessageChange&id="+id;
 	}
 	function acceptMessageChange(id) {
 		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptMessageChange&id="+id;

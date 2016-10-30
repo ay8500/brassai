@@ -20,7 +20,7 @@ class dbDAO {
 		if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
 			$this->dataBase = new MySqlDb('db652851844.db.1and1.com','db652851844','dbo652851844','levi1967');
 		} else { 
-			$this->dataBase = new MySqlDb('localhost',"db652851844",'root','root');
+			$this->dataBase = new MySqlDb('localhost',"db652851844",'root','');
 		}
 	}
 
@@ -117,8 +117,8 @@ class dbDAO {
 	/**
 	 * Returns a signle person in consideration of the anonymous changes or NULL if no entry found
 	 */
-	public function getPersonByID($personid) {
-		return $this->getEntryById("person", $personid);
+	public function getPersonByID($personid,$forceThisID=false) {
+		return $this->getEntryById("person", $personid,$forceThisID);
 	}
 	
 	/**
@@ -243,16 +243,23 @@ class dbDAO {
 	
 //******************** Picture DAO *******************************************
 	
+	/**
+	 * Save picture
+	 * @param array $picture
+	 * @param string $whereSecondPrimaryKey
+	 * @return integer, negativ if an error occurs
+	 */
 	public function savePicture($picture,$whereSecondPrimaryKey=null) {
 		return $this->saveEntry("picture", $picture,$whereSecondPrimaryKey);
 	}
 	
 	public function savePictureField($id,$personId,$classId,$schoolId,$file,$isVisibleForAll,$title,$comment,$uploadDate,$isDeleted=0) 
 	{
+		if ($personId==null)
+			return -1;
 		$picture = array();
 		$picture["id"]=$id;
-		if ($personId!=null)
-			$picture["personID"]=$personId;
+		$picture["personID"]=$personId;
 		if ($classId!=null)
 			$picture["classID"]=$classId;
 		if ($schoolId!=null)
@@ -410,7 +417,9 @@ class dbDAO {
 	
 	public function getMessageListToBeChecked()
 	{
-		$sql="select message.*, person.lastname, person.firstname, person.birthname from message left join person on message.changeUserID=person.id  where message.changeForID is not null or isDeleted=1";
+		$sql ="select message.*, person.lastname, person.firstname, person.birthname from message";
+		$sql.=" left join person on message.changeUserID=person.id";
+		$sql.=" where message.changeUserID is null or isDeleted=1";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$ret= $this->dataBase->getRowList();
@@ -492,7 +501,16 @@ class dbDAO {
 	 * even if the copy is returned the id will be from the original
 	 * @return the entry of null if not found
 	 */
-	private function getEntryById($table,$id) {
+	private function getEntryById($table,$id,$forceThisID=false) {
+		//First get the foced entry by the id
+		if ($forceThisID==true) {
+			$sql="select * from ".$table.' where id='.$id;
+			$this->dataBase->query($sql);
+			if ($this->dataBase->count()==1) {
+				return  $this->dataBase->fetchRow();
+			} else 
+				return null;
+		}
 		//First get the original entry by the id
 		$sql="select * from ".$table.' where id='.$id." and changeForID is null";
 		$this->dataBase->query($sql);
@@ -560,7 +578,7 @@ class dbDAO {
 			if (getLoggedInUserId()>=0) {
 				//Update the entry
 				if ($this->dataBase->update($table,$data,"id",$entry["id"]))							
-					return $dbEntry["id"];
+					return $entry["id"];
 				else 
 					return -5;
 			//Anonymous user
@@ -597,13 +615,12 @@ class dbDAO {
 				} if ($this->dataBase->count()>1) {
 					return -8;
 				}
-			} else {
-				//Insert
-				if ($this->dataBase->insert($table,$data))
-					return $this->dataBase->getInsertedId();
-				else 
-					return -1;
 			}
+			//Insert
+			if ($this->dataBase->insert($table,$data))
+				return $this->dataBase->getInsertedId();
+			else 
+				return -1;
 		}
 	
 	}

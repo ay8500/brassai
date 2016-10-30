@@ -29,13 +29,13 @@ class MySqlDb {
  
   /* Execute a query get results with $this->fetchRow() and $this->count() */
   public function query($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or die(mysqli_error($this->connection));
+  	$this->result=mysqli_query($this->connection,$query)  or die("MySQL ERROR:".$query."\r\nMySQL Message:".mysqli_error($this->connection));
   	$this->counter=NULL;
   }
   
   /* Execute a query that return a single iteger value */
   public function queryInt($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or die(mysqli_error($this->connection));
+  	$this->result=mysqli_query($this->connection,$query)  or die("MySQL ERROR:".$query."\r\nMySQL Message:".mysqli_error($this->connection));
 	//if(is_resource($this->result)) {
   		return $this->mysqli_result($this->result,0); 
 	//}
@@ -44,7 +44,7 @@ class MySqlDb {
 
   /* Execute a query that return a single row*/
   public function querySignleRow($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or die(mysqli_error($this->connection));
+  	$this->result=mysqli_query($this->connection,$query)  or die("MySQL ERROR:".$query."\r\nMySQL Message:".mysqli_error($this->connection));
   	if ($this->count()==1)
   		return $this->fetchRow();
   	else 

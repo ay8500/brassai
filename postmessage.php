@@ -13,7 +13,7 @@ function readMessageList($elements) {
 	$ret="";
 	foreach ($h as $message) {
 		$diak=null;
-		if ($message["changeUserID"]>=0) {
+		if (isset($message["changeUserID"]) && $message["changeUserID"]>=0) {
 			$diak=$db->getPersonByID($message["changeUserID"]);
 		}
 		if	(userIsAdmin() ||  ($message["isDeleted"]==0 && 
@@ -106,7 +106,8 @@ function writeMessage($text,$privacy,$name) {
 		$message["name"]=$name;
 		$message["privacy"]="world";
 	}
-	sendHtmlMail(null, $text, " Message");
+	if (!userIsAdmin())
+		sendHtmlMail(null, $text, " Message");
 	return $db->saveNewMessage($message); 
 }
 

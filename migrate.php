@@ -1,7 +1,8 @@
+<?php session_start(); ?>
 <h2>Bassai classmate database migration to MySQL</h2>
 <h3>Okt. 2016 Levi</h3>
 <?php
-session_start();
+
 $_SESSION["uId"]="0";
 include_once 'data.php';
 include_once 'songdatabase.php';
@@ -12,8 +13,8 @@ $data=array();
 $pictureFolder = "./images/";
 $dataPath = "data/";
 
-$onlyError=false;
-$migrateSongs=true;
+$onlyError=true;
+$migrateSongs=false;
 $migratePictures=true;
 
 

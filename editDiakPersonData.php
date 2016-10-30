@@ -89,6 +89,7 @@ if ($action=="changediak" && checkRequesterIP("change") ) {
 			if ($ret>=0) {
 				$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
 				if (!userIsAdmin())
+					sendHtmlMail(null, "Person is changed id:".$diak["id"], " Person is changed");
 					saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 			} else {
 				$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
@@ -107,7 +108,7 @@ if ($action=="changediak" && checkRequesterIP("change") ) {
 	</div>
 	
 	<?php //Person picture download?>
-	<?php if ($edit || $newperson) {  ?>
+	<?php if (($edit || $newperson) && trim($diak["lastname"])!="") {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
 				<span>Válassz egy új képet max. 2MByte</span>
