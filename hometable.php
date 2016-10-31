@@ -1,8 +1,8 @@
 <?PHP 
-include_once 'sessionManager.php';
+include_once 'tools/sessionManager.php';
 include("homemenu.php");
 include_once("data.php");
-include_once 'ltools.php';
+include_once 'tools/ltools.php';
 
 
 $resultDBoperation="";

@@ -1,5 +1,5 @@
 <?PHP 
-include_once("sessionManager.php");
+include_once("tools/sessionManager.php");
 include_once("data.php");
 
 if (!isset($siteHeader)) $siteHeader='';

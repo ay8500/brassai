@@ -2,7 +2,7 @@
 $diakEditStorys=true;
 include("homemenu.php"); 
 include_once("data.php");
-include_once("userManager.php");
+include_once("tools/userManager.php");
 
 
 if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {

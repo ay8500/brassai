@@ -3,7 +3,7 @@
  * Database engime for person data  
  */
 
-include_once("userManager.php");
+include_once("tools/userManager.php");
 include_once 'dbDAO.class.php';
 
 $db = new dbDAO;

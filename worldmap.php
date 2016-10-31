@@ -1,5 +1,5 @@
 <?PHP 	
-include_once("sessionManager.php"); 
+include_once("tools/sessionManager.php"); 
 //Change scool year and class if parameters are there 
 if (isset($_GET['scoolYear'])) {
 	$_SESSION['scoolYear']=$_GET['scoolYear'];

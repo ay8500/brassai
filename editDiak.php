@@ -1,8 +1,8 @@
 <?PHP 
 
-include_once("sessionManager.php");
-include_once ('userManager.php');
-include_once 'ltools.php';
+include_once("tools/sessionManager.php");
+include_once ('tools/userManager.php');
+include_once 'tools/ltools.php';
 include_once("data.php");
 
 if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"]; 

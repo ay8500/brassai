@@ -2,9 +2,9 @@
 /*
  * Send a request mail to the actual user, to extend his user storys.
  */
-include_once 'sessionManager.php';
-include_once 'userManager.php';
-include_once 'ltools.php';
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/ltools.php';
 
 $code = getParam("code", "+");
 

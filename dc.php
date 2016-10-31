@@ -8,7 +8,7 @@ if (sizeof($su)>2) {
 	header($location);
 	die();
 }
-include_once 'ltools.php';
+include_once 'tools/ltools.php';
 
 if(getGetParam("p", "")=="") {
 	$qs = explode("-",$_SERVER["REQUEST_URI"]) ;
@@ -26,8 +26,8 @@ else if  ($su[1]=='impressum') {
 }
 */
 if (sizeof($qs)>1) {
-	include_once("sessionManager.php");
-	include_once ('userManager.php');
+	include_once 'tools/sessionManager.php';
+	include_once 'tools/userManager.php';
 	include_once 'data.php';
 	setAktUserId($qs[1]);
 		$diak=$db->getPersonByID($qs[1]);
@@ -40,7 +40,7 @@ if (sizeof($qs)>1) {
 			exit();
 		}
 	}
-} 
+ 
 error();
 exit;
 

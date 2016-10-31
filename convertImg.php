@@ -1,5 +1,5 @@
 <?php
-include_once 'sessionManager.php';
+include_once 'tools/sessionManager.php';
 //are we in a session?
 if ( !isset($_SESSION['lastReq']) ) {
 	http_response_code(401);
@@ -7,7 +7,7 @@ if ( !isset($_SESSION['lastReq']) ) {
 	exit;
 }
 include_once 'data.php';
-include_once 'ltools.php';
+include_once 'tools/ltools.php';
 
 
 //file Name without extensions

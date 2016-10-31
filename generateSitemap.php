@@ -1,5 +1,5 @@
 <?PHP 
-include_once("sessionManager.php");
+include_once 'tools/sessionManager.php';
 Header ("Content-type: text/txt");
 
 function writeSitemap($id,$link) 

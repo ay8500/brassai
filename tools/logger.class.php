@@ -47,7 +47,7 @@ function logger($text, $level=loggerLevel::info) {
 }
 
 //Text Loggen wenn condition falsch, dann als Fehler
-//Condition wird unverändert zurück gegeben
+//Condition wird unverï¿½ndert zurï¿½ck gegeben
 function loggerConditioned($condition, $text, $level=loggerLevel::debug) {
 	if (strrpos ($_SESSION['loggerLevel'],$level)>-1) {
 		if ($_SESSION['loggerType']==loggerType::html) {
@@ -120,10 +120,11 @@ function loggerTable($table, $level=loggerLevel::info) {
 function logToFile($logText,$level){
 	$file = './log';
 	$text =date('Y-m-d H:i:s')."\t";
+	$text .=$level."\t";
 	$text .=$_SERVER["REMOTE_ADDR"]."\t";
+	$text .=$_SERVER["SCRIPT_NAME"]."\t";
 	if (isset($_SESSION['USER']))
 		$text .=$_SESSION['USER']."\t";
-	$text .=$level."\t";
 	$text .=$logText."\t";
 	$text .= "\r\n";
 	file_put_contents($file, $text, FILE_APPEND | LOCK_UN);

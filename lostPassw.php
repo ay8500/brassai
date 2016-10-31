@@ -1,8 +1,8 @@
 <?PHP 
 include_once("data.php");		//the database
 include_once("sendMail.php");	//send mail
-include_once("userManager.php");//login logoff
-include_once 'ltools.php';
+include_once("tools/userManager.php");//login logoff
+include_once 'tools/ltools.php';
 
 $arRole = array(	"...válassz!...",
 					"Végzős véndiák vagyok, a Brassai Sámuel líceumban ballagtam.",

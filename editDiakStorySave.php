@@ -1,8 +1,8 @@
 <?php
-include_once 'sessionManager.php';
-include_once 'ltools.php';
+include_once 'tools/sessionManager.php';
+include_once 'tools/ltools.php';
 include_once 'data.php';
-include_once 'userManager.php';
+include_once 'tools/userManager.php';
 
 $personId = getPostParam("id","" );
 $type = getPostParam("type", "");

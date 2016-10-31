@@ -1,27 +1,36 @@
 <?php
 
+include_once 'logger.class.php';
+
 class MySqlDb {
   private $connection = NULL;
   private $result = NULL;
   private $counter=NULL;
  
  
-  /* Constructor */
-  public function __construct($host=NULL, $database=NULL, $user=NULL, $pass=NULL){
+  /**
+   * Constructor
+   * @return boolean true if the connection is ok
+   */
+  public function __construct($host, $database, $user="", $pass=""){
 	$this->connection = mysqli_connect($host,$user,$pass,$database);
 	if (mysqli_connect_errno()) {
-		die('Database connection:'.$host. ":" . mysqli_error($this->connection));
+		die ('Database connection:'.$host. " Error nr:" . mysqli_connect_errno());
 	}
-	//if (!is_resource($this->connection))	             die('Database connection: ' . mysqli_error($this->connection));
-  	//if (!mysqli_select_db($database, $this->connection))	 die('Database connection: ' . mysqli_error());
   }
  
-  /* "Destructor" */
+  /**
+   * "Destructor"
+   */
   public function disconnect() {
     if (is_resource($this->connection))				
         mysqli_close($this->connection);
+		logger('Database disconnected',loggerLevel::info);
   }
   
+  /**
+   * Commit Work
+   */
   public function commit() {
   	return mysqli_commit($this->connection);
   }
@@ -29,22 +38,22 @@ class MySqlDb {
  
   /* Execute a query get results with $this->fetchRow() and $this->count() */
   public function query($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or die("MySQL ERROR:".$query."\r\nMySQL Message:".mysqli_error($this->connection));
+  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   	$this->counter=NULL;
   }
   
   /* Execute a query that return a single iteger value */
   public function queryInt($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or die("MySQL ERROR:".$query."\r\nMySQL Message:".mysqli_error($this->connection));
+  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
 	//if(is_resource($this->result)) {
   		return $this->mysqli_result($this->result,0); 
 	//}
-	return 0;
+	//return 0;
   }
 
   /* Execute a query that return a single row*/
   public function querySignleRow($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or die("MySQL ERROR:".$query."\r\nMySQL Message:".mysqli_error($this->connection));
+  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   	if ($this->count()==1)
   		return $this->fetchRow();
   	else 
@@ -98,7 +107,7 @@ class MySqlDb {
     		$sql="select sum(".$field." * ".$multField." ) from ".$table;
     	else
     		$sql="select sum(".$field." * ".$multField." )  from ".$table." where ".$where;
-    	$this->result=mysqli_query($this->connection,$sql) or die(mysqli_error($this->connection));
+    	$this->result=mysqli_query($this->connection,$sql) or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   		return $this->queryInt($sql);
   }
 
@@ -141,6 +150,7 @@ class MySqlDb {
 	   	}
 	   	else {
 	   		 return false;
+	   		 logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
 	   	}
 	}
 
@@ -187,6 +197,7 @@ class MySqlDb {
 	   	}
 	   	else {
 	   		return false;
+	   		logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
 	   	}
 	}
    	  
@@ -198,6 +209,7 @@ class MySqlDb {
    	  	}
    	  	else {
    	  		return false;
+   	  		logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
    	  	}
 	}
 	
@@ -278,7 +290,6 @@ class MySqlDb {
 		} 
 		return $fieldArray;
 	}
-	
 	
 	
 }

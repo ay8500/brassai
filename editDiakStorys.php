@@ -1,5 +1,5 @@
 <?php
-	include_once 'ltools.php';
+	include_once 'tools/ltools.php';
 	include_once 'data.php';
 	
 	$person=$db->getPersonByID($personid);

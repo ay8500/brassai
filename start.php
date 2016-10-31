@@ -1,5 +1,5 @@
 <?php 
-include_once 'sessionManager.php';
+include_once 'tools/sessionManager.php';
 
 if (!isset($siteHeader)) $siteHeader='';
 $siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css" /> ';
@@ -16,7 +16,7 @@ if ($facebook) {
 }
 $SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
 
-include_once 'ltools.php';
+include_once 'tools/ltools.php';
 include_once 'data.php';
 
 $scoolClass=getParam("scoolClassFb","");

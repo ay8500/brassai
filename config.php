@@ -1,4 +1,8 @@
 <?php
+include_once 'tools/logger.class.php';
+
+setLoggerType(loggerType::file);
+
 if (!isset($SiteTitle))
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum vén diakjai";
 $SupportedLang = array("hu"); //First language ist the default language

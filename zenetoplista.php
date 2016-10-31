@@ -2,7 +2,7 @@
 $SiteTitle="A véndiákok ezt hallgatják szívesen";
 include("homemenu.php");
 include("songdatabase.php");
-include_once("userManager.php");
+include_once("tools/userManager.php");
 $resultDBoperation="";
 
 //User can make changes in the toplist

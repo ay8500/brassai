@@ -1,9 +1,9 @@
 <?PHP
-	include_once 'sessionManager.php';
-	include_once("userManager.php");
+	include_once 'tools/sessionManager.php';
+	include_once("tools/userManager.php");
 	include_once 'sendMail.php';
 	include_once 'config.php';
-	include_once 'ltools.php';
+	include_once 'tools/ltools.php';
 
 	$logOnMessage="";
 	

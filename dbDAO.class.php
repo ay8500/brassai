@@ -8,8 +8,8 @@ select all 				where changeUserID is not null
 select where anonymous	where changeUserID is null and IP=* 
 
 */
-include_once 'mysql.class.php';
-include_once 'logger.class.php';
+include_once 'tools/mysql.class.php';
+include_once 'tools/logger.class.php';
 
 class dbDAO {
 	private $dataBase = NULL;
@@ -20,7 +20,7 @@ class dbDAO {
 		if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
 			$this->dataBase = new MySqlDb('db652851844.db.1and1.com','db652851844','dbo652851844','levi1967');
 		} else { 
-			$this->dataBase = new MySqlDb('localhost',"db652851844",'root','');
+			$this->dataBase = new MySqlDb('localhost',"db652851844",'root','root');
 		}
 	}
 

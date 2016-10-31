@@ -1,6 +1,6 @@
 <?php
-include_once 'sessionManager.php';
-include_once 'ltools.php';
+include_once 'tools/sessionManager.php';
+include_once 'tools/ltools.php';
 include_once 'data.php';
 
 $id = getIntParam("id",-1 );

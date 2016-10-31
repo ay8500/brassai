@@ -1,5 +1,5 @@
 <?PHP
-include_once("sessionManager.php");
+include_once("tools/sessionManager.php");
 include_once("data.php");
 $lat1=$_GET["lat1"];
 $lng1=$_GET["lng1"];

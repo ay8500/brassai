@@ -1,5 +1,5 @@
 <?php
-	include_once("sessionManager.php");
+	include_once("tools/sessionManager.php");
 	include_once("config.php");
 	include_once("logon.php");
 	include_once("data.php");
