@@ -7,6 +7,7 @@ $TXT["LogInUser"]			="Felhasználónév";
 $TXT["LogInPassw"]			="Jelszó"; 
 $TXT["LogOut"]				="Kilépés"; 
 $TXT["LogInError"]			="Belépés sikertelen! "; 
+$TXT["LogInToManyErrors"]	="Sikertelen bejelentkezések száma túl nagy. Probálkozz késöbb újból.";
 $TXT["LogInUserPassw"]		="Felhasználónév és jelszó hiányzik."; 
 $TXT["LogInUserPasErr"]		="Hibás Felhasználónév vagy jelszó!";
 $TXT["LogInPasswChanged"]	="Jelszó sikeresen módósítva.";   

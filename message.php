@@ -27,12 +27,16 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 			$resultDBoperation='<div class="alert alert-warning" >Írd be család és keresztneved!</div>';
 		}
 		else if (checkMessageContent($paramText)) {
-			if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
-				$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
-				$paramName="";
-				$paramText="";
+			if (checkRequesterIP(changeType::message)) {
+				if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
+					$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+					$paramName="";
+					$paramText="";
+				} else {
+					$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+				}
 			} else {
-				$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+				$resultDBoperation='<div class="alert alert-warning" > Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.</div>';
 			}
 		} else 
 			$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';

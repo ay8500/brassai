@@ -11,6 +11,19 @@ select where anonymous	where changeUserID is null and IP=*
 include_once 'tools/mysql.class.php';
 include_once 'tools/logger.class.php';
 
+/**
+ * data change types 
+ */
+class changeType
+{
+	const login = 0;
+	const message = 1;
+	const personupload = 2;
+	const personchange = 3;
+	const classchange = 4;
+	const classupload = 5;
+}
+
 class dbDAO {
 	private $dataBase = NULL;
 
@@ -40,6 +53,7 @@ class dbDAO {
 	
 	public function saveClass($class ) {
 		$where="name='".$this->dataBase->replaceSpecialChars($class["name"])."' and graduationYear=".$class["graduationYear"];
+		
 		return $this->saveEntry("class", $class,$where);
 	}
 	
@@ -76,14 +90,19 @@ class dbDAO {
 		return $this->saveEntry("person", $person,$whereSecondPrimaryKey);
 	}
 	
+	/**
+	 * save changes on only one field
+	 * @return positiv integer if the save operation is succeded 
+	 */
 	public function savePersonField($personId,$fieldName,$fieldValue) {
 		if ($fieldName==null || $fieldName=="")
 			return -1;
 		$person=$this->getPersonByID($personId);
 		if ($person!=null) {
 			$person[$fieldName]=$fieldValue;
-			$this->savePerson($person);
+			return $this->savePerson($person);
 		}
+		return -1;
 	}
 
 	/**
@@ -459,9 +478,76 @@ class dbDAO {
 		} else
 			return -11;
 	}
+
+//********************* Request ******************************************
+
+	/**
+	 * reset requests for an ip an type
+	 * @param integer $type
+	 * @param string $ip
+	 */
+	public function deleteRequest($type,$ip) {
+		$where="typeID=".$type." and ip='".$ip."'";
+		return $this->dataBase->deleteWhere("request", $where);
+	}
+	
+	/**
+	 * get the amount of requests
+	 * @param changeType $type
+	 * @param integer $hours
+	 */
+	public function getCountOfRequest($type,$hours=0) {
+		$sql="SELECT count(1) FROM request";
+		$sql .=" where typeID=".$type;
+		$sql .=" and ip='".$_SERVER["REMOTE_ADDR"]."'";
+		if ($hours>0) {
+			$sql .=" and date>'".date("Y-m-d H:i:s",strtotime("-".$hours." hours"))."'";
+		}
+		$r =$this->dataBase->queryInt($sql);
+		return $r;
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->fetchRow();
+			return intval($r["count"]);
+		} else {
+			return 0;
+		}
+	}
+	
+	/**
+	 * List of requests groupt by IP and type
+	 */
+	public function getListOfRequest($hours=0) {
+		$sql="SELECT count(1) as count,typeID,ip FROM request";
+		if ($hours>0) {
+			$newDate = strtotime($date) + strtotime("-".$hours." hours");
+			$sql .=" where date>'".$newDate("Y-m-d H:i:s")."'";
+		}
+		$sql .=" group by typeID,ip"; 
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
+		}
+	}
+
+	/**
+	 * Save request
+	 * @param  changeType $type
+	 */
+	public function saveRequest($type) {
+		if (!userIsLoggedOn()) {
+			$data=array();
+			$data=$this->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
+			$data=$this->dataBase->insertFieldInArray($data, "date", date("Y-m-d H:i:s"));
+			$data=$this->dataBase->insertFieldInArray($data, "typeID", $type);
+			$this->dataBase->insert("request", $data);
+		}
+	}
 	
 	
 //********************* Private ******************************************	
+
 	
 	/**
 	 * get a array of elements, or an empty array if no elements found

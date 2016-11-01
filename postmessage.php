@@ -2,9 +2,8 @@
 include_once 'sendMail.php';
 
 /**
- * Read the messages from json message file and return it as a html list
- * @param unknown $elements
- * @param unknown $pricacy
+ * Read the messages and return it as a html list
+ * @param integer $elements
  * @return string
  */
 function readMessageList($elements) {
@@ -16,9 +15,11 @@ function readMessageList($elements) {
 		if (isset($message["changeUserID"]) && $message["changeUserID"]>=0) {
 			$diak=$db->getPersonByID($message["changeUserID"]);
 		}
-		if	(userIsAdmin() ||  ($message["isDeleted"]==0 && 
-				$message["privacy"]=="world" || 
-				($diak!=null && $diak["classID"]==getLoggedInUserClassId())
+		if	(	userIsAdmin() ||  	//Admin
+				($diak!=null && $diak["classID"]==getLoggedInUserClassId()) || //User
+				($message["isDeleted"]==0 &&  
+				$message["privacy"]=="world" && 
+				(isset($message["changeUserID"]) || (!isset($message["changeUserID"]) && $message["changeIP"]==$_SERVER["REMOTE_ADDR"]))
 				)
 			) {
 			if($message["isDeleted"]==0)
@@ -54,7 +55,11 @@ function readMessageList($elements) {
 				$ret .= '<span class="cmessage message_class">Ezt az üzenetet csak az én osztálytársaim tekinthetik meg.</span>';
 			if ($message["privacy"]=="scool")
 				$ret .= '<span class="cmessage message_scool">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
-			//Delete button
+			//Show IP
+			if (userIsAdmin()) {
+				$ret .= '<span class="cmessage" >'.$message["changeIP"].'</span>';
+			}
+				//Delete button
 			if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
 				(isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
 				$message["changeUserID"]==getLoggedInUserId() )
@@ -108,6 +113,7 @@ function writeMessage($text,$privacy,$name) {
 	}
 	if (!userIsAdmin())
 		sendHtmlMail(null, $text, " Message");
+	$db->saveRequest(changeType::message);
 	return $db->saveNewMessage($message); 
 }
 
@@ -122,7 +128,9 @@ function checkMessageContent($message) {
 	$msg = " ".strtolower(strip_tags($message))." ";
 	$rr = array("-",":",",",".","(",")","?","!");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(" lessz ", " volt "," a "," rossz "," hogy "," az "," ez "," ahoz "," itt ", " ott ", " igen "," nem ", " akkor ", " csak ", " szia "," sziasztok ", " puszi ", "ellemes ", "nnepek",  "oldog ", "csony", "hus", "egy " );
+	$whiteList = array(	"lessz ", " volt "," a "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz ","itt ", "ott ",
+						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ",
+						"nnepek",  "boldog ", "csony", "hus", "egy ","minden","senki" );
 	$count = 0;
 	foreach ($whiteList as $s) {
 		$count += substr_count($msg, $s);

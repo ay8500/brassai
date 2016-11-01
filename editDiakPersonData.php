@@ -37,7 +37,6 @@ if(true)  { //Name
 	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
 	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
 	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
-	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
 	array_push($dataFieldObl		, false,false,false,false,false,false);
 }
 if (true) { //Communication
@@ -61,42 +60,47 @@ if (isset($classId) && $classId==0 ) { //Teachers
 
 
 //Retrive changed data and save it
-if ($action=="changediak" && checkRequesterIP("change") ) {
-	$diak = $db->getPersonByID($personid);
-	if ($diak!=null) {
-		for ($i=0;$i<sizeof($dataFieldNames);$i++) {
-			$tilde="";
-			if ($dataCheckFieldVisible[$i]) {
-				if (isset($_GET["cb_".$dataFieldNames[$i]])) 
-					$tilde="~";
+if ($action=="changediak") {
+	if (checkRequesterIP(changeType::personchange)) {
+		$diak = $db->getPersonByID($personid);
+		if ($diak!=null) {
+			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
+				$tilde="";
+				if ($dataCheckFieldVisible[$i]) {
+					if (isset($_GET["cb_".$dataFieldNames[$i]])) 
+						$tilde="~";
+				}
+				//save the fields in the person array
+				if (isset($_GET[$dataFieldNames[$i]]))
+					$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
 			}
-			//save the fields in the person array
-			if (isset($_GET[$dataFieldNames[$i]]))
-				$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
-		}
-		//No dublicate email address is allowed
-		if (checkUserEmailExists($diak["id"],$diak["email"])) {
-			$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
-		//Validate the mail address if no admin logged on
-		} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-			$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
-		} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
-			$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
-		} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
-			$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
-		} else {
-			$ret = $db->savePerson($diak);
-			if ($ret>=0) {
-				$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!</div>';
-				if (!userIsAdmin())
-					sendHtmlMail(null, "Person is changed id:".$diak["id"], " Person is changed");
-					saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+			//No dublicate email address is allowed
+			if (checkUserEmailExists($diak["id"],$diak["email"])) {
+				$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
+			//Validate the mail address if no admin logged on
+			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
+				$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
+			} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
+				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
+			} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
+				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 			} else {
-				$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
+				$ret = $db->savePerson($diak);
+				if ($ret>=0) {
+					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
+					$db->saveRequest(changeType::personchange);
+					if (!userIsAdmin())
+						sendHtmlMail(null, "Person is changed id:".$diak["id"], " Person is changed");
+						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+				} else {
+					$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
+				}
 			}
+		} else {
+			$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
 		}
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
+		$resultDBoperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
 	}
 }
 

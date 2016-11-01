@@ -91,26 +91,24 @@
 	function checkUserLogin($user,$passw) {
 		global $db;
 		$ret = false;
-		if (checkRequesterIP("login")) {
-			$ret=false;
-			$usr = $db->getPersonByUser($user);
+		$ret=false;
+		$usr = $db->getPersonByUser($user);
+		if (null != $usr && $usr["passw"]==$passw) {
+			setUserInSession(
+				$usr["role"],
+				$usr["user"],
+				$usr["id"]);
+			$ret = true;
+		}
+		else {
+			$usr =$db->getPersonByEmail($user);
 			if (null != $usr && $usr["passw"]==$passw) {
 				setUserInSession(
 					$usr["role"],
 					$usr["user"],
 					$usr["id"]);
 				$ret = true;
-			}
-			else {
-				$usr =$db->getPersonByEmail($user);
-				if (null != $usr && $usr["passw"]==$passw) {
-					setUserInSession(
-						$usr["role"],
-						$usr["user"],
-						$usr["id"]);
-					$ret = true;
-				}		
-			}
+			}		
 		}
 		if (!userIsAdmin()) {
 			if (isset($_SESSION['uId']))
@@ -345,9 +343,20 @@
 	 * this is a safety funtion to prevent automatic loging of password crack
 	 */
 	function checkRequesterIP($action) {
-		//Action types: change,upload,login,newpassword,facebook
-		//TODO protection against hacking attaks 
-		return true;
+		global $db;
+		if ($action==changeType::login) {
+			$count = $db->getCountOfRequest($action,24);
+			return $count<20;
+		} elseif ($action==changeType::personchange) {
+			$count = $db->getCountOfRequest($action,24);
+			return $count<60;
+		} elseif ($action==changeType::message) {
+			$count = $db->getCountOfRequest($action,24);
+			return $count<1;
+		} elseif ($action==changeType::personupload) {
+			$count = $db->getCountOfRequest($action,24);
+			return $count<5;
+		} 
 	}
 
 	/**

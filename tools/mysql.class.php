@@ -45,10 +45,11 @@ class MySqlDb {
   /* Execute a query that return a single iteger value */
   public function queryInt($query) {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-	//if(is_resource($this->result)) {
-  		return $this->mysqli_result($this->result,0); 
-	//}
-	//return 0;
+	if(!$this->result==false) {
+  		$r =mysqli_fetch_row($this->result);
+  		return  intval($r[0]);
+	}
+	return 0;
   }
 
   /* Execute a query that return a single row*/
@@ -203,17 +204,25 @@ class MySqlDb {
    	  
 	/* delete */
    	public function delete($table, $whereField, $whereValue) {
-   	  	$sql="delete from ".$table." where ".$whereField."=".$whereValue;
-   	  	if ($this->result=mysqli_query($this->connection,$sql)) {
-   	  		return true;
-   	  	}
-   	  	else {
-   	  		return false;
-   	  		logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-   	  	}
+   	  	$where=$whereField."=".$whereValue;
+   	  	return $this->deleteWhere($table, $where);
 	}
 	
-   	  
+	/**
+	 *  delete from a table with where clausel
+	 *  @return boolean 
+	 **/
+	public function deleteWhere($table, $where) {
+		$sql="delete from ".$table." where ".$where;
+		if ($this->result=mysqli_query($this->connection,$sql)) {
+			return true;
+		}
+		else {
+			return false;
+			logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+		}
+	}
+	
 	public function getNextAutoIncrement($table) {
 		$sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='".$table."'";
 		return $this->queryInt($sql);

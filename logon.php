@@ -1,9 +1,9 @@
 <?PHP
 	include_once 'tools/sessionManager.php';
 	include_once("tools/userManager.php");
+	include_once 'tools/ltools.php';
 	include_once 'sendMail.php';
 	include_once 'config.php';
-	include_once 'tools/ltools.php';
 
 	$logOnMessage="";
 	
@@ -12,23 +12,30 @@
 		$paramName=getParam("paramName");
 		$paramPassw=getParam("paramPassw");
 		if ((null==$paramName) || (null==$paramPassw)) { 
-			$paramName=""; $paramPassw="";
 			logoutUser();
 			http_response_code(400);
 			$logOnMessage =getTextRes("LogInError")."<br />".getTextRes("LogInUserPassw");
-			saveLogInInfo("Login","","","","false");
-			echo($logOnMessage);
-		}
-		else if (!checkUserLogin($paramName,$paramPassw)) {
-			logoutUser();
-			http_response_code(401);
-			$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
-			saveLogInInfo("Login","",$paramName,$paramPassw,"false");
 			echo($logOnMessage);
 		} else {
-			saveLogInInfo("Login",getLoggedInUserId(),"","","true");
-			$logOnMessage = "Ok";
-			echo($logOnMessage);
+			if (!checkRequesterIP(changeType::login)) {
+				logoutUser();
+				http_response_code(400);
+				$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInToManyErrors");
+				echo($logOnMessage);
+			} else {
+				if (!checkUserLogin($paramName,$paramPassw)) {
+					logoutUser();
+					http_response_code(400);
+					$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
+					$db->saveRequest(changeType::login);
+					saveLogInInfo("Login","",$paramName,$paramPassw,"false");
+					echo($logOnMessage);
+				} else {
+					saveLogInInfo("Login",getLoggedInUserId(),"","","true");
+					$logOnMessage = "Ok";
+					echo($logOnMessage);
+				}
+			}
 		}
 		if (! userIsAdmin()) {
 			sendHtmlMail(null,

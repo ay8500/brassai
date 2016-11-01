@@ -31,7 +31,7 @@ function getParam($name,$def=null) {
 function getIntParam($name,$def=0) {
 	$ret = getParam($name);
 	if (null!=$ret)
-		return (int)$ret;
+		return intval($ret);
 	else
 		return $def;
 }
@@ -59,6 +59,14 @@ function localhost() {
 
 	return false;
 	
+}
+
+function getConstantName($className,$value)
+{
+	$class = new ReflectionClass($className);
+	$constants = array_flip($class->getConstants());
+
+	return $constants[$value];
 }
 
 ?>

@@ -31,7 +31,7 @@ if ($personid!=null && $personid>0) {
 $resultDBoperation="";
 
 //Change password
-if (getParam("action","")=="changepassw" && userIsLoggedOn()) {
+if (getParam("action")=="changepassw" && userIsLoggedOn()) {
 	if (isset($_GET["newpwd1"])) $newpwd1=$_GET["newpwd1"]; else $newpwd1="";
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
@@ -51,7 +51,7 @@ if (getParam("action","")=="changepassw" && userIsLoggedOn()) {
 }
 
 //Change user name
-if (getParam("action","")=="changeuser" && userIsLoggedOn()) {
+if (getParam("action")=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
 		if (!checkUserNameExists($personid,$user)) { 
@@ -73,7 +73,7 @@ if (getParam("action","")=="changeuser" && userIsLoggedOn()) {
 }
 
 //Remove Facebook connection
-if (getParam("action","")=="removefacebookconnection"  && userIsLoggedOn()) {
+if (getParam("action")=="removefacebookconnection"  && userIsLoggedOn()) {
 	$diak["facebookid"]="";
 	$db->savePersonField($diak["id"], getLoggedInUserId(), "facebookid", "");
 	saveLogInInfo("FacebookDelete",$personid,$diak["user"],"",true);
@@ -94,46 +94,62 @@ if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = preg_split( "/[.]/", basename( $_FILES['userfile']['name']));
-		$idx=$db->getNextPictureId("picture");
-		if (checkRequesterIP("upload")) {
-			if ($_POST["action"]=="upload_diak") {
-				$pFileName=getAktClassFolder()."/d".$personid."-".$idx.".".strtolower($fileName[1]);
-				$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
-				$diak['picture']=$pFileName;
-				$db->savePersonField($personid, "picture", $pFileName);
-			} else {
-				$uploadfile="./images/".getAktClassFolder()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
-				$picture = array();
-				$picture["id"]=-1;
-				$picture["personID"]=$personid;
-				$picture["file"]=$uploadfile;
-				$picture["isVisibleForAll"]=1;
-				$picture["isDeleted"]=0;
-				$picture["uploadDate"]=date("Y-m-d H:i:s");
-				$db->savePicture($picture);
-			}
-			//JPG
+		if (checkRequesterIP(changeType::personupload)) {
+			//Only jpg
 			if (strcasecmp($fileName[1],"jpg")==0) {
-				if ($_FILES['userfile']['size']<2000000) {
-					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-						resizeImage($uploadfile,1200,1024);
-						$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
-						saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
+				if ($_FILES['userfile']['size']<3100000) {
+					if ($_POST["action"]=="upload_diak") {
+						$idx=rand(234567,999999);
+						$pFileName=getAktClassFolder()."/d".$personid."-".$idx.".".strtolower($fileName[1]);
+						$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
 					} else {
-						$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+						$idx=$db->getNextPictureId("picture");
+						$uploadfile="./images/".getAktClassFolder()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
+					}
+					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+						$ok=false;
+						if ($_POST["action"]=="upload_diak") {
+							$diak['picture']=$pFileName;
+							if ($db->savePersonField($personid, "picture", $pFileName)>=0) {
+								$db->saveRequest(changeType::personupload);
+								resizeImage($uploadfile,400,400);
+								$ok=true;
+							}
+						} else {
+							$picture = array();
+							$picture["id"]=-1;
+							$picture["personID"]=$personid;
+							$picture["file"]=$uploadfile;
+							$picture["isVisibleForAll"]=1;
+							$picture["isDeleted"]=0;
+							$picture["uploadDate"]=date("Y-m-d H:i:s");
+							if ($db->savePicture($picture)>=0) {
+								$db->saveRequest(changeType::personupload);
+								resizeImage($uploadfile,1024,800);
+								$ok=true;
+							}
+						}
+						if ($ok) {
+							$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
+							saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
+						} else {
+							$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+						}
+					} else {
+						$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
 					}
 				}
 				else {
-					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
+					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.</div>";
 					saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
 				} 	
 			}
 			else {
-				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
+				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.<br />Probáld a képet jpg formátumba konvertálni, és töltsd fel újra.</div>";
 				saveLogInInfo("PictureUpload",$personid,$diak["user"],"only jpg",false);
 			}
 		} else {
-			$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Sajnáljuk, de tul sok képet probálsz feltölteni!<br/> Kérünk fordulj a rendszergazdához, ha tovább szeretnéd folytatni ezt az akciót.</div>";
+			$resultDBoperation='<div class="alert alert-warning">'."Sajnáljuk, de tul sok képet probálsz feltölteni!<br/>Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>";
 		}
 	}
 }
