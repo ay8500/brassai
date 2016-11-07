@@ -14,7 +14,15 @@ else $tabOpen=0;
 if (isset($_GET["uid"]) || isset($_POST["uid"])) {
 	if (isset($_GET["uid"])) $personid = $_GET["uid"];
 	if (isset($_POST["uid"])) $personid = $_POST["uid"];
-	setAktUserId($personid);	//save actual person in case of tab changes
+	if ($db->getPersonByID($personid)!=null)
+		setAktUserId($personid);	//save actual person in case of tab changes
+	else {
+		$person=$db->getPersonByUser($personid);
+		if ($person!=null) {
+			$personid=$person["id"];
+			setAktUserId($person["id"]);
+		}
+	}
 }
 else {
 	$personid=getAktUserId();	

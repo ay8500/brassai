@@ -43,6 +43,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || ge
 ?>
 <div class="sub_title">Újdonságok</div>
 <div class="container-fluid">
+	<?php if(userIsAdmin()) :?>
 	<div class="panel panel-default col-sm-6" style="margin-right:10px;">
 		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
 			<h4><span class="glyphicon glyphicon-user"></span> Véndiák Újdonságok:</h4></div>
@@ -52,6 +53,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || ge
 		</ul>
 		</div>
 	</div>
+	<?php endif;?>
 	<div class="panel panel-default col-sm-5">
 		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
 			<h4><span class="glyphicon glyphicon-home"></span> Honoldal Újdonságok:</h4></div>

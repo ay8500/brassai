@@ -194,7 +194,7 @@ if ($delVote>=0 && $edit) {
 </div>
 
 <?php 
-  	 	$topList= readTopList (getAktDatabaseName(),getLoggedInUserId());
+  	 	$topList= readTopList (getAktClass(),getLoggedInUserId());
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);

@@ -78,10 +78,14 @@ class MySqlDb {
  
   /* howmanny rows are in the query result */
   public function count() {
-  	if($this->counter==NULL && isset($this->result)) {
-  		$this->counter=mysqli_num_rows($this->result);
-  	}
- 	return $this->counter;
+	  	try {
+	  		if($this->counter==NULL && isset($this->result) && gettype($this->result)=="object" ) {
+	  			$this->counter=mysqli_num_rows($this->result);
+	  		}
+	  		return $this->counter;
+	  	} catch (Exception $e) {
+	  		return 0;
+	  	}
   }
 
   /* select count */

@@ -123,13 +123,18 @@
 						</li>
 						<?PHP endif  ?>
 						<li><a href="vote.php">A következő Találkozó</a></li>
-						<li><a href="zenetoplista.php">Zenetoplista</a></li>
+						<?php if(userIsAdmin()) :?>
+							<li><a href="zenetoplista.php">Zenetoplista</a></li>
+						<?php endif;?>
 					</ul>
 	      		</li>
 	      	<?php } ?>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok<b class="caret"></b></a>
 			  	<ul class="dropdown-menu">
+			  	<?php if(userIsAdmin()) :?>
+			  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
+			  	<?php endif;?>
 			  	<?php
 			  		$classes = $db->getClassList();
 			  		foreach($classes as $class) {
@@ -143,6 +148,9 @@
 			  		<?php 	}
 			  			}
 			  	?>
+			  	<?php if(userIsAdmin()) :?>
+			  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
+			  	<?php endif;?>
 			  	</ul>
 			</li>
 			<li>
