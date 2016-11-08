@@ -87,7 +87,7 @@
 						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClass(); ?>">Vendégek és barátok</a></li>
 						<li><a href="worldmap.php">Térkép</a></li>
 						<li><a href="tablo.php">Tabló és csoportképek</a></li>
-						<?php if ( getAktClass()==$db->getClassByText("1985 12A")) : ?>
+						<?php if ( getAktClass()==$db->getClassIdByText("1985 12A")) : ?>
 						<li class="dropdown-submenu"><a>Régi képek</a>
 							<ul class="dropdown-menu">
 								<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>

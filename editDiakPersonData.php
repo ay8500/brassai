@@ -5,9 +5,10 @@ $action=getGetParam("action","");
 //Create a new person
 $newperson = $action=="newperson" || $action=="newguest" || $action=="newteacher"; 
 
+$anonymousEditor=getParam("anonymousEditor")=="true";
 
 //Edit or only view variant this page
-$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || getParam("anonymousEditor")=="true" || $action=="changediak");
+$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
 
 
 //create new person in case of submittin a new one
@@ -149,13 +150,13 @@ if ($action=="changediak") {
 	
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
-	<?php 
-	if ($edit || $newperson) {
-		echo('<div style="min-height:30px" class="input-group">');
-      	echo('<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>');
-      	echo('<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>');
-		echo('<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />');
-   		echo('</div>');	
+	<?php if (($edit || $newperson) && !$anonymousEditor ) { ?>
+		<div style="min-height:30px" class="input-group">
+      		<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
+      		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+			<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />
+   		</div>	
+   	<?php 
 		echo('<form action="'.$SCRIPT_NAME.'" method="get" name="edit_form" >');
 	}
 	?>
@@ -164,7 +165,7 @@ if ($action=="changediak") {
 		<div class="input-group">
 			<?php
 			//Inpufields
-			if ($edit || $newperson) {?>
+			if ($edit && !$anonymousEditor ) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
 				<span style="width:40px" id="highlight" class="input-group-addon">
 		      		<?php if ($dataCheckFieldVisible[$i]) {
@@ -175,6 +176,17 @@ if ($action=="changediak") {
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
 	      		$dataFieldObl[$i] ? $obl="kötelező mező" : $obl="";
 	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+			//Inpufields new person
+			} elseif ($anonymousEditor) {?>
+				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
+	      		<?php 
+	      		if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
+	      			$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
+	      			$dataFieldObl[$i] ? $obl="kötelező mező" : $obl="";
+	      			echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+	      		} else {
+	      			echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
+	      		}
 	      	//Display fields
 			} else {
 				if (showField($diak,$dataFieldNames[$i])) {

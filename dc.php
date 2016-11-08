@@ -1,4 +1,5 @@
 <?php
+
 $su= explode("?",$_SERVER["REQUEST_URI"]);
 $su = explode("/",$su[0]);
 

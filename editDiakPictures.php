@@ -14,12 +14,12 @@
 				$checked="";
 				if ($pict["isVisibleForAll"]==1) $checked="checked";
 				$notDeletedPictures++;
-	?>
-			<div style="padding: 10px;margin: 10px; display: inline-block;border-radius: 10px;border-style: outset; vertical-align: top;border-width: 1px; background-color: white">
+		?>
+		<div style="padding: 10px;margin: 10px; display: inline-block;border-radius: 10px;border-style: outset; vertical-align: top;border-width: 1px; background-color: white">
 			<div style="display: inline-block;border-radius:10px;" >
-			<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php echo $file?>',<?php echo $pict["isVisibleForAll"]==1 || userIsAdmin()?1:0 ?>);" href="#">
-				<img style="width:200px; height:200px;" src="convertImg.php?color=ffffff&thumb=true&file=<?php echo $file?>" />
-			</a>
+				<a title="<?php echo $pict["title"] ?>" onclick="showPicture('<?php echo $file?>',<?php echo $pict["isVisibleForAll"]==1 || userIsAdmin()?1:0 ?>);" href="#">
+					<img style="width:200px; height:200px;" src="convertImg.php?color=ffffff&thumb=true&file=<?php echo $file?>" />
+				</a>
 			</div>
 			<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
 				<div style="display: inline-block;">
@@ -33,14 +33,16 @@
 				</div>
 			<?php endif ?>
 			<div style="width: 220px;height: 35px; ">
-			<b><span id="pTitle<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
-			<span id="pComment<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
+				<b><span id="pTitle<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
+				<span id="pComment<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
 			</div>
-			</div>
+		</div>
 	<?php 
 		}
-	}
+	} if ($notDeletedPictures==0) {
 	?>
+		<h3>Nincsenek képek feltöltve.</h3>
+	<?php }?>
 	</form>
 	</td></tr>
 	<tr><td colspan="3"><hr/> </td></tr>

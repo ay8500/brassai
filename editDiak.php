@@ -33,7 +33,13 @@ if ($personid!=null && $personid>0) {
 		$classId=$diak["classID"];
 		$class=$db->getClassById($classId);
 		setAktClass($classId);
+	} else {
+		header('Location:dc.php');
+		exit;
 	}
+} else {
+	header('Location:dc.php');
+	exit;
 }
 
 $resultDBoperation="";

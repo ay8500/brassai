@@ -51,6 +51,11 @@ class dbDAO {
 		return $this->getEntryByField("class", "text",$text);
 	}
 	
+	public function getClassIdByText($text) {
+		$ret=$this->getEntryByField("class", "text",$text);
+		return $ret["id"];
+	}
+	
 	public function saveClass($class ) {
 		$where="name='".$this->dataBase->replaceSpecialChars($class["name"])."' and graduationYear=".$class["graduationYear"];
 		
@@ -298,7 +303,7 @@ class dbDAO {
 		return $this->savePicture($picture);		
 	}
 	
-	public function getListOfPictures($id,$type,$isDeleted,$isVisibleForAll) {
+	public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1) {
 		$sql="select * from picture ";
 		if ($type=="person")
 			$sql.="where personId=".$id;
