@@ -374,6 +374,10 @@ class dbDAO {
 	
 //******************** Song  DAO *******************************************
 
+	public function deleteVote($voteId) {
+		return $this->dataBase->delete("songvote", "id",$voteId);
+	}
+	
 	public function saveSongVote($entry) {
 		return $this->saveEntry("songvote", $entry, "personID =".$entry["personID"]." and songID=".$entry["songID"]);
 	}
@@ -402,14 +406,36 @@ class dbDAO {
 		return $this->getEntryByField("interpret", "name",$name);
 	}
 	
-	public function getSongList() {
-		return $this->getElementList("song");
+	public function getSongList($interpretId=0) {
+		if ($interpretId>0) {
+			return $this->getElementList("song","interpretID=".$interpretId);
+		} else {
+			return $this->getElementList("song");
+		}
 	}
 
 	public function getInterpretList() {
 		return $this->getElementList("interpret");
 	}
+	
+	public function getVotersList($classId) {
+		$sql  ="select  person.id, person.lastname, person.firstname, person.picture, count(1) as count "; 
+		$sql .="from songvote join person on person.id=songvote.personID ";
+		$sql .="where person.classID=".$classId." group by personID";
+		$this->dataBase->query($sql);
+		return $this->dataBase->getRowList();
+	}
 
+	public function readTopList($classId,$personId) {
+		$sql  ="select count(1) as count, instr(GROUP_CONCAT(person.id),'".$personId."') as voted, song.id as songID, song.link as songLink, song.video as songVideo, song.name as songName, interpret.name as interpretName, songvote.id as id  ";
+		$sql .="from songvote join person on person.id=songvote.personID ";
+		$sql .="join song on song.id=songvote.songID ";
+		$sql .="join interpret on interpret.id=song.interpretID ";
+		$sql .="where person.classID=".$classId;
+		$sql .=" group by song.id order by count desc";
+		$this->dataBase->query($sql);
+		return $this->dataBase->getRowList();
+	}
 //********************* Message ******************************************
 
 	public function getMessages($count) {

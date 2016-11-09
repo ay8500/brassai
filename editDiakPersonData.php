@@ -156,16 +156,15 @@ if ($action=="changediak") {
       		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
 			<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />
    		</div>	
-   	<?php 
-		echo('<form action="'.$SCRIPT_NAME.'" method="get" name="edit_form" >');
-	}
-	?>
+   	<?php } ?>
+   	
+   	<form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
 	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
 			<?php
 			//Inpufields
-			if ($edit && !$anonymousEditor ) {?>
+			if (($edit ||$newperson) && !$anonymousEditor ) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
 				<span style="width:40px" id="highlight" class="input-group-addon">
 		      		<?php if ($dataCheckFieldVisible[$i]) {

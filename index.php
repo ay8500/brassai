@@ -37,19 +37,17 @@ include("homemenu.php");
 			Térképen megjelenített szétszóródása az osztálytársaknak. 
 		</div>
 		<div class="col-sm-4">
-			<a href="vote.php"><img img class="indeximg" src="images/vote.png" /></a><br />
+			<a href="vote.php?classid=64"><img img class="indeximg" src="images/vote.png" /></a><br />
 			Találkozók szervezésére alkalmas szavazati lista 
 		</div>
 		<div class="col-sm-4">
 			<a href="#"><img img class="indeximg" src="images/group.png" /></a><br />
 			Osztályfelelősők körlevelet (E-mail) küldhetnek volt osztálytársuknak. 
 		</div>
-		<?php if(userIsAdmin()) :?>
 		<div class="col-sm-4">
 			<a href="zenetoplista.php"><img img class="indeximg" src="images/record-player.png" /></a><br />
 			Zenetoplista, milyen zenére mullatnak a véndiákok. 
 		</div>
-		<?php endif;?>
 	</div>
 	<div  style="padding:15px;margin-top:20px" class="col-sm-4" >
 		<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>

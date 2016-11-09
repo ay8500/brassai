@@ -1,7 +1,6 @@
 <?PHP 
 $SiteTitle="A véndiákok ezt hallgatják szívesen";
 include("homemenu.php");
-include("songdatabase.php");
 include_once("tools/userManager.php");
 $resultDBoperation="";
 
@@ -11,7 +10,7 @@ $edit = (userIsLoggedOn() && getAktClass()==getLoggedInUserClassId()) || userIsA
 //action  delete vote
 $delVote = intval(getGetParam("delVote", "-1"));
 if ($delVote>=0 && $edit) {
-   	if (deleteVote(getAktDatabaseName(),getLoggedInUserId(),$delVote))
+   	if ($db->deleteVote($delVote))
 		$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidból törölve!</div>';
 	else 
 		$resultDBoperation='<div class="alert alert-warning" >Szavazat törlése nem sikerült.</div>';
@@ -26,7 +25,10 @@ if ($delVote>=0 && $edit) {
    if (isset($_GET["interpret"])) $pinterpret = $_GET["interpret"]; else $pinterpret=0;
    if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
-   		$pinterpret=insertNewInterpret(getAktDatabaseName(),$pnewinterpret);
+   		$interpret=array();
+   		$interpret["name"]=$pnewinterpret;
+   		$interpret["id"]=-1;
+   		$pinterpret=$db->saveInterpret($interpret);
    		if ($pinterpret>=0) 
    			$resultDBoperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
    		else
@@ -50,7 +52,11 @@ if ($delVote>=0 && $edit) {
    		}
    } 
    if ($psong>0 && $edit) {
-   		if (insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong))
+   		$vote=array();
+   		$vote["id"]=-1;
+   		$vote["songID"]=$psong;
+   		$vote["personID"]=getLoggedInUserId();
+   		if ($db->saveSongVote($vote))
 			$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
 		else 
 			$resultDBoperation='<div class="alert alert-warning" >Szavazat nem sikerült.</div>';
@@ -58,15 +64,17 @@ if ($delVote>=0 && $edit) {
    } 
 	
    //Read voters List
-	$votersList=readVotersList(getAktClassFolder());
+	$votersList=$db->getVotersList(getAktClass());
 	$allVotes=0;
 	$voteCount=0;
 	foreach ($votersList as $voter) {
-		if (trim($voter["Name"])!="")
-			$allVotes +=$voter["VotesCount"];
-		if (trim($voter["UID"])==getLoggedInUserId())
-			$voteCount =$voter["VotesCount"];
+		if (trim($voter["firstname"])!="")
+			$allVotes +=$voter["count"];
+		if (trim($voter["id"])==getLoggedInUserId())
+			$voteCount =$voter["count"];
 	}
+	
+	$aktPerson = getAktPerson();
 	
 	//Check the maximal amout of vote
 	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
@@ -77,7 +85,7 @@ if ($delVote>=0 && $edit) {
 			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
 	} else {
 		if (userIsLoggedOn())
-			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?scoolYear='.getUScoolYear().'&scoolClass='.getUScoolClass().'">An én osztályom toplistálya</a>';
+			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.$aktPerson["classID"].'">An én osztályom toplistálya</a>';
 		else
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod top 100-as zenelistályához.";
 	}
@@ -106,7 +114,7 @@ if ($delVote>=0 && $edit) {
 				<select name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" class="form-control">
 					<option value="0">...válassz!...</option>
 					<?php
-						$interpretList= readInterpretList(getAktDatabaseName()); 
+						$interpretList= $db->getInterpretList(); 
 						foreach ($interpretList as $interpret)	{
 							if ($interpret['id']==$pinterpret) $def="selected"; else $def="";
 							echo('<option value='.$interpret['id'].' '.$def.' >'.$interpret['name'].'</option>');
@@ -131,14 +139,14 @@ if ($delVote>=0 && $edit) {
  	 		</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Előadó</label>
-	    	   	<input readonly class="form-control" value="<?php echo (readInterpret(getAktDatabaseName(),$pinterpret)["name"]);?>"/>
+	    	   	<input readonly class="form-control" value="<?php echo $db->getInterpretById($pinterpret)["name"]?>"/>
 	    	</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Az adatbázisból </label>
 				<select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';" class="form-control" />
 					<option value="0">...válassz!...</option>
 				  	 <?php
-				  	 	$songList= readSongList(getAktDatabaseName(),$pinterpret);
+				  	 	$songList= $db->getSongList($pinterpret);
 						foreach ($songList as $song) 
 						{
 							if ($song['id']==$psong) $def="selected"; else $def="";
@@ -179,12 +187,12 @@ if ($delVote>=0 && $edit) {
 		<div class="form-group navbar-form navbar">
 			<table>
 			  <?php foreach ($votersList as $voter) {
-			     	if (trim($voter["Name"])!="" && intval($voter["VotesCount"])>0) { ?>
+			     	if (trim($voter["firstname"])!="" && intval($voter["count"])>0) { ?>
 			     		<tr>
-			     			<td><img src="images/<?php echo getPerson($voter["UID"])["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" /></td>
-			     			<td><?php echo $voter["Name"]?></td>
+			     			<td><img src="images/<?php echo $voter["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" /></td>
+			     			<td><?php echo $voter["lastname"]." ".$voter["firstname"]?></td>
 			     			<td>&nbsp;</td>
-			     			<td style="padding-left:15px;"><?php echo $voter["VotesCount"]?></td>
+			     			<td style="padding-left:15px;"><?php echo $voter["count"]?></td>
 			     		</tr>
 			     	<?php }
 			  } ?>
@@ -194,7 +202,7 @@ if ($delVote>=0 && $edit) {
 </div>
 
 <?php 
-  	 	$topList= readTopList (getAktClass(),getLoggedInUserId());
+  	 	$topList= $db->readTopList (getAktClass(),getLoggedInUserId());
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);
@@ -231,32 +239,32 @@ if ($delVote>=0 && $edit) {
 				for ($i=0;$i<$listLength;$i++) {
 					$v=$topList[$i];
 					$dh='&nbsp;';
-					if  ($v['voted']) {
-						$voted='<a href="zenetoplista.php?delVote='.$v['song']['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
+					if  ($v['voted']!=0) {
+						$voted='<a href="zenetoplista.php?delVote='.$v['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
 						$dh='<span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span>';
 					} else {
 						if (($voteCount<$maxVoteCount)&&(getLoggedInUserId()>0))
-							$voted='<a href="zenetoplista.php?song='.$v['song']['id'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
+							$voted='<a href="zenetoplista.php?song='.$v['songID'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
 						else
 							$voted='';
 					}
-					if (strlen($v['song']['video'])>5) 
-						$YouTubeLink='<a href="zenePlayer.php?link='.$v['song']['video'].'"><span class="glyphicon glyphicon-film"></span></a>';
+					if (strlen($v['songVideo'])>5) 
+						$YouTubeLink='<a href="zenePlayer.php?link='.$v['songVideo'].'"><span class="glyphicon glyphicon-film"></span></a>';
 					else 
 						$YouTubeLink="&nbsp;";
-					if (strlen($v['song']['link'])>5) 
-						$wwwLink='<a target="song" href="'.$v['song']['link'].'" title="Honoldal"><span class="glyphicon glyphicon-link"></span></a>';
+					if (strlen($v['songLink'])>5) 
+						$wwwLink='<a target="song" href="'.$v['songLink'].'" title="Honoldal"><span class="glyphicon glyphicon-link"></span></a>';
 					else 
-						$wwwLink='<a target="song" href="http://www.google.de/search?q='.$v['interpret']['name'].' '.$v['song']['name'].'" title="Megkeresem"><span class="glyphicon glyphicon-search"></span></a>';
+						$wwwLink='<a target="song" href="http://www.google.de/search?q='.$v['interpretName'].' '.$v['songName'].'" title="Megkeresem"><span class="glyphicon glyphicon-search"></span></a>';
 					?>
 					<tr>
 						<?php if (userIsAdmin()) :?>
-							<td><?php echo --$v["votes"]?></td>
+							<td><?php echo $v["count"]."-"?></td>
 						<?php endif;?>
 						<td><?php echo $i+1?></td>
 						<td style="padding-left:5px;padding-right:5px;"><?php echo $dh?></td>
-						<td class="hidden-xs"><?php echo $v['interpret']['name']?></td>
-						<td style="padding-left:5px;"><?php echo $v['song']['name']?></td>
+						<td class="hidden-xs"><?php echo $v['interpretName']?></td>
+						<td style="padding-left:5px;"><?php echo $v['songName']?></td>
 						<?php if ($edit) :?>
 							<td style="text-align: center;"><?php echo $voted?></td>
 						<?php endif;?>

@@ -5,7 +5,7 @@
 
 $_SESSION["uId"]="0";
 include_once 'data.php';
-include_once 'songdatabase.php';
+include_once 'migrate/songdatabase.php';
 
 $dataBase=null;
 $dataFileName="";
