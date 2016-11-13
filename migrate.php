@@ -12,6 +12,8 @@ $dataFileName="";
 $data=array();
 $pictureFolder = "./images/";
 $dataPath = "data/";
+$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate","deleted");
+
 
 $onlyError=true;
 $migrateSongs=false;

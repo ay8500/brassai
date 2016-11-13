@@ -83,13 +83,17 @@ else
 //visibility
 $picture = $db->getPictureByFileName($file_name); 
 if (sizeof($picture>0)) {
-	if ($picture["isDeleted"]==0 || userIsAdmin()) {
+	if (isset($picture["isDeleted"]) && ($picture["isDeleted"]==0 || userIsAdmin())) {
 		//resizing the image
 		imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
 		if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
-			imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 6,true);
+			imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 16,true);
 			imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
 		}
+	}
+	else {
+		imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+		
 	}
 }
 //finally, return the image

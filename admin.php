@@ -113,7 +113,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		<?PHP
 		$persons = $db->getPersonListByClassId(getAktClass());
 		foreach ($persons as $idx=>$d) {
-			if (isPersonAdmint($d) || isPersonEditor($d))  {
+			if (isPersonAdmin($d) || isPersonEditor($d))  {
 				if (($idx % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else

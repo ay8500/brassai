@@ -7,8 +7,12 @@ $id = getIntParam("id",-1 );
 $visibility = getParam("attr", "");
 
 if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
-	setPictureVisibleForAll($id,$visibility);
-	echo($id."-".$visibility);
+
+	$p=$db->getPictureById($id);
+	$p["isVisibleForAll"]=$visibility;
+	if ($db->savePicture($p)>0) {
+		$row["error"] = "Error saving the picture";
+	}
 }
 else 
 	echo("Not authorized");

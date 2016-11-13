@@ -8,12 +8,10 @@ include_once 'dbDAO.class.php';
 
 $db = new dbDAO;
 
-
-$datafields = array("id","firstname","lastname","birthname","partner","address","zipcode","place","country","phone","mobil","email","skype","homepage","education","employer","function","children","picture","geolat","geolng","user","passw","role","date","ip","facebook","facebookid","twitter");
-$PictureFields=array("id","visibleforall","date","title","comment","ip","uploadDate","lastIp","lastChangeDate","deleted");
-
-
-//aktual used scoolyear and class
+/**
+ * The aktual person class id
+ * @return number|NULL
+ */
 function getAktClass() {
 	global $db;
 	if (isset($_SESSION['aktClass'])) 
@@ -28,14 +26,17 @@ function getAktClass() {
 	}
 }
 
-
+/**
+ * Set aktual person class id
+ * @param unknown $classId
+ */
 function setAktClass($classId) {
 	$_SESSION['aktClass']=$classId;
 }
 
 
 /**
- * The name of the aktual class
+ * The folder of the aktual persons class
  */
 function getAktClassFolder() {
 	global $db;
@@ -47,7 +48,7 @@ function getAktClassFolder() {
 }
 
 /**
- * The name of the aktual class
+ * The name of the aktual persons class
  */
 function getAktClassName() {
 	global $db;
@@ -64,6 +65,7 @@ function getAktClassName() {
 
 /**
  * returns logged in person
+ * @return object person
  */
 function getPersonLogedOn() {
 	global $db;
@@ -76,6 +78,7 @@ function getPersonLogedOn() {
 
 /**
  * returns aktual person
+ * @return object person
  */
 function getAktPerson() {
 	global $db;
@@ -88,15 +91,22 @@ function getAktPerson() {
 
 /**
  * is the person a guest
- */
+ * @return boolean*/
 function isPersonGuest($person) {
 	return (isset($person["role"]) && strstr($person["role"],"guest")!="");
 }
 
-function isPersonAdmint($person) {
+/**
+ * is the person a admin
+ * @return boolean*/
+function isPersonAdmin($person) {
 	return (isset($person["role"]) && strstr($person["role"],"admin")!="");
 }
 
+/**
+ * is the person a editor
+ * @return boolean
+ */
 function isPersonEditor($person) {
 	return (isset($person["role"]) && strstr($person["role"],"editor")!="");
 }
@@ -116,8 +126,6 @@ function getPersonDummy() {
 	$p["role"]="";
 	return $p;
 }
-
-
 
 
 /**
@@ -169,11 +177,19 @@ function setPictureVisibleForAll($pictureId, $visibleforall){
 	$db->savePicture($picture);
 }
 
+/**
+ * Mark picture as deleted
+ * @param integer $pictureId
+ * @return boolean
+ */
 function deletePicture($pictureId) {
 	global $db;
 	$picture=$db->getPictureById($pictureId);
-	$picture["isDeleted"]=1;
-	return $db->savePicture($picture);
+	if ($picture!=null) {
+		$picture["isDeleted"]=1;
+		return $db->savePicture($picture);
+	}
+	return false;
 }
 
 /* resize image
@@ -340,7 +356,11 @@ function showField($diak,$field) {
 
 }
 
-
+/**
+ * Concatenate lastname firstname and birtname
+ * @param array $person
+ * @return string
+ */
 function getPersonName($person) {
 	if ($person!=null) {
 		$ret = $person["lastname"]." ".$person["firstname"];
@@ -351,6 +371,10 @@ function getPersonName($person) {
 	return '';
 }
 
+/**
+ * The real person id
+ * @param unknown $person
+ */
 function getPersonId($person) {
 	if (isset($person["changeForID"]))
 		return $person["changeForID"];
@@ -358,11 +382,20 @@ function getPersonId($person) {
 		return $person["id"];
 }
 
-//generate normalised person link
-function getPersonLink($ln,$fn) {
-   return getNormalisedChars($ln).'_'.getNormalisedChars($fn);
+/**
+ * generate normalised person link
+ * @param string $lastname
+ * @param string $firstname
+ * @return string
+ */
+function getPersonLink($lastname,$firstname) {
+   return getNormalisedChars($lastname).'_'.getNormalisedChars($firstname);
 }
 
+/**
+ * Translate special chars in normal chars eg. á->a
+ * @param unknown $s
+ */
 function getNormalisedChars($s) {
   $trans = array (
   	" "=>"_","-"=>"_",

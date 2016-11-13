@@ -333,13 +333,18 @@ class dbDAO {
 		}
 	}
 	
+	/**
+	 * Get a picture by id
+	 * @param integer $id
+	 * @return array or null if no picture found
+	 */
 	public function getPictureById($id) {
 		$sql="select * from picture where id=".$id;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
 			return $this->dataBase->fetchRow();
 		} else {
-			return array();
+			return null;
 		}
 	}
 	

@@ -95,9 +95,9 @@ if (getParam("action")=="removefacebookconnection"  && userIsLoggedOn()) {
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
-	if (deletePicture(getParam("id", "")>=0)) {
+	if (deletePicture(getParam("id", ""))>=0) {
 		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
-		saveLogInInfo("PictureDelete",$uid,$diak["user"],getParam("id", ""),true);
+		saveLogInInfo("PictureDelete",getLoggedInUserId(),$diak["user"],getParam("id", ""),true);
 	} else {
 		$resultDBoperation='<div class="alert alert-warning" >Kép törlés sikertelen!</div>';
 	}
@@ -111,20 +111,27 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]==
 		if (checkRequesterIP(changeType::personupload)) {
 			//Only jpg
 			if (strcasecmp($fileName[1],"jpg")==0) {
+				//Create folder is doesn't exists
+				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktClassFolder();
+				if (!file_exists($fileFolder)) {
+ 	   				mkdir($fileFolder, 0777, true);
+				}
+				//The max size of e picture 
 				if ($_FILES['userfile']['size']<3100000) {
 					if ($_POST["action"]=="upload_diak") {
 						$idx=rand(234567,999999);
-						$pFileName=getAktClassFolder()."/d".$personid."-".$idx.".".strtolower($fileName[1]);
-						$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/"."images/".$pFileName;
+						$pFileName="/d".$personid."-".$idx.".".strtolower($fileName[1]);
+						$uploadfile=$fileFolder.$pFileName;
 					} else {
 						$idx=$db->getNextPictureId("picture");
-						$uploadfile="./images/".getAktClassFolder()."/p".$personid."-".$idx.".".strtolower($fileName[1]);
+						$pFileName="/p".$personid."-".$idx.".".strtolower($fileName[1]);
+						$uploadfile=$fileFolder.$pFileName;
 					}
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 						$ok=false;
 						if ($_POST["action"]=="upload_diak") {
-							$diak['picture']=$pFileName;
-							if ($db->savePersonField($personid, "picture", $pFileName)>=0) {
+							$diak['picture']=getAktClassFolder().$pFileName;
+							if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,400,400);
 								$ok=true;
@@ -133,7 +140,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]==
 							$picture = array();
 							$picture["id"]=-1;
 							$picture["personID"]=$personid;
-							$picture["file"]=$uploadfile;
+							$picture["file"]="images/".getAktClassFolder().$pFileName;
 							$picture["isVisibleForAll"]=1;
 							$picture["isDeleted"]=0;
 							$picture["uploadDate"]=date("Y-m-d H:i:s");
@@ -144,17 +151,17 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]==
 							}
 						}
 						if ($ok) {
-							$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
+							$resultDBoperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
 							saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
 						} else {
-							$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+							$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
 						}
 					} else {
-						$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
+						$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
 					}
 				}
 				else {
-					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.</div>";
+					$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.</div>";
 					saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
 				} 	
 			}

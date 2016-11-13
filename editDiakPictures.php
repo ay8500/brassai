@@ -25,7 +25,7 @@
 				<div style="display: inline-block;">
 				<div class="borderbutton borderbuttonedit" ><input  type="radio"  onclick="clickRadio(<?php echo $pict["id"] ?>);" value="<?php echo ($pict["id"]); ?>" name="pictureid" title="Kép kiválasztás név vagy tartalom módósításhoz" /></div>
 				<br />
-				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility('<?PHP echo($personid) ?>',<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
+				<div class="borderbutton borderbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></div>
 				<br />
 				<?php if ($pict["isDeleted"]==0): ?>
 					<div class="borderbutton" ><a onclick="deletePicture('<?PHP echo($personid) ?>',<?php echo $pict["id"] ?>);" title="Képet töröl"><img src="images/delete.gif" /></a></div>
@@ -108,10 +108,10 @@
     		window.location.href="editDiak.php?tabOpen=1&action=deletePicture&id="+id+"&uid="+uid;    
 	}
 
-	function changeVisibility(uid,id) {
-		var c = $('#visibility'+id).prop('checked');
+	function changeVisibility(id) {
+		var c = $('#visibility'+id).prop('checked')?1:0;
 		$.ajax({
-			url:"editDiakPictureVisibility.php?id="+id+"&attr="+c+"&uid="+uid,
+			url:"editDiakPictureVisibility.php?id="+id+"&attr="+c,
 			type:"GET",
 			success:function(data){
 				$('#ajaxStatus').html(' Kimetés sikerült. ');

@@ -7,23 +7,19 @@
 	
 	//Login if crypted loginkey present and correct
 	if (isset($_GET['key']))   {
-		$login = explode("-", encrypt_decrypt("decrypt", $_GET['key']));
-		if (sizeof($login)==3) {
-			setAktScoolClass($login[0]);
-			setAktScoolYear($login[1]);
-			setAktUserId($login[2]);
-			$diak=getPerson($login[2],getAktDatabaseName());
-			if (null!=$diak) {
-				setUserInSession($diak["admin"], $diak["user"],$login[2] , $login[1], $login[0]);
-				if (!userIsAdmin()) {
-					saveLogInInfo("Login",$_SESSION['uId'],$diak["user"],"","direct");
-					sendHtmlMail(null,
-						"<h2>Login</h2>".
-						"Uid:".$_SESSION['uId']." User: ".$diak["user"]," Direct-Login");
-				}
-			} else {
-				die("A kód nem érvényes!");
+		$login = encrypt_decrypt("decrypt", $_GET['key']);
+		setAktUserId($login);
+		$diak=$db->getPersonByID($login);
+		if (null!=$diak) {
+			setUserInSession($diak["admin"], $diak["user"],$login);
+			if (!userIsAdmin()) {
+				saveLogInInfo("Login",$_SESSION['uId'],$diak["user"],"","direct");
+				sendHtmlMail(null,
+					"<h2>Login</h2>".
+					"Uid:".$_SESSION['uId']." User: ".$diak["user"]," Direct-Login");
 			}
+		} else {
+			die("A kód nem érvényes!".$login[2]);
 		}
 	}
 	
@@ -147,8 +143,6 @@
 	 * @param User role $admin
 	 * @param User name $user
 	 * @param User id $uid
-	 * @param Scool year $scoolYear
-	 * @param Scool class $scoolClass
 	 */
 	function setUserInSession($admin, $user, $uid )
 	{
@@ -178,7 +172,7 @@
 	}
 	
 	/**
-	 * user is loggen in and is a admin
+	 *User is logged in and have the role of admin
 	 */
 	function userIsAdmin() {
 		if (isset($_SESSION['uRole'])) 
@@ -188,7 +182,7 @@
 	}
 	
 	/**
-	 * user is logged in and is a editor
+	 *User is logged in and have the role of  editor
 	 */
 	function userIsEditor() {
 		global $db;
@@ -223,7 +217,7 @@
 
 	
 	/**
-	 * user is logged in and is a viewer
+	 *User is logged in and have the role as viewer
 	 */
 	function userIsViewer() {
 		if (isset($_SESSION['uRole'])) 
@@ -233,7 +227,7 @@
 	}
 
 	/**
-	 * generate a login key for the aktual user
+	 * Generate a login key for the aktual user
 	 * @return key string
 	 */
 	function generateAktUserLoginKey() {
@@ -241,7 +235,7 @@
 	}
 	
 	/**
-	 * generate an login key for the a user in the aktual database
+	 * generate an login key for the a user 
 	 * @return key string
 	 */
 	function generateUserLoginKey($uid) {
@@ -272,7 +266,7 @@
 		global $db;
 		$usr = $db->getPersonByEmail($email);
 		if (null!=$usr) {
-			if ( $usr["id"]==$id || (isset($usr["idForSave"]) && $usr["idForSave"]==$id))
+			if ( $usr["id"]==$id )
 				return false;
 			else
 				return true;
@@ -339,8 +333,8 @@
 	
 	/**
 	 * Check the requester IP 
-	 * if the IP can't login more then 10 time on a day then return value will set to false 
-	 * this is a safety funtion to prevent automatic loging of password crack
+	 * if the IP can't login more then a defined time on a day then return value will set to false 
+	 * this is a safety funtion to prevent automatic loging of password crack or to mutch anonymous changes
 	 */
 	function checkRequesterIP($action) {
 		global $db;
@@ -384,13 +378,6 @@
 			}
 		}
 		return $logData;
-	}
-	
-	/**
-	 * create a log backup file if the file is to big or to old
-	 */
-	function backupLoginData() {
-		//TODO
 	}
 	
 	/**
