@@ -189,7 +189,7 @@ class dbDAO {
 	}
 	
 	/**
-	 * gel the list of classmates 
+	 * get the list of classmates 
 	 */
 	public function getPersonListByClassId($classId) {
 		$where ="classID=".$classId;
@@ -198,6 +198,16 @@ class dbDAO {
 		usort($ret, "compareAlphabetical");
 		return $ret;
 	}	
+
+	/**
+	 * get the person list!
+	 */
+	public function getPersonList() {
+		$where.=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+		$ret = $this->getElementList("person",$where);
+		usort($ret, "compareAlphabetical");
+		return $ret;
+	}
 	
 	public function getPersonListToBeChecked() {
 		$sql="select c.*, o.id as changeForIDjoin from person as c left join person as o on c.changeForID=o.id   where c.changeUserID is null";

@@ -6,130 +6,156 @@
 <url>
   <loc>http://brassai.blue-l.de/</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
-
 <url>
-  <loc>http://brassai.blue-l.de/index.php?scoolYear=1984&amp;scoolClass=12A</loc>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1965 12B</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1971 12A</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1981 12B</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 
 <url>
-  <loc>http://brassai.blue-l.de/index.php?scoolYear=1985&amp;scoolClass=12B</loc>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1984 12A</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+
+<url>
+  <loc>http://brassai.blue-l.de/hometable.phpclassid=1985 12B</loc>
   <priority>0.5</priority>
   <lastmod>2013-06-27</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>http://brassai.blue-l.de/index.php?scoolYear=1985&amp;scoolClass=12A</loc>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1985 12A</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>http://brassai.blue-l.de/index.php?scoolYear=1986&amp;scoolClass=12A</loc>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1986 12A</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>http://brassai.blue-l.de/index.php?scoolYear=1986&amp;scoolClass=12B</loc>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1986 12B</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 <url>
-  <loc>http://brassai.blue-l.de/index.php?scoolYear=1986&amp;scoolClass=12C</loc>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1986 12C</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>http://brassai.blue-l.de/hometable.php?classid=1992 12A</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 <url>
   <loc>http://brassai.blue-l.de/brassai.php</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/iskola.php</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/hometable.php?scoolYear=1984&amp;scoolClass=12A</loc>
   <priority>0.9</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/hometable.php?scoolYear=1985&amp;scoolClass=12B</loc>
   <priority>0.9</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/hometable.php?guests=true&amp;scoolYear=1985&amp;scoolClass=12B</loc>
   <priority>0.9</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/tablo.php?scoolYear=1985&amp;scoolClass=12B</loc>
   <priority>0.7</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/hometable.php?scoolYear=1985&amp;scoolClass=12A</loc>
   <priority>0.9</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/tablo.php?scoolYear=1986&amp;scoolClass=12A</loc>
   <priority>0.7</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/tablo.php?scoolYear=1986&amp;scoolClass=12B</loc>
   <priority>0.7</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/tablo.php?scoolYear=1986&amp;scoolClass=12C</loc>
   <priority>0.7</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=CSOPORT</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=BALLAGAS</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=LASTDAYS</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -141,7 +167,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=EMLEKEK</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -153,7 +179,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK10</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -165,7 +191,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK15</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -177,7 +203,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK20</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -190,7 +216,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK25</loc>
   <priority>0.8</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -202,7 +228,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK25S</loc>
   <priority>0.8</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -214,7 +240,7 @@
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=TALALK25T</loc>
   <priority>0.8</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -227,7 +253,7 @@
 <url>
   <loc>http://brassai.blue-l.de/zenetoplista.php</loc>
   <priority>0.7</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
@@ -251,1418 +277,1623 @@
 <url>
   <loc>http://brassai.blue-l.de/impressum.php</loc>
   <priority>0.5</priority>
-  <lastmod>2010-01-12</lastmod>
+  <lastmod>2016-01-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Peter-12A1971-100</loc>
+	<loc>http://brassai.blue-l.de/Adorjan_Janos-588</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Akerman_Janos-12A1984-2</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Peter-589</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Barabas_Julia-12A1984-4</loc>
+	<loc>http://brassai.blue-l.de/Bajusz_Marika-590</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bugnar_Melinda-12A1984-5</loc>
+	<loc>http://brassai.blue-l.de/Ferenczi_Gyorgy-591</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Burgus_Botond-12A1984-1</loc>
+	<loc>http://brassai.blue-l.de/Laszlo_Aranka-592</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Csepregi_Julianna-12A1984-7</loc>
+	<loc>http://brassai.blue-l.de/Molnar_Zoltan-593</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Csomos_Krisztina-12A1984-8</loc>
+	<loc>http://brassai.blue-l.de/Nano_Csaba-594</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Csakany_Eniko-12A1984-6</loc>
+	<loc>http://brassai.blue-l.de/Ozsvath_Alexandru-595</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Darvasi_Zsuzsa-12A1984-9</loc>
+	<loc>http://brassai.blue-l.de/Szekely_Erzsebet-596</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Doval_Attila-12A1984-10</loc>
+	<loc>http://brassai.blue-l.de/Tompos_Laszlo-597</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Farkas_Melinda-12A1984-11</loc>
+	<loc>http://brassai.blue-l.de/Torok_Zsuzsa-598</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Fulop_Laszlo-12A1984-12</loc>
+	<loc>http://brassai.blue-l.de/Acs_Ibolya-599</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gall_Agnes-12A1984-13</loc>
+	<loc>http://brassai.blue-l.de/Akerman_Janos-600</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Hilf_Judith-12A1984-14</loc>
+	<loc>http://brassai.blue-l.de/Barabas_Julia-601</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Jakab_Attila-12A1984-15</loc>
+	<loc>http://brassai.blue-l.de/Bugnar_Melinda-602</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kassay_Geza-12A1984-16</loc>
+	<loc>http://brassai.blue-l.de/Burgus_Botond-603</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kelemen_Attila-12A1984-17</loc>
+	<loc>http://brassai.blue-l.de/Csakany_Eniko-604</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Istvan-12A1984-18</loc>
+	<loc>http://brassai.blue-l.de/Csepregi_Julianna-605</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kocsis_Judit-12A1984-19</loc>
+	<loc>http://brassai.blue-l.de/Csomos_Krisztina-606</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Marosan_Eva-12A1984-20</loc>
+	<loc>http://brassai.blue-l.de/Darvasi_Zsuzsa-607</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Muresan_Sandor-12A1984-21</loc>
+	<loc>http://brassai.blue-l.de/Doval_Attila-608</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Eniko-12A1984-22</loc>
+	<loc>http://brassai.blue-l.de/Farkas_Melinda-609</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nits_Reka-12A1984-23</loc>
+	<loc>http://brassai.blue-l.de/Fulop_Laszlo-610</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Obernoster_Istvan-12A1984-24</loc>
+	<loc>http://brassai.blue-l.de/Gall_Agnes-611</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Plank_Eva-12A1984-27</loc>
+	<loc>http://brassai.blue-l.de/Hilf_Judith-612</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Prikarszky_Attila-12A1984-28</loc>
+	<loc>http://brassai.blue-l.de/Jakab_Attila-613</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Puskas_Ildiko-12A1984-29</loc>
+	<loc>http://brassai.blue-l.de/Kassay_Geza-614</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Pakai_Eva-12A1984-26</loc>
+	<loc>http://brassai.blue-l.de/Kelemen_Attila-615</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Razmany_Attila-12A1984-30</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Istvan-616</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Soos_Laszlo-12A1984-31</loc>
+	<loc>http://brassai.blue-l.de/Kocsis_Judit-617</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szabo_Jozsef-12A1984-32</loc>
+	<loc>http://brassai.blue-l.de/Marosan_Eva-618</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szabo_Katalin-12A1984-33</loc>
+	<loc>http://brassai.blue-l.de/Muresan_Sandor-619</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szabo_Tunde-12A1984-34</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Eniko-620</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szakacs_Zsolt-12A1984-35</loc>
+	<loc>http://brassai.blue-l.de/Nits_Reka-621</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Tulogdi_Laszlo-12A1984-36</loc>
+	<loc>http://brassai.blue-l.de/Obernoster_Istvan-622</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Veer_Gyorgy-12A1984-38</loc>
+	<loc>http://brassai.blue-l.de/Ovari_Eva-623</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vincze_Annamaria-12A1984-39</loc>
+	<loc>http://brassai.blue-l.de/Pakai_Eva-624</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Acs_Ibolya-12A1984-3</loc>
+	<loc>http://brassai.blue-l.de/Plank_Eva-625</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Ovari_Eva-12A1984-25</loc>
+	<loc>http://brassai.blue-l.de/Prikarszky_Attila-626</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Ujvari_Lenke-12A1984-37</loc>
+	<loc>http://brassai.blue-l.de/Puskas_Ildiko-627</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Tamas_Gizella-12A1985-2</loc>
+	<loc>http://brassai.blue-l.de/Razmany_Attila-628</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Varga_Dorottya-12A1985-3</loc>
+	<loc>http://brassai.blue-l.de/Soos_Laszlo-629</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Barabasi_Emese-12A1985-37</loc>
+	<loc>http://brassai.blue-l.de/Szabo_Jozsef-630</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Barabasi_Jeno_Rudolf-12A1985-4</loc>
+	<loc>http://brassai.blue-l.de/Szabo_Katalin-631</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Benedek_Zsolt-12A1985-5</loc>
+	<loc>http://brassai.blue-l.de/Szabo_Tunde-632</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Hinschutz_Eniko-12A1985-6</loc>
+	<loc>http://brassai.blue-l.de/Szakacs_Zsolt-633</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kovacs_Katalin-12A1985-8</loc>
+	<loc>http://brassai.blue-l.de/Tulogdi_Laszlo-634</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Biro_Adam_Atilla-12A1985-7</loc>
+	<loc>http://brassai.blue-l.de/Ujvari_Lenke-635</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bujaki_Sandor-12A1985-9</loc>
+	<loc>http://brassai.blue-l.de/Veer_Gyorgy-636</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gaspar_Edina-12A1985-10</loc>
+	<loc>http://brassai.blue-l.de/Vincze_Annamaria-637</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Csaszar_Istvan-12A1985-11</loc>
+	<loc>http://brassai.blue-l.de/Tamas_Gizella-638</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Donath_Kalman-12A1985-13</loc>
+	<loc>http://brassai.blue-l.de/Varga_Dorottya-639</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/David_Ildiko-12A1985-12</loc>
+	<loc>http://brassai.blue-l.de/Barabasi_Emese-640</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szilagyi_Ildiko-12A1985-14</loc>
+	<loc>http://brassai.blue-l.de/Barabasi_Jeno_Rudolf-641</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Onci_Krisztina-12A1985-15</loc>
+	<loc>http://brassai.blue-l.de/Benedek_Zsolt-642</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Buchmuller_Agnes-12A1985-16</loc>
+	<loc>http://brassai.blue-l.de/Hinschutz_Eniko-643</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Veres_Agnes-12A1985-17</loc>
+	<loc>http://brassai.blue-l.de/Biro_Adam_Atilla-644</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szallos_Eszter-12A1985-18</loc>
+	<loc>http://brassai.blue-l.de/Kovacs_Katalin-645</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gruber_Oszkar-12A1985-19</loc>
+	<loc>http://brassai.blue-l.de/Bujaki_Sandor-646</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kali_Sandor-12A1985-20</loc>
+	<loc>http://brassai.blue-l.de/Gaspar_Edina-647</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Maier_Levente-12A1985-21</loc>
+	<loc>http://brassai.blue-l.de/Csaszar_Istvan-648</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Edit-12A1985-22</loc>
+	<loc>http://brassai.blue-l.de/David_Ildiko-649</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Krull_Klara-12A1985-23</loc>
+	<loc>http://brassai.blue-l.de/Donath_Kalman-650</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bogardine_Magdolna-12A1985-24</loc>
+	<loc>http://brassai.blue-l.de/Szilagyi_Ildiko-651</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kovacs_Laszlo-12A1985-25</loc>
+	<loc>http://brassai.blue-l.de/Onci_Krisztina-652</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Donath_Julia_Karmen-12A1985-26</loc>
+	<loc>http://brassai.blue-l.de/Buchmuller_Agnes-653</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Miklos_Andras-12A1985-27</loc>
+	<loc>http://brassai.blue-l.de/Veres_Agnes-654</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Bela-12A1985-39</loc>
+	<loc>http://brassai.blue-l.de/Szallos_Eszter-655</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Darai_Gabriella-12A1985-28</loc>
+	<loc>http://brassai.blue-l.de/Gruber_Oszkar-656</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Paniti_Arpad-12A1985-38</loc>
+	<loc>http://brassai.blue-l.de/Kali_Sandor-657</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Petrov_Ljubomir-12A1985-29</loc>
+	<loc>http://brassai.blue-l.de/Maier_Levente-658</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Sover_Laszlo_Tibor-12A1985-30</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Edit-659</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szabo_Istvan-12A1985-31</loc>
+	<loc>http://brassai.blue-l.de/Krull_Klara-660</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szekely_Hajnalka-12A1985-32</loc>
+	<loc>http://brassai.blue-l.de/Bogardine_Magdolna-661</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Tatar_Tunde-12A1985-33</loc>
+	<loc>http://brassai.blue-l.de/Kovacs_Laszlo-662</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Varga_Ildiko-12A1985-34</loc>
+	<loc>http://brassai.blue-l.de/Donath_Julia_Karmen-663</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Ferenczy_Vass_Eva-12A1985-40</loc>
+	<loc>http://brassai.blue-l.de/Miklos_Andras-664</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vincze_Nemet_Gabriella-12A1985-35</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Bela-665</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Moll_Marta-12A1985-36</loc>
+	<loc>http://brassai.blue-l.de/Darai_Gabriella-666</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Ambrus_Noemi-12A1986-17</loc>
+	<loc>http://brassai.blue-l.de/Paniti_Arpad-667</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Ambrus_Agnes-12A1986-20</loc>
+	<loc>http://brassai.blue-l.de/Petrov_Ljubomir-668</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Andrasi_Kirsztina-12A1986-16</loc>
+	<loc>http://brassai.blue-l.de/Sover_Laszlo_Tibor-669</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bajnoczi_Lajos-12A1986-33</loc>
+	<loc>http://brassai.blue-l.de/Szabo_Istvan-670</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Ballo_Antonia-12A1986-29</loc>
+	<loc>http://brassai.blue-l.de/Szekely_Hajnalka-671</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Balazs_Attila-12A1986-44</loc>
+	<loc>http://brassai.blue-l.de/Tatar_Tunde-672</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bartha_Peter-12A1986-42</loc>
+	<loc>http://brassai.blue-l.de/Vincze_Nemet_Gabriella-673</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bicsak_Maria-12A1986-18</loc>
+	<loc>http://brassai.blue-l.de/Varga_Ildiko-674</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Biro_Eniko-12A1986-22</loc>
+	<loc>http://brassai.blue-l.de/Ferenczy_Vass_Eva-675</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Biro_Judith-12A1986-35</loc>
+	<loc>http://brassai.blue-l.de/Moll_Marta-676</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Eniko-12A1986-13</loc>
+	<loc>http://brassai.blue-l.de/Balazs_Attila-677</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bodor_Ildiko-12A1986-24</loc>
+	<loc>http://brassai.blue-l.de/Fodor_Eva-678</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bodroghi_Eniko-12A1986-23</loc>
+	<loc>http://brassai.blue-l.de/Boros_Edit-679</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Balint_Imola-12A1986-19</loc>
+	<loc>http://brassai.blue-l.de/Both_Melinda-680</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Banffy_Bela-12A1986-30</loc>
+	<loc>http://brassai.blue-l.de/Chiorean_Krisztina-681</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Csiandor_Hajnal-12A1986-14</loc>
+	<loc>http://brassai.blue-l.de/Vernes_Ibolya-682</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Dozsa_Eva-12A1986-34</loc>
+	<loc>http://brassai.blue-l.de/Bukkos_Ildiko-683</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Egri_Attila-12A1986-40</loc>
+	<loc>http://brassai.blue-l.de/Lazsadi_Ildiko-684</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Felvinczi_Csaba-12A1986-31</loc>
+	<loc>http://brassai.blue-l.de/Dali_Endre-685</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gecse_Izabella-12A1986-27</loc>
+	<loc>http://brassai.blue-l.de/Deak_Attila-686</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gergely_Laszlo-12A1986-41</loc>
+	<loc>http://brassai.blue-l.de/Kalman_Maria_Magdolna-687</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gombar_Annamaria-12A1986-25</loc>
+	<loc>http://brassai.blue-l.de/Felhazi_Sandor-688</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Jakab_Robert-12A1986-1</loc>
+	<loc>http://brassai.blue-l.de/Fulop_Erzsebet-689</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Korosfoy_Eva-12A1986-38</loc>
+	<loc>http://brassai.blue-l.de/Hosszu_Sandor-690</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Laszlo_Andras-12A1986-39</loc>
+	<loc>http://brassai.blue-l.de/Bodo_Steven-691</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Mihaly_Reka-12A1986-28</loc>
+	<loc>http://brassai.blue-l.de/Jasko_Ilona-692</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Mathe_Emilia-12A1986-36</loc>
+	<loc>http://brassai.blue-l.de/Kelemen_Attila-693</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Peter-12A1986-47</loc>
+	<loc>http://brassai.blue-l.de/Kis_Lukacs_Laszlo-694</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Peter-12A1986-32</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Attila_Geza_(Cezar)-695</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Sorompo_Reka-12A1986-26</loc>
+	<loc>http://brassai.blue-l.de/Revesz_Erzsebet-696</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szalczer_Eniko-12A1986-21</loc>
+	<loc>http://brassai.blue-l.de/Kory_Orsolya-697</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szilagyi_Levente-12A1986-45</loc>
+	<loc>http://brassai.blue-l.de/Kovacs_Adelka-698</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szasz_Csaba-12A1986-43</loc>
+	<loc>http://brassai.blue-l.de/Kovacs_Arpad-699</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szekely_Zsejke-12A1986-15</loc>
+	<loc>http://brassai.blue-l.de/Szabo_Eva-700</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szocs_Jozsef-12A1986-46</loc>
+	<loc>http://brassai.blue-l.de/Lazar_Gabriella-701</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Veres_Gyorgy-12A1986-2</loc>
+	<loc>http://brassai.blue-l.de/Lenard_Jozsef_(Yogi)-702</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vincze_Ingeborg-12A1986-37</loc>
+	<loc>http://brassai.blue-l.de/Marton_Asgrim_Aniko-703</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Adorjan_Janos-12B1965-1</loc>
+	<loc>http://brassai.blue-l.de/Berger_Maria-704</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Fodor_Eva-12B1985-2</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Maria-705</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Balazs_Attila-12B1985-1</loc>
+	<loc>http://brassai.blue-l.de/Papp_Levente-706</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Boros_Edit-12B1985-4</loc>
+	<loc>http://brassai.blue-l.de/Szados_Erzsebet-707</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Both_Melinda-12B1985-5</loc>
+	<loc>http://brassai.blue-l.de/Dosa_Magda-708</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Chiorean_Krisztina-12B1985-6</loc>
+	<loc>http://brassai.blue-l.de/Dezsi_Krisztina-709</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vernes_Ibolya-12B1985-7</loc>
+	<loc>http://brassai.blue-l.de/Rozsa_Julianna-710</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bukkos_Ildiko-12B1985-8</loc>
+	<loc>http://brassai.blue-l.de/Losteiner_Agnes-711</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Dali_Endre-12B1985-9</loc>
+	<loc>http://brassai.blue-l.de/Gergely_Varga_Andrea-712</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Deak_Attila-12B1985-10</loc>
+	<loc>http://brassai.blue-l.de/Tar_Bengtsson_Zsuzsa-713</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kalman_Maria_Magdolna-12B1985-11</loc>
+	<loc>http://brassai.blue-l.de/Bazsa_Jolan-714</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Felhazi_Sandor-12B1985-12</loc>
+	<loc>http://brassai.blue-l.de/Toth_Ibolya-715</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Fulop_Erzsebet-12B1985-13</loc>
+	<loc>http://brassai.blue-l.de/Veres_Gitta-716</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Hosszu_Sandor-12B1985-15</loc>
+	<loc>http://brassai.blue-l.de/Vremir_Marton-717</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gellert_Ilona-12B1985-14</loc>
+	<loc>http://brassai.blue-l.de/Ambrus_Agnes-718</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bodo_Steven-12B1985-3</loc>
+	<loc>http://brassai.blue-l.de/Ambrus_Noemi-719</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Jasko_Ilona-12B1985-16</loc>
+	<loc>http://brassai.blue-l.de/Andrasi_Kirsztina-720</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kelemen_Attila-12B1985-17</loc>
+	<loc>http://brassai.blue-l.de/Bajnoczi_Lajos-721</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kis_Lukacs_Laszlo-12B1985-19</loc>
+	<loc>http://brassai.blue-l.de/Balazs_Attila-722</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Attila_Geza_(Cezar)-12B1985-18</loc>
+	<loc>http://brassai.blue-l.de/Balint_Imola-723</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Revesz_Erzsebet-12B1985-42</loc>
+	<loc>http://brassai.blue-l.de/Ballo_Antonia-724</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kory_Orsolya-12B1985-20</loc>
+	<loc>http://brassai.blue-l.de/Banffy_Bela-725</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kovacs_Adelka-12B1985-22</loc>
+	<loc>http://brassai.blue-l.de/Bartha_Peter-726</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kovacs_Arpad-12B1985-21</loc>
+	<loc>http://brassai.blue-l.de/Bicsak_Maria-727</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szabo_Eva-12B1985-23</loc>
+	<loc>http://brassai.blue-l.de/Biro_Eniko-728</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Lazar_Gabriella-12B1985-24</loc>
+	<loc>http://brassai.blue-l.de/Biro_Judith-729</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Lenard_Jozsef_(Yogi)-12B1985-25</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Eniko-730</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Berger_Maria-12B1985-27</loc>
+	<loc>http://brassai.blue-l.de/Bodor_Ildiko-731</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Marton_Asgrim_Aniko-12B1985-26</loc>
+	<loc>http://brassai.blue-l.de/Bodroghi_Eniko-732</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Maria-12B1985-39</loc>
+	<loc>http://brassai.blue-l.de/Csiandor_Hajnal-733</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Papp_Levente-12B1985-28</loc>
+	<loc>http://brassai.blue-l.de/Dozsa_Eva-734</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szados_Erzsebet-12B1985-29</loc>
+	<loc>http://brassai.blue-l.de/Egri_Attila-735</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Dosa_Magda-12B1985-30</loc>
+	<loc>http://brassai.blue-l.de/Felvinczi_Csaba-736</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Dezsi_Krisztina-12B1985-31</loc>
+	<loc>http://brassai.blue-l.de/Gecse_Izabella-737</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Rozsa_Julianna-12B1985-32</loc>
+	<loc>http://brassai.blue-l.de/Gergely_Laszlo-738</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Losteiner_Agnes-12B1985-33</loc>
+	<loc>http://brassai.blue-l.de/Gombar_Annamaria-739</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gergely_Varga_Andrea-12B1985-34</loc>
+	<loc>http://brassai.blue-l.de/Jakab_Robert-740</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Tar_Bengtsson_Zsuzsa-12B1985-35</loc>
+	<loc>http://brassai.blue-l.de/Korosfoy_Eva-741</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Toth_Ibolya-12B1985-36</loc>
+	<loc>http://brassai.blue-l.de/Laszlo_Andras-742</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bazsa_Jolan-12B1985-37</loc>
+	<loc>http://brassai.blue-l.de/Mathe_Emilia-743</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Veres_Gitta-12B1985-38</loc>
+	<loc>http://brassai.blue-l.de/Mihaly_Reka-744</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vremir_Marton-12B1985-40</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Peter-745</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Akerman_Judit-12B1986-2</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Peter-746</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Baczoni_Karoly-12B1986-21</loc>
+	<loc>http://brassai.blue-l.de/Sorompo_Reka-747</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bajko_Janos_Csaba-12B1986-1</loc>
+	<loc>http://brassai.blue-l.de/Szalczer_Eniko-748</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Biro_Erzsebet_Gyongyvirag-12B1986-8</loc>
+	<loc>http://brassai.blue-l.de/Szasz_Csaba-749</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bojthe_Tamas-12B1986-22</loc>
+	<loc>http://brassai.blue-l.de/Szekely_Zsejke-750</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Csepregi_Zsuzsa-12B1986-17</loc>
+	<loc>http://brassai.blue-l.de/Szilagyi_Levente-751</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Deak_Ildiko-12B1986-23</loc>
+	<loc>http://brassai.blue-l.de/Szocs_Jozsef-752</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Farkas_Attila-12B1986-24</loc>
+	<loc>http://brassai.blue-l.de/Veres_Gyorgy-753</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gombos_Erika_Csilla-12B1986-25</loc>
+	<loc>http://brassai.blue-l.de/Vincze_Ingeborg-754</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kelemen_Emese-12B1986-16</loc>
+	<loc>http://brassai.blue-l.de/Akerman_Judit-755</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kelemen_Erzsebet-12B1986-13</loc>
+	<loc>http://brassai.blue-l.de/Baczoni_Karoly-756</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kelemen_Melinda-12B1986-19</loc>
+	<loc>http://brassai.blue-l.de/Bajko_Janos_Csaba-757</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Ildiko-12B1986-15</loc>
+	<loc>http://brassai.blue-l.de/Biro_Erzsebet_Gyongyvirag-758</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Zsuzsanna_Emese-12B1986-12</loc>
+	<loc>http://brassai.blue-l.de/Bojthe_Tamas-759</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kantor_Csaba-12B1986-26</loc>
+	<loc>http://brassai.blue-l.de/Csepregi_Zsuzsa-760</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kaptalan_Nagy_Jozsef_Csaba-12B1986-27</loc>
+	<loc>http://brassai.blue-l.de/Deak_Ildiko-761</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kosa_Ildiko-12B1986-10</loc>
+	<loc>http://brassai.blue-l.de/Farkas_Attila-762</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Lovasz_Andras-12B1986-28</loc>
+	<loc>http://brassai.blue-l.de/Gombos_Erika_Csilla-763</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gruber_Annamaria-12B1986-3</loc>
+	<loc>http://brassai.blue-l.de/Kantor_Csaba-764</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Muradin_Judit-12B1986-31</loc>
+	<loc>http://brassai.blue-l.de/Kaptalan_Nagy_Jozsef_Csaba-765</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Malos_Maria-12B1986-29</loc>
+	<loc>http://brassai.blue-l.de/Kelemen_Emese-766</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Marton_Zsuzsa-12B1986-30</loc>
+	<loc>http://brassai.blue-l.de/Kelemen_Erzsebet-767</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Gyongyi-12B1986-14</loc>
+	<loc>http://brassai.blue-l.de/Balogh_Kelemen_Melinda-768</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Piroska_Judit-12B1986-33</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Ildiko-769</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Pall_Kinga_Agnes-12B1986-32</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Zsuzsanna_Emese-770</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Pavai_Barna_Laszlo-12B1986-6</loc>
+	<loc>http://brassai.blue-l.de/Kosa_Ildiko-771</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Peter_Andrea-12B1986-20</loc>
+	<loc>http://brassai.blue-l.de/Lovasz_Andras-772</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Razmany_Peter_Zsolt-12B1986-34</loc>
+	<loc>http://brassai.blue-l.de/Malos_Maria-773</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Schoplocher_Krisztina_Eva-12B1986-11</loc>
+	<loc>http://brassai.blue-l.de/Marton_Zsuzsa-774</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szocs_Sandor_Attila-12B1986-35</loc>
+	<loc>http://brassai.blue-l.de/Gruber_Annamaria-775</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szoke_Eniko_Gyongyi-12B1986-36</loc>
+	<loc>http://brassai.blue-l.de/Muradin_Judit-776</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Teleki_Gabor-12B1986-5</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Gyongyi-777</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Terschanszky_Agnes_Katalin-12B1986-7</loc>
+	<loc>http://brassai.blue-l.de/Pall_Kinga_Agnes-778</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Talas_Zoltan-12B1986-37</loc>
+	<loc>http://brassai.blue-l.de/Pavai_Barna_Laszlo-779</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Torok_Arpad-12B1986-4</loc>
+	<loc>http://brassai.blue-l.de/Peter_Andrea-780</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Valczan_Anna_Maria-12B1986-38</loc>
+	<loc>http://brassai.blue-l.de/Piroska_Judit-781</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Wagner_Melinda-12B1986-39</loc>
+	<loc>http://brassai.blue-l.de/Razmany_Peter_Zsolt-782</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Almasi_Melinda-12C1986-19</loc>
+	<loc>http://brassai.blue-l.de/Schoplocher_Krisztina_Eva-783</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Babrik_Gyongyi-12C1986-17</loc>
+	<loc>http://brassai.blue-l.de/Szocs_Sandor_Attila-784</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Baja_Erika-12C1986-14</loc>
+	<loc>http://brassai.blue-l.de/Szoke_Eniko_Gyongyi-785</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Balogh_Zoltan-12C1986-20</loc>
+	<loc>http://brassai.blue-l.de/Talas_Zoltan-786</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Barazsuly_Istvan-12C1986-34</loc>
+	<loc>http://brassai.blue-l.de/Teleki_Gabor-787</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bartha_Gabriella-12C1986-8</loc>
+	<loc>http://brassai.blue-l.de/Terschanszky_Agnes_Katalin-788</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Batiz_Reka-12C1986-15</loc>
+	<loc>http://brassai.blue-l.de/Torok_Arpad-789</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Bereczky_Ildiko-12C1986-3</loc>
+	<loc>http://brassai.blue-l.de/Valczan_Anna_Maria-790</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Biro_Ildiko-12C1986-2</loc>
+	<loc>http://brassai.blue-l.de/Wagner_Melinda-791</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Biro_Jutka-12C1986-11</loc>
+	<loc>http://brassai.blue-l.de/Almasi_Melinda-792</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Balint_Emese-12C1986-13</loc>
+	<loc>http://brassai.blue-l.de/Szekely_Gyongyi-793</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Balint_Zoltan-12C1986-35</loc>
+	<loc>http://brassai.blue-l.de/Baja_Erika-794</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Beczi_Judith-12C1986-10</loc>
+	<loc>http://brassai.blue-l.de/Balint_Emese-795</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Czegelyi_Eniko-12C1986-26</loc>
+	<loc>http://brassai.blue-l.de/Balint_Zoltan-796</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Denes_Melinda-12C1986-24</loc>
+	<loc>http://brassai.blue-l.de/Balogh_Zoltan-797</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Gergely_Iren-12C1986-23</loc>
+	<loc>http://brassai.blue-l.de/Barazsuly_Istvan-798</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Jakab_Sandor-12C1986-30</loc>
+	<loc>http://brassai.blue-l.de/Bartha_Gabriella-799</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Katrinecz_Attila-12C1986-32</loc>
+	<loc>http://brassai.blue-l.de/Batiz_Reka-800</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kilin_Gyorgy-12C1986-27</loc>
+	<loc>http://brassai.blue-l.de/Beczi_Judith-801</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Csaba-12C1986-21</loc>
+	<loc>http://brassai.blue-l.de/Bereczky_Ildiko-802</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Kiss_Csaba-12C1986-1</loc>
+	<loc>http://brassai.blue-l.de/Biro_Ildiko-803</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Nagy_Judith-12C1986-5</loc>
+	<loc>http://brassai.blue-l.de/Biro_Jutka-804</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Orban_Martha-12C1986-25</loc>
+	<loc>http://brassai.blue-l.de/Czegelyi_Eniko-805</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Prosteanu_Marius-12C1986-28</loc>
+	<loc>http://brassai.blue-l.de/Denes_Melinda-806</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Palffy_Hajnal-12C1986-9</loc>
+	<loc>http://brassai.blue-l.de/Gergely_Iren-807</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Peterffy_Lilla-12C1986-18</loc>
+	<loc>http://brassai.blue-l.de/Jakab_Sandor-808</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szallos_Pal-12C1986-37</loc>
+	<loc>http://brassai.blue-l.de/Katrinecz_Attila-809</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szatmari_Marika-12C1986-7</loc>
+	<loc>http://brassai.blue-l.de/Kilin_Gyorgy-810</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szlavits_Maria-12C1986-4</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Csaba-811</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szell_Zoltan-12C1986-29</loc>
+	<loc>http://brassai.blue-l.de/Kiss_Csaba-812</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Torok_Erzsebet-12C1986-6</loc>
+	<loc>http://brassai.blue-l.de/Nagy_Judith-813</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Torok_Melinda-12C1986-16</loc>
+	<loc>http://brassai.blue-l.de/Orban_Martha-814</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Torok_Arpad-12C1986-33</loc>
+	<loc>http://brassai.blue-l.de/Palffy_Hajnal-815</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Varga_Ibolya-12C1986-12</loc>
+	<loc>http://brassai.blue-l.de/Finta_Peterffy_Lilla-816</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Veres_Istvan-12C1986-31</loc>
+	<loc>http://brassai.blue-l.de/Prosteanu_Marius-817</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vincze_Attila-12C1986-36</loc>
+	<loc>http://brassai.blue-l.de/Szallos_Pal-818</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Vasarhelyi_Krisztina-12C1986-22</loc>
+	<loc>http://brassai.blue-l.de/Szatmari_Marika-819</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Iskola_Vendeg-oooooo-12</loc>
+	<loc>http://brassai.blue-l.de/Szell_Zoltan-820</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/System_Administrator-oooooo-2</loc>
+	<loc>http://brassai.blue-l.de/Szlavits_Maria-821</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
-	<loc>http://brassai.blue-l.de/Szell_Zoltan-oooooo-29</loc>
+	<loc>http://brassai.blue-l.de/Torok_Arpad-822</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-06-02</lastmod>
+	<lastmod>2016-11-13</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
+<url>
+	<loc>http://brassai.blue-l.de/Torok_Erzsebet-823</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Torok_Melinda-824</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Varga_Ibolya-825</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vasarhelyi_Krisztina-826</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Veres_Istvan-827</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Vincze_Attila-828</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Cimpian_Zsolt_Attila-829</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Mate_Andras_Levente-830</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Rethy_Kinga-831</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Rethy_Levente-832</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Iskola_Vendeg-833</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/System_Administrator-834</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Arkosi_Sandor-835</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Benedek_Andras-836</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Berekmeri_Geza-837</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Boda_Karoly-838</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Csalah_Gyorgy-839</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Daly_Gyorgy-840</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Finta_Gyula-841</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Finta_Hajnal-842</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Gall_Denes-843</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Jozsa_Gyorgy-844</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kiss_Lajos-845</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Jolan-846</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Kovacs_Zoltan-847</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Maczak_Andras-848</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Marosi_Maria-849</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Papp_Zoltan-850</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Pazmany_Zsuzsa-851</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szabo_Almos-852</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szolosi_Ferenc-853</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Torok_Ferenc-854</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Toth_Karoly-855</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kelemen_Zoltan-878</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-11-13</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+
 </urlset>

@@ -4,7 +4,7 @@ include_once("homemenu.php");
 ?>
 <div class="container-fluid">
 <h1>Impresszum: </h1 >
-		Weboldal tulajdonos <a href="Levente_Maier">Maier Levente</a><br/>
+		Weboldal tulajdonos <a href="editDiak.php?uid=levi&tabOpen=0">Maier Levente</a><br/>
 		Bergstr. 33a<br/>
 		91790 Bergen<br/>
 		Germany<br/>
@@ -25,7 +25,6 @@ include_once("homemenu.php");
 		</p>
 		
 		<p>Angaben gemäß § 5 TMG:</p>
-		<p>Levente Maier<br /> Bergstr. 33<br />91790 Bergen</p>
 		<h2>Kontakt:</h2>
 		<p>Telefon:+49 09147 95033<br />E-Mail:levi@blue-l.de</p>
 		<p><span style="line-height: 1.3em;">Quelle: </span><em style="line-height: 1.3em;"><a href="http://www.e-recht24.de">eRecht24</a>, Rechtsanwalt für Internetrecht Sören Siebert</em></p>

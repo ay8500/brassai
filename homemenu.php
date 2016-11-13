@@ -14,6 +14,8 @@
 		setAktClass($class["id"]);
 	}
 	
+	$db = new dbDAO;
+	
 	
 ?>
 <!DOCTYPE html>

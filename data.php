@@ -372,6 +372,33 @@ function getPersonName($person) {
 }
 
 /**
+ * try to get a person by normalised name in one class
+ * @param unknown $personLink
+ * @param unknown $classId
+ */
+function getPersonByNormalisedName($personLink,$classId=null) {
+	$personLink = trim($personLink,"//");
+	global $db;
+	if ($classId!=null) {
+		$personlist = $db->getPersonListByClassId($classId);
+		foreach ($personlist as $person) {
+			if (getPersonLink($person["lastname"], $person["firstname"])==$personLink) { 
+				return $person;
+				exit;
+			}
+		}
+	}
+	$personlist=$db->getPersonList();
+	foreach ($personlist as $person) {
+		if (getPersonLink($person["lastname"], $person["firstname"])==$personLink) {
+			return $person;
+			exit;
+		}
+	}
+	return null;
+}
+
+/**
  * The real person id
  * @param unknown $person
  */

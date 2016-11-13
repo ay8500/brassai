@@ -10,6 +10,8 @@ ErrorDocument 404 /dc.php
 RewriteEngine On 
 Options FollowSymLinks 
 
+Redirect 301 /Burgus_Botond-12A1984-1 /Burgus_Botond-603
+
 Redirect 301 /Levente_Maier /Maier_Levente-12A1985-21
 Redirect 301 /Tamas_Gizella /Tamas_Gizella-12A1985-2
 Redirect 301 /Varga_Dorottya /Varga_Dorottya-12A1985-3

@@ -26,22 +26,63 @@ else if  ($su[1]=='impressum') {
   include_once('impressum.php');
 }
 */
-if (sizeof($qs)>1) {
+if (sizeof($qs)==2) {
 	include_once 'tools/sessionManager.php';
 	include_once 'tools/userManager.php';
 	include_once 'data.php';
 	setAktUserId($qs[1]);
-		$diak=$db->getPersonByID($qs[1]);
+	$diak=$db->getPersonByID($qs[1]);
+	if ($diak==null) {
+		error();
+		exit;
+	} else {
+		header("status: 200");
+		include ("editDiak.php");
+		exit();
+	}
+}
+
+if (sizeof($qs)==3) {
+	include_once 'tools/sessionManager.php';
+	include_once 'tools/userManager.php';
+	include_once 'data.php';
+	$classText=substr($qs[1],3,7)." ".substr($qs[1],0,3);
+	$classId = $db->getClassByText($classText);
+	if ($classId!=null) {
+		setAktClass($classId);
+		$diak=getPersonByNormalisedName($qs[0],$classId["id"]);
 		if ($diak==null) {
 			error();
 			exit;
 		} else {
-			header("status: 200"); 
+			setAktUserId($diak["id"]);
+			header("status: 200");
 			include ("editDiak.php");
-			exit();
+			exit;
 		}
+	} else {
+		error();
+		exit;
 	}
- 
+}
+
+if (sizeof($qs)==1) {
+	include_once 'tools/sessionManager.php';
+	include_once 'tools/userManager.php';
+	include_once 'data.php';
+	$diak=getPersonByNormalisedName($qs[0]);
+	if ($diak==null) {
+		error();
+		exit;
+	} else {
+		setAktUserId($diak["id"]);
+		header("status: 200");
+		include ("editDiak.php");
+		exit;
+	}
+}
+
+
 error();
 exit;
 
