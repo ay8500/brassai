@@ -126,6 +126,9 @@
 						<?PHP endif  ?>
 						<li><a href="vote.php">A következő Találkozó</a></li>
 						<li><a href="zenetoplista.php">Zenetoplista</a></li>
+						<?php if (userIsAdmin()) :?>
+							<li><a href="editclass.php?classid=<?php echo getAktClass()?>">Osztályinformációk</a></li>
+						<?php endif;?>
 					</ul>
 	      		</li>
 	      	<?php } ?>

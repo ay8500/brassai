@@ -238,7 +238,12 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function deletePersonEntry( $id) {
-		return $this->dataBase->delete("person", "id", $id);
+		$person=$this->getPersonByID($id,true);
+		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
+		$file=$person["picture"];
+		$ret1 =unlink($fileFolder.$file);
+		$ret2= $this->dataBase->delete("person", "id", $id);
+		return $ret1 && $ret2;
 	}
 	
 	/**

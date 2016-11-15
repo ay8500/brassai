@@ -9,33 +9,6 @@ include_once 'dbDAO.class.php';
 $db = new dbDAO;
 
 /**
- * The aktual person class id
- * @return number|NULL
- */
-function getAktClass() {
-	global $db;
-	if (isset($_SESSION['aktClass'])) 
-		return intval($_SESSION['aktClass']);
-	else {
-		$class =$db->getClassByText("1985 12A");
-		if ($class!=null) {
-			$_SESSION['aktClass']=$class["id"];
-			return $class["id"];
-		}
-		else die("Default class not found!");
-	}
-}
-
-/**
- * Set aktual person class id
- * @param unknown $classId
- */
-function setAktClass($classId) {
-	$_SESSION['aktClass']=$classId;
-}
-
-
-/**
  * The folder of the aktual persons class
  */
 function getAktClassFolder() {

@@ -1,4 +1,4 @@
-<?PHP 
+<?php
 include_once 'tools/sessionManager.php';
 include("homemenu.php");
 include_once("data.php");

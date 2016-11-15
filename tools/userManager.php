@@ -6,17 +6,22 @@
 	if (isset($_GET['classid']))   { setAktClass($_GET['classid']); }
 	
 	//Login if crypted loginkey present and correct
-	if (isset($_GET['key']))   {
-		$login = encrypt_decrypt("decrypt", $_GET['key']);
-		setAktUserId($login);
-		$diak=$db->getPersonByID($login);
-		if (null!=$diak) {
-			setUserInSession($diak["admin"], $diak["user"],$login);
+	if (isset($_GET['key'])) {
+		directLogin($_GET['key']);
+	}
+	
+	function directLogin($key){
+		global $db;
+		$personid = encrypt_decrypt("decrypt", $key);
+		$person=$db->getPersonByID($personid);
+		if (null!=$person) {
+			setAktUserId($personid);
+			setUserInSession($person["admin"], $person["user"],$personid);
 			if (!userIsAdmin()) {
-				saveLogInInfo("Login",$_SESSION['uId'],$diak["user"],"","direct");
+				saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
 				sendHtmlMail(null,
 					"<h2>Login</h2>".
-					"Uid:".$_SESSION['uId']." User: ".$diak["user"]," Direct-Login");
+					"Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
 			}
 		} else {
 			die("A kód nem érvényes!".$login[2]);
@@ -71,6 +76,34 @@
 		else 
 			return null;
 	}
+
+	/**
+	 * Set aktual person class id
+	 * @param unknown $classId
+	 */
+	function setAktClass($classId) {
+		$_SESSION['aktClass']=$classId;
+	}
+	
+	
+	/**
+	* The aktual person class id
+	* @return number|NULL
+	*/
+	function getAktClass() {
+		global $db;
+		if (isset($_SESSION['aktClass']))
+			return intval($_SESSION['aktClass']);
+			else {
+				$class =$db->getClassByText("1985 12A");
+				if ($class!=null) {
+					$_SESSION['aktClass']=$class["id"];
+					return $class["id"];
+				}
+				else die("Default class not found!");
+			}
+	}
+	
 	
 	/**
 	 * are the logged in user and aktual viewed user the same?

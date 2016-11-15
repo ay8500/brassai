@@ -1,31 +1,4 @@
 <?php
-//Submit a new user
-$action=getGetParam("action","");
-
-//Create a new person
-$newperson = $action=="newperson" || $action=="newguest" || $action=="newteacher"; 
-
-$anonymousEditor=getParam("anonymousEditor")=="true";
-
-//Edit or only view variant this page
-$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
-
-
-//create new person in case of submittin a new one
-if ( $newperson ) {
-	$diak = getPersonDummy();
-	$diak["id"] = -1; 
-	$diak["classID"] = getAktClass();
-	$action=="newteacher" ? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
-	$action=="newguest"   ? $diak["role"]="guest"	:	$diak["role"]="";
-	$newid = $db->savePerson($diak);
-	if ($newid>=0)
-		$diak["id"]=$newid; 
-	else
-		$resultDBoperation='<div class="alert alert-danger" >Személy kimetése nem sikerült! Hibakód:4912</div>';
-}
-
-
 
 //preparation of the field to be edited and the itemprop characteristic
 $dataFieldNames 	=array("lastname","firstname","email");
@@ -113,7 +86,7 @@ if ($action=="changediak") {
 	</div>
 	
 	<?php //Person picture download?>
-	<?php if (($edit || $newperson) && trim($diak["lastname"])!="") {  ?>
+	<?php if (($edit || $createNewPerson) && trim($diak["lastname"])!="") {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
 				<span>Válassz egy új képet max. 2MByte</span>
@@ -135,14 +108,14 @@ if ($action=="changediak") {
 	<?php } ?>
 	
 	<?php //Save button?>
-	<?php if ($edit || $newperson) {?>
+	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
 		</div>
 	<?php } ?>
 	
 	<?php //Anonymous user edit button?>
-	<?php if (!$edit && !$newperson) {?>
+	<?php if (!$edit && !$createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
 		</div>
@@ -150,7 +123,7 @@ if ($action=="changediak") {
 	
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
-	<?php if (($edit || $newperson) && !$anonymousEditor ) { ?>
+	<?php if (($edit || $createNewPerson) && !$anonymousEditor ) { ?>
 		<div style="min-height:30px" class="input-group">
       		<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
       		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
@@ -164,7 +137,7 @@ if ($action=="changediak") {
 		<div class="input-group">
 			<?php
 			//Inpufields
-			if (($edit ||$newperson) && !$anonymousEditor ) {?>
+			if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
 				<span style="width:40px" id="highlight" class="input-group-addon">
 		      		<?php if ($dataCheckFieldVisible[$i]) {
@@ -212,7 +185,7 @@ if ($action=="changediak") {
 	<?php } ?>
 	</div>
 	<?php 
-	if ($edit || $newperson) {
+	if ($edit || $createNewPerson) {
 		echo('<input type="hidden" name="action"	value="changediak" id="form_action" />');
 		echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
 		echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');

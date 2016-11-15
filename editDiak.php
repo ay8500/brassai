@@ -5,9 +5,8 @@ include_once ('tools/userManager.php');
 include_once 'tools/ltools.php';
 include_once("data.php");
 
-if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"]; 
-else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"]; 
-else $tabOpen=0;
+$resultDBoperation="";
+$tabOpen= getIntParam("tabOpen", 0);
 
 //focus the person and get his data from the database
 //if user id is delivered over pos or get parameter
@@ -27,6 +26,33 @@ if (isset($_GET["uid"]) || isset($_POST["uid"])) {
 else {
 	$personid=getAktUserId();	
 }
+
+//Parameters
+$action=getGetParam("action","");
+$anonymousEditor=getParam("anonymousEditor")=="true";
+
+//Create a new person
+$createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher";
+
+//Edit or only view variant this page
+$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
+
+
+//create new person in case of submittin a new one
+if ( $createNewPerson ) {
+	$newPerson = getPersonDummy();
+	$newPerson["id"] = -1;
+	$newPerson["classID"] = getAktClass();
+	$action=="newteacher" ? $newPerson["isTeacher"]=1	:	$newPerson["isTeacher"]=0;
+	$action=="newguest"   ? $newPerson["role"]="guest"	:	$newPerson["role"]="";
+	$newid = $db->savePerson($newPerson);
+	if ($newid>=0)
+		$personid=$newid;
+	else
+		$resultDBoperation='<div class="alert alert-danger" >ùj személy létrehozása nem sikerült! Hibakód:4912</div>';
+}
+
+
 if ($personid!=null && $personid>0) {
 	$diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
@@ -41,8 +67,6 @@ if ($personid!=null && $personid>0) {
 	header('Location:dc.php');
 	exit;
 }
-
-$resultDBoperation="";
 
 //Change password
 if (getParam("action")=="changepassw" && userIsLoggedOn()) {
