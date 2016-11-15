@@ -1,6 +1,6 @@
 <?php
 /**
- * Database engime for person data  
+ * Business layer for the classmate database 
  */
 
 include_once "tools/userManager.php";
@@ -62,6 +62,18 @@ function getAktClassName() {
 		return "";
 }
 
+/**
+ * returns aktual person
+ * @return object person
+ */
+function getAktPerson() {
+	global $db;
+	if ( null!=getAktUserId())  {
+		return $db->getPersonByID(getAktUserId());
+	} else {
+		return null;
+	}
+}
 
 /**
  * returns logged in person
@@ -76,18 +88,6 @@ function getPersonLogedOn() {
 	}
 }
 
-/**
- * returns aktual person
- * @return object person
- */
-function getAktPerson() {
-	global $db;
-	if ( null!=getAktUserId())  {
-		return $db->getPersonByID(getAktUserId());
-	} else {
-		return null;
-	}
-}
 
 /**
  * is the person a guest
@@ -115,24 +115,23 @@ function isPersonEditor($person) {
  * returns an empty person
  */
 function getPersonDummy() {
-	$p = array();
-	$p["firstname"]="";
-	$p["lastname"]="";
-	$p["picture"]="avatar.jpg";
-	$p["geolat"]="46.7719";
-	$p["geolng"]="23.5924";
-	$p["user"]=createPassword(8);
-	$p["passw"]=createPassword(8);
-	$p["role"]="";
-	return $p;
+	return [
+		"firstname"=>"",
+		"lastname"=>"",
+		"picture"=>"avatar.jpg",
+		"geolat"=>"46.7719",
+		"geolng"=>"23.5924",
+		"user"=>createPassword(8),
+		"passw"=>createPassword(8),
+		"role"=>""
+	];
 }
 
 
 /**
- * Compare classmates
- * "firstname","lastname","birthname"
- * @param unknown $a
- * @param unknown $b
+ * Compare classmates by firstname,lastname,birthname
+ * @param person $a
+ * @param person $b
  */
 function compareAlphabetical($a,$b) {
 	if (strstr($a["lastname"],"Dr. ")!="")
@@ -150,18 +149,33 @@ function compareAlphabetical($a,$b) {
 	return strcmp(getNormalisedChars($aa), getNormalisedChars($bb));
 }
 
+/**
+ * Compare classmates by email
+ * @param person $a
+ * @param person $b
+ */
 function compairEmail($d1,$d2) {
 	if (!isset($d1["email"]) || !isset($d2["email"]))
 		return false;
 	return getFieldValue($d1,"email")==getFieldValue($d2,"email");
 }
 
+/**
+ * Compare classmates by username
+ * @param person $a
+ * @param person $b
+ */
 function compairUser($d1,$d2) {
 	if (!isset($d1["user"]) || !isset($d2["user"]))
 		return false;
 	return strtolower($d1["user"])==strtolower($d2["user"]);
 }
 
+/**
+ * Compare classmates by username link
+ * @param person $a
+ * @param person $b
+ */
 function compairUserLink($d1,$d2) {
 	if (isset($d1["lastname"]) && isset($d2["lastname"]) && isset($d1["firstname"]) && isset($d2["firstname"])) {
 		return getPersonLink($d1["lastname"],$d1["firstname"])==getPersonLink($d2["lastname"],$d2["firstname"]);
@@ -170,11 +184,17 @@ function compairUserLink($d1,$d2) {
 		return false;
 	}
 
+/**
+ * Set picture visibility 
+ * @param int $pictureId
+ * @param int $visibleforall
+ * @return integer >=0 ok,
+ */
 function setPictureVisibleForAll($pictureId, $visibleforall){
 	global $db;
 	$picture=$db->getPictureById($pictureId);
 	$picture["isVisibleForAll"]=$visibleforall?1:0;
-	$db->savePicture($picture);
+	return $db->savePicture($picture);
 }
 
 /**

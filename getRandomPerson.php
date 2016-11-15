@@ -61,7 +61,7 @@ function getRandomPerson() {
 	$idrow=$personList[rand(0,sizeof($personList)-1)];
 	
 	$p=$db->getPersonByID($idrow["id"]);
-	$class=$db->getClassById(getAktClass());
+	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	
 	return $p;

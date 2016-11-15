@@ -28,15 +28,17 @@
 						<?php 
 							$classes=$db->getClassList();
 							foreach ($classes as $class) {
-								echo('<option>'.$class["text"].'</option>');
+								echo('<option value="'.$class["id"].'">'.$class["text"].'</option>');
 							}
 						?>
 					</select>
 				</div>
 				<div>
-					<input type="submit" value="<?php echo getTextRes("NextPage"); ?>">
+					<input type="submit" value="<?php echo getTextRes("NextPage"); ?>" class="btn btn-default" />
 				</div>
 			</form>
+			<br />
+			<button onclick="alert('Ez a funktió még áll rendelkezésre, kérlek küldj egy mailt a brassai@blue-l.de címre. Amilyen gyorsan csak lehet bővítve lessz az oldal a kivánt osztállyal.')" class="btn btn-default">Nem találom végzős osztályom,<br /> szeretném bővítenni ezt az oldalt az én osztályommal.</button>
 		</div>
 	<?php }?>
 	<br/>
@@ -54,20 +56,24 @@
 				<select name="userId" size="1">
 						<option value="-2"><?php echo getTextRes("SelectOneOption"); ?></option>
 						<?php 
-							$classId = $db->getClassByText($schoolClass);
-							$data=$db->getPersonListByClassId($classId);
-							foreach ($data as $l => $d) { 
-							if ($d["facebookid"]=="") { ?>
-								<option value="<?php echo getPersonId($d) ?>"><?php echo $d["lastname"].' '.$d["firstname"] ?> </option>
-						<?php } } ?>	
+							$classId = $db->getClassById(intval($schoolClass));
+							$data=$db->getPersonListByClassId($classId["id"]);
+							foreach ($data as $d) { 
+								if (!isset($d["facebookid"]) || $d["facebookid"]=="" || $d["facebookid"]==0) { ?>
+									<option value="<?php echo getPersonId($d) ?>"><?php echo $d["lastname"].' '.$d["firstname"] ?> </option>
+						<?php  } } ?>	
 				</select>
 				<br />
 				<br />
 				<div>
-					<input type="submit" value="<?php echo getTextRes("ConnectToFacebook"); ?>">
+					<input type="submit" value="<?php echo getTextRes("ConnectToFacebook"); ?>" class="btn btn-default" />
 				</div>
 			</form>
 			<br />
+			<form action="start.php"  >
+				<input type="hidden" name="scoolClassFb" />
+				<input type="submit" value="Tévedtem, nem ebben az osztályban végezem" class="btn btn-default" />
+			</form>
 		</div>
 	<?php }?>
 	</div>

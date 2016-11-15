@@ -170,7 +170,15 @@ class MySqlDb {
 	}
 	
 	
-	/* Update */
+	/**
+	 * Update data in a table
+	 * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
+	 * @param string $table
+	 * @param array $data
+	 * @param string $whereField
+	 * @param string $whereValue
+	 * @return boolean
+	 */
 	public function update($table, $data, $whereField="", $whereValue="") {
 	  	$sql="update ".$table." set ";
 	  	$notFirstElement=false;

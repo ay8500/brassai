@@ -19,15 +19,11 @@ $SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
 include_once 'tools/ltools.php';
 include_once 'data.php';
 
-$scoolClass=getParam("scoolClassFb","");
-if ($scoolClass!="")
-	openDatabase(substr($scoolClass,5,3).substr($scoolClass,0,4));
+$schoolClass=getParam("scoolClassFb","");
 
 $userId=getIntParam("userId",-1);
 if ($userId>=0) {
-	$person = $db->getPersonByID($userId);
-	$person["facebookid"]= $_SESSION["FacebookId"];
-	$db->savePerson($person);
+	$db->savePersonFacebookId($userId,$_SESSION["FacebookId"]);
 }
 
 include("homemenu.php");
@@ -59,7 +55,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || ge
 			<h4><span class="glyphicon glyphicon-home"></span> Honoldal Újdonságok:</h4></div>
 			<div class="panel-body">
 				<ul>
-					<li>Március 2016: <a href="hometable.php?scoolYear=teac&scoolClass=ooo">Tanárok</a> listályával bővült az oldal.</li>
+					<li>Március 2016: <a href="hometable.php?classid=0 staf">Tanárok</a> listályával bővült az oldal.</li>
 					<li>Junius 2015: Üzenőfal híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
 					<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
 					<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>

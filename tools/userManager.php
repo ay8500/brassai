@@ -123,7 +123,6 @@
 		$ret = false;
 		if (checkRequesterIP("facebook")) {
 			$ret=false;
-			$diak["facebookid"]=$facebookId;
 			$usr =$db->getPersonByFacobookId($facebookId);
 			if (null != $usr) {
 				setUserInSession(

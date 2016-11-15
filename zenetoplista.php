@@ -25,10 +25,7 @@ if ($delVote>=0 && $edit) {
    if (isset($_GET["interpret"])) $pinterpret = $_GET["interpret"]; else $pinterpret=0;
    if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
-   		$interpret=array();
-   		$interpret["name"]=$pnewinterpret;
-   		$interpret["id"]=-1;
-   		$pinterpret=$db->saveInterpret($interpret);
+   		$pinterpret=$db->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
    		if ($pinterpret>=0) 
    			$resultDBoperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
    		else
@@ -41,10 +38,21 @@ if ($delVote>=0 && $edit) {
    if (isset($_GET["newVideo"])) $pnewVideo = $_GET["newVideo"]; else $pnewVideo="";
    if (isset($_GET["newLink"])) $pnewLink = $_GET["newLink"]; else $pnewLink="";
    if (($psong=="0") && ($pnewSong<>"" && $edit )) {
-   		$psong=insertNewSong(getAktDatabaseName(),$pinterpret, $pnewSong,$pnewVideo, $pnewLink);
+   		$psong=$db->saveSong([
+   				'id'=>-1,
+   				'interpretID'=>$pinterpret,
+   				'name'=>$pnewSong,
+   				'video'=>$pnewVideo,
+   				'link'=>$pnewLink]);
    		if ($psong>=0) {
-   			insertVote(getAktDatabaseName(),getLoggedInUserId(),$psong);
-   			$resultDBoperation='<div class="alert alert-success" >Zene és a szavezatod sikeresen kimentve.</div>';
+   			if(	$db->saveSongVote([
+   					'id'=>-1,
+   					'personID'=>getLoggedInUserId(),
+   					'songID'=>$psong])>=0) {
+   				$resultDBoperation='<div class="alert alert-success" >Zene és a szavazatod sikeresen kimentve.</div>';
+   			} else {
+   				$resultDBoperation='<div class="alert alert-warning" >Zene kimentése sikertelen!</div>';
+   			}
    			$psong=0;$pinterpret=0;
    		} else {
    			$resultDBoperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
@@ -77,7 +85,7 @@ if ($delVote>=0 && $edit) {
 	$aktPerson = getAktPerson();
 	
 	//Check the maximal amout of vote
-	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=25;
+	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=30;
 	if ($edit) {
 		if ($voteCount<$maxVoteCount)  
 			$voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot adhatsz"; 

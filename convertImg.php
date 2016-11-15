@@ -1,4 +1,20 @@
 <?php
+/**
+ * Parameter:
+ * 	color: 
+ * 		Background color of the empty space if parameter thumb=true
+ * 		Default value: ffffff 
+ *  thumb: 
+ *  	If true a sqare picture is generated the empty space if filled with the color parameter
+ * 		Default value: false
+ *  
+ *  file:picture filename
+ *  id: picture id
+ *  
+ *  quality: jpeg quality default 75
+ *  
+ *  width,height default value 200
+ */
 include_once 'tools/sessionManager.php';
 //are we in a session?
 if ( !isset($_SESSION['lastReq']) ) {
@@ -12,10 +28,30 @@ include_once 'tools/ltools.php';
 
 //file Name without extensions
 $file_name = getParam("file", "");
-if ($file_name=="") {
-	echo("Missing parameter file!");
+$id = getParam("id", "");
+if ($file_name=="" && $id=="") {
+	http_response_code(401);
+	echo("Missing parameter id or file!");
 	exit; 
 }
+
+if ($file_name!="") {
+	$picture = $db->getPictureByFileName($file_name);
+	if ($picture==null) {
+		http_response_code(401);
+		echo("Picture:'".$file_name."' not found!");
+		exit;
+	}
+} else {
+	$picture = $db->getPictureById(intval($id));
+	if ($picture==null) {
+		http_response_code(401);
+		echo("Picture id:".$id." not found!");
+		exit;
+	}
+	$file_name=$picture["file"];
+}
+
 
 //Width
 if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = 200;
@@ -26,6 +62,8 @@ $Thumb = false; if ((isset($_GET['thumb'])) && ($_GET['thumb']=="true")) $Thumb 
 //Color
 $color ="ffffff"; if (isset($_GET['color'])) $color=($_GET['color']); 
 
+//Quality
+$quality=75; if (isset($_GET['quality'])) $quality=intval($_GET['quality']);
  
 /*
 //check the file's extension
@@ -81,7 +119,6 @@ else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
 //visibility
-$picture = $db->getPictureByFileName($file_name); 
 if (sizeof($picture>0)) {
 	if (isset($picture["isDeleted"]) && ($picture["isDeleted"]==0 || userIsAdmin())) {
 		//resizing the image
@@ -98,7 +135,7 @@ if (sizeof($picture>0)) {
 }
 //finally, return the image
 Header ("Content-type: image/png");
-ImageJpeg ($resized_img,null,80);
+ImageJpeg ($resized_img,null,$quality);
 
 ImageDestroy ($resized_img);
 ImageDestroy ($new_img);

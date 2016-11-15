@@ -1,11 +1,20 @@
 <?php
+/**
+ * Data access layer for the classmate database
+ */
+
 /* |Framework fields | id | changeUserID | changeDate | changeIP | changeForID |
 *  |normal entry     | *  | *            | *          | *        | NULL        |  
 *  |anonymous change | *  | NULL         | *          | *        | *           |  
 *  |anonymous new    | *  | NULL         | *          | *        | NULL        |  
 
-select all 				where changeUserID is not null
-select where anonymous	where changeUserID is null and IP=* 
+select all 			where changeUserID is not null
+select anonymous	where changeUserID is null and IP=*
+
+In the save funktions use id=-1 to insert a new entry 
+
+
+
 
 */
 include_once 'tools/mysql.class.php';
@@ -93,6 +102,10 @@ class dbDAO {
 	 */
 	public function savePerson($person,$whereSecondPrimaryKey=null) {
 		return $this->saveEntry("person", $person,$whereSecondPrimaryKey);
+	}
+	
+	public function savePersonFacebookId($id,$facebookId) {
+		$this->dataBase->update("person", [["field"=>"facebookid","type"=>"s","value"=>$facebookId]],"id",$id);	
 	}
 	
 	/**
