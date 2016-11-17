@@ -38,9 +38,13 @@ foreach ($personList as $d)
 				?>
 			</h4>
 			<div class="fields"> 
-				<?php 
-				echo "<div><span>Ballagási év:</span>".$d["scoolYear"]."</div>";
-				echo "<div><span>Osztály:</span>".$d["scoolClass"]."</div>";
+				<?php
+				if ($d["classID"]!=0) {
+					echo "<div><span>Ballagási év:</span>".$d["scoolYear"]."</div>";
+					echo "<div><span>Osztály:</span>".$d["scoolClass"]."</div>";
+				} else {
+					echo "<div><span>Tanár:</span>".$d["function"]."</div>";
+				}
 				echo "<div>&nbsp;</div>";
 				if(showField($d,"partner")) 	echo "<div><span>Élettárs:</span>".$d["partner"]."</div>";
 				if(showField($d,"children")) 	echo "<div><span>Gyerekek:</span>".$d["children"]."</div>";

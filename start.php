@@ -62,7 +62,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || ge
 					<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>
 					<li>Julius 2010:<a href="hometable.php?guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
 					<li>Junius 2010: Képek <a href="pictureGallery.php?gallery=SzepIdok">Régi szép idők</a></li>
-					<li>Május 2010: Zene toplista <a href="zenetoplista.php">Zenetoplista</a></li>
+					<li>Május 2010: Zene toplista <a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
 				</ul>
 			</div>
 		</div>

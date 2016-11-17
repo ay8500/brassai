@@ -95,12 +95,15 @@ if ($delVote>=0 && $edit) {
 		if (userIsLoggedOn())
 			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.$aktPerson["classID"].'">An én osztályom toplistálya</a>';
 		else
-			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod top 100-as zenelistályához.";
+			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}
 ?>
 
-
-<div class="sub_title">A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.</div>
+<?php if (getAktClass()==0) { ?>
+	<div class="sub_title">Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.</div>
+<?php } else {?>
+	<div class="sub_title">A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.</div>
+<?php } ?>
 <div class="container-fluid">
 	<div class="well">
 		<?php echo $voteStatus?>
@@ -186,7 +189,7 @@ if ($delVote>=0 && $edit) {
 		</form>
 	<?php } ?>
 
-	
+<?php if (getAktClass()!=0):?>	
 <div class="col-sm-3">	
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -208,16 +211,17 @@ if ($delVote>=0 && $edit) {
 		</div>
 	</div>
 </div>
+<?php endif;?>
 
 <?php 
   	 	$topList= $db->readTopList (getAktClass(),getLoggedInUserId());
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);
+  	 	else if (userIsAdmin() || getAktClass()==0)
+  	 		$listLength=sizeof($topList)-1;
   	 	else if (userIsLoggedOn())
   	 		$listLength=100;
-  	 	else if (userIsAdmin())
-  	 		$listLength=sizeof($topList)-1;
   	 	else
   	 		$listLength=25;
 ?>
@@ -226,7 +230,7 @@ if ($delVote>=0 && $edit) {
 		<div class="panel-heading">
 			<label id="dbDetails">Top <?php echo $listLength?> zenelista</label> 
 		</div>
-		<div class="form-group navbar-form navbar">
+		<div class="form-group navbar-form navbar" >
 			<table>
 			   <tr class="zenecaption">
 				<?php if (userIsAdmin()) :?>

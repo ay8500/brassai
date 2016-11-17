@@ -45,7 +45,7 @@ include("homemenu.php");
 			Osztályfelelősők körlevelet (E-mail) küldhetnek volt osztálytársuknak. 
 		</div>
 		<div class="col-sm-4">
-			<a href="zenetoplista.php"><img img class="indeximg" src="images/record-player.png" /></a><br />
+			<a href="zenetoplista.php?classid=0"><img img class="indeximg" src="images/record-player.png" /></a><br />
 			Zenetoplista, milyen zenére mullatnak a véndiákok. 
 		</div>
 	</div>

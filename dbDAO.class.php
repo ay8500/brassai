@@ -222,26 +222,34 @@ class dbDAO {
 		return $ret;
 	}
 	
+	/**
+	 * List of temporary persons
+	 */
 	public function getPersonListToBeChecked() {
-		$sql="select c.*, o.id as changeForIDjoin from person as c left join person as o on c.changeForID=o.id   where c.changeUserID is null";
+		$sql ="select c.*, o.id as changeForIDjoin from person as c ";
+		$sql.="left join person as o on c.changeForID=o.id  ";
+		$sql.="where c.changeUserID is null ";
+		$sql.="order by c.changeDate asc";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$ret= $this->dataBase->getRowList();
-			usort($ret, "compareAlphabetical");
 			return $ret;
 		} else 
 			return array();
 	}	
 	
 	/**
-	 * Delete person from database 
+	 * Delete person from database and the picture 
 	 * @return boolean
 	 */
 	public function deletePersonEntry( $id) {
 		$person=$this->getPersonByID($id,true);
 		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
 		$file=$person["picture"];
-		$ret1 =unlink($fileFolder.$file);
+		if ($file!="avatar.jpg")
+			$ret1 =unlink($fileFolder.$file);
+		else 
+			$ret1=true;
 		$ret2= $this->dataBase->delete("person", "id", $id);
 		return $ret1 && $ret2;
 	}
@@ -464,7 +472,8 @@ class dbDAO {
 		$sql .="from songvote join person on person.id=songvote.personID ";
 		$sql .="join song on song.id=songvote.songID ";
 		$sql .="join interpret on interpret.id=song.interpretID ";
-		$sql .="where person.classID=".$classId;
+		if (intval($classId!=0))
+			$sql .="where person.classID=".$classId;
 		$sql .=" group by song.id order by count desc";
 		$this->dataBase->query($sql);
 		return $this->dataBase->getRowList();
