@@ -33,29 +33,34 @@ if ($delVote>=0 && $edit) {
    }
    
    //Parameter Song
-   $psong=intval(getGetParam("song", "0"));
-   if (isset($_GET["newSong"])) $pnewSong = $_GET["newSong"]; else $pnewSong="";
-   if (isset($_GET["newVideo"])) $pnewVideo = $_GET["newVideo"]; else $pnewVideo="";
-   if (isset($_GET["newLink"])) $pnewLink = $_GET["newLink"]; else $pnewLink="";
+   $psong=intval(getIntParam("song", "0"));
+   $pnewSong = getParam("newSong");
+   $pnewVideo = getParam("newVideo");
+   $pnewLink = getParam("newLink");
    if (($psong=="0") && ($pnewSong<>"" && $edit )) {
-   		$psong=$db->saveSong([
-   				'id'=>-1,
-   				'interpretID'=>$pinterpret,
-   				'name'=>$pnewSong,
-   				'video'=>$pnewVideo,
-   				'link'=>$pnewLink]);
-   		if ($psong>=0) {
-   			if(	$db->saveSongVote([
-   					'id'=>-1,
-   					'personID'=>getLoggedInUserId(),
-   					'songID'=>$psong])>=0) {
-   				$resultDBoperation='<div class="alert alert-success" >Zene és a szavazatod sikeresen kimentve.</div>';
-   			} else {
-   				$resultDBoperation='<div class="alert alert-warning" >Zene kimentése sikertelen!</div>';
-   			}
-   			$psong=0;$pinterpret=0;
+   		if (getSongName($pnewVideo)!="") {
+	   		$psong=$db->saveSong([
+	   				'id'=>-1,
+	   				'interpretID'=>$pinterpret,
+	   				'name'=>$pnewSong,
+	   				'video'=>$pnewVideo,
+	   				'link'=>$pnewLink]);
+	   		if ($psong>=0) {
+	   			if(	$db->saveSongVote([
+	   					'id'=>-1,
+	   					'personID'=>getLoggedInUserId(),
+	   					'songID'=>$psong])>=0) {
+	   				$resultDBoperation='<div class="alert alert-success" >Zene és a szavazatod sikeresen kimentve.</div>';
+	   			} else {
+	   				$resultDBoperation='<div class="alert alert-warning" >Zene kimentése sikertelen!</div>';
+	   			}
+	   			$psong=0;$pinterpret=0;
+	   		} else {
+	   			$resultDBoperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
+	   			$psong=0;
+	   		}
    		} else {
-   			$resultDBoperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
+   			$resultDBoperation='<div class="alert alert-warning" >Videó nem létezik a youtubeon! Írd be a youtoube linkböl a videó anzonosítót pédául:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51</div>';
    			$psong=0;
    		}
    } 
@@ -168,16 +173,17 @@ if ($delVote>=0 && $edit) {
 			</div> 	 		
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" >vagy írj be egy újat<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
-	    	   	<input name="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control"/>
+	    	   	<input name="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control" value="<?php echo $pnewSong; ?>" />
 	    	</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" >Youtube link vagy cód</label>
-		    	<input name="newVideo" type="text" size="50" class="form-control" />
+		    	<input name="newVideo" type="text" size="50" class="form-control" value="<?php echo $pnewVideo; ?>" />
 		    </div>
+		    <?php /*
   			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" >Honoldal<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
   				<input name="newLink" type="text" size="50" class="form-control" />
-  			</div>
+  			</div> */ ?>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" ></label>
 	    		<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
@@ -260,10 +266,7 @@ if ($delVote>=0 && $edit) {
 						else
 							$voted='';
 					}
-					if (strlen($v['songVideo'])>5) 
-						$YouTubeLink='<a href="zenePlayer.php?link='.$v['songVideo'].'"><span class="glyphicon glyphicon-film"></span></a>';
-					else 
-						$YouTubeLink="&nbsp;";
+					$YouTubeLink='<a href="zenePlayer.php?link='.$v['songVideo'].'&id='.$v['songID'].'"><span class="glyphicon glyphicon-film"></span></a>';
 					if (strlen($v['songLink'])>5) 
 						$wwwLink='<a target="song" href="'.$v['songLink'].'" title="Honoldal"><span class="glyphicon glyphicon-link"></span></a>';
 					else 
@@ -280,13 +283,21 @@ if ($delVote>=0 && $edit) {
 						<?php if ($edit) :?>
 							<td style="text-align: center;"><?php echo $voted?></td>
 						<?php endif;?>
-						<td style="text-align: center;"><?php echo $YouTubeLink?></td>
+						<td style="text-align: center;">
+						<?php 
+							echo $YouTubeLink;
+							if (userIsAdmin() && getParam("check")=="true" && getSongName($v['songVideo'])=="") echo ("!");
+						?>
+						</td>
 						<td class="hidden-xs " style="text-align: center;"><?php echo$wwwLink?></td>
 					</tr>
 			<?php }?> 
 			</table>
 		</div>
 	</div>
+	<?php if (userIsAdmin()) :?>
+		<button onclick="javascript:document.location='zenetoplista.php?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
+	<?php endif;?>
 </div>
 
 </div>
@@ -323,3 +334,16 @@ function autoComplete (field, select, property, forcematch) {
 	}
 </script>
  
+ <?php 
+ 
+ function getSongName($song) {
+ 	$apiPublicKey="AIzaSyDsdHR0UNecnOH6s9OdQZhJkFpOZv02ncM";
+ 	$response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $song. '&key=' . $apiPublicKey);
+ 	$json = json_decode($response);
+ 	if (is_object($json))
+ 		return $json->title;
+ 	else 
+ 		return ""; 
+ }
+ 
+ ?>

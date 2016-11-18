@@ -431,6 +431,10 @@ class dbDAO {
 		return $this->saveEntry("song", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
 	}
 	
+	public function updateSong($id,$video) {
+		return $this->dataBase->update("song", [["field"=>"video","type"=>"s","value"=>$video]],"id",$id);
+	}
+	
 	public function getSongById($id) {
 		return $this->getEntryById("song", $id);
 	}
@@ -456,7 +460,7 @@ class dbDAO {
 	}
 
 	public function getInterpretList() {
-		return $this->getElementList("interpret");
+		return $this->getElementList("interpret",null,null,"name asc");
 	}
 	
 	public function getVotersList($classId) {
