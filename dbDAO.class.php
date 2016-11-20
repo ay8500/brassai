@@ -72,7 +72,7 @@ class dbDAO {
 	}
 	
 	public function getClassList() {
-		return   $this->getElementList("class");
+		return   $this->getElementList("class",null,null,"text asc");
 	}
 	
 	/**
