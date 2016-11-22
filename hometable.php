@@ -68,10 +68,8 @@ foreach ($personList as $d)
 		} else {
 			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
 		}
-		if (strstr($d["role"],"rip")!="")
-			$rip="rip";
-		else 
-			$rip="";
+		//Set the RIP value
+		strstr($d["role"],"rip")!=""?$rip="rip":$rip="";
 		?>
 		
 		<div class="element">
@@ -96,13 +94,17 @@ foreach ($personList as $d)
 					if(showField($d,"function")) 	echo "<div><span>Beosztás:</span>".getFieldValue($d["function"])."</div>";
 				} else {
 					if (isset($d["function"]))		echo "<div><span>Tantárgy:</span>".getFieldValue($d["function"])."</div>";
-					if (isset($d["children"])) {	echo "<div><span>Osztályfönök:</span>";
-													$c = explode(",", getFieldValue($d["children"]));
-													foreach ($c as $cc) {
-														$class= $db->getClassByText($cc);
-														echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
-													}
-													echo "</div>";
+					if (showField($d,"children")) {	
+						echo "<div><span>Osztályfönök:</span>";
+						$c = explode(",", getFieldValue($d["children"]));
+						foreach ($c as $cc) {
+							$class= $db->getClassByText($cc);
+							if ($class!=null)
+								echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
+							else
+								echo(' <a href="javascript:alert(\'Ennek az osztálynak még nincsenek bejegyzései ezen az oldalon. Szívesen bővitheted a véndiákok oldalát önmagad is. Hozd létre ezt az osztályt és egyenként írd be a diákoknak nevét és adatait. Előre is köszönjük!\')">'.$cc.'</a> ');
+						}
+						echo "</div>";
 					}
 				}
 				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";

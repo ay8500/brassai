@@ -52,8 +52,8 @@ class dbDAO {
 
 //************************ Class ******************************************* 	
 
-	public function getClassById($id) {
-		return $this->getEntryById("class", $id);
+	public function getClassById($id,$forceThisID=false) {
+		return $this->getEntryById("class", $id,$forceThisID);
 	}
 	
 	public function getClassByText($text) {
@@ -71,9 +71,38 @@ class dbDAO {
 		return $this->saveEntry("class", $class,$where);
 	}
 	
-	public function getClassList() {
-		return   $this->getElementList("class",null,null,"text asc");
+	/**
+	 * Get the list of classes for a schoool
+	 */
+	public function getClassList($schoolID=1) {
+		return   $this->getElementList("class","schoolID=".$schoolID,null,"text asc");
 	}
+	
+	/**
+	 * Delete a class
+	 * @param unknown $id
+	 */
+	public function deleteClass($id) {
+		return  $this->dataBase->delete("class", "id", $id);
+	}
+	
+	/**
+	 * List of temporary classes
+	 */
+	public function getClassListToBeChecked() {
+		$sql ="select c.*, o.id as changeForIDjoin from class as c ";
+		$sql.="left join class as o on c.changeForID=o.id  ";
+		$sql.="where c.changeUserID is null ";
+		$sql.="order by c.changeDate asc";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$ret= $this->dataBase->getRowList();
+			return $ret;
+		} else
+			return array();
+	}
+	
+	
 	
 	/**
 	 * Use in combination with getQueryRow if you want to make a loop over all personen 
@@ -253,25 +282,26 @@ class dbDAO {
 		$ret2= $this->dataBase->delete("person", "id", $id);
 		return $ret1 && $ret2;
 	}
+
 	
 	/**
-	 * Accept the anonymous changes for a person
+	 * Accept the anonymous changes for a table entry
 	 * @return boolean
 	 */
-	public function acceptChangeForPerson($id) {
-		$p=$this->dataBase->querySignleRow("select * from person where id=".$id);
+	public function acceptChangeForEntry($table,$id) {
+		$p=$this->dataBase->querySignleRow("select * from ".$table." where id=".$id);
 		if (sizeof($p)>0) {
 			if (isset($p["changeForID"])) {
 				$p["id"]=$p["changeForID"];
 				unset($p["changeForID"]);
 				$p["changeUserID"]=getAktUserId();
-				if ($this->dataBase->delete("person", "id", $id))
-					return $this->updateEntry("person", $p)>=0;
+				if ($this->dataBase->delete($table, "id", $id))
+					return $this->updateEntry($table, $p)>=0;
 				else 
 					return false;
 			} else {
 				$p["changeUserID"]=getAktUserId();
-				return $this->updateEntry("person", $p)>=0;
+				return $this->updateEntry($table, $p)>=0;
 			}
 		} else 
 			return false;
@@ -596,8 +626,9 @@ class dbDAO {
 	public function getListOfRequest($hours=0) {
 		$sql="SELECT count(1) as count,typeID,ip FROM request";
 		if ($hours>0) {
-			$newDate = strtotime($date) + strtotime("-".$hours." hours");
-			$sql .=" where date>'".$newDate("Y-m-d H:i:s")."'";
+			$newDate = new DateTime();
+			$newDate =$newDate->sub(new DateInterval('PT'.$hours.'H')); 
+			$sql .=" where date>'".$newDate->format("Y-m-d H:i:s")."'";
 		}
 		$sql .=" group by typeID,ip"; 
 		$this->dataBase->query($sql);
@@ -642,8 +673,10 @@ class dbDAO {
 	 * get a array of ids, or an empty array if no ids found
 	 */
 	private function getIdList($table,$where=null,$limit=null,$orderby=null) {
-		$sql="select id from ".$table." where ( changeForID is null ";
-		$sql.=" or (changeForID =-1 and changeIP='".$_SERVER["REMOTE_ADDR"]."') )";
+		//normal entrys
+		$sql="select id from ".$table." where ( (changeForID is null and changeUserID is not null) ";
+		//anonymous new entrys from the aktual ip
+		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
 		if ($where!=null)
 			$sql.=" and ".$where;
 		if ($orderby!=null)

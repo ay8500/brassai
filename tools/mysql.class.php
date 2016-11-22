@@ -214,8 +214,11 @@ class MySqlDb {
 	   	}
 	}
    	  
-	/* delete */
-   	public function delete($table, $whereField, $whereValue) {
+	/**
+	 *  delete from a table with where field and value
+	 *  @return boolean 
+	 **/
+	public function delete($table, $whereField, $whereValue) {
    	  	$where=$whereField."=".$whereValue;
    	  	return $this->deleteWhere($table, $where);
 	}

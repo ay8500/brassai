@@ -1,6 +1,5 @@
 <?php
 include_once 'tools/sessionManager.php';
-include("homemenu.php");
 include_once("data.php");
 include_once 'tools/ltools.php';
 
@@ -8,8 +7,41 @@ include_once 'tools/ltools.php';
 $resultDBoperation="";
 $action = getParam("action","");
 $classid= getIntParam("classid",-1);
-if ($classid>=0)
+if ($classid>=0) {
 	$class=$db->getClassById($classid);
+	$personCount=sizeof($db->getPersonListByClassId($class["id"]));
+	if ($action=="deleteclass" && $personCount==0 && userIsAdmin()) {
+		if ($db->deleteClass($classid)) {
+			$resultDBoperation='<div class="alert alert-success">Új osztály sikeresen törölve!</div>';
+		} else {
+			$resultDBoperation='<div class="alert alert-warning">Új osztály törlése sikertelen!</div>';
+		}
+	}
+} 
+if ($action=="saveclass") {
+	if ($classid<0) 
+		$class= $db->getClassByText(getParam("year")." ".getParam("class"));
+	if ($class!=null && $classid<0) 
+		$resultDBoperation='<div class="alert alert-warning">Ez az osztály már létezik!</div>';
+	else {
+		$classid=$db->saveClass([
+				"id"=>$classid,
+				"schoolID"=>1,
+				"graduationYear"=>getParam("year"),
+				"name"=>getParam("class"),
+				"text"=>getParam("year")." ".getParam("class"),
+				"headTeacherID"=>getIntParam("teacher",0)
+		]);
+		if ($classid>=0 ) {
+			$resultDBoperation='<div class="alert alert-success">Új osztály sikeresen létrehozva!</div>';
+			setAktClass($classid);
+		} else {
+			$resultDBoperation='<div class="alert alert-warning">Új osztály kimentése sikertelen!</div>';
+		}
+	}
+}
+
+include("homemenu.php");
 
 ?>
 <div class="container-fluid">
@@ -28,7 +60,7 @@ if ($classid>=0)
 		</select>
 	</div>
 	
-	<?php if ($classid>=0) {?>
+	<?php if ($classid>=0) {  //Create a new class?>
 		<div class="input-group" style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" disabled id="selectYear">
@@ -42,13 +74,14 @@ if ($classid>=0)
 				<option value="<?php echo $class["name"] ?>"><?php echo $class["name"] ?></option>
 			</select>
 		</div>
-	<?php } else {?>
+	<?php } else {  //Edit an existing class?>
 		<div class="input-group" style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" onchange="changeYear()" id="selectYear">
 				<option value="0">...válassz...</option>
-				<option value="1">1990</option>
-				<option value="1">1991</option>
+				<?php for($year=1950;$year<2010;$year++) {?>
+				<option value="<?php echo $year?>"><?php echo $year?></option>
+				<?php } ?>
 			</select>
 		</div>
 		
@@ -56,8 +89,12 @@ if ($classid>=0)
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztály</span>	      		
 			<select class="form-control" onchange="changeClass()" id="selectClass">
 				<option value="0">...válassz...</option>
-				<option value="1">12A</option>
-				<option value="1">12B</option>
+				<?php 
+					for($cl=11;$cl<14;$cl++) {
+						for($cs="A";$cs<"G";$cs++) {
+				?>
+					<option value="<?php echo $cl.$cs ?>"><?php echo $cl.$cs ?></option>
+				<?php } } ?>
 			</select>
 		</div>
 	<?php } ?>	
@@ -65,9 +102,16 @@ if ($classid>=0)
 		<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztályfőnők</span>	      		
 		<select class="form-control" onchange="changeTeacher()" id="selectTeacher">
 			<option value="0">...válassz...</option>
-			<option value="1">...nincs a listán...</option>
-			<option value="1" style="height:50px;"><img src="images/oooteac/d2-0.jpg"/> Kiss Lajos: Magyar irodalom</option>
-			<option value="1" >Pérfi: Kémia</option>
+			<option value="-1">...nincs a listán...</option>
+			<?php
+				$teachers=$db->getPersonListByClassId(0);
+				foreach ($teachers as $t) {
+					if ($t["isTeacher"]==1) {
+			?>
+				<option value="<?php echo $t['id']?>" <?php echo (isset($class['headTeacherID']) && $t['id']==$class['headTeacherID']?"selected":"ok") ?>> 
+					<?php echo getPersonName($t).':'.getFieldValueNull($t,'function')?>
+				</option>
+			<?php } }?>
 		</select>
 	</div>
 	
@@ -76,11 +120,14 @@ if ($classid>=0)
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
-			<span class="glyphicon glyphicon-ok-circle"></span> Osztályt módosításokat kiment!
+			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
 		</button>
-		<button class="btn btn-default disabled"  id="btCancel" onclick="cancelValues();">
-			<span class="glyphicon glyphicon-remove-circle"></span> Adatokat törlöm
-		</button>
+		<?php if (userIsAdmin() && isset($personCount) ) :?>
+			<span>Diákok száma:<?php echo $personCount?></span>
+			<button class="btn btn-default " <?php if($personCount>0) echo "disabled";?> onclick="deleteClass();">
+				<span class="glyphicon glyphicon-remove-circle"></span> Osztályt töröl
+			</button>
+		<?php  endif;?>
 	</div>
 </div>
 
@@ -122,20 +169,17 @@ include_once 'homefooter.php';
 		}
 	}
 
-	function cancelValues() {
-		$("#selectYear").val(0);
-		$("#selectClass").val(0);
-		$("#selectTeacher").val(0);
-		checkStatus();
-	}
-
 	function saveClass() {
-	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'$teacher='+$("#selectTeacher").val()+"&classid=<?php echo $classid?>";
+	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'&teacher='+$("#selectTeacher").val()+"&classid=<?php echo $classid?>";
 	}
 
 	function saveNewClass() {
-	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'$teacher='+$("#selectTeacher").val();
+	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'&teacher='+$("#selectTeacher").val();
 	}
 	
+	function deleteClass() {
+		if (confirm('Biztos ki szeretnéd törölni az osztályt?'))
+	    	document.location='editclass.php?action=deleteclass&classid=<?php echo $classid?>';
+	}
 	
 </script>

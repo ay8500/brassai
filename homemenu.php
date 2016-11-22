@@ -126,34 +126,28 @@
 						<?PHP endif  ?>
 						<li><a href="vote.php">A következő Találkozó</a></li>
 						<li><a href="zenetoplista.php">Zenetoplista</a></li>
-						<?php if (userIsAdmin()) :?>
-							<li><a href="editclass.php?classid=<?php echo getAktClass()?>">Osztályinformációk</a></li>
-						<?php endif;?>
+						<li><a href="editclass.php?classid=<?php echo getAktClass()?>">Osztályinformációk</a></li>
 					</ul>
 	      		</li>
 	      	<?php } ?>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok<b class="caret"></b></a>
 			  	<ul class="dropdown-menu">
-			  	<?php if(userIsAdmin()) :?>
-			  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
-			  	<?php endif;?>
+		  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
 			  	<?php
 			  		$classes = $db->getClassList();
-			  		foreach($classes as $class) {
-			  			if ($class["id"]>0) {
-				  			if (getAktClass()==$class["id"]) 
+			  		foreach($classes as $cclass) {
+			  			if ($cclass["id"]>0) {
+				  			if (getAktClass()==$cclass["id"]) 
 				  				$aktualClass="actual_class_in_menu";
 				  			else 
 				  				$aktualClass="";
 				  			?>
-				  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($class["id"]);?>"><?php echo($class["text"]); ?></a></li>
-			  		<?php 	}
-			  			}
+				  			<li><a class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($cclass["id"]);?>"><?php echo($cclass["text"]); ?></a></li>
+			  		<?php }
+			  		}
 			  	?>
-			  	<?php if(userIsAdmin()) :?>
-			  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
-			  	<?php endif;?>
+		  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
 			  	</ul>
 			</li>
 			<li>
