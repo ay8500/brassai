@@ -50,18 +50,15 @@ if (sizeof($qs)==3) {
 	$classId = $db->getClassByText($classText);
 	if ($classId!=null) {
 		setAktClass($classId);
-		$diak=getPersonByNormalisedName($qs[0],$classId["id"]);
-		if ($diak==null) {
-			error();
-			exit;
-		} else {
-			setAktUserId($diak["id"]);
-			header("status: 200");
-			include ("editDiak.php");
-			exit;
-		}
-	} else {
+	}
+	$diak=getPersonByNormalisedName($qs[0],$classId["id"]);
+	if ($diak==null) {
 		error();
+		exit;
+	} else {
+		setAktUserId($diak["id"]);
+		header("status: 200");
+		include ("editDiak.php");
 		exit;
 	}
 }

@@ -9,7 +9,7 @@ $lng2=$_GET["lng2"];
 $points = Array();
 
 $i=0;
-$persons=$db->getPersonListByClassId(getAktClass());
+$persons=$db->getPersonListByClassId(getRealId(getAktClass()));
 foreach ($persons as $d)  {
 	if (!isPersonGuest($d)) {
 		if (($d["geolat"]!="") && ($d["geolng"]!="")) {

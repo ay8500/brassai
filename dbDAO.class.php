@@ -29,8 +29,12 @@ class changeType
 	const message = 1;
 	const personupload = 2;
 	const personchange = 3;
+	/**
+	 * @var Changes für class pictures
+	 */
 	const classchange = 4;
 	const classupload = 5;
+	const deletepicture= 6;
 }
 
 class dbDAO {
@@ -370,23 +374,18 @@ class dbDAO {
 	}
 	
 	public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1) {
-		$sql="select * from picture ";
+		$sql="";
 		if ($type=="person")
-			$sql.="where personId=".$id;
+			$sql.="personId=".$id;
 		if ($type=="class")
-			$sql.="where classId=".$id;
+			$sql.="classId=".$id;
 		if ($type=="school")
-			$sql.="where schoolId=".$id;
-			if ($isDeleted<2) {
+			$sql.="schoolId=".$id;
+		if ($isDeleted<2) {
 			$sql.=" and isDeleted=".$isDeleted;}
 		if ($isVisibleForAll<2) {
 			$sql.=" and isVisibleForAll=".$isVisibleForAll; }
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			return $this->dataBase->getRowList();
-		} else {
-			return array();
-		}
+		return $this->getElementList("picture",$sql,null,"changeDate desc");	
 	}
 	
 	public function getPictureByFileName($filename) {
@@ -417,6 +416,20 @@ class dbDAO {
 	public function getNextPictureId() {
 		return $this->dataBase->getNextAutoIncrement("picture");
 	}
+	
+	/**
+	 * Delete picture from database and the picture
+	 * @return boolean
+	 */
+	public function deletePictureEntry( $id) {
+		$p=$this->getPictureById($id);
+		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/";
+		$file=$p["file"];
+		$ret1 =unlink($fileFolder.$file);
+		$ret2= $this->dataBase->delete("picture", "id", $id);
+		return $ret1 && $ret2;
+	}
+	
 
 //******************** Vote DAO *******************************************
 	

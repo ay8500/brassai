@@ -6,7 +6,7 @@ include_once 'tools/ltools.php';
 
 
 $resultDBoperation="";
-if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getAktClass()==getLoggedInUserClassId()) || userIsAdmin()) ) {
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" )))
 		$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
 	else
@@ -15,7 +15,7 @@ if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor(
 
 // Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
-if (getAktClass()==0) {
+if (getAktClassId()==0) {
 	echo('<h2 class="sub_title">Tanáraink</h2>');
 } else {
 	if ($guests )
@@ -33,7 +33,7 @@ if (getAktClass()==0) {
 				<input type="hidden" name="action" value="newguest" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új vendéggel, jó baráttal"/>
 				Vendégek száma:
-			<?php } else if (getAktClass()!=0) {?>
+			<?php } else if (getAktClassId()!=0) {?>
 				<input type="hidden" name="action" value="newperson" />
 				<input class="btn btn-default" type="submit" value="Névsor bővítése új véndiákkal "/>
 				Véndiákok száma:
@@ -43,7 +43,7 @@ if (getAktClass()==0) {
 				Tanárok száma:
 			<?php } ?>
 		</form>
-		<?php echo($db->getCountOfPersons(getAktClass(), $guests));?>
+		<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>
 	</div>
 
 
@@ -58,7 +58,7 @@ if (getAktClass()==0) {
 
 
 <?php
-$personList=$db->getPersonListByClassId(getAktClass());
+$personList=$db->getPersonListByClassId(getRealId(getAktClass()));
 foreach ($personList as $d)	
 { 
 	if ( $guests == isPersonGuest($d) ) {

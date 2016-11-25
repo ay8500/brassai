@@ -8,7 +8,7 @@ include_once("data.php");
 <table>
 <tr style="background-color:#ffffcb;font-weight:bold;"><td>Sz.</td><td>Név</td><td>Feleség/férj neve</td><td>Cím</td><td>Email</td><td>Telefon</td><td>Mobil</td><td>Skype</td><td>Munkahely</td><td>Beosztás</td><td>Gyerekek</td></tr>
 		<?PHP
-		$data=$db->getPersonListByClassId(getAktClass());
+		$data=$db->getPersonListByClassId(getRealId(getAktClass()));
 		for ($l=0;$l<sizeof($data);$l++) {
 			$d=$data[$l];
 			if (!isPersonGuest($d)) {

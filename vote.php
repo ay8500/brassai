@@ -1,7 +1,7 @@
 <?PHP include("homemenu.php"); 
 include_once("data.php");
 
-$class=$db->getClassById(getAktClass());
+$class=$db->getClassById(getRealId(getAktClass()));
 $classMeetingCount=date("Y")-intval($class["graduationYear"]);
 
 if (($classMeetingCount % 5)!=0) $classMeetingCount += 5 - ($classMeetingCount % 5);
@@ -10,7 +10,7 @@ $classMeetingYear = intval($class["graduationYear"])+$classMeetingCount;
 
 $resultDBoperation="";
 
-$data=$db->getPersonListByClassId(getAktClass());
+$data=$db->getPersonListByClassId(getRealId(getAktClass()));
 
 //Vote data structure 
 $fields=array("personID","classID","meetAfterYear", "eventDay","isSchool","isCemetery","isDinner","isExcursion","place");
@@ -21,7 +21,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		foreach ($data as $l => $d)	
 		{ 
 			$vote=array();
-			$vote["classID"]=getAktClass();
+			$vote["classID"]=getRealId(getAktClass());
 			$vote["meetAfterYear"]=$classMeetingCount;
 			for ($i=0;$i<sizeof($fields);$i++) {
 				$field=$fields[$i]."_".$d["id"];
@@ -43,7 +43,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		//Save only one record
 		if (userIsLoggedOn())  {
 			$vote=array();
-			$vote["classID"]=getAktClass();
+			$vote["classID"]=getRealId(getAktClass());
 			$vote["meetAfterYear"]=$classMeetingCount;
 			for ($i=0;$i<sizeof($fields);$i++) {
 				$field=$fields[$i]."_".getLoggedInUserId();
@@ -105,7 +105,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 			if (showField($d,"birthname")) echo(' ('.$d["birthname"].')');?>
 		</td>
 		<?php 
-		if ( userIsAdmin() || userIsEditor() || ($d["id"]==getLoggedInUserId() && getAktClass()==getLoggedInUserClassId()) ) { 
+		if ( userIsAdmin() || userIsEditor() || ($d["id"]==getLoggedInUserId() && getRealId(getAktClass())==getLoggedInUserClassId()) ) { 
 			$dis="";$ro="";
 		} else {
 			$dis="disabled";$ro="readonly";
@@ -125,7 +125,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		</td>
 		<input type="hidden" value="vote" name="action" />
 		<input type="hidden" value="<?php echo getPersonId($d)?>" name="personID_<?php echo $l?>" />
-		<input type="hidden" value="<?php echo getAktClass()?>" name="classID_<?php echo $l?>" />
+		<input type="hidden" value="<?php echo getRealId(getAktClass())?>" name="classID_<?php echo $l?>" />
 		<input type="hidden" value="<?php echo $classMeetingCount?>" name="meetAfterYear_<?php echo $l?>" />
 		</tr>
 	<?php 

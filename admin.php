@@ -8,7 +8,7 @@ include_once("tools/userManager.php");
 if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	if ( userIsAdmin() ) {
 		include_once ("sendMail.php");
-		$persons = $db->getPersonListByClassId(getAktClass());
+		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $person) {
 			$uid=$person["id"];
 			if (isset($_GET["D".$uid])) {
@@ -36,7 +36,7 @@ Ide kell írni a szöveget....
 Üdvözlettel <?php $dd=getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
 <p>
-Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.getAktClass());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
+Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
 </p>
 		</textarea>
 		<input type="checkbox" name="U"/> Bejelentkezési adatokat is elküld.<br/>
@@ -45,7 +45,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		<button type="button" class="btn btn-default" onclick="checkUncheckAll(false);"><span class="glyphicon glyphicon-unchecked"></span> Megjelöléseket töröl</button>
 		<p>
 		<?php
-		$persons = $db->getPersonListByClassId(getAktClass());
+		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $d) {
 				echo('<div style="display:inline-block; margin-right:10px">');
 				if (isset($d["email"]) && strlen($d["email"])>2) 
@@ -75,7 +75,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		</tr>
 		
 		<?PHP
-		$persons = $db->getPersonListByClassId(getAktClass());
+		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $l=>$d) {
 			if (!isPersonGuest($d)) {
 				if (($l % 2) ==0) 
@@ -111,7 +111,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		<table class="table-sp"  >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td><td  id="o1024">IP</td><td  id="o1024">Datum</td></tr>
 		<?PHP
-		$persons = $db->getPersonListByClassId(getAktClass());
+		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $idx=>$d) {
 			if (isPersonAdmin($d) || isPersonEditor($d))  {
 				if (($idx % 2) ==0) 

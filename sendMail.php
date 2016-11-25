@@ -32,7 +32,7 @@ function SendNewPassword($uid) {
 	$text.="Jelszó:".$diak["passw"]."<br/>";
 	$text.='Direkt link az én adataimhoz: <a href="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?classid='.getAktClass().'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");

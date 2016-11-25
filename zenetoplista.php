@@ -5,7 +5,7 @@ include_once("tools/userManager.php");
 $resultDBoperation="";
 
 //User can make changes in the toplist
-$edit = (userIsLoggedOn() && getAktClass()==getLoggedInUserClassId()) || userIsAdmin();
+$edit = (userIsLoggedOn() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin();
 
 //action  delete vote
 $delVote = intval(getGetParam("delVote", "-1"));
@@ -77,7 +77,7 @@ if ($delVote>=0 && $edit) {
    } 
 	
    //Read voters List
-	$votersList=$db->getVotersList(getAktClass());
+	$votersList=$db->getVotersList(getRealId(getAktClass()));
 	$allVotes=0;
 	$voteCount=0;
 	foreach ($votersList as $voter) {
@@ -220,7 +220,7 @@ if ($delVote>=0 && $edit) {
 <?php endif;?>
 
 <?php 
-  	 	$topList= $db->readTopList (getAktClass(),getLoggedInUserId());
+  	 	$topList= $db->readTopList (getRealId(getAktClass()),getLoggedInUserId());
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);

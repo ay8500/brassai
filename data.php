@@ -13,7 +13,7 @@ $db = new dbDAO;
  */
 function getAktClassFolder() {
 	global $db;
-	$class=$db->getClassById(getAktClass());
+	$class=getAktClass();
 	if ($class!=null)
 		return $class["name"].$class["graduationYear"];
 	else
@@ -25,7 +25,7 @@ function getAktClassFolder() {
  */
 function getAktClassName() {
 	global $db;
-	$class=$db->getClassById(getAktClass());
+	$class=getAktClass();
 	if ($class!=null)
 		if ($class["id"]==0)
 			return "";
@@ -171,18 +171,22 @@ function setPictureVisibleForAll($pictureId, $visibleforall){
 }
 
 /**
- * Mark picture as deleted
+ * Mark picture as deleted or delete it from the db and filesystem
  * @param integer $pictureId
+ * @param boolean $unlink default false
  * @return boolean
  */
-function deletePicture($pictureId) {
+function deletePicture($pictureId,$unlink=false) {
 	global $db;
 	$picture=$db->getPictureById($pictureId);
-	if ($picture!=null) {
+	if ($picture==null)
+		return false;
+	if ($unlink) {
+		$db->deletePictureEntry($pictureId);
+	} else {
 		$picture["isDeleted"]=1;
 		return $db->savePicture($picture);
 	}
-	return false;
 }
 
 /* resize image
@@ -250,7 +254,7 @@ function resizeImage($fileName,$maxWidth,$maxHight)
 function getFieldAccessValue($field) {
 	if (userIsAdmin() || isAktUserTheLoggedInUser())
 		return getFieldValue($field);
-	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClass()==getLoggedInUserClassId())
+	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClassId()==getLoggedInUserClassId())
 		return getFieldValue($field);
 	else if (userIsLoggedOn() && getFieldCheckedScool($field)=="checked")
 		return getFieldValue($field);
@@ -394,6 +398,7 @@ function getPersonByNormalisedName($personLink,$classId=null) {
 /**
  * The real person id
  * @param unknown $person
+ * @deprecated use getRealId
  */
 function getPersonId($person) {
 	if (isset($person["changeForID"]))
@@ -401,6 +406,18 @@ function getPersonId($person) {
 	else
 		return $person["id"];
 }
+
+/**
+ * The real class id
+ * @param unknown $person
+ */
+function getRealId($entry) {
+	if (isset($entry["changeForID"]))
+		return $entry["changeForID"];
+		else
+			return $entry["id"];
+}
+
 
 /**
  * generate normalised person link

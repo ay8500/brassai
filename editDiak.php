@@ -42,7 +42,7 @@ $edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || $anony
 if ( $createNewPerson ) {
 	$newPerson = getPersonDummy();
 	$newPerson["id"] = -1;
-	$newPerson["classID"] = getAktClass();
+	$newPerson["classID"] = getAktClassId();
 	$action=="newteacher" ? $newPerson["isTeacher"]=1	:	$newPerson["isTeacher"]=0;
 	$action=="newguest"   ? $newPerson["role"]="guest"	:	$newPerson["role"]="";
 	$newid = $db->savePerson($newPerson);
@@ -224,7 +224,7 @@ if (strstr(getParam("action"),"new")=="" ){?>
 <?php }
 
 //initialize tabs
-if (getAktClass()==0 && !userIsAdmin())
+if (getAktClassId()==0 && !userIsAdmin())
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajz");
 elseif ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
 	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");

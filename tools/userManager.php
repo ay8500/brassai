@@ -90,7 +90,7 @@
 	* The aktual person class id
 	* @return number|NULL
 	*/
-	function getAktClass() {
+	function getAktClassId() {
 		global $db;
 		if (isset($_SESSION['aktClass']))
 			return intval($_SESSION['aktClass']);
@@ -101,6 +101,19 @@
 					return $class["id"];
 				}
 				else die("Default class not found!");
+			}
+	}
+	
+	/**
+	 * The aktual person class id
+	 * @return number|NULL
+	 */
+	function getAktClass() {
+		global $db;
+		if (isset($_SESSION['aktClass']))
+			return $db->getClassById(intval($_SESSION['aktClass']));
+			else {
+				return $db->getClassByText("1985 12A");
 			}
 	}
 	
@@ -219,7 +232,7 @@
 	function userIsEditor() {
 		global $db;
 		//User is editor in his own db
-		if (isset($_SESSION['uRole']) && getAktClass()==getLoggedInUserClassId()) {
+		if (isset($_SESSION['uRole']) && getAktClassId()==getLoggedInUserClassId()) {
 			return strstr($_SESSION['uRole'],"editor")!="";
 		} else { 
 			$p=$db->getPersonByID(getLoggedInUserId());
@@ -229,7 +242,7 @@
 					if (isset($p["children"])) {
 						$c=explode(",", $p["children"]);
 						$ret = false;
-						$class = $db->getClassById(getAktClass());
+						$class = getAktClass();
 						foreach ($c as $cc) {
 							if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"]) 
 								$ret=true;

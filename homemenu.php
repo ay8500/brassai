@@ -81,15 +81,15 @@
         			<li><a href="iskola.php">Liceum története</a></li>
        			</ul>
       		</li>
-      		<?php if (getAktClass()!=0) {?>
+      		<?php if (getAktClassId()!=0) {?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName());?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">
-						<li><a href="hometable.php?classid=<?php echo getAktClass(); ?>">Véndiákok</a></li>
-						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClass(); ?>">Vendégek és barátok</a></li>
+						<li><a href="hometable.php?classid=<?php echo getAktClassId(); ?>">Véndiákok</a></li>
+						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClassId(); ?>">Vendégek és barátok</a></li>
 						<li><a href="worldmap.php">Térkép</a></li>
 						<li><a href="tablo.php">Tabló és csoportképek</a></li>
-						<?php if ( getAktClass()==$db->getClassIdByText("1985 12A")) : ?>
+						<?php if ( getRealId(getAktClass())==$db->getClassIdByText("1985 12A")) : ?>
 						<li class="dropdown-submenu"><a>Régi képek</a>
 							<ul class="dropdown-menu">
 								<li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
@@ -126,7 +126,7 @@
 						<?PHP endif  ?>
 						<li><a href="vote.php">A következő Találkozó</a></li>
 						<li><a href="zenetoplista.php">Zenetoplista</a></li>
-						<li><a href="editclass.php?classid=<?php echo getAktClass()?>">Osztályinformációk</a></li>
+						<li><a href="editclass.php?classid=<?php echo getAktClassId();?>">Osztályinformációk</a></li>
 					</ul>
 	      		</li>
 	      	<?php } ?>
@@ -138,7 +138,7 @@
 			  		$classes = $db->getClassList();
 			  		foreach($classes as $cclass) {
 			  			if ($cclass["id"]>0) {
-				  			if (getAktClass()==$cclass["id"]) 
+				  			if (getAktClassId()==$cclass["id"]) 
 				  				$aktualClass="actual_class_in_menu";
 				  			else 
 				  				$aktualClass="";

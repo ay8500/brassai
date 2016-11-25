@@ -27,7 +27,7 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) {
 		$p["aboutMe"]=$text;
 	
 	$db->savePerson($p);
-	$row["classid"] = getAktClass();
+	$row["classid"] = getAktClassId();
 	$row["person"] = $personId;
 	$row["type"] = $type;
 	$row["privacy"] =$privacy;

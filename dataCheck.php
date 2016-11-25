@@ -63,7 +63,7 @@ if (userIsAdmin()) {
 	   			echo('<tr >');
 	   			echo("<td>".$l["text"]."</td>");
 	   			echo("<td>".$l["changeDate"]."</td>");
-	   			echo("<td>".$l["changeIP"]."</td>");
+	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
 	  			if ($l["changeForIDjoin"]!=null) {
 	   				echo('<td><button class="btn btn-default" onclick="editClassChange('.$l["id"].');"><span class="glyphicon glyphicon-edit"></span></button></td>');
 	   			}else{
@@ -137,8 +137,8 @@ if (userIsAdmin()) {
 	   			echo('<tr >');
 	   			echo("<td>".$l["lastname"]."&nbsp;".$l["firstname"]."</td>");
 	   			echo("<td>".$l["changeDate"]."</td>");
-	   			echo("<td>".$l["changeIP"]."</td>");
-	  			if ($l["changeForIDjoin"]!=null) {
+	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
+	   			if ($l["changeForIDjoin"]!=null) {
 	   				echo('<td><button class="btn btn-default" onclick="editChange('.$l["id"].');"><span class="glyphicon glyphicon-edit"></span></button></td>');
 	   			}else{
 	   				echo('<td><button class="btn btn-default" onclick="editChange('.$l["id"].');"><span class="glyphicon glyphicon-open"></span></button></td>');
@@ -231,8 +231,8 @@ if (userIsAdmin()) {
 	   				echo("<td>".html_entity_decode($l["name"])."</td>");
 	   			echo("<td>".html_entity_decode($l["text"])."</td>");
 	   			echo("<td>".$l["changeDate"]."</td>");
-	   			echo("<td>".$l["changeIP"]."</td>");
-   				if ($l["isDeleted"]==0)
+	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
+	   			if ($l["isDeleted"]==0)
    					echo('<td><button class="btn btn-default" onclick="acceptMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
    				else
    					echo("<td></td>");
@@ -256,8 +256,8 @@ if (userIsAdmin()) {
 	  		$list = $db->getListOfRequest(24);
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
-   				echo("<td>".$l["ip"]."</td>");
-   				echo("<td>"."</td>");
+	   			echo("<td><a href=\"javascript:showip('".$l["ip"]."')\">".$l["ip"]."</td>");
+	   			echo("<td>"."</td>");
 	   			echo("<td>".getConstantName("changeType",$l["typeID"])."</td>");
 	   			echo("<td>".$l["count"]."</td>");
    				if ($l["count"]>1)
@@ -277,8 +277,8 @@ if (userIsAdmin()) {
 	  		$list = $db->getListOfRequest(0);
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
-   				echo("<td>".$l["ip"]."</td>");
-   				echo("<td>"."</td>");
+	   			echo("<td><a href=\"javascript:showip('".$l["ip"]."')\">".$l["ip"]."</td>");
+	   			echo("<td>"."</td>");
 	   			echo("<td>".getConstantName("changeType",$l["typeID"])."</td>");
 	   			echo("<td>".$l["count"]."</td>");
    				if ($l["count"]>1)
@@ -297,9 +297,27 @@ if (userIsAdmin()) {
 <?php }
 else
 	echo '<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>';
-	
-include 'homefooter.php';
 ?>
+	
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<?php include 'homefooter.php';?>
 
 <script>
 	function deleteChange(id) {
@@ -357,6 +375,16 @@ include 'homefooter.php';
 	function resetChange(ip,type) {
 	    if (confirm("Biztos vagy?"))
 			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=resetChange&type="+type+"&ip="+ip;
+	}
+
+	function showip(ip) {
+	    $.ajax({
+		  url: "http://ip-api.com/json/"+ip
+		}).success(function(data) {
+		    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
+			$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+			$('#myModal').modal({show: 'false' });
+		});
 	}
 </script>
 
