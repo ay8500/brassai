@@ -23,8 +23,11 @@ function writeSitemapLink($link)
 
 include_once("dbDAO.class.php");
 include_once("data.php");
-	
-	
+
+	$pictureList=$db->getPictureList();
+	foreach ($pictureList as $picture) {
+		writeSitemapLink("picture.php?id=".$picture["id"]);
+	}
 	$classList=$db->getClassList();
 	foreach ($classList as $class) {
 		writeSitemapLink("hometable.php?classid=".$class["id"]);
@@ -32,7 +35,7 @@ include_once("data.php");
 		writeSitemapLink("vote.php?classid=".$class["id"]);
 		writeSitemapLink("picture.php?classid=".$class["id"]);
 	}
-		
+	
 	$db->queryPersons();
 	while ($d=$db->getQueryRow()) {
 		writeSitemapPerson($d["id"],getPersonLink($d["lastname"],$d["firstname"]));

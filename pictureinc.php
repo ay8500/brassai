@@ -47,7 +47,7 @@ $resultDBoperation="";
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
 	if ($db->getCountOfRequest(changeType::deletepicture,24)<5) {
-		if (deletePicture(getIntParam("id"))>=0) {
+		if (deletePicture(getIntParam("did"))>=0) {
 			$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 			$db->saveRequest(changeType::deletepicture);
 			saveLogInInfo("PictureDelete",getAktUserId(),"",getParam("id", ""),true);
@@ -61,7 +61,7 @@ if (getParam("action","")=="deletePicture" ) {
 
 //Delete and unlink Picture
 if (getParam("action","")=="unlinkPicture" && userIsAdmin()) {
-	if (deletePicture(getIntParam("id"),true)>=0) {
+	if (deletePicture(getIntParam("did"),true)>=0) {
 		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 	} else {
 		$resultDBoperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
@@ -87,14 +87,14 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			if (strcasecmp($fileName[1],"jpg")==0) {
 				if ($_FILES['userfile']['size']<2000000) {
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-						$picture = array();
-						$picture["id"]=-1;
-						$picture[$type]=$typeId;
-						$picture["file"]="images/".getAktClassFolder().$pFileName;
-						$picture["isVisibleForAll"]=1;
-						$picture["isDeleted"]=0;
-						$picture["uploadDate"]=date("Y-m-d H:i:s");
-						if ($db->savePicture($picture)>=0) {
+						$upicture = array();
+						$upicture["id"]=-1;
+						$upicture[$type]=$typeId;
+						$upicture["file"]="images/".getAktClassFolder().$pFileName;
+						$upicture["isVisibleForAll"]=1;
+						$upicture["isDeleted"]=0;
+						$upicture["uploadDate"]=date("Y-m-d H:i:s");
+						if ($db->savePicture($upicture)>=0) {
 							$db->saveRequest(changeType::personupload);
 							resizeImage($uploadfile,1800,1800);
 							$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
@@ -129,17 +129,26 @@ $notDeletedPictures=0;
 if (!isset($typeId)) 
 	$typeId=null; 
 
-$pictures = $db->getListOfPictures($typeId, $type, 2, 2);
-foreach ($pictures as $pict) {
-	if ( $pict["isDeleted"]==0 ) {
-		$notDeletedPictures++;
+if(isset($picture)) {
+	$pictures = array($picture);
+	$notDeletedPictures=1;
+} else {
+	$pictures = $db->getListOfPictures($typeId, $type, 2, 2);
+	foreach ($pictures as $pict) {
+		if ( $pict["isDeleted"]==0 ) {
+			$notDeletedPictures++;
+		}
 	}
 }
-
 ?>
 
 	<?php if ($notDeletedPictures<50 || userIsAdmin()) :?>
-		<div style="margin-bottom:15px;"><button class="btn btn_default" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"></span> Kép feltöltése</button></div>
+		<div style="margin-bottom:15px;">
+			<button class="btn btn_default" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"></span> Kép feltöltése</button>
+			<?php if(isset($picture)) { ?>
+				<button class="btn btn_default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId."'"?>" >Mutasd a többi képet</button>
+			<?php  }?>
+		</div>
 		<div id="download" style="margin:15px;display:none;">
 			<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 				<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
@@ -263,7 +272,7 @@ function changeVisibility(id) {
 
 	function deletePicture(id) {
 		if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-			window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&id="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>;
+			window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
 		}
 	}
 
@@ -280,7 +289,7 @@ function changeVisibility(id) {
 	<?php if (userIsAdmin()) :?>
 	function unlinkPicture(id) {
 		if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-			window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&id="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>;
+			window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
 		}
 	}
 	<?php endif;?>

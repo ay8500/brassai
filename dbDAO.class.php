@@ -404,6 +404,14 @@ class dbDAO {
 	}
 	
 	/**
+	 * List of all not deleted pictures
+	 */
+	public function getPictureList() {
+		return   $this->getElementList("picture","isDeleted=0");
+	}
+	
+	
+	/**
 	 * Get a picture by id
 	 * @param integer $id
 	 * @return array or null if no picture found

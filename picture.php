@@ -9,12 +9,12 @@ include("homemenu.php");
 
 $id=getIntParam("id",-1);
 if ($id>=0) {
-	$p=$db->getPictureById($id);
-	if ($p!=null) {
-		if (isset($p["personID"])) $type="personID";
-		if (isset($p["schoolID"])) $type="schoolID";
-		if (isset($p["classID"]))  $type="classID";
-		$typeId=$p[$type];
+	$picture=$db->getPictureById($id);
+	if ($picture!=null) {
+		if (isset($picture["personID"])) $type="personID";
+		if (isset($picture["schoolID"])) $type="schoolID";
+		if (isset($picture["classID"]))  $type="classID";
+		$typeId=$picture[$type];
 	}
 }
 if (!isset($type)) {
@@ -37,7 +37,7 @@ if (!isset($typeId)) {
 	<?php if ($type=="classID") { ?>
 		<h2 class="sub_title">A tanárok és diákok együtt a ballagási tablón és csoportképeken.</h2>
 	<?php } if ($type=="personID") { $person=$db->getPersonByID($typeId); ?>
-		<h2 class="sub_title"><?php echo("Képek:".getPersonName($person)); ?></h2>
+		<h2 class="sub_title"><?php writePersonLinkAndPicture($person);?> képei</h2>
 	<?php } if ($type=="schoolID") { ?>
 		<h2 class="sub_title">Képek iskolánkról.</h2>
 	<?php }  ?>

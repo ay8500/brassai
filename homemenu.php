@@ -79,7 +79,9 @@
 					<li><a href="hometable.php?classid=0">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
+        			<li><a href="worldmap.php?classid=0">Térkép</a></li>
         			<li><a href="picture.php?type=schoolID&typeid=1">Iskola képek</a></li>
+        			<li><a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
        			</ul>
       		</li>
       		<?php if (getAktClassId()!=0) {?>
@@ -164,8 +166,7 @@
 				<form class="navbar-form navbar-right" role="search">
 					<div class="input-group input-group" style="margin: 3px;">
 						<span class="input-group-addon" style="width:130px">
-							<img src="images/<?php echo $person["picture"] ?>"  class="diak_image_sicon"/>
-							<a href="editDiak.php?uid=<?php echo(getLoggedInUserId());?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
+							<?php writePersonLinkAndPicture($person);?>
 						</span>
 						<button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();" ><span class="glyphicon glyphicon-log-out"></span> Kijelentkezés</button>
 					</div>
