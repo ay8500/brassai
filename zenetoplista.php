@@ -104,7 +104,7 @@ if ($delVote>=0 && $edit) {
 	}
 ?>
 
-<?php if (getAktClass()==0) { ?>
+<?php if (getAktClassId()==0) { ?>
 	<div class="sub_title">Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.</div>
 <?php } else {?>
 	<div class="sub_title">A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.</div>
@@ -159,7 +159,7 @@ if ($delVote>=0 && $edit) {
 	    	</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Az adatbázisból </label>
-				<select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';" class="form-control" />
+				<select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';" class="form-control"  />
 					<option value="0">...válassz!...</option>
 				  	 <?php
 				  	 	$songList= $db->getSongList($pinterpret);
@@ -195,7 +195,7 @@ if ($delVote>=0 && $edit) {
 		</form>
 	<?php } ?>
 
-<?php if (getAktClass()!=0):?>	
+<?php if (getAktClassId()!=0):?>	
 <div class="col-sm-3">	
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -224,7 +224,7 @@ if ($delVote>=0 && $edit) {
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);
-  	 	else if (userIsAdmin() || getAktClass()==0)
+  	 	else if (userIsAdmin() || getAktClassId()==0)
   	 		$listLength=sizeof($topList)-1;
   	 	else if (userIsLoggedOn())
   	 		$listLength=100;

@@ -55,6 +55,7 @@ class MySqlDb {
   /* Execute a query that return a single row*/
   public function querySignleRow($query) {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+  	$this->counter=null;
   	if ($this->count()==1)
   		return $this->fetchRow();
   	else 

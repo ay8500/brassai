@@ -298,17 +298,18 @@ class dbDAO {
 			if (isset($p["changeForID"])) {
 				$p["id"]=$p["changeForID"];
 				unset($p["changeForID"]);
-				$p["changeUserID"]=getAktUserId();
+				$p["changeUserID"]=getLoggedInUserId();
 				if ($this->dataBase->delete($table, "id", $id))
 					return $this->updateEntry($table, $p)>=0;
 				else 
 					return false;
 			} else {
-				$p["changeUserID"]=getAktUserId();
+				$p["changeUserID"]=getLoggedInUserId();
 				return $this->updateEntry($table, $p)>=0;
 			}
-		} else 
-			return false;
+		} else {
+			return false;			
+		}
 	}
 	
 	
@@ -373,14 +374,18 @@ class dbDAO {
 		return $this->savePicture($picture);		
 	}
 	
-	public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1) {
+	/**
+	 * Get list of pictures
+	 * @param integer $id if null get all pictures of a type
+	 * @param string $type the type of picture personID, classID, schoolID
+	 * @return array of pictures  
+	 */
+	 public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1) {
 		$sql="";
-		if ($type=="person")
-			$sql.="personId=".$id;
-		if ($type=="class")
-			$sql.="classId=".$id;
-		if ($type=="school")
-			$sql.="schoolId=".$id;
+		if($id!=null)
+			$sql.=$type."=".$id;
+		else
+			$sql.=$type." is not null ";
 		if ($isDeleted<2) {
 			$sql.=" and isDeleted=".$isDeleted;}
 		if ($isVisibleForAll<2) {
@@ -428,6 +433,19 @@ class dbDAO {
 		$ret1 =unlink($fileFolder.$file);
 		$ret2= $this->dataBase->delete("picture", "id", $id);
 		return $ret1 && $ret2;
+	}
+	
+	public function getPictureListToBeChecked() {
+		$sql ="select c.*, o.id as changeForIDjoin from picture as c ";
+		$sql.="left join picture as o on c.changeForID=o.id  ";
+		$sql.="where c.changeUserID is null ";
+		$sql.="order by c.changeDate asc";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$ret= $this->dataBase->getRowList();
+			return $ret;
+		} else
+			return array();
 	}
 	
 

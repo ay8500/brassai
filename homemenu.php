@@ -79,6 +79,7 @@
 					<li><a href="hometable.php?classid=0">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
+        			<li><a href="picture.php?type=schoolID&typeid=1">Iskola képek</a></li>
        			</ul>
       		</li>
       		<?php if (getAktClassId()!=0) {?>
@@ -88,7 +89,7 @@
 						<li><a href="hometable.php?classid=<?php echo getAktClassId(); ?>">Véndiákok</a></li>
 						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClassId(); ?>">Vendégek és barátok</a></li>
 						<li><a href="worldmap.php">Térkép</a></li>
-						<li><a href="tablo.php">Tabló és csoportképek</a></li>
+						<li><a href="picture.php">Tabló és csoportképek</a></li>
 						<?php if ( getRealId(getAktClass())==$db->getClassIdByText("1985 12A")) : ?>
 						<li class="dropdown-submenu"><a>Régi képek</a>
 							<ul class="dropdown-menu">

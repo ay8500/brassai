@@ -129,7 +129,7 @@ if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
 
 
 //Upload Image
-if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]=="upload_diak") ) {
+if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = preg_split( "/[.]/", basename( $_FILES['userfile']['name']));
 		if (checkRequesterIP(changeType::personupload)) {
@@ -142,39 +142,14 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload" || $_POST["action"]==
 				}
 				//The max size of e picture 
 				if ($_FILES['userfile']['size']<3100000) {
-					if ($_POST["action"]=="upload_diak") {
-						$idx=rand(234567,999999);
-						$pFileName="/d".$personid."-".$idx.".".strtolower($fileName[1]);
-						$uploadfile=$fileFolder.$pFileName;
-					} else {
-						$idx=$db->getNextPictureId("picture");
-						$pFileName="/p".$personid."-".$idx.".".strtolower($fileName[1]);
-						$uploadfile=$fileFolder.$pFileName;
-					}
+					$idx=rand(234567,999999);
+					$pFileName="/d".$personid."-".$idx.".".strtolower($fileName[1]);
+					$uploadfile=$fileFolder.$pFileName;
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-						$ok=false;
-						if ($_POST["action"]=="upload_diak") {
-							$diak['picture']=getAktClassFolder().$pFileName;
-							if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
-								$db->saveRequest(changeType::personupload);
-								resizeImage($uploadfile,400,400);
-								$ok=true;
-							}
-						} else {
-							$picture = array();
-							$picture["id"]=-1;
-							$picture["personID"]=$personid;
-							$picture["file"]="images/".getAktClassFolder().$pFileName;
-							$picture["isVisibleForAll"]=1;
-							$picture["isDeleted"]=0;
-							$picture["uploadDate"]=date("Y-m-d H:i:s");
-							if ($db->savePicture($picture)>=0) {
-								$db->saveRequest(changeType::personupload);
-								resizeImage($uploadfile,1024,800);
-								$ok=true;
-							}
-						}
-						if ($ok) {
+						$diak['picture']=getAktClassFolder().$pFileName;
+						if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
+							$db->saveRequest(changeType::personupload);
+							resizeImage($uploadfile,400,400);
 							$resultDBoperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
 							saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
 						} else {
@@ -246,8 +221,9 @@ $tabUrl="editDiak.php";
 		}
 		//Pictures
 		if ($tabOpen==1) { 
-			include("editDiakPictures.php");
-			return ;
+			$type="personID";
+			$typeId=$personid;
+			include("pictureinc.php");
 		}
 		//Change storys cv, scool trory, sparetime
 		if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {

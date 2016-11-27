@@ -30,7 +30,7 @@ include_once("data.php");
 		writeSitemapLink("hometable.php?classid=".$class["id"]);
 		writeSitemapLink("worldmap.php?classid=".$class["id"]);
 		writeSitemapLink("vote.php?classid=".$class["id"]);
-		writeSitemapLink("tablo.php?classid=".$class["id"]);
+		writeSitemapLink("picture.php?classid=".$class["id"]);
 	}
 		
 	$db->queryPersons();

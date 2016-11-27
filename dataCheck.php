@@ -7,19 +7,6 @@ if (userIsAdmin()) {
 	$id=getIntParam("id"); 
 	$ret=false;
 	$show=false;
-  	if (getParam("action")=="deletePersonChange") {
-  		$ret =$db->deletePersonEntry($id);$show=true;
-	} 	
-  	if (getParam("action")=="acceptPersonChange") {
-  		$ret =$db->acceptChangeForEntry("person",$id);$show=true;
-	}
-	
-	if (getParam("action")=="deleteClassChange") {
-		$ret =$db->deleteClass($id);$show=true;
-	}
-	if (getParam("action")=="acceptClassChange") {
-		$ret =$db->acceptChangeForEntry("class",$id);$show=true;
-	}
 	
 	if (getParam("action")=="deleteMessageChange") {
   		$ret =$db->deleteMessageEntry($id);$show=true;
@@ -46,171 +33,21 @@ if (userIsAdmin()) {
 	$tabsCaption=Array("Osztályok","Személyek","Képek","Üzenetek","Hozzáférések");
 	include("tabs.php");
 	?>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-
 
 	<?php if ($tabOpen==0) {
-		$list=$db->getClassListToBeChecked();
+		generateCheckHtmlTable("Osztályok", "Osztály","Class","text","getClassListToBeChecked",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
+	}
 	?>
-	<p align="center">
-	   Osztályok:<br/>	
-	   <?php //** The table of the class changes?>
-	  <table align="center" border="1">
-	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    	<td>Osztály</td><td>Datum</td><td>Ip</td><td colspan="3">Akció</td></tr>
-	  	<?php
-	  		foreach ($list as $i=>$l) {
-	   			echo('<tr >');
-	   			echo("<td>".$l["text"]."</td>");
-	   			echo("<td>".$l["changeDate"]."</td>");
-	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
-	  			if ($l["changeForIDjoin"]!=null) {
-	   				echo('<td><button class="btn btn-default" onclick="editClassChange('.$l["id"].');"><span class="glyphicon glyphicon-edit"></span></button></td>');
-	   			}else{
-	   				echo('<td><button class="btn btn-default" onclick="editClassChange('.$l["id"].');"><span class="glyphicon glyphicon-open"></span></button></td>');
-	   			}
-	   			echo('<td><button class="btn btn-default" onclick="acceptClassChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
-	   			echo('<td><button class="btn btn-default" onclick="deleteClassChange('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
-	   			echo("</tr>");
-	  		}
-	  	?>
-	  	<?php 
-	  	if ((getParam("action")=="showClassChange" || getParam("action")=="acceptClassFieldChange") && userIsAdmin()) {
-	  		$cp=$db->getClassByID($id,true);
-	  		if ($compare = isset($cp["changeForID"])) 
-	  			$op=$db->getClassByID($cp["changeForID"],true);
-	  		else 
-	  			$op=["id"=>0,"graduationYear"=>"","name"=>"","text"=>""];
-	  		if (getParam("action")=="acceptClassFieldChange") {
-	  			$field=getParam("field");
-	  			$op[$field]=$cp[$field];
-	  			if ($db->saveClass($op)>=0) {
-					$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
-				else {
-					$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
-	  		}
-		?>
-			<?php //** The table of the changes for a person?>
-			<table align="center" border="1" style="margin-top: 20px">
-	    		<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    			<td>Mezö</td>
-	    			<?php if ($compare) {?><td>Eredeti</td><?php }?>
-	    			<td>Módosítás</td>
-	    			<?php if ($compare) {?><td>Akció</td><?php }?>
-	    		</tr>
-	    		<?php foreach ($op as $field=>$value) {
-	    			$s=$cp[$field]!=$value?' style="background-color:yellow;"':'';
-	    		?>
-	    			<tr>
-	    				<td ><?php echo $field ?></td>
-	    					<?php if ($compare) {?>
-	    						<td class="acceptField"><?php echo $value ?></td>
-	    					<?php }?>
-	    					<td class="acceptField" <?php echo $s?>><?php echo $cp[$field]?></td>
-	    				<?php if ($compare) {?>
-		    				<td >
-		    					<?php if (strstr($field,"change")=="" && $field!="id" && $cp[$field]!=$value) :?>
-		    						<button class="btn btn-default" onclick="acceptClassFieldChange(<?php echo $id ?>,'<?php echo $field?>');"><span class="glyphicon glyphicon-edit"></span></button>
-		    					<?php endif;?>
-		    				</td>
-		    			<?php }?>
-	    			</tr>
-	    		<?php }	?>
-			</table>
-		<?php 
-	  	}
-		?>
-	 </table>  
-	</p>
-	<?php } ?>
 	
 	<?php if ($tabOpen==1) {
-		$list=$db->getPersonListToBeChecked();
+		generateCheckHtmlTable("Személyek", "Személy","Person","lastname","getPersonListToBeChecked",$id,getPersonDummy(),"getPersonByID","deletePersonEntry","savePerson");
+	}
 	?>
-	<p align="center">
-	   Személyek:<br/>	
-	   <?php //** The table of the person changes?>
-	  <table align="center" border="1">
-	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;"><td>Név</td><td>Datum</td><td>Ip</td><td colspan="3">Akció</td></tr>
-	  	<?php
-	  		foreach ($list as $i=>$l) {
-	   			echo('<tr >');
-	   			echo("<td>".$l["lastname"]."&nbsp;".$l["firstname"]."</td>");
-	   			echo("<td>".$l["changeDate"]."</td>");
-	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
-	   			if ($l["changeForIDjoin"]!=null) {
-	   				echo('<td><button class="btn btn-default" onclick="editChange('.$l["id"].');"><span class="glyphicon glyphicon-edit"></span></button></td>');
-	   			}else{
-	   				echo('<td><button class="btn btn-default" onclick="editChange('.$l["id"].');"><span class="glyphicon glyphicon-open"></span></button></td>');
-	   			}
-	   			echo('<td><button class="btn btn-default" onclick="acceptChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
-	   			echo('<td><button class="btn btn-default" onclick="deleteChange('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
-	   			echo("</tr>");
-	  		}
-	  	?>
-	  	<?php 
-	  	if ((getParam("action")=="showPersonChange" || getParam("action")=="acceptPersonFieldChange") && userIsAdmin()) {
-	  		$cp=$db->getPersonByID($id,true);
-	  		if ($compare = isset($cp["changeForID"])) 
-	  			$op=$db->getPersonByID($cp["changeForID"],true);
-	  		else 
-	  			$op=getPersonDummy();
-	  		if (getParam("action")=="acceptPersonFieldChange") {
-	  			$field=getParam("field");
-	  			$op[$field]=$cp[$field];
-	  			if ($db->savePerson($op)>=0) {
-					$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
-				else {
-					$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
-	  		}
-		?>
-			<?php //** The table of the changes for a person?>
-			<table align="center" border="1" style="margin-top: 20px">
-	    		<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    			<td>Mezö</td>
-	    			<?php if ($compare) {?><td>Eredeti</td><?php }?>
-	    			<td>Módosítás</td>
-	    			<?php if ($compare) {?><td>Akció</td><?php }?>
-	    		</tr>
-	    		<?php foreach ($op as $field=>$value) {
-	    			$s=$cp[$field]!=$value?' style="background-color:yellow;"':'';
-	    		?>
-	    			<tr>
-	    				<td ><?php echo $field ?></td>
-	    				<?php if ($field!="picture") {?>
-	    					<?php if ($compare) {?>
-	    						<td class="acceptField"><?php echo $value ?></td>
-	    					<?php }?>
-	    					<td class="acceptField" <?php echo $s?>><?php echo $cp[$field]?></td>
-	    				<?php } else {?>
-		    				<?php if ($compare) {?>
-		    					<td class="acceptField"><img class="acceptField" src="images/<?php echo $value ?>" /></td>
-		    				<?php }?>
-		    				<td class="acceptField"><img class="acceptField" src="images/<?php echo $cp[$field]?>"/></td>
-	    				<?php }?>
-	    				<?php if ($compare) {?>
-		    				<td >
-		    					<?php if (strstr($field,"change")=="" && $field!="id" && $cp[$field]!=$value) :?>
-		    						<button class="btn btn-default" onclick="acceptFieldChange(<?php echo $id ?>,'<?php echo $field?>');"><span class="glyphicon glyphicon-edit"></span></button>
-		    					<?php endif;?>
-		    				</td>
-		    			<?php }?>
-	    			</tr>
-	    		<?php }	?>
-			</table>
-		<?php 
-	  	}
-		?>
-	 </table>  
-	</p>
-	<?php }?>
 	
-	
-	<?php if ($tabOpen==2) { ?>
-	<p align="center">
-	   Képek:<br/>	
-	</p>
-	<?php }?>
+	<?php if ($tabOpen==2) { 
+		generateCheckHtmlTable("Képek", "Kép","Picture","file","getPictureListToBeChecked",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
+	}
+	?>
 	
 	
 	<?php if ($tabOpen==3) {
@@ -293,6 +130,7 @@ if (userIsAdmin()) {
 	</p>
 	<?php }?>
 
+	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 
 <?php }
 else
@@ -320,39 +158,6 @@ else
 <?php include 'homefooter.php';?>
 
 <script>
-	function deleteChange(id) {
-		if (confirm("Személy módosítás akarsz törölni. Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deletePersonChange&id="+id;
-	}
-	function editChange(id) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=showPersonChange&id="+id;
-	}
-	function acceptChange(id) {
-	    if (confirm("Személy módosítás akarsz jóváhagyni. Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptPersonChange&id="+id;
-	}
-	function acceptFieldChange(id,field) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptPersonFieldChange&id="+id+"&field="+field;
-	}
-
-
-	function deleteClassChange(id) {
-		if (confirm("Osztály módosítás akarsz törölni. Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deleteClassChange&id="+id;
-	}
-	function editClassChange(id) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=showClassChange&id="+id;
-	}
-	function acceptClassChange(id) {
-	    if (confirm("Osztály módosítás akarsz jóváhagyni. Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptClassChange&id="+id;
-	}
-	function acceptClassFieldChange(id,field) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptClassFieldChange&id="+id+"&field="+field;
-	}
-
-
-	
 	function deleteMessageChange(id) {
 	    if (confirm("Biztos vagy?"))
 			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deleteMessageChange&id="+id;
@@ -360,17 +165,6 @@ else
 	function acceptMessageChange(id) {
 	    if (confirm("Biztos vagy?"))
 			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptMessageChange&id="+id;
-	}
-	function deletePictureChange(id) {
-	    if (confirm("Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deletePictureChange&id="+id;
-	}
-	function editPictureChange(id) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=editPictureChange&id="+id;
-	}
-	function acceptPictureChange(id) {
-	    if (confirm("Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptPictureChange&id="+id;
 	}
 	function resetChange(ip,type) {
 	    if (confirm("Biztos vagy?"))
@@ -388,4 +182,127 @@ else
 	}
 </script>
 
+
+<?php function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionList,$id,$emptyEntry,$functionGetByID,$functionDelete,$functionSave ) {
+	global $db;
+	global $resultDBoperation;
+  	$show=false;
+  	if (getParam("action")=="delete".$fieldDb."Change") {
+ 		$ret =call_user_func_array(array($db,$functionDelete),array($id));$show=true;
+  	}
+  	if (getParam("action")=="accept".$fieldDb."Change") {
+ 		$ret =$db->acceptChangeForEntry(strtolower($fieldDb),$id);$show=true;
+  	}
+  	if ($show) {
+  		if ($ret===true) {
+  			$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
+  		else {
+  			$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+  	}
+	$list = call_user_func(array($db,$functionList));
+?>
+<p align="center">
+<?php echo($title)?>:<br/>
+<?php //** The table of the  changes?>
+	  <table align="center" border="1">
+	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+	    	<td><?php echo $fieldText ?></td><td>Datum</td><td>Ip</td><td colspan="3">Akció</td></tr>
+	  	<?php
+	  		foreach ($list as $i=>$l) {
+	   			echo('<tr >');
+	   			echo("<td>".$l[$showField]."</td>");
+	   			echo("<td>".$l["changeDate"]."</td>");
+	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
+	  			if ($l["changeForIDjoin"]!=null) {
+	   				echo('<td><button class="btn btn-default" onclick="edit'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-resize-horizontal"></span></button></td>');
+	   			}else{
+	   				echo('<td><button class="btn btn-default" onclick="edit'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-open"></span></button></td>');
+	   			}
+	   			echo('<td><button class="btn btn-default" onclick="accept'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
+	   			echo('<td><button class="btn btn-default" onclick="delete'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
+	   			echo("</tr>");
+	  		}
+	  	?>
+	  	<?php //Parameter read and action handling
+	  	if ((getParam("action")=="show".$fieldDb."Change" || getParam("action")=="accept".$fieldDb."FieldChange") && userIsAdmin()) {
+  			$cp=call_user_func_array(array($db,$functionGetByID),array($id,true));
+  			if ($compare = isset($cp["changeForID"])) 
+  				$op=call_user_func_array(array($db,$functionGetByID),array($cp["changeForID"],true));
+  			else 
+  				$op=$emptyEntry;
+	  		if (getParam("action")=="accept".$fieldDb."FieldChange") {
+	  			$field=getParam("field");
+	  			$op[$field]=$cp[$field];
+  				$ret=call_user_func_array(array($db,$functionSave),array($op))>=0;
+	  			if ($ret) {
+					$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
+				else {
+					$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+	  		}
+		?>
+			<?php //** The table of the changes ?>
+			<table align="center" border="1" style="margin-top: 20px">
+	    		<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+	    			<td>Mezö</td>
+	    			<?php if ($compare) {?><td>Eredeti</td><?php }?>
+	    			<td>Módosítás</td>
+	    			<?php if ($compare) {?><td>Akció</td><?php }?>
+	    		</tr>
+	    		<?php foreach ($op as $field=>$value) {
+	    			$s=$cp[$field]!=$value?' style="background-color:yellow;"':'';
+	    		?>
+	    			<tr>
+	    				<td ><?php echo $field ?></td>
+	    					<?php 
+	    					if ($field=="file") {
+	    						if ($compare) {
+	    							echo('<td ><img class="acceptField" src="'.$value.'" /></td>');
+	    						}
+	    						echo('<td ><img class="acceptField" src="'.$cp[$field].'" /></td>');
+	    					}
+	    			    	elseif ($field=="picture") {
+	    						if ($compare) {
+	    							echo('<td ><img class="acceptField" src="images/'.$value.'" /></td>');
+	    						}
+	    						echo('<td ><img class="acceptField" src="images/'.$cp[$field].'" /></td>');
+	    					}
+	    					else {
+	    						if ($compare) {
+	    							echo('<td class="acceptField">'.$value.'</td>');
+	    						}
+	    						echo('<td class="acceptField" '.$s.'>'.$cp[$field].'</td>');
+	    					}
+	    					?>
+	    				<?php if ($compare) { //Button?>
+		    				<td >
+		    					<?php if (strstr($field,"change")=="" && $field!="id" && $cp[$field]!=$value) :?>
+		    						<button class="btn btn-default" onclick="accept<?php echo $fieldDb?>FieldChange(<?php echo $id ?>,'<?php echo $field?>');"><span class="glyphicon glyphicon-edit"></span></button>
+		    					<?php endif;?>
+		    				</td>
+		    			<?php }?>
+	    			</tr>
+	    		<?php }	?>
+			</table>
+		<?php 
+	  	}
+		?>
+	 </table>  
+</p>
+<script>
+	function delete<?php echo $fieldDb?>Change(id) {
+		if (confirm("<?php echo $fieldText?> módosítást akarsz törölni. Biztos vagy?"))
+			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=delete<?php echo $fieldDb?>Change&id="+id;
+	}
+	function edit<?php echo $fieldDb?>Change(id) {
+		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=show<?php echo $fieldDb?>Change&id="+id;
+	}
+	function accept<?php echo $fieldDb?>Change(id) {
+	if (confirm("<?php echo $fieldText?> módosítást akarsz jóváhagyni. Biztos vagy?"))
+			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=accept<?php echo $fieldDb?>Change&id="+id;
+	}
+	function accept<?php echo $fieldDb?>FieldChange(id,field) {
+		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=accept<?php echo $fieldDb?>FieldChange&id="+id+"&field="+field;
+	}
+</script>
+<?php }?>
 
