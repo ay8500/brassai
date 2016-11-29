@@ -21,7 +21,7 @@
 	.zenetabout     {color:black;text-align:left; 	background-color: white }
 	.zenevoters     {margin:10px;color:black;text-align:left; 	background-color: #e8e8e8;border-width:1px;border-color:black; }
 	.zenetext		{text-align:right; }
-	.zenecaption	{background-color: #e0e0e0;font-weight: bold }
+	.zenecaption	{background-color: #e0e0e0;font-weight: bold;height:25px }
 	.LogonLine		{text-align: right;}
 	.loginFacebookSubmit {border-style: none; background-image: url("../images/facebook_bejelentkezes.jpg");width: 163px;height: 22px;vertical-align: bottom;	}
 	.loginFacebookSubmitH{border-style: none; background-image: url("../images/fblogin.png");width: 87px;height: 21px; margin: 10px	}
@@ -53,7 +53,9 @@
     .fields {vertical-align: text-top;}
     .element{display: inline-block; background-color: #E5E9EA;  padding: 10px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
     .rip {border-top-style: solid; border-width: 10px; border-color: black;}
-    
+
+	/*zenebox*/
+	.personbox {margin:5px;display:inline-block;width:220px;padding-top:4px;padding:3px 0px 3px 8px;text-align:left;border-radius:5px;background-color: #cccccc;}    
 	
 .igLinks {
 	width:48px;

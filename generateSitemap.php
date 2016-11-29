@@ -24,10 +24,17 @@ function writeSitemapLink($link)
 include_once("dbDAO.class.php");
 include_once("data.php");
 
+	$list=$db->getSongList();
+	foreach ($list as $element) {
+		writeSitemapLink("zenePlayer.php?id=".$element["id"]);
+	}
+
+
 	$pictureList=$db->getPictureList();
 	foreach ($pictureList as $picture) {
 		writeSitemapLink("picture.php?id=".$picture["id"]);
 	}
+
 	$classList=$db->getClassList();
 	foreach ($classList as $class) {
 		writeSitemapLink("hometable.php?classid=".$class["id"]);

@@ -251,7 +251,6 @@ if ($delVote>=0 && $edit) {
 			   	<?php endif;?>
 			   	<td class="hidden-xs">Youtube</td>
 			   	<td class="visible-xs" style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-film"></span></td>
-			   	<td class="hidden-xs" style="padding-left:10px;">Honoldal</td>
 			  </tr>
 			   <?php
 				for ($i=0;$i<$listLength;$i++) {
@@ -267,12 +266,8 @@ if ($delVote>=0 && $edit) {
 							$voted='';
 					}
 					$YouTubeLink='<a href="zenePlayer.php?link='.$v['songVideo'].'&id='.$v['songID'].'"><span class="glyphicon glyphicon-film"></span></a>';
-					if (strlen($v['songLink'])>5) 
-						$wwwLink='<a target="song" href="'.$v['songLink'].'" title="Honoldal"><span class="glyphicon glyphicon-link"></span></a>';
-					else 
-						$wwwLink='<a target="song" href="http://www.google.de/search?q='.$v['interpretName'].' '.$v['songName'].'" title="Megkeresem"><span class="glyphicon glyphicon-search"></span></a>';
 					?>
-					<tr>
+					<tr style="height: 26px">
 						<?php if (userIsAdmin()) :?>
 							<td><?php echo $v["count"]."-"?></td>
 						<?php endif;?>
@@ -289,7 +284,6 @@ if ($delVote>=0 && $edit) {
 							if (userIsAdmin() && getParam("check")=="true" && getSongName($v['songVideo'])=="") echo ("!");
 						?>
 						</td>
-						<td class="hidden-xs " style="text-align: center;"><?php echo$wwwLink?></td>
 					</tr>
 			<?php }?> 
 			</table>

@@ -540,6 +540,15 @@ class dbDAO {
 		return $this->dataBase->getRowList();
 	}
 
+	public function getVotersListForMusicId($musicId) {
+		$sql  ="select  person.id as personid, person.lastname, person.firstname, person.picture  ";
+		$sql .="from songvote join person on person.id=songvote.personID ";
+		$sql .="where songvote.songID=".$musicId." order by person.lastname";
+		$this->dataBase->query($sql);
+		return $this->dataBase->getRowList();
+	}
+	
+	
 	public function readTopList($classId,$personId) {
 		$sql  ="select count(1) as count, instr(GROUP_CONCAT(person.id),'".$personId."') as voted, song.id as songID, song.link as songLink, song.video as songVideo, song.name as songName, interpret.name as interpretName, songvote.id as id  ";
 		$sql .="from songvote join person on person.id=songvote.personID ";

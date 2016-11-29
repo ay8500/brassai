@@ -20,8 +20,17 @@ if (isset( $_GET['link'])  ) {
 	else 
 		$Video=$nlink[0];
 }
-else 
-	$Video="";
+else {
+	$v=$db->getSongById(getIntParam("id"));
+	if ($v!=null) {
+		$Video=$v["video"];
+	}
+	else $Video="";
+	
+}
+
+//Get the vote list for this music
+$voters =$db->getVotersListForMusicId(getIntParam("id"));
 
 //Check if video exists	
 $apiPublicKey="AIzaSyDsdHR0UNecnOH6s9OdQZhJkFpOZv02ncM";
@@ -43,6 +52,16 @@ $json = json_decode($response);
 		<?php } else {?>
 			<div class="resultDBoperation" ><div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?></div></div>
 		<?php }?>
+		<?php if (sizeof($voters)>0) :?>
+			<div class="panel panel-default" style="margin-top: 15px">
+				<div class="panel-heading" >Akiknek tetszik ez a zene</div>
+				<div class="panel-body"><div style=display:inline">
+					<?php foreach ($voters as $voter) {?>
+						<div class="personbox"><?php writePersonLinkAndPicture($db->getPersonByID($voter["personid"]))?></div>
+					<?php }?>
+				</div></div>
+			</div>
+		<?php endif;?>
 		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista.php">Vissza a toplistához. </a></div>
 	</div>
 </div>
