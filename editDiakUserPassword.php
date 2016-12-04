@@ -34,7 +34,7 @@
 			<br />
 			<form action="editDiak.php" method="get">
 				<input type="hidden" value="removefacebookconnection" name="action" />
-				<input type="hidden" value="<?php echo $uid ?>" name="uid" />
+				<input type="hidden" value="<?php echo getAktUserId() ?>" name="uid" />
 				<input type="hidden" value="<?php echo $tabOpen ?>" name="tabOpen" />
 				<input type="submit" class="btn btn-default" value="Facebook kapcsolatot töröl" />
 			</form>

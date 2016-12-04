@@ -1,5 +1,9 @@
-	body		{	line-height:normal;	}
-	form		{display:inline;}
+	body		{ line-height:normal;	}
+	form		{ display:inline;}
+	.inline		{ display:inline;}
+	.left		{ float: left;}
+	.margin-def {margin:10px;}
+	.margin-hor {margin-left:10px;margin-right:10px;}
 	#highlight 	{ background-color: #ffdddd;text-align:center}
 	.caption1   { font-weight: bold; text-align:right;}
 	.loginText 	{ text-align:left; font-size:12px; font-weight:bold}

@@ -17,7 +17,10 @@ if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor(
 // Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
 if (getAktClassId()==0) {
-	echo('<h2 class="sub_title">Tanáraink</h2>');
+	if ($guests)
+		echo('<h2 class="sub_title">Barátaink</h2>');
+	else
+		echo('<h2 class="sub_title">Tanáraink</h2>');
 } else {
 	if ($guests )
 		echo('<h2 class="sub_title">Nem végzős osztálytársak, vendégek, jó barátok.</h2>');
@@ -51,13 +54,10 @@ if (getAktClassId()==0) {
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 
 <?php
-$personList=$db->getPersonListByClassId(getRealId(getAktClass()));
+$personList=$db->getPersonListByClassId(getRealId(getAktClass()),$guests);
 foreach ($personList as $d)	
 { 
-	if ( $guests == isPersonGuest($d) ) {
-
-		editDiakCard($d);
-	}
+	editDiakCard($d);
 }
 ?>
 </div>

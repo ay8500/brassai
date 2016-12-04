@@ -5,7 +5,8 @@ include("homemenu.php");
 
 //Save Youtube id
 if (getParam("action")=="savesong" && userIsAdmin()) {
-	$db->updateSong(getIntParam("id"),getParam("link"));
+	$db->updateSong(getIntParam("id"),getParam("link"),"video");
+	$db->updateSong(getIntParam("id"),html_entity_decode(getParam("song"),ENT_QUOTES,"UTF-8"),"name");
 }
 
 //Get playlist

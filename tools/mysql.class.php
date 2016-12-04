@@ -251,11 +251,11 @@ class MySqlDb {
 	}
    	  
 	public function replaceSpecialChars($s) {
-   	  	return str_replace("'", "&Apos;", $s);
+   	  	return str_replace("'", "\'", $s);
 	}
 	
 	public function rereplaceSpecialChars($s) {
-		return str_replace("&Apos;", "'", $s);
+		return str_replace("\'", "'", $s);
 	}
 	
 	public function createFieldArray($type,$name,$value) {

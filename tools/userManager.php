@@ -117,6 +117,26 @@
 			}
 	}
 	
+	/**
+	 * The aktual person school id
+	 * @return number|NULL
+	 */
+	function getAktSchool() {
+		global $db;
+		return $db->getSchoolById(getAktSchoolId());
+	}
+
+	/**
+	 * The aktual person school id
+	 * @return number|NULL
+	 */
+	function getAktSchoolId() {
+		if (isset($_SESSION['aktSchool']))
+			return intval($_SESSION['aktSchool']);
+		else 
+			return 1;
+	}
+	
 	
 	/**
 	 * are the logged in user and aktual viewed user the same?
@@ -167,19 +187,16 @@
 	function checkFacebookUserLogin($facebookId) {
 		global $db;
 		$ret = false;
-		if (checkRequesterIP("facebook")) {
-			$ret=false;
-			$usr =$db->getPersonByFacobookId($facebookId);
-			if (null != $usr) {
-				setUserInSession(
-					$usr["role"],
-					$usr["user"],
-					$usr["id"]);
-				$ret = true;
-				if (!userIsAdmin() && userIsLoggedOn())
-					saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
-			}		
-		}
+		$usr =$db->getPersonByFacobookId($facebookId);
+		if (null != $usr) {
+			setUserInSession(
+				$usr["role"],
+				$usr["user"],
+				$usr["id"]);
+			$ret = true;
+			if (!userIsAdmin() && userIsLoggedOn())
+				saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
+		}		
 		return $ret;
 	}
 	
@@ -189,9 +206,9 @@
 	 * @param User name $user
 	 * @param User id $uid
 	 */
-	function setUserInSession($admin, $user, $uid )
+	function setUserInSession($role, $user, $uid )
 	{
-		$_SESSION['uRole']=$admin;
+		$_SESSION['uRole']=$role;
 		$_SESSION['uName']=$user;
 		$_SESSION['uId']=$uid;
 	}

@@ -35,6 +35,11 @@ class changeType
 	const classchange = 4;
 	const classupload = 5;
 	const deletepicture= 6;
+	/**
+	 * 
+	 * @var create a new user
+	 */
+	const newuser= 7;
 }
 
 class dbDAO {
@@ -54,6 +59,22 @@ class dbDAO {
 		$this->dataBase->disconnect();
 	}
 
+//************************ School *******************************************
+	
+	public function getSchoolById($id,$forceThisID=false) {
+		return $this->getEntryById("school", $id,$forceThisID);
+	}
+	
+	public function getSchoolByText($text) {
+		return $this->getEntryByField("school", "text",$text);
+	}
+	
+	public function getSchoolIdByText($text) {
+		$ret=$this->getEntryByField("school", "text",$text);
+		return $ret["id"];
+	}
+	
+	
 //************************ Class ******************************************* 	
 
 	public function getClassById($id,$forceThisID=false) {
@@ -142,15 +163,16 @@ class dbDAO {
 	}
 	
 	/**
-	 * save changes on only one field
+	 * save changes on only one field 
 	 * @return positiv integer if the save operation is succeded 
 	 */
-	public function savePersonField($personId,$fieldName,$fieldValue) {
-		if ($fieldName==null || $fieldName=="")
-			return -1;
+	public function savePersonField($personId,$fieldName,$fieldValue=null) {
 		$person=$this->getPersonByID($personId);
 		if ($person!=null) {
-			$person[$fieldName]=$fieldValue;
+			if ($fieldName==null )
+				unset($person[$fieldName]);
+			else
+				$person[$fieldName]=$fieldValue;
 			return $this->savePerson($person);
 		}
 		return -1;
@@ -235,11 +257,21 @@ class dbDAO {
 	}
 	
 	/**
-	 * get the list of classmates 
+	 * get the list of classmates
+	 * @param integer classId 
+	 * @param boolean guest default false 
+	 * @param boolean withoutFacebookId default false
 	 */
-	public function getPersonListByClassId($classId) {
+	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false) {
 		$where ="classID=".$classId;
 		$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+		if($guest)
+			$where.=" and role like '%guest%'";
+		else
+			$where.=" and role not like '%guest%'";
+		if ($withoutFacebookId) {
+			$where.=" and (facebookid is null or length(facebookid)<5) ";
+		}
 		$ret = $this->getElementList("person",$where);
 		usort($ret, "compareAlphabetical");
 		return $ret;
@@ -500,8 +532,8 @@ class dbDAO {
 		return $this->saveEntry("song", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
 	}
 	
-	public function updateSong($id,$video) {
-		return $this->dataBase->update("song", [["field"=>"video","type"=>"s","value"=>$video]],"id",$id);
+	public function updateSong($id,$value,$field) {
+		return $this->dataBase->update("song", [["field"=>$field,"type"=>"s","value"=>$value]],"id",$id);
 	}
 	
 	public function getSongById($id) {

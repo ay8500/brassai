@@ -5,12 +5,17 @@ if (!isset($siteHeader)) $siteHeader='';
 $siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css" /> ';
 
 //Test facebook
-/*
-$_SESSION['FacebookId']="965038823537235";
-$_SESSION["FacebookName"]="Teszt";
-*/
-$facebook = isset($_SESSION['FacebookId']);
-if ($facebook) {
+if (true) {
+	$_SESSION['FacebookId']="965038893537235";
+	$_SESSION["FacebookName"]="Peter Pán";
+	$_SESSION["FacebookFirstName"]="Peter";
+	$_SESSION["FacebookLastName"]="Pán";
+	$_SESSION["FacebookEmail"]="pp@tonilne.de";
+	$_SESSION["FacebookLink"]="https://www.facebook.com/rethy.levente";
+} else {
+	unset($_SESSION['FacebookId']);
+}
+if (isset($_SESSION['FacebookId'])) {
 	$file=fopen("facebooklogin.log","a");
 	fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".print_r($_SESSION,true)."\r\n");
 }
@@ -31,10 +36,12 @@ include_once 'history.php';
 ?>
 
 <?php 
-if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || getParam("action","")=="newPassword") {
+if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") {
 	include("lostPassw.php");
-} elseif ($facebook && !userIsLoggedOn()) { 
-	include("facebooklogin.php");
+	include ("homefooter.php");
+} elseif ((isset($_SESSION['FacebookId']) || getParam("action")=="newUser")&& !userIsLoggedOn()) { 
+	include("signin.php");
+	include ("homefooter.php");
 } else { 
 ?>
 <div class="sub_title">Újdonságok</div>
@@ -68,7 +75,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newUser" || ge
 		</div>
 	</div>
 	<div id="wrapper"></div>
+	<?php  include ("homefooter.php");?>
+	<script type="text/javascript" src="js/wrapper.js"></script>
 </div>
 <?php } ?>
-<?php  include ("homefooter.php");?>
-<script type="text/javascript" src="js/wrapper.js"></script>

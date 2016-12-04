@@ -51,7 +51,7 @@
 
 			onResize();
 
-			setTimeout(clearDbMessages, 8000);
+			setTimeout(clearDbMessages, 10000);
 		
 		});
 		var logoTimer;

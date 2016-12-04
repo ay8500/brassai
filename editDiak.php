@@ -8,11 +8,8 @@ include_once("data.php");
 $resultDBoperation="";
 $tabOpen= getIntParam("tabOpen", 0);
 
-//focus the person and get his data from the database
-//if user id is delivered over pos or get parameter
-if (isset($_GET["uid"]) || isset($_POST["uid"])) {
-	if (isset($_GET["uid"])) $personid = $_GET["uid"];
-	if (isset($_POST["uid"])) $personid = $_POST["uid"];
+$personid = getParam("uid",null);
+if($personid!=null){
 	if ($db->getPersonByID($personid)!=null)
 		setAktUserId($personid);	//save actual person in case of tab changes
 	else {
@@ -53,7 +50,7 @@ if ( $createNewPerson ) {
 }
 
 
-if ($personid!=null && $personid>0) {
+if ($personid!=null && $personid>=0) {
 	$diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
 		$classId=$diak["classID"];
@@ -112,8 +109,8 @@ if (getParam("action")=="changeuser" && userIsLoggedOn()) {
 
 //Remove Facebook connection
 if (getParam("action")=="removefacebookconnection"  && userIsLoggedOn()) {
-	$diak["facebookid"]="";
-	$db->savePersonField($diak["id"], getLoggedInUserId(), "facebookid", "");
+	unset($diak["facebookid"]);
+	$db->savePersonField(getLoggedInUserId(), "facebookid", null);
 	saveLogInInfo("FacebookDelete",$personid,$diak["user"],"",true);
 }
 

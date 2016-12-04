@@ -26,14 +26,30 @@ function getAktClassFolder() {
 function getAktClassName() {
 	global $db;
 	$class=getAktClass();
-	if ($class!=null)
+	if ($class!=null) {
 		if ($class["id"]==0)
 			return "";
 		else
 			return $class["text"];
-	else
+	} else
 		return "";
 }
+
+/**
+ * The name of the aktual persons school
+ */
+function getAktSchoolName() {
+	global $db;
+	$school=getAktSchool();
+	if ($school!=null) {
+		if ($school["id"]==0)
+			return "";
+		else
+			return $school["name"];
+	} else
+		return "";
+}
+
 
 /**
  * returns aktual person
@@ -420,8 +436,8 @@ function getPersonId($person) {
 function getRealId($entry) {
 	if (isset($entry["changeForID"]))
 		return $entry["changeForID"];
-		else
-			return $entry["id"];
+	else
+		return $entry["id"];
 }
 
 

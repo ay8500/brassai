@@ -89,7 +89,7 @@ function writeLogonDiv() {
 		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
 		</div>
 	</form>
-	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
+	<form action="<?php echo(dirname($_SERVER["SCRIPT_NAME"]));?>/fb/fblogin.php" method="get">
 		<div style="text-align:center; margin: 3px">
 		<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
 		</div>

@@ -22,8 +22,8 @@ if ($delVote>=0 && $edit) {
  $siteStatus="Válaszd ki a kedvenc elöadód, ha nem találod a listában akkor írd be a lenti mezöbe.";
 
    //Parameter Interpret
-   if (isset($_GET["interpret"])) $pinterpret = $_GET["interpret"]; else $pinterpret=0;
-   if (isset($_GET["newinterpret"])) $pnewinterpret = $_GET["newinterpret"]; else $pnewinterpret="";
+   $pinterpret = getIntParam("interpret",0);
+   $pnewinterpret = html_entity_decode(getParam("newinterpret",""),ENT_QUOTES,"UTF-8");
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
    		$pinterpret=$db->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
    		if ($pinterpret>=0) 
@@ -34,7 +34,7 @@ if ($delVote>=0 && $edit) {
    
    //Parameter Song
    $psong=intval(getIntParam("song", "0"));
-   $pnewSong = getParam("newSong");
+   $pnewSong = html_entity_decode(getParam("newSong"),ENT_QUOTES,"UTF-8");
    $pnewVideo = getParam("newVideo");
    $pnewLink = getParam("newLink");
    if (($psong=="0") && ($pnewSong<>"" && $edit )) {

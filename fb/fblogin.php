@@ -17,41 +17,42 @@ use Facebook\HttpClients\FacebookHttpable;
 // init app with app id and secret
 FacebookSession::setDefaultApplication( '1606012466308740','4845414b223ba81a17eba1c4af7e6a95' );
 // login helper with redirect_uri
-    $helper = new FacebookRedirectLoginHelper('http://brassai.blue-l.de/fb/fblogin.php');
-	//$helper = new FacebookRedirectLoginHelper('http://192.168.201.40/brassai/fb/fblogin.php');
+$helper = new FacebookRedirectLoginHelper('http://'.$_SERVER["SERVER_NAME"].dirname($_SERVER["SCRIPT_NAME"]).'/fblogin.php');
+//$helper = new FacebookRedirectLoginHelper('http://192.168.201.40/brassai/fb/fblogin.php');
 try {
-  $session = $helper->getSessionFromRedirect();
+ 	$session = $helper->getSessionFromRedirect();
 } catch( FacebookRequestException $ex ) {
-   echo("Facebook returns an error");
+	echo("Facebook returns an error");
 } catch( Exception $ex ) {
-  echo("validation fails or other local issues");
+ 	echo("validation fails or other local issues");
 }
 // see if we have a session
 if ( isset( $session ) ) {
-  // graph api request for user data
-  $request = new FacebookRequest( $session, 'GET', '/me' );
-  $response = $request->execute();
-  // get response
-  $graphObject = $response->getGraphObject();
-		$ara = $graphObject->asArray();
-     	$fbid = $graphObject->getProperty('id');            // To Get Facebook ID
- 	    $fbfullname = $graphObject->getProperty('name'); 	// To Get Facebook full name
-	    $femail = $graphObject->getProperty('email');    	// To Get Facebook email ID
-	    $flink = $graphObject->getProperty('link');    		// To Get Facebook email ID
-	    $_SESSION['FacebookId'] = $fbid;           
-        $_SESSION['FacebookName'] = $fbfullname;
-	    $_SESSION['FacebookEmail'] =  $femail;
-	    //$_SESSION['FacebookLink'] =  $flink;
-	    
-	    //Change Facebook Id
-	    //$urlName =strtr($_SESSION['FacebookName']," ",".");
-	    //$res = json_decode(file_get_contents('https://graph.facebook.com/'.$urlName),true);
-	    //$_SESSION['FacebookId'] = $res["id"];
-	    
-	 /*
-	echo("Username:".$fbfullname = $graphObject->getProperty('name') );
+	//graph api request for user data
+	$request = new FacebookRequest( $session, 'GET', '/me',array ("locale"=>"hu_HU") );
+ 	$response = $request->execute();
+ 	// get response
+	$graphObject = $response->getGraphObject();
+
+    $_SESSION['FacebookId'] 		= $graphObject->getProperty('id');           
+	$_SESSION['FacebookName'] 		= $graphObject->getProperty('name');
+	$_SESSION['FacebookFirstName'] 	= $graphObject->getProperty('first_name');
+	$_SESSION['FacebookLastName'] 	= $graphObject->getProperty('last_name');
+	$_SESSION['FacebookEmail'] 		= $graphObject->getProperty('email');
+    $_SESSION['FacebookLink'] 		= $graphObject->getProperty('link');
+	
+    //friends
+    //$request = new FacebookRequest( $session, 'GET', '/965038823537045/friends',array ("locale"=>"hu_HU") );
+    //$response = $request->execute();
+    //$graphObject = $response->getGraphObject();
+    
+	/*
+	$ara = $graphObject->asArray();
+	echo("Username:".$graphObject->getProperty('name') );
 	echo("<br/><br/>");
-	print_r($_SERVER["HTTP_REFERER"]);
+	echo("Firstname:".$ara["first_name"]." Lastname:".$ara["last_name"]);
+	echo("<br/><br/>");
+	echo("Mail:".$graphObject->getProperty('email') );
 	echo("<br/><br/>");
 	echo $graphObject->getProperty('country');
 	echo("<br/><br/>");
@@ -61,11 +62,12 @@ if ( isset( $session ) ) {
 	print_r($ara);
 	*/
 	
-  header("Location: ../start.php?action=facebooklogin");
+ 	header("Location: ../start.php?action=facebooklogin");
 } else {
-  $loginUrl = $helper->getLoginUrl();
-  //echo("not logged on");
- header("Location: ".$loginUrl);
+ 	$loginUrl = $helper->getLoginUrl(array('req_perms' => 'email'));
+ 	//$loginUrl = $helper->getLoginUrl(array('req_perms' => 'email,public_profile,user_friends'));
+ 	//echo("not logged on");
+	header("Location: ".$loginUrl);
 }
 
 ?>
