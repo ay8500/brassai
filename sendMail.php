@@ -42,10 +42,10 @@ function SendNewPassword($uid) {
  * send mail to new user
  */
 function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,$uid=null) {
-	$text='<p style="font-weight: bold;">Kedeves '.$lastname." ".$firstname.'</p>';
+	$text='<p style="font-weight: bold;">Kedves '.$lastname." ".$firstname.'</p>';
 	$text.="Ezt az e-mail azért kapod mert bejelentkeztél a Brassai Sámuel véndiákok honoldalára.<br />";
 	$text.="<p>Ennek nagyön örvendünk, és köszöjük érdeklődésed. </p>";
-	$text.="<p>A véndiákok honoldala lehetőséget nyújt neked, volt iskola- és osztálytásaiddal kapcsolatba lépjél. Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.</p>";
+	$text.="<p>A véndiákok honoldala lehetőséget nyújt neked, a volt iskola- és osztálytásaiddal kapcsolatba lépjél. Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.</p>";
 	$text.="<p>";
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
@@ -57,12 +57,11 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,
 	} else {
 		$text.="Jelszavad:".$passw."<br/>";
 	}
-	$text.="Mail címed: ".$mail."<br/>";
 	if ($rights!="") {
 		$text.="<p>Szerep: ".$rights."</p>";
 	}
 	$text.="</p><p>";
-	$text.='<a href=http://brassai.blue-l.de/index.php?scoolYear='.$year.'&scoolClass='.$class.'>A véndiakok diákok honlapja</a>';
+	$text.='<a href=http://brassai.blue-l.de/index.php?classid='.$year.' '.$class.'>A véndiakok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
 	sendHtmlMail($mail,$text," új bejelenkezés");
@@ -100,13 +99,13 @@ function sendHtmlMail($recipient,$text,$subject="") {
 	$reply = '';
 
 	/* subject */
-	$subject = 'Brassai Samuel Líceum Vendiakok Honlapja '.$subject;
+	$subject = 'Brassai Samuel Líceum Véndiakok Honlapja '.$subject;
 
 	/* Nachricht */
 	$message = '<html>
 	    <head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	        <title>Brassai Samuel Liceum Vendiakok Honlapja</title>
+	        <title>Brassai Samuel Liceum Véndiakok Honlapja</title>
 	    </head>
 	    <body>'.$text.'
 	    </body>

@@ -46,18 +46,22 @@ function editDiakCard($d) {
 				if(showField($d,"place")) 		echo "<div><span>Város:</span>".getFieldValue($d["place"])."</div>";
 				echo('<div style="margin-top:5px"><span></span>');
 					if(showField($d,"email"))
-						echo '<a href="mailto:'.getFieldValue($d["email"]).'"><img src="images/email.png" /></a>';
+						echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
 					if (isset($d["facebook"]) && strlen($d["facebook"])>8)
-						echo '&nbsp;<a target="_new" href='.getFieldValue($d["facebook"]).'><img src="images/facebook.png" /></a>';
+						echo '&nbsp;<a target="_new" href="'.getFieldValue($d["facebook"]).'" title="Facebook"><img src="images/facebook.png" /></a>';
 					if (isset($d["twitter"]) && strlen($d["twitter"])>8)
-						echo '&nbsp;<a target="_new" href='.getFieldValue($d["twitter"]).'><img src="images/twitter.png" /></a>';
+						echo '&nbsp;<a target="_new" href="'.getFieldValue($d["twitter"]).'" title="Twitter"><img src="images/twitter.png" /></a>';
 					if (isset($d["homepage"]) && strlen($d["homepage"])>8)
-						echo '&nbsp;<a target="_new" href='.getFieldValue($d["homepage"]).'><img src="images/www.png" /></a>';
-					if ($db->getListOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2))
-						echo '&nbsp;<a target="_new" href="editDiak.php?tabOpen=1&uid='.$d["id"].'"><img src="images/picture.png" /></a>';
+						echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
+					if (sizeof($db->getListOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2))>0)
+						echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
 					if (isset($d["cv"]) && $d["cv"]!="")
-						echo '&nbsp;<a target="_new" href="editDiak.php?tabOpen=2&uid='.$d["id"].'"><img src="images/info.gif" /></a>';
-				echo("</div>");
+						echo '&nbsp;<a href="editDiak.php?tabOpen=2&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
+					if (isset($d["story"]) && $d["story"]!="")
+						echo '&nbsp;<a href="editDiak.php?tabOpen=3&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
+					if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
+						echo '&nbsp;<a href="editDiak.php?tabOpen=4&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
+					echo("</div>");
 			?>
 	  		</div>
 		</div>

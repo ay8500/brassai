@@ -35,7 +35,9 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 					$person["email"]=html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8");
 					$person["role"]=getParam("role","");
 					$person["classID"]=$classid;
+					$_SESSION["uId"]=0;
 					$ret = $db->savePerson($person);
+					unset($_SESSION["uId"]);
 				} else {
 					//update a person
 					$person=$db->getPersonByID(getIntParam("id"));
@@ -48,13 +50,16 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 						$person["firstname"]=html_entity_decode(getParam("firstname"),ENT_QUOTES,"UTF-8");
 						$person["email"]=html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8");
 						$person["facebookid"]=getIntParam("fid",0);
+						$_SESSION["uId"]=0;
 						$ret = $db->savePerson($person);
+						unset($_SESSION["uId"]);
 					}
 				}
 				if ($ret>=0) {
 					$db->saveRequest(changeType::newuser);
 					$resultDBoperation='<div class="alert alert-info" >Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.</div>';
 					setUserInSession($person["role"],$person["user"],$ret);
+					sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"], "", $class["graduationYear"], $class["name"],$person["id"]);
 				} else {
 					$resultDBoperation='<div class="alert alert-warning" >Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer!<br/>Hibacód:64432</div>';
 				}

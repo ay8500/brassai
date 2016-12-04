@@ -701,7 +701,7 @@ class dbDAO {
 	}
 	
 	/**
-	 * List of requests groupt by IP and type
+	 * List of requests grouped by IP and type
 	 */
 	public function getListOfRequest($hours=0) {
 		$sql="SELECT count(1) as count,typeID,ip FROM request";
@@ -710,7 +710,7 @@ class dbDAO {
 			$newDate =$newDate->sub(new DateInterval('PT'.$hours.'H')); 
 			$sql .=" where date>'".$newDate->format("Y-m-d H:i:s")."'";
 		}
-		$sql .=" group by typeID,ip"; 
+		$sql .=" group by typeID,ip order by ip,typeID"; 
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			return $this->dataBase->getRowList();

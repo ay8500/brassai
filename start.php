@@ -5,6 +5,7 @@ if (!isset($siteHeader)) $siteHeader='';
 $siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css" /> ';
 
 //Test facebook
+/*
 if (true) {
 	$_SESSION['FacebookId']="965038893537235";
 	$_SESSION["FacebookName"]="Peter Pán";
@@ -15,6 +16,8 @@ if (true) {
 } else {
 	unset($_SESSION['FacebookId']);
 }
+*/
+
 if (isset($_SESSION['FacebookId'])) {
 	$file=fopen("facebooklogin.log","a");
 	fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".print_r($_SESSION,true)."\r\n");
