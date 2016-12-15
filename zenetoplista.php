@@ -87,8 +87,6 @@ if ($delVote>=0 && $edit) {
 			$voteCount =$voter["count"];
 	}
 	
-	$aktPerson = getAktPerson();
-	
 	//Check the maximal amout of vote
 	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=30;
 	if ($edit) {
@@ -98,7 +96,7 @@ if ($delVote>=0 && $edit) {
 			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
 	} else {
 		if (userIsLoggedOn())
-			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.$aktPerson["classID"].'">An én osztályom toplistálya</a>';
+			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.getLoggedInUserClassId().'">An én osztályom toplistálya</a>';
 		else
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}
@@ -195,7 +193,7 @@ if ($delVote>=0 && $edit) {
 		</form>
 	<?php } ?>
 
-<?php if (getAktClassId()!=0):?>	
+<?php if (getAktClassId()!=0 || true):?>	
 <div class="col-sm-3">	
 	<div class="panel panel-default">
 		<div class="panel-heading">

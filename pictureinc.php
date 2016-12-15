@@ -25,18 +25,11 @@
     padding: 5px 6px;
     display: inline-block;
 }
-.iledittitle {
-	border: none;
-	width:100%;
-	padding:5px;
-	font-weight: bold;
-}
-.ileditcomment {
-	border: none;
-	width:100%;
-	height:100px;
-	padding:5px;
-}
+.iledittitle {	border: none;width:100%;padding:5px;font-weight: bold;}
+.ileditcomment {border: none;width:100%;height:100px;padding:5px;}
+
+.pi100 {width:100%};
+
 </style>
 
 <?php 
@@ -144,17 +137,18 @@ if(isset($picture)) {
 
 	<?php if ($notDeletedPictures<50 || userIsAdmin()) :?>
 		<div style="margin-bottom:15px;">
-			<button class="btn btn_default" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"></span> Kép feltöltése</button>
+			<button class="btn btn-default" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
-				<button class="btn btn_default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId."'"?>" >Mutasd a többi képet</button>
+				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId."'"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
 			<?php  }?>
+			<button class="btn btn-default" onclick="toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
 		</div>
 		<div id="download" style="margin:15px;display:none;">
 			<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 				<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
 				<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
-				<span style="display: inline-block;"><button class="btn btn-default"  type="submit" >feltölt</button></span>
-				<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" >mégsem</button></span>
+				<span style="display: inline-block;"><button class="btn btn-default"  type="submit" ><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
+				<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> mégsem</button></span>
 				<input type="hidden" value="upload" name="action" />
 				<?php if (isset($personid)):?>
 					<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
@@ -180,14 +174,14 @@ if(isset($picture)) {
 			if ($pict["isVisibleForAll"]==1) $checked="checked";
 	?>
 	
-			<div style="margin-bottom: 15px;padding: 10px; display: block;border-radius: 10px;background-color: #e8e8e8" >
-				<div class="col-sm-8" >
-					<a style="display: inline-block;vertical-align: top;" title="<?php echo $pict["title"] ?>" href="#" onclick="toggleBigger(this)">
-						<img class="img-responsive" style="display: inline-block;max-height:1024px;cursor: -webkit-zoom-in; cursor: -moz-zoom-in;" src="convertImg.php?width=1800&thumb=false&id=<?php echo $pict["id"] ?>" />
+			<div id="pictureframe" style="padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;" >
+				<div id="list-table">
+					<a style="display: inline-block;vertical-align: top; margin:10px" title="<?php echo $pict["title"] ?>" href="javascript:return false" onclick="toggleBigger(this)">
+						<img class="img-responsive" style="display: inline-block;cursor: -webkit-zoom-in; cursor: -moz-zoom-in;" src="convertImg.php?width=1800&thumb=false&id=<?php echo $pict["id"] ?>" />
 					</a>
 				</div>
-				<div class="col-sm-4" id="pictureedit">
-					<div id="edit_<?php echo $pict["id"] ?>" style="width:100%;display: none;margin: 10px 0px 0 0px; background-color: white;border-radius: 7px;padding: 5px;" >
+				<div  id="list-table" >
+					<div id="edit_<?php echo $pict["id"] ?>" style="margin:10px;display: none; background-color: white;border-radius: 7px;padding: 5px;" >
 							<input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo $pict["title"] ?>" placeholder="A kép címe" /><br/>
 <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="A kép tartalma" >
 <?php echo $pict["comment"] ?></textarea>
@@ -205,23 +199,23 @@ if(isset($picture)) {
 							<button onclick="hideedit(<?php echo $pict["id"] ?>);" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
 						</div> 
 					</div>
-					<div id="show_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 15px 0px; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
+					<div id="show_<?php echo $pict["id"] ?>" style="margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
 						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;">
 							<b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
 							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
 						</div>
 						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-pencil"></span></button>
+						<?php if(userIsLoggedOn()) :?>
+							<button id="picsort" style="display: none;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="moveup(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-arrow-up"></span></button>
+							<button id="picsort" style="display: none;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="movedown(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-arrow-down"></span></button>
+						<?php endif;?>
 					</div>
 					<?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
 					<br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
 					<?php } ?> 
 				</div>
-				<div class="row"></div>
 			</div>
-	<?php 
-		}
-	}
-	?>
+	<?php }	}?>
 	
 </div>
 
@@ -261,12 +255,33 @@ function changeVisibility(id) {
 }
 
 	function toggleBigger(o) {
-		if ($(o).parent().hasClass("col-sm-8")) {
-			$(o).parent().removeClass("col-sm-8");
-			$(o).parent().addClass("col-sm-12");
+	    var tempScrollTop = $(window).scrollTop();
+		
+		if ($(o).parent().parent().css("max-width")==="none") {  //Big
+		    $(o).parent().parent().css("max-width","395px");
 		} else {
-			$(o).parent().removeClass("col-sm-12");
-			$(o).parent().addClass("col-sm-8");
+		    $("[id=pictureframe]").css("max-width","395px");
+		    $(o).parent().parent().css("max-width","none");
+		}
+		
+		$(window).scrollTop(tempScrollTop);
+	}
+
+	function toogleListBlock() {
+		if ($("#pictureframe").css("max-width")!=="none") {
+	    	$("[id=pictureframe]").css("max-width","none");		//List
+	    	$("[id=pictureframe]").css("width","100%");
+	    	$("[class=img-responsive]").css("height","70px");
+	    	$("[id=list-table]").css("display","inline");
+	    	$("[id=picsort]").css("display","inline"); 
+	    	$("[id^=edit]").css("display","inline");
+	    	$("[id^=edit]").hide();
+		} else {
+		    $("[id=pictureframe]").css("max-width","395px");  //Table
+		    $("[id=pictureframe]").css("width","");
+		    $("[class=img-responsive]").css("height","");
+		    $("[id=list-table]").css("display","auto");
+		    $("[id=picsort]").hide();
 		}
 	}
 
@@ -276,14 +291,23 @@ function changeVisibility(id) {
 		}
 	}
 
+	function moveup(id) {
+	    window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=moveup&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
+	}
+
+	function movedown(id) {
+	    window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=movedown&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
+	}
+
 	function hideedit(id) {
-		$("#edit_"+id).slideUp("slow");
-		$("#show_"+id).slideDown("slow");
+		$("#edit_"+id).hide();
+		$("#show_"+id).show();
+		
 	}
 	
 	function displayedit(id) {
-		$("#edit_"+id).slideDown("slow");
-		$("#show_"+id).slideUp("slow");
+	    $("#show_"+id).hide();
+		$("#edit_"+id).show();
 	}
 
 	<?php if (userIsAdmin()) :?>
