@@ -40,9 +40,13 @@ if (!isset($typeId)) {
 		<h2 class="sub_title"><?php writePersonLinkAndPicture($person);?> képei</h2>
 	<?php } if ($type=="schoolID") { ?>
 		<h2 class="sub_title">Képek iskolánkról.</h2>
+	<?php } if ($type=="tablo") { ?>
+		<h2 class="sub_title">Iskolánk tabló képei.</h2>
 	<?php }  ?>
 
 <?php include_once 'pictureinc.php';?>
+
+</div>
 
 <?php include 'homefooter.php'; ?> 
 

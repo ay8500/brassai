@@ -126,7 +126,10 @@ if(isset($picture)) {
 	$pictures = array($picture);
 	$notDeletedPictures=1;
 } else {
-	$pictures = $db->getListOfPictures($typeId, $type, 2, 2);
+	if ($type!="tablo")
+		$pictures = $db->getListOfPictures($typeId, $type, 2, 2);
+	else
+		$pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
 	foreach ($pictures as $pict) {
 		if ( $pict["isDeleted"]==0 ) {
 			$notDeletedPictures++;
@@ -135,7 +138,7 @@ if(isset($picture)) {
 }
 ?>
 
-	<?php if ($notDeletedPictures<50 || userIsAdmin()) :?>
+	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $type!="tablo") :?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-default" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>

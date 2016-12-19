@@ -425,6 +425,19 @@ class dbDAO {
 		return $this->getElementList("picture",$sql,null,"changeDate desc");	
 	}
 	
+	/**
+	 * Get list of pictures by where
+	 * @param string where 
+	 * @return array of pictures  
+	 */
+	 public function getListOfPicturesWhere($where="") {
+		$sql="";
+		$sql.="isDeleted=0 ";
+		if ($where!="")
+			$sql.=" and ".$where; 
+		return $this->getElementList("picture",$sql,null,"changeDate desc");	
+	}
+	
 	public function getPictureByFileName($filename) {
 		$sql="select * from picture where file='".$filename."'";
 		$this->dataBase->query($sql);
