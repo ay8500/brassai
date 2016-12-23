@@ -197,11 +197,11 @@ if (strstr(getParam("action"),"new")=="" ){?>
 
 //initialize tabs
 if (getAktClassId()==0 && !userIsAdmin())
-	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajz");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz");
 elseif ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
-	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
-	$tabsCaption=Array("Semélyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
 if (getParam("action","")=="newdiak" || getParam("action","")=="newguest" || getParam("action","")=="submit_newdiak" || getParam("action","")=="submit_newguest" || getParam("action","")=="submit_newdiak_save" || getParam("action","")=="submit_newguest_save")
 	$tabsCaption=Array("Új személy adatai");
 $tabUrl="editDiak.php";

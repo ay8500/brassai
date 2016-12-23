@@ -17,7 +17,7 @@ $personList=$db->searchForPerson($name);
 	</div>
 	<?php
 	foreach ($personList as $d)	{
-		editDiakCard($d);
+		editDiakCard($d,true);
 	} 
 	?>
 </div>

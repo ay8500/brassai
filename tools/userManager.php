@@ -471,5 +471,11 @@
 	
 		return $output;
 	}
+	
+	function backupLoginData() {
+		//TODO
+		;
+
+	}
 
 ?>

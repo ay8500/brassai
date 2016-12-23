@@ -435,7 +435,7 @@ class dbDAO {
 		$sql.="isDeleted=0 ";
 		if ($where!="")
 			$sql.=" and ".$where; 
-		return $this->getElementList("picture",$sql,null,"changeDate desc");	
+		return $this->getElementList("picture",$sql,null,"title asc");	
 	}
 	
 	public function getPictureByFileName($filename) {

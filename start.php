@@ -65,6 +65,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 			<h4><span class="glyphicon glyphicon-home"></span> Honoldal Újdonságok:</h4></div>
 			<div class="panel-body">
 				<ul>
+					<li>December 2016: <a href="picture.php?type=tablo&typeid=tablo">Tablók</a> albumával bővült az oldal.</li>
 					<li>Március 2016: <a href="hometable.php?classid=0 staf">Tanárok</a> listályával bővült az oldal.</li>
 					<li>Junius 2015: Üzenőfal híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
 					<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>

@@ -90,7 +90,7 @@ include("homemenu.php");
 			<select class="form-control" onchange="changeClass()" id="selectClass">
 				<option value="0">...válassz...</option>
 				<?php 
-					for($cl=11;$cl<14;$cl++) {
+					for($cl=10;$cl<14;$cl++) {
 						for($cs="A";$cs<"G";$cs++) {
 				?>
 					<option value="<?php echo $cl.$cs ?>"><?php echo $cl.$cs ?></option>

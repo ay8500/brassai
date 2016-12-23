@@ -1,5 +1,5 @@
 <?php 
-function editDiakCard($d) {
+function editDiakCard($d,$showClass=false) {
 	global $db;
 	if (userIsLoggedOn() || localhost()) {
 		$personLink="editDiak.php?uid=".$d["id"];
@@ -17,6 +17,21 @@ function editDiakCard($d) {
 		</div>
 		<div style="display: inline-block;max-width:300px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			<h4><?php echo getPersonName($d);?></h4>
+			<?php if($showClass) {?>
+				<?php if ($d["isTeacher"]==1) { ?>
+					<h5>Tanár</h5>
+				<?php } else { 
+					$diakClass=$db->getClassById($d["classID"]);
+					if (isPersonGuest($d)==1) {
+						if ($d["classID"]!=0) 
+							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$diakClass["text"].'</a></h5>';
+						else
+							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$diakClass["text"].'</a></h5>';
+					} else {
+						echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$diakClass["text"].'</a></h5>';
+					}
+				} ?>
+			<?php } ?>
 			<div class="fields"> 
 			<?php 
 				if ($d["isTeacher"]==0) {

@@ -6,29 +6,54 @@
 <url>
   <loc>http://brassai.blue-l.de/</loc>
   <priority>0.5</priority>
-  <lastmod>2016-01-12</lastmod>
+  <lastmod>2016-12-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 
+<url>
+  <loc>http://brassai.blue-l.de/start.php</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-12-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
 
 <url>
   <loc>http://brassai.blue-l.de/brassai.php</loc>
   <priority>0.5</priority>
-  <lastmod>2016-01-12</lastmod>
+  <lastmod>2016-12-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
+
 <url>
   <loc>http://brassai.blue-l.de/iskola.php</loc>
   <priority>0.5</priority>
-  <lastmod>2016-01-12</lastmod>
+  <lastmod>2016-12-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
+
+<url>
+  <loc>http://brassai.blue-l.de/picture.php?type=schoolID&amp;typeid=1</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-12-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>http://brassai.blue-l.de/picture.php?type=tablo&amp;typeid=tablo</loc>
+  <priority>0.5</priority>
+  <lastmod>2016-12-12</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+
+
+
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=CSOPORT</loc>
   <priority>0.5</priority>
-  <lastmod>2016-01-12</lastmod>
+  <lastmod>2016-12-12</lastmod>
   <changefreq>monthly</changefreq>
 </url>
+
 <url>
   <loc>http://brassai.blue-l.de/pictureGallery.php?view=thumbnails&amp;amp;gallery=BALLAGAS</loc>
   <priority>0.5</priority>
@@ -146,3583 +171,3883 @@
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2847</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2848</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2849</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2850</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2851</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2852</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2853</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2854</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2855</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2856</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2857</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2858</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2859</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2860</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2861</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2862</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2863</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2864</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2865</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2866</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2867</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2868</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2869</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2870</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2871</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2872</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2873</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2874</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2875</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2876</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2877</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2878</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2879</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2880</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2881</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2882</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2883</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2884</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2885</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2886</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2887</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2888</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2889</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2890</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2891</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2892</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2893</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2894</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2895</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2896</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2897</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2898</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2899</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2900</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2901</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2902</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2903</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2904</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2905</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2906</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2907</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2908</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2909</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2910</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2911</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2912</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2913</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2914</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2915</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2916</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2917</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2918</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2919</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2920</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2921</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2922</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2923</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2924</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2925</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2926</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2927</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2928</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2929</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2930</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2931</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2932</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2933</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2934</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2935</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2936</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2937</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2938</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2939</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2940</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2941</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2942</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2943</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2944</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2945</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2946</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2947</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2948</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2949</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2950</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2951</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2952</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2953</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2954</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2955</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2956</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2957</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2958</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2959</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2960</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2961</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2962</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2963</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2964</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2965</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2966</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2967</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2968</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2969</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2970</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2971</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2972</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2973</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2974</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2975</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2976</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2977</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2978</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2979</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2980</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2981</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2982</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2983</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2984</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2985</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2986</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2987</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2988</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2989</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2990</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2991</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2992</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2993</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2994</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2995</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2996</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2997</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2998</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=2999</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3000</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3001</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3002</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3003</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3004</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3005</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3006</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3007</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3008</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3009</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3010</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3011</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3012</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3013</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3014</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3015</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3016</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3017</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3018</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3019</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3020</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3021</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3022</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3023</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3024</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3025</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3026</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3027</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3028</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3029</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3030</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3031</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3032</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3033</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3034</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3035</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3036</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3037</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3038</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3039</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3040</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3041</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3042</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3043</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3044</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3045</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3046</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3047</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3048</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3049</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3050</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3051</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3052</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3053</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3054</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3055</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3056</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3057</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3058</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3059</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3060</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3061</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3062</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3063</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3064</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3065</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3066</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3067</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3068</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3069</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3070</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/zenePlayer.php?id=3071</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=36</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=37</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=38</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=39</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=40</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/picture.php?id=41</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=42</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=43</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=44</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=45</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=46</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=47</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=48</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=49</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=50</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=51</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=52</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=53</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=54</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=55</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=58</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=59</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=61</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=62</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/picture.php?id=63</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=64</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=65</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=66</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=71</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=72</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=74</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=75</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?id=76</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=78</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=79</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=80</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=81</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=83</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=84</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=85</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=86</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=89</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=91</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=93</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=94</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=95</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=97</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=98</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?id=99</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=0</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=0</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/vote.php?classid=0</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=0</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/hometable.php?classid=91</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/worldmap.php?classid=91</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/vote.php?classid=91</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?classid=91</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/hometable.php?classid=92</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/worldmap.php?classid=92</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/vote.php?classid=92</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?classid=92</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=82</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=82</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=82</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=82</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=70</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=70</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=70</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=70</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/hometable.php?classid=89</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/worldmap.php?classid=89</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/vote.php?classid=89</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?classid=89</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=71</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=71</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=71</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=71</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=86</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=86</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=86</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=86</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/hometable.php?classid=83</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/worldmap.php?classid=83</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/vote.php?classid=83</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
-	<changefreq>monthly</changefreq>
-</url>
-<url>
-	<loc>http://brassai.blue-l.de/picture.php?classid=83</loc>
-	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=72</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=72</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=72</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=72</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/hometable.php?classid=87</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/worldmap.php?classid=87</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/vote.php?classid=87</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?classid=87</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=73</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=73</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=73</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=73</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=74</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=74</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=74</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=74</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=75</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=75</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=75</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=75</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=76</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=76</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=76</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=76</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=77</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=77</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=77</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=77</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=78</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=78</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=78</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=78</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/hometable.php?classid=90</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/worldmap.php?classid=90</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/vote.php?classid=90</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/picture.php?classid=90</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=85</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=85</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=85</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=85</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/hometable.php?classid=79</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/worldmap.php?classid=79</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/vote.php?classid=79</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/picture.php?classid=79</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Adorjan_Janos-588</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Peter-589</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bajusz_Marika-590</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ferenczi_Gyorgy-591</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Laszlo_Aranka-592</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Molnar_Zoltan-593</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nano_Csaba-594</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ozsvath_Alexandru-595</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szekely_Erzsebet-596</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Tompos_Laszlo-597</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Torok_Zsuzsa-598</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Acs_Ibolya-599</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Akerman_Janos-600</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Barabas_Julia-601</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bugnar_Melinda-602</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Burgus_Botond-603</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csakany_Eniko-604</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csepregi_Julianna-605</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csomos_Krisztina-606</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Darvasi_Zsuzsa-607</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Doval_Attila-608</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Farkas_Melinda-609</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Fulop_Laszlo-610</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gall_Agnes-611</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Hilf_Judith-612</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Jakab_Attila-613</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kassay_Geza-614</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kelemen_Attila-615</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Istvan-616</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kocsis_Judit-617</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Marosan_Eva-618</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Muresan_Sandor-619</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Eniko-620</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nits_Reka-621</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Obernoster_Istvan-622</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ovari_Eva-623</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Pakai_Eva-624</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Plank_Eva-625</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Prikarszky_Attila-626</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Puskas_Ildiko-627</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Razmany_Attila-628</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Soos_Laszlo-629</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szabo_Jozsef-630</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szabo_Katalin-631</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szabo_Tunde-632</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szakacs_Zsolt-633</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Tulogdi_Laszlo-634</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ujvari_Lenke-635</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Veer_Gyorgy-636</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vincze_Annamaria-637</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Tamas_Gizella-638</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Varga_Dorottya-639</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Barabasi_Emese-640</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Barabasi_Jeno_Rudolf-641</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Benedek_Zsolt-642</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Hinschutz_Eniko-643</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Biro_Adam_Atilla-644</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kovacs_Katalin-645</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bujaki_Sandor-646</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gaspar_Edina-647</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csaszar_Istvan-648</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/David_Ildiko-649</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Donath_Kalman-650</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szilagyi_Ildiko-651</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Onci_Krisztina-652</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Buchmuller_Agnes-653</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Veres_Agnes-654</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szallos_Eszter-655</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gruber_Oszkar-656</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kali_Sandor-657</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Maier_Levente-658</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Edit-659</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Krull_Klara-660</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bogardine_Magdolna-661</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kovacs_Laszlo-662</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Donath_Julia_Karmen-663</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Miklos_Andras-664</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Bela-665</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Darai_Gabriella-666</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Paniti_Arpad-667</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Petrov_Ljubomir-668</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Sover_Laszlo_Tibor-669</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szabo_Istvan-670</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szekely_Hajnalka-671</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Tatar_Tunde-672</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vincze_Nemet_Gabriella-673</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Varga_Ildiko-674</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ferenczy_Vass_Eva-675</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Moll_Marta-676</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balazs_Attila-677</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Fodor_Eva-678</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Boros_Edit-679</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Both_Melinda-680</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Chiorean_Krisztina-681</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vernes_Ibolya-682</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bukkos_Ildiko-683</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Lazsadi_Ildiko-684</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dali_Endre-685</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Deak_Attila-686</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kalman_Maria_Magdolna-687</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Felhazi_Sandor-688</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Fulop_Erzsebet-689</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Hosszu_Sandor-690</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bodo_Steven-691</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Jasko_Ilona-692</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kelemen_Attila-693</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kis_Lukacs_Laszlo-694</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Attila_Geza_(Cezar)-695</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Revesz_Erzsebet-696</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kory_Orsolya-697</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kovacs_Adelka-698</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kovacs_Arpad-699</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szabo_Eva-700</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Lazar_Gabriella-701</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Lenard_Jozsef_(Yogi)-702</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Marton_Asgrim_Aniko-703</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Berger_Maria-704</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Maria-705</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Papp_Levente-706</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szados_Erzsebet-707</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dosa_Magda-708</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dezsi_Krisztina-709</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Rozsa_Julianna-710</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Losteiner_Agnes-711</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gergely_Varga_Andrea-712</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Tar_Bengtsson_Zsuzsa-713</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bazsa_Jolan-714</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Toth_Ibolya-715</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Veres_Gitta-716</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vremir_Marton-717</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ambrus_Agnes-718</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ambrus_Noemi-719</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Andrasi_Kirsztina-720</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bajnoczi_Lajos-721</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balazs_Attila-722</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balint_Imola-723</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Ballo_Antonia-724</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Banffy_Bela-725</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bartha_Peter-726</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bicsak_Maria-727</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Biro_Eniko-728</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Biro_Judith-729</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Eniko-730</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bodor_Ildiko-731</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bodroghi_Eniko-732</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csiandor_Hajnal-733</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dozsa_Eva-734</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Egri_Attila-735</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Felvinczi_Csaba-736</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gecse_Izabella-737</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gergely_Laszlo-738</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gombar_Annamaria-739</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Jakab_Robert-740</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Korosfoy_Eva-741</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Laszlo_Andras-742</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Mathe_Emilia-743</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Mihaly_Reka-744</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Peter-745</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Peter-746</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Sorompo_Reka-747</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szalczer_Eniko-748</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szasz_Csaba-749</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szekely_Zsejke-750</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szilagyi_Levente-751</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szocs_Jozsef-752</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Veres_Gyorgy-753</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vincze_Ingeborg-754</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Akerman_Judit-755</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Baczoni_Karoly-756</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bajko_Janos_Csaba-757</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Biro_Erzsebet_Gyongyvirag-758</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bojthe_Tamas-759</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csepregi_Zsuzsa-760</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Deak_Ildiko-761</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Farkas_Attila-762</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gombos_Erika_Csilla-763</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kantor_Csaba-764</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kaptalan_Nagy_Jozsef_Csaba-765</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kelemen_Emese-766</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kelemen_Erzsebet-767</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balogh_Kelemen_Melinda-768</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Ildiko-769</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Zsuzsanna_Emese-770</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kosa_Ildiko-771</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Lovasz_Andras-772</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Malos_Maria-773</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Marton_Zsuzsa-774</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gruber_Annamaria-775</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Muradin_Judit-776</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Gyongyi-777</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Pall_Kinga_Agnes-778</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Pavai_Barna_Laszlo-779</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Peter_Andrea-780</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Piroska_Judit-781</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Razmany_Peter_Zsolt-782</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Schoplocher_Krisztina_Eva-783</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szocs_Sandor_Attila-784</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szoke_Eniko_Gyongyi-785</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Talas_Zoltan-786</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Teleki_Gabor-787</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Terschanszky_Agnes_Katalin-788</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Torok_Arpad-789</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Valczan_Anna_Maria-790</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Wagner_Melinda-791</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Almasi_Melinda-792</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szekely_Gyongyi-793</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Baja_Erika-794</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balint_Emese-795</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balint_Zoltan-796</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Balogh_Zoltan-797</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Barazsuly_Istvan-798</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bartha_Gabriella-799</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Batiz_Reka-800</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Beczi_Judith-801</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Bereczky_Ildiko-802</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Biro_Ildiko-803</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Biro_Jutka-804</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Czegelyi_Eniko-805</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Denes_Melinda-806</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gergely_Iren-807</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Jakab_Sandor-808</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Katrinecz_Attila-809</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kilin_Gyorgy-810</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Csaba-811</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Nagy_Judith-813</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Orban_Martha-814</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Palffy_Hajnal-815</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Finta_Peterffy_Lilla-816</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Prosteanu_Marius-817</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szallos_Pal-818</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szatmari_Marika-819</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szell_Zoltan-820</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szlavits_Maria-821</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Torok_Arpad-822</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Torok_Erzsebet-823</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Torok_Melinda-824</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Varga_Ibolya-825</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vasarhelyi_Krisztina-826</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Veres_Istvan-827</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Vincze_Attila-828</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Cimpian_Zsolt_Attila-829</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Mate_Andras_Levente-830</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Rethy_Kinga-831</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Rethy_Levente-832</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Iskola_Vendeg-833</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/System_Administrator-834</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dr._Arkosi_Sandor-835</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Benedek_Andras-836</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Berekmeri_Geza-837</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Boda_Karoly-838</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Csalah_Gyorgy-839</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Daly_Gyorgy-840</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Finta_Gyula-841</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Finta_Hajnal-842</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gall_Denes-843</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Jozsa_Gyorgy-844</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kiss_Lajos-845</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kovacs_Jolan-846</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dr._Kovacs_Zoltan-847</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Maczak_Andras-848</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dr._Marosi_Maria-849</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Papp_Zoltan-850</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Pazmany_Zsuzsa-851</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szabo_Almos-852</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szolosi_Ferenc-853</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Torok_Ferenc-854</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Toth_Karoly-855</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kelemen_Zoltan-878</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Gruber_Ilona-884</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Kalmar_Marta-889</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Rosca_Zsuzsa-890</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Szocs_Judit-892</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Czegenyi_Eva-893</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Dan_Maria-894</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Fola_Marton-895</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Jakab_Gyongyi-897</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Molnar_Eva-899</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Andrasofszky_Pap_Emese-908</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Derzsy_Arpad-909</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 <url>
 	<loc>http://brassai.blue-l.de/Pardy_George-910</loc>
 	<priority>0.5</priority>
-	<lastmod>2016-11-29</lastmod>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Istvan-917</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kalmar_Zoltan-919</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szabo_Arpad-920</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bognar_Robert-921</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bitay_Levente_Laszlo-922</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Daly_Gyorgy-923</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Osz_Denes-924</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Levy_Zoltan-925</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Kovacs_Laszlo-926</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Pogany_Adam-927</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Nyaguly_Istvan-928</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Bruszt_Miklos-929</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Rethy_Istvan-930</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Fejer_Miklos-931</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Szekely_Jozsef-932</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Sinka_Zoltan-933</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Vaczy_Margit-934</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Miko_Imre-935</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Dr._Heinrich_Laszlo-936</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://brassai.blue-l.de/Buzas_Gyongyver-937</loc>
+	<priority>0.5</priority>
+	<lastmod>2016-12-20</lastmod>
 	<changefreq>monthly</changefreq>
 </url>
 </urlset>
