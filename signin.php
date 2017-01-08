@@ -56,6 +56,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 					}
 				}
 				if ($ret>=0) {
+					$person["id"]=$ret;
 					$db->saveRequest(changeType::newuser);
 					$resultDBoperation='<div class="alert alert-info" >Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.</div>';
 					setUserInSession($person["role"],$person["user"],$ret);
@@ -96,7 +97,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 			<h4 class="margin-hor">Kapcsolatom a <?php  echo getAktSchoolName() ?> diákjaival:</h4> 
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,1);"/> 
-				<div class="inline margin-hor"> Végzös diák vagyok, ebben az iskolában éretségiztem és ballagtam.</div></div>
+				<div class="inline margin-hor"> Véndiák vagyok, ebben az iskolában éretségiztem és ballagtam.</div></div>
 			<div style="clear:both;"></div>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,2);"/> 
@@ -115,7 +116,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
 					<select id="year" name="year" size="1" class="form-control" onchange="showPersons()">
 						<option value="0">...válassz!...</option>
-						<?php for ($i=2010;$i>1965;$i--) {
+						<?php for ($i=2010;$i>1940;$i--) {
 							if (getParam("year", "")==$i) $selected="selected"; else $selected="";
 							echo('<option '.$selected.' value="'.$i.'">'.$i.'</option>');
 						} ?>
@@ -125,7 +126,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási osztály</span>
 					<select id="class" name="class" size="1" class="form-control" onchange="showPersons()">
 						<option value="0">...válassz!...</option>
-						<?php for($cl=11;$cl<14;$cl++) { ?>
+						<?php for($cl=10;$cl<14;$cl++) { ?>
 							<?php for($cs="A";$cs<"G";$cs++) { ?>
 								<option value="<?php echo $cl.$cs ?>"><?php echo $cl.$cs ?></option>
 						<?php } } ?>

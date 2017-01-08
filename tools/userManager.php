@@ -16,7 +16,7 @@
 		$person=$db->getPersonByID($personid);
 		if (null!=$person) {
 			setAktUserId($personid);
-			setUserInSession($person["admin"], $person["user"],$personid);
+			setUserInSession($person["role"], $person["user"],$personid);
 			if (!userIsAdmin()) {
 				saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
 				sendHtmlMail(null,
