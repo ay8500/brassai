@@ -76,8 +76,12 @@ if ($delVote>=0 && $edit) {
    		$psong=0;$pinterpret=0;
    } 
 	
-   //Read voters List
-	$votersList=$db->getVotersList(getRealId(getAktClass()));
+   //Read voters List by ClassID
+   	if (getAktClassId()!=0)
+		$votersList=$db->getVotersListByClassId(getRealId(getAktClass()));
+   	else
+		$votersList=$db->getVotersListBySchoolId(getRealId(getAktSchool()));
+   	usort($votersList, "compareAlphabetical");
 	$allVotes=0;
 	$voteCount=0;
 	foreach ($votersList as $voter) {

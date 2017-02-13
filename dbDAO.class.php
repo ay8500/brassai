@@ -577,7 +577,10 @@ class dbDAO {
 		return $this->getElementList("interpret",null,null,"name asc");
 	}
 	
-	public function getVotersList($classId) {
+	/*
+	 * get Voterslist by class id
+	 */
+	public function getVotersListByClassId($classId) {
 		$sql  ="select  person.id, person.lastname, person.firstname, person.picture, count(1) as count "; 
 		$sql .="from songvote join person on person.id=songvote.personID ";
 		$sql .="where person.classID=".$classId." group by personID";
@@ -585,6 +588,18 @@ class dbDAO {
 		return $this->dataBase->getRowList();
 	}
 
+	/*
+	 * get Voterslist by scool id
+	 */
+	public function getVotersListBySchoolId($schoolId) {
+		$sql  ="select  person.id, person.lastname, person.firstname, person.picture, count(1) as count ";
+		$sql .="from songvote join person on person.id=songvote.personID ";
+		$sql .="join class on class.id=person.classID ";
+		$sql .="where class.schoolID=".$schoolId." group by personID";
+		$this->dataBase->query($sql);
+		return $this->dataBase->getRowList();
+	}
+	
 	public function getVotersListForMusicId($musicId) {
 		$sql  ="select  person.id as personid, person.lastname, person.firstname, person.picture  ";
 		$sql .="from songvote join person on person.id=songvote.personID ";
