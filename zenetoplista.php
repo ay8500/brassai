@@ -213,7 +213,10 @@ if ($delVote>=0 && $edit) {
 <div class="col-sm-9">	
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<label id="dbDetails">Top <?php echo $listLength?> zenelista</label> 
+			<label id="dbDetails">Top <?php echo $listLength?> zenelista lejátszó</label><br/> 
+			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-attributes"></span> Legjobb szám elsőnek</button>
+			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Legjobb szám utoljára</button>
+			<button class="btn btn-default"onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
 		</div>
 		<div class="form-group navbar-form navbar" >
 			<table>
@@ -300,7 +303,36 @@ if ($delVote>=0 && $edit) {
 </div>
  <?PHP  include "homefooter.php" ?>
 
- <script language="JavaScript1.2">
+<script>
+var songs = [<?php foreach($topList as $i=>$v) echo(($i!=0?',"':'"').$v['songVideo'].'"');?>];
+
+function playBackward() {
+    var url="zenePlayer.php?listdir=előre&link="+songs[0]+"&list=";
+    for (var i=1;i<songs.length;url+=songs[i++]+",");
+    window.location.href=url;
+}
+
+function playForward() {
+    var url="zenePlayer.php?listdir=visszafele&link="+songs[songs.length-1]+"&list=";
+    for (var i=songs.length-2;i>=0;url+=songs[i--]+",");
+    window.location.href=url;
+}
+
+function playRandom() {
+    var idx=Math.floor(Math.random()*(songs.length));
+    var url="zenePlayer.php?listdir=véletlenszerüen&link="+songs[idx]+"&list=";
+    songs[idx]="";
+    for (var i=1;i<songs.length;i++) {
+		idx=Math.floor(Math.random()*(songs.length));
+		while (songs[idx]=="") {
+		    idx=Math.floor(Math.random()*(songs.length));
+		}
+		url+=songs[idx]+",";
+	    songs[idx]="";
+    }
+    window.location.href=url;
+}
+
 function autoComplete (field, select, property, forcematch) {
 	var found = false;
 	for (var i = 0; i < select.options.length; i++) {
