@@ -35,15 +35,15 @@ function editDiakCard($d,$showClass=false) {
 			<div class="fields"> 
 			<?php 
 				if ($d["isTeacher"]==0) {
-					if(showField($d,"partner")) 	echo "<div><span>Élettárs:</span>".$d["partner"]."</div>";
-					if(showField($d,"education")) 	echo "<div><span>Végzettség:</span>".$d["education"]."</div>";
+					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
+					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".$d["education"]."</div></div>";
 					if(showField($d,"employer")) 	{
 						$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "",	getFieldValue($d["employer"]));
-						echo "<div><span>Munkahely:</span>".$fieldString ."</div>";
+						echo "<div><div>Munkahely:</div><div>".$fieldString ."</div></div>";
 					}
-					if(showField($d,"function")) 	echo "<div><span>Beosztás:</span>".getFieldValue($d["function"])."</div>";
+					if(showField($d,"function")) 	echo "<div><div>Beosztás:</div><div>".getFieldValue($d["function"])."</div></div>";
 				} else {
-					if (isset($d["function"]))		echo "<div><span>Tantárgy:</span>".getFieldValue($d["function"])."</div>";
+					if (isset($d["function"]))		echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."</div></div>";
 					if (showField($d,"children")) {	
 						echo "<div><span>Osztályfönök:</span>";
 						$c = explode(",", getFieldValue($d["children"]));
@@ -57,9 +57,9 @@ function editDiakCard($d,$showClass=false) {
 						echo "</div>";
 					}
 				}
-				if(showField($d,"country")) 	echo "<div><span>Ország:</span>".getFieldValue($d["country"])."</div>";
-				if(showField($d,"place")) 		echo "<div><span>Város:</span>".getFieldValue($d["place"])."</div>";
-				echo('<div style="margin-top:5px"><span></span>');
+				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
+				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
+				echo('<div class="diakCardIcons">');
 					if(showField($d,"email"))
 						echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
 					if (isset($d["facebook"]) && strlen($d["facebook"])>8)

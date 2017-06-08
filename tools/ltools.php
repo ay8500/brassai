@@ -16,6 +16,13 @@ function getPostParam($name,$def) {
 }
 
 /**
+ * Check the value of parameter with the name "action"
+ **/
+function isActionParam($action) {
+	return getParam("action")==$action;
+}
+
+/**
  * Safety paramateter read default value can be specified othewise is NULL 
  */
 function getParam($name,$def=null) {
@@ -36,15 +43,18 @@ function getIntParam($name,$def=0) {
 		return $def;
 }
 
+/**
+ * Set the response header to Ok or Bad Request
+ * @param unknown $booleanResult
+ */
 function httpHeader($booleanResult) {
 	if ($booleanResult) {
 		header("HTTP/1.0 200 OK");
-		//header("Status: 200 OK");
 	}
 	else { 
 		header("HTTP/1.0 400 Bad Request");
-		//header("Status: 400 Bad Request");
 	}
+	return $booleanResult;
 }
 
 /**
@@ -61,6 +71,12 @@ function localhost() {
 	
 }
 
+
+/**
+ * Returns the readable name of a enum constant value
+ * @param unknown $className
+ * @param unknown $value
+ */
 function getConstantName($className,$value)
 {
 	$class = new ReflectionClass($className);
@@ -68,5 +84,6 @@ function getConstantName($className,$value)
 
 	return $constants[$value];
 }
+
 
 ?>

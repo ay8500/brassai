@@ -197,29 +197,6 @@ if ($delVote>=0 && $edit) {
 		</form>
 	<?php } ?>
 
-<?php if (getAktClassId()!=0 || true):?>	
-<div class="col-sm-3">	
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotes); ?></label> 
-		</div>
-		<div class="form-group navbar-form navbar">
-			<table>
-			  <?php foreach ($votersList as $voter) {
-			     	if (trim($voter["firstname"])!="" && intval($voter["count"])>0) { ?>
-			     		<tr>
-			     			<td><img src="images/<?php echo $voter["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" /></td>
-			     			<td><?php echo $voter["lastname"]." ".$voter["firstname"]?></td>
-			     			<td>&nbsp;</td>
-			     			<td style="padding-left:15px;"><?php echo $voter["count"]?></td>
-			     		</tr>
-			     	<?php }
-			  } ?>
-			</table>
-		</div>
-	</div>
-</div>
-<?php endif;?>
 
 <?php 
   	 	$topList= $db->readTopList (getRealId(getAktClass()),getLoggedInUserId());
@@ -227,7 +204,7 @@ if ($delVote>=0 && $edit) {
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);
   	 	else if (userIsAdmin() || getAktClassId()==0)
-  	 		$listLength=sizeof($topList)-1;
+  	 		$listLength=sizeof($topList);
   	 	else if (userIsLoggedOn())
   	 		$listLength=100;
   	 	else
@@ -295,6 +272,30 @@ if ($delVote>=0 && $edit) {
 		<button onclick="javascript:document.location='zenetoplista.php?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
 	<?php endif;?>
 </div>
+
+
+<div class="col-sm-3">	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotes); ?></label> 
+		</div>
+		<div class="form-group navbar-form navbar">
+			<table>
+			  <?php foreach ($votersList as $voter) {
+			     	if (trim($voter["firstname"])!="" && intval($voter["count"])>0) { ?>
+			     		<tr>
+			     			<td><img src="images/<?php echo $voter["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" /></td>
+			     			<td><?php echo $voter["lastname"]." ".$voter["firstname"]?></td>
+			     			<td>&nbsp;</td>
+			     			<td style="padding-left:15px;"><?php echo $voter["count"]?></td>
+			     		</tr>
+			     	<?php }
+			  } ?>
+			</table>
+		</div>
+	</div>
+</div>
+
 
 </div>
  <?PHP  include "homefooter.php" ?>

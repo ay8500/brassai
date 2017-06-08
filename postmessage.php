@@ -128,7 +128,7 @@ function checkMessageContent($message) {
 	$msg = " ".strtolower(strip_tags($message))." ";
 	$rr = array("-",":",",",".","(",")","?","!");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(	"lessz ", " volt "," a "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz ","itt ", "ott ",
+	$whiteList = array(	"lessz ", " volt "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz ","itt ", "ott ",
 						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ",
 						"nnepek",  "boldog ", "csony", "hus", "egy ","minden","senki" );
 	$count = 0;

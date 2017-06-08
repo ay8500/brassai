@@ -56,26 +56,28 @@ function addWrapperDiv(id) {
         html +='</h4>';
         html +='<div class="fields">'; 
         if (d.classID=="0") {
-            html +='<div><span>Tanár:</span>'+d['function']+'</div>';
+            if (d['function']!=null) {
+        	html +='<div><div>Tanár:</div><div>'+d['function']+'</div></div>';
+            }
             if (d.children!=null) {
-    	    	html +='<div><span>Osztályfőnök:</span>';
+    	    	html +='<div><div>Osztályfőnök:</div><div>';
     	    	var kx= d.children.split(",");
     	    	for (var k=0;k<kx.length;k++) {
     			html +='<a href="hometable.php?classid='+kx[k]+'">'+kx[k]+'</a> ';
     	    	}
-    	    	html +='</div>';
+    	    	html +='</div></div>';
             }
         } else {
             if (d.isGuest==0)
-        	html +='<div><span>Végzős osztály:</span><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div>';
+        	html +='<div><div>Osztály:</div><div><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div></div>';
             else
-        	html +='<div><span>Vendég jó barát:</span><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div>';
+        	html +='<div><div>Osztály:</div><div><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div></div>';
         }
         if (d.place!=null)
-    	html +='<div><span>Helyiség:</span><br/>&nbsp;&nbsp;&nbsp;'+d.place+'</div>';
+    	html +='<div><div>Helyiség:</div><div>'+d.place+'</div></div>';
         if (d.employer!=null)
-    	html +='<div><span>Munkahely:</span><br/>&nbsp;&nbsp;&nbsp;'+d.employer+'</div>';
-        html +='<div style="margin-top:5px">';
+    	html +='<div><div>Munkahely:</div><div>'+d.employer+'</div></div>';
+        html +='<div class="diakCardIcons">';
         if(d.email!=null)
     	html +='<a href="mailto:'+d.email+'"><img src="images/email.png" /></a>';
         if (d.facebook!=null)
