@@ -41,8 +41,8 @@ function addWrapperDiv(id) {
     if (data.length>=id+1) {
 	var d = data[id];
 
-	var w=$("#wrapper").width()-parseInt($("#wrapper").css("margin-right").replace("px",""));
-        var width=Math.round(-0.5+w/Math.round(0.5+w/wrapperWidth));
+	var w=$("#wrapper").width();
+        var width=Math.round(0.5+w/Math.round(0.5+w/wrapperWidth));
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; width:160px;">';

@@ -3,7 +3,7 @@ include_once("tools/sessionManager.php");
 include_once("data.php");
 
 if (!isset($siteHeader)) $siteHeader='';
-$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css" /> ';
+$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v=08062017a" /> ';
 
 include("homemenu.php");
 ?>
@@ -64,4 +64,4 @@ include("homemenu.php");
 	</div>
 </div>
 <?php  include ("homefooter.php");?>
-<script type="text/javascript" src="js/wrapper.js"></script>
+<script type="text/javascript" src="js/wrapper.js?v=08062017a"></script>
