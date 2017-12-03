@@ -52,6 +52,14 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 			$resultDBoperation='<div class="alert alert-warning" > Az üzenet törlése nem sikerült!</div>';
 	}
 }
+
+if (isset($_GET["action"]) && ($_GET["action"]=="commentMessage")) {
+	if ($db->saveMessageComment(getIntParam("id"),getGetParam("comment", ""))===true) {
+		$resultDBoperation='<div class="alert alert-success" > A beadott kommentár elküldése sikerült!</div>';
+	} else {
+		$resultDBoperation='<div class="alert alert-warning" > A beadott kommentár kimentése nem sikerült!</div>';
+	}
+}
 ?>
 
 <div class="container-fluid">   

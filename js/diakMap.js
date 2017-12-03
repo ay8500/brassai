@@ -5,7 +5,7 @@ var xmlHttp;		//AJAX
 $(document).ready(function() {
     if (GBrowserIsCompatible()) {
         application = new MyApplication();
-        zoomMap(7);
+        zoomMap(6);
         
         setTimeout( function(){fillPoints()},500);
     }
@@ -21,7 +21,7 @@ function zoomMap(i) {
     if (i==4) { zoom=7; center = new GLatLng(47.4984,19.0411);}
     if (i==5) { zoom=7; center = new GLatLng(49.84,9.97);}
     if (i==6) { zoom=5; center = new GLatLng(47.4984,15.0411);}
-    if (i==7) { zoom=3; center = new GLatLng(41,-42);}
+    if (i==7) { zoom=4; center = new GLatLng(41,-42);}
     application.map.setCenter(center, zoom);
     fillPoints();
 }

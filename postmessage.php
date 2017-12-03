@@ -59,13 +59,19 @@ function readMessageList($elements) {
 			if (userIsAdmin()) {
 				$ret .= '<span class="cmessage" >'.$message["changeIP"].'</span>';
 			}
-				//Delete button
+			//Delete button
 			if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
 				(isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
 				$message["changeUserID"]==getLoggedInUserId() )
 				if ($message["isDeleted"]==0) {
-					$ret .= '<button class="btn btn-default" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
-				}
+					$ret .= '<button class="btn btn-danger" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
+			}
+			if (userIsAdmin()) {
+				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'">';
+				$ret .= ' Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;">';
+				$ret .= ' <button class="btn btn-warning" name="action" value="commentMessage">Kiment</button>';
+				$ret .= '</form></span>';
+			}
 			$ret .= '</div>';
 			$ret .= '</div>';
 			$ret .= '</div><div style="width:100%; height:10px;"></div>'."\r\n";
@@ -96,7 +102,7 @@ function deleteMessage($id) {
 
 
 /**
- * Write message in the json message File
+ * Write message 
  * @param unknown $text
  * @param unknown $privacy
  * @param unknown $name

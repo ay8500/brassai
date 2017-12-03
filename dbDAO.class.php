@@ -177,6 +177,15 @@ class dbDAO {
 		}
 		return -1;
 	}
+	
+	public function getClassStatistics($classId) {
+		$ret = new stdClass();
+		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
+		$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture != 'avatar.jpg'");
+		$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
+		$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
+		return $ret;
+	}
 
 	/**
 	 * get a person by unsername
@@ -648,6 +657,17 @@ class dbDAO {
 		$entry["id"]=-1;
 		return $this->saveEntry("message", $entry);
 	}
+	
+	/**
+	 * save messager comment
+	 * @param int $id
+	 * @param string $comment
+	 * @return boolean
+	 */
+	public function saveMessageComment($id,$comment) {
+		return $this->dataBase->update("message", [["field"=>"comment","type"=>"s","value"=>$comment]],"id",$id);
+	}
+	
 	
 	public function getMessageListToBeChecked()
 	{

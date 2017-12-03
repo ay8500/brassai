@@ -33,10 +33,10 @@ if ($action=="saveclass") {
 				"headTeacherID"=>getIntParam("teacher",0)
 		]);
 		if ($classid>=0 ) {
-			$resultDBoperation='<div class="alert alert-success">Új osztály sikeresen létrehozva!</div>';
+			$resultDBoperation='<div class="alert alert-success">Osztály sikeresen kimentve!</div>';
 			setAktClass($classid);
 		} else {
-			$resultDBoperation='<div class="alert alert-warning">Új osztály kimentése sikertelen!</div>';
+			$resultDBoperation='<div class="alert alert-warning">Osztály kimentése sikertelen!</div>';
 		}
 	}
 }
@@ -113,6 +113,17 @@ include("homemenu.php");
 				</option>
 			<?php } }?>
 		</select>
+	</div>
+	
+	<?php $stat=$db->getClassStatistics($classid);?>
+	<div class="well " style="margin-bottom: 25px;">
+		<h4>Statisztikai adatok</h4>
+		<div class="form">	      		
+		<a href="hometable.php?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
+		Diákok képpel:<?php echo $stat->personWithPicture?><br/>
+		Diakok képei:<?php echo $stat->personPictures?><br/>
+		<a href="picture.php?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
+		</div>
 	</div>
 	
 	<div class="well">
