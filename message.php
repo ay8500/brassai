@@ -26,22 +26,33 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 		if (strlen($paramName)<4) {
 			$resultDBoperation='<div class="alert alert-warning" >Írd be család és keresztneved!</div>';
 		}
-		else if (checkMessageContent($paramText)) {
-			if (checkRequesterIP(changeType::message)) {
-				if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
-					$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
-					$paramName="";
-					$paramText="";
+		else { 
+			if (checkMessageContent($paramText)) {
+				if (checkRequesterIP(changeType::message)) {
+					if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
+						$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+						$paramName="";
+						$paramText="";
+					} else {
+						$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+					}
 				} else {
-					$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+					$resultDBoperation='<div class="alert alert-warning" > Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.</div>';
 				}
-			} else {
-				$resultDBoperation='<div class="alert alert-warning" > Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.</div>';
 			}
-		} else 
-			$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
+			else 
+				$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
+		} 
 	}
 }
+
+if (isset($_GET["action"]) && ($_GET["action"]=="checkMessage")) {
+	$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet tartalmaz '.
+		checkMessageContent($paramText,true).
+		' magyar kivejezést.Eredmény:'.
+		(checkMessageContent($paramText)?"Ok":"nem jo").' </div>';
+}
+
 
 if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 	$id=getIntParam("id",-1);
@@ -90,8 +101,10 @@ if (isset($_GET["action"]) && ($_GET["action"]=="commentMessage")) {
 				<div title="Az osztálytársak" class="cradio radio_class"><input type="radio" name="privacy" value="class" <?php echo getFieldCheckedClass($text)?> onclick="saveMessage();" /></div>
 			</div> 
 			<?php } ?>
-			<button class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-send"></span> küldés!</button>
-			<input type="hidden" value="postMessage" name="action" />
+			<button value="postMessage" name="action" class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-send"></span> küldés!</button>
+			<?php if (userIsAdmin()) {?>
+				<button value="checkMessage" name="action" class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-check"></span> magyar?</button>
+			<?php } ?>
 		</form>
 		<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" id="deleteForm">
 			<input type="hidden" name="id" id="deleteId"/>

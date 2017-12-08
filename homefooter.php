@@ -8,6 +8,7 @@
 				<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
 				<li><a href="logingData.php"  >Loging</a></li>
 				<li><a href="dataCheck.php"  >Vizsga</a></li>
+				<li><a href="database.php"  >Adatbank</a></li>
 			<?PHP }	?>
 			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">(c) 2016 Levi</span></li>
 	      </ul>

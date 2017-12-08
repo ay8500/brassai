@@ -128,22 +128,34 @@ function writeMessage($text,$privacy,$name) {
 
 /**
  * Check if the message is hungarian human
- * @param unknown $message
+ * @param string $message
+ * @param boolean $returnCount if true will return the count of hungarian words
  */
-function checkMessageContent($message) {
-	$msg = " ".strtolower(strip_tags($message))." ";
-	$rr = array("-",":",",",".","(",")","?","!");
+function checkMessageContent($message,$returnCount=false) {
+	if (strlen($message)<10)
+		if ($returnCount)
+			return 0;
+		else
+			return false;
+	$msg = " ".mb_strtolower(strip_tags($message))." ";
+	$rr = array("/","=","-",":",",",".","(",")","?","!");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(	"lessz ", " volt "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz ","itt ", "ott ",
-						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ",
-						"nnepek",  "boldog ", "csony", "hus", "egy ","minden","senki" );
+	$whiteList = array(	"lessz ", " volt "," van "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz "," itt ", " ott "," de "," is ",
+						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ","nagyon","puszilok",
+						"legyek", " aki ", "mikor", "honlap", "honoldal","vagyok","leszek"," vagy ",
+						" én ",
+						"ünnepek",  "boldog ", "karácsony", "husvét", "egy ","minden","senki","neked","fénykép" );
 	$count = 0;
 	foreach ($whiteList as $s) {
 		$count += substr_count($msg, $s);
 	}
-	if ($count==0)
-		return false;
-	return (($count+0.01)/strlen($msg) > 1/1000);
+	if ($returnCount) {
+		return $count;
+	} else {
+		if ($count==0)
+			return false;
+		return ($count > strlen($msg) /70);
+	}
 }
 
 ?>

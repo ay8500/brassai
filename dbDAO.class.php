@@ -752,7 +752,7 @@ class dbDAO {
 	 * List of requests grouped by IP and type
 	 */
 	public function getListOfRequest($hours=0) {
-		$sql="SELECT count(1) as count,typeID,ip FROM request";
+		$sql="SELECT count(1) as count,typeID,ip,date FROM request";
 		if ($hours>0) {
 			$newDate = new DateTime();
 			$newDate =$newDate->sub(new DateInterval('PT'.$hours.'H')); 

@@ -21,11 +21,11 @@ if (true) { //Communication
 	array_push($dataFieldObl		, false,false,false,false,false,false,false,false,false,false);
 }
 if (userIsAdmin()) { //only for admin
-	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng");
-	array_push($dataItemProp,"","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false);
+	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID","classID");
+	array_push($dataItemProp,"","","","","","","","","","","","");
+	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","IP","Dátum","User","changeForID","OsztályID");
+	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
 }
 if (isset($classId) && $classId==0 ) { //Teachers
 	$dataFieldCaption[17]="Tantárgy";

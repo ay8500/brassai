@@ -30,7 +30,16 @@ if (userIsAdmin()) {
 if (userIsAdmin()) {  
 
 	//initialise tabs
-	$tabsCaption=Array("Osztályok","Személyek","Képek","Üzenetek","Hozzáférések");
+	$clist=$db->getClassListToBeChecked();
+	$plist=$db->getPersonListToBeChecked();
+	$ilist=$db->getPictureListToBeChecked();
+	$mlist=$db->getMessageListToBeChecked();
+	
+	$tabsCaption=Array(	'Osztályok <span class="badge">'.sizeof($clist).'</span>',
+						'Személyek <span class="badge">'.sizeof($plist).'</span>',
+						'Képek <span class="badge">'.sizeof($ilist).'</span>',
+						'Üzenetek <span class="badge">'.sizeof($mlist).'</span>',
+						'Hozzáférések');
 	include("tabs.php");
 	?>
 
@@ -84,7 +93,7 @@ if (userIsAdmin()) {
 
 	<?php if ($tabOpen==4) { ?>
 	<p align="center">
-	   Hozzáférések:<br/>
+	   Hozzáférések ma:<br/>
    	  <table align="center" border="1">
 	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
 	    	<td>IP</td><td>Datum</td><td>Type</td><td>Számláló</td><td>Akció</td>
@@ -94,10 +103,10 @@ if (userIsAdmin()) {
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
 	   			echo("<td><a href=\"javascript:showip('".$l["ip"]."')\">".$l["ip"]."</td>");
-	   			echo("<td>"."</td>");
+	   			echo("<td>".$l["date"]."</td>");
 	   			echo("<td>".getConstantName("changeType",$l["typeID"])."</td>");
 	   			echo("<td>".$l["count"]."</td>");
-   				if ($l["count"]>1)
+   				if ($l["count"]>0)
    					echo('<td><button class="btn btn-default" onclick="resetChange('."'".$l["ip"]."',".$l["typeID"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
    				else
    					echo("<td></td>");
@@ -105,7 +114,7 @@ if (userIsAdmin()) {
 	  		}
 	  	?>
 	 </table>  
-	 
+	 <p style="text-align: center;margin-top:20px">Hozzáférések:</p>
    	 <table align="center" border="1" style="margin-top:20px">
 	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
 	    	<td>IP</td><td>Datum</td><td>Type</td><td>Számláló</td><td>Akció</td>
@@ -115,10 +124,10 @@ if (userIsAdmin()) {
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
 	   			echo("<td><a href=\"javascript:showip('".$l["ip"]."')\">".$l["ip"]."</td>");
-	   			echo("<td>"."</td>");
+	   			echo("<td>".$l["date"]."</td>");
 	   			echo("<td>".getConstantName("changeType",$l["typeID"])."</td>");
 	   			echo("<td>".$l["count"]."</td>");
-   				if ($l["count"]>1)
+   				if ($l["count"]>=1)
    					echo('<td><button class="btn btn-default" onclick="resetChange('."'".$l["ip"]."',".$l["typeID"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
    				else
    					echo("<td></td>");

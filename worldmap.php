@@ -27,7 +27,7 @@ include("homemenu.php");
 			<?php } ?>
 			
 			<div style="text-align:center;">
-				<div id="map_canvas" style="width: 100%; height: 500px; text-align:center"></div>
+				<div id="map_canvas" style="width: 100%; height: 600px; text-align:center"></div>
 				<div style="text-align:center;font-size:12px; margin:10px">
 					Térkép részletek: 
 					<a href="javascript:zoomMap(1);">Kolozsvár</a>
