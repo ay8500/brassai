@@ -63,7 +63,8 @@ function addWrapperDiv(id) {
     	    	html +='<div><div>Osztályfőnök:</div><div>';
     	    	var kx= d.children.split(",");
     	    	for (var k=0;k<kx.length;k++) {
-    			html +='<a href="hometable.php?classid='+kx[k]+'">'+kx[k]+'</a> ';
+    	    	    if (k!=0) html+=',';
+    	    	    html +='<a href="hometable.php?classid='+kx[k]+'">'+kx[k]+'</a> ';
     	    	}
     	    	html +='</div></div>';
             }

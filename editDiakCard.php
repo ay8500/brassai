@@ -41,18 +41,20 @@ function editDiakCard($d,$showClass=false) {
 						$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "",	getFieldValue($d["employer"]));
 						echo "<div><div>Munkahely:</div><div>".$fieldString ."</div></div>";
 					}
-					if(showField($d,"function")) 	echo "<div><div>Beosztás:</div><div>".getFieldValue($d["function"])."</div></div>";
+					if(showField($d,"function")) 	echo "<div><div>Beosztás:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
 				} else {
-					if (isset($d["function"]))		echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."</div></div>";
+					if (isset($d["function"]))		echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
 					if (showField($d,"children")) {	
 						echo "<div><span>Osztályfönök:</span>";
 						$c = explode(",", getFieldValue($d["children"]));
-						foreach ($c as $cc) {
+						foreach ($c as $idx=>$cc) {
 							$class= $db->getClassByText($cc);
-							if ($class!=null)
+							if ($idx!=0) echo(',');
+							if ($class!=null) {
 								echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
-							else
+							} else {
 								echo(' <a href="javascript:alert(\'Ennek az osztálynak még nincsenek bejegyzései ezen az oldalon. Szívesen bővitheted a véndiákok oldalát önmagad is. Hozd létre ezt az osztályt és egyenként írd be a diákoknak nevét és adatait. Előre is köszönjük!\')">'.$cc.'</a> ');
+							}
 						}
 						echo "</div>";
 					}

@@ -1,5 +1,4 @@
-<?PHP 
-
+<?php 
 include_once("tools/sessionManager.php");
 include_once ('tools/userManager.php');
 include_once 'tools/ltools.php';
@@ -10,9 +9,9 @@ $tabOpen= getIntParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
 if($personid!=null){
-	if ($db->getPersonByID($personid)!=null)
+	if ($db->getPersonByID($personid)!=null) {
 		setAktUserId($personid);	//save actual person in case of tab changes
-	else {
+	} else {
 		$person=$db->getPersonByUser($personid);
 		if ($person!=null) {
 			$personid=$person["id"];
@@ -28,27 +27,19 @@ else {
 $action=getGetParam("action","");
 $anonymousEditor=getParam("anonymousEditor")=="true";
 
-//Create a new person
-$createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher";
-
 //Edit or only view variant this page
 $edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
 
-
-//create new person in case of submittin a new one
+//Create new person 
+$createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher" || $action=="savenewperson" || $action=="savenewguest" || $action=="savenewteacher";
 if ( $createNewPerson ) {
-	$newPerson = getPersonDummy();
-	$newPerson["id"] = -1;
-	$newPerson["classID"] = getAktClassId();
-	$action=="newteacher" ? $newPerson["isTeacher"]=1	:	$newPerson["isTeacher"]=0;
-	$action=="newguest"   ? $newPerson["role"]="guest"	:	$newPerson["role"]="";
-	$newid = $db->savePerson($newPerson);
-	if ($newid>=0)
-		$personid=$newid;
-	else
-		$resultDBoperation='<div class="alert alert-danger" >ùj személy létrehozása nem sikerült! Hibakód:4912</div>';
+	$diak = getPersonDummy();
+	$diak["id"] = -1;
+	$diak["classID"] = getAktClassId();
+	$action=="newteacher" || $action=="savenewteacher" ? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
+	$action=="newguest"   || $action=="savenewguest" ? $diak["role"]="guest"	:	$diak["role"]="";
+	$personid=-1;
 }
-
 
 if ($personid!=null && $personid>=0) {
 	$diak = $db->getPersonByID($personid);
@@ -60,10 +51,94 @@ if ($personid!=null && $personid>=0) {
 		header('Location:dc.php');
 		exit;
 	}
-} else {
-	header('Location:dc.php');
-	exit;
+} 
+
+//preparation of the field to be edited and the itemprop characteristic
+$dataFieldNames 	=array("lastname","firstname","email");
+$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
+$dataItemProp       =array("","","");
+$dataCheckFieldVisible	=array(false,false,true);
+$dataFieldObl			=array(true,true,true);
+if(true)  { //Name
+	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country");
+	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
+	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
+	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
+	array_push($dataFieldObl		, false,false,false,false,false,false);
 }
+if (true) { //Communication
+	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
+	array_push($dataItemProp,"","","","","","","","","","","","");
+	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
+	array_push($dataCheckFieldVisible,true ,true ,true ,false,false,true ,true ,false,true ,true );
+	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,false);
+}
+if (userIsAdmin()) { //only for admin
+	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID","classID");
+	array_push($dataItemProp,"","","","","","","","","","","","");
+	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","IP","Dátum","User","changeForID","OsztályID");
+	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
+}
+if ((isset($classId) && $classId==0) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
+	$dataFieldCaption[17]="Tantárgy";
+	$dataFieldCaption[18]="Osztályfönök";
+	$dataFieldObl[18]="Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+}
+
+
+if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
+	if (checkRequesterIP(changeType::personchange)) {
+		if ($diak!=null) {
+			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
+				$tilde="";
+				if ($dataCheckFieldVisible[$i]) {
+					if (isset($_GET["cb_".$dataFieldNames[$i]]))
+						$tilde="~";
+				}
+				//save the fields in the person array
+				if (isset($_GET[$dataFieldNames[$i]]))
+					$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
+			}
+			//No dublicate email address is allowed
+			if (checkUserEmailExists($diak["id"],$diak["email"])) {
+				$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
+				//Validate the mail address if no admin logged on
+			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
+				$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
+			} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
+				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
+			} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
+				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
+			} else {
+				if($diak["id"]!=-1) {
+					$oldDiakEntry=$db->getPersonByID($diak["id"]);
+				}
+				$personid = $db->savePerson($diak);
+				if ($personid>=0) {
+					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
+					$db->saveRequest(changeType::personchange);
+					if (!userIsAdmin())
+						sendHtmlMail(null, "Person is changed id:".$diak["id"].'<br/><br/>old entry<br/>'.json_encode($oldDiakEntry).'<br/><br/>new entry<br/>'.json_encode($diak), " Person is changed");
+						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+				} else {
+					$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
+				}
+			}
+		} else {
+			$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
+		}
+	} else {
+		$resultDBoperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
+	}
+	if ($resultDBoperation!="") {
+		if ($action="savenewteacher") $action="newteacher";
+		else if ($action="savenewperson") $action="newperson";
+		else if ($action="savenewguest") $action="newguest";
+	}
+}
+
+
 
 //Change password
 if (getParam("action")=="changepassw" && userIsLoggedOn()) {
@@ -176,14 +251,15 @@ if ($tabOpen==5)
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
 	$diakEditStorys = true;
 
-if ($personid!=null)
+if ($personid!=null && $personid>=0)
 	$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakja " .$diak["lastname"]." ".$diak["firstname"];
 else 
 	$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakjai";
 	
 include("homemenu.php"); 
+?>
 
-if (strstr(getParam("action"),"new")=="" ){?>
+<?php if (strstr($action,"new")=="" ){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
 	<img src="images/<?php echo $diak["picture"] ?>" class="diak_image_icon" />
@@ -202,8 +278,12 @@ elseif ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() )
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 else
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
-if (getParam("action","")=="newdiak" || getParam("action","")=="newguest" || getParam("action","")=="submit_newdiak" || getParam("action","")=="submit_newguest" || getParam("action","")=="submit_newdiak_save" || getParam("action","")=="submit_newguest_save")
-	$tabsCaption=Array("Új személy adatai");
+if ($action=="newperson")
+	$tabsCaption=Array("Új diák adatai");
+if ($action=="newguest")
+	$tabsCaption=Array("Új barát vagy vendég adatai");
+if ($action=="newteacher")
+	$tabsCaption=Array("Új tanárnő vagy tanár adatai");
 $tabUrl="editDiak.php";
 ?>
 

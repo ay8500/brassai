@@ -1,92 +1,10 @@
-<?php
-
-//preparation of the field to be edited and the itemprop characteristic
-$dataFieldNames 	=array("lastname","firstname","email");
-$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
-$dataItemProp       =array("","","");
-$dataCheckFieldVisible	=array(false,false,true);
-$dataFieldObl			=array(true,true,true);
-if(true)  { //Name
-	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country");
-	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
-	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
-	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
-	array_push($dataFieldObl		, false,false,false,false,false,false);
-}
-if (true) { //Communication
-	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
-	array_push($dataItemProp,"","","","","","","","","","","","");
-	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible,true ,true ,true ,false,false,true ,true ,false,true ,true );
-	array_push($dataFieldObl		, false,false,false,false,false,false,false,false,false,false);
-}
-if (userIsAdmin()) { //only for admin
-	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID","classID");
-	array_push($dataItemProp,"","","","","","","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","IP","Dátum","User","changeForID","OsztályID");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
-}
-if (isset($classId) && $classId==0 ) { //Teachers
-	$dataFieldCaption[17]="Tantárgy";
-	$dataFieldCaption[18]="Osztályfönök";
-}
-
-
-//Retrive changed data and save it
-if ($action=="changediak") {
-	if (checkRequesterIP(changeType::personchange)) {
-		$diak = $db->getPersonByID($personid);
-		if ($diak!=null) {
-			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
-				$tilde="";
-				if ($dataCheckFieldVisible[$i]) {
-					if (isset($_GET["cb_".$dataFieldNames[$i]])) 
-						$tilde="~";
-				}
-				//save the fields in the person array
-				if (isset($_GET[$dataFieldNames[$i]]))
-					$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
-			}
-			//No dublicate email address is allowed
-			if (checkUserEmailExists($diak["id"],$diak["email"])) {
-				$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
-			//Validate the mail address if no admin logged on
-			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-				$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
-			} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
-				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
-			} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
-				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
-			} else {
-				$ret = $db->savePerson($diak);
-				if ($ret>=0) {
-					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
-					$db->saveRequest(changeType::personchange);
-					if (!userIsAdmin())
-						sendHtmlMail(null, "Person is changed id:".$diak["id"], " Person is changed");
-						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
-				} else {
-					$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
-				}
-			}
-		} else {
-			$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
-		}
-	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
-	}
-}
-
-
-?>
 	<?php //Person picture?>
 	<div class="diak_picture" style="display: inline-block;">
 		<img src="images/<?php echo($diak["picture"]);?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
 	</div>
 	
-	<?php //Person picture download?>
-	<?php if (($edit || $createNewPerson) && trim($diak["lastname"])!="") {  ?>
+	<?php //Person picture download only  if person already saved?>
+	<?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
 				<span>Válassz egy új képet max. 2MByte</span>
@@ -131,7 +49,7 @@ if ($action=="changediak") {
    		</div>	
    	<?php } ?>
    	
-   	<form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
+<form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
 	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
@@ -146,7 +64,8 @@ if ($action=="changediak") {
 	      		</span>
 	      		<?php   
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-	      		$dataFieldObl[$i] ? $obl="kötelező mező" : $obl="";
+	      		$obl=$dataFieldObl[$i];
+	      		$dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
 	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
 			//Inpufields new person
 			} elseif ($anonymousEditor) {?>
@@ -171,7 +90,8 @@ if ($action=="changediak") {
 					if ($classId==0  && $dataFieldNames[$i]=="children") {
 						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
 						echo('<div  class="form-control" style="height:auto;">');
-						foreach ($c as $cc) {
+						foreach ($c as $id=>$cc) {
+							if ($id!=0) echo(',');
 							$class= $db->getClassByText($cc);
 							echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
 						}
@@ -186,14 +106,22 @@ if ($action=="changediak") {
 	</div>
 	<?php 
 	if ($edit || $createNewPerson) {
-		echo('<input type="hidden" name="action"	value="changediak" id="form_action" />');
+		if ($action=="newperson") {
+			echo('<input type="hidden" name="action"	value="savenewperson" id="form_action" />');
+		} else if ($action=="newteacher") {
+			echo('<input type="hidden" name="action"	value="savenewteacher" id="form_action" />');
+		} else if ($action=="newguest") {
+			echo('<input type="hidden" name="action"	value="savenewguest" id="form_action" />');
+		} else {
+			echo('<input type="hidden" name="action"	value="changediak" id="form_action" />');
+		}
 		echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
 		echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
-		echo('</form>');
+		if (!userIsAdmin())
+			echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
 	}
-
 ?>
-
+</form>
 
 <script>
 	function validateEmailInput(sender,button) { 
