@@ -272,18 +272,20 @@ include("homemenu.php");
 <?php }
 
 //initialize tabs
-if (getAktClassId()==0 && !userIsAdmin())
+if (getAktClassId()==0 && !userIsAdmin()) {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz");
-elseif ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) 
+} else if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) { 
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
-else
+} else {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
-if ($action=="newperson")
+}
+if ($action=="newperson") { 
 	$tabsCaption=Array("Új diák adatai");
-if ($action=="newguest")
+} else if ($action=="newguest") {
 	$tabsCaption=Array("Új barát vagy vendég adatai");
-if ($action=="newteacher")
+} else if ($action=="newteacher") {
 	$tabsCaption=Array("Új tanárnő vagy tanár adatai");
+}
 $tabUrl="editDiak.php";
 ?>
 
