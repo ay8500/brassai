@@ -90,6 +90,7 @@ if ((isset($classId) && $classId==0) || $action=="savenewteacher" || $action=="n
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
 	if (checkRequesterIP(changeType::personchange)) {
 		if ($diak!=null) {
+			$personid=-1;
 			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 				$tilde="";
 				if ($dataCheckFieldVisible[$i]) {
@@ -118,9 +119,11 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				if ($personid>=0) {
 					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
 					$db->saveRequest(changeType::personchange);
-					if (!userIsAdmin())
+					if (!userIsAdmin()) {
 						sendHtmlMail(null, "Person is changed id:".$diak["id"].'<br/><br/>old entry<br/>'.json_encode($oldDiakEntry).'<br/><br/>new entry<br/>'.json_encode($diak), " Person is changed");
 						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
+					}
+					
 				} else {
 					$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
 				}
@@ -131,17 +134,17 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 	} else {
 		$resultDBoperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
 	}
-	if ($resultDBoperation!="") {
-		if ($action="savenewteacher") $action="newteacher";
-		else if ($action="savenewperson") $action="newperson";
-		else if ($action="savenewguest") $action="newguest";
+	if ($personid==-1) {
+		if ($action=="savenewteacher") $action="newteacher";
+		else if ($action=="savenewperson") $action="newperson";
+		else if ($action=="savenewguest") $action="newguest";
 	}
 }
 
 
 
 //Change password
-if (getParam("action")=="changepassw" && userIsLoggedOn()) {
+if ($action=="changepassw" && userIsLoggedOn()) {
 	if (isset($_GET["newpwd1"])) $newpwd1=$_GET["newpwd1"]; else $newpwd1="";
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
@@ -161,7 +164,7 @@ if (getParam("action")=="changepassw" && userIsLoggedOn()) {
 }
 
 //Change user name
-if (getParam("action")=="changeuser" && userIsLoggedOn()) {
+if ($action=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
 		if (!checkUserNameExists($personid,$user)) { 
@@ -183,14 +186,14 @@ if (getParam("action")=="changeuser" && userIsLoggedOn()) {
 }
 
 //Remove Facebook connection
-if (getParam("action")=="removefacebookconnection"  && userIsLoggedOn()) {
+if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
 	unset($diak["facebookid"]);
 	$db->savePersonField(getLoggedInUserId(), "facebookid", null);
 	saveLogInInfo("FacebookDelete",$personid,$diak["user"],"",true);
 }
 
 //Delete Picture
-if (getParam("action","")=="deletePicture" && userIsLoggedOn()) {
+if ($action=="deletePicture" && userIsLoggedOn()) {
 	if (deletePicture(getParam("id", ""))>=0) {
 		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 		saveLogInInfo("PictureDelete",getLoggedInUserId(),$diak["user"],getParam("id", ""),true);
