@@ -136,7 +136,7 @@
 	      	<?php } ?>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok<b class="caret"></b></a>
-			  	<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:320?>px;columns:3; list-style-position: inside;">
+			  	<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:430?>px;columns:3; list-style-position: inside;">
 		  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
 			  	<?php
 			  		$classes = $db->getClassList();
@@ -151,9 +151,9 @@
 				  				<a style="display: inline-block;" class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($cclass["id"]);?>">
 				  					<?php echo($cclass["text"]); ?>
 				  				</a>
+			  					<?php $stat=$db->getClassStatistics($cclass["id"]);?>
+				  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
 				  				<?php if (userIsAdmin()) {?>
-				  					<?php $stat=$db->getClassStatistics($cclass["id"]);?>
-					  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
 					  				<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
 				  				<?php }?>
 				  			</li>
