@@ -9,79 +9,20 @@ function readHistoryList($elements) {
 					"Diákkori történettel bővítette adatait.",
 					"Megosztotta mit csinál szabadidejében.",
 					"Facebook felhasználó kapcsolatot létesített.");
-	$h=readHistory($elements);
+	$pictures=$db->getRecentPictureList(10);
 	$ret="";
-	foreach ($h as $history) {
+	foreach ($pictures as $picture) {
 		$ret .= "<li>";
-		$ret .= $history["scoolyear"]." ";
-		$ret .= $history["scoolclass"]." ";
-		if ($history["type"]<=4)
-		   $tabopen="&tabOpen=".$history["type"];
-		else 
-			$tabopen ="";
-		$ret .= '<a href="editDiak.php?uid='.$history["uid"].'&scoolYear='.$history["scoolyear"].'&scoolClass='.$history["scoolclass"].$tabopen.'" >';
-		$diak = $db->getPersonByID($history["uid"]);
-		$ret .= $diak["lastname"]." ".$diak["firstname"]." ";
-		if (isset($diak["birthname"]))
-			$ret .=$diak["birthname"]." ";
-		$ret .='</a>';
-		$ret .= $arType[$history["type"]];
+		$ret .= '<image src="convertImg.php?hight=200&thumb=true&id='.$picture["id"].'"/><br>';
+		$ret .= $picture["title"]. " - ".$picture["comment"];
+		$ret .= date("d.m.Y H:i:s",strtotime($picture["uploadDate"])). " - ".$picture["changeUserID"];
+		$ret .= isset($picture["schoolID"])?"School:".$picture["schoolID"]:"";
+		$ret .= isset($picture["classID"])?"Class:".$picture["classID"]:"";
+		$ret .= isset($picture["personID"])?"Person:".$picture["personID"]:"";
 		$ret .= "</li>"."\r\n";
 	}
 	return $ret;
 }
 
-function readHistory($elements) {
-	$ret = array();
-	$file=fopen("data/history.json","r");
-	while (!feof($file) && $elements-->0) {
-		$b = fgets($file);
-		$json = json_decode($b,true);
-		array_push($ret, $json);	
-	}
-	return $ret;
-}
-
-function checkNewHistory($type) {
-	$h =readHistory(10);
-	foreach ($h as $history) {
-		if ($history["ip"]==$_SERVER["REMOTE_ADDR"] &&
-			substr($history["date"],0,10)==date('d.m.Y') &&
-			$history["type"]==$type )
-			return false;
-	}
-	return true;
-}
-
-/**
- * type: 0 Personal data, 1-pictures, 2,3,4-Stroy, 4 Facebook
- * Enter description here ...
- * @param unknown_type $type
- */
-function writeHistory($type) {
-	if (checkNewHistory($type)) {
-		$history = array();
-		$history["ip"]=$_SERVER["REMOTE_ADDR"];
-		$history["date"]=date('d.m.Y H:i');
-		$history["type"]=$type;
-		$history["uid"]=getLoggedInUserId();
-		$history["scoolyear"]=getUScoolYear();
-		$history["scoolclass"]=getUScoolClass();
-		prepend($histroy);
-	}
-}
-
-function prepend($histroy) {
-  $string=json_encode($histroy)."\r\n";
-  $context = stream_context_create();
-  $filename="data/history.json";
-  $fp = fopen($filename, 'r', 1, $context);
-  $tmpname = "data/".md5($string);
-  file_put_contents($tmpname, $string);
-  file_put_contents($tmpname, $fp, FILE_APPEND);
-  fclose($fp);
-  unlink($filename);
-  rename($tmpname, $filename);
-}
 
 ?>

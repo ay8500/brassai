@@ -464,6 +464,13 @@ class dbDAO {
 		return   $this->getElementList("picture","isDeleted=0");
 	}
 	
+	/**
+	 * List of recent not deleted pictures
+	 */
+	public function getRecentPictureList($limit) {
+		return   $this->getElementList("picture","isDeleted=0",$limit,"uploadDate desc");
+	}
+	
 	
 	/**
 	 * Get a picture by id
