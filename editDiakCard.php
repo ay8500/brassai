@@ -1,6 +1,6 @@
 <?php 
-function editDiakCard($d,$showClass=false) {
-	global $db;
+function displayPerson($db,$person,$showClass=false,$showDate=false) {
+	$d=$person;
 	if (userIsLoggedOn() || localhost()) {
 		$personLink="editDiak.php?uid=".$d["id"];
 	} else {
@@ -15,7 +15,7 @@ function editDiakCard($d,$showClass=false) {
 				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="diak_image_medium <?php echo $rip?>" />
 			</a>
 		</div>
-		<div style="display: inline-block;max-width:300px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			<h4><?php echo getPersonName($d);?></h4>
 			<?php if($showClass) {?>
 				<?php if ($d["isTeacher"]==1) { ?>
@@ -45,7 +45,7 @@ function editDiakCard($d,$showClass=false) {
 				} else {
 					if (isset($d["function"]))		echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
 					if (showField($d,"children")) {	
-						echo "<div><span>Osztályfönök:</span>";
+						echo "<div><span>Osztályfőnök:</span>";
 						$c = explode(",", getFieldValue($d["children"]));
 						foreach ($c as $idx=>$cc) {
 							$class= $db->getClassByText($cc);
@@ -78,9 +78,58 @@ function editDiakCard($d,$showClass=false) {
 						echo '&nbsp;<a href="editDiak.php?tabOpen=3&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
 					if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
 						echo '&nbsp;<a href="editDiak.php?tabOpen=4&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
-					echo("</div>");
-			?>
+				?>
+				</div>
+				<?php  if ($showDate) {
+					$changePerson=$db->getPersonByID($d["changeUserID"]);
+				?>
+				<div class="diakCardIcons">
+					Módosította:<a href="editDiak.php?uid=<?php echo $d["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
+					Dátum:<?php echo date("Y.m.d H:i:s",strtotime($d["changeDate"]));?><br/>
+				</div>
+				<?php }?>
 	  		</div>
 		</div>
 	</div>
-<?php } ?>
+<?php } 
+
+function displayPicture($db,$picture,$showSchool=false) {
+	$p=$picture;
+	$person = $db->getPersonByID($picture["changeUserID"]);
+	if (isset($picture["schoolID"])){
+		$type="school";
+		$typeid=$picture[$type."ID"];
+		$school=$db->getSchoolById($typeid);
+		$typeText="Iskolakép: ".$school["name"];
+	}
+	if (isset($picture["classID"])){
+		$type="class";
+		$typeid=$picture[$type."ID"];
+		$class=$db->getClassById($typeid);
+		$typeText="Osztálykép csoportkép: ".$class["text"];
+	}
+	if (isset($picture["personID"])){
+		$type="person";
+		$typeid=$picture[$type."ID"];
+		$picturePerson=$db->getPersonByID($typeid);
+		$typeText="Személyes kép: ".$person["lastname"]." ".$person["firstname"];
+	}
+	
+	?>
+	<div class="element">
+		<div style="display: inline-block; ">
+			<a href="picture.php?type=<?php echo $type?>&typeid=<?php echo $typeid?>&id=<?php echo $picture["id"]?>">
+				<image src="convertImg.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" />
+			</a>
+		</div><br/>
+		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+			<b><?php echo $picture["title"];?></b><br/>
+			<?php echo $typeText;?><br/>
+			Feltőltötte: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
+			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["uploadDate"]));?>
+		</div>
+	</div>
+<?php } 
+
+
+?>

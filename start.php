@@ -35,7 +35,7 @@ if ($userId>=0) {
 }
 
 include("homemenu.php");
-include_once 'history.php';
+include_once 'editDiakCard.php';
 ?>
 
 <?php 
@@ -49,37 +49,55 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 ?>
 <div class="sub_title">Újdonságok</div>
 <div class="container-fluid">
-	<?php if(userIsAdmin()) :?>
-	<div class="panel panel-default col-sm-6" style="margin-right:10px;">
+	<div class="panel panel-default col-sm-12" style="margin-right:10px;">
 		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
-			<h4><span class="glyphicon glyphicon-user"></span> Véndiák Újdonságok:</h4></div>
+			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, frissitések </h4>
+		</div>
 		<div class="panel-body">
-		<ul id="newData">
-		<?php echo (readHistoryList(20)); ?>
-		</ul>
+		<?php 
+		$persons=$db->getRecentChangedPersonList(12);
+		foreach ($persons as $person) {
+			displayPerson($db,$person,true,true);
+		}
+	?>
 		</div>
 	</div>
-	<?php endif;?>
-	<div class="panel panel-default col-sm-5">
+
+	<div class="panel panel-default col-sm-12" style="margin-right:10px;">
 		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
-			<h4><span class="glyphicon glyphicon-home"></span> Honoldal Újdonságok:</h4></div>
-			<div class="panel-body">
-				<ul>
-					<li>December 2016: <a href="picture.php?type=tablo&typeid=tablo">Tablók</a> albumával bővült az oldal.</li>
-					<li>Március 2016: <a href="hometable.php?classid=0 staf">Tanárok</a> listályával bővült az oldal.</li>
-					<li>Junius 2015: Üzenőfal híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
-					<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
-					<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>
-					<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>
-					<li>Julius 2010:<a href="hometable.php?guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
-					<li>Junius 2010: Képek <a href="pictureGallery.php?gallery=SzepIdok">Régi szép idők</a></li>
-					<li>Május 2010: Zene toplista <a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
-				</ul>
-			</div>
+			<h4><span class="glyphicon glyphicon-picture"></span> Új fényképek:</h4>
+		</div>
+		<div class="panel-body">
+		<?php 
+		$pictures=$db->getRecentPictureList(12);
+		foreach ($pictures as $picture) {
+			displayPicture($db,$picture);
+		}
+	?>
+		</div>
+	</div>
+
+	<div class="panel panel-default col-sm-12">
+		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
+			<h4><span class="glyphicon glyphicon-home"></span> Honoldal Újdonságok:</h4>
+		</div>
+		<div class="panel-body">
+			<ul>
+				<li>December 2017: <a href="start.php"></a> Ez az oldal az utólsó frissitéseket illetve bejegyzéseket is tartalmazza.</li>
+				<li>December 2016: <a href="picture.php?type=tablo&typeid=tablo">Tablók</a> albumával bővült az oldal.</li>
+				<li>Március 2016: <a href="hometable.php?classid=0 staf">Tanárok</a> listályával bővült az oldal.</li>
+				<li>Junius 2015: Üzenőfal híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
+				<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
+				<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>
+				<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>
+				<li>Julius 2010:<a href="hometable.php?guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
+				<li>Junius 2010: Képek <a href="pictureGallery.php?gallery=SzepIdok">Régi szép idők</a></li>
+				<li>Május 2010: Zene toplista <a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
+			</ul>
 		</div>
 	</div>
 	<div id="wrapper"></div>
 	<?php  include ("homefooter.php");?>
 	<script type="text/javascript" src="js/wrapper.js"></script>
-</div>
+
 <?php } ?>

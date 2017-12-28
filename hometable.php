@@ -57,7 +57,7 @@ if (getAktClassId()==0) {
 $personList=$db->getPersonListByClassId(getRealId(getAktClass()),$guests);
 foreach ($personList as $d)	
 { 
-	editDiakCard($d);
+	displayPerson($db,$d);
 }
 ?>
 </div>

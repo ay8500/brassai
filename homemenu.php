@@ -125,6 +125,7 @@
 										<li><a href="talalk30.php">Programajánlat</a></li>
 									</ul>
 								</li>
+								<li class="dropdown-submenu"><a href="pictureGallery.php?view=thumbnails&gallery=50evesek">50-évesek Találkozója</a>
 							</ul>
 						</li>
 						<?PHP endif  ?>
@@ -195,15 +196,15 @@
 
 <?PHP writeLogonDiv();	?>
 
-<div class="panel panel-default" style="display:none;margin:auto;width:220px;" id="uSearch" >
+<div class="panel panel-default" style="display:none;margin:auto;width:320px;" id="uSearch" >
 	<div class="panel-heading" >
 		<b>Keresgélés</b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeSearch();"></span>
 	</div>
 	<form action="search.php" method="get">
 		<input type="hidden" value="search" name="action"/>
-		<div class="input-group input-group" style="margin: 3px;">
+		<div class="input-group" style="width:300px;margin: 3px;">
     		<span class="input-group-addon" style="width:30px" title="Véndiak neve"><span class="glyphicon glyphicon-search"></span></span>
-    		<input type="text" class="form-control"  placeholder="családnév keresztnév" id="srcText" name="srcText" value="<?php echo getGetParam("srcText", "")?>">
+    		<input type="text" class="form-control"  placeholder="család- keresztnév, éretségi év, szöveg" id="srcText" name="srcText" value="<?php echo getGetParam("srcText", "")?>">
 		</div>
 		<div style="text-align:center; margin: 3px">
 			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="search();"><span class="glyphicon glyphicon-log-in"></span> Keres</button>

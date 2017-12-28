@@ -290,8 +290,18 @@ class dbDAO {
 	 * get the person list!
 	 */
 	public function getPersonList() {
-		$where.=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		$ret = $this->getElementList("person",$where);
+		usort($ret, "compareAlphabetical");
+		return $ret;
+	}
+
+	/**
+	 * get the recently updates person list
+	 */
+	public function getRecentChangedPersonList($limit) {
+		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+		$ret = $this->getElementList("person",$where,$limit,"changeDate desc");
 		usort($ret, "compareAlphabetical");
 		return $ret;
 	}
