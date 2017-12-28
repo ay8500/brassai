@@ -54,6 +54,9 @@
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
 			<?php
+			//Placeholder
+			$obl=$dataFieldObl[$i];
+			$dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
 			//Inpufields
 			if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
@@ -64,16 +67,21 @@
 	      		</span>
 	      		<?php   
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-	      		$obl=$dataFieldObl[$i];
-	      		$dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
 	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-			//Inpufields new person
+	      		if ($dataFieldNames[$i]=="classID") {
+	      			$class=$db->getClassById(getFieldValueNull($diak,$dataFieldNames[$i]));
+	      			echo('<span class="input-group-addon"><span class="">'.$class["text"].'</span></span>');
+	      		}
+	      		if ($dataFieldNames[$i]=="changeUserID") {
+	      			$person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
+	      			echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
+	      		}?>
+			<?php //Inpufields new person
 			} elseif ($anonymousEditor) {?>
 				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
 	      		<?php 
 	      		if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
 	      			$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-	      			$dataFieldObl[$i] ? $obl="kötelező mező" : $obl="";
 	      			echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
 	      		} else {
 	      			echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
@@ -105,15 +113,19 @@
 	<?php } ?>
 	</div>
 	<?php 
+	//Hidden fields action, uid, tabOpen,role
 	if ($edit || $createNewPerson) {
 		if ($action=="newperson") {
-			echo('<input type="hidden" name="action"	value="savenewperson" id="form_action" />');
-		} else if ($action=="newteacher") {
-			echo('<input type="hidden" name="action"	value="savenewteacher" id="form_action" />');
-		} else if ($action=="newguest") {
-			echo('<input type="hidden" name="action"	value="savenewguest" id="form_action" />');
-		} else {
-			echo('<input type="hidden" name="action"	value="changediak" id="form_action" />');
+			echo('<input type="hidden" name="action" value="savenewperson" id="form_action" />');
+		} 
+		else if ($action=="newteacher") {
+			echo('<input type="hidden" name="action" value="savenewteacher" id="form_action" />');
+		} 
+		else if ($action=="newguest") {
+			echo('<input type="hidden" name="action" value="savenewguest" id="form_action" />');
+		} 
+		else {
+			echo('<input type="hidden" name="action" value="changediak" id="form_action" />');
 		}
 		echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
 		echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');

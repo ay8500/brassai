@@ -297,12 +297,11 @@ class dbDAO {
 	}
 
 	/**
-	 * get the recently updates person list
+	 * get the recently updated person list
 	 */
 	public function getRecentChangedPersonList($limit) {
 		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		$ret = $this->getElementList("person",$where,$limit,"changeDate desc");
-		usort($ret, "compareAlphabetical");
 		return $ret;
 	}
 	
