@@ -7,7 +7,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 		$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
 	}
 	//Set the RIP value
-	strstr($d["role"],"rip")!=""?$rip="rip":$rip="";
+	strstr($d["role"],"rip")!=""?$rip="rip":$rip=""
 	?>
 	<div class="element">
 		<div style="display: inline-block; width:160px;">
@@ -131,5 +131,37 @@ function displayPicture($db,$picture,$showSchool=false) {
 	</div>
 <?php } 
 
-
+function displayClass($db,$d,$showDate=false) { 
+	if (userIsLoggedOn() || localhost()) {
+		$personLink="editDiak.php?uid=".$d["headTeacherID"];
+	} else {
+		$personLink=getPersonLink($d["tlname"],$d["tfname"])."-".$d["headTeacherID"];
+	}
+	//Set the RIP value
+	strstr($d["role"],"rip")!=""?$rip="rip":$rip=""
+	?>
+	<div class="element">
+		<div style="display: inline-block; vertical-align: top;width:160px;">
+			<a href="<?php echo $personLink?>" title="<?php echo ($d["tlname"]." ".$d["tfname"])?>">
+				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["tlname"].' '.$d["tfname"]?>" class="diak_image_medium <?php echo $rip?>" />
+			</a>
+		</div>
+		<?php if ($d["classPictureID"]!==false) {?>
+		<div style="display: inline-block;vertical-align: top; ">
+			<a href="picture.php?type=class&typeid=<?php  echo $d["id"]?>&id=<?php echo $d["classPictureID"]?>" >
+				<image src="convertImg.php?width=300&thumb=false&id=<?php echo $d["classPictureID"]?>" />
+			</a>
+		</div>
+		<?php } ?>
+		<br/>
+		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+			<b><?php echo $d["text"];?></b><br/>
+			Osztályfőnök: <a href="editDiak.php?uid=<?php echo $d["headTeacherID"]?>" ><?php echo $d["tlname"]." ".$d["tfname"]?></a> <br/>
+			<?php if ($showDate) {?>
+				Módosítva: <a href="editDiak.php?uid=<?php echo $d["changeUserID"]?>" ><?php echo $d["clname"]." ".$d["cfname"]?></a> <br/>
+				Dátum:<?php echo date("Y.m.d H:i:s",strtotime($d["changeDate"]));?>
+			<?php }?>
+		</div>
+	</div>
+<?php }
 ?>

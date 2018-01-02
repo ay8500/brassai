@@ -111,6 +111,43 @@ class dbDAO {
 		return  $this->dataBase->delete("class", "id", $id);
 	}
 	
+	
+	/**
+	 * Search for class by year name 
+	 * @param unknown $name
+	 */
+	public function searchForClass($name) {
+		$ret = array();
+		$name=trim($name);
+		if( strlen($name)>1) {
+				
+			$sql="select c.*, p.firstname as tfname, p.lastname as tlname, p.birthname as tbname,p.picture as picture,";
+			$sql .=" cp.id as cid, cp.firstname as cfname, cp.lastname as clname, cp.birthname as cbname, cp.role as role";
+			$sql .=" from class as c"; 
+			$sql .=" join  person as p on c.headTeacherID=p.id";
+			$sql .=" join  person as cp on c.changeUserID=cp.id where";
+			$sql .=" c.name like '%".$name."%' ";
+			$sql .=" or c.graduationYear like '%".$name."%' ";
+			$sql .=" or c.text like '%".$name."%' ";
+			$this->dataBase->query($sql);
+			while ($class=$this->dataBase->fetchRow()) {
+					array_push($ret, $class);
+			}
+			foreach ($ret as $i=>$r) {
+				$picture=$this->getGroupPictureByClassID($r["id"]);
+				if(isset($picture["id"])) {
+					$ret[$i]["classPictureID"]=$picture["id"];
+				} else {
+					$ret[$i]["classPictureID"]=false;
+				}
+				
+			}
+			asort($ret);
+		}
+		return $ret;
+	}
+	
+	
 	/**
 	 * List of temporary classes
 	 */
@@ -458,6 +495,16 @@ class dbDAO {
 	
 	public function getPictureByFileName($filename) {
 		$sql="select * from picture where file='".$filename."'";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			return $this->dataBase->fetchRow();
+		} else {
+			return array();
+		}
+	}
+
+	public function getGroupPictureByClassID($id) {
+		$sql="select * from picture where title like '%Tabló%' and classID=".$id;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
 			return $this->dataBase->fetchRow();

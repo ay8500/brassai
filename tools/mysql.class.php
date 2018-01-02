@@ -65,7 +65,10 @@ class MySqlDb {
   
   /* fech a query result row */	 
   public function fetchRow() {
-  	return mysqli_fetch_assoc($this->result);
+  	if ($this->result!==false)
+  		return mysqli_fetch_assoc($this->result);
+  	else 
+  		return null;
   }
   
   /* get result list as an array */

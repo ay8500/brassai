@@ -7,18 +7,31 @@ include_once 'editDiakCard.php';
 
 $name=trim(html_entity_decode(getGetParam("srcText", "")));
 $personList=$db->searchForPerson($name);
+$classList=$db->searchForClass($name);
 
 ?>
 
 <div class="container-fluid">
 	<h2 style="text-align: center;"  class="sub_title" >Találatok a véndiákok adatbankjában</h2>
-	<div class="well">
-		Találatok száma:<?php echo sizeof($personList)?> Keresett szó:"<?php echo $name?>"
-	</div>
-	<?php
-	foreach ($personList as $d)	{
-		displayPerson($db,$d,true);
-	} 
+	<?php if(sizeof($personList)>0) {?>
+		<div class="well">
+			Talált személyek száma:<?php echo sizeof($personList)?> Keresett szó:"<?php echo $name?>"
+		</div>
+		<?php
+		foreach ($personList as $d)	{
+			displayPerson($db,$d,true);
+		}
+	}
+	?>
+	<?php if(sizeof($classList)>0) {?>
+		<div class="well">
+			Talált osztályok száma:<?php echo sizeof($classList)?> Keresett szó:"<?php echo $name?>"
+		</div>
+		<?php
+		foreach ($classList as $d)	{
+			displayclass($db,$d);
+		}
+	}
 	?>
 </div>
 
