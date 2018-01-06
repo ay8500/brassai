@@ -11,10 +11,7 @@
 select all 			where changeUserID is not null
 select anonymous	where changeUserID is null and IP=*
 
-In the save funktions use id=-1 to insert a new entry 
-
-
-
+In the save functions use id=-1 to insert a new entry 
 
 */
 include_once 'tools/mysql.class.php';
@@ -90,10 +87,14 @@ class dbDAO {
 		return $ret["id"];
 	}
 	
+	/**
+	 * save a class
+	 * @param unknown $class
+	 * @return number
+	 */
 	public function saveClass($class ) {
-		$where="name='".$this->dataBase->replaceSpecialChars($class["name"])."' and graduationYear=".$class["graduationYear"];
-		
-		return $this->saveEntry("class", $class,$where);
+		$this->createHistoryEntry("class",$class["id"]);
+		return $this->saveEntry("class", $class);
 	}
 	
 	/**
@@ -108,6 +109,7 @@ class dbDAO {
 	 * @param unknown $id
 	 */
 	public function deleteClass($id) {
+		$this->createHistoryEntry("class",$id,true);
 		return  $this->dataBase->delete("class", "id", $id);
 	}
 	
@@ -187,15 +189,15 @@ class dbDAO {
 //************************** Person *******************************************	
 	/**
 	 * Insert or update a person
-	 * If the person has a sekond primary key exists then force an update
 	 * If user is anonymous create a new entry as a change   
 	 * @return integer if negativ an error occurs
 	 */
-	public function savePerson($person,$whereSecondPrimaryKey=null) {
-		return $this->saveEntry("person", $person,$whereSecondPrimaryKey);
+	public function savePerson($person) {
+		return $this->saveEntry("person", $person);
 	}
 	
 	public function savePersonFacebookId($id,$facebookId) {
+		$this->createHistoryEntry("person",$id);
 		$this->dataBase->update("person", [["field"=>"facebookid","type"=>"s","value"=>$facebookId]],"id",$id);	
 	}
 	
@@ -215,6 +217,11 @@ class dbDAO {
 		return -1;
 	}
 	
+	/**
+	 * Get persons,pictures from a class
+	 * @param int $classId
+	 * @return stdClass
+	 */
 	public function getClassStatistics($classId) {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
@@ -363,6 +370,7 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function deletePersonEntry( $id) {
+		$this->createHistoryEntry("person",$id,true);
 		$person=$this->getPersonByID($id,true);
 		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
 		$file=$person["picture"];
@@ -377,13 +385,17 @@ class dbDAO {
 	
 	/**
 	 * Accept the anonymous changes for a table entry
+	 * @param string $table the table name
+	 * @param int $id the id of the entry that contains the changes
 	 * @return boolean
 	 */
 	public function acceptChangeForEntry($table,$id) {
 		$p=$this->dataBase->querySignleRow("select * from ".$table." where id=".$id);
 		if (sizeof($p)>0) {
 			if (isset($p["changeForID"])) {
-				$p["id"]=$p["changeForID"];
+				$p["id"]=$p["changeForID"]; 
+				//make history entry 
+				$this->createHistoryEntry($table,$p["id"]);
 				unset($p["changeForID"]);
 				$p["changeUserID"]=getLoggedInUserId();
 				if ($this->dataBase->delete($table, "id", $id))
@@ -428,11 +440,10 @@ class dbDAO {
 	/**
 	 * Save picture
 	 * @param array $picture
-	 * @param string $whereSecondPrimaryKey
 	 * @return integer, negativ if an error occurs
 	 */
-	public function savePicture($picture,$whereSecondPrimaryKey=null) {
-		return $this->saveEntry("picture", $picture,$whereSecondPrimaryKey);
+	public function savePicture($picture) {
+		return $this->saveEntry("picture", $picture);
 	}
 	
 	public function savePictureField($id,$personId,$classId,$schoolId,$file,$isVisibleForAll,$title,$comment,$uploadDate,$isDeleted=0) 
@@ -556,6 +567,7 @@ class dbDAO {
 		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/";
 		$file=$p["file"];
 		$ret1 =unlink($fileFolder.$file);
+		$this->createHistoryEntry("picture",$id,true);
 		$ret2= $this->dataBase->delete("picture", "id", $id);
 		return $ret1 && $ret2;
 	}
@@ -595,31 +607,42 @@ class dbDAO {
 	}
 	
 	public function saveVote($entry) {
-		return $this->saveEntry("vote", $entry,"personID=".$entry["personID"]." and meetAfterYear=".$entry["meetAfterYear"]);
+		return $this->saveEntry("vote", $entry);
 	}
 
 	
 //******************** Song  DAO *******************************************
 
 	public function deleteVote($voteId) {
+		$this->createHistoryEntry("songvote",$voteId,true);
 		return $this->dataBase->delete("songvote", "id",$voteId);
 	}
 	
 	public function saveSongVote($entry) {
-		return $this->saveEntry("songvote", $entry, "personID =".$entry["personID"]." and songID=".$entry["songID"]);
+		return $this->saveEntry("songvote",$entry);
 	}
 	
 	public function saveInterpret($entry) {
-		return $this->saveEntry("interpret", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
+		return $this->saveEntry("interpret", $entry);
 	}
 
 	public function saveSong($entry) {
-		return $this->saveEntry("song", $entry, "name ='".$this->dataBase->replaceSpecialChars($entry["name"])."'");
+		return $this->saveEntry("song", $entry);
 	}
 	
 	public function updateSong($id,$value,$field) {
+		$this->createHistoryEntry("song",$id);
 		return $this->dataBase->update("song", [["field"=>$field,"type"=>"s","value"=>$value]],"id",$id);
 	}
+	
+	public function updateSongFields($id,$video,$name) {
+		$this->createHistoryEntry("song",$id);
+		$data=array();
+		$data=$this->dataBase->insertFieldInArray($data, "video", $video);
+		$data=$this->dataBase->insertFieldInArray($data, "name", $name);
+		return $this->dataBase->update("song", $data,"id",$id);
+	}
+	
 	
 	public function getSongById($id) {
 		return $this->getEntryById("song", $id);
@@ -709,11 +732,12 @@ class dbDAO {
 		$entry=array();
 		$entry["id"]=$id;
 		$entry["isDeleted"]=1;
+		$this->createHistoryEntry("message",$id);
 		return $this->updateEntry("message", $entry);
 	}
 	
 	public function saveMessage($entry) {
-		return $this->saveEntry("message", $entry, "text ='".$this->dataBase->replaceSpecialChars($entry["text"])."'");
+		return $this->saveEntry("message");
 	}
 	
 	public function saveNewMessage($entry) {
@@ -728,6 +752,7 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function saveMessageComment($id,$comment) {
+		$this->createHistoryEntry("message",$id);
 		return $this->dataBase->update("message", [["field"=>"comment","type"=>"s","value"=>$comment]],"id",$id);
 	}
 	
@@ -750,6 +775,7 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function deleteMessageEntry( $id) {
+		$this->createHistoryEntry("message",$id,true);
 		return $this->dataBase->delete("message", "id", $id);
 	}
 	
@@ -759,22 +785,9 @@ class dbDAO {
 	 */
 	public function acceptChangeForMessage($id) {
 		$p=$this->dataBase->querySignleRow("select * from message where id=".$id);
-		if (sizeof($p)>0) {
-			$p["id"]=-1;
-			unset($p["changeForID"]);
-			if ($this->dataBase->delete("message", "id", $id)) {
-				$newid = $this->saveEntry("message",$p,"text='".$p["text"]."'");
-				if ($newid>=0) {
-					$update = array();
-					$update["id"]=$newid;
-					$update["changeUserID"]=-1;
-					return $this->updateEntry("message", $update);
-				} else
-					return $newid;
-			} else
-				return  -12;
-		} else
-			return -11;
+		$p["changeUserID"]=-1;
+		$this->createHistoryEntry("message",$id);
+		return $this->updateEntry("message", $p);
 	}
 
 //********************* Request ******************************************
@@ -939,11 +952,10 @@ class dbDAO {
 	
 	/**
 	 * Insert or update a table entry
-	 * If the entry has a sekond primary key exists then force an update
 	 * If user is anonymous create a new entry as a change   
 	 * @return integer if negativ an error occurs
 	 */
-	private function saveEntry($table,$entry,$whereSecondPrimaryKey=null) {
+	private function saveEntry($table,$entry) {
 		//Build the change data array
 		$data = array();
 		foreach ($entry as $fieldName=>$fieldValue) {
@@ -963,10 +975,10 @@ class dbDAO {
 		if ($entry["id"]>=0) {
 			//User is loggen on
 			if (getLoggedInUserId()>=0) {
-				//Update the entry
-				if ($this->dataBase->update($table,$data,"id",$entry["id"]))							
+				$this->createHistoryEntry($table,$entry["id"]);
+				if ($this->dataBase->update($table,$data,"id",$entry["id"])) {
 					return $entry["id"];
-				else 
+				} else 
 					return -5;
 			//Anonymous user
 			} else {
@@ -989,27 +1001,33 @@ class dbDAO {
 		} 
 		//Insert
 		else {
-			if ($whereSecondPrimaryKey!=null) {
-				$sql="select * from ".$table." where ".$whereSecondPrimaryKey." and changeForID is null";
-				$this->dataBase->query($sql);
-				if ($this->dataBase->count()==1) {
-					$row=$this->dataBase->fetchRow();
-					//Found a entry to update 
-					if ($this->dataBase->update($table,$data,"id",$row["id"]))
-						return $row["id"];
-					else 
-						return -7;
-				} if ($this->dataBase->count()>1) {
-					return -8;
-				}
-			}
-			//Insert
 			if ($this->dataBase->insert($table,$data))
 				return $this->dataBase->getInsertedId();
 			else 
 				return -1;
 		}
+	}
 	
+	/**
+	 * Create a history entry in the history table
+	 * @param unknown $table
+	 * @param unknown $id
+	 */
+	private function createHistoryEntry($table,$id,$delete=false) {
+		$entry=$this->dataBase->querySignleRow("select * from ".$table." where id=".$id);
+		if (sizeof($entry)==0) 
+			return -16;
+		$data = array();
+		$data=$this->dataBase->insertFieldInArray($data, "entryID", $id);
+		$data=$this->dataBase->insertFieldInArray($data, "table", $table);
+		$data=$this->dataBase->insertFieldInArray($data, "jsonData", json_encode((object)$entry));
+		$data =$this->dataBase->insertFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
+		$data =$this->dataBase->insertFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
+		if (getLoggedInUserId()>=0) {
+			$data =$this->dataBase->insertFieldInArray($data,"changeUserID", getLoggedInUserId());
+		}  
+		$data =$this->dataBase->insertFieldInArray($data,"deleted", $delete?1:0 );
+		return $this->dataBase->insert("history", $data);
 	}
 	
 	/**

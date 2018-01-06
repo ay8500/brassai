@@ -7,7 +7,7 @@ include_once 'editDiakCard.php';
 
 
 $resultDBoperation="";
-if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin()) ) {
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" )))
 		$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
 	else

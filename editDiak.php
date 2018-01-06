@@ -116,11 +116,12 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 					$oldDiakEntry=$db->getPersonByID($diak["id"]);
 				}
 				$personid = $db->savePerson($diak);
+				setAktUserId($personid);	//save actual person in case of tab changes
 				if ($personid>=0) {
 					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
 					$db->saveRequest(changeType::personchange);
 					if (!userIsAdmin()) {
-						sendHtmlMail(null, "Person is changed id:".$diak["id"].'<br/><br/>old entry<br/>'.json_encode($oldDiakEntry).'<br/><br/>new entry<br/>'.json_encode($diak), " Person is changed");
+						sendHtmlMail(null, "Person is changed id:".$diak["id"].'<br/><br/>Entry<br/><br/>'.json_encode($diak), " Person is changed");
 						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 					}
 					

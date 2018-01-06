@@ -53,14 +53,14 @@ include("homemenu.php");
 
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
-	<div class="input-group " style="margin-bottom: 25px;">
-		<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
-		<select class="form-control" disabled onchange="changeYear()" id="selectSchool">
-			<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
-		</select>
-	</div>
 	
-	<?php if ($classid>=0) {  //Create a new class?>
+	<?php if ($classid>=0) {  //Edit an existing class?>
+		<div class="input-group " style="margin-bottom: 25px;">
+			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
+			<select class="form-control" disabled id="selectSchool">
+				<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
+			</select>
+		</div>
 		<div class="input-group" style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" disabled id="selectYear">
@@ -74,12 +74,19 @@ include("homemenu.php");
 				<option value="<?php echo $class["name"] ?>"><?php echo $class["name"] ?></option>
 			</select>
 		</div>
-	<?php } else {  //Edit an existing class?>
+	<?php } else {  //Create a new class?>
+		<div class="input-group " style="margin-bottom: 25px;">
+			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
+			<select class="form-control" onchange="changeSchool()" id="selectSchool">
+				<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
+				<option value="2">Hiányzik a te iskolád, akkor küdj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
+			</select>
+		</div>
 		<div class="input-group" style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" onchange="changeYear()" id="selectYear">
 				<option value="0">...válassz...</option>
-				<?php for($year=1950;$year<2010;$year++) {?>
+				<?php for($year=1950;$year<2018;$year++) {?>
 				<option value="<?php echo $year?>"><?php echo $year?></option>
 				<?php } ?>
 			</select>
@@ -108,27 +115,19 @@ include("homemenu.php");
 				foreach ($teachers as $t) {
 					if ($t["isTeacher"]==1) {
 			?>
-				<option value="<?php echo $t['id']?>" <?php echo (isset($class['headTeacherID']) && $t['id']==$class['headTeacherID']?"selected":"ok") ?>> 
+				<option value="<?php echo $t['id']?>" <?php echo (isset($class['headTeacherID']) && $t['id']==$class['headTeacherID']?"selected":"") ?> > 
 					<?php echo getPersonName($t).':'.getFieldValueNull($t,'function')?>
 				</option>
 			<?php } }?>
 		</select>
 	</div>
 	
-	<?php $stat=$db->getClassStatistics($classid);?>
-	<div class="well " style="margin-bottom: 25px;">
-		<h4>Statisztikai adatok</h4>
-		<div class="form">	      		
-		<a href="hometable.php?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
-		Diákok képpel:<?php echo $stat->personWithPicture?><br/>
-		Diakok képei:<?php echo $stat->personPictures?><br/>
-		<a href="picture.php?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
-		</div>
-	</div>
-	
 	<div class="well">
 		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
+		</button>
+		<button class="btn btn-default"   id="btMail" onclick="mailto:brassai@blue-l.de" style="display:none">
+			<span class="glyphicon glyphicon-email"></span> Új iskolát szeretnék
 		</button>
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
@@ -139,6 +138,17 @@ include("homemenu.php");
 				<span class="glyphicon glyphicon-remove-circle"></span> Osztályt töröl
 			</button>
 		<?php  endif;?>
+	</div>
+
+	<?php $stat=$db->getClassStatistics($classid);?>
+	<div class="well " style="margin-bottom: 25px;">
+		<h4>Statisztikai adatok</h4>
+		<div class="form">	      		
+		<a href="hometable.php?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
+		Diákok képpel:<?php echo $stat->personWithPicture?><br/>
+		Diakok képei:<?php echo $stat->personPictures?><br/>
+		<a href="picture.php?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
+		</div>
 	</div>
 </div>
 
@@ -156,12 +166,24 @@ include_once 'homefooter.php';
 	    checkStatus();
 	}
 
+	function changeSchool() {
+		if ($("#selectSchool").val()==1	) {
+		    $("#btNew").show();$("#btMail").hide();
+		} else {
+		    $("#btNew").hide();$("#btMail").show();
+		    
+		}
+	    checkStatus();
+	}
+
+	
 	function changeTeacher() {
 	    checkStatus();
 	}
 
 	function checkStatus() {
-		if ($("#selectYear").val()!=0	&&
+		if ($("#selectSchool").val()==1	&&
+			$("#selectYear").val()!=0	&&
 			$("#selectClass").val()!=0	&&
 			$("#selectTeacher").val()!=0 ) {
 			$("#btNew").removeClass("disabled");

@@ -266,48 +266,14 @@ CREATE TABLE `request` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `personhistory` (
-  `historyID` int(11) NOT NULL AUTO_INCREMENT,
-  `id` int(11) NOT NULL,
-  `classID` int(11) NOT NULL,
-  `isTeacher` int(11) NOT NULL DEFAULT '0',
-  `firstname` varchar(245) NOT NULL,
-  `lastname` varchar(245) DEFAULT NULL,
-  `picture` varchar(245) DEFAULT NULL,
-  `geolat` varchar(45) DEFAULT NULL,
-  `geolng` varchar(45) DEFAULT NULL,
-  `user` varchar(145) NOT NULL,
-  `passw` varchar(255) DEFAULT NULL,
-  `role` varchar(145) DEFAULT NULL,
-  `birthname` varchar(145) DEFAULT NULL,
-  `partner` varchar(145) DEFAULT NULL,
-  `address` varchar(245) DEFAULT NULL,
-  `zipcode` varchar(45) DEFAULT NULL,
-  `place` varchar(145) DEFAULT NULL,
-  `country` varchar(145) DEFAULT NULL,
-  `phone` varchar(145) DEFAULT NULL,
-  `mobil` varchar(145) DEFAULT NULL,
-  `email` varchar(245) DEFAULT NULL,
-  `homepage` varchar(255) DEFAULT NULL,
-  `skype` varchar(145) DEFAULT NULL,
-  `education` varchar(245) DEFAULT NULL,
-  `employer` varchar(255) DEFAULT NULL,
-  `function` varchar(245) DEFAULT NULL,
-  `children` varchar(245) DEFAULT NULL,
-  `facebook` varchar(245) DEFAULT NULL,
-  `facebookid` varchar(45) DEFAULT NULL,
-  `twitter` varchar(245) DEFAULT NULL,
-  `cv` text,
-  `story` text,
-  `aboutMe` text,
-  `changeIP` varchar(45) DEFAULT NULL,
-  `changeDate` datetime DEFAULT NULL,
-  `changeUserID` int(11) DEFAULT NULL,
-  `changeForID` int(11) DEFAULT NULL,
-  `historyType` varchar(45) DEFAULT NULL,
-  `historyDate` datetime DEFAULT NULL,
-  `historyUserID` int(11) DEFAULT NULL
-  PRIMARY KEY (`historyID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='History of Classmates und teachers' AUTO_INCREMENT=1 ;
-
-
+CREATE TABLE `db652851844`.`history` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `entryID` INT NOT NULL,
+  `table` VARCHAR(45) NOT NULL,
+  `jsonData` TEXT NULL,
+  `changeIP` VARCHAR(45) NOT NULL,
+  `changeDate` DATETIME NOT NULL,
+  `changeUserID` INT NULL,
+  `deleted` INT NULL,
+  PRIMARY KEY (`id`))
+COMMENT = 'Historical data from all the content tables';

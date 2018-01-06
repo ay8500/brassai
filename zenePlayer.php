@@ -5,8 +5,7 @@ include("homemenu.php");
 
 //Save Youtube id
 if (getParam("action")=="savesong" && userIsAdmin()) {
-	$db->updateSong(getIntParam("id"),getParam("link"),"video");
-	$db->updateSong(getIntParam("id"),html_entity_decode(getParam("song"),ENT_QUOTES,"UTF-8"),"name");
+	$db->updateSongFields(getIntParam("id"), getParam("link"), html_entity_decode(getParam("song"),ENT_QUOTES,"UTF-8"));
 }
 
 //Get playlist
@@ -87,7 +86,7 @@ $json = json_decode($response);
 		<input type="hidden" name="action" value="savesong" />
 		<input type="hidden" name="id" value="<?php echo getIntParam("id") ?>" />
 		<div style="text-align: center;">
-			<button class="btn btn-default">Kiment</button>
+			<button class="btn btn-success">Kiment</button>
 		</div>
 	</form>
 <?php } ?>

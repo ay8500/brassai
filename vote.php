@@ -1,4 +1,5 @@
-<?PHP include("homemenu.php"); 
+<?php 
+include("homemenu.php"); 
 include_once("data.php");
 
 $class=$db->getClassById(getRealId(getAktClass()));
@@ -89,7 +90,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 	<td style="width: 25px;text-align: center;" class="visible-xs"><span class="glyphicon glyphicon-cutlery"></span></td>
 	<td style="width: 80px;text-align: center;" class="hidden-xs">Kirán-<br>dulás</td>
 	<td style="width: 25px;text-align: center;" class="visible-xs"><span class="glyphicon glyphicon-tree-conifer"></span></td>
-	<td class="hidden-xs">Kivándulás hova?</td></tr>
+	<td class="hidden-xs">Kirándulás, hova?</td></tr>
 <?php
 	$k=false;
 	foreach ($data as $d)	

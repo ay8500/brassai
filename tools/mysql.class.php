@@ -121,13 +121,11 @@ class MySqlDb {
   }
 
   
-  	/* Insert and update need a $data array for the values 
+  	/** Insert and update need a $data array for the values 
   	 * $data[0]["field"]='Fieldname';
   	 * $data[0]["type"]='s';            //Types s=string, d=datatime, n=number
   	 * $data[0]["value"]='value';
   	 * */
-  
-	/* Insert */ 
 	public function insert($table, $data) {
 	  	$sql  ="insert into `".$table."` (";
 	  	foreach ($data as $i=>$d) {

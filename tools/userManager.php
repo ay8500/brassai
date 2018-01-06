@@ -242,6 +242,17 @@
 		else 
 			return false;
 	}
+
+	/**
+	 *User is logged in and have the role of admin
+	 */
+	function userIsSuperuser() {
+		if (isset($_SESSION['uRole']))
+			return strstr($_SESSION['uRole'],"superuser")!="";
+		else
+			return false;
+	}
+	
 	
 	/**
 	 *User is logged in and have the role of  editor
@@ -253,7 +264,7 @@
 			return strstr($_SESSION['uRole'],"editor")!="";
 		} else { 
 			$p=$db->getPersonByID(getLoggedInUserId());
-			//User is teacher and editor
+			//User is teacher and editor then return editor right for all classes where the teacher is head teacher
 			if ($p["isTeacher"]==1) { 
 				if (strstr($_SESSION['uRole'],"editor")!="") {
 					if (isset($p["children"])) {

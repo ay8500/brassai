@@ -9,7 +9,7 @@
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
 				<span>Válassz egy új képet max. 2MByte</span>
 				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
-				<button style="margin-top:5px;" type="submit" class="btn btn-default" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-save"></span> Feltölt</button>
+				<button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-save"></span> Feltölt</button>
 				<input type="hidden" value="upload_diak" name="action" />
 				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
@@ -18,9 +18,9 @@
 	<?php } ?>
    <?php if ($edit) {  ?>	
 		<?php //Don't delete myself and if no user logged on?>
-		<?php if (!(getLoggedInUserId()==$diak["id"] ) && getLoggedInUserId()>0) { ?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (userIsEditor() || userIsSuperuser() || userIsAdmin()) ) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
+			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
 		</div>
 		<?php } ?>
 	<?php } ?>
@@ -28,14 +28,14 @@
 	<?php //Save button?>
 	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="document.forms['edit_form'].submit();" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
+			<button onclick="document.forms['edit_form'].submit();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
 		</div>
 	<?php } ?>
 	
 	<?php //Anonymous user edit button?>
 	<?php if (!$edit && !$createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
+			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
 		</div>
 	<?php } ?>
 	

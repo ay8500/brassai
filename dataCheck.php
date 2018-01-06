@@ -49,7 +49,13 @@ if (userIsAdmin()) {
 	?>
 	
 	<?php if ($tabOpen==1) {
-		generateCheckHtmlTable("Személyek", "Személy","Person","lastname","getPersonListToBeChecked",$id,getPersonDummy(),"getPersonByID","deletePersonEntry","savePerson");
+		$dummyPerson=getPersonDummy();
+		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["isTeacher"]="";
+		$dummyPerson["address"]="";$dummyPerson["zipcode"]="";$dummyPerson["place"]="";
+		$dummyPerson["phone"]="";$dummyPerson["mobil"]="";$dummyPerson["email"]="";
+		$dummyPerson["homepage"]="";$dummyPerson["skype"]="";$dummyPerson["education"]="";
+		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
+		generateCheckHtmlTable("Személyek", "Személy","Person","lastname","getPersonListToBeChecked",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
 	}
 	?>
 	
