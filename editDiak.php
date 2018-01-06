@@ -28,7 +28,7 @@ $action=getGetParam("action","");
 $anonymousEditor=getParam("anonymousEditor")=="true";
 
 //Edit or only view variant this page
-$edit = (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
+$edit = (userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
 
 //Create new person 
 $createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher" || $action=="savenewperson" || $action=="savenewguest" || $action=="savenewteacher";
@@ -141,8 +141,6 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 		else if ($action=="savenewguest") $action="newguest";
 	}
 }
-
-
 
 //Change password
 if ($action=="changepassw" && userIsLoggedOn()) {

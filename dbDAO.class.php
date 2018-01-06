@@ -443,7 +443,11 @@ class dbDAO {
 	 * @return integer, negativ if an error occurs
 	 */
 	public function savePicture($picture) {
-		return $this->saveEntry("picture", $picture);
+		$id = $this->saveEntry("picture", $picture);
+		if ($id>=0) {
+			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id]],"id",$id);
+		}
+		return $id;
 	}
 	
 	public function savePictureField($id,$personId,$classId,$schoolId,$file,$isVisibleForAll,$title,$comment,$uploadDate,$isDeleted=0) 
@@ -488,7 +492,7 @@ class dbDAO {
 			$sql.=" and isDeleted=".$isDeleted;}
 		if ($isVisibleForAll<2) {
 			$sql.=" and isVisibleForAll=".$isVisibleForAll; }
-		return $this->getElementList("picture",$sql,null,"changeDate desc");	
+		return $this->getElementList("picture",$sql,null,"orderValue desc");	
 	}
 	
 	/**
@@ -502,6 +506,16 @@ class dbDAO {
 		if ($where!="")
 			$sql.=" and ".$where; 
 		return $this->getElementList("picture",$sql,null,"title asc");	
+	}
+	
+	public function changePictureOrderValues($id1,$id2) {
+		$orderValue1=$this->dataBase->queryInt("select orderValue from picture where id=".$id1);
+		$orderValue2=$this->dataBase->queryInt("select orderValue from picture where id=".$id2);
+		$data=array();
+		$data=$this->dataBase->insertFieldInArray($data, "orderValue", $orderValue1);
+		$this->dataBase->update("picture", $data, "id", $id2);
+		$data=$this->dataBase->changeFieldInArray($data, "orderValue", $orderValue2);
+		$this->dataBase->update("picture", $data, "id", $id1);
 	}
 	
 	public function getPictureByFileName($filename) {

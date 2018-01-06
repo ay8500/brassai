@@ -1,3 +1,7 @@
+<?php 
+$view=getParam("view","table");
+?>
+
 <style>
 .ilbuttonworld {
     background-image: url("images/world-16.png");
@@ -28,8 +32,13 @@
 .iledittitle {	border: none;width:100%;padding:5px;font-weight: bold;}
 .ileditcomment {border: none;width:100%;height:100px;padding:5px;}
 
-.pi100 {width:100%};
-
+.pi100 {width:100%;}
+<?php if ($view=="table") {?>
+.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;} 	
+<?php } else {?>
+.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}
+#list-table { display:inline-block;vertical-align: text-top;}
+<?php }?>
 </style>
 
 <?php 
@@ -52,8 +61,14 @@ if (getParam("action","")=="deletePicture" ) {
 	}
 }
 
+//changeOrder
+if (getParam("action","")=="changeOrder" && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
+	$db->changePictureOrderValues(getIntParam("id1", -1), getIntParam("id2", -1));
+}
+
+
 //Delete and unlink Picture
-if (getParam("action","")=="unlinkPicture" && userIsAdmin()) {
+if (getParam("action","")=="unlinkPicture" && (userIsAdmin() || userIsSuperuser()) )  {
 	if (deletePicture(getIntParam("did"),true)>=0) {
 		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 	} else {
@@ -138,9 +153,9 @@ if(isset($picture)) {
 }
 ?>
 
-	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $type!="tablo") :?>
+	<?php if (($notDeletedPictures<250 || userIsAdmin()) && $type!="tablo") :?>
 		<div style="margin-bottom:15px;">
-			<button class="btn btn-default" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
+			<button class="btn btn-info" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
 				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId."'"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
 			<?php  }?>
@@ -171,17 +186,23 @@ if(isset($picture)) {
 	
 		
 	<?php 
-	foreach ($pictures as $pict) {
+	foreach ($pictures as $idx=>$pict) {
 		if ( $pict["isDeleted"]==0  || userIsAdmin() ) {
 			$checked="";
 			if ($pict["isVisibleForAll"]==1) $checked="checked";
 	?>
 	
-			<div id="pictureframe" style="padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;" >
+			<div class="pictureframe" >
 				<div id="list-table">
-					<a style="display: inline-block;vertical-align: top; margin:10px" title="<?php echo $pict["title"] ?>" href="javascript:return false" onclick="toggleBigger(this)">
-						<img class="img-responsive" style="display: inline-block;cursor: -webkit-zoom-in; cursor: -moz-zoom-in;" src="convertImg.php?width=1800&thumb=false&id=<?php echo $pict["id"] ?>" />
-					</a>
+					<?php if ($view=="table") {?>
+						<a style="display:block;vertical-align: top; margin:10px" title="<?php echo $pict["title"] ?>" href="javascript:return false" onclick="toggleBigger(this)">
+							<img class="img-responsive" style="cursor: -webkit-zoom-in; cursor: -moz-zoom-in;" src="convertImg.php?width=1800&thumb=false&id=<?php echo $pict["id"] ?>" />
+						</a>
+					<?php } else {?>
+						<div style="vertical-align: top; margin:10px" >
+							<img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
+						</div>
+					<?php } ?>
 				</div>
 				<div  id="list-table" >
 					<div id="edit_<?php echo $pict["id"] ?>" style="margin:10px;display: none; background-color: white;border-radius: 7px;padding: 5px;" >
@@ -203,15 +224,24 @@ if(isset($picture)) {
 						</div> 
 					</div>
 					<div id="show_<?php echo $pict["id"] ?>" style="margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
+						<?php //change Order buttons?>
+						<?php if($view!="table" && (userIsEditor() || userIsAdmin() || userIsSuperuser()) ) :?>
+							<?php  if ($idx!=0) {?>
+								<button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
+							<?php } else {?>
+								<span style="margin: 0px 40px 0 10px;" >&nbsp</span>
+							<?php } if ($idx+1<sizeof($pictures)) {?>
+								<button id="picsort" style="margin: 0px 10px 0 5px;" class="btn btn-default" onclick="changeOrder(<?php echo $pictures[$idx+1]["id"] ?>,<?php echo $pictures[$idx]["id"] ?>);" title="eggyel hátrébb"><span class="glyphicon glyphicon-arrow-down"></span></button>
+							<?php } else {?>
+								<span style="margin: 0px 5px 0 40px;" >&nbsp</span>
+							<?php } ?>
+							<?php echo $pict["orderValue"]?>
+						<?php endif;?>
 						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;">
 							<b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
 							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
 						</div>
 						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-pencil"></span></button>
-						<?php if(userIsLoggedOn()) :?>
-							<button id="picsort" style="display: none;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="moveup(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-arrow-up"></span></button>
-							<button id="picsort" style="display: none;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="movedown(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-arrow-down"></span></button>
-						<?php endif;?>
 					</div>
 					<?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
 					<br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
@@ -271,22 +301,20 @@ function changeVisibility(id) {
 	}
 
 	function toogleListBlock() {
-		if ($("#pictureframe").css("max-width")!=="none") {
-	    	$("[id=pictureframe]").css("max-width","none");		//List
-	    	$("[id=pictureframe]").css("width","100%");
-	    	$("[class=img-responsive]").css("height","70px");
-	    	$("[id=list-table]").css("display","inline");
-	    	$("[id=picsort]").css("display","inline"); 
-	    	$("[id^=edit]").css("display","inline");
-	    	$("[id^=edit]").hide();
+	<?php 
+		if ($view=="table") {	
+			$url="view=list";
 		} else {
-		    $("[id=pictureframe]").css("max-width","395px");  //Table
-		    $("[id=pictureframe]").css("width","");
-		    $("[class=img-responsive]").css("height","");
-		    $("[id=list-table]").css("display","auto");
-		    $("[id=picsort]").hide();
-		}
+			$url="view=table";
+		} 
+		$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
+		$url .=isset($type)?"&type=".$type:"";
+		$url .=isset($typeId)?"&typeid=".$typeId:"";
+		$url .=isset($id)?"&id=".$id:"";
+		?>
+		window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>";
 	}
+	
 
 	function deletePicture(id) {
 		if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
@@ -294,13 +322,18 @@ function changeVisibility(id) {
 		}
 	}
 
-	function moveup(id) {
-	    window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=moveup&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
+	function changeOrder(id1,id2) {
+	<?php 
+		$url =$view=="table"?"view=table":"view=list";
+		$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
+		$url .=isset($type)?"&type=".$type:"";
+		$url .=isset($typeId)?"&typeid=".$typeId:"";
+		$url .=isset($id)?"&id=".$id:"";
+		$url .="&action=changeOrder";
+		?>
+		window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>"+"&id1="+id1+"&id2="+id2;
 	}
 
-	function movedown(id) {
-	    window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=movedown&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
-	}
 
 	function hideedit(id) {
 		$("#edit_"+id).hide();

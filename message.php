@@ -74,7 +74,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="commentMessage")) {
 ?>
 
 <div class="container-fluid">   
-<h2 class="sub_title" >Üzenöfal</h2>
+<h2 class="sub_title" >Üzenőfal</h2>
 <div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <div class="dropdown" style="margin-bottom: 10px;">
  	<button onclick="showMessage();" class="btn btn-default" type="button" >

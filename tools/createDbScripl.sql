@@ -277,3 +277,8 @@ CREATE TABLE `db652851844`.`history` (
   `deleted` INT NULL,
   PRIMARY KEY (`id`))
 COMMENT = 'Historical data from all the content tables';
+
+ALTER TABLE `db652851844`.`picture` 
+ADD COLUMN `orderValue` INT NOT NULL DEFAULT 0 AFTER `changeForID`;
+
+update db652851844.picture set orderValue=id;
