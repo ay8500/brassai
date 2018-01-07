@@ -225,7 +225,7 @@ if(isset($picture)) {
 					</div>
 					<div id="show_<?php echo $pict["id"] ?>" style="margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
 						<?php //change Order buttons?>
-						<?php if($view!="table" && (userIsEditor() || userIsAdmin() || userIsSuperuser()) ) :?>
+						<?php if($view!="table" && ( userIsAdmin() ) ) :?>
 							<?php  if ($idx!=0) {?>
 								<button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
 							<?php } else {?>
@@ -235,9 +235,8 @@ if(isset($picture)) {
 							<?php } else {?>
 								<span style="margin: 0px 5px 0 40px;" >&nbsp</span>
 							<?php } ?>
-							<?php echo $pict["orderValue"]?>
 						<?php endif;?>
-						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;">
+						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;max-width: 320px;">
 							<b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
 							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
 						</div>
@@ -247,6 +246,19 @@ if(isset($picture)) {
 					<br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
 					<?php } ?> 
 				</div>
+				<?php if ($view!="table" && userIsAdmin()) {?>
+				<div  id="list-table" ><div style="margin:10px;">
+					id=<?php echo $pict["id"]?>
+					orderValue=<?php echo $pict["orderValue"]?><br/>
+					orderValue=<?php echo $pict["file"]?><br/>
+					uploaded=<?php echo date("Y.m.d H:i:s",strtotime($pict["uploadDate"]));?></br>
+					changed=<?php echo date("Y.m.d H:i:s",strtotime($pict["changeDate"]));?></br>
+					user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?></br>
+					changes=<a href="history.php?table=picture&id=<?php echo $pict["id"]?>">
+								<?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?>
+							</a></br>
+				</div></div>
+				<?php } ?>
 			</div>
 	<?php }	}?>
 	

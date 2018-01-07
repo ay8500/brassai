@@ -443,8 +443,9 @@ class dbDAO {
 	 * @return integer, negativ if an error occurs
 	 */
 	public function savePicture($picture) {
+		$newEntry=$picture["id"]==-1;
 		$id = $this->saveEntry("picture", $picture);
-		if ($id>=0) {
+		if ($newEntry and $id>=0) {
 			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id]],"id",$id);
 		}
 		return $id;
@@ -1019,6 +1020,32 @@ class dbDAO {
 				return $this->dataBase->getInsertedId();
 			else 
 				return -1;
+		}
+	}
+	
+	/**
+	 * get history info
+	 */
+	public function getHistoryInfo($table,$id) {
+		$sql="select id from history where `table`='".$table."' and entryID=".$id;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
+		}
+	}
+	
+	/**
+	 * get history 
+	 */
+	public function getHistory($table,$id) {
+		$sql="select * from history where `table`='".$table."' and entryID=".$id;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
 		}
 	}
 	

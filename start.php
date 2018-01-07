@@ -55,12 +55,13 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php 
-		$persons=$db->getRecentChangedPersonList(12);
+		$persons=$db->getRecentChangedPersonList(getIntParam("persons", 12));
 		foreach ($persons as $person) {
 			displayPerson($db,$person,true,true);
 		}
 	?>
 		</div>
+		<a href="start.php?persons=200" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
 	</div>
 
 	<div class="panel panel-default col-sm-12" style="margin-right:10px;">
@@ -69,12 +70,13 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php 
-		$pictures=$db->getRecentPictureList(12);
+		$pictures=$db->getRecentPictureList(getIntParam("pictures", 12));
 		foreach ($pictures as $picture) {
 			displayPicture($db,$picture);
 		}
 	?>
 		</div>
+		<a href="start.php?pictures=100" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
 	</div>
 
 	<div class="panel panel-default col-sm-12">

@@ -61,25 +61,25 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				}
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
-				echo('<div class="diakCardIcons">');
-					if(showField($d,"email"))
-						echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
-					if (isset($d["facebook"]) && strlen($d["facebook"])>8)
-						echo '&nbsp;<a target="_new" href="'.getFieldValue($d["facebook"]).'" title="Facebook"><img src="images/facebook.png" /></a>';
-					if (isset($d["twitter"]) && strlen($d["twitter"])>8)
-						echo '&nbsp;<a target="_new" href="'.getFieldValue($d["twitter"]).'" title="Twitter"><img src="images/twitter.png" /></a>';
-					if (isset($d["homepage"]) && strlen($d["homepage"])>8)
-						echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
-					if (sizeof($db->getListOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2))>0)
-						echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
-					if (isset($d["cv"]) && $d["cv"]!="")
-						echo '&nbsp;<a href="editDiak.php?tabOpen=2&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
-					if (isset($d["story"]) && $d["story"]!="")
-						echo '&nbsp;<a href="editDiak.php?tabOpen=3&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
-					if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
-						echo '&nbsp;<a href="editDiak.php?tabOpen=4&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
+					echo('<div class="xxx_diakCardIcons" style="margin-top:10px">');
+						if(showField($d,"email"))
+							echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
+						if (isset($d["facebook"]) && strlen($d["facebook"])>8)
+							echo '&nbsp;<a target="_new" href="'.getFieldValue($d["facebook"]).'" title="Facebook"><img src="images/facebook.png" /></a>';
+						if (isset($d["twitter"]) && strlen($d["twitter"])>8)
+							echo '&nbsp;<a target="_new" href="'.getFieldValue($d["twitter"]).'" title="Twitter"><img src="images/twitter.png" /></a>';
+						if (isset($d["homepage"]) && strlen($d["homepage"])>8)
+							echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
+						if (sizeof($db->getListOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2))>0)
+							echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
+						if (isset($d["cv"]) && $d["cv"]!="")
+							echo '&nbsp;<a href="editDiak.php?tabOpen=2&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
+						if (isset($d["story"]) && $d["story"]!="")
+							echo '&nbsp;<a href="editDiak.php?tabOpen=3&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
+						if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
+							echo '&nbsp;<a href="editDiak.php?tabOpen=4&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
 				?>
-				</div>
+					</div>
 				<?php  if ($showDate) {
 					$changePerson=$db->getPersonByID($d["changeUserID"]);
 				?>
