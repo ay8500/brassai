@@ -225,7 +225,7 @@ if(isset($picture)) {
 					</div>
 					<div id="show_<?php echo $pict["id"] ?>" style="margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
 						<?php //change Order buttons?>
-						<?php if($view!="table" && ( userIsAdmin() ) ) :?>
+						<?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
 							<?php  if ($idx!=0) {?>
 								<button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
 							<?php } else {?>
