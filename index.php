@@ -5,6 +5,8 @@ include_once("data.php");
 if (!isset($siteHeader)) $siteHeader='';
 $siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v=08062017a" /> ';
 
+unsetAktClass();
+
 include("homemenu.php");
 ?>
 <div class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján</br>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!</br></div>
@@ -21,7 +23,7 @@ include("homemenu.php");
 	<div  style="padding:15px;" class="col-sm-8" >
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="hometable.php?classid=64"><img img class="indeximg" src="images/classmatex.png" /></a>
+			<a class="inlineBox" href="editDiak.php?action=newperson"><img img class="indeximg" src="images/classmatex.png" /></a>
 			<div class="inlineBox">Véndiákok névsorának bővítése és ápolása.</div>
 		</div>
 		<div class="col-sm-4">

@@ -31,8 +31,8 @@ function getAktClassName() {
 			return "";
 		else
 			return $class["text"];
-	} else
-		return "";
+	}
+	return "";
 }
 
 /**
@@ -434,10 +434,14 @@ function getPersonId($person) {
  * @param unknown $person
  */
 function getRealId($entry) {
-	if (isset($entry["changeForID"]))
+	if (isset($entry["changeForID"])) {
 		return $entry["changeForID"];
-	else
-		return $entry["id"];
+	} else {
+		if (isset($entry["id"])) {
+			return $entry["id"];
+		}
+	}
+	return null;
 }
 
 

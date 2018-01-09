@@ -291,6 +291,7 @@ if ($action=="newperson") {
 $tabUrl="editDiak.php";
 ?>
 
+<?php if (null!=getAktClass()) {?>
 <div class="container-fluid">
 	<?php  include("tabs.php"); ?>
 	<div class="well">
@@ -329,6 +330,12 @@ $tabUrl="editDiak.php";
 		}
 	}
 </script>
-
+<?php } else { ?>
+<div class="alert alert-info" >
+	<b>Osztály névsór</b>
+	<br/><br/><br/>
+	<p>Osztály névsórának a módosótásához elöbször válassz ki egy osztályt az "Osztályok" menü segítségével!</p>
+</div>
+<?php } ?>
 <?php include 'homefooter.php'; ?>
 

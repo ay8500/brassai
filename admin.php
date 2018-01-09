@@ -22,7 +22,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 <div class="container-fluid">   
 <h2 class="sub_title" >Adminisztráció</h2>
 
-<?php if (userIsAdmin() || (userIsEditor()) ) { 
+<?php if (userIsAdmin() || userIsEditor() ) { 
 	$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
 	include("tabs.php");
 	if ($tabOpen==0) {?>
@@ -71,7 +71,11 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		<div>
 		<table  class="table-sp" >
 		<tr style="text-align:center;font-weight:bold;">
-			<td style="min-width:160px">Név</td><td id="o1024" >Becenév</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td><td  id="o1024">IP</td><td  id="o1024">Datum</td>
+			<td style="min-width:160px">Név</td><td id="o1024" >Becenév</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td>
+			<?php if(userIsAdmin()) {?>
+				<td  id="o1024">IP</td>
+			<?php }?>
+			<td  id="o1024">Datum</td>
 		</tr>
 		
 		<?PHP
@@ -84,7 +88,11 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 					echo '<tr style="background-color:#e8f0f0">';
 				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font>".'</td><td  id="o1024">'.getFieldValue($d,"user")."</td><td>";
 				echo "<a href=mailto:".getFieldValue($d,"email").">".getFieldValue($d,"email")."</a>";
-				echo '<td  id="o400">'.getFieldValue($d,"phone").'</td><td  id="o480">'.getFieldValue($d,"mobil").'</td><td  id="o1024">'.getFieldValue($d,"skype").'</td><td  id="o1024">'.getFieldValue($d,"ip").'</td><td  id="o1024">'.getFieldValue($d,"date")."</td>";
+				echo '<td  id="o400">'.getFieldValue($d,"phone").'</td><td  id="o480">'.getFieldValue($d,"mobil").'</td><td  id="o1024">'.getFieldValue($d,"skype").'</td>';
+				if (userIsAdmin()) {
+					echo '<td  id="o1024">'.getFieldValue($d,"ip").'</td>';
+				}
+				echo '<td  id="o1024">'.getFieldValue($d,"date")."</td>";
 				echo "</tr>";
 			}
 		
@@ -127,11 +135,9 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		?>
 		</table>
 	<?PHP } ?>
-<?PHP } 
-else
-	?>
+<?php } else { ?>
 	<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>
-
+<?php } ?>
 </div>
 <script language="JavaScript" type="text/javascript">
 	function checkUncheckAll(state) {

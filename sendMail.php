@@ -36,12 +36,13 @@ function SendNewPassword($uid) {
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
+	sendHtmlMail("brassai@blue-l.de",$text," New password");
 }
 
 /**
  * send mail to new user
  */
-function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,$uid=null) {
+function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$class,$uid=null) {
 	$text='<p style="font-weight: bold;">Kedves '.$lastname." ".$firstname.'</p>';
 	$text.="Ezt az e-mail azért kapod mert bejelentkeztél a Brassai Sámuel véndiákok honoldalára.<br />";
 	$text.="<p>Ennek nagyön örvendünk, és köszöjük érdeklődésed. </p>";
@@ -55,7 +56,8 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,
 	if ($passw=="") {
 		$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
 	} else {
-		$text.="Jelszavad:".$passw."<br/>";
+		$text.="Felhasználóneved: ".$user."<br/>";
+		$text.="Jelszavad: ".$passw."<br/>";
 	}
 	if ($rights!="") {
 		$text.="<p>Szerep: ".$rights."</p>";
@@ -65,6 +67,7 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$rights,$year,$class,
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
 	sendHtmlMail($mail,$text," új bejelenkezés");
+	sendHtmlMail("brassai@blue-l.de",$text," new user:".$mail);
 }
 
 /**

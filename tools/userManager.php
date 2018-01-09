@@ -85,23 +85,21 @@
 		$_SESSION['aktClass']=$classId;
 	}
 	
+	function unsetAktClass() {
+		unset($_SESSION['aktClass']);
+	}
+	
 	
 	/**
 	* The aktual person class id
 	* @return number|NULL
 	*/
 	function getAktClassId() {
-		global $db;
-		if (isset($_SESSION['aktClass']))
+		if (isset($_SESSION['aktClass'])) {
 			return intval($_SESSION['aktClass']);
-			else {
-				$class =$db->getClassByText("1985 12A");
-				if ($class!=null) {
-					$_SESSION['aktClass']=$class["id"];
-					return $class["id"];
-				}
-				else die("Default class not found!");
-			}
+		} else {
+			return -1;
+		}
 	}
 	
 	/**
@@ -110,11 +108,10 @@
 	 */
 	function getAktClass() {
 		global $db;
-		if (isset($_SESSION['aktClass']))
+		if (isset($_SESSION['aktClass'])) {
 			return $db->getClassById(intval($_SESSION['aktClass']));
-			else {
-				return $db->getClassByText("1985 12A");
-			}
+		}
+		return null;
 	}
 	
 	/**
@@ -153,7 +150,6 @@
 	function checkUserLogin($user,$passw) {
 		global $db;
 		$ret = false;
-		$ret=false;
 		$usr = $db->getPersonByUser($user);
 		if (null != $usr && $usr["passw"]==$passw) {
 			setUserInSession(
@@ -170,7 +166,16 @@
 					$usr["user"],
 					$usr["id"]);
 				$ret = true;
-			}		
+			} else {
+				$usr =$db->getPersonByLastnameFirstname($user);
+				if (null != $usr && $usr["passw"]==$passw) {
+					setUserInSession(
+							$usr["role"],
+							$usr["user"],
+							$usr["id"]);
+					$ret = true;
+				}				
+			}
 		}
 		if (!userIsAdmin()) {
 			if (isset($_SESSION['uId']))
@@ -223,6 +228,7 @@
 		$_SESSION['FacebookId'] = NULL;
 		$_SESSION['FacebookName'] = NULL;
 		$_SESSION['FacebookEmail'] =  NULL;
+		unsetAktClass();
 	}
 	
 	/**
@@ -271,9 +277,11 @@
 						$c=explode(",", $p["children"]);
 						$ret = false;
 						$class = getAktClass();
-						foreach ($c as $cc) {
-							if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"]) 
-								$ret=true;
+						if (null!=$class) {
+							foreach ($c as $cc) {
+								if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"]) 
+									$ret=true;
+							}
 						}
 						return $ret;
 					} else {

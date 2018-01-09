@@ -33,6 +33,7 @@ $userId=getIntParam("userId",-1);
 if ($userId>=0) {
 	$db->savePersonFacebookId($userId,$_SESSION["FacebookId"]);
 }
+unsetAktClass();
 
 include("homemenu.php");
 include_once 'editDiakCard.php';

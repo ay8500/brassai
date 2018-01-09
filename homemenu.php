@@ -85,7 +85,7 @@
         			<li><a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
        			</ul>
       		</li>
-      		<?php if (getAktClassId()!=0 || userIsAdmin()) {?>
+      		<?php if (getAktClassId()>0 || userIsAdmin()) {?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName());?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">

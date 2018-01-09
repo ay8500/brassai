@@ -49,7 +49,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 if (isset($_GET["action"]) && ($_GET["action"]=="checkMessage")) {
 	$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet tartalmaz '.
 		checkMessageContent($paramText,true).
-		' magyar kivejezést.Eredmény:'.
+		' magyar kifejezést.Eredmény:'.
 		(checkMessageContent($paramText)?"Ok":"nem jo").' </div>';
 }
 

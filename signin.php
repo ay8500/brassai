@@ -60,7 +60,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 					$db->saveRequest(changeType::newuser);
 					$resultDBoperation='<div class="alert alert-info" >Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.</div>';
 					setUserInSession($person["role"],$person["user"],$ret);
-					sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"], "", $class["graduationYear"], $class["name"],$person["id"]);
+					sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"],$person["user"], "", $class["graduationYear"], $class["name"],$person["id"]);
 				} else {
 					$resultDBoperation='<div class="alert alert-warning" >Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer!<br/>Hibacód:64432</div>';
 				}

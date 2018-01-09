@@ -247,6 +247,25 @@ class dbDAO {
 			$person = $this->getEntryByField("person", "email", "~".$email);
 		return $person;
 	}
+
+	public function getPersonByLastnameFirstname($name) {
+		if ($name==null || trim($name)=="")
+			return null;
+		$n=explode(' ', trim($name));
+		if (sizeof($n)==2) {
+			$person = $this->getEntryByField("person", "lastname", $n[0]);
+			if ($person!=null) {
+				if ($person->firstname==$n[1])
+					return $person;
+			}
+		} else {
+			$person = $this->getEntryByField("person", "lastname", $n[0]);
+			if ($person!=null) {
+				return $person;
+			}
+		}
+		return null;
+	}
 	
 	public function getPersonByFacobookId($fbid) {
 		if ($fbid==null || trim($fbid)=="")
@@ -275,7 +294,7 @@ class dbDAO {
 		$name=trim($name);
 		if( strlen($name)>1) {
 			
-			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";  
+			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person left join  class on class.id=person.classID where ";  
 			$sql .=" (classID != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is null";
 			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
@@ -316,18 +335,21 @@ class dbDAO {
 	 * @param boolean withoutFacebookId default false
 	 */
 	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false) {
-		$where ="classID=".$classId;
-		$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-		if($guest)
-			$where.=" and role like '%guest%'";
-		else
-			$where.=" and role not like '%guest%'";
-		if ($withoutFacebookId) {
-			$where.=" and (facebookid is null or length(facebookid)<5) ";
+		if (null!=$classId) {
+			$where ="classID=".$classId;
+			$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+			if($guest)
+				$where.=" and role like '%guest%'";
+			else
+				$where.=" and role not like '%guest%'";
+			if ($withoutFacebookId) {
+				$where.=" and (facebookid is null or length(facebookid)<5) ";
+			}
+			$ret = $this->getElementList("person",$where);
+			usort($ret, "compareAlphabetical");
+			return $ret;
 		}
-		$ret = $this->getElementList("person",$where);
-		usort($ret, "compareAlphabetical");
-		return $ret;
+		return array();
 	}	
 
 	/**
@@ -413,19 +435,21 @@ class dbDAO {
 	
 	
 	public function getCountOfPersons($classId,$guests) {
-		$ret = array();
-		$sql="select 1 from person where ";
-		$sql .=" classID = ".$classId;
-		if ($guests)
-			$sql .=" and role like '%guest%'";
-		else
-			$sql .=" and not(role like '%guest%')";
-		$sql .=" and changeForID is null ";
-		$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-		if ($classId==0)
-			$sql .=" and isTeacher = 1";
-		$this->dataBase->query($sql);
-		return $this->dataBase->count();
+		if(null!=$classId) {
+			$sql="select 1 from person where ";
+			$sql .=" classID = ".$classId;
+			if ($guests)
+				$sql .=" and role like '%guest%'";
+			else
+				$sql .=" and not(role like '%guest%')";
+			$sql .=" and changeForID is null ";
+			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+			if ($classId==0)
+				$sql .=" and isTeacher = 1";
+			$this->dataBase->query($sql);
+			return $this->dataBase->count();
+		}
+		return 0;
 	}
 	
 	public function getPersonIdListWithPicture() {
@@ -719,6 +743,9 @@ class dbDAO {
 	}
 	
 	
+	/**
+	 * read songvotelist
+	 */
 	public function readTopList($classId,$personId) {
 		$sql  ="select count(1) as count, instr(GROUP_CONCAT(person.id),'".$personId."') as voted, song.id as songID, song.link as songLink, song.video as songVideo, song.name as songName, interpret.name as interpretName, songvote.id as id  ";
 		$sql .="from songvote join person on person.id=songvote.personID ";

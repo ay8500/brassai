@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(0);
+error_reporting(1);
 set_time_limit(0);
 
 if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
@@ -12,7 +12,7 @@ if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME
 
 
 // ab hier nichts mehr ändern
-function db_pictures($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$password)
+function db_pictures($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup)
 {
 	$allPictures=0;$okPictures=0;$errorPictures=0;
 	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd,$dbname) or die(mysqli_error());
