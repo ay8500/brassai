@@ -85,7 +85,7 @@ exit;
 
 function error() { 
 	header("status: 404"); 
-	$SiteTitle="A kolozsvári Brassai Sámuel líceum: Hiba oldal";
+	$SiteTitle="A kolozsvári Brassai Sámuel líceum: hiba oldal";
 	$siteHeader="<link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>";
 	include_once("homemenu.php"); 
 	?>

@@ -2,7 +2,7 @@
 /**
  * Safety get paramateter read 
  */
-function getGetParam($name,$def) {
+function getGetParam($name,$def=null) {
 	return html_entity_decode(htmlentities(isset($_GET[$name]) ? $_GET[$name] : $def,ENT_QUOTES),ENT_NOQUOTES);
 		
 }
@@ -10,7 +10,7 @@ function getGetParam($name,$def) {
 /**
  * Safety post paramateter read 
  */
-function getPostParam($name,$def) {
+function getPostParam($name,$def=null) {
 	return html_entity_decode(htmlentities(isset($_POST[$name]) ? $_POST[$name] : $def,ENT_QUOTES),ENT_NOQUOTES);
 		
 }

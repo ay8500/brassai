@@ -4,7 +4,7 @@ include_once 'tools/logger.class.php';
 setLoggerType(loggerType::file);
 
 if (!isset($SiteTitle))
-	$SiteTitle="A kolozsvári Brassai Sámuel líceum vén diakjai";
+	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndiakjai";
 $SupportedLang = array("hu"); //First language ist the default language
 
 // Set languge include file

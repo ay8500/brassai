@@ -67,7 +67,6 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
 	sendHtmlMail($mail,$text," új bejelenkezés");
-	sendHtmlMail("brassai@blue-l.de",$text," new user:".$mail);
 }
 
 /**
@@ -122,7 +121,7 @@ function sendHtmlMail($recipient,$text,$subject="") {
 	$headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n"; 
 	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
-	mail("code@blue-l.de", $subject, $message, $headers);
+	mail("brassai@blue-l.de", $subject, $message, $headers);
 	if (isset($recipient)) {
 		return mail($recipient, $subject, $message, $headers);
 	}

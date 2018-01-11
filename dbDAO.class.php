@@ -113,16 +113,25 @@ class dbDAO {
 		return  $this->dataBase->delete("class", "id", $id);
 	}
 	
+	public function searchForClass($name) {
+		$ret = array();
+		$nameItems=explode(' ', trim($name));
+		foreach ($nameItems as $nameWord) {
+			if (strlen(trim($nameWord))>2) {
+				$ret=array_merge($ret,$this->searchForClassOneString($nameWord));
+			}
+		}
+		return $ret;
+	}
 	
 	/**
 	 * Search for class by year name 
 	 * @param unknown $name
 	 */
-	public function searchForClass($name) {
+	private function searchForClassOneString($name) {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
-				
 			$sql="select c.*, p.firstname as tfname, p.lastname as tlname, p.birthname as tbname,p.picture as picture,";
 			$sql .=" cp.id as cid, cp.firstname as cfname, cp.lastname as clname, cp.birthname as cbname, cp.role as role";
 			$sql .=" from class as c"; 
@@ -290,6 +299,17 @@ class dbDAO {
  	* @param unknown $name
  	*/
 	public function searchForPerson($name) {
+		$ret = array();
+		$nameItems=explode(' ', trim($name));
+		foreach ($nameItems as $nameWord) {
+			if (strlen(trim($nameWord))>2) {
+				$ret=array_merge($ret,$this->searchForPersonOneString($nameWord));
+			}
+		}
+		return $ret;
+	}
+	
+	private function searchForPersonOneString($name) {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
@@ -943,7 +963,7 @@ class dbDAO {
 	 * even if the copy is returned the id will be from the original
 	 * @return the entry of null if not found
 	 */
-	private function getEntryById($table,$id,$forceThisID=false) {
+	public function getEntryById($table,$id,$forceThisID=false) {
 		//First get the foced entry by the id
 		if ($forceThisID==true) {
 			$sql="select * from ".$table.' where id='.$id;
@@ -1067,7 +1087,14 @@ class dbDAO {
 	 * get history 
 	 */
 	public function getHistory($table,$id) {
-		$sql="select * from history where `table`='".$table."' and entryID=".$id;
+		if(null!=$table && null!=$id) {
+			$sql="select * from history where `table`='".$table."' and entryID=".$id;
+		} elseif(null!=$table) {
+			$sql="select * from history where `table`='".$table."' order by entryID desc, id desc limit 1000";
+		} else {
+			$sql="select * from history  order by `table` asc, entryID desc, id desc limit 1000";
+		}
+			
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			return $this->dataBase->getRowList();

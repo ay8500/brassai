@@ -136,7 +136,7 @@ Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.
 		</table>
 	<?PHP } ?>
 <?php } else { ?>
-	<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>
+	<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>
 <?php } ?>
 </div>
 <script language="JavaScript" type="text/javascript">

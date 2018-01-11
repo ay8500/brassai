@@ -254,9 +254,9 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
 	$diakEditStorys = true;
 
 if ($personid!=null && $personid>=0)
-	$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakja " .$diak["lastname"]." ".$diak["firstname"];
+	$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakja " .$diak["lastname"]." ".$diak["firstname"];
 else 
-	$SiteTitle = "A kolozsvári Brassai Sámuel líceum vén diakjai";
+	$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakjai";
 	
 include("homemenu.php"); 
 ?>
