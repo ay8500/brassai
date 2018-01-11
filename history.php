@@ -101,9 +101,9 @@ function displayPerson($db,$person,$personNext) {
 	displayElementObj($person, $personNext,"employer","E");
 	displayElementObj($person, $personNext,"function","F");
 	displayElementObj($person, $personNext,"children","K");
-	displayElementObj($person, $personNext,"cv","CV");
-	displayElementObj($person, $personNext,"story","S");
-	displayElementObj($person, $personNext,"aboutMe","Me");
+	displayElement(hash("sha256",$person["cv"]), hash("sha256",$personNext["cv"]),"CV","CV");
+	displayElement(hash("sha256",$person["story"]), hash("sha256",$personNext["story"]),"T","Történet");
+	displayElement(hash("sha256",$person["aboutMe"]), hash("sha256",$personNext["aboutMe"]),"R","Magamról");
 	
 	displayElementObj($person, $personNext,"user","U");
 	displayElementObj($person, $personNext,"passw","P");
@@ -137,6 +137,7 @@ function displayChangeData($db,$item) {
 }
 
 function displayElement($text,$nextText,$title=null,$field="") {
+	
 	if (trim($text)===trim($nextText)) {
 		$style='style="background-color:white"';
 	} else {
@@ -155,11 +156,13 @@ function displayElementObj($text,$nextText,$field,$title=null) {
 
 function json_decode_utf8($json) {
 	if(null!=$json) {
-		$js=json_decode($json,true);
-		if(null!=$js) {
-			foreach ($js as $idx=>$j) {
-				$js[$idx]=preg_replace('/u([\da-fA-F]{4})/', '&#x\1;', $js[$idx]);
-			}
+		$jsonArray =explode('","',substr($json,2,-1));
+		
+		$js=array();
+		foreach ($jsonArray as $jsonElement) {
+			$e=explode('":"', $jsonElement);
+			if (sizeof($e)==2)
+				$js[$e[0]]=html_entity_decode(preg_replace('/u([\da-fA-F]{4})/', '&#x\1;', $e[1]));
 		}
 		return $js;
 	}

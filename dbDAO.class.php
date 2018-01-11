@@ -458,6 +458,7 @@ class dbDAO {
 				$this->createHistoryEntry($table,$p["id"]);
 				unset($p["changeForID"]);
 				$p["changeUserID"]=getLoggedInUserId();
+				$p["changeIP"]=$_SERVER["REMOTE_ADDR"];
 				if ($this->dataBase->delete($table, "id", $id))
 					return $this->updateEntry($table, $p)>=0;
 				else 
@@ -465,6 +466,7 @@ class dbDAO {
 			} else {
 				$this->createHistoryEntry($table,$p["id"]);
 				$p["changeUserID"]=getLoggedInUserId();
+				$p["changeIP"]=$_SERVER["REMOTE_ADDR"];
 				return $this->updateEntry($table, $p)>=0;
 			}
 		} else {
@@ -1134,7 +1136,7 @@ class dbDAO {
 		$data = array();
 		$data=$this->dataBase->insertFieldInArray($data, "entryID", $id);
 		$data=$this->dataBase->insertFieldInArray($data, "table", $table);
-		$data=$this->dataBase->insertFieldInArray($data, "jsonData", json_encode((object)$entry));
+		$data=$this->dataBase->insertFieldInArray($data, "jsonData", json_encode((object)$entry),JSON_HEX_TAG+JSON_HEX_AMP+JSON_HEX_APOS+JSON_HEX_QUOT);
 		$data =$this->dataBase->insertFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
 		$data =$this->dataBase->insertFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
 		if (getLoggedInUserId()>=0) {
