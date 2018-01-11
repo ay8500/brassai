@@ -5,7 +5,7 @@
 <div class="sub_title">Loging</div>
 <?PHP
 if (userIsAdmin()) {  
-	$year="2016";
+	$year="2018";
 
 	//initialise tabs
 	$tabsCaption=Array("Bejelentkezés","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");

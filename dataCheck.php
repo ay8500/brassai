@@ -149,7 +149,7 @@ if (userIsAdmin()) {
 
 <?php }
 else
-	echo '<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>';
+	echo '<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>';
 ?>
 	
   <!-- Modal -->

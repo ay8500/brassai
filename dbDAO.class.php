@@ -303,7 +303,24 @@ class dbDAO {
 		$nameItems=explode(' ', trim($name));
 		foreach ($nameItems as $nameWord) {
 			if (strlen(trim($nameWord))>2) {
-				$ret=array_merge($ret,$this->searchForPersonOneString($nameWord));
+				$ret=$this->personMerge($ret,$this->searchForPersonOneString($nameWord));
+			}
+		}
+		usort($ret, "compareAlphabeticalPicture");
+		return $ret;
+	}
+	
+	private function personMerge($array1,$array2) {
+		$ret=array();
+		if (sizeof($array1)==0)
+			return  $array2;
+		if (sizeof($array2)==0)
+			return  $array1;
+		foreach ($array1 as $person1) {
+			foreach ($array2 as $person2) {
+				if ($person1["id"]==$person2["id"]) {
+					array_push($ret,$person1);
+				}
 			}
 		}
 		return $ret;
@@ -388,6 +405,7 @@ class dbDAO {
 	public function getRecentChangedPersonList($limit) {
 		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		$ret = $this->getElementList("person",$where,$limit,"changeDate desc");
+		usort($ret, "compareAlphabeticalPicture");
 		return $ret;
 	}
 	
@@ -445,6 +463,7 @@ class dbDAO {
 				else 
 					return false;
 			} else {
+				$this->createHistoryEntry($table,$p["id"]);
 				$p["changeUserID"]=getLoggedInUserId();
 				return $this->updateEntry($table, $p)>=0;
 			}
@@ -1088,7 +1107,7 @@ class dbDAO {
 	 */
 	public function getHistory($table,$id) {
 		if(null!=$table && null!=$id) {
-			$sql="select * from history where `table`='".$table."' and entryID=".$id;
+			$sql="select * from history where `table`='".$table."' and entryID=".$id." order by id desc ";
 		} elseif(null!=$table) {
 			$sql="select * from history where `table`='".$table."' order by entryID desc, id desc limit 1000";
 		} else {

@@ -133,7 +133,7 @@ function compareAlphabetical($a,$b) {
 		$a["lastname"]=substr($a["lastname"], 4);
 	if (strstr($b["lastname"],"Dr. ")!="")
 		$b["lastname"]=substr($b["lastname"], 4);
-		if (isset($a["birthname"]) && $a["birthname"]!="") 
+	if (isset($a["birthname"]) && $a["birthname"]!="") 
 		$aa=$a["birthname"]." ".$a["firstname"];
 	else
 		$aa=$a["lastname"]." ".$a["firstname"];
@@ -142,6 +142,20 @@ function compareAlphabetical($a,$b) {
 	else
 		$bb=$b["lastname"]." ".$b["firstname"];
 	return strcmp(getNormalisedChars($aa), getNormalisedChars($bb));
+}
+
+
+/**
+ * Compare classmates by picture,firstname,lastname,birthname
+ * @param person $a
+ * @param person $b
+ */
+function compareAlphabeticalPicture($a,$b) {
+	$c = strcmp($a["picture"]=='avatar.jpg',$b["picture"]=='avatar.jpg');
+	if ($c!=0) {
+		return $c;
+	}
+	return compareAlphabetical($a, $b);
 }
 
 /**

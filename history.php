@@ -33,12 +33,12 @@ $resultDBoperation="";
 		  			<tr><td colspan="45"><hr/></td></tr>
 				<?php } ?>
 		  		<tr>
-		  			<td>O <?php echo $item["table"]?></td>	
+		  			<td>A <?php echo $item["table"]?></td>	
 					<?php displayHistoryElement($db,$item,$item,true);$aktId=$item["entryID"]; ?>		          			
 		  		</tr>
 			<?php }	?>
 	  		<tr>
-	  			<td>C <?php echo $item["table"]?></td>	
+	  			<td>O <?php echo $item["table"]?></td>	
 	   			<?php displayHistoryElement($db,$history[$id],$id<sizeof($history)-1?$history[$id+1]:null,false);?>
 	  	  	</tr>
   		<?php } ?>
@@ -80,25 +80,52 @@ function displayHistoryElement($db,$item,$itemNext,$original=false) {
 function displayPerson($db,$person,$personNext) {
 	displayChangeData($db,$person);
 	displayElement(getPersonName($person), getPersonName($personNext));
-	displayElement($person["email"], $personNext["email"]);
-	displayElement($person["country"], $personNext["country"]);
-	displayElement($person["place"], $personNext["place"]);
+	displayElementObj($person, $personNext,"picture","Pic");
+	displayElementObj($person, $personNext,"partner","P");
+
+	displayElementObj($person, $personNext,"phone","P");
+	displayElementObj($person, $personNext,"mobil","M");
+	displayElementObj($person, $personNext,"email","E");
+	displayElementObj($person, $personNext,"homepage","W");
+	displayElementObj($person, $personNext,"skype","S");
+	displayElementObj($person, $personNext,"twitter","T");
+	displayElementObj($person, $personNext,"facebook","F");
+
+	displayElementObj($person, $personNext,"geolat","XY");
+	displayElementObj($person, $personNext,"country","C");
+	displayElementObj($person, $personNext,"zipcode","Z");
+	displayElementObj($person, $personNext,"place","P");
+	displayElementObj($person, $personNext,"address","A");
+
+	displayElementObj($person, $personNext,"education","O");
+	displayElementObj($person, $personNext,"employer","E");
+	displayElementObj($person, $personNext,"function","F");
+	displayElementObj($person, $personNext,"children","K");
+	displayElementObj($person, $personNext,"cv","CV");
+	displayElementObj($person, $personNext,"story","S");
+	displayElementObj($person, $personNext,"aboutMe","Me");
+	
+	displayElementObj($person, $personNext,"user","U");
+	displayElementObj($person, $personNext,"passw","P");
+	displayElementObj($person, $personNext,"classID","C");
+	displayElementObj($person, $personNext,"isTeacher","T");
+	
 }
 
 function displayClass($db,$class,$classNext) {
 	displayChangeData($db,$class);
-	displayElement($class["schoolID"], $classNext["schoolID"]);
-	displayElement($class["name"], $classNext["name"]);
-	displayElement($class["graduationYear"], $classNext["graduationYear"]);
+	displayElementObj($class, $classNext, "schoolID");
+	displayElementObj($class, $classNext, "name");
+	displayElementObj($class, $classNext, "graduationYear");
 	displayElement(getPersonName($db->getPersonByID($class["headTeacherID"])), getPersonName($db->getPersonByID($classNext["headTeacherID"])));
 }
 
 function displayPicture($db,$picture,$pictureNext) {
 	displayChangeData($db,$picture);
-	displayElement($picture["title"], $pictureNext["title"]);
-	displayElement($picture["comment"], $pictureNext["comment"]);
-	displayElement($picture["isVisibleForAll"], $pictureNext["isVisibleForAll"]);
-	displayElement($picture["isDeleted"], $pictureNext["isDeleted"]);
+	displayElementObj($picture, $pictureNext, "title");
+	displayElementObj($picture, $pictureNext, "comment");
+	displayElementObj($picture, $pictureNext, "isVisibleForAll");
+	displayElementObj($picture, $pictureNext, "isDeleted");
 }
 
 
@@ -109,13 +136,21 @@ function displayChangeData($db,$item) {
 	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td><?php
 }
 
-function displayElement($text,$nextText) {
-	if (!strcmp(trim($text),trim($nextText))) {
+function displayElement($text,$nextText,$title=null,$field="") {
+	if (trim($text)===trim($nextText)) {
 		$style='style="background-color:white"';
 	} else {
 		$style='style="background-color:yellow"';
 	}
-	echo('<td '.$style.'>'.$text.'</td>');
+	if (null==$title) {
+		echo('<td '.$style.'>'.$text.'</td>');
+	} else {
+		echo('<td title="'.$field.':'.$text.'"'.$style.'>'.$title.'</td>');
+	}
+}
+
+function displayElementObj($text,$nextText,$field,$title=null) {
+	displayElement($text[$field], $nextText[$field],$title,$field);
 }
 
 function json_decode_utf8($json) {

@@ -287,7 +287,7 @@ if ($delVote>=0 && $edit) {
 			  <?php foreach ($votersList as $voter) {
 			     	if (trim($voter["firstname"])!="" && intval($voter["count"])>0) { ?>
 			     		<tr>
-			     			<td><img src="images/<?php echo $voter["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" /></td>
+			     			<td><img src="images/<?php echo $voter["picture"] ?>" class="diak_image_sicon" style="margin:2px;"/></td>
 			     			<td><?php echo $voter["lastname"]." ".$voter["firstname"]?></td>
 			     			<td>&nbsp;</td>
 			     			<td style="padding-left:15px;"><?php echo $voter["count"]?></td>

@@ -112,16 +112,12 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
 				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 			} else {
-				if($diak["id"]!=-1) {
-					$oldDiakEntry=$db->getPersonByID($diak["id"]);
-				}
 				$personid = $db->savePerson($diak);
 				setAktUserId($personid);	//save actual person in case of tab changes
 				if ($personid>=0) {
 					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
 					$db->saveRequest(changeType::personchange);
 					if (!userIsAdmin()) {
-						sendHtmlMail(null, "Person is changed id:".$diak["id"].'<br/><br/>Entry<br/><br/>'.json_encode($diak), " Person is changed");
 						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 					}
 					

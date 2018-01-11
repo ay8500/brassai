@@ -7,13 +7,23 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 		$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
 	}
 	//Set the RIP value
-	strstr($d["role"],"rip")!=""?$rip="rip":$rip=""
+	strstr($d["role"],"rip")!=""?$rstyle="rip":$rstyle="";
+	//mini icon
+	if ($person["picture"]=='avatar.jpg')
+		$rstyle.=' diak_image_sicon';
+	else 
+		$rstyle.=' diak_image_medium';
 	?>
 	<div class="element">
 		<div style="display: inline-block; width:160px;">
-			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>">
-				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="diak_image_medium <?php echo $rip?>" />
+			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
+				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
 			</a>
+			<?php  if (userIsAdmin()) {?>
+			<a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">
+				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$d["id"]))?></span>
+			</a>
+			<?php } ?>
 		</div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			<h4><?php echo getPersonName($d);?></h4>
@@ -112,7 +122,7 @@ function displayPicture($db,$picture,$showSchool=false) {
 		$type="person";
 		$typeid=$picture[$type."ID"];
 		$picturePerson=$db->getPersonByID($typeid);
-		$typeText="Személyes kép: ".$person["lastname"]." ".$person["firstname"];
+		$typeText="Személyes kép: ".getPersonName($picturePerson);
 	}
 	
 	?>
