@@ -64,11 +64,19 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 	}
 }
 
-if (isset($_GET["action"]) && ($_GET["action"]=="commentMessage")) {
-	if ($db->saveMessageComment(getIntParam("id"),getGetParam("comment", ""))===true) {
+if (isset($_GET["action"]) && $_GET["action"]=="commentMessage" && userIsAdmin()) {
+	if ($db->saveMessageComment(getIntParam("id"),getParam("comment"))===true) {
 		$resultDBoperation='<div class="alert alert-success" > A beadott kommentár elküldése sikerült!</div>';
 	} else {
 		$resultDBoperation='<div class="alert alert-warning" > A beadott kommentár kimentése nem sikerült!</div>';
+	}
+}
+
+if (isset($_GET["action"]) && $_GET["action"]=="setPersonID" && userIsAdmin()) {
+	if ($db->saveMessagePersonID(getIntParam("id"),getParam("personid"))===true) {
+		$resultDBoperation='<div class="alert alert-success" > Személy cserérés sikerült!</div>';
+	} else {
+		$resultDBoperation='<div class="alert alert-warning" > Személy csrélés nem sikerült!</div>';
 	}
 }
 ?>

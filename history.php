@@ -156,6 +156,7 @@ function displayElementObj($text,$nextText,$field,$title=null) {
 
 function json_decode_utf8($json) {
 	if(null!=$json) {
+		$json = str_replace('null','""', $json);
 		$jsonArray =explode('","',substr($json,2,-1));
 		
 		$js=array();

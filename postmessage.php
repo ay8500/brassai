@@ -41,6 +41,12 @@ function readMessageList($elements) {
 			} else {
 				$ret .= "Anonim felhasználó" ;
 			}
+			if (userIsAdmin()) {
+				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'">';
+				$ret .= ' Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;">';
+				$ret .= ' <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>';
+				$ret .= '</form></span>';
+			}
 			$ret .= '</div>'; 
 			$ret .= '<div style="margin:10px">';
 				$ret .= '<div class="message_text">'.html_entity_decode($message["text"]).'</div>';

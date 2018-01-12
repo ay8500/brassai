@@ -51,6 +51,30 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 <div class="sub_title">Újdonságok</div>
 <div class="container-fluid">
 	<div class="panel panel-default col-sm-12" style="margin-right:10px;">
+
+		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
+			<h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb véndiákok</h4>
+		</div>
+		<div class="panel-body">
+		<?php 
+		$bests=$db->getPersonChangeBest();
+		foreach ($bests as $uid=>$count) {
+			if ($count>=10) {
+				$person=$db->getPersonByID($uid);
+				?>
+				<div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
+					<span style="width: 36px;display: inline-block;"><img src="images/<?php echo $person["picture"] ?>" class="diak_image_sicon" style="margin:2px;"/></span>
+					<span style="width: 146px;display: inline-block;"><?php echo $person["lastname"]." ".$person["firstname"]?></span>
+	   				<span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
+	   			</div>
+			<?php
+			}
+		}
+		?>
+		<div>Pontok:  Képek=5, új személy=3, személy módosítás=1 (Pontokat csak bejelentkezett véndiákok kaphatnak)</div>
+	</div>
+				
+
 		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
 			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, frissitések </h4>
 		</div>
@@ -103,4 +127,15 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 	<?php  include ("homefooter.php");?>
 	<script type="text/javascript" src="js/wrapper.js"></script>
 
+
 <?php } ?>
+<?php 
+function sortBests($a,$b) {
+	if (intval($a)<intval($b))
+		return 1;
+	elseif (intval($a)>intval($b))
+		return -1;
+	else
+		return 0;
+}
+?>
