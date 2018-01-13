@@ -3,6 +3,9 @@
 	include_once("config.php");
 	include_once("logon.php");
 	include_once("data.php");
+
+	$db = new dbDAO;
+	
 	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
@@ -13,11 +16,8 @@
 			$class=$db->getClassById(getGetParam("classid", ""));
 		setAktClass($class["id"]);
 	}
-	
-	$db = new dbDAO;
-	
-	
 ?>
+
 <!DOCTYPE html>
 <html lang="hu">
   <head>
@@ -39,7 +39,7 @@
 	<?PHP } else { ?>
 		<meta name="description" content="<?PHP echo($SiteTitle) ?>" />
 	<?PHP } ?>
-	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás" />
+	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />
 	
 	<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -134,36 +134,11 @@
 						<li><a href="editclass.php?classid=<?php echo getAktClassId();?>">Osztályinformációk</a></li>
 					</ul>
 	      		</li>
-	      	<?php } ?>
-			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Osztályok<b class="caret"></b></a>
-			  	<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:430?>px;columns:3; list-style-position: inside;">
-		  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
-			  	<?php
-			  		$classes = $db->getClassList();
-			  		foreach($classes as $cclass) {
-			  			if ($cclass["id"]>0) {
-				  			if (getAktClassId()==$cclass["id"]) 
-				  				$aktualClass="actual_class_in_menu";
-				  			else 
-				  				$aktualClass="";
-				  			?>
-				  			<li>
-				  				<a style="display: inline-block;" class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($cclass["id"]);?>">
-				  					<?php echo($cclass["text"]); ?>
-				  				</a>
-			  					<?php $stat=$db->getClassStatistics($cclass["id"]);?>
-				  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
-				  				<?php if (userIsAdmin()) {?>
-					  				<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
-				  				<?php }?>
-				  			</li>
-			  		<?php }
-			  		}
-			  	?>
-		  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
-			  	</ul>
-			</li>
+	      	<?php }
+	      	$classes = $db->getClassList();
+	      	showClassList($db,$classes,0,"Osztályok");
+	      	showClassList($db,$classes,1,"Estisek");
+	      	?>
 			<li>
 				<a href="message.php">Ünzenőfal</a>
 			</li>
@@ -240,3 +215,36 @@
 	}
 	
 </script>
+
+<?php 
+
+function showClassList($db,$classes,$eveningClass,$menuText) { ?>
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $menuText?><b class="caret"></b></a>
+		<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:430?>px;columns:3; list-style-position: inside;">
+			<li><a href="editclass.php?action=newclass">Új osztály</a></li>
+			<?php
+			foreach($classes as $cclass) {
+				if ($cclass["id"]>0 && $eveningClass==$cclass["eveningClass"]) {
+					if (getAktClassId()==$cclass["id"])
+						$aktualClass="actual_class_in_menu";
+					else
+						$aktualClass="";
+					?>
+		  			<li>
+		  				<a style="display: inline-block;" class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($cclass["id"]);?>">
+		  					<?php echo($cclass["text"]); ?>
+		  				</a>
+	  					<?php $stat=$db->getClassStatistics($cclass["id"]);?>
+		  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
+		  				<?php if (userIsAdmin()) {?>
+			  				<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
+		  				<?php }?>
+		  			</li>
+		  		<?php }
+		  		}
+		  	?>
+	  		<li><a href="editclass.php?action=newclass">Új osztály</a></li>
+	  	</ul>
+	</li>
+<?php }?>

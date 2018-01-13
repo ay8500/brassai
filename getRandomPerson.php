@@ -21,6 +21,7 @@ $person["name"]=$p["lastname"]." ".$p["firstname"];
 $person["id"]=$p["id"];
 $person["classID"]=$p["classID"];
 $person["classText"]=$p["classText"];
+$person["classText"].=(intval($p["classEvening"])==0)?"":" esti tagozat";
 $person["image"]=$p["picture"];
 if (isset($p["education"]) && showField($p,"education")) 
 	$person["education"]=getFieldValue($p,"education");
@@ -63,6 +64,7 @@ function getRandomPerson() {
 	$p=$db->getPersonByID($idrow["id"]);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
+	$p["classEvening"]=$class["eveningClass"];
 	
 	return $p;
 }

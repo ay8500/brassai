@@ -29,8 +29,11 @@ function getAktClassName() {
 	if ($class!=null) {
 		if ($class["id"]==0)
 			return "";
-		else
-			return $class["text"];
+		else {
+			$ret= str_replace(" ", "&nbsp;", $class["text"]);
+			$ret.= (intval($class["eveningClass"])==0)?"":"&nbsp;esti&nbsp;tagozat";
+			return $ret;
+		}
 	}
 	return "";
 }

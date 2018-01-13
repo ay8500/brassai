@@ -32,13 +32,15 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 					<h5>Tanár</h5>
 				<?php } else { 
 					$diakClass=$db->getClassById($d["classID"]);
+					$classText = $diakClass["text"];
+					$classText.= (intval($diakClass["eveningClass"])==0)?"":" esti tagozat"; 
 					if (isPersonGuest($d)==1) {
 						if ($d["classID"]!=0) 
-							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$diakClass["text"].'</a></h5>';
+							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
-							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$diakClass["text"].'</a></h5>';
+							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 					} else {
-						echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$diakClass["text"].'</a></h5>';
+						echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 					}
 				} ?>
 			<?php } ?>

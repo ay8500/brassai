@@ -13,6 +13,7 @@ if ($classid>=0) {
 	if ($action=="deleteclass" && $personCount==0 && userIsAdmin()) {
 		if ($db->deleteClass($classid)) {
 			$resultDBoperation='<div class="alert alert-success">Új osztály sikeresen törölve!</div>';
+			$classid=-1;
 		} else {
 			$resultDBoperation='<div class="alert alert-warning">Új osztály törlése sikertelen!</div>';
 		}
@@ -27,6 +28,7 @@ if ($action=="saveclass") {
 		$classid=$db->saveClass([
 				"id"=>$classid,
 				"schoolID"=>1,
+				"eveningClass"=>getIntParam("eveningClass",0),
 				"graduationYear"=>getParam("year"),
 				"name"=>getParam("class"),
 				"text"=>getParam("year")." ".getParam("class"),
@@ -35,6 +37,7 @@ if ($action=="saveclass") {
 		if ($classid>=0 ) {
 			$resultDBoperation='<div class="alert alert-success">Osztály sikeresen kimentve!</div>';
 			setAktClass($classid);
+			$class=$db->getClassById($classid);
 		} else {
 			$resultDBoperation='<div class="alert alert-warning">Osztály kimentése sikertelen!</div>';
 		}
@@ -61,6 +64,13 @@ include("homemenu.php");
 				<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
 			</select>
 		</div>
+		<div class="input-group " style="margin-bottom: 25px;">
+			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>	      		
+			<select class="form-control" id="eveningClass">
+				<option value="0" <?php echo $class["eveningClass"]==0?"selected":""?>>nappali tagozat</option>
+				<option value="1" <?php echo $class["eveningClass"]==1?"selected":""?>>esti tagozat</option>
+			</select>
+		</div>
 		<div class="input-group" style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" disabled id="selectYear">
@@ -80,6 +90,13 @@ include("homemenu.php");
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
 				<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
 				<option value="2">Hiányzik a te iskolád, akkor küdj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
+			</select>
+		</div>
+		<div class="input-group " style="margin-bottom: 25px;">
+			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>	      		
+			<select class="form-control"  id="eveningClass">
+				<option value="0">nappali tagozat</option>
+				<option value="1">esti tagozat</option>
 			</select>
 		</div>
 		<div class="input-group" style="margin-bottom: 25px;">
@@ -203,11 +220,11 @@ include_once 'homefooter.php';
 	}
 
 	function saveClass() {
-	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'&teacher='+$("#selectTeacher").val()+"&classid=<?php echo $classid?>";
+	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'&teacher='+$("#selectTeacher").val()+'&eveningClass='+$("#eveningClass").val()+"&classid=<?php echo $classid?>";
 	}
 
 	function saveNewClass() {
-	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'&teacher='+$("#selectTeacher").val();
+	    document.location='editclass.php?action=saveclass&year='+$("#selectYear").val()+'&class='+$("#selectClass").val()+'&teacher='+$("#selectTeacher").val()+'&eveningClass='+$("#eveningClass").val();
 	}
 	
 	function deleteClass() {

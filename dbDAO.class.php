@@ -326,12 +326,16 @@ class dbDAO {
 		return $ret;
 	}
 	
+	/**
+	 * search for persons using one word name
+	 * @param string $name
+	 */
 	private function searchForPersonOneString($name) {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
 			
-			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person left join  class on class.id=person.classID where ";  
+			$sql="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person left join  class on class.id=person.classID where ";  
 			$sql .=" (classID != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is null";
 			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
@@ -372,7 +376,7 @@ class dbDAO {
 	 * @param boolean withoutFacebookId default false
 	 */
 	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false) {
-		if (null!=$classId) {
+		if ($classId>=0) {
 			$where ="classID=".$classId;
 			$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 			if($guest)
@@ -1100,6 +1104,9 @@ class dbDAO {
 	}
 	
 	
+	/**
+	 * get the list of best users including the score
+	 */
 	public function getPersonChangeBest() {
 		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID limit 20";
 		$this->dataBase->query($sql);
@@ -1110,7 +1117,7 @@ class dbDAO {
 				$r1[$s["uid"]]=$s["count"];
 			}
 		} 
-		$ret = $this->mergeBestArray(array(),$r1,2);
+		$ret = $this->mergeBestArray(array(),$r1,1);
 
 		$sql="select count(1) as count, changeUserID as uid from person where changeUserID !=0 group by  changeUserID limit 20";
 		$this->dataBase->query($sql);
@@ -1121,7 +1128,7 @@ class dbDAO {
 				$r2[$s["uid"]]=$s["count"];
 			}
 		} 
-		$ret = $this->mergeBestArray(array(),$r2,2);
+		$ret = $this->mergeBestArray(array(),$r2,3);
 		
 		$sql="select count(1) as count, changeUserID as uid from picture where changeUserID !=0 group by  changeUserID limit 20";
 		$this->dataBase->query($sql);
