@@ -82,6 +82,7 @@
         			<li><a href="picture.php?type=schoolID&typeid=1">Iskola képek</a></li>
         			<li><a href="picture.php?type=tablo&typeid=tablo">Iskola tablói</a></li>
         			<li><a href="worldmap.php?classid=0">Térkép</a></li>
+        			<li><a href="statistics.php">Statisztika</a></li>
         			<li><a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
        			</ul>
       		</li>

@@ -28,7 +28,7 @@
 	<?php //Save button?>
 	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="document.forms['edit_form'].submit();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
+			<button id="saveButton" onclick="document.forms['edit_form'].submit();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
 		</div>
 	<?php } ?>
 	
@@ -44,6 +44,7 @@
 	
 	<?php if (($edit || $createNewPerson) && !$anonymousEditor ) {
 		$optionClasses=$db->getClassList(getAktSchoolId());
+		unset($optionClasses[0]); //The first class is the teachers list
 	?>
 		<div style="min-height:30px" class="input-group">
       		<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
@@ -56,16 +57,21 @@
 			<select class="form-control">
 				<option>Brassai Sámuel líceum</option>
 			</select>
-   		</div>	
+   		</div>
+   		<?php if (getAktClassId()!=0) {?>	
    		<div style="min-height:30px" class="input-group">
       		<span style="min-width:110px;" class="input-group-addon" >Osztály</span>
       		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-			<select class="form-control" name="classID">
+			<select class="form-control" name="classID" id="classID">
+				<option value="-1" >...válassz...</option>
 				<?php foreach ($optionClasses as $optionClass) {?>
 					<option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
 				<?php } ?>
 			</select>
    		</div>	
+   		<?php } else {?>
+   			<input type="hidden" name="classID" value="0" />
+   		<?php } ?>
    	<?php } ?>
    	
    	
@@ -160,7 +166,7 @@
 			$(button).addClass("disabled");
 		}
 	} 
-	
+
 	function validateEmail(mail) {
 		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(mail);

@@ -109,6 +109,8 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			if (checkUserEmailExists($diak["id"],$diak["email"])) {
 				$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
 				//Validate the mail address if no admin logged on
+			} elseif ((isset($diak["classID"]) && $diak["classID"]==="-1") || !isset($diak["classID"])) {
+				$resultDBoperation='<div class="alert alert-warning">Osztály nincs kiválasztva!</div>';
 			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
 				$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
 			} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
@@ -117,8 +119,9 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 			} else {
 				$personid = $db->savePerson($diak);
-				setAktUserId($personid);	//save actual person in case of tab changes
 				if ($personid>=0) {
+					setAktUserId($personid);		//set actual person in case of tab changes
+					setAktClass($diak["classID"]);	//set actual class in case of class changes
 					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
 					$db->saveRequest(changeType::personchange);
 					if (!userIsAdmin()) {

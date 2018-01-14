@@ -43,7 +43,7 @@ function getClassName($class,$short=false) {
 			else {
 				$ret= str_replace(" ", "&nbsp;", $class["text"]);
 				if (!$short) {
-					$ret.= (intval($class["eveningClass"])==0)?"":"&nbsp;esti&nbsp;tagozat";
+					$ret.= (intval($class["eveningClass"])==0)?"":"&nbsp;tagozat";
 				}
 				return $ret;
 			}

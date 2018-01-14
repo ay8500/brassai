@@ -611,8 +611,12 @@ class dbDAO {
 	/**
 	 * List of all not deleted pictures
 	 */
-	public function getPictureList() {
-		return   $this->getElementList("picture","isDeleted=0");
+	public function getPictureList($where=null) {
+		if (null==$where) {
+			return   $this->getElementList("picture","isDeleted=0");
+		} else {
+			return   $this->getElementList("picture","isDeleted=0 and ".$where);
+		}
 	}
 	
 	/**
@@ -1237,6 +1241,10 @@ class dbDAO {
 			return 0;
 		else
 			return -1;
+	}
+	
+	public function getNameStatistics() {
+		;
 	}
 }
 ?>
