@@ -57,16 +57,16 @@ include("homemenu.php");
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
 	
-	<?php if ($classid>=0) {  //Edit an existing class?>
+	<?php if ($classid>=0 && !userIsAdmin()) {  //Edit an existing class?>
 		<div class="input-group " style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" disabled id="selectSchool">
-				<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
+				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
 			</select>
 		</div>
 		<div class="input-group " style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>	      		
-			<select class="form-control" id="eveningClass">
+			<select class="form-control" onchange="checkStatus()" id="eveningClass">
 				<option value="0" <?php echo $class["eveningClass"]==0?"selected":""?>>nappali tagozat</option>
 				<option value="1" <?php echo $class["eveningClass"]==1?"selected":""?>>esti tagozat</option>
 			</select>
@@ -88,15 +88,15 @@ include("homemenu.php");
 		<div class="input-group " style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
-				<option value="1">Brassai Sámuel Liceum: Kolozsvár</option>
+				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
 				<option value="2">Hiányzik a te iskolád, akkor küdj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
 			</select>
 		</div>
 		<div class="input-group " style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>	      		
-			<select class="form-control"  id="eveningClass">
-				<option value="0">nappali tagozat</option>
-				<option value="1">esti tagozat</option>
+			<select class="form-control" onchange="checkStatus()" id="eveningClass">
+				<option value="0" <?php echo (isset($class) && intval($class["eveningClass"])===0)?"selected":""?>>nappali tagozat</option>
+				<option value="1" <?php echo (isset($class) && intval($class["eveningClass"])===1)?"selected":""?>>esti tagozat</option>
 			</select>
 		</div>
 		<div class="input-group" style="margin-bottom: 25px;">
@@ -104,7 +104,7 @@ include("homemenu.php");
 			<select class="form-control" onchange="changeYear()" id="selectYear">
 				<option value="0">...válassz...</option>
 				<?php for($year=1950;$year<2018;$year++) {?>
-				<option value="<?php echo $year?>"><?php echo $year?></option>
+				<option value="<?php echo $year?>" <?php echo (isset($class) && intval($class["graduationYear"])===$year)?"selected":""?>><?php echo $year?></option>
 				<?php } ?>
 			</select>
 		</div>
@@ -113,11 +113,13 @@ include("homemenu.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztály</span>	      		
 			<select class="form-control" onchange="changeClass()" id="selectClass">
 				<option value="0">...válassz...</option>
+				<option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
+				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
 				<?php 
 					for($cl=10;$cl<14;$cl++) {
 						for($cs="A";$cs<"G";$cs++) {
 				?>
-					<option value="<?php echo $cl.$cs ?>"><?php echo $cl.$cs ?></option>
+					<option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option>
 				<?php } } ?>
 			</select>
 		</div>
@@ -181,6 +183,12 @@ include_once 'homefooter.php';
 		
 	function changeClass() {
 	    checkStatus();
+	    if ($("#selectClass").val()==='') {
+		    $("#eveningClass").val('0');
+	    }
+	    if ($("#selectClass").val()==='esti') {
+		    $("#eveningClass").val('1');
+	    }
 	}
 
 	function changeSchool() {

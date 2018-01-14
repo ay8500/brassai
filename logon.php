@@ -118,7 +118,6 @@ function writeLogonDiv() {
 				}, 3000);
 			}
 		});
-			
 	}
 
 	function lostlogon() {
@@ -139,12 +138,18 @@ function writeLogonDiv() {
 	    closeSearch();
 	    $("#uLogon").slideDown("slow");
 	    onResize(220);
+	    $(":input").keyup(function (e) {
+			if (e.which == 13) {
+				logon();
+			}
+		});
 	}
 
 	function closeLogin() {
 		$("#uLogon").slideUp("slow");
 		onResize(0);
 	}
+
 		
 </script>
 <?php } ?>

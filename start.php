@@ -59,7 +59,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		<?php 
 		$bests=$db->getPersonChangeBest();
 		foreach ($bests as $uid=>$count) {
-			if ($count>=10) {
+			if ($count>=1) {
 				$person=$db->getPersonByID($uid);
 				?>
 				<div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">

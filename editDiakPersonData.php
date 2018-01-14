@@ -40,16 +40,35 @@
 	<?php } ?>
 	
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
+<form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
 	
-	<?php if (($edit || $createNewPerson) && !$anonymousEditor ) { ?>
+	<?php if (($edit || $createNewPerson) && !$anonymousEditor ) {
+		$optionClasses=$db->getClassList(getAktSchoolId());
+	?>
 		<div style="min-height:30px" class="input-group">
       		<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
       		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
 			<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />
+   		</div>
+   		<div style="min-height:30px" class="input-group">
+      		<span style="min-width:110px;" class="input-group-addon" >Iskola</span>
+      		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+			<select class="form-control">
+				<option>Brassai Sámuel líceum</option>
+			</select>
+   		</div>	
+   		<div style="min-height:30px" class="input-group">
+      		<span style="min-width:110px;" class="input-group-addon" >Osztály</span>
+      		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+			<select class="form-control" name="classID">
+				<?php foreach ($optionClasses as $optionClass) {?>
+					<option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
+				<?php } ?>
+			</select>
    		</div>	
    	<?php } ?>
    	
-<form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
+   	
 	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
 	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
 		<div class="input-group">
@@ -68,10 +87,6 @@
 	      		<?php   
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
 	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-	      		if ($dataFieldNames[$i]=="classID") {
-	      			$class=$db->getClassById(getFieldValueNull($diak,$dataFieldNames[$i]));
-	      			echo('<span class="input-group-addon"><span class="">'.$class["text"].'</span></span>');
-	      		}
 	      		if ($dataFieldNames[$i]=="changeUserID") {
 	      			$person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
 	      			echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');

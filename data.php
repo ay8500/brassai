@@ -21,19 +21,32 @@ function getAktClassFolder() {
 }
 
 /**
- * The name of the aktual persons class
+ * The name of the aktual school class
+ * @param boolean $short short form without evening class text
+ * @return string
  */
-function getAktClassName() {
-	global $db;
+function getAktClassName($short=false) {
 	$class=getAktClass();
+	return getClassName($class,$short);
+}
+
+
+/**
+ * The name of the school class 
+ * @param boolean $short short form without evening class text
+ * @return string
+ */
+function getClassName($class,$short=false) {
 	if ($class!=null) {
 		if ($class["id"]==0)
 			return "";
-		else {
-			$ret= str_replace(" ", "&nbsp;", $class["text"]);
-			$ret.= (intval($class["eveningClass"])==0)?"":"&nbsp;esti&nbsp;tagozat";
-			return $ret;
-		}
+			else {
+				$ret= str_replace(" ", "&nbsp;", $class["text"]);
+				if (!$short) {
+					$ret.= (intval($class["eveningClass"])==0)?"":"&nbsp;esti&nbsp;tagozat";
+				}
+				return $ret;
+			}
 	}
 	return "";
 }

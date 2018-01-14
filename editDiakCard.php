@@ -167,7 +167,7 @@ function displayClass($db,$d,$showDate=false) {
 		<?php } ?>
 		<br/>
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-			<b><?php echo $d["text"];?></b><br/>
+			<a href="hometable.php?classid=<?php echo $d["id"]?>"><b><?php echo getClassName($d);?></b></a><br/>
 			Osztályfőnök: <a href="editDiak.php?uid=<?php echo $d["headTeacherID"]?>" ><?php echo $d["tlname"]." ".$d["tfname"]?></a> <br/>
 			<?php if ($showDate) {?>
 				Módosítva: <a href="editDiak.php?uid=<?php echo $d["changeUserID"]?>" ><?php echo $d["clname"]." ".$d["cfname"]?></a> <br/>

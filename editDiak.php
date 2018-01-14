@@ -74,11 +74,11 @@ if (true) { //Communication
 	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,false);
 }
 if (userIsAdmin()) { //only for admin
-	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID","classID");
-	array_push($dataItemProp,"","","","","","","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","IP","Dátum","User","changeForID","OsztályID");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
+	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID");
+	array_push($dataItemProp,"","","","","","","","","","","");
+	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","IP","Dátum","User","changeForID");
+	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false);
 }
 if ((isset($classId) && $classId==0) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
 	$dataFieldCaption[17]="Tantárgy";
@@ -100,6 +100,10 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				//save the fields in the person array
 				if (isset($_GET[$dataFieldNames[$i]]))
 					$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
+			}
+			//ClassID
+			if (isset($_GET["classID"])) {
+				$diak["classID"]=getParam("classID");
 			}
 			//No dublicate email address is allowed
 			if (checkUserEmailExists($diak["id"],$diak["email"])) {

@@ -87,7 +87,7 @@
       		</li>
       		<?php if (getAktClassId()>0 || userIsAdmin()) {?>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName());?><b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName(true));?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">
 						<li><a href="hometable.php?classid=<?php echo getAktClassId(); ?>">Véndiákok</a></li>
 						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClassId(); ?>">Vendégek és barátok</a></li>
@@ -221,7 +221,7 @@
 function showClassList($db,$classes,$eveningClass,$menuText) { ?>
 	<li class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $menuText?><b class="caret"></b></a>
-		<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:430?>px;columns:3; list-style-position: inside;">
+		<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:440?>px;columns:3; list-style-position: inside;">
 			<li><a href="editclass.php?action=newclass">Új osztály</a></li>
 			<?php
 			foreach($classes as $cclass) {
