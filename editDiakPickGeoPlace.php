@@ -47,7 +47,7 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 	</div>
 	<div class="input-group input-group-sl">
 		<span style="min-width:110px; text-align:right" class="input-group-addon" >Cím</span>
-		<input type="text" id="addres" value="Kolozsvár, Brassai" onKeyPress="if (window.event.keyCode == 13) {doSearch();}	" class="form-control"/>
+		<input type="text" id="addres" placeholder="Kolozsvár, Brassai" value="<?php echo $diak["place"].' '.$diak["address"]?>" onKeyPress="if (window.event.keyCode == 13) {doSearch();}	" class="form-control"/>
 		<div class="input-group-btn">
 			<input class="btn btn-default" type="button" value="Keres" onclick="doSearch();return true;"/><br />
 		</div>

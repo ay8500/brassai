@@ -48,7 +48,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 			<?php 
 				if ($d["isTeacher"]==0) {
 					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
-					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".$d["education"]."</div></div>";
+					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d["education"])."</div></div>";
 					if(showField($d,"employer")) 	{
 						$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "",	getFieldValue($d["employer"]));
 						echo "<div><div>Munkahely:</div><div>".$fieldString ."</div></div>";

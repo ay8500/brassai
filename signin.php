@@ -116,7 +116,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">Ballagási év</span>
 					<select id="year" name="year" size="1" class="form-control" onchange="showPersons()">
 						<option value="0">...válassz!...</option>
-						<?php for ($i=2010;$i>1940;$i--) {
+						<?php for ($i=date("Y");$i>date("Y")-80;$i--) {
 							if (getParam("year", "")==$i) $selected="selected"; else $selected="";
 							echo('<option '.$selected.' value="'.$i.'">'.$i.'</option>');
 						} ?>
