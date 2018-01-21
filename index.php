@@ -66,4 +66,4 @@ include("homemenu.php");
 	</div>
 </div>
 <?php  include ("homefooter.php");?>
-<script type="text/javascript" src="js/wrapper.js?v=16022018a"></script>
+<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>

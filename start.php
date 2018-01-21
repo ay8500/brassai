@@ -125,7 +125,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 	</div>
 	<div id="wrapper"></div>
 	<?php  include ("homefooter.php");?>
-	<script type="text/javascript" src="js/wrapper.js"></script>
+	<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>
 
 
 <?php } ?>

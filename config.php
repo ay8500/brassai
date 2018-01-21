@@ -6,6 +6,8 @@ setLoggerType(loggerType::file);
 if (!isset($SiteTitle))
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndiakjai";
 
+$webAppVersion="20180121";
+
 $SupportedLang = array("hu"); //First language ist the default language
 
 // Set languge include file
