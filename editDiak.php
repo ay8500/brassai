@@ -281,7 +281,7 @@ if (getAktClassId()==0 && !userIsAdmin()) {
 } else if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) { 
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 } else {
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Térkép");
 }
 if ($action=="newperson") { 
 	$tabsCaption=Array("Új diák adatai");

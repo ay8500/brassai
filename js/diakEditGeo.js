@@ -16,8 +16,10 @@ function initialize() {
         map.setCenter(center, 10);
 
         marker = new GMarker(center, {draggable: true});
+        if(null!=document.geo) {
 		document.geo.geolat.value=center.lat();
 		document.geo.geolng.value=center.lng();
+        }
 
         GEvent.addListener(marker, "dragstart", function() {
           map.closeInfoWindow();

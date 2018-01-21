@@ -1,15 +1,12 @@
 <?php
-if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
-
+if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 	//Save geo data
 	if (getParam("action","")=="changegeo" && userIsLoggedOn()) {
 	
 		$geolat=getGetParam("geolat", "46.7719");
 		$geolng=getGetParam("geolng", "23.5923");
 	
-		$r1 = $db->savePersonField($diak["id"], "geolat", $geolat);
-		$r2 = $db->savePersonField($diak["id"], "geolng", $geolng);
-		if ($r1>=0 && $r2>=0) {
+		if ($db->savePersonGeolocation($diak["id"],$geolat,$geolng)>=0) {
 			if (!userIsAdmin())
 				saveLogInInfo("SaveGeo",$diak["id"],$diak["user"],"",true);
 			$resultDBoperation='<div class="alert alert-success">Geokoordináták sikeresen módósítva!</div>';
@@ -19,6 +16,16 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 			$resultDBoperation='<div class="alert alert-warning">Geokoordináták módósítása nem sikerült!</div>';
 		}
 	}
+}
+if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==getLoggedInUserClassId()) ) {
+	$xrandom=0;
+	$yrandom=0;
+} else {
+	srand(levenshtein("123.34.56.011", $_SERVER["REMOTE_ADDR"]));
+	$xrandom=rand(-5,5)/100;
+	$yrandom=rand(-5,5)/100;
+}
+
 ?>	
 	<script language="JavaScript" type="text/javascript">
 		var diak='<b><?php echo $diak["lastname"]." ".$diak["firstname"]?></b><br />';
@@ -26,18 +33,24 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		diak +='<?php echo( getFieldValue($diak["zipcode"]));?>';
 		diak +='<?php echo( getFieldValue($diak["place"]))?><br />';
 		<?php if ($diak["geolat"]!="") {?>
-			var centerx = '<?php echo $diak["geolat"]?>'; 
-			var centery = '<?php echo $diak["geolng"]?>';
+				var centerx = '<?php echo $diak["geolat"]+$xrandom?>'; 
+				var centery = '<?php echo $diak["geolng"]+$yrandom?>';
 		<?php } else {?>
 			var centerx =46.771919; 
 			var centery = 23.592248;
 		<?php } ?>
 	</script>
-	
+
+<?php if (!(userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser())) { ?>	
+	<div  class="panel panel-default" style="display: block;">
+		<div class="panel-heading">A pontos lakhelyet csak bejelentkezett osztálytársak látják pontosan.</div>
+	</div>
+<?php } ?>	
 	
 	<div id="map_canvas" style="width: 100%x; height: 400px;"></div>
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
+<?php if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>	
 	<div  class="panel panel-default" style="display: block;">
 		<div class="panel-heading"><b>Jelöld meg a térképen a lakhelyedet.</b> Ezt a poziciót csak az osztálytársak látják pontosan.</div>
 	</div>
@@ -69,6 +82,4 @@ if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 			</div>
 		</div>
 	</form>
-<?php } else {	?>
-	<div class="resultDBoperation" ><div class="alert alert-warning">Hozzáférésí jog hiánzik!</div></div>
-<?php }?>	
+<?php }?>

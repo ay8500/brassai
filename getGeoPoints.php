@@ -23,10 +23,11 @@ foreach ($classList as $class) {
 		if (!isPersonGuest($d)) {
 			if ($d["geolat"]!="" && $d["geolng"]!="" && $d["geolat"]!=$dummy["geolat"] && $d["geolng"]!=$dummy["geolng"]) {
 				
-				if ( userIsLoggedOn() ) {
+				if ( userIsLoggedOn() && getAktClassId()==getLoggedInUserClassId()) {
 					$xrandom=0;
 					$yrandom=0;
 				} else {
+					srand(levenshtein("123.34.56.011", $_SERVER["REMOTE_ADDR"]));
 					$xrandom=rand(-5,5)/100;
 					$yrandom=rand(-5,5)/100;
 				}

@@ -209,6 +209,14 @@ class dbDAO {
 		$this->createHistoryEntry("person",$id);
 		$this->dataBase->update("person", [["field"=>"facebookid","type"=>"s","value"=>$facebookId]],"id",$id);	
 	}
+
+	public function savePersonGeolocation($id,$lat,$lng) {
+		if (!userIsAdmin()) {
+			$this->createHistoryEntry("person",$id);
+		}
+		$this->dataBase->update("person", [["field"=>"geolat","type"=>"s","value"=>$lat],["field"=>"geolng","type"=>"s","value"=>$lng]],"id",$id);
+	}
+	
 	
 	/**
 	 * save changes on only one field 
