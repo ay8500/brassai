@@ -3,7 +3,7 @@
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<table style="width:90%" class="editpagetable">
 		<form action="editDiak.php" method="get">
-			<tr><td colspan="3"><p style="text-align:left" ><h3>Becenév módosítása</h3> A becenév minimum 6 karakter hosszú kell legyen. </p></td></tr>
+			<tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-user"></span> Becenév módosítása</h3> A becenév minimum 6 karakter hosszú kell legyen. </p></td></tr>
 			<tr><td class="caption1">Becenév</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="<?php  echo $diak["user"] ?>" /></td></tr>
 			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="btn btn-default" value="Új becenév!" title="Új becenév kimentése" /></td></tr>
 			<input type="hidden" value="changeuser" name="action" />
@@ -12,7 +12,7 @@
 		</form>
 		<tr><td colspan="3"><hr/> </td></tr>
 			<form action="editDiak.php" method="get">
-			<tr><td colspan="3"><p style="text-align:left"><h3>Jelszó módosítása</h3> A jelszó minimum 6 karakter hosszú kell legyen. </p></td></tr>
+			<tr><td colspan="3"><p style="text-align:left"><h3><span class="glyphicon glyphicon-sunglasses"></span> Jelszó módosítása</h3> A jelszó minimum 6 karakter hosszú kell legyen. </p></td></tr>
 			<tr><td class="caption1">Jelszó</td><td>&nbsp;</td>
 			<td>
 				<input type="password" xclass="form-control" name="newpwd1" value="" />

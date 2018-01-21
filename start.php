@@ -50,9 +50,9 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 ?>
 <div class="sub_title">Újdonságok</div>
 <div class="container-fluid">
-	<div class="panel panel-default col-sm-12" style="margin-right:10px;">
+	<div class="panel panel-default " >
 
-		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
+		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb véndiákok</h4>
 		</div>
 		<div class="panel-body">
@@ -75,7 +75,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 	</div>
 				
 
-		<div class="panel-heading" style="margin: 1px -13px -7px -13px;">
+		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, frissitések </h4>
 		</div>
 		<div class="panel-body">

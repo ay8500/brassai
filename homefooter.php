@@ -26,7 +26,7 @@
 		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
 		<script type="text/javascript" src="js/diakEditGeo.js"></script>
 	<?php endif?>
-	<?php if (isset($diakEditStorys)) :?>
+	<?php if (isset($loadTextareaEditor)) :?>
 		<script type="text/javascript" src="editor/trumbowyg.min.js"></script>
 		<script type="text/javascript" src="editor/langs/hu.min.js"></script>
 		<script >
@@ -35,7 +35,7 @@
 				fullscreenable: false,
 				closable: false,
 				lang: "hu",
-				btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists','|', 'horizontalRule'],
+				btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
 				removeformatPasted: true,
 				autogrow: true
 			});

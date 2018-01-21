@@ -1,4 +1,11 @@
 <?php 
+/**
+ * Display a person div including person picture class, education,ocupation,address and change date an user 
+ * @param object $db
+ * @param array $person
+ * @param bool $showClass
+ * @param bool $showDate
+ */
 function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	$d=$person;
 	if (userIsLoggedOn() || localhost()) {
@@ -10,30 +17,29 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	strstr($d["role"],"rip")!=""?$rstyle="rip":$rstyle="";
 	//mini icon
 	if ($person["picture"]=='avatar.jpg')
-		$rstyle.=' diak_image_sicon';
+		$rstyle.=' diak_image_empty';
 	else 
 		$rstyle.=' diak_image_medium';
 	?>
 	<div class="element">
-		<div style="display: inline-block; width:160px;">
+		<div style="display: inline-block; ">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
 				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
 			</a>
 			<?php  if (userIsAdmin()) {?>
-			<a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">
+			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$d["id"]))?></span>
 			</a>
-			<?php } ?>
+			<?php }?>
 		</div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-			<h4><?php echo getPersonName($d);?></h4>
+			<a href="<?php $personLink?>"><h4><?php echo getPersonName($d);?></h4></a>
 			<?php if($showClass) {?>
 				<?php if ($d["isTeacher"]==1) { ?>
 					<h5>Tanár</h5>
 				<?php } else { 
-					$diakClass=$db->getClassById($d["classID"]);
-					$classText = $diakClass["text"];
-					$classText.= (intval($diakClass["eveningClass"])==0)?"":" esti tagozat"; 
+					$diakClass = $db->getClassById($d["classID"]);
+					$classText = getClassName($diakClass); 
 					if (isPersonGuest($d)==1) {
 						if ($d["classID"]!=0) 
 							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';

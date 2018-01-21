@@ -15,13 +15,13 @@
 			logoutUser();
 			http_response_code(400);
 			$logOnMessage =getTextRes("LogInError")."<br />".getTextRes("LogInUserPassw");
-			echo($logOnMessage);
+			//echo($logOnMessage);
 		} else {
 			if (!checkRequesterIP(changeType::login)) {
 				logoutUser();
 				http_response_code(400);
 				$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInToManyErrors");
-				echo($logOnMessage);
+				//echo($logOnMessage);
 			} else {
 				if (!checkUserLogin($paramName,$paramPassw)) {
 					logoutUser();
@@ -29,11 +29,11 @@
 					$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
 					$db->saveRequest(changeType::login);
 					saveLogInInfo("Login","",$paramName,$paramPassw,"false");
-					echo($logOnMessage);
+					//echo($logOnMessage);
 				} else {
 					saveLogInInfo("Login",getLoggedInUserId(),"","","true");
 					$logOnMessage = "Ok";
-					echo($logOnMessage);
+					//echo($logOnMessage);
 				}
 			}
 		}
@@ -78,11 +78,11 @@ function writeLogonDiv() {
 		<input type="hidden" value="logon" name="action"/>
 		<div class="input-group input-group" style="margin: 3px;">
     		<span class="input-group-addon" style="width:30px" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
-    		<input type="text" class="form-control" id="loUser" placeholder="<?php echo getTextRes("LogInUser"); ?>">
+    		<input name="paramName" type="text" class="form-control" id="loUser" placeholder="<?php echo getTextRes("LogInUser"); ?>">
 		</div>
 		<div class="input-group input-group" style="margin: 3px;">
     		<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
-    		<input type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
+    		<input name="paramPassw" type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
 		</div>
 		<div style="text-align:center; margin: 3px">
 			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo getTextRes("LogIn"); ?></button>

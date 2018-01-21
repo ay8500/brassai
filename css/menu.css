@@ -1,21 +1,21 @@
 	body		{ line-height:normal;	}
 	form		{ display:inline;}
+	a			{ color:#101010}
 	.inline		{ display:inline;}
 	.inlineBox	{ display:table-cell;height:50px;padding-right:10px}
 	.left		{ float: left;}
-	.margin-def {margin:10px;}
-	.margin-hor {margin-left:10px;margin-right:10px;}
+	.margin-def { margin:10px;}
+	.margin-hor { margin-left:10px;margin-right:10px;}
 	#highlight 	{ background-color: #ffdddd;text-align:center}
 	.caption1   { font-weight: bold; text-align:right;}
 	.loginText 	{ text-align:left; font-size:12px; font-weight:bold}
-	.loginInput { text-align:left; font-size:10px;height:14px; }
+	.loginInput { text-align:left; font-size:10px;height:14px;}
 	.loginSubmit{ height:18px;font-size:10px;}
 	.loginError { text-align:left; font-size:10px; color:red}
 	.appltitle	{ text-align:center; font-size:20px;  font-family: sans-serif,arial}
-	.sub_title	{ text-align:center; font-size:16px;  font-family: sans-serif,arial; font-weight:bold;
-					margin-top:10px; margin-bottom: 25px;}
+	.sub_title	{ text-align:center; font-size:16px;  font-family: sans-serif,arial; font-weight:bold; margin-top:10px; margin-bottom: 25px;}
 	.content    { vertical-align:top;width:100%;height:600px;background-color:white;}
-	.pannel		{background-color:#eeeeee }
+	.pannel		{ background-color:#eeeeee}
 	
 	.editpagetable 	{margin:10px; border-style:none;border-collapse:collapse; }
 	
@@ -57,7 +57,7 @@
     .fields div div:first-child { font-weight: bold;width: 95px;text-align: right;float:left; }
     .fields div div:first-child + div {display:flow-root}
     .fields {vertical-align: text-top;}
-    .element{display: inline-block;display: inline-grid; overflow:hidden; background-color: #E5E9EA;  padding: 10px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
+    .element{width:500px;display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 10px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
     .rip {border-top-style: solid; border-width: 10px; border-color: black;}
     .diakCardIcons {border-top-style: solid;border-top-width: 1px;margin-top: 5px;border-top-color: darkgray;padding-top: 5px;}
 
@@ -91,9 +91,7 @@
 	z-index: -1;
 }
 
-#homelogo {
-	position: absolute;
-}
+#homelogo {	position: absolute;}
 
 /* Menu */
 	
@@ -173,15 +171,16 @@
 }
 
 .diak_image {
-	width:200px;
+	height:240px;
 	border-radius: 10px;
 	filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
 }
 
 
-.diak_image_medium {
-	width:150px;
+.diak_image_medium, .diak_image_empty {
+	max-height:240px;
+	max-width:155px;
 	border-radius: 5px;
 	margin-bottom:5px;
 	filter: grayscale(100%);
@@ -195,43 +194,34 @@
     -webkit-filter: grayscale(100%);
 }
 
-.diak_image_sicon {
-	height:20px;
-}
+.diak_image_sicon {	height:20px; }
+.diak_image_nsicon {	height:35px; }
 
 .diak_image:hover, .diak_image_medium:hover, .diak_image_icon:hover, .diak_image_sicon:hover {
 	filter: grayscale(0%);
     -webkit-filter: grayscale(0%);
 }
 
-
-.actual_class_in_menu {
-    background-color: beige;
-}
+.actual_class_in_menu {  background-color: beige; }
 
 /****************** Browser width dependent content ****************************/
 
 @media ( max-width : 400px) {
-	#o400 {
-		display: none;
-	}
+	#o400 {	display: none;}
 }
 
 @media ( max-width : 480px) {
-	#o480 {
-		display: none;
-	}
+	#o480 {	display: none;}
+	.diak_image_empty {	display: none;}
+	.element{width:100%; display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 5px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
+	.panel-body {padding:0px;}
 }
 
 @media ( max-width : 1024px) {
-	#o1024 {
-		display: none;
-	}
+	#o1024 {display: none;}
 }
 
 @media ( max-width : 1400px) {
-	#o1400 {
-		display: none;
-	}
+	#o1400 {display: none;}
 }
 

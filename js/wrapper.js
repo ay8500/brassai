@@ -47,7 +47,7 @@ function addWrapperDiv(id) {
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; width:160px;">';
         html +='<a href="editDiak.php?uid='+d.id+'" title="'+d.name+'">';
-        html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium ">';
+        html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" style="width:150px;border-radius: 5px;margin-bottom:5px;filter: grayscale(100%);-webkit-filter: grayscale(100%);">';
         html +='</a>';
         html +='</div>';
         html +='<div style="display: inline-block;max-width:50%;vertical-align: top;margin-bottom:10px;">';

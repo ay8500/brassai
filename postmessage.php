@@ -41,14 +41,8 @@ function readMessageList($elements) {
 			} else {
 				$ret .= "Anonim felhasználó" ;
 			}
-			if (userIsAdmin()) {
-				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'">';
-				$ret .= ' Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;">';
-				$ret .= ' <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>';
-				$ret .= '</form></span>';
-			}
 			$ret .= '</div>'; 
-			$ret .= '<div style="margin:10px">';
+			$ret .= '<div style="margin:10px 0px 10px 0px">';
 				$ret .= '<div class="message_text">'.html_entity_decode($message["text"]).'</div>';
 			if (isset($message["comment"]))
 				$ret .= '<br /><b>Kommentár: </b>'.html_entity_decode($message["comment"]);
@@ -61,10 +55,6 @@ function readMessageList($elements) {
 				$ret .= '<span class="cmessage message_class">Ezt az üzenetet csak az én osztálytársaim tekinthetik meg.</span>';
 			if ($message["privacy"]=="scool")
 				$ret .= '<span class="cmessage message_scool">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
-			//Show IP
-			if (userIsAdmin()) {
-				$ret .= '<span class="cmessage" >'.$message["changeIP"].'</span>';
-			}
 			//Delete button
 			if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
 				(isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
@@ -72,11 +62,16 @@ function readMessageList($elements) {
 				if ($message["isDeleted"]==0) {
 					$ret .= '<button class="btn btn-danger" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
 			}
+			$ret .= "\n";
 			if (userIsAdmin()) {
-				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'">';
-				$ret .= ' Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;">';
+				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'"/>';
+				$ret .= ' Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;"/>';
 				$ret .= ' <button class="btn btn-warning" name="action" value="commentMessage">Kiment</button>';
-				$ret .= '</form></span>';
+				$ret .= "</form></span>\n";
+				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'"/>';
+				$ret .= ' Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;" value="'.(isset($message["changeUserID"])?$message["changeUserID"]:'').'"/>';
+				$ret .= ' <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>';
+				$ret .= "</form></span>\n\n";
 			}
 			$ret .= '</div>';
 			$ret .= '</div>';

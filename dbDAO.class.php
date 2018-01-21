@@ -101,7 +101,7 @@ class dbDAO {
 	 * Get the list of classes for a schoool
 	 */
 	public function getClassList($schoolID=1) {
-		return   $this->getElementList("class","schoolID=".$schoolID,null,"text asc");
+		return   $this->getElementList("class","schoolID=".$schoolID,null,null,"text asc");
 	}
 	
 	/**
@@ -306,7 +306,7 @@ class dbDAO {
 				$ret=$this->personMerge($ret,$this->searchForPersonOneString($nameWord));
 			}
 		}
-		usort($ret, "compareAlphabeticalPicture");
+		usort($ret, "compareAlphabetical");
 		return $ret;
 	}
 	
@@ -372,19 +372,22 @@ class dbDAO {
 	/**
 	 * get the list of classmates
 	 * @param integer classId 
-	 * @param boolean guest default false 
+	 * @param boolean guest default false
 	 * @param boolean withoutFacebookId default false
+	 * @param boolean all default false all entrys
 	 */
-	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false) {
+	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false) {
 		if ($classId>=0) {
 			$where ="classID=".$classId;
 			$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-			if($guest)
-				$where.=" and role like '%guest%'";
-			else
-				$where.=" and role not like '%guest%'";
-			if ($withoutFacebookId) {
-				$where.=" and (facebookid is null or length(facebookid)<5) ";
+			if (!$all) {
+				if($guest)
+					$where.=" and role like '%guest%'";
+				else
+					$where.=" and role not like '%guest%'";
+				if ($withoutFacebookId) {
+					$where.=" and (facebookid is null or length(facebookid)<5) ";
+				}
 			}
 			$ret = $this->getElementList("person",$where);
 			usort($ret, "compareAlphabetical");
@@ -408,7 +411,7 @@ class dbDAO {
 	 */
 	public function getRecentChangedPersonList($limit) {
 		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-		$ret = $this->getElementList("person",$where,$limit,"changeDate desc");
+		$ret = $this->getElementList("person",$where,$limit,null,"changeDate desc");
 		usort($ret, "compareAlphabeticalPicture");
 		return $ret;
 	}
@@ -562,7 +565,7 @@ class dbDAO {
 			$sql.=" and isDeleted=".$isDeleted;}
 		if ($isVisibleForAll<2) {
 			$sql.=" and isVisibleForAll=".$isVisibleForAll; }
-		return $this->getElementList("picture",$sql,null,"orderValue desc");	
+		return $this->getElementList("picture",$sql,null,null,"orderValue desc");	
 	}
 	
 	/**
@@ -575,7 +578,7 @@ class dbDAO {
 		$sql.="isDeleted=0 ";
 		if ($where!="")
 			$sql.=" and ".$where; 
-		return $this->getElementList("picture",$sql,null,"title asc");	
+		return $this->getElementList("picture",$sql,null,null,"title asc");	
 	}
 	
 	public function changePictureOrderValues($id1,$id2) {
@@ -623,7 +626,7 @@ class dbDAO {
 	 * List of recent not deleted pictures
 	 */
 	public function getRecentPictureList($limit) {
-		return   $this->getElementList("picture","isDeleted=0",$limit,"uploadDate desc");
+		return   $this->getElementList("picture","isDeleted=0",$limit,null,"uploadDate desc");
 	}
 	
 	
@@ -757,7 +760,7 @@ class dbDAO {
 	}
 
 	public function getInterpretList() {
-		return $this->getElementList("interpret",null,null,"name asc");
+		return $this->getElementList("interpret",null,null,null,"name asc");
 	}
 	
 	/*
@@ -808,8 +811,18 @@ class dbDAO {
 	}
 //********************* Message ******************************************
 
-	public function getMessages($count) {
-		return $this->getElementList("message",null,$count,"changeDate desc");
+	/**
+	 * get chat messages
+	 */
+	public function getMessages($count=null,$limit=null) {
+		return $this->getElementList("message","classID is null",$count,$limit,"changeDate desc");
+	}
+
+	/**
+	 * get class messages
+	 */
+	public function getClassMessages($classId,$count=null,$limit=null) {
+		return $this->getElementList("message","classID =".$classId,$count,$limit,"changeDate desc");
 	}
 	
 	/**
@@ -963,8 +976,8 @@ class dbDAO {
 	/**
 	 * get a array of elements, or an empty array if no elements found
 	 */
-	private function getElementList($table,$where=null,$limit=null,$orderby=null) {
-		$rows=$this->getIdList($table,$where,$limit,$orderby);
+	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
+		$rows=$this->getIdList($table,$where,$limit,$offset,$orderby);
 		$ret=array();
 		foreach ($rows as $row) {
 			array_push($ret, $this->getEntryById($table, $row["id"]));
@@ -975,7 +988,7 @@ class dbDAO {
 	/**
 	 * get a array of ids, or an empty array if no ids found
 	 */
-	private function getIdList($table,$where=null,$limit=null,$orderby=null) {
+	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
 		//normal entrys
 		$sql="select id from ".$table." where ( (changeForID is null and changeUserID is not null) ";
 		//anonymous new entrys from the aktual ip
@@ -986,6 +999,8 @@ class dbDAO {
 			$sql.=" order by ".$orderby;
 		if ($limit!=null)
 			$sql.=" limit ".$limit;
+		if ($offset!=null)
+			$sql.=" offset ".$offset;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			return $this->dataBase->getRowList();
@@ -1243,8 +1258,5 @@ class dbDAO {
 			return -1;
 	}
 	
-	public function getNameStatistics() {
-		;
-	}
 }
 ?>

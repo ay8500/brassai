@@ -47,8 +47,8 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->	 
-	<link rel="stylesheet" type="text/css" href="css/menu.css?v=08062017" />
-	<?php if (isset($diakEditStorys)) :?>
+	<link rel="stylesheet" type="text/css" href="css/menu.css?v=16012018" />
+	<?php if (isset($loadTextareaEditor)) :?>
 		<link rel="stylesheet" href="editor/ui/trumbowyg.min.css">
 	<?php endif?>
 	<?php if (isset($siteHeader)) { 
@@ -58,7 +58,7 @@
 <body>
 <div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
-<nav id="main-menu" class="navbar navbar-default" role="navigation">
+<nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00;" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -92,6 +92,7 @@
 					<ul class="dropdown-menu multi-level">
 						<li><a href="hometable.php?classid=<?php echo getAktClassId(); ?>">Véndiákok</a></li>
 						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClassId(); ?>">Vendégek és barátok</a></li>
+						<?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>
 						<li><a href="worldmap.php">Térkép</a></li>
 						<li><a href="picture.php">Tabló és csoportképek</a></li>
 						<?php if ( getRealId(getAktClass())==$db->getClassIdByText("1985 12A")) : ?>
@@ -145,7 +146,7 @@
 			</li>
 			<form class="navbar-form navbar-left" role="search" action="">
 				<div class="input-group input-group" style="margin: 3px;">
-					<button type="button" id="uLogonMenu" class="btn btn-default " onclick="showSearchBox();" ><span class="glyphicon glyphicon-search" ></span> Keres</button>
+					<button type="button" class="btn btn-default " onclick="showSearchBox();" ><span class="glyphicon glyphicon-search" ></span> Keres</button>
 				</div>
 			</form>
 			<?php if (userIsLoggedOn()) {

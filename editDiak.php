@@ -253,7 +253,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 if ($tabOpen==5) 
 	$diakEditGeo = true;
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
-	$diakEditStorys = true;
+	$loadTextareaEditor = true;
 
 if ($personid!=null && $personid>=0)
 	$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakja " .$diak["lastname"]." ".$diak["firstname"];
@@ -263,7 +263,7 @@ else
 include("homemenu.php"); 
 ?>
 
-<?php if (strstr($action,"new")=="" ){?>
+<?php if (strstr($action,"new")==""){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
 	<img src="images/<?php echo $diak["picture"] ?>" class="diak_image_icon" />

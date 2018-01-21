@@ -35,7 +35,7 @@ if (!isset($typeId)) {
 <div class="container-fluid">
 	
 	<?php if ($type=="classID") { ?>
-		<h2 class="sub_title">A tanárok és diákok együtt a ballagási tablón és csoportképeken.</h2>
+		<h2 class="sub_title">A tanárok és diákok együtt a ballagási tablón és csoportképeken. <?php echo getClassName($db->getClassById($typeId))?></h2>
 	<?php } if ($type=="personID") { $person=$db->getPersonByID($typeId); ?>
 		<h2 class="sub_title"><?php writePersonLinkAndPicture($person);?> képei</h2>
 	<?php } if ($type=="schoolID") { ?>

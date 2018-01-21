@@ -1,5 +1,5 @@
 <?PHP 
-$diakEditStorys=true;
+$loadTextareaEditor=true;
 include("homemenu.php"); 
 include_once("data.php");
 include_once("tools/userManager.php");
