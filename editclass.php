@@ -117,7 +117,7 @@ include("homemenu.php");
 				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
 				<?php 
 					for($cl=10;$cl<14;$cl++) {
-						for($cs="A";$cs<"H";$cs++) {
+						for($cs="A";$cs<="H";$cs++) {
 				?>
 					<option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option>
 				<?php } } ?>
@@ -145,7 +145,7 @@ include("homemenu.php");
 		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>
-		<button class="btn btn-default"   id="btMail" onclick="mailto:brassai@blue-l.de" style="display:none">
+		<button class="btn btn-default"   id="btMail" onclick="mailto:brassai(at)blue-l.de" style="display:none">
 			<span class="glyphicon glyphicon-email"></span> Új iskolát szeretnék
 		</button>
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
@@ -171,12 +171,9 @@ include("homemenu.php");
 	</div>
 </div>
 
-<?php 
-include_once 'homefooter.php';
-?>
+<?php include_once 'homefooter.php';?>
 
 <script>
-
 	function changeYear() {
 	    checkStatus();
 	}
@@ -201,7 +198,6 @@ include_once 'homefooter.php';
 	    checkStatus();
 	}
 
-	
 	function changeTeacher() {
 	    checkStatus();
 	}
@@ -239,5 +235,4 @@ include_once 'homefooter.php';
 		if (confirm('Biztos ki szeretnéd törölni az osztályt?'))
 	    	document.location='editclass.php?action=deleteclass&classid=<?php echo $classid?>';
 	}
-	
 </script>

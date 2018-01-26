@@ -86,7 +86,6 @@ if ((isset($classId) && $classId==0) || $action=="savenewteacher" || $action=="n
 	$dataFieldObl[18]="Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
 }
 
-
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
 	if (checkRequesterIP(changeType::personchange)) {
 		if ($diak!=null) {

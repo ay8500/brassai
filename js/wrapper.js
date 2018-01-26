@@ -1,7 +1,3 @@
-/**
- * (c) 2016 Levente Maier  
- */
-
 var countWrapper=5;		//Wrappen in line
 var wrapperWidth=700;		//Max wrapper width
 var wrapperSlideCorrection=30;	//This is a correction value of horizontal sliding
@@ -25,7 +21,6 @@ $( window ).resize(function() {
     }
 });
 
-
 function resizeWrapper() {
     aktWrapper=1;
     $("#wrapper_frame").empty();	//delete all wrapper divs
@@ -33,7 +28,6 @@ function resizeWrapper() {
     for (var i=0;i<countWrapper;i++){
 	addWrapperDiv(i);		//create them with the new size
     }
-
     resizeToDo=false;
 }
 
@@ -48,12 +42,9 @@ function addWrapperDiv(id) {
         html +='<div style="display: inline-block; width:160px;">';
         html +='<a href="editDiak.php?uid='+d.id+'" title="'+d.name+'">';
         html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium">';
-        html +='</a>';
-        html +='</div>';
+        html +='</a></div>';
         html +='<div style="display: inline-block;max-width:50%;vertical-align: top;margin-bottom:10px;">';
-        html +='<h4>';
-        html +=d.name;
-        html +='</h4>';
+        html +='<h4>'+d.name+'</h4>';
         html +='<div class="fields">'; 
         if (d.classID=="0") {
             if (d['function']!=null) {
@@ -75,18 +66,20 @@ function addWrapperDiv(id) {
         	html +='<div><div>Osztály:</div><div><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div></div>';
         }
         if (d.place!=null)
-    	html +='<div><div>Helyiség:</div><div>'+d.place+'</div></div>';
+    		html +='<div><div>Helyiség:</div><div>'+d.place+'</div></div>';
         if (d.employer!=null)
-    	html +='<div><div>Munkahely:</div><div>'+d.employer+'</div></div>';
+    		html +='<div><div>Munkahely:</div><div>'+d.employer+'</div></div>';
         html +='<div class="diakCardIcons">';
         if(d.email!=null)
-    	html +='<a href="mailto:'+d.email+'"><img src="images/email.png" /></a>';
+    		html +='<a href="mailto:'+d.email+'"><img src="images/email.png" /></a>';
         if (d.facebook!=null)
-    	html +='&nbsp;<a target="_new" href='+d.facebook+'><img src="images/facebook.png" /></a>';
+    		html +='&nbsp;<a target="_new" href='+d.facebook+'><img src="images/facebook.png" /></a>';
         if (d.twitter!=null)
-    	html +='&nbsp;<a target="_new" href='+d.twitter+'><img src="images/twitter.png" /></a>';
+    		html +='&nbsp;<a target="_new" href='+d.twitter+'><img src="images/twitter.png" /></a>';
         if (d.homepage!=null)
-    	html +='&nbsp;<a target="_new" href='+d.homepage+'><img src="images/www.png" /></a>';
+    		html +='&nbsp;<a target="_new" href='+d.homepage+'><img src="images/www.png" /></a>';
+        if (d.geolocation===1)
+        	html +='&nbsp;<a href=editDiak.php?tabOpen=5&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
         html +='</div>';
 
         html +='</div>';

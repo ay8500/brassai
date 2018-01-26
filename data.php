@@ -134,8 +134,8 @@ function getPersonDummy() {
 
 function writePersonLinkAndPicture($person) {
 	?>	
-			<img src="images/<?php echo $person["picture"] ?>"  class="diak_image_sicon"/>
-			<a href="editDiak.php?uid=<?php echo($person["id"]);?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
+		<img src="images/<?php echo $person["picture"] ?>"  class="diak_image_sicon"/>
+		<a href="editDiak.php?uid=<?php echo($person["id"]);?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
 	<?php		
 }
 

@@ -424,7 +424,7 @@
 			return $count<20;
 		} elseif ($action==changeType::personchange) {
 			$count = $db->getCountOfRequest($action,24);
-			return $count<60;
+			return $count<30;
 		} elseif ($action==changeType::message) {
 			$count = $db->getCountOfRequest($action,24);
 			return $count<1;

@@ -27,10 +27,12 @@ if (isset($p["education"]) && showField($p,"education"))
 	$person["education"]=getFieldValue($p,"education");
 if (isset($p["employer"]) && showField($p,"employer"))
 	$person["employer"]=getFieldValue($p,"employer");
+
 if (isset($p["country"]) && showField($p,"country"))
 	$person["place"]=getFieldValue($p,"country");
 else
 	$person["place"]="";
+
 if (isset($p["place"]) && showField($p,"place"))
 	$person["place"] .=" ".getFieldValue($p,"place");
 if (strlen($person["place"])<5)
@@ -47,7 +49,9 @@ if (isset($p["function"]) && showField($p,"function"))
 	$person["function"]=getFieldValue($p,"function");
 if (isset($p["children"]) && showField($p,"children"))
 	$person["children"]=getFieldValue($p,"children");
-$person["isGuest"]= isPersonGuest($p)?1:0;
+
+$person["geolocation"] = $p["geolat"]!="46.7719"?1:0;
+$person["isGuest"] = isPersonGuest($p)?1:0;
 	
 
 echo(json_encode($person));
