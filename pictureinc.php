@@ -134,11 +134,8 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 
 $notDeletedPictures=0;
 
-if (!isset($typeId)) 
-	$typeId=null; 
-
 if(isset($picture)) {
-	$pictures = array($picture);
+	$pictures = array($picture);	//Only one picture
 	$notDeletedPictures=1;
 } else {
 	if ($type!="tablo")
@@ -299,20 +296,19 @@ function changeVisibility(id) {
 	});
 }
 
-	function toggleBigger(o) {
-	    var tempScrollTop = $(window).scrollTop();
-		
-		if ($(o).parent().parent().css("max-width")==="none") {  //Big
-		    $(o).parent().parent().css("max-width","395px");
-		} else {
-		    $("[id=pictureframe]").css("max-width","395px");
-		    $(o).parent().parent().css("max-width","none");
-		}
-		
-		$(window).scrollTop(tempScrollTop);
+function toggleBigger(o) {
+    var tempScrollTop = $(window).scrollTop();
+	
+	if ($(o).parent().parent().css("max-width")==="none") {  //Big
+	    $(o).parent().parent().css("max-width","395px");
+	} else {
+	    $("[class*=pictureframe]").css("max-width","395px");
+	    $(o).parent().parent().css("max-width","none");
 	}
+	$(window).scrollTop(tempScrollTop);
+}
 
-	function toogleListBlock() {
+function toogleListBlock() {
 	<?php 
 		if ($view=="table") {	
 			$url="view=list";
@@ -325,46 +321,42 @@ function changeVisibility(id) {
 		$url .=isset($id)?"&id=".$id:"";
 		?>
 		window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>";
-	}
+}
 	
-
-	function deletePicture(id) {
-		if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-			window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
-		}
+function deletePicture(id) {
+	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
+		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
 	}
+}
 
-	function changeOrder(id1,id2) {
-	<?php 
-		$url =$view=="table"?"view=table":"view=list";
-		$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
-		$url .=isset($type)?"&type=".$type:"";
-		$url .=isset($typeId)?"&typeid=".$typeId:"";
-		$url .=isset($id)?"&id=".$id:"";
-		$url .="&action=changeOrder";
-		?>
-		window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>"+"&id1="+id1+"&id2="+id2;
-	}
+function changeOrder(id1,id2) {
+<?php 
+	$url =$view=="table"?"view=table":"view=list";
+	$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
+	$url .=isset($type)?"&type=".$type:"";
+	$url .=isset($typeId)?"&typeid=".$typeId:"";
+	$url .=isset($id)?"&id=".$id:"";
+	$url .="&action=changeOrder";
+	?>
+	window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>"+"&id1="+id1+"&id2="+id2;
+}
 
-
-	function hideedit(id) {
-		$("#edit_"+id).hide();
-		$("#show_"+id).show();
-		
-	}
+function hideedit(id) {
+	$("#edit_"+id).hide();
+	$("#show_"+id).show();
 	
-	function displayedit(id) {
-	    $("#show_"+id).hide();
-		$("#edit_"+id).show();
-	}
+}
 
-	<?php if (userIsAdmin()) :?>
-	function unlinkPicture(id) {
-		if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-			window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
-		}
-	}
-	<?php endif;?>
-	
+function displayedit(id) {
+    $("#show_"+id).hide();
+	$("#edit_"+id).show();
+}
 
+<?php if (userIsAdmin()) :?>
+function unlinkPicture(id) {
+	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
+		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
+	}
+}
+<?php endif;?>
 </script>

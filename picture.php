@@ -20,13 +20,21 @@ if ($id>=0) {
 if (!isset($type)) {
 	$type=getParam("type");
 	if ($type==null) {
-		$type="classID";$typeId=getRealId(getAktClass());
+		if (null!=getAktClass()) {
+			$type="classID";$typeId=getRealId(getAktClass());
+		} else {
+			$type="schoolID";$typeId=getRealId(getAktSchool());
+		}
 	}
 }
 if (!isset($typeId)) {
 	$typeId=getParam("typeid");
 	if ($typeId==null) {
-		$type="classID";$typeId=getRealId(getAktClass());
+		if (null!=getAktClass()) {
+			$type="classID";$typeId=getRealId(getAktClass());
+		} else {
+			$type="schoolID";$typeId=getRealId(getAktSchool());
+		}
 	}
 }
 
