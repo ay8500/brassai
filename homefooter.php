@@ -20,7 +20,7 @@
     
 	<?php if (isset($googleMap)) :?>
 		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakMap.js"></script>
+		<script type="text/javascript" src="js/diakMap.js?v=<?php echo $webAppVersion?>"></script>
 	<?php endif ?>
 	<?php if (isset($diakEditGeo)) :?>
 		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>

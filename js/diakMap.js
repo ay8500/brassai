@@ -9,6 +9,12 @@ $(document).ready(function() {
         
         setTimeout( function(){fillPoints()},500);
     }
+    
+    $.fn.redraw = function(){
+	  $(this).each(function(){
+	    var redraw = this.offsetHeight;
+	  });
+    };
 });
 
 
@@ -41,13 +47,13 @@ function MyApplication() {
 }
     
 MyApplication.prototype.onMapDragEnd = function() {
-	document.getElementById("txtPerson").innerHTML="Search...";
 	fillPoints();
 };
 
 
     
 function fillPoints() {
+    document.getElementById("txtPerson").innerHTML='Adat keresés <img src="images/loading.gif" />';
     application.map.clearOverlays();
     var SW= new GLatLng();SW=application.map.getBounds().getSouthWest();
     var NE= new GLatLng();NE=application.map.getBounds().getNorthEast();
@@ -76,8 +82,8 @@ function setMarkers(data)	{
 	    markerOptions = { title:point[2]};
 	    marker = new GMarker(latlng,markerOptions);
 	    application.map.addOverlay(marker);
+	    document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(i+1);
 	}				
     }
-    document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(pointArr.length-1); 
 } 
 

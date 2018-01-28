@@ -135,8 +135,8 @@ class dbDAO {
 			$sql="select c.*, p.firstname as tfname, p.lastname as tlname, p.birthname as tbname,p.picture as picture,";
 			$sql .=" cp.id as cid, cp.firstname as cfname, cp.lastname as clname, cp.birthname as cbname, cp.role as role";
 			$sql .=" from class as c"; 
-			$sql .=" join  person as p on c.headTeacherID=p.id";
-			$sql .=" join  person as cp on c.changeUserID=cp.id where";
+			$sql .=" left join  person as p on c.headTeacherID=p.id";
+			$sql .=" left join  person as cp on c.changeUserID=cp.id where";
 			$sql .=" c.name like '%".$name."%' ";
 			$sql .=" or c.graduationYear like '%".$name."%' ";
 			$sql .=" or c.text like '%".$name."%' ";

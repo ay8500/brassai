@@ -1,20 +1,11 @@
 <?PHP 	
 include_once("tools/sessionManager.php"); 
-//Change scool year and class if parameters are there 
-if (isset($_GET['scoolYear'])) {
-	$_SESSION['scoolYear']=$_GET['scoolYear'];
-} 
-if (isset($_GET['scoolClass']))  {
-	$_SESSION['scoolClass']=$_GET['scoolClass'];	
-}
 
 $SiteTitle = "A diakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
 $googleMap = true;
 include("homemenu.php");
-
 ?>
-
 
 <h2 class="sub_title">Merre szóródtak szét az osztálytársak:</h2>
 <table class="pannel" style="width:100%">

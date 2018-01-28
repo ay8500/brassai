@@ -10,8 +10,8 @@ $points = Array();
 
 $i=0;
 $classId=getAktClassId();
-if($classId==0) {
-	$classList=$db->getClassList(1);
+if($classId<0) {
+	$classList=$db->getClassList(getAktSchoolId());
 } else {
 	$classList = array($db->getClassById($classId));
 }
