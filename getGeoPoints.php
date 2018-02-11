@@ -9,7 +9,7 @@ $lng2=$_GET["lng2"];
 $points = Array();
 
 $classId=getAktClassId();
-$where="geolat is not null";
+$where="geolat is not null and geolat !='' ";
 if($classId<0) {
 	$classList=$db->getClassList(getAktSchoolId());
 	$classIdList=array();

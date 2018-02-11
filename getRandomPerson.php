@@ -50,7 +50,7 @@ if (isset($p["function"]) && showField($p,"function"))
 if (isset($p["children"]) && showField($p,"children"))
 	$person["children"]=getFieldValue($p,"children");
 
-$person["geolocation"] = isset($p["geolat"])?1:0;
+$person["geolocation"] = (isset($p["geolat"]) && $p["geolat"]!="")?1:0;
 $person["isGuest"] = isPersonGuest($p)?1:0;
 	
 

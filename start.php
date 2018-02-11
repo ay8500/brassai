@@ -63,7 +63,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 				$person=$db->getPersonByID($uid);
 				?>
 				<div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
-					<span style="width: 36px;display: inline-block;"><img src="images/<?php echo $person["picture"] ?>" class="diak_image_sicon" style="margin:2px;"/></span>
+					<span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
 					<span style="width: 146px;display: inline-block;"><?php echo $person["lastname"]." ".$person["firstname"]?></span>
 	   				<span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
 	   			</div>

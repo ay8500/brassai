@@ -130,7 +130,7 @@ function getPersonDummy() {
 }
 
 function getPersonPicture($person) {
-	if (null==$person || !isset($person["picture"])) {
+	if (null==$person || !isset($person["picture"]) || $person["picture"]=="") {
 		return "images/avatar.jpg";
 	} else {
 		return "images/".$person["picture"];

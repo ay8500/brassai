@@ -90,7 +90,9 @@
         			<li><a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
        			</ul>
       		</li>
-      		<?php if (getAktClassId()>0 || userIsAdmin()) {?>
+      		<?php if ((getAktClassId()!=$db->getStafClassIdBySchoolId(getAktSchoolId()) && getAktClassId()>=0) || userIsAdmin()) {
+      			$classStat=$db->getClassStatistics(getAktClassId(),true);
+      			?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName(true));?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">
@@ -98,7 +100,9 @@
 						<li><a href="hometable.php?guests=true&classid=<?php echo getAktClassId(); ?>">Vendégek és barátok</a></li>
 						<?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>
 						<li><a href="worldmap.php">Térkép</a></li>
-						<li><a href="picture.php">Tabló és csoportképek</a></li>
+						<li><a href="picture.php">Osztályképek 
+							<?php if ($classStat->classPictures>0) {?><span class="badge" ><?php echo $classStat->classPictures?></span><?php }?>
+						</a></li>
 						<?php if ( getRealId(getAktClass())==$db->getClassIdByText("1985 12A")) : ?>
 						<li class="dropdown-submenu"><a>Régi képek</a>
 							<ul class="dropdown-menu">
@@ -231,7 +235,7 @@ function showClassList($db,$classes,$eveningClass,$menuText) { ?>
 			<li><a href="editclass.php?action=newclass">Új osztály</a></li>
 			<?php
 			foreach($classes as $cclass) {
-				if ($cclass["id"]>0 && $eveningClass==$cclass["eveningClass"]) {
+				if ($cclass["id"]!=$db->getStafClassIdBySchoolId(getAktSchoolId()) && $eveningClass==$cclass["eveningClass"]) {
 					if (getAktClassId()==$cclass["id"])
 						$aktualClass="actual_class_in_menu";
 					else
@@ -241,7 +245,7 @@ function showClassList($db,$classes,$eveningClass,$menuText) { ?>
 		  				<a style="display: inline-block;" class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($cclass["id"]);?>">
 		  					<?php echo($cclass["text"]); ?>
 		  				</a>
-	  					<?php $stat=$db->getClassStatistics($cclass["id"]);?>
+	  					<?php $stat=$db->getClassStatistics($cclass["id"],userIsAdmin());?>
 		  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
 		  				<?php if (userIsAdmin()) {?>
 			  				<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>

@@ -250,12 +250,14 @@ class dbDAO {
 	 * @param int $classId
 	 * @return stdClass
 	 */
-	public function getClassStatistics($classId) {
+	public function getClassStatistics($classId,$countPictures=false) {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
-		$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null");
-		$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
-		$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
+		if($countPictures) {
+			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null");
+			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
+			$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
+		}
 		return $ret;
 	}
 
@@ -434,7 +436,7 @@ class dbDAO {
 	public function getRecentChangedPersonList($limit) {
 		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		$ret = $this->getElementList("person",$where,$limit,null,"changeDate desc");
-		usort($ret, "compareAlphabeticalPicture");
+		//usort($ret, "compareAlphabeticalPicture");
 		return $ret;
 	}
 	
