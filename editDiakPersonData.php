@@ -1,6 +1,6 @@
 	<?php //Person picture?>
 	<div class="diak_picture" style="display: inline-block;">
-		<img src="images/<?php echo($diak["picture"]);?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
+		<img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
 	</div>
 	
 	<?php //Person picture download only  if person already saved?>

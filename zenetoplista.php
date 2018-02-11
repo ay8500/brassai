@@ -19,7 +19,7 @@ if ($delVote>=0 && $edit) {
 
 
  //Site Status 
- $siteStatus="Válaszd ki a kedvenc elöadód, ha nem találod a listában akkor írd be a lenti mezöbe.";
+ $siteStatus="Válaszd ki a kedvenc előadód, ha nem találod a listában akkor írd be a lenti mezőbe.";
 
    //Parameter Interpret
    $pinterpret = getIntParam("interpret",0);
@@ -100,7 +100,7 @@ if ($delVote>=0 && $edit) {
 			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
 	} else {
 		if (userIsLoggedOn())
-			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.getLoggedInUserClassId().'">An én osztályom toplistálya</a>';
+			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.getLoggedInUserClassId().'">Az én osztályom toplistálya</a>';
 		else
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}
@@ -285,9 +285,9 @@ if ($delVote>=0 && $edit) {
 		<div class="form-group navbar-form navbar">
 			<table>
 			  <?php foreach ($votersList as $voter) {
-			     	if (trim($voter["firstname"])!="" && intval($voter["count"])>0) { ?>
+			     	if (intval($voter["count"])>0) {?>
 			     		<tr>
-			     			<td><img src="images/<?php echo $voter["picture"] ?>" class="diak_image_sicon" style="margin:2px;"/></td>
+			     			<td><img src="<?php echo getPersonPicture($person) ?>" class="diak_image_sicon" style="margin:2px;"/></td>
 			     			<td><?php echo $voter["lastname"]." ".$voter["firstname"]?></td>
 			     			<td>&nbsp;</td>
 			     			<td style="padding-left:15px;"><?php echo $voter["count"]?></td>

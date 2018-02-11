@@ -35,7 +35,7 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup)
 	$pictures = mysqli_query($conn,"SELECT * FROM person");
 	while ($picture = mysqli_fetch_array($pictures))
 	{
-		if($picture["picture"]!=null && $picture["picture"]!='avatar.jpg') {
+		if($picture["picture"]!=null) {
 			$allPictures++;
 			$file=dirname(__DIR__)."/images/".$picture["picture"];
 			if(file_exists($file)) {

@@ -97,6 +97,7 @@ function error() {
 		</div>
 	</div>
 	<?php
-		include_once("homefooter.php");
-}	
+	include_once("homefooter.php");
+}
+?>
 

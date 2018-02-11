@@ -89,7 +89,7 @@ include("homemenu.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
 				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
-				<option value="2">Hiányzik a te iskolád, akkor küdj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
+				<option value="2">Hiányzik a te iskolád, akkor küldj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
 			</select>
 		</div>
 		<div class="input-group " style="margin-bottom: 25px;">

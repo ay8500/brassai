@@ -5,7 +5,19 @@ include_once("data.php");
 include_once("tools/userManager.php");
 include_once 'chatinc.php';
 
-$resultDBoperation="";
+$resultDBoperation = "";
+
+if (getGetParam("sendAction")=="sendMail" && userIsLoggedOn()) {
+	$mailsSent = 0;
+	include_once ("sendMail.php");
+	$persons = $db->getPersonListByClassId(getAktClassId());
+	foreach ($persons as $person) {
+		if (sendChatMail(getAktPerson(), $person, getGetParam("Text") )) {
+			$mailsSent++;
+		}
+	}
+	$resultDBoperation = "</div>Elküldött e-mailek száma:".$mailsSent."</div>";
+}
 
 $personList=$db->getPersonListByClassId(getRealId(getAktClass()),null,null,true);
 $messageList=$db->getClassMessages(getAktClassId());
@@ -19,7 +31,6 @@ if(sizeof($messageList)==0) {
 	array_push($messageList, $message);
 }
 
-$resultDBoperation="";
 ?>
 <div class="container-fluid">   
 	<h2 class="sub_title" >Osztálytárs körlevek</h2>

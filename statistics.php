@@ -10,11 +10,11 @@ $teacher=0;$teacherPicture=0;
 foreach ($persons as $person) {
 	if (intval($person["isTeacher"])==1) {
 		$teacher++;
-		if($person["picture"]!="avatar.jpg")
+		if(isset($person["picture"]))
 			$teacherPicture++;
 	} else {
 		$classmate++;
-		if($person["picture"]!="avatar.jpg")
+		if(isset($person["picture"]))
 			$classmatePicture++;
 		if(isset($person["email"]) && $person["email"]!="")
 			$classmateEmail++;

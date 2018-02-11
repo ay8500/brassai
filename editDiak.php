@@ -224,7 +224,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 						$diak['picture']=getAktClassFolder().$pFileName;
 						if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
 							$db->saveRequest(changeType::personupload);
-							resizeImage($uploadfile,400,400);
+							resizeImage($uploadfile,400,400,"o");
 							$resultDBoperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
 							saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
 						} else {
@@ -265,7 +265,7 @@ include("homemenu.php");
 <?php if (strstr($action,"new")==""){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
-	<img src="images/<?php echo $diak["picture"] ?>" class="diak_image_icon" />
+		<img src="<?php echo getPersonPicture($diak) ?>" class="diak_image_icon" />
 	<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
 	<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
 	</h2>

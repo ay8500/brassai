@@ -123,18 +123,23 @@ function getPersonDummy() {
 	return [
 		"firstname"=>"",
 		"lastname"=>"",
-		"picture"=>"avatar.jpg",
-		"geolat"=>"46.7719",
-		"geolng"=>"23.5924",
 		"user"=>createPassword(8),
 		"passw"=>createPassword(8),
 		"role"=>""
 	];
 }
 
+function getPersonPicture($person) {
+	if (null==$person || !isset($person["picture"])) {
+		return "images/avatar.jpg";
+	} else {
+		return "images/".$person["picture"];
+	}
+}
+
 function writePersonLinkAndPicture($person) {
 	?>	
-		<img src="images/<?php echo $person["picture"] ?>"  class="diak_image_sicon"/>
+		<img src="<?php echo getPersonPicture($person) ?>"  class="diak_image_sicon"/>
 		<a href="editDiak.php?uid=<?php echo($person["id"]);?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
 	<?php		
 }
@@ -167,7 +172,7 @@ function compareAlphabetical($a,$b) {
  * @param person $b
  */
 function compareAlphabeticalPicture($a,$b) {
-	$c = strcmp($a["picture"]=='avatar.jpg',$b["picture"]=='avatar.jpg');
+	$c = strcmp(isset($a["picture"])?'1':'0',isset($b["picture"])?'1':'0');
 	if ($c!=0) {
 		return $c;
 	}
@@ -241,10 +246,14 @@ function deletePicture($pictureId,$unlink=false) {
 	}
 }
 
-/* resize image
- * 
+/**
+ * Resize image, if originalFileSufix not set the original file well be owewrited
+ * @param string $fileName
+ * @param int $maxWidth
+ * @param int $maxHight
+ * @param string $originalFileSufix
  */
-function resizeImage($fileName,$maxWidth,$maxHight)
+function resizeImage($fileName,$maxWidth,$maxHight,$originalFileSufix="")
 { 
 	$limitedext = array(".gif",".jpg",".png",".jpeg");		
 	
@@ -294,6 +303,10 @@ function resizeImage($fileName,$maxWidth,$maxHight)
 	imagecopyresized($resized_img, $new_img, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
 	//finally, save the image
+	if ($originalFileSufix!="") {
+		$path_parts=pathinfo($fileName);
+		rename($fileName,$path_parts["dirname"].DIRECTORY_SEPARATOR.$path_parts["filename"]."_".$originalFileSufix.".".$path_parts["extension"]);
+	}
 	ImageJpeg ($resized_img,$fileName,80);
 
 	ImageDestroy ($resized_img);
@@ -461,9 +474,11 @@ function getPersonId($person) {
 
 /**
  * The real class id
- * @param unknown $person
+ * @param object $entry 
  */
 function getRealId($entry) {
+	if(null==$entry)
+		return null;
 	if (isset($entry["changeForID"])) {
 		return $entry["changeForID"];
 	} else {

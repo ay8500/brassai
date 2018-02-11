@@ -88,11 +88,23 @@
 	function unsetAktClass() {
 		unset($_SESSION['aktClass']);
 	}
+
+	/**
+	 * Set aktual person class id
+	 * @param unknown $classId
+	 */
+	function setAktSchool($schoolId) {
+		$_SESSION['aktSchool']=$schoolId;
+	}
+	
+	function unsetAktSchool() {
+		unset($_SESSION['aktSchool']);
+	}
 	
 	
 	/**
 	* The aktual person class id
-	* @return number|NULL
+	* @return number|-1
 	*/
 	function getAktClassId() {
 		if (isset($_SESSION['aktClass'])) {
@@ -114,18 +126,37 @@
 		return null;
 	}
 	
+	function isAktClassStaf() {
+		global $db;
+		if (isset($_SESSION['aktClass'])) {
+			$class= $db->getClassById(intval($_SESSION['aktClass']));
+			return $class["graduationYear"]===0;
+		}
+		return false;
+	}
+	
+	
 	/**
-	 * The aktual person school id
+	 * The aktual school id
 	 * @return number|NULL
 	 */
 	function getAktSchool() {
 		global $db;
 		return $db->getSchoolById(getAktSchoolId());
 	}
-
+	
+	/**
+	 * The aktual school staf class id
+	 * @return number|NULL
+	 */
+	function istAktClassStaf() {
+		global $db;
+		return $db->getStafClassIdBySchoolId(getAktSchoolId())==getAktClassId();
+	}
+	
 	/**
 	 * The aktual person school id
-	 * @return number|NULL
+	 * @return number|-1
 	 */
 	function getAktSchoolId() {
 		if (isset($_SESSION['aktSchool']))

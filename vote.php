@@ -99,7 +99,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="vote")) {
 		$vote=$db->getVote(getPersonId($d),$classMeetingCount);
 		if ($k) { $k=false; echo('<tr class="disabled" >'); } else { $k=true; echo('<tr class="disabled" style="background-color:#dddddd">');}?>
 		<td>
-			<img src="images/<?php echo $d["picture"] ?>" style="height:30px; border-radius:3px; margin:2px;" />
+			<img src="<?php echo getPersonPicture($d) ?>" style="height:30px; border-radius:3px; margin:2px;" />
 		</td>
 		<td class="hidden-xs hidden-sm">
 			<?php echo $d["lastname"].' '.$d["firstname"];

@@ -8,7 +8,7 @@ include_once 'chatinc.php';
 
 // Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
-if (getAktClassId()==0) 
+if (istAktClassStaf()) 
 	$subTitle=$guests?"Barátaink":"Tanáraink";
 else
 	$subTitle=$guests?"Vendégek, jó barátok":"Osztálytársak";
@@ -39,11 +39,11 @@ $personList=$db->getPersonListByClassId(getRealId(getAktClass()),$guests);
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newteacher"><span class="glyphicon glyphicon-user"></span> Névsor bővítése új tanárral</button>
 			<?php } ?>
 		</form>
-		<?php if (getAktClassId()!=0) {showChatEnterfields($personList);} ?>
+		<?php if (!isAktClassStaf()) {showChatEnterfields($personList);} ?>
 		<br/>
 		<?php if ($guests) {?>
 			Vendégek&nbsp;száma:<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>
-		<?php } elseif (getAktClassId()!=0) {?>
+		<?php } elseif (!isAktClassStaf()) {?>
 			Véndiákok&nbsp;száma:<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>
 		<?php } else  {?>
 			Tanárok&nbsp;száma:<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>

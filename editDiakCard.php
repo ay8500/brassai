@@ -16,15 +16,16 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	//Set the RIP value
 	strstr($d["role"],"rip")!=""?$rstyle="rip":$rstyle="";
 	//mini icon
-	if ($person["picture"]=='avatar.jpg')
-		$rstyle.=' diak_image_empty';
-	else 
+	if (isset($person["picture"])) 
 		$rstyle.=' diak_image_medium';
+	else {
+		$rstyle.=' diak_image_empty';
+	}
 	?>
 	<div class="element">
 		<div style="display: inline-block; ">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
-				<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+				<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
 			</a>
 			<?php  if (userIsAdmin()) {?>
 			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">
@@ -33,7 +34,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 			<?php }?>
 		</div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-			<a href="<?php $personLink?>"><h4><?php echo getPersonName($d);?></h4></a>
+			<a href="<?php echo $personLink?>"><h4><?php echo getPersonName($d);?></h4></a>
 			<?php if($showClass) {?>
 				<?php if ($d["isTeacher"]==1) { ?>
 					<h5>Tanár</h5>
@@ -96,7 +97,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 							echo '&nbsp;<a href="editDiak.php?tabOpen=3&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
 						if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
 							echo '&nbsp;<a href="editDiak.php?tabOpen=4&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
-						if ($d["geolat"]!="46.7719")
+						if (isset($d["geolat"]))
 							echo '&nbsp;<a href="editDiak.php?tabOpen=5&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
 						?>
 					</div>

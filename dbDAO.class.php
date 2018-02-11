@@ -86,6 +86,17 @@ class dbDAO {
 		$ret=$this->getEntryByField("class", "text",$text);
 		return $ret["id"];
 	}
+
+	public function getStafClassIdBySchoolId($schoolId) {
+		$ret=$this->getEntry("class", "schoolID=".$schoolId." and graduationYear=0");
+		return $ret["id"];
+	}
+
+	public function getStafClassBySchoolId($schoolId) {
+		$ret=$this->getEntry("class", "schoolID=".$schoolId." and graduationYear=0");
+		return $ret;
+	}
+	
 	
 	/**
 	 * save a class
@@ -242,7 +253,7 @@ class dbDAO {
 	public function getClassStatistics($classId) {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
-		$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture != 'avatar.jpg'");
+		$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null");
 		$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
 		$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
 		return $ret;
@@ -407,8 +418,11 @@ class dbDAO {
 	/**
 	 * get the person list!
 	 */
-	public function getPersonList() {
+	public function getPersonList($optWhere=null) {
 		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+		if (null!=$optWhere) {
+			$where .=' and '.$optWhere;
+		}
 		$ret = $this->getElementList("person",$where);
 		usort($ret, "compareAlphabetical");
 		return $ret;
@@ -448,9 +462,8 @@ class dbDAO {
 		$this->createHistoryEntry("person",$id,true);
 		$person=$this->getPersonByID($id,true);
 		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
-		$file=$person["picture"];
-		if ($file!="avatar.jpg")
-			$ret1 =unlink($fileFolder.$file);
+		if (isset($person["picture"]))
+			$ret1 =unlink($fileFolder.$person["picture"]);
 		else 
 			$ret1=true;
 		$ret2= $this->dataBase->delete("person", "id", $id);
@@ -776,8 +789,11 @@ class dbDAO {
 	 */
 	public function getVotersListByClassId($classId) {
 		$sql  ="select  person.id, person.lastname, person.firstname, person.picture, count(1) as count "; 
-		$sql .="from songvote join person on person.id=songvote.personID ";
-		$sql .="where person.classID=".$classId." group by personID";
+		$sql .="from songvote join person on person.id=songvote.personID";
+		if (null!=$classId) {
+			$sql .=" where person.classID=".$classId;
+		}
+		$sql .=" group by personID";
 		$this->dataBase->query($sql);
 		return $this->dataBase->getRowList();
 	}
@@ -1058,7 +1074,7 @@ class dbDAO {
 	
 	/**
 	 * get a db entry by a field
-	 * @return NULL is no entry found 
+	 * @return NULL is no entry or more then one entry found 
 	 */
 	private function getEntryByField($table,$fieldName,$fieldValue) {
 		$sql="select * from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
@@ -1071,6 +1087,23 @@ class dbDAO {
 			return null;
 		}
 	}
+
+	/**
+	 * get a db entry by a field
+	 * @return NULL is no entry or more then one entry found
+	 */
+	public function getEntry($table,$where) {
+		$sql="select * from ".$table." where ".$where;
+		$sql .=" and changeForID is null";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			$entry = $this->dataBase->fetchRow();
+			return $this->getEntryById($table, $entry["id"]);
+		} else {
+			return null;
+		}
+	}
+	
 	
 	/**
 	 * Insert or update a table entry

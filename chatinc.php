@@ -12,37 +12,40 @@ function showChatEnterfields($personList) {
 		if($d["email"]!="")
 			$personWithEmail++;
 	}
-	if ($personWithEmail>=0 && false) {?>
-	<form action="chat.php" method="post" id="chatform">
-		<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>
-		<div id="message-fields"  style="display: none;">
-			<div style="display: inline-block;font-size: 125%;">Körlevél e-mail <?php echo $personWithEmail?> osztálytársnak.</div>
-			<button style="float: right;" class="btn btn-default" type="button" onclick="hideMessage();"><span class="glyphicon glyphicon-remove-sign"></span> bezár</button>
-			<textarea id="story" name="T" onchange="textChanged();" >Kedves osztálytársak, barátok,<br/><br/><br/><br/>Üdvözlettel <?php getLoggedInUserName()?></textarea>
-			<button type="button" class="btn btn-default btn-t" onclick="setText(1);"><span class="glyphicon glyphicon-star-empty"></span> rövid</button>
-			<button type="button" class="btn btn-default btn-t" onclick="setText(2);"><span class="glyphicon glyphicon-star"></span> bővebb</button>
-			<button type="button" class="btn btn-default btn-t" onclick="setText(3);"><span class="glyphicon glyphicon-heart"></span> szíből</button>
-			<button type="button" class="btn btn-default btn-t" onclick="setText(0);"><span class="glyphicon glyphicon-remove-circle"></span> töröl</button>
-			<div id="login-fields" style="display: none;">
-				Jelentkezz be! Körlevelet csak akkor tudsz küldeni az osztálytársaidnak ha be vagy jelentkezve.<br/>
-				<input type="hidden" value="logon" name="action"/>
+	if ( userIsAdmin() || (false && $personWithEmail>=0 && getAktClassId()==getLoggedInUserClassId() )) {
+		?>
+		<form action="chat.php" method="post" id="chatform">
+			<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>
+			<div id="message-fields"  style="display: none;">
+				<div style="display: inline-block;font-size: 125%;">Körlevél e-mail <?php echo $personWithEmail?> osztálytársnak.</div>
+				<button style="float: right;" class="btn btn-default" type="button" onclick="hideMessage();"><span class="glyphicon glyphicon-remove-sign"></span> bezár</button>
+				<textarea id="story" name="Text" onchange="textChanged();" >Kedves osztálytársak, barátok,<br/><br/><br/><br/>Üdvözlettel <?php getLoggedInUserName()?></textarea>
+				<button type="button" class="btn btn-default btn-t" onclick="setText(1);"><span class="glyphicon glyphicon-star-empty"></span> rövid</button>
+				<button type="button" class="btn btn-default btn-t" onclick="setText(2);"><span class="glyphicon glyphicon-star"></span> bővebb</button>
+				<button type="button" class="btn btn-default btn-t" onclick="setText(3);"><span class="glyphicon glyphicon-heart"></span> szíből</button>
+				<button type="button" class="btn btn-default btn-t" onclick="setText(0);"><span class="glyphicon glyphicon-remove-circle"></span> töröl</button>
+				<div id="login-fields" style="display: none;">
+					<?php if (!userIsLoggedOn()) {?>
+					Jelentkezz be! Körlevelet csak akkor tudsz küldeni az osztálytársaidnak ha be vagy jelentkezve.<br/>
+					<input type="hidden" value="logon" name="action"/>
+					<div style="display: inline-block;">
+						<div class="input-group input-group" style="margin: 3px;">
+			    			<span class="input-group-addon" style="width:30px;" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
+			    			<input name="paramName" type="text" class="form-control" id="loginUser" placeholder="<?php echo getTextRes("LogInUser"); ?>" style="display: inline-block;" />
+					</div></div>
+					<div style="display: inline-block;">
+						<div class="input-group input-group" style="margin: 3px;">
+			    			<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
+			    			<input name="paramPassw" type="password" class="form-control" id="loginPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
+					</div></div>
+					<?php }?>
+				</div>
 				<div style="display: inline-block;">
-					<div class="input-group input-group" style="margin: 3px;">
-		    			<span class="input-group-addon" style="width:30px;" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
-		    			<input name="paramName" type="text" class="form-control" id="loginUser" placeholder="<?php echo getTextRes("LogInUser"); ?>" style="display: inline-block;" />
-				</div></div>
-				<div style="display: inline-block;">
-					<div class="input-group input-group" style="margin: 3px;">
-		    			<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
-		    			<input name="paramPassw" type="password" class="form-control" id="loginPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
-				</div></div>
+				<button type="button" class="btn btn-warning btn-t" name="sendAction" value="sendMessage" onclick="sendMessage();"><span class="glyphicon glyphicon-send"></span> küldés</button>
+				</div>
+				<br/>
 			</div>
-			<div style="display: inline-block;">
-			<button type="button" class="btn btn-warning btn-t" onclick="sendMessage();"><span class="glyphicon glyphicon-send"></span> küldés</button>
-			</div>
-			<br/>
-		</div>
-	</form>
+		</form>
 	<?php } 
 }
 

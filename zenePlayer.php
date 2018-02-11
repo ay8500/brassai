@@ -43,6 +43,16 @@ $json = json_decode($response);
 <div class="sub_title">Zenedoboz</div>
 <div class="container-fluid">
 	<div style="text-align: center;">
+		<?php if (sizeof($voters)>0) :?>
+			<div class="panel panel-default" style="margin-top: 15px">
+				<div class="panel-heading" >Akiknek tetszik ez a zene</div>
+				<div class="panel-body"><div style=display:inline">
+					<?php foreach ($voters as $voter) {?>
+						<div class="personbox"><?php writePersonLinkAndPicture($db->getPersonByID($voter["personid"]))?></div>
+					<?php }?>
+				</div></div>
+			</div>
+		<?php endif;?>
 		<?php if (is_object($json) ) {?>
 			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista.php">Vissza a toplistához. </a></div>
 			<?php if (null==$playlist):?>
@@ -56,16 +66,6 @@ $json = json_decode($response);
 		<?php } else {?>
 			<div class="resultDBoperation" ><div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?></div></div>
 		<?php }?>
-		<?php if (sizeof($voters)>0) :?>
-			<div class="panel panel-default" style="margin-top: 15px">
-				<div class="panel-heading" >Akiknek tetszik ez a zene</div>
-				<div class="panel-body"><div style=display:inline">
-					<?php foreach ($voters as $voter) {?>
-						<div class="personbox"><?php writePersonLinkAndPicture($db->getPersonByID($voter["personid"]))?></div>
-					<?php }?>
-				</div></div>
-			</div>
-		<?php endif;?>
 		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista.php">Vissza a toplistához. </a></div>
 	</div>
 </div>
@@ -74,6 +74,7 @@ $json = json_decode($response);
 <?php if (userIsAdmin()) {
 	$song = $db->getSongById(getIntParam("id"));
 ?>
+	<div class="panel panel-default" style="margin: 15px; padding:10px">
 	<form>
 		<div class="input-group" style="margin-bottom: 10px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Zene</span>	      		
@@ -89,6 +90,7 @@ $json = json_decode($response);
 			<button class="btn btn-success">Kiment</button>
 		</div>
 	</form>
+	</div>
 <?php } ?>
 
 
