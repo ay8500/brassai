@@ -277,9 +277,12 @@ else
 	    					}
 	    			    	elseif ($field=="picture") {
 	    						if ($compare) {
-	    							echo('<td ><img class="acceptField" src="images/'.$value.'" /></td>');
+	    							if (null!=$value && $value!="") 
+	    								echo('<td ><img class="acceptField" src="images/'.$value.'" /></td>');
+	    							else 
+	    								echo('<td ><img class="acceptField" src="images/avatar.jpg" /></td>');
 	    						}
-	    						echo('<td ><img class="acceptField" src="images/'.$cp[$field].'" /></td>');
+	    						echo('<td ><img class="acceptField" src="'.getPersonPicture($cp).'" /></td>');
 	    					}
 	    					else {
 	    						if ($compare) {

@@ -126,6 +126,7 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 					if (!userIsAdmin()) {
 						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 					}
+					header("location:hometable.php?class=".$diak["classID"]);
 				} else {
 					$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
 				}

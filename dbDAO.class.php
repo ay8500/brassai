@@ -524,7 +524,7 @@ class dbDAO {
 	}
 	
 	public function getPersonIdListWithPicture() {
-		$where="picture is not null and picture not like '%avatar%'";
+		$where="picture is not null and picture != ''";
 		$where .=" and (changeUserID is not null or changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		
 		return $this->getIdList("person",$where);

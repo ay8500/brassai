@@ -16,7 +16,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	//Set the RIP value
 	strstr($d["role"],"rip")!=""?$rstyle="rip":$rstyle="";
 	//mini icon
-	if (isset($person["picture"])) 
+	if (isset($person["picture"]) && $person["picture"]!="") 
 		$rstyle.=' diak_image_medium';
 	else {
 		$rstyle.=' diak_image_empty';

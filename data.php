@@ -137,11 +137,15 @@ function getPersonPicture($person) {
 	}
 }
 
+function getPersonLinkAndPicture($person) {
+	$ret = '<img src="'.getPersonPicture($person).'"  class="diak_image_sicon"/>';
+	$ret.= ' <a href="editDiak.php?uid='.$person["id"].'">'.$person["lastname"]." ".$person["firstname"].'</a>';
+	return $ret;
+}
+
+
 function writePersonLinkAndPicture($person) {
-	?>	
-		<img src="<?php echo getPersonPicture($person) ?>"  class="diak_image_sicon"/>
-		<a href="editDiak.php?uid=<?php echo($person["id"]);?>"><?php echo $person["lastname"]." ".$person["firstname"] ?></a>
-	<?php		
+	echo(getPersonLinkAndPicture($person));		
 }
 
 /**
