@@ -53,10 +53,10 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 	<div class="panel panel-default " >
 
 		<div class="panel-heading">
-			<h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb véndiákok</h4>
+			<h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb tanáraink és véndiákok</h4>
 		</div>
 		<div class="panel-body">
-		<?php 
+		<?php
 		$bests=$db->getPersonChangeBest();
 		foreach ($bests as $uid=>$count) {
 			if ($count>=1) {
@@ -80,7 +80,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php 
-		$persons=$db->getRecentChangedPersonList(getIntParam("persons", 12));
+		$persons=$db->getRecentChangedPersonList(getIntParam("persons", 18));
 		foreach ($persons as $person) {
 			displayPerson($db,$person,true,true);
 		}
@@ -95,7 +95,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php 
-		$pictures=$db->getRecentPictureList(getIntParam("pictures", 12));
+		$pictures=$db->getRecentPictureList(getIntParam("pictures", 18));
 		foreach ($pictures as $picture) {
 			displayPicture($db,$picture);
 		}

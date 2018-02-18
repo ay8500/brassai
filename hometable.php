@@ -7,13 +7,27 @@ include_once 'editDiakCard.php';
 include_once 'chatinc.php';
 
 // Title of the page schoolmate or guests
+$class=getAktClass();
 $guests = getParam("guests", "")=="true";
-if (istAktClassStaf()) 
+if (istAktClassStaf()) {
 	$subTitle=$guests?"Barátaink":"Tanáraink";
-else
-	$subTitle=$guests?"Vendégek, jó barátok":"Osztálytársak";
+	$SiteTitle = $SiteTitle.': '.$subTitle;
+} else {
+	if ($guests) {
+		$subTitle="Vendégek, jó barátok";
+		$SiteTitle = $SiteTitle.': '.$subTitle;
+	} else {
+		if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
+			$headTeacher=$db->getPersonByID($class["headTeacherID"]);
+			$subTitle="Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
+			$SiteTitle = $SiteTitle.". Osztályfőnök ".getPersonName($headTeacher);
+		} else {
+			$subTitle="Osztálytársak";
+			$SiteTitle = $SiteTitle.': '.$subTitle;
+		}
+	}
+}
 
-$SiteTitle = $SiteTitle.': '.$subTitle;
 include("homemenu.php");
 	
 $resultDBoperation="";
@@ -23,17 +37,17 @@ if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor(
 	else
 		$resultDBoperation='<div class="alert alert-warning">Véndiák törölése sikertelen! Hibakód:9811</div>';
 }
-$personList=$db->getPersonListByClassId(getRealId(getAktClass()),$guests);
+$personList=$db->getPersonListByClassId(getRealId($class),$guests);
 
 // Toolbar for new schoolmate or guests
 ?>
-<h2 class="sub_title"><?php $subTitle?></h2>
+<h2 class="sub_title"><?php echo $subTitle?></h2>
 <div class="container-fluid">
 	<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
 		<form action="editDiak.php">
 			<?php if ($guests) {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newguest"><span class="glyphicon glyphicon-user"></span> Névsor bővítése jó baráttal</button>
-			<?php } elseif (getAktClassId()!=0) {?>
+			<?php } elseif (!istAktClassStaf()) {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newperson"><span class="glyphicon glyphicon-user"></span> Névsor bővítése új véndiákkal</button> 
 			<?php } else  {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newteacher"><span class="glyphicon glyphicon-user"></span> Névsor bővítése új tanárral</button>

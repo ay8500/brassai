@@ -83,32 +83,44 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			$fileName = explode( ".", basename( $_FILES['userfile']['name']));
 			$idx=$db->getNextPictureId();
 	
-			//Create folder is doesn't exists
-			$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktClassFolder();
-			if (!file_exists($fileFolder)) {
-	 	   		mkdir($fileFolder, 0777, true);
+			if (userIsAdmin() && null!=getParam("overwriteFileName")) {
+				//Overwrite an existing file
+				$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/".getParam("overwriteFileName");
+				unlink($uploadfile);
+				$overwrite=true;
+			} else {
+				//Create folder is doesn't exists
+				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktClassFolder();
+				if (!file_exists($fileFolder)) {
+		 	   		mkdir($fileFolder, 0777, true);
+				}
+				$pFileName="/c-".$idx.".".strtolower($fileName[1]);
+				$uploadfile=$fileFolder.$pFileName;
+				$overwrite=false;
 			}
-			$pFileName="/c-".$idx.".".strtolower($fileName[1]);
-			$uploadfile=$fileFolder.$pFileName;
 			
 			//JPG
 			if (strcasecmp($fileName[1],"jpg")==0) {
 				if ($_FILES['userfile']['size']<2000000) {
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-						$upicture = array();
-						$upicture["id"]=-1;
-						$upicture[$type]=$typeId;
-						$upicture["file"]="images/".getAktClassFolder().$pFileName;
-						$upicture["isVisibleForAll"]=1;
-						$upicture["isDeleted"]=0;
-						$upicture["uploadDate"]=date("Y-m-d H:i:s");
-						if ($db->savePicture($upicture)>=0) {
-							$db->saveRequest(changeType::personupload);
-							resizeImage($uploadfile,1800,1800);
-							$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
-							saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);
+						if ($overwrite==false) {
+							$upicture = array();
+							$upicture["id"]=-1;
+							$upicture[$type]=$typeId;
+							$upicture["file"]="images/".getAktClassFolder().$pFileName;
+							$upicture["isVisibleForAll"]=1;
+							$upicture["isDeleted"]=0;
+							$upicture["uploadDate"]=date("Y-m-d H:i:s");
+							if ($db->savePicture($upicture)>=0) {
+								$db->saveRequest(changeType::personupload);
+								resizeImage($uploadfile,1800,1800);
+								$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
+								saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);
+							} else {
+								$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+							}
 						} else {
-							$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+							$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve és felülírva.</div>";
 						}
 					} else {
 						$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
@@ -149,36 +161,34 @@ if(isset($picture)) {
 	}
 }
 ?>
-
+	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 	<?php if (($notDeletedPictures<250 || userIsAdmin()) && $type!="tablo") :?>
 		<div style="margin-bottom:15px;">
-			<button class="btn btn-info" onclick="$('#download').slideDown();"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
+			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
 				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId."'"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
 			<?php  }?>
-			<button class="btn btn-default" onclick="toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
+			<button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
 		</div>
 		<div id="download" style="margin:15px;display:none;">
-			<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-				<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
-				<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
-				<span style="display: inline-block;"><button class="btn btn-default"  type="submit" ><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
-				<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> mégsem</button></span>
-				<input type="hidden" value="upload" name="action" />
-				<?php if (isset($personid)):?>
-					<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
-				<?php endif;?>
-				<input type="hidden" value="<?PHP echo(getIntParam("tabOpen",0)) ?>" name="tabOpen" />
-				<input type="hidden" name="type" value="<?php echo ($type)?>" />
-				<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
-			</form>
+			<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
+			<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
+			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" ><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
+			<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> mégsem</button></span>
+			<input type="hidden" value="upload" name="action" />
+			<?php if (isset($personid)):?>
+				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
+			<?php endif;?>
+			<input type="hidden" value="<?PHP echo(getIntParam("tabOpen",0)) ?>" name="tabOpen" />
+			<input type="hidden" name="type" value="<?php echo ($type)?>" />
+			<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
 		</div>
 		<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<?php endif; ?>
 	
 	
 	<?php if ($notDeletedPictures==0) :?>
-			<div class="alert alert-warning" >Jelenleg nincsenek képek feltöltve!</div>
+		<div class="alert alert-warning" >Jelenleg nincsenek képek feltöltve!</div>
 	<?php endif;?>
 	
 		
@@ -210,25 +220,25 @@ if(isset($picture)) {
 							<?php if (userIsLoggedOn()) { ?>
 								<span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
 							<?php } ?> 
-							<button class="btn btn_default"  title="Kimenti a kép módosításait" onclick="savePicture(<?php echo $pict["id"] ?>,this)"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>							
+							<button class="btn btn_default"  title="Kimenti a kép módosításait" onclick="savePicture(<?php echo $pict["id"] ?>,this);return false;"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>							
 							<?php if ($pict["isDeleted"]!=1): ?>
-								<button class="btn btn_default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>)"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
+								<button class="btn btn_default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
 							<?php endif ?>
 							<?php if (userIsAdmin()) : ?>
-								<button class="btn btn_default" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>)"><img src="images/delete.gif" /> Végleges</button>
+								<button class="btn btn_default" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
 							<?php endif ?>
-							<button onclick="hideedit(<?php echo $pict["id"] ?>);" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
+							<button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
 						</div> 
 					</div>
 					<div id="show_<?php echo $pict["id"] ?>" style="margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
 						<?php //change Order buttons?>
 						<?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
 							<?php  if ($idx!=0) {?>
-								<button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
+								<button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);return false;" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
 							<?php } else {?>
 								<span style="margin: 0px 40px 0 10px;" >&nbsp</span>
 							<?php } if ($idx+1<sizeof($pictures)) {?>
-								<button id="picsort" style="margin: 0px 10px 0 5px;" class="btn btn-default" onclick="changeOrder(<?php echo $pictures[$idx+1]["id"] ?>,<?php echo $pictures[$idx]["id"] ?>);" title="eggyel hátrébb"><span class="glyphicon glyphicon-arrow-down"></span></button>
+								<button id="picsort" style="margin: 0px 10px 0 5px;" class="btn btn-default" onclick="changeOrder(<?php echo $pictures[$idx+1]["id"] ?>,<?php echo $pictures[$idx]["id"] ?>);return false;" title="eggyel hátrébb"><span class="glyphicon glyphicon-arrow-down"></span></button>
 							<?php } else {?>
 								<span style="margin: 0px 5px 0 40px;" >&nbsp</span>
 							<?php } ?>
@@ -237,7 +247,10 @@ if(isset($picture)) {
 							<b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
 							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
 						</div>
-						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button>
+						<?php  if (userIsAdmin()){?>
+							<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
+						<?php } ?>
 					</div>
 					<?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
 					<br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
@@ -258,8 +271,8 @@ if(isset($picture)) {
 				<?php } ?>
 			</div>
 	<?php }	}?>
+	</form>
 	
-</div>
 
 <script type="text/javascript">
 

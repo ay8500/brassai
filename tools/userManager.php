@@ -130,7 +130,7 @@
 		global $db;
 		if (isset($_SESSION['aktClass'])) {
 			$class= $db->getClassById(intval($_SESSION['aktClass']));
-			return $class["graduationYear"]===0;
+			return intval($class["graduationYear"])==0;
 		}
 		return false;
 	}

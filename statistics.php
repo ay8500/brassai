@@ -5,7 +5,7 @@ include_once('tools/userManager.php');
 $resultDBoperation="";
 
 $persons=$db->getPersonList();
-$classmate=0;$classmatePicture=0;$classmateEmail=0;
+$classmate=0;$classmatePicture=0;$classmateEmail=0;$facebook=0;
 $teacher=0;$teacherPicture=0;
 foreach ($persons as $person) {
 	if (intval($person["isTeacher"])==1) {
@@ -18,6 +18,8 @@ foreach ($persons as $person) {
 			$classmatePicture++;
 		if(isset($person["email"]) && $person["email"]!="")
 			$classmateEmail++;
+		if(isset($person["facebook"]) && $person["facebook"]!="")
+			$facebook++;
 	}
 }
 unset($persons);
@@ -88,6 +90,14 @@ unset($classes);unset($pictures);
 	       		<span type="text" class="form-control"><?php echo $classmateEmail." (".round($classmateEmail/$classmate*100,2)."%)"?></span>
 	  		</div>
 	  	</li>
+	  	<?php if (userIsAdmin()) {?>
+  		<li>
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">Facebook</span></span>	
+	       		<span type="text" class="form-control"><?php echo $facebook." (".round($facebook/$classmate*100,2)."%)"?></span>
+	  		</div>
+	  	</li>
+	  	<?php }?>
 	  	<br/>
 	</ul>
 </div>
