@@ -482,21 +482,26 @@ class dbDAO {
 	public function acceptChangeForEntry($table,$id) {
 		$p=$this->dataBase->querySignleRow("select * from ".$table." where id=".$id);
 		if (sizeof($p)>0) {
+			//Accept a change
 			if (isset($p["changeForID"])) {
-				$p["id"]=$p["changeForID"]; 
+				$objID=$p["changeForID"];
 				//make history entry 
-				$this->createHistoryEntry($table,$p["id"]);
-				unset($p["changeForID"]);
-				$p["changeUserID"]=getLoggedInUserId();
-				$p["changeIP"]=$_SERVER["REMOTE_ADDR"];
-				if ($this->dataBase->delete($table, "id", $id))
+				$this->createHistoryEntry($table,$objID);
+				//Delete the temporary entry
+				if ($this->dataBase->delete($table, "id", $id)) {
+					//Update the entry
+					$p["id"]=$objID; 			//the object entry
+					$p["changeUserID"]=-1;  	//anonym user
+					unset($p["changeForID"]);   //remove flag changes for id
 					return $this->updateEntry($table, $p)>=0;
-				else 
+				} else { 
 					return false;
-			} else {
+				}
+			} else
+			//Accept a new entry
+			{
 				$this->createHistoryEntry($table,$p["id"]);
-				$p["changeUserID"]=getLoggedInUserId();
-				$p["changeIP"]=$_SERVER["REMOTE_ADDR"];
+				$p["changeUserID"]=-1;
 				return $this->updateEntry($table, $p)>=0;
 			}
 		} else {

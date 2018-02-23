@@ -56,11 +56,11 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 		<?php if (!isAktClassStaf()) {showChatEnterfields($personList);} ?>
 		<br/>
 		<?php if ($guests) {?>
-			Vendégek&nbsp;száma:<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>
+			Vendégek&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } elseif (!isAktClassStaf()) {?>
-			Véndiákok&nbsp;száma:<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>
+			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } else  {?>
-			Tanárok&nbsp;száma:<?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?>
+			Tanárok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } ?>
 	</div>
 

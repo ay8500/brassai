@@ -19,14 +19,15 @@ if (userIsAdmin()) {
 	} 	
 	if ($show) {
 		if ($ret===true) {
-			$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
-		else {
-			$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+			$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';
+		} else {
+			$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';
+		}
 	}
 }  	
 ?>
 <div class="sub_title">Adatok vizsgálása és jóváhagyása</div>
-<?PHP
+<?php
 if (userIsAdmin()) {  
 
 	//initialise tabs
@@ -41,14 +42,10 @@ if (userIsAdmin()) {
 						'Üzenetek <span class="badge">'.sizeof($mlist).'</span>',
 						'Hozzáférések');
 	include("tabs.php");
-	?>
-
-	<?php if ($tabOpen==0) {
+	if ($tabOpen==0) {
 		generateCheckHtmlTable("Osztályok", "Osztály","Class","text","getClassListToBeChecked",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
 	}
-	?>
-	
-	<?php if ($tabOpen==1) {
+	if ($tabOpen==1) {
 		$dummyPerson=getPersonDummy();
 		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["isTeacher"]="";
 		$dummyPerson["address"]="";$dummyPerson["zipcode"]="";$dummyPerson["place"]="";
@@ -57,17 +54,12 @@ if (userIsAdmin()) {
 		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
 		generateCheckHtmlTable("Személyek", "Személy","Person","lastname","getPersonListToBeChecked",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
 	}
-	?>
-	
-	<?php if ($tabOpen==2) { 
+	if ($tabOpen==2) { 
 		generateCheckHtmlTable("Képek", "Kép","Picture","file","getPictureListToBeChecked",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
 	}
-	?>
-	
-	
-	<?php if ($tabOpen==3) {
+	if ($tabOpen==3) {
 		$list=$db->getMessageListToBeChecked();
-	?>
+?>
 	<p align="center">
 	   Üzenetek:<br/>	
 	  <table align="center" border="1">
@@ -94,10 +86,8 @@ if (userIsAdmin()) {
 	  	?>
 	 </table>  
 	</p>
-	<?php }?>
-
-
-	<?php if ($tabOpen==4) { ?>
+<?php }?>
+<?php if ($tabOpen==4) { ?>
 	<p align="center">
 	   Hozzáférések ma:<br/>
    	  <table align="center" border="1">
@@ -198,7 +188,21 @@ else
 </script>
 
 
-<?php function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionList,$id,$emptyEntry,$functionGetByID,$functionDelete,$functionSave ) {
+<?php 
+/**
+ * Generate php code for check table
+ * @param unknown $title 
+ * @param unknown $fieldText
+ * @param unknown $fieldDb
+ * @param unknown $showField
+ * @param unknown $functionList
+ * @param unknown $id
+ * @param unknown $emptyEntry
+ * @param unknown $functionGetByID
+ * @param unknown $functionDelete
+ * @param unknown $functionSave
+ */
+function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionList,$id,$emptyEntry,$functionGetByID,$functionDelete,$functionSave ) {
 	global $db;
 	global $resultDBoperation;
   	$show=false;

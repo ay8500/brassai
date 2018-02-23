@@ -33,13 +33,11 @@ $resultDBoperation="";
 		  			<tr><td colspan="45"><hr/></td></tr>
 				<?php } ?>
 		  		<tr>
-		  			<td>A <?php echo $item["table"]?></td>	
 					<?php displayHistoryElement($db,$item,$item,true);$aktId=$item["entryID"]; ?>		          			
 		  		</tr>
 			<?php }	?>
 	  		<tr>
-	  			<td>O <?php echo $item["table"]?></td>	
-	   			<?php displayHistoryElement($db,$history[$id],$id<sizeof($history)-1?$history[$id+1]:null,false);?>
+	   			<?php displayHistoryElement($db,$item,$id<sizeof($history)-1?$history[$id+1]:null,false);?>
 	  	  	</tr>
   		<?php } ?>
 	</table>
@@ -58,7 +56,7 @@ function displayHistoryElement($db,$item,$itemNext,$original=false) {
 				$person=$db->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$person=json_decode_utf8($item["jsonData"]);
-			displayPerson($db, $person,json_decode_utf8($itemNext["jsonData"]));
+			displayPerson($db, $item,$person,json_decode_utf8($itemNext["jsonData"]),$original);
 			break;
 		case "picture" :
 			if ($original) 
@@ -77,7 +75,11 @@ function displayHistoryElement($db,$item,$itemNext,$original=false) {
 	}
 }
 
-function displayPerson($db,$person,$personNext) {
+function displayPerson($db,$item, $person,$personNext,$original) {
+	if (!$original) {
+		displayChangeData($db,$item);
+		echo("</tr><tr>");
+	}
 	displayChangeData($db,$person);
 	displayElement(getPersonName($person), getPersonName($personNext));
 	displayElementObj($person, $personNext,"picture","Pic");
@@ -129,9 +131,12 @@ function displayPicture($db,$picture,$pictureNext) {
 }
 
 
+/**
+ * Display: ChangeDate, IP, Username
+ */
 function displayChangeData($db,$item) {
 	$changePerson=$db->getPersonByID($item["changeUserID"]);
-	?><td><?php echo date("Y.m.d H:i:s",strtotime($item["changeDate"]))?></td>
+	?><td><?php echo date("Y.m.d",strtotime($item["changeDate"]))?> <?php echo date("H:i:s",strtotime($item["changeDate"]))?></td>
 	<td><?php echo $item["changeIP"]?></td>
 	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td><?php
 }

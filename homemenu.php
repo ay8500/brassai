@@ -93,7 +93,7 @@
       		<?php if ((getAktClassId()!=$db->getStafClassIdBySchoolId(getAktSchoolId()) && getAktClassId()>=0) || userIsAdmin()) {
       			$classStat=$db->getClassStatistics(getAktClassId(),true);
       			?>
-				<li class="dropdown">
+				<li id="classmenu" class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getAktClassName(true));?><b class="caret"></b></a>
 					<ul class="dropdown-menu multi-level">
 						<li><a href="hometable.php?classid=<?php echo getAktClassId(); ?>">Véndiákok</a></li>

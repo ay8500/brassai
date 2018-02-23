@@ -27,6 +27,7 @@ function getAktClassFolder() {
  */
 function getAktClassName($short=false) {
 	$class=getAktClass();
+	if (istAktClassStaf()) return "";
 	return getClassName($class,$short);
 }
 
@@ -37,18 +38,15 @@ function getAktClassName($short=false) {
  * @return string
  */
 function getClassName($class,$short=false) {
-	if ($class!=null) {
-		if ($class["id"]==0)
-			return "";
-			else {
-				$ret= str_replace(" ", "&nbsp;", $class["text"]);
-				if (!$short) {
-					$ret.= (intval($class["eveningClass"])==0)?"":"&nbsp;tagozat";
-				}
-				return $ret;
-			}
+	if (null==$class) return "";
+	if ($class["graduationYear"]===0) return "";
+
+	$ret= str_replace(" ", "&nbsp;", $class["text"]);
+	if (!$short) {
+		$ret.= (intval($class["eveningClass"])!==0 && strpos($class["text"], "esti")===false)?" esti":"";
+		$ret.= (intval($class["eveningClass"])===0)?"":"&nbsp;tagozat";
 	}
-	return "";
+	return $ret;
 }
 
 /**
@@ -69,7 +67,7 @@ function getAktSchoolName() {
 
 /**
  * returns aktual person
- * @return object person
+ * @return object person or null
  */
 function getAktPerson() {
 	global $db;
@@ -82,7 +80,7 @@ function getAktPerson() {
 
 /**
  * returns logged in person
- * @return object person
+ * @return object person or null
  */
 function getPersonLogedOn() {
 	global $db;

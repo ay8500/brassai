@@ -250,6 +250,7 @@ if(isset($picture)) {
 						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button>
 						<?php  if (userIsAdmin()){?>
 							<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
+							<a class="btn btn-default" target="_download" href="<?php echo $pict['file']?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
 						<?php } ?>
 					</div>
 					<?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
