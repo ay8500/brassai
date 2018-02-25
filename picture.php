@@ -1,11 +1,8 @@
-
 <?php 
 include_once("tools/sessionManager.php");
 include_once ('tools/userManager.php');
 include_once 'tools/ltools.php';
 include_once("data.php");
-$SiteTitle="Ballagási tabló és csoportképek".getAktClassName();
-include("homemenu.php"); 
 
 $id=getIntParam("id",-1);
 if ($id>=0) {
@@ -36,14 +33,20 @@ if (!isset($typeId)) {
 			$type="schoolID";$typeId=getRealId(getAktSchool());
 		}
 	}
+} else {
+	if ($type=="classID") {
+		setAktClass($typeId);
+	}
 }
+$SiteTitle="Ballagási tabló és csoportképek".getAktClassName();
+include("homemenu.php");
 
 ?>
 
 <div class="container-fluid">
 	
-	<?php if ($type=="classID") { ?>
-		<h2 class="sub_title">A tanárok és diákok együtt a ballagási tablón és csoportképeken. <?php echo getClassName($db->getClassById($typeId))?></h2>
+	<?php if ($type=="classID") {?>
+		<h2 class="sub_title">A tanárok és diákok együtt a ballagási tablón és csoportképeken.</h2>
 	<?php } if ($type=="personID") { $person=$db->getPersonByID($typeId); ?>
 		<h2 class="sub_title"><?php writePersonLinkAndPicture($person);?> képei</h2>
 	<?php } if ($type=="schoolID") { ?>

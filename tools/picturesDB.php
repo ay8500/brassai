@@ -1,4 +1,8 @@
 <?php
+session_start();
+//User is logged in and have the role of admin
+if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="") 
+	die("Only for admins");
 
 error_reporting(1);
 set_time_limit(0);
@@ -14,6 +18,8 @@ if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME
 // ab hier nichts mehr ändern
 function db_pictures($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup)
 {
+	echo("Result of pictures checking source filesystem<br/>");
+	
 	$allPictures=0;$okPictures=0;$errorPictures=0;
 	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd,$dbname) or die(mysqli_error());
 	

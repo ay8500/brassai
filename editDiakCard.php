@@ -164,14 +164,14 @@ function displayClass($db,$d,$showDate=false) {
 	<div class="element">
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			Osztály: <a href="hometable.php?classid=<?php echo $d["id"]?>"><b><?php echo getClassName($d);?></b></a><br/>
-			<?php if (isset($d["headTeacherID"])) {?>
+			<?php if (isset($d["headTeacherID"]) && $d["headTeacherID"]>=0) {?>
 				Osztályfőnök: <a href="editDiak.php?uid=<?php echo $d["headTeacherID"]?>" ><?php echo $d["tlname"]." ".$d["tfname"]?></a> <br/>
 			<?php } ?>
 		</div>
-		<?php if (isset($d["headTeacherID"])) {?>
+		<?php if (isset($d["headTeacherID"]) && $d["headTeacherID"]>=0) { ;?>
 			<div style="display: inline-block; vertical-align: top;width:160px;">
 				<a href="<?php echo $personLink?>" title="<?php echo ($d["tlname"]." ".$d["tfname"])?>">
-					<img src="images/<?php echo $d["picture"]?>" border="0" title="<?php echo $d["tlname"].' '.$d["tfname"]?>" class="diak_image_medium <?php echo $rip?>" />
+					<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["tlname"].' '.$d["tfname"]?>" class="diak_image_medium <?php echo $rip?>" />
 				</a>
 			</div>
 		<?php } ?>

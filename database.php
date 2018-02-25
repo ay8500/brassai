@@ -25,6 +25,8 @@ $resultDBoperation="";
   	  		</div>
   	  		<p></p>
   			<div class="input-group input-group-sm">
+  	  			<a class="btn btn-success" href="tools/backup.sql" >Download</a>
+  	  			&nbsp;
   	  			<button class="btn btn-warning" onclick="backup();" >Backup</button>
   	  			&nbsp;
   	  			<button class="btn btn-danger" onclick="restore();" >Restore</button>
@@ -41,12 +43,20 @@ $resultDBoperation="";
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<label id="dbDetails">Picture analysis</label> 
+		<label id="dbDetails">Picture tools</label> 
 	</div>
 	<ul class="list-group">
   		<li class="list-group-item">
   			<div class="input-group input-group-sm">
-  	  			<button class="btn btn-warning" onclick="pictures();" >Go</button>
+  	  			<a class="btn btn-success" href="images/images.zip" >Download</a>
+  	  			&nbsp;
+  	  			<button class="btn btn-danger" onclick="createZipFile();" >Create ZIP File</button>
+  	  			&nbsp;&nbsp;
+  	  			<button class="btn btn-warning" onclick="picturesDB();" >Database</button>
+  	  			&nbsp;&nbsp;
+  	  			<button class="btn btn-warning" onclick="picturesFS();" >File system</button>
+  	  			&nbsp;
+  	  			<button class="btn btn-danger" onclick="picturesDelete();" >Delete</button>
   	  		</div>
   		</li>
   		<li class="list-group-item">
@@ -92,10 +102,10 @@ function restore() {
     });
 }
 
-function pictures() {
-    $('#pictureResult').html('restore....');
+function picturesDB() {
+    $('#pictureResult').html('searching....');
     $.ajax({
-		url:"tools/pictures.php",
+		url:"tools/picturesDB.php",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
@@ -105,5 +115,51 @@ function pictures() {
 		}
     });
 }
+
+function picturesFS() {
+    $('#pictureResult').html('searching....');
+    $.ajax({
+		url:"tools/picturesFS.php",
+		type:"GET",
+		success:function(data){
+		    $('#pictureResult').html(data);
+		},
+		error:function(error) {
+		    $('#pictureResult').html("Error:"+data);
+		}
+    });
+}
+
+function picturesDelete() {
+    if (confirm("Are you sure, that you want to delete all unreferenced pictures?")) {
+	    $('#pictureResult').html('searching....');
+	    $.ajax({
+			url:"tools/picturesFS.php?action=delete",
+			type:"GET",
+			success:function(data){
+			    $('#pictureResult').html(data);
+			},
+			error:function(error) {
+			    $('#pictureResult').html("Error:"+data);
+			}
+	    });
+    }
+}
+
+function createZipFile() {
+    $('#pictureResult').html('creating zip file....');
+    $.ajax({
+		url:"tools/zipPictures.php",
+		type:"GET",
+		success:function(data){
+		    $('#pictureResult').html(data);
+		},
+		error:function(error) {
+		    $('#pictureResult').html("Error:"+data);
+		}
+    });
+}
+
+
 
 </script>
