@@ -7,9 +7,12 @@ $siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v=08
 
 unsetAktClass();
 
+
+
 include("homemenu.php");
 ?>
 <div class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján</br>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!</br></div>
+<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <div class="container-fluid">
 	<div  style="padding:15px;margin-top:20px" class="col-sm-4" >
 		<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>
@@ -62,7 +65,7 @@ include("homemenu.php");
 	<div class="row">&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2017. május 8.</b>-án.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. február 17.</b>-én.
 	</div>
 </div>
 <?php  include ("homefooter.php");?>

@@ -1015,6 +1015,27 @@ class dbDAO {
 		}
 		return $ret;
 	}
+	private function getNewElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
+	    //normal entrys
+	    $sql="select * from ".$table." where ( (changeForID is null and changeUserID is not null) ";
+	    //anonymous new entrys from the aktual ip
+        $sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
+        if ($where!=null)
+            $sql.=" and ".$where;
+        if ($orderby!=null)
+	       $sql.=" order by ".$orderby;
+        if ($limit!=null)
+            $sql.=" limit ".$limit;
+        if ($offset!=null)
+            $sql.=" offset ".$offset;
+        $this->dataBase->query($sql);
+        if ($this->dataBase->count()==0) {
+            return array();
+        } else {
+            $ret=$this->dataBase->getRowList();
+            return $ret;
+        }
+	}
 	
 	/**
 	 * get a array of ids, or an empty array if no ids found

@@ -1,25 +1,64 @@
 <?php
-	include_once("tools/sessionManager.php");
+    ob_start("ob_gzhandler");
+    include_once("tools/sessionManager.php");
 	include_once("config.php");
 	include_once("logon.php");
 	include_once("data.php");
 
 	$db = new dbDAO;
+	$resultDBoperation="";
 	
 	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
-	if (getParam("classid", "")!="") {
-		$class=$db->getClassByText(getParam("classid",""));
+	if (null!=getParam("classid")) {
+		$class=$db->getClassById(getParam("classid"));
 		if ($class==null)
-			$class=$db->getClassById(getGetParam("classid", ""));
-		setAktClass($class["id"]);
+			$class=$db->getClassByText(getParam("classid"));
+			if ($class!=null) {
+		      setAktClass($class["id"]);
+		      setAktSchool($class["schoolID"]);
+		    }
+	} else {
+	   $class=getAktClass();   
 	}
+	
 	if (getParam("schoolid", "")!="") {
 		unsetAktClass();
 		setAktSchool($schoolid);
 	}
+	
+	//Login if crypted loginkey present and correct
+	if (isset($_GET['key'])) {
+	    $resultDBoperation=directLogin($db,$_GET['key']);
+	}
+	
+	function directLogin($db,$key){
+	    $keyStr = encrypt_decrypt("decrypt", $key);
+	    if (substr($keyStr, 0,2)=="M-") {
+	        $action="M";
+	        $keyStr=substr($keyStr,2);
+	    }
+	    $person=$db->getPersonByID($keyStr);
+	    if (null!=$person) {
+	        setAktUserId($keyStr);
+	        setUserInSession($person["role"], $person["user"],$keyStr);
+	        $class=$db->getClassById($person["classID"]);
+	        setAktClass($class["id"]);
+	        setAktSchool($class["schoolID"]);
+	        if (!userIsAdmin()) {
+	            saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
+	            sendHtmlMail(null,
+	                "<h2>Login</h2>".
+	                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
+	        }
+	        return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
+	    } else {
+	        return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
+	    }
+	}
+	
 	?>
 
 <!DOCTYPE html>
@@ -147,7 +186,7 @@
 	      	<?php }
 	      	$classes = $db->getClassList();
 	      	showClassList($db,$classes,0,"Osztályok");
-	      	showClassList($db,$classes,1,"Estisek");
+	        showClassList($db,$classes,1,"Estisek");
 	      	?>
 			<li>
 				<a href="message.php">Ünzenőfal</a>
@@ -234,8 +273,9 @@ function showClassList($db,$classes,$eveningClass,$menuText) { ?>
 		<ul class="dropdown-menu" style="min-width: <?php echo userIsAdmin()?530:440?>px;columns:3; list-style-position: inside;">
 			<li><a href="editclass.php?action=newclass">Új osztály</a></li>
 			<?php
+			$stafClassId=$db->getStafClassIdBySchoolId(getAktSchoolId());
 			foreach($classes as $cclass) {
-				if ($cclass["id"]!=$db->getStafClassIdBySchoolId(getAktSchoolId()) && $eveningClass==$cclass["eveningClass"]) {
+				if ($cclass["id"]!=$stafClassId && $eveningClass==$cclass["eveningClass"]) {
 					if (getAktClassId()==$cclass["id"])
 						$aktualClass="actual_class_in_menu";
 					else
@@ -245,11 +285,13 @@ function showClassList($db,$classes,$eveningClass,$menuText) { ?>
 		  				<a style="display: inline-block;" class="<?php echo($aktualClass);?>" href="hometable.php?classid=<?php echo($cclass["id"]);?>">
 		  					<?php echo($cclass["text"]); ?>
 		  				</a>
-	  					<?php $stat=$db->getClassStatistics($cclass["id"],userIsAdmin());?>
-		  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
-		  				<?php if (userIsAdmin()) {?>
-			  				<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
-		  				<?php }?>
+		  				<?php if (userIsLoggedOn()) {?>
+    	  					<?php  $stat=$db->getClassStatistics($cclass["id"],userIsAdmin());?>
+    		  				<span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
+    		  				<?php if (userIsAdmin()) {?>
+    			  				<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
+    		  				<?php } ?>
+    		  			<?php } ?>
 		  			</li>
 		  		<?php }
 		  		}

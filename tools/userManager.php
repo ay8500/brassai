@@ -1,32 +1,4 @@
-<?PHP
-	include_once("data.php");
-	include_once 'sendMail.php';
-	
-	//Change scool year and class if parameters are there
-	if (isset($_GET['classid']))   { setAktClass($_GET['classid']); }
-	
-	//Login if crypted loginkey present and correct
-	if (isset($_GET['key'])) {
-		directLogin($_GET['key']);
-	}
-	
-	function directLogin($key){
-		global $db;
-		$personid = encrypt_decrypt("decrypt", $key);
-		$person=$db->getPersonByID($personid);
-		if (null!=$person) {
-			setAktUserId($personid);
-			setUserInSession($person["role"], $person["user"],$personid);
-			if (!userIsAdmin()) {
-				saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
-				sendHtmlMail(null,
-					"<h2>Login</h2>".
-					"Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
-			}
-		} else {
-			die("A kód nem érvényes!".$login[2]);
-		}
-	}
+<?php	
 	
 	/**
 	 * get the user id form logged in user

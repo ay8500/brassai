@@ -3,11 +3,9 @@ include_once 'tools/sessionManager.php';
 include_once("config.php");
 include_once("data.php");
 include_once 'tools/ltools.php';
-include_once 'editDiakCard.php';
-include_once 'chatinc.php';
 
 // Title of the page schoolmate or guests
-$class=getAktClass();
+// $class=getAktClass();
 $guests = getParam("guests", "")=="true";
 if (istAktClassStaf()) {
 	$subTitle=$guests?"Barátaink":"Tanáraink";
@@ -29,8 +27,10 @@ if (istAktClassStaf()) {
 }
 
 include("homemenu.php");
-	
-$resultDBoperation="";
+include_once 'editDiakCard.php';
+include_once 'chatinc.php';
+
+
 if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" )))
 		$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
@@ -63,10 +63,7 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 			Tanárok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } ?>
 	</div>
-
-
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-
 <?php
 foreach ($personList as $d)	
 { 

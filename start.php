@@ -112,6 +112,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 			<ul>
+				<li>Január 2018: <a href="hometable.php?classid="></a> Estisek tanfolyamok névsora új menüponton keresztül érhetbő el.</li>
 				<li>December 2017: <a href="start.php"></a> Ez az oldal az utólsó frissitéseket illetve bejegyzéseket is tartalmazza.</li>
 				<li>December 2016: <a href="picture.php?type=tablo&typeid=tablo">Tablók</a> albumával bővült az oldal.</li>
 				<li>Március 2016: <a href="hometable.php?classid=0 staf">Tanárok</a> listályával bővült az oldal.</li>
