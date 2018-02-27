@@ -10,6 +10,9 @@
 				<span>Válassz egy új képet max. 2MByte</span>
 				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
 				<button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-save"></span> Feltölt</button>
+				<?php  if (userIsAdmin()){?>
+					<button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
+				<?php }?>					
 				<input type="hidden" value="upload_diak" name="action" />
 				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
@@ -17,7 +20,7 @@
 		</div>
 	<?php } ?>
    <?php if ($edit) {  ?>	
-		<?php //Don't delete myself and if no user logged on?>
+		<?php //Don't delete myself?>
 		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (userIsEditor() || userIsSuperuser() || userIsAdmin()) ) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>

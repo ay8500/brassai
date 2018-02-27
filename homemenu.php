@@ -184,10 +184,13 @@
 					</ul>
 	      		</li>
 	      	<?php }
-	      	$classes = $db->getClassList();
-	      	showClassList($db,$classes,0,"Osztályok");
-	        showClassList($db,$classes,1,"Estisek");
+	      	//$classes = $db->getClassList();
+	      	//showClassList($db,$classes,0,"Osztályok");
+	        //showClassList($db,$classes,1,"Estisek");
 	      	?>
+	      	<li>
+				<a href="classlist.php">Osztályok</a>
+			</li>
 			<li>
 				<a href="message.php">Ünzenőfal</a>
 			</li>
@@ -222,7 +225,7 @@
 
 <div class="panel panel-default" style="display:none;margin:auto;width:320px;" id="uSearch" >
 	<div class="panel-heading" >
-		<b>Keresgélés</b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeSearch();"></span>
+		<b>Keresgélés: diákok, tanárok, évfolyam</b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeSearch();"></span>
 	</div>
 	<form action="search.php" method="get">
 		<input type="hidden" value="search" name="action"/>

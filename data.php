@@ -250,7 +250,7 @@ function deletePicture($pictureId,$unlink=false) {
 
 
 /**
- * Resize image, if originalFileSufix not set the original file well be owewrited
+ * Resize image, if originalFileSufix not set the original file will be owewrited
  * @param string $fileName
  * @param int $maxWidth
  * @param int $maxHight

@@ -250,7 +250,7 @@ class dbDAO {
 	 * @param int $classId
 	 * @return stdClass
 	 */
-	public function getClassStatistics($classId,$countPictures=false) {
+	public function getClassStatistics($classId,$countPictures=true) {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
 		if($countPictures) {
@@ -258,6 +258,7 @@ class dbDAO {
 			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
 			$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
 		}
+		$ret->teacher=(object)$this->dataBase->querySignleRow("select firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
 		return $ret;
 	}
 

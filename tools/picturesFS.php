@@ -68,49 +68,48 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
 	}
 	
 	//Table person
-	$toCheckPersonArray=array();
-	$whereIn="";
+	$whereIn="'o'";
 	foreach($toCheckFilesArray as $id=>$file) {
-		if ($id>0)
-			$whereIn.=",";
-		$fn=substr($file,strlen("/images"));
-		$whereIn.="'".$fn."'";
-		$toCheckPersonArray[sizeof($toCheckPersonArray)]=$fn;
+		$toCheckFilesArray[$id]=substr($file,strlen("/images"));
+		$whereIn.=",'".$toCheckFilesArray[$id]."'";
 	}
 	$sql="SELECT picture FROM person where picture in (".$whereIn.")";
 	$pictures = mysqli_query($conn,$sql);
 	while ($picture = mysqli_fetch_array($pictures))
 	{
-		if (($key = array_search($picture["picture"], $toCheckPersonArray)) !== false) {
-			unset($toCheckPersonArray[$key]);
+		if (($key = array_search($picture["picture"], $toCheckFilesArray)) !== false) {
+			unset($toCheckFilesArray[$key]);
 			$statistic->okPictures=$statistic->okPictures+1;
-			if (($key = array_search(str_replace(".", "_o.", $picture["picture"]), $toCheckPersonArray)) !== false) {
-				unset($toCheckPersonArray[$key]);
+			if (($key = array_search(str_replace(".", "_o.", $picture["picture"]), $toCheckFilesArray)) !== false) {
+				unset($toCheckFilesArray[$key]);
 				$statistic->okPictures=$statistic->okPictures+1;
 			}
 		} 
 	}
 	
 	//The list of not referenced pictures
-	foreach ($toCheckPersonArray as $notFound) {
+	foreach ($toCheckFilesArray as $notFound) {
 		if (strpos($notFound,"images")===false)
-			$notFound = "images/".$notFound;
-		echo('Not in the DB:'.$notFound.' <a href="'.$notFound.'" target="not_found"><img style="height:50px" src="'.$notFound.'"/></a>');
+			$notFoundImg = "images/".$notFound;
+		else
+			$notFoundImg = $notFound;
+		echo('Not in the DB:'.$notFound.' <a href="'.$notFound.'" target="not_found"><img style="height:50px" src="'.$notFoundImg.'"/></a>');
+
 		$fa= explode("-",basename($notFound),2);
 		if (sizeof($fa)==2 && substr($fa[0],0,1)=="d") {
 			$sql="select * from person where id =".substr($fa[0], 1);
 			$ps = mysqli_query($conn,$sql);
 			while ($person= mysqli_fetch_array($ps)) {
-				echo (' Org: <img style="height:50px" src="images/'.$person["picture"].'"/>');
+				echo (' Org:'.$person["picture"].' <img style="height:50px" src="images/'.$person["picture"].'"/>');
 			}
 		}
 		echo("<br/>");
 		if (isset($_GET["action"]) && $_GET["action"]=="delete") {
-			unlink(dirname(__DIR__)."/".$notFound);
+			unlink(dirname(__DIR__)."/".$notFoundImg);
 		}
 		
 	}
-	$statistic->errorPictures=$statistic->errorPictures+sizeof($toCheckPersonArray);
+	$statistic->errorPictures=$statistic->errorPictures+sizeof($toCheckFilesArray);
 	
 	return $statistic;
 }

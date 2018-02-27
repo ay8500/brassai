@@ -101,7 +101,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			
 			//JPG
 			if (strcasecmp($fileName[1],"jpg")==0) {
-				if ($_FILES['userfile']['size']<2000000) {
+				if ($_FILES['userfile']['size']<3100000) {
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 						if ($overwrite==false) {
 							$upicture = array();

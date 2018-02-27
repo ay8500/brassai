@@ -218,18 +218,31 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 				}
 				//The max size of e picture 
 				if ($_FILES['userfile']['size']<3100000) {
-					$idx=rand(234567,999999);
-					$pFileName="/d".$personid."-".$idx.".".strtolower($fileName[1]);
+					if (userIsAdmin() && null!=getParam("overwriteFileName")) {
+						//Overwrite an existing file
+						$pFileName='/'.basename(getParam("overwriteFileName"));
+						unlink($fileFolder.$pFileName);
+						$overwrite=true;
+					} else {
+						$idx=rand(234567,999999);
+						$pFileName="/d".$personid."-".$idx.".".strtolower($fileName[1]);
+						$overwrite=false;
+					}
 					$uploadfile=$fileFolder.$pFileName;
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-						$diak['picture']=getAktClassFolder().$pFileName;
-						if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
-							$db->saveRequest(changeType::personupload);
-							resizeImage($uploadfile,400,400,"o");
-							$resultDBoperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
-							saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
+						if (!$overwrite) {
+							$diak['picture']=getAktClassFolder().$pFileName;
+							if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
+								$db->saveRequest(changeType::personupload);
+								resizeImage($uploadfile,400,400,"o");
+								$resultDBoperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
+								saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
+							} else {
+								$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+							}
 						} else {
-							$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+							resizeImage($uploadfile,400,400,"o");
+							$resultDBoperation='<div class="alert alert-success">Kép sikeresen kicserélve</div>';
 						}
 					} else {
 						$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
