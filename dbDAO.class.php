@@ -151,6 +151,8 @@ class dbDAO {
 			$sql .=" c.name like '%".$name."%' ";
 			$sql .=" or c.graduationYear like '%".$name."%' ";
 			$sql .=" or c.text like '%".$name."%' ";
+			$sql .=" limit 50";
+				
 			$this->dataBase->query($sql);
 			while ($class=$this->dataBase->fetchRow()) {
 					array_push($ret, $class);
@@ -375,6 +377,8 @@ class dbDAO {
 			$sql .=" (classID != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is not null";
 			$sql .=" and person.changeIP ='".$_SERVER["REMOTE_ADDR"]."'";
+			$sql .=" limit 50";
+				
 			$this->dataBase->query($sql);
 			while ($person=$this->dataBase->fetchRow()) {
 				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
@@ -703,6 +707,39 @@ class dbDAO {
 			return $ret;
 		} else
 			return array();
+	}
+	
+	public function searchForPicture($name) {
+		$ret = array();
+		$nameItems=explode(' ', trim($name));
+		foreach ($nameItems as $nameWord) {
+			if (strlen(trim($nameWord))>2) {
+				$ret=array_merge($ret,$this->searchForPictureOneString($nameWord));
+			}
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Search for class by year name
+	 * @param unknown $name
+	 */
+	private function searchForPictureOneString($name) {
+		$ret = array();
+		$name=trim($name);
+		if( strlen($name)>1) {
+			$sql="select p.* from picture as p";
+			//$sql .=" left join  person as cp on c.changeUserID=cp.id where";
+			$sql .=" where p.title like '%".$name."%' ";
+			$sql .=" or p.comment like '%".$name."%' ";
+			$sql .=" limit 50";
+			$this->dataBase->query($sql);
+			while ($class=$this->dataBase->fetchRow()) {
+				array_push($ret, $class);
+			}
+			asort($ret);
+		}
+		return $ret;
 	}
 	
 
@@ -1196,6 +1233,72 @@ class dbDAO {
 	/**
 	 * get the list of best users including the score
 	 */
+	public function getNewPersonChangeBest() {
+		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->getRowList();
+			$r1=array();
+			foreach ($r as $s) {
+				$r1[$s["uid"]]=$s["count"];
+			}
+		} 
+		$ret = $this->mergeBestArray(array(),$r1,1);unset($r1);
+		
+		$sql="select id, changeUserID as uid from person where changeUserID >0 and changeForID is null";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->getRowList();
+			$r2=array();
+			foreach ($r as $s) {
+				$uid= $this->getOldestHistoryUserId($s["id"]);
+				if ($uid==0) 
+					$uid=$s["uid"];
+				if (isset($r2[$uid]))
+					$r2[$uid]=$r2[$uid]+1;
+				else
+					$r2[$uid]=1;
+			}
+		} 
+		$ret = $this->mergeBestArray(array(),$r2,3);unset($r2);
+		
+		$sql="select id, changeUserID as uid from picture where changeUserID >0 and isDeleted=0";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->getRowList();
+			$r3=array();
+			foreach ($r as $s) {
+				$uid= $this->getOldestHistoryUserId($s["id"]);
+				if ($uid==0) 
+					$uid=$s["uid"];
+				if (isset($r3[$uid]))
+					$r3[$uid]=$r3[$uid]+1;
+				else
+					$r3[$uid]=1;
+			}
+		} 
+		$ret = $this->mergeBestArray($ret,$r3,5);unset($r3);
+		var_dump($ret);
+		$rets=array();
+		for($i=0;$i<12;$i++) {
+			$value=0;
+			foreach ($ret as $uid=>$count) {
+				if($count>$value) {
+					$value=$count;
+					$vuid=$uid;
+				}
+			}
+			$rets[$vuid]=$value;
+			unset($ret[$vuid]);
+		}
+		return $rets;
+	}
+	
+	private function getOldestHistoryUserId($id) {
+		$sql="select changeUserID from history where entyID =".$id." and changeUserID>0 order by changeDate limit 1";
+		$this->dataBase->queryInt($sql);
+	}
+
 	public function getPersonChangeBest() {
 		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID limit 20";
 		$this->dataBase->query($sql);
@@ -1205,9 +1308,9 @@ class dbDAO {
 			foreach ($r as $s) {
 				$r1[$s["uid"]]=$s["count"];
 			}
-		} 
+		}
 		$ret = $this->mergeBestArray(array(),$r1,1);
-
+	
 		$sql="select count(1) as count, changeUserID as uid from person where changeUserID !=0 group by  changeUserID limit 20";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
@@ -1216,9 +1319,9 @@ class dbDAO {
 			foreach ($r as $s) {
 				$r2[$s["uid"]]=$s["count"];
 			}
-		} 
+		}
 		$ret = $this->mergeBestArray(array(),$r2,3);
-		
+	
 		$sql="select count(1) as count, changeUserID as uid from picture where changeUserID !=0 group by  changeUserID limit 20";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
@@ -1227,7 +1330,7 @@ class dbDAO {
 			foreach ($r as $s) {
 				$r3[$s["uid"]]=$s["count"];
 			}
-		} 
+		}
 		$ret = $this->mergeBestArray($ret,$r3,5);
 		$rets=array();
 		for($i=0;$i<12;$i++) {
@@ -1243,6 +1346,7 @@ class dbDAO {
 		}
 		return $rets;
 	}
+	
 	
 	private function mergeBestArray($a1,$a2,$factor=1) {
 		foreach ($a2 as $idx=>$a) {

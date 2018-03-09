@@ -8,10 +8,14 @@
  */
 function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	$d=$person;
-	if (userIsLoggedOn() || localhost()) {
-		$personLink="editDiak.php?uid=".$d["id"];
+	if ($d["id"]!=-1) {
+		if (userIsLoggedOn() || localhost()) {
+			$personLink="editDiak.php?uid=".$d["id"];
+		} else {
+			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
+		}
 	} else {
-		$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
+		$personLink="javascript:alert('Sajnos erről a személyről nincsenek adatok.');";
 	}
 	//Set the RIP value
 	strstr($d["role"],"rip")!=""?$rstyle="rip":$rstyle="";
@@ -27,7 +31,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
 				<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
 			</a>
-			<?php  if (userIsAdmin()) {?>
+			<?php  if (userIsAdmin() || userIsSuperuser()) {?>
 			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$d["id"]))?></span>
 			</a>
@@ -40,14 +44,17 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 					<h5>Tanár</h5>
 				<?php } else { 
 					$diakClass = $db->getClassById($d["classID"]);
-					$classText = getClassName($diakClass); 
+					$classText = getClassName($diakClass);
 					if (isPersonGuest($d)==1) {
 						if ($d["classID"]!=0) 
 							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
 							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 					} else {
-						echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+						if (null!=$diakClass)
+							echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+						else 
+							echo('<h5>Véndiák:'.-1 * $d["classID"].'</h5>'); //Graduation year for laurates that are not in the db
 					}
 				} ?>
 			<?php } ?>
@@ -142,7 +149,13 @@ function displayPicture($db,$picture,$showSchool=false) {
 			<a href="picture.php?type=<?php echo $type?>&typeid=<?php echo $typeid?>&id=<?php echo $picture["id"]?>">
 				<image src="convertImg.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" />
 			</a>
-		</div><br/>
+		</div>
+		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+			<a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;">
+				<span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$picture["id"]))?></span>
+			</a>
+		<?php } ?>
+		<br/>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			<b><?php echo $picture["title"];?></b><br/>
 			<?php echo $typeText;?><br/>
@@ -188,6 +201,11 @@ function displayClass($db,$d,$showDate=false) {
 				Módosítva: <a href="editDiak.php?uid=<?php echo $d["changeUserID"]?>" ><?php echo $d["clname"]." ".$d["cfname"]?></a> <br/>
 				Dátum:<?php echo date("Y.m.d H:i:s",strtotime($d["changeDate"]));?>
 			</div>
+		<?php }?>
+		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+			<br/><a href="history.php?table=class&id=<?php echo $d["id"]?>" style="display:inline-block;">
+				<span class="badge"><?php echo sizeof($db->getHistoryInfo("class",$d["id"]))?></span>
+			</a>
 		<?php }?>
 	</div>
 <?php }

@@ -8,6 +8,7 @@ include_once 'editDiakCard.php';
 $name=trim(html_entity_decode(getGetParam("srcText", "")));
 $personList=$db->searchForPerson($name);
 $classList=$db->searchForClass($name);
+$pictureList=$db->searchForPicture($name);
 
 ?>
 
@@ -30,6 +31,16 @@ $classList=$db->searchForClass($name);
 		<?php
 		foreach ($classList as $d)	{
 			displayclass($db,$d);
+		}
+	}
+	?>
+	<?php if(sizeof($pictureList)>0) {?>
+		<div class="well">
+			Talált képek száma:<?php echo sizeof($pictureList)?> Keresett szó:"<?php echo $name?>"
+		</div>
+		<?php
+		foreach ($pictureList as $d)	{
+			displayPicture($db,$d);
 		}
 	}
 	?>

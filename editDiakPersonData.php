@@ -7,7 +7,9 @@
 	<?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<form enctype="multipart/form-data" action="editDiak.php" method="post">
-				<span>Válassz egy új képet max. 2MByte</span>
+				<h4>Profiképed</h4>
+				<div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
+				<span>Válassz egy új jpg képet max. 2MByte</span>
 				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
 				<button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-save"></span> Feltölt</button>
 				<?php  if (userIsAdmin()){?>

@@ -62,11 +62,11 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 			if ($count>=1) {
 				$person=$db->getPersonByID($uid);
 				$personName=$person["lastname"]." ".$person["firstname"];
-				if (strlen($personName)<3) $personName="Anonim";
+				if (strlen($personName)<4) $personName="Anonim";
 				?>
 				<div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
 					<span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
-					<span style="width: 146px;display: inline-block;"><?php echo $personName?></span>
+					<span style="width: 146px;display: inline-block;"><a href="editDiak.php?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
 	   				<span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
 	   			</div>
 			<?php

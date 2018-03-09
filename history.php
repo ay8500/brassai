@@ -16,13 +16,16 @@ $resultDBoperation="";
 </div>
 
 
-<?php if (userIsAdmin()) {
+<?php if (userIsAdmin() || userIsSuperuser()) {
 	$history=$db->getHistory(getParam("table"), getParam("id"));
 ?>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<label id="dbDetails">Adat</label> 
+		&nbsp;&nbsp;&nbsp;&nbsp;Színek jelentése:<span style="background-color:#e0ffe0" > Adat nem üres</span>
+		<span style="background-color:yellow" > Adat módosítás</span>
+		
 	</div>
 	<table class="history">
 		<?php 
@@ -37,7 +40,7 @@ $resultDBoperation="";
 		  		</tr>
 			<?php }	?>
 	  		<tr>
-	   			<?php displayHistoryElement($db,$item,$id<sizeof($history)-1?$history[$id+1]:null,false);?>
+	   			<?php displayHistoryElement($db,$item,$id<sizeof($history)-1?$history[$id+1]:null,false,$id==sizeof($history)-1);?>
 	  	  	</tr>
   		<?php } ?>
 	</table>
@@ -46,17 +49,34 @@ $resultDBoperation="";
 <?php } else { ?>
 	<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>
 <?php } ?>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <?php include 'homefooter.php';?>
 
 <?php 
-function displayHistoryElement($db,$item,$itemNext,$original=false) {
+function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=false) {
 	switch ($item["table"]) {
 		case "person" :
 			if ($original) 
 				$person=$db->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$person=json_decode_utf8($item["jsonData"]);
-			displayPerson($db, $item,$person,json_decode_utf8($itemNext["jsonData"]),$original);
+			displayPerson($db, $item,$person,json_decode_utf8($itemNext["jsonData"]),$original,$lastElement);
 			break;
 		case "picture" :
 			if ($original) 
@@ -64,6 +84,13 @@ function displayHistoryElement($db,$item,$itemNext,$original=false) {
 			else
 				$picture=json_decode_utf8($item["jsonData"]);
 			displayPicture($db, $picture,json_decode_utf8($itemNext["jsonData"]));
+			break;
+		case "vote" :
+			if ($original) 
+				$vote=$db->getEntryById($item["table"],$item["entryID"],true);
+			else
+				$vote=json_decode_utf8($item["jsonData"]);
+			displayVote($db, $vote,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "class" :
 			if ($original) 
@@ -75,11 +102,7 @@ function displayHistoryElement($db,$item,$itemNext,$original=false) {
 	}
 }
 
-function displayPerson($db,$item, $person,$personNext,$original) {
-	if (!$original) {
-		displayChangeData($db,$item);
-		echo("</tr><tr>");
-	}
+function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayChangeData($db,$person);
 	displayElement(getPersonName($person), getPersonName($personNext));
 	displayElementObj($person, $personNext,"picture","Pic");
@@ -111,7 +134,8 @@ function displayPerson($db,$item, $person,$personNext,$original) {
 	displayElementObj($person, $personNext,"passw","P");
 	displayElementObj($person, $personNext,"classID","C");
 	displayElementObj($person, $personNext,"isTeacher","T");
-	
+	if ($item["changeUserID"]!=$person["changeUserID"] && !$lastElement )
+		displayChangeData($db,$item);	
 }
 
 function displayClass($db,$class,$classNext) {
@@ -124,12 +148,21 @@ function displayClass($db,$class,$classNext) {
 
 function displayPicture($db,$picture,$pictureNext) {
 	displayChangeData($db,$picture);
-	displayElementObj($picture, $pictureNext, "title");
+	displayElementObj($picture, $pictureNext, "title" );
 	displayElementObj($picture, $pictureNext, "comment");
-	displayElementObj($picture, $pictureNext, "isVisibleForAll");
+	displayElementObj($picture, $pictureNext, "isVisibleForAll" );
 	displayElementObj($picture, $pictureNext, "isDeleted");
 }
 
+function displayVote($db,$vote,$voteNext) {
+	displayChangeData($db,$vote);
+	displayElementObj($vote, $voteNext, "eventDay", "D");
+	displayElementObj($vote, $voteNext, "isSchool", "I");
+	displayElementObj($vote, $voteNext, "isCemetery", "T");
+	displayElementObj($vote, $voteNext, "isDinner", "V");
+	displayElementObj($vote, $voteNext, "isExcursion", "K");
+	displayElementObj($vote, $voteNext, "place", "H");
+}
 
 /**
  * Display: ChangeDate, IP, Username
@@ -137,14 +170,22 @@ function displayPicture($db,$picture,$pictureNext) {
 function displayChangeData($db,$item) {
 	$changePerson=$db->getPersonByID($item["changeUserID"]);
 	?><td><?php echo date("Y.m.d",strtotime($item["changeDate"]))?> <?php echo date("H:i:s",strtotime($item["changeDate"]))?></td>
-	<td><?php echo $item["changeIP"]?></td>
+	<?php if (userIsAdmin()) {?>
+		<td onclick="showip('<?php echo $item["changeIP"]?>');" class="btn">IP</td>
+	<?php } ?>
 	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td><?php
 }
 
 function displayElement($text,$nextText,$title=null,$field="") {
 	
 	if (trim($text)===trim($nextText)) {
-		$style='style="background-color:white"';
+		if ($text==="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+			$text="";
+		if (trim($text)==="" ) { 
+			$style='style="background-color:white"';
+		} else {
+			$style='style="background-color:#e0ffe0"';
+		}
 	} else {
 		$style='style="background-color:yellow"';
 	}
@@ -154,6 +195,7 @@ function displayElement($text,$nextText,$title=null,$field="") {
 		echo('<td title="'.$field.':'.$text.'"'.$style.'>'.$title.'</td>');
 	}
 }
+
 
 function displayElementObj($text,$nextText,$field,$title=null) {
 	displayElement($text[$field], $nextText[$field],$title,$field);
@@ -178,6 +220,13 @@ function json_decode_utf8($json) {
 ?>
 
 <script type="text/javascript">
-
-
+	function showip(ip) {
+	    $.ajax({
+		  url: "http://ip-api.com/json/"+ip
+		}).success(function(data) {
+		    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
+			$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+			$('#myModal').modal({show: 'false' });
+		});
+	}
 </script>

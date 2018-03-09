@@ -171,6 +171,7 @@ if(isset($picture)) {
 			<button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
 		</div>
 		<div id="download" style="margin:15px;display:none;">
+			<div>Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.<span></span></div>
 			<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
 			<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
 			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" ><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
