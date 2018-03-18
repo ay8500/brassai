@@ -110,6 +110,9 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							$upicture["file"]="images/".getAktClassFolder().$pFileName;
 							$upicture["isVisibleForAll"]=1;
 							$upicture["isDeleted"]=0;
+							if (null!=getParam("album")) {
+								$upicture["albumName"]=getParam("album");
+							}
 							$upicture["uploadDate"]=date("Y-m-d H:i:s");
 							if ($db->savePicture($upicture)>=0) {
 								$db->saveRequest(changeType::personupload);
@@ -151,7 +154,7 @@ if(isset($picture)) {
 	$notDeletedPictures=1;
 } else {
 	if ($type!="tablo")
-		$pictures = $db->getListOfPictures($typeId, $type, 2, 2);
+		$pictures = $db->getListOfPictures($typeId, $type, 2, 2, getParam("album"));
 	else
 		$pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
 	foreach ($pictures as $pict) {
@@ -182,6 +185,9 @@ if(isset($picture)) {
 			<?php endif;?>
 			<input type="hidden" value="<?PHP echo(getIntParam("tabOpen",0)) ?>" name="tabOpen" />
 			<input type="hidden" name="type" value="<?php echo ($type)?>" />
+			<?php if(null!=getParam("album")) {?>
+				<input type="hidden" name="album" value="<?php echo (getParam("album"))?>" />
+			<?php }?>
 			<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
 		</div>
 		<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>

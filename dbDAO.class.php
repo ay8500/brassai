@@ -600,7 +600,7 @@ class dbDAO {
 	 * @param string $type the type of picture personID, classID, schoolID
 	 * @return array of pictures  
 	 */
-	 public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1) {
+	 public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1,$album=null) {
 		$sql="";
 		if($id!=null)
 			$sql.=$type."=".$id;
@@ -610,6 +610,11 @@ class dbDAO {
 			$sql.=" and isDeleted=".$isDeleted;}
 		if ($isVisibleForAll<2) {
 			$sql.=" and isVisibleForAll=".$isVisibleForAll; }
+		if (null!=$album) {
+			$sql.=" and albumName='".$album."'"; 
+		} else {
+			$sql.=" and albumName is null";
+		}
 		return $this->getElementList("picture",$sql,null,null,"orderValue desc");	
 	}
 	

@@ -38,6 +38,8 @@ if (!isset($typeId)) {
 		setAktClass($typeId);
 	}
 }
+$album=getParam("album","");
+
 $SiteTitle="Ballagási tabló és csoportképek".getAktClassName();
 include("homemenu.php");
 
@@ -50,7 +52,7 @@ include("homemenu.php");
 	<?php } if ($type=="personID") { $person=$db->getPersonByID($typeId); ?>
 		<h2 class="sub_title"><?php writePersonLinkAndPicture($person);?> képei</h2>
 	<?php } if ($type=="schoolID") { ?>
-		<h2 class="sub_title">Képek iskolánkról.</h2>
+		<h2 class="sub_title">Képek iskolánkról. <?php echo $album?></h2>
 	<?php } if ($type=="tablo") { ?>
 		<h2 class="sub_title">Iskolánk tabló képei.</h2>
 	<?php }  ?>
