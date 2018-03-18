@@ -4,40 +4,23 @@ include('homemenu.php');
 include_once('tools/userManager.php');
 $resultDBoperation="";
 
-$persons=$db->getPersonList();
-$classmate=0;$classmatePicture=0;$classmateEmail=0;$facebook=0;
-$teacher=0;$teacherPicture=0;
-foreach ($persons as $person) {
-	if (intval($person["isTeacher"])==1) {
-		$teacher++;
-		if(isset($person["picture"]))
-			$teacherPicture++;
-	} else {
-		$classmate++;
-		if(isset($person["picture"]))
-			$classmatePicture++;
-		if(isset($person["email"]) && $person["email"]!="")
-			$classmateEmail++;
-		if(isset($person["facebook"]) && $person["facebook"]!="")
-			$facebook++;
-	}
-}
-unset($persons);
 
-$classes=$db->getClassList(getAktSchoolId());
-$classCount=0;$classGraduationPicture=0;$classPicture=0;
-foreach ($classes as $class) {
-	if ($class["text"]!="staf")
-		$classCount++;
-	$pictures=$db->getPictureList("classID=".$class["id"]);
-	foreach ($pictures as $picture) {
-		if(isset($picture["title"]) && $picture["title"]!="" && (strstr($picture["title"],"Tabl")!="" || strstr($picture["title"],"tabl")!="") ) 
-			$classGraduationPicture++;
-		else
-			$classPicture++;
-	}
-}
-unset($classes);unset($pictures);
+$classmate=$db->getTableCount("person","isTeacher='0'");
+$classmatePicture=$db->getTableCount("person","isTeacher='0' and (picture is not null and picture <>'')");
+$classmateEmail=$db->getTableCount("person","isTeacher='0' and (email is not null and email<>'')");
+$classmateFacebook=$db->getTableCount("person","isTeacher='0' and (facebook is not null and facebook<>'')");
+$classmateWikipedia=$db->getTableCount("person","isTeacher='0' and homepage like '%wikipedia%'");
+$classmatePictures=$db->getTableCount("picture","personID is not null");
+
+$teacher=$db->getTableCount("person","isTeacher='1'");
+$teacherPicture=$db->getTableCount("person","isTeacher='1' and (picture is not null and picture <>'')");;
+$teacherEmail=$db->getTableCount("person","isTeacher='1' and (email is not null and email<>'')");
+$teacherFacebook=$db->getTableCount("person","isTeacher='1' and (facebook is not null and facebook<>'')");
+$teacherWikipedia=$db->getTableCount("person","isTeacher='1' and homepage like '%wikipedia%'");
+
+$classCount=$db->getTableCount("class");
+$classGraduationPicture=$db->getTableCount("picture","classID is not null and title like 'Tabló%'");
+$classPicture=$db->getTableCount("picture","classID is not null");
 
 ?>
 <style>
@@ -48,63 +31,99 @@ unset($classes);unset($pictures);
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 </div>
 
-
+<div  style="margin:30px">
 <div class="panel panel-default">
 	<div class="panel-heading text-center"><label >Tanárok</label></div>
-	<ul class="list-group">
+	<ul class="list-group"  style="list-style: none;">
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Összesen</span></span>
 	       		<span type="text" class="form-control"><?php echo $teacher?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=teacher" class="btn btn-default">Mutasd</a></div>
 	  		</div>
   		</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Képpel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $teacherPicture." (".round($teacherPicture/$teacher*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=teacherwithpicture" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
-	  	<br/>
+  		<li>
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">E-Mail címmel</span></span>	
+	       		<span type="text" class="form-control"><?php echo $teacherEmail." (".round($teacherEmail/$teacher*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=teacherwithemail" class="btn btn-default">Mutasd</a></div>
+	  		</div>
+	  	</li>
+  		<li>
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">Facebook</span></span>	
+	       		<span type="text" class="form-control"><?php echo $teacherFacebook." (".round($teacherFacebook/$teacher*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=teacherwithfacebook" class="btn btn-default">Mutasd</a></div>
+	  		</div>
+	  	</li>
+  		<li>
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">Wikipedia</span></span>	
+	       		<span type="text" class="form-control"><?php echo $teacherWikipedia." (".round($teacherWikipedia/$teacher*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=teacherwithwikipedia" class="btn btn-default">Mutasd</a></div>
+	  		</div>
+	  	</li>
 	</ul>
 </div>
 
 
 <div class="panel panel-default">
 	<div class="panel-heading text-center"><label >Véndiákok</label></div>
-	<ul class="list-group">
-  		<li class="">
-			<div class="input-group input-group-sm">
-	  			<span class="input-group-addon"><span class="statw">Összesen</span></span>
-	       		<span type="text" class="form-control"><?php echo $classmate?></span>
-	  		</div>
+	<ul class="list-group"  style="list-style: none;">
+  		<li>
+  			<div class="input-group input-group-sm">
+  				<span class="input-group-addon"><span class="statw">Összesen</span></span>
+       			<span type="text" class="form-control"><?php echo $classmate?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=classmate" class="btn btn-default">Mutasd</a></div>
+	       	</div>
   		</li>
-  		<li class="">
+  		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Képpel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classmatePicture." (".round($classmatePicture/$classmate*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=classmatewithpicture" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">E-Mail címmel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classmateEmail." (".round($classmateEmail/$classmate*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=classmatewithemail" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
-	  	<?php if (userIsAdmin()) {?>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Facebook</span></span>	
-	       		<span type="text" class="form-control"><?php echo $facebook." (".round($facebook/$classmate*100,2)."%)"?></span>
+	       		<span type="text" class="form-control"><?php echo $classmateFacebook." (".round($classmateFacebook/$classmate*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=classmatewithfacebook" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
-	  	<?php }?>
-	  	<br/>
+  		<li>
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">Wikipedia</span></span>	
+	       		<span type="text" class="form-control"><?php echo $classmateWikipedia." (".round($classmateWikipedia/$classmate*100,2)."%)"?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=classmatewithwikipedia" class="btn btn-default">Mutasd</a></div>
+	  		</div>
+	  	</li>
+  		<li class="">
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">Képek</span></span>	
+	       		<span type="text" class="form-control"><?php echo $classmatePictures?></span>
+	  		</div>
+	  	</li>
 	</ul>
 </div>
 
 <div class="panel panel-default">
 	<div class="panel-heading text-center"><label >Osztályok</label></div>
-	<ul class="list-group">
+	<ul class="list-group" style="list-style: none;">
   		<li class="">
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Összesen</span></span>
@@ -123,8 +142,8 @@ unset($classes);unset($pictures);
 	       		<span type="text" class="form-control"><?php echo $classPicture?></span>
 	  		</div>
 	  	</li>
-	  	<br/>
 	</ul>
+</div>
 </div>
 
 <?php include 'homefooter.php';?>

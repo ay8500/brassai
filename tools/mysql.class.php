@@ -45,7 +45,7 @@ class MySqlDb {
   /* Execute a query that return a single iteger value */
   public function queryInt($query) {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-	if(!$this->result==false) {
+	if(!$this->result===false) {
   		$r =mysqli_fetch_row($this->result);
   		return  intval($r[0]);
 	}

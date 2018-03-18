@@ -425,16 +425,28 @@ class dbDAO {
 	/**
 	 * get the person list!
 	 */
-	public function getPersonList($optWhere=null) {
-		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-		if (null!=$optWhere) {
-			$where .=' and '.$optWhere;
-		}
-		$ret = $this->getElementList("person",$where);
-		usort($ret, "compareAlphabetical");
+	public function getPersonList($where=null,$limit=null,$ofset=null) {
+		$ret = $this->getElementList("person",$where,$limit,$ofset);
+		//usort($ret, "compareAlphabetical");
 		return $ret;
 	}
 
+	/**
+	 * get person count
+	 * @param unknown $where
+	 * @param unknown $limit
+	 * @param unknown $ofset
+	 */
+	public function getTableCount($table,$where=null) {
+		//normal entrys
+		$sql="select count(1) from ".$table." where ( (changeForID is null and changeUserID is not null) ";
+		//anonymous new entrys from the aktual ip
+		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
+		if ($where!=null)
+			$sql.=" and ".$where;
+		return $this->dataBase->queryInt($sql);
+	}
+	
 	/**
 	 * get the recently updated person list
 	 */
