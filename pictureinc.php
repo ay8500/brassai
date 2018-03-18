@@ -1,7 +1,4 @@
-<?php 
-$view=getParam("view","table");
-?>
-
+<?php $view=getParam("view","table"); ?>
 <style>
 .ilbuttonworld {
     background-image: url("images/world-16.png");
@@ -43,8 +40,6 @@ $view=getParam("view","table");
 
 <?php 
 $resultDBoperation="";
-
-
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
@@ -144,9 +139,6 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 	}
 }
 
-
-
-
 $notDeletedPictures=0;
 
 if(isset($picture)) {
@@ -169,7 +161,7 @@ if(isset($picture)) {
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
-				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId."'"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
+				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
 			<?php  }?>
 			<button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
 		</div>

@@ -40,23 +40,22 @@ if (!isset($typeId)) {
 }
 $album=getParam("album","");
 
-$SiteTitle="Ballagási tabló és csoportképek".getAktClassName();
+
+if ($type=="classID") {
+	$subtitle="A tanárok és diákok együtt a ballagási tablón és csoportképeken. ".getAktClassName();
+} if ($type=="personID") { 
+	$person=$db->getPersonByID($typeId);
+	$subtitle=getPersonName($person)." képei";
+} if ($type=="schoolID") { 
+	$subtitle="Képek iskolánkról. ".$album;
+} if ($type=="tablo") { 
+	$subtitle="Iskolánk tabló képei.";
+}  
+$SiteTitle=$subtitle;
 include("homemenu.php");
-
 ?>
-
 <div class="container-fluid">
-	
-	<?php if ($type=="classID") {?>
-		<h2 class="sub_title">A tanárok és diákok együtt a ballagási tablón és csoportképeken.</h2>
-	<?php } if ($type=="personID") { $person=$db->getPersonByID($typeId); ?>
-		<h2 class="sub_title"><?php writePersonLinkAndPicture($person);?> képei</h2>
-	<?php } if ($type=="schoolID") { ?>
-		<h2 class="sub_title">Képek iskolánkról. <?php echo $album?></h2>
-	<?php } if ($type=="tablo") { ?>
-		<h2 class="sub_title">Iskolánk tabló képei.</h2>
-	<?php }  ?>
-
+<h2 class="sub_title"><?php echo $subtitle ?></h2>
 <?php include_once 'pictureinc.php';?>
 
 </div>

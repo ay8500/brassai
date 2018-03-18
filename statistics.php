@@ -33,7 +33,7 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 
 <div  style="margin:30px">
 <div class="panel panel-default">
-	<div class="panel-heading text-center"><label >Tanárok</label></div>
+	<div class="panel-heading text-center"><span class="icon"></span><label> Tanárok</label></div>
 	<ul class="list-group"  style="list-style: none;">
   		<li>
 			<div class="input-group input-group-sm">
