@@ -157,7 +157,7 @@ if(isset($picture)) {
 }
 ?>
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-	<?php if (($notDeletedPictures<250 || userIsAdmin()) && $type!="tablo") :?>
+	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $type!="tablo") :?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
@@ -331,6 +331,7 @@ function toogleListBlock() {
 		$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
 		$url .=isset($type)?"&type=".$type:"";
 		$url .=isset($typeId)?"&typeid=".$typeId:"";
+		$url .=null!=getParam("album")?"&album=".getParam("album"):"";
 		$url .=isset($id)?"&id=".$id:"";
 		?>
 		window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>";
@@ -338,7 +339,7 @@ function toogleListBlock() {
 	
 function deletePicture(id) {
 	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
+		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
 	}
 }
 
@@ -349,6 +350,7 @@ function changeOrder(id1,id2) {
 	$url .=isset($type)?"&type=".$type:"";
 	$url .=isset($typeId)?"&typeid=".$typeId:"";
 	$url .=isset($id)?"&id=".$id:"";
+	$url .=null!=getParam("album")?"&album=".getParam("album"):"";
 	$url .="&action=changeOrder";
 	?>
 	window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>"+"&id1="+id1+"&id2="+id2;
@@ -368,7 +370,7 @@ function displayedit(id) {
 <?php if (userIsAdmin()) :?>
 function unlinkPicture(id) {
 	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>";
+		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+"&tabOpen="+<?php echo(getIntParam("tabOpen",0))?>+"&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
 	}
 }
 <?php endif;?>

@@ -159,6 +159,9 @@ function displayPicture($db,$picture,$showSchool=false) {
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			<b><?php echo $picture["title"];?></b><br/>
 			<?php echo $typeText;?><br/>
+			<?php if (isset($picture["albumName"])) {?>
+				Album:<?php echo $picture["albumName"]?><br/>
+			<?php }?>
 			Feltőltötte: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
 			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["uploadDate"]));?>
 		</div>
