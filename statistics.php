@@ -32,7 +32,7 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 </div>
 
 <div  style="margin:30px">
-<div class="panel panel-default">
+<div id="teacherff" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
 	<div class="panel-heading text-center"><span class="icon"></span><label> Tanárok</label></div>
 	<ul class="list-group"  style="list-style: none;">
   		<li>
@@ -73,8 +73,9 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 	</ul>
 </div>
 
-
-<div class="panel panel-default">
+<div class="panel panel-default"  style="padding:5px;width:400px; display:inline-block;vertical-align: top;" id="teachergg"></div>
+<br/>
+<div id="personff" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
 	<div class="panel-heading text-center"><label >Véndiákok</label></div>
 	<ul class="list-group"  style="list-style: none;">
   		<li>
@@ -121,7 +122,9 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 	</ul>
 </div>
 
-<div class="panel panel-default">
+<div class="panel panel-default"  style="padding:5px;width:400px; display:inline-block;vertical-align: top;" id="persongg"></div>
+<br/>
+<div id="classff" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
 	<div class="panel-heading text-center"><label >Osztályok</label></div>
 	<ul class="list-group" style="list-style: none;">
   		<li class="">
@@ -144,7 +147,63 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 	  	</li>
 	</ul>
 </div>
+<div class="panel panel-default"  style="padding:5px;width:400px; display:inline-block;vertical-align: top;" id="classgg"></div>
+<br/>
+
 </div>
 
 <?php include 'homefooter.php';?>
 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data1 = google.visualization.arrayToDataTable([
+			['','',{ role: 'style' }],                                                          
+            ['Összesen',<?php echo $teacher?>,'red'],
+            ['Képpel',<?php echo $teacherPicture?>,'green'],
+            ['E-Mail',<?php echo $teacherEmail?>,'blue'],
+            ['Facebook',<?php echo $teacherFacebook?>,'lightblue'],
+            ['Wikipedia',<?php echo $teacherWikipedia?>,'cyan']
+        ]);
+        var data2 = google.visualization.arrayToDataTable([
+ 		  ['','',{ role: 'style' }],                                                          
+          ['Összesen',<?php echo $classmate?>,'red'],
+          ['Képpel',<?php echo $classmatePicture?>,'green'],
+          ['E-Mail',<?php echo $classmateEmail?>,'blue'],
+          ['Facebook',<?php echo $classmateFacebook?>,'lightblue'],
+          ['Wikipedia',<?php echo $classmateWikipedia?>,'cyan'],
+          ['Képek',<?php echo $classmatePictures?>,'lightgreen']
+		]);
+        var data3 = google.visualization.arrayToDataTable([
+ 			['','',{ role: 'style' }],                                                          
+			['Összesen',<?php echo $classCount?>,'red'],
+			['Tablóképpel',<?php echo $classGraduationPicture?>,'green'],
+			['Képek',<?php echo $classPicture?>,'lightgreen']
+        ]);
+
+        var options = {chart: { }, bars: 'horizontal', legend: { position: "none" }};
+        
+
+        var view1 = new google.visualization.DataView(data1);
+        view1.setColumns([0,1,{ calc: "stringify",sourceColumn: 1,type: "string",role: "annotation" },2]);
+        var chart1 = new google.visualization.BarChart(document.getElementById("teachergg"));
+        options.title="Tanárok";options.height=$("#teacherff").height();
+        chart1.draw(view1, options);
+
+        var view2 = new google.visualization.DataView(data2);
+        view2.setColumns([0,1,{ calc: "stringify",sourceColumn: 1,type: "string",role: "annotation" },2]);
+        var chart2 = new google.visualization.BarChart(document.getElementById("persongg"));
+        options.title="Véndiákok";options.height=$("#personff").height();
+        chart2.draw(view2, options);
+
+        var view = new google.visualization.DataView(data3);
+        view.setColumns([0,1,{ calc: "stringify",sourceColumn: 1,type: "string",role: "annotation" },2]);
+        var chart3 = new google.visualization.BarChart(document.getElementById("classgg"));
+        options.title="Osztályok";options.height=$("#classff").height();
+        chart3.draw(view, options);
+      }
+    </script>

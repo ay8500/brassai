@@ -105,7 +105,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							$upicture["file"]="images/".getAktClassFolder().$pFileName;
 							$upicture["isVisibleForAll"]=1;
 							$upicture["isDeleted"]=0;
-							if (null!=getParam("album")) {
+							if (null!=getParam("album") && getParam("album")!="") {
 								$upicture["albumName"]=getParam("album");
 							}
 							$upicture["uploadDate"]=date("Y-m-d H:i:s");
