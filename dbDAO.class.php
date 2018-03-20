@@ -562,7 +562,7 @@ class dbDAO {
 	public function savePicture($picture) {
 		$newEntry=$picture["id"]==-1;
 		$id = $this->saveEntry("picture", $picture);
-		if ($newEntry and $id>=0) {
+		if ($newEntry && $id>=0) {
 			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id]],"id",$id);
 		}
 		return $id;
@@ -613,7 +613,7 @@ class dbDAO {
 		if (null!=$album) {
 			$sql.=" and albumName='".$album."'"; 
 		} else {
-			$sql.=" and albumName is null";
+			$sql.=" and (albumName is null or albumName='')";
 		}
 		return $this->getElementList("picture",$sql,null,null,"orderValue desc");	
 	}
@@ -1349,6 +1349,20 @@ class dbDAO {
 			}
 		}
 		$ret = $this->mergeBestArray($ret,$r3,5);
+
+		$sql="select userLastLogin, changeUserID as uid from person where userLastLogin is not null limit 20";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->getRowList();
+			$r4=array();
+			foreach ($r as $s) {
+				$diff=date_diff(new DateTime(),new DateTime($s["userLastLogin"]),true);
+				if ($diff->days<1000)
+					$r4[$s["uid"]]=1000-$diff->days;
+			}
+		}
+		$ret = $this->mergeBestArray($ret,$r4,1);
+		
 		$rets=array();
 		for($i=0;$i<12;$i++) {
 			$value=0;

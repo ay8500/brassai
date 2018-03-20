@@ -103,7 +103,7 @@ include("homemenu.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" onchange="changeYear()" id="selectYear">
 				<option value="0">...válassz...</option>
-				<?php for($year=date("Y")-80;$year<=date("Y");$year++) {?>
+				<?php for($year=date("Y")-118;$year<=date("Y");$year++) {?>
 				<option value="<?php echo $year?>" <?php echo (isset($class) && intval($class["graduationYear"])===$year)?"selected":""?>><?php echo $year?></option>
 				<?php } ?>
 			</select>
@@ -116,7 +116,7 @@ include("homemenu.php");
 				<option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
 				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
 				<?php 
-					for($cl=10;$cl<14;$cl++) {
+					for($cl=8;$cl<14;$cl++) {
 						for($cs="A";$cs<="L";$cs++) {
 				?>
 					<option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option>

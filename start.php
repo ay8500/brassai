@@ -73,7 +73,8 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 			}
 		}
 		?>
-		<div>Pontok:  Képek=5, új személy=3, személy módosítás=1 (Pontokat csak bejelentkezett véndiákok kaphatnak)</div>
+		<div>Pontok:  Bejelentkezés=1000, Képek=5, új személy=3, személy módosítás=1 </div>
+		<div stlye="font-size:x-small">Pontokat csak bejelentkezett véndiákok kaphatnak, a bejelentkezésí pontszám minden nap egy ponttal csökken.</div>
 	</div>
 				
 

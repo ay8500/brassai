@@ -76,8 +76,7 @@ function loggerArray($arr, $level=loggerLevel::info) {
 		   echo("</table>");
 		 }
 		if ($_SESSION['loggerType']==loggerType::file) {
-			//TODO
-			logToFile("Array logger not impelented",$level);
+			logToFile("Array: ".var_export($arr, true),$level);
 		}
 	}
 }

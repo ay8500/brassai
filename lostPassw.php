@@ -7,7 +7,7 @@ include_once 'tools/ltools.php';
 $mail='';$myname="";$resultText='';$rights="";
 
 //change the password
-if (getParam('action','')=='newPassword') {
+if (isActionParam('newPassword')) {
 	if (isset($_GET['mail'])) $mail=$_GET['mail'];
 	if (checkEmail($mail)) {
 		$ret=resetUserPasswort($mail, createPassword(8) );
@@ -25,7 +25,7 @@ if (getParam('action','')=='newPassword') {
 }
 
 //new user
-if (getParam('action','')=='newUser') {
+if (isActionParam('newUser')) {
 	$mail=getParam('mail',"");
 	if (checkEmail($mail)) {
 		$passw= ""; 

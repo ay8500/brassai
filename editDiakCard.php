@@ -9,7 +9,7 @@
 function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	$d=$person;
 	if ($d["id"]!=-1) {
-		if (userIsLoggedOn() || localhost()) {
+		if (userIsLoggedOn() || isLocalhost()) {
 			$personLink="editDiak.php?uid=".$d["id"];
 		} else {
 			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
@@ -159,7 +159,7 @@ function displayPicture($db,$picture,$showSchool=false) {
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
 			<b><?php echo $picture["title"];?></b><br/>
 			<?php echo $typeText;?><br/>
-			<?php if (isset($picture["albumName"])) {?>
+			<?php if (isset($picture["albumName"])&&$picture["albumName"]!="") {?>
 				Album:<?php echo $picture["albumName"]?><br/>
 			<?php }?>
 			Feltőltötte: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
@@ -169,7 +169,7 @@ function displayPicture($db,$picture,$showSchool=false) {
 <?php } 
 
 function displayClass($db,$d,$showDate=false) { 
-	if (userIsLoggedOn() || localhost()) {
+	if (userIsLoggedOn() || isLocalhost()) {
 		$personLink="editDiak.php?uid=".$d["headTeacherID"];
 	} else {
 		$personLink=getPersonLink($d["tlname"],$d["tfname"])."-".$d["headTeacherID"];

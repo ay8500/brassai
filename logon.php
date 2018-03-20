@@ -8,20 +8,18 @@
 	$logOnMessage="";
 	
 	//Logon action
-	if (getParam("action","")=="logon") {
+	if (isActionParam("logon")) {
 		$paramName=getParam("paramName");
 		$paramPassw=getParam("paramPassw");
 		if ((null==$paramName) || (null==$paramPassw)) { 
 			logoutUser();
 			http_response_code(400);
 			$logOnMessage =getTextRes("LogInError")."<br />".getTextRes("LogInUserPassw");
-			//echo($logOnMessage);
 		} else {
 			if (!checkRequesterIP(changeType::login)) {
 				logoutUser();
 				http_response_code(400);
 				$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInToManyErrors");
-				//echo($logOnMessage);
 			} else {
 				if (!checkUserLogin($paramName,$paramPassw)) {
 					logoutUser();
@@ -29,11 +27,10 @@
 					$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
 					$db->saveRequest(changeType::login);
 					saveLogInInfo("Login","",$paramName,$paramPassw,"false");
-					//echo($logOnMessage);
 				} else {
+					$db->savePersonField(getAktUserId(),'userLastLogin', date("Y-m-d H:i:s"));
 					saveLogInInfo("Login",getLoggedInUserId(),"","","true");
 					$logOnMessage = "Ok";
-					//echo($logOnMessage);
 				}
 			}
 		}
@@ -43,14 +40,15 @@
 				"Parameter:".$paramName." : ".$paramPassw."<br/>".
 				"Login result:".$logOnMessage," Login");
 		}
+		echo($logOnMessage);
 	}
 	//Logoff action
-	if (getParam("action","")=="logoff") {
+	if (isActionParam("logoff")) {
 		logoutUser();
 	}
 	
 	//Facebook login
-	if (getParam("action","")=="facebooklogin" && isset($_SESSION['FacebookId'])) {
+	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
 			//logoutUser();
 			$logOnMessage=getTextRes("LogInError");
@@ -100,7 +98,6 @@ function writeLogonDiv() {
 <?php } ?> 
 </div>
 <script type="text/javascript">
-		
 	function logon() {
 		$.ajax({
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
@@ -113,7 +110,7 @@ function writeLogonDiv() {
 				$('#ajaxLStatus').html(data.responseText);
 				$('#ajaxLStatus').show();
 				setTimeout(function(){
-			    	$('#ajaxLStatus').html('');
+			    	$('#ajaxLStatus').html(data);
 			    	$('#ajaxLStatus').slideUp('slow');
 				}, 3000);
 			}
@@ -149,7 +146,5 @@ function writeLogonDiv() {
 		$("#uLogon").slideUp("slow");
 		onResize(0);
 	}
-
-		
 </script>
 <?php } ?>

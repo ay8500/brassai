@@ -1,4 +1,8 @@
 <?php
+/**********************************************
+ * Levi PHP Tools for easy parameter reading  *
+ **********************************************/
+
 /**
  * Safety get paramateter read 
  */
@@ -19,7 +23,7 @@ function getPostParam($name,$def=null) {
  * Check the value of parameter with the name "action"
  **/
 function isActionParam($action) {
-	return getParam("action")==$action;
+	return getParam("action")===$action;
 }
 
 /**
@@ -44,33 +48,13 @@ function getIntParam($name,$def=0) {
 }
 
 /**
- * Set the response header to Ok or Bad Request
- * @param unknown $booleanResult
- */
-function httpHeader($booleanResult) {
-	if ($booleanResult) {
-		header("HTTP/1.0 200 OK");
-	}
-	else { 
-		header("HTTP/1.0 400 Bad Request");
-	}
-	return $booleanResult;
-}
-
-/**
  * Is the server the localhost?
  * @return true if localhost
  */
-function localhost() {
+function isLocalhost() {
 	$whitelist = array('127.0.0.1','::1');
-	
-	if(in_array($_SERVER['REMOTE_ADDR'], $whitelist))
-		return true;
-
-	return false;
-	
+	return in_array($_SERVER['REMOTE_ADDR'], $whitelist);
 }
-
 
 /**
  * Returns the readable name of a enum constant value
@@ -81,9 +65,6 @@ function getConstantName($className,$value)
 {
 	$class = new ReflectionClass($className);
 	$constants = array_flip($class->getConstants());
-
 	return $constants[$value];
 }
-
-
 ?>
