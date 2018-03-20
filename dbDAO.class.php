@@ -230,6 +230,9 @@ class dbDAO {
 		$this->dataBase->update("person", [["field"=>"geolat","type"=>"s","value"=>$lat],["field"=>"geolng","type"=>"s","value"=>$lng]],"id",$id);
 	}
 	
+	public function savePersonLastLogin($id) {
+		$this->dataBase->update("person", [["field"=>"userLastLogin","type"=>"s","value"=>date("Y-m-d H:i:s")]],"id",$id);
+	}
 	
 	/**
 	 * save changes on only one field 
@@ -431,6 +434,47 @@ class dbDAO {
 		return $ret;
 	}
 
+	/**
+	 * get last activity group by date
+	 * @param unknown $dateTime
+	 * @return unknown
+	 */
+	public function getActivityCalendar($dateTime) {
+		$ret=array();
+		
+		$sql ="select changeDate, count(*) as count from history where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r= $this->dataBase->getRowList();
+			foreach ($r as $v) { $ret[$v["changeDate"]]=intval($v["count"]);}
+		} 
+		
+		$sql ="select changeDate, count(*) as count from person where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r= $this->dataBase->getRowList();
+			foreach ($r as $v) {
+				if (isset($ret[$v["changeDate"]]))
+					$ret[$v["changeDate"]]+=$v["count"];
+				else
+					$ret[$v["changeDate"]]=intval($v["count"]);
+			}
+		}
+
+		$sql ="select changeDate, count(*) as count from image where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r= $this->dataBase->getRowList();
+			foreach ($r as $v) {
+				if (isset($ret[$v["changeDate"]]))
+					$ret[$v["changeDate"]]+=$v["count"];
+				else
+					$ret[$v["changeDate"]]=intval($v["count"]);
+			}
+		}
+		return $ret;	
+	}
+	
 	/**
 	 * get person count
 	 * @param unknown $where
@@ -1350,15 +1394,15 @@ class dbDAO {
 		}
 		$ret = $this->mergeBestArray($ret,$r3,5);
 
-		$sql="select userLastLogin, changeUserID as uid from person where userLastLogin is not null limit 20";
+		$sql="select userLastLogin, id as uid from person where userLastLogin is not null limit 20";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$r = $this->dataBase->getRowList();
 			$r4=array();
 			foreach ($r as $s) {
-				$diff=date_diff(new DateTime(),new DateTime($s["userLastLogin"]),true);
+				$diff=date_diff(new DateTime($s["userLastLogin"]),new DateTime(),true);
 				if ($diff->days<1000)
-					$r4[$s["uid"]]=1000-$diff->days;
+					$r4[$s["uid"]]=1000- ($diff->days);
 			}
 		}
 		$ret = $this->mergeBestArray($ret,$r4,1);

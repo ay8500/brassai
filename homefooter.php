@@ -19,11 +19,11 @@
     <script src="js/bootstrap.min.js"></script>
     
 	<?php if (isset($googleMap)) :?>
-		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
+		<script type="text/javascript" src="//maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
 		<script type="text/javascript" src="js/diakMap.js?v=<?php echo $webAppVersion?>"></script>
 	<?php endif ?>
 	<?php if (isset($diakEditGeo)) :?>
-		<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
+		<script type="text/javascript" src="//maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
 		<script type="text/javascript" src="js/diakEditGeo.js?v=<?php echo $webAppVersion?>"></script>
 	<?php endif?>
 	<?php if (isset($loadTextareaEditor)) :?>
@@ -91,8 +91,8 @@
 		}		
 	</script>
 
-	<script type="text/javascript" src="http://s522513082.online.de/stat/track.php?mode=js"></script>
-	<noscript><img src="http://s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
+	<script type="text/javascript" src="//s522513082.online.de/stat/track.php?mode=js"></script>
+	<noscript><img src="//s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-20252557-2']);

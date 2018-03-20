@@ -28,7 +28,7 @@
 					$db->saveRequest(changeType::login);
 					saveLogInInfo("Login","",$paramName,$paramPassw,"false");
 				} else {
-					$db->savePersonField(getAktUserId(),'userLastLogin', date("Y-m-d H:i:s"));
+					$db->savePersonLastLogin($_SESSION['uId']);
 					saveLogInInfo("Login",getLoggedInUserId(),"","","true");
 					$logOnMessage = "Ok";
 				}

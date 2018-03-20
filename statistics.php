@@ -22,6 +22,9 @@ $classCount=$db->getTableCount("class");
 $classGraduationPicture=$db->getTableCount("picture","classID is not null and title like 'Tabló%'");
 $classPicture=$db->getTableCount("picture","classID is not null");
 
+$calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
+
+
 ?>
 <style>
 .statw {width:150px; text-align:right; display: inline-block;};
@@ -32,6 +35,8 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 </div>
 
 <div  style="margin:30px">
+<div class="panel panel-default"  style="padding:5px; max-width:650px" id="calendargg"></div>
+<br/>
 <div id="teacherff" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
 	<div class="panel-heading text-center"><span class="icon"></span><label> Tanárok</label></div>
 	<ul class="list-group"  style="list-style: none;">
@@ -152,12 +157,11 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 
 </div>
 
-<?php include 'homefooter.php';?>
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
+<script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+      //google.charts.load('current', {'packages':['bar']});
       google.charts.load("current", {packages:["corechart"]});
+      google.charts.load("current", {packages:["calendar"]});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
@@ -205,5 +209,40 @@ $classPicture=$db->getTableCount("picture","classID is not null");
         var chart3 = new google.visualization.BarChart(document.getElementById("classgg"));
         options.title="Osztályok";options.height=$("#classff").height();
         chart3.draw(view, options);
+
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({ type: 'date', id: 'Date' });
+        dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+        dataTable.addRows([
+			<?php foreach ($calendar as $date=>$count) {?>
+           [ new Date(<?php echo (new DateTime($date))->format("Y, m, d")?>), <?php echo $count?> ],
+           <?php } ?>
+         ]);
+
+        var chart = new google.visualization.Calendar(document.getElementById('calendargg'));
+
+        var options = {
+          title: "Véndiákok aktivitásai",
+          height: 220,
+          calendar: {
+          	focusedCellColor: {
+              stroke: 'red',
+              strokeOpacity: 0.8,
+              strokeWidth: 1
+            },
+            monthOutlineColor: {
+                stroke: '#981b48',
+                strokeOpacity: 0.8,
+                strokeWidth: 1
+              },
+            cellSize:10,
+            daysOfWeek:'VHKSCPS'
+          },
+          colorAxis:{minValue: 0,  colors: ['#80FF00', '#FF0000']}
+        };
+
+        chart.draw(dataTable, options);
+        
       }
-    </script>
+</script>
+<?php include 'homefooter.php';?>
