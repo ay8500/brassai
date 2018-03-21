@@ -216,9 +216,11 @@
 	 */
 	function setUserInSession($role, $user, $uid )
 	{
+		global $db;
 		$_SESSION['uRole']=$role;
 		$_SESSION['uName']=$user;
 		$_SESSION['uId']=$uid;
+		$db->savePersonLastLogin($_SESSION['uId']);
 	}
 	
 	/**

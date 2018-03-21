@@ -28,7 +28,6 @@
 					$db->saveRequest(changeType::login);
 					saveLogInInfo("Login","",$paramName,$paramPassw,"false");
 				} else {
-					$db->savePersonLastLogin($_SESSION['uId']);
 					saveLogInInfo("Login",getLoggedInUserId(),"","","true");
 					$logOnMessage = "Ok";
 				}
@@ -87,13 +86,11 @@ function writeLogonDiv() {
 		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
 		</div>
 	</form>
-	<!-- 
 	<form action="http://brassai.blue-l.de/fb/fblogin.php" method="get">
 		<div style="text-align:center; margin: 3px">
 		<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
 		</div>
 	</form>
-	 -->
 	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxLStatus"></div>	
 <?php } ?> 
 </div>
