@@ -207,7 +207,7 @@ function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionL
 	global $resultDBoperation;
   	$show=false;
   	if (getParam("action")=="delete".$fieldDb."Change") {
- 		$ret =call_user_func_array(array($db,$functionDelete),array($id));$show=true;
+ 		$ret =call_user_func_array(array($db,$functionDelete),array($id,false));$show=true;
   	}
   	if (getParam("action")=="accept".$fieldDb."Change") {
  		$ret =$db->acceptChangeForEntry(strtolower($fieldDb),$id);$show=true;

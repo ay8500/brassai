@@ -58,13 +58,13 @@ $dataFieldNames 	=array("lastname","firstname","email");
 $dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
 $dataItemProp       =array("","","");
 $dataCheckFieldVisible	=array(false,false,true);
-$dataFieldObl			=array(true,true,true);
+$dataFieldObl			=array(true,true,"fontos mező");
 if(true)  { //Name
 	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country");
 	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
 	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
 	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
-	array_push($dataFieldObl		, false,false,false,false,false,false);
+	array_push($dataFieldObl		, false,false,false,false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
 	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");

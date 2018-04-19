@@ -51,7 +51,7 @@ if (null==getParam("type")) {
 			}
 			
 			case "classmate": {
-				$personList=$db->getPersonList("isTeacher='0'",20,getIntParam("start",0));
+				$personList=$db->getPersonList("isTeacher='0'",20,20*getIntParam("start",0));
 				$personCount=$db->getTableCount("person","isTeacher='0'");
 				$caption ="Diákok:".$personCount;
 				break;
@@ -103,7 +103,7 @@ if (null==getParam("type")) {
 				    <li class="page-item"><a class="page-link" href="<?php echo $start>0?$link.($start-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
 				    <li class="page-item"><a class="page-link" href="#"><?php echo 20*getIntParam("start",0)+1?></a></li>
 				    <li class="page-item"><a class="page-link" href="<?php echo $start*20<$personCount?$link.($start+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
-				    <li class="page-item"><a class="page-link" href="<?php echo $link.round($personCount/20) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+				    <li class="page-item"><a class="page-link" href="<?php echo $link.floor($personCount/20) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
 				  </ul>
 				</nav>
 			<?php }?>

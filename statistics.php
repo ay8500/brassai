@@ -215,14 +215,14 @@ $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->mod
         dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
         dataTable.addRows([
 			<?php foreach ($calendar as $date=>$count) {?>
-           [ new Date(<?php echo (new DateTime($date))->format("Y, m, d")?>), <?php echo $count?> ],
+           [ new Date(<?php echo (new DateTime($date))->format("Y, n-1, j")?>), <?php echo $count?> ],
            <?php } ?>
          ]);
 
         var chart = new google.visualization.Calendar(document.getElementById('calendargg'));
 
         var options = {
-          title: "Véndiákok aktivitásai",
+          title: "Tanárok és véndiákok aktivitása",
           height: 220,
           calendar: {
           	focusedCellColor: {

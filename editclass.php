@@ -145,9 +145,9 @@ include("homemenu.php");
 		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>
-		<button class="btn btn-default"   id="btMail" onclick="mailto:brassai(at)blue-l.de" style="display:none">
+		<a class="btn btn-default"   id="btMail" href="mailto:brassai@blue-l.de" style="display:none">
 			<span class="glyphicon glyphicon-email"></span> Új iskolát szeretnék
-		</button>
+		</a>
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
 		</button>

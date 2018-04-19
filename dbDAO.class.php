@@ -521,11 +521,11 @@ class dbDAO {
 	 * Delete person from database and the picture 
 	 * @return boolean
 	 */
-	public function deletePersonEntry( $id) {
+	public function deletePersonEntry( $id, $deletePicture=true) {
 		$this->createHistoryEntry("person",$id,true);
 		$person=$this->getPersonByID($id,true);
 		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
-		if (isset($person["picture"]))
+		if (isset($person["picture"]) && $deletePicture)
 			$ret1 =unlink($fileFolder.$person["picture"]);
 		else 
 			$ret1=true;
@@ -1360,8 +1360,8 @@ class dbDAO {
 		$this->dataBase->queryInt($sql);
 	}
 
-	public function getPersonChangeBest() {
-		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID limit 20";
+	public function getPersonChangeBest($count=12) {
+		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID order by count desc limit ".$count;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$r = $this->dataBase->getRowList();
@@ -1372,7 +1372,7 @@ class dbDAO {
 		}
 		$ret = $this->mergeBestArray(array(),$r1,1);
 	
-		$sql="select count(1) as count, changeUserID as uid from person where changeUserID !=0 group by  changeUserID limit 20";
+		$sql="select count(1) as count, changeUserID as uid from person where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$r = $this->dataBase->getRowList();
@@ -1383,7 +1383,7 @@ class dbDAO {
 		}
 		$ret = $this->mergeBestArray(array(),$r2,3);
 	
-		$sql="select count(1) as count, changeUserID as uid from picture where changeUserID !=0 group by  changeUserID limit 20";
+		$sql="select count(1) as count, changeUserID as uid from picture where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$r = $this->dataBase->getRowList();
@@ -1394,10 +1394,11 @@ class dbDAO {
 		}
 		$ret = $this->mergeBestArray($ret,$r3,5);
 
-		$sql="select userLastLogin, id as uid from person where userLastLogin is not null limit 20";
+		$sql="select userLastLogin, id as uid from person where userLastLogin is not null and changeForID is null order by userLastLogin desc limit  ".$count;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$r = $this->dataBase->getRowList();
+			//var_dump($r);
 			$r4=array();
 			foreach ($r as $s) {
 				$diff=date_diff(new DateTime($s["userLastLogin"]),new DateTime(),true);
@@ -1408,11 +1409,11 @@ class dbDAO {
 		$ret = $this->mergeBestArray($ret,$r4,1);
 		
 		$rets=array();
-		for($i=0;$i<12;$i++) {
+		for($i=0;$i<$count;$i++) {
 			$value=0;
-			foreach ($ret as $uid=>$count) {
-				if($count>$value) {
-					$value=$count;
+			foreach ($ret as $uid=>$counts) {
+				if($counts>$value) {
+					$value=$counts;
 					$vuid=$uid;
 				}
 			}

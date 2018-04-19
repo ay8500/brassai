@@ -1,3 +1,9 @@
+	<span style="font-size: 10px">GDPR: A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt a weboldalt bővítsék. 
+	A beadott személyes adatok egy vebszerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">1 und 1</a> cég szamitógépközpontjában. 
+	Biztonsági másolatok a személyes adatokról csak a internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az adatok maximum 6 hónapig vannak tárolva. 
+	A személyes adatok megjelennek külömbőző internet kereső oldalok találati listáján. 
+	A védett mezők tartalma anonim felhasználok ellen védve vannak. </span><br/>
+	
 	<?php //Person picture?>
 	<div class="diak_picture" style="display: inline-block;">
 		<img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
@@ -47,7 +53,7 @@
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
 	
-	<?php if (($edit || $createNewPerson) && !$anonymousEditor ) {
+	<?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
 		$optionClasses=$db->getClassList(getAktSchoolId());
 		unset($optionClasses[0]); //The first class is the teachers list
 	?>
@@ -89,12 +95,14 @@
 			$dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
 			//Inpufields
 			if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
-				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
+				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
+				<?php if ( userIsLoggedOn()) {?>	      		
 				<span style="width:40px" id="highlight" class="input-group-addon">
 		      		<?php if ($dataCheckFieldVisible[$i]) {
 		        		echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
 		      		} ?>
 	      		</span>
+	      		<?php }?>
 	      		<?php   
 	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
 	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
