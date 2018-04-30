@@ -11,7 +11,7 @@ $privacy = getPostParam("privacy", "class");
 
 $row = array();
 
-if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) {
+if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) {
 	if ($privacy=="world") $text="~~".$text;
 	if ($privacy=="scool") $text="~".$text;
 	

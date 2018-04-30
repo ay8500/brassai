@@ -45,7 +45,7 @@ if ($type=="classID") {
 	$subtitle="A tanárok és diákok együtt a ballagási tablón és csoportképeken. ".getAktClassName();
 } if ($type=="personID") { 
 	$person=$db->getPersonByID($typeId);
-	$subtitle=getPersonName($person)." képei";
+	$subtitle=getPersonLinkAndPicture($person)." képei";
 } if ($type=="schoolID") { 
 	$subtitle="Képek iskolánkról. ".$album;
 } if ($type=="tablo") { 

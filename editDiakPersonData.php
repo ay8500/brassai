@@ -1,4 +1,4 @@
-	<span style="font-size: 10px">GDPR: A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt a weboldalt bővítsék. 
+	<span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt a weboldalt bővítsék. 
 	A beadott személyes adatok egy vebszerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">1 und 1</a> cég szamitógépközpontjában. 
 	Biztonsági másolatok a személyes adatokról csak a internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az adatok maximum 6 hónapig vannak tárolva. 
 	A személyes adatok megjelennek külömbőző internet kereső oldalok találati listáján. 

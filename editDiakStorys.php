@@ -21,7 +21,7 @@
 ?>		
 
 	<h3><?php  echo $title; ?></h3>
-	<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>
+	<?php if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) { ?>
 		<form id="stroryForm" onsubmit="saveStory(); return false;">
 		<fieldset onkeyup="fieldChanged();" >
 			<textarea id="story" style="visibility:hidden; height:400px;" >
@@ -81,7 +81,7 @@
 
 
 
-<?php if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) : ?>
+<?php if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) : ?>
 <script type="text/javascript">
 
 	function saveStory() {

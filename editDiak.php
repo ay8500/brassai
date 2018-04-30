@@ -289,9 +289,11 @@ include("homemenu.php");
 <?php }
 
 //initialize tabs
-if (getAktClassId()==0 && !userIsAdmin()) {
+if (getAktClassId()==0 && !userIsAdmin() && !userIsSuperuser()) {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz");
-} else if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser() ) { 
+} else if ( userIsSuperuser() ) { 
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
+} else if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) { 
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
 } else {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Térkép");
