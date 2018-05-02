@@ -3,7 +3,8 @@ include_once("tools/sessionManager.php");
 include_once("data.php");
 
 if (!isset($siteHeader)) $siteHeader='';
-$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v=08062017a" /> ';
+$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v=02052018" /> ';
+$showWrapper=true;
 
 unsetAktClass();
 
@@ -11,7 +12,7 @@ unsetAktClass();
 
 include("homemenu.php");
 ?>
-<div class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján</br>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!</br></div>
+<div class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!<br/></div>
 <div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <div class="container-fluid">
 	<div  style="padding:15px;margin-top:20px" class="col-sm-4" >
@@ -68,5 +69,6 @@ include("homemenu.php");
 		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. február 17.</b>-én.
 	</div>
 </div>
+
 <?php  include ("homefooter.php");?>
-<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>
+

@@ -60,18 +60,18 @@ $dataItemProp       =array("","","");
 $dataCheckFieldVisible	=array(false,false,true);
 $dataFieldObl			=array(true,true,"fontos mező");
 if(true)  { //Name
-	array_push($dataFieldNames, "birthname","partner","address","zipcode","place","country");
-	array_push($dataItemProp,"","","streetAddress","postalCode","addressLocality","addressCountry");
-	array_push($dataFieldCaption, "Diákkori név","Élettárs","Cím","Irányítószám","Helység","Ország");
-	array_push($dataCheckFieldVisible, false,false,true,true,false,false);
-	array_push($dataFieldObl		, false,false,false,false,"fontos mező","fontos mező");
+	array_push($dataFieldNames, "birthname","deceasedYear","partner","address","zipcode","place","country");
+	array_push($dataItemProp,"","","","streetAddress","postalCode","addressLocality","addressCountry");
+	array_push($dataFieldCaption, "Diákkori név","† elhunyt","Élettárs","Cím","Irányítószám","Helység","Ország");
+	array_push($dataCheckFieldVisible, false,false,false,true,true,false,false);
+	array_push($dataFieldObl		, "leánykori családnév","csak az évszámot kell beírni, 0 ha nem tudod pontosan és -1 ha törölni akarod","ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
 	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
 	array_push($dataItemProp,"","","","","","","","","","","","");
 	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
 	array_push($dataCheckFieldVisible,true ,true ,true ,false,false,true ,true ,false,true ,true );
-	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,false);
+	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
 }
 if (userIsAdmin()) { //only for admin
 	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID");

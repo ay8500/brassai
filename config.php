@@ -6,7 +6,7 @@ setLoggerType(loggerType::file);
 if (!isset($SiteTitle))
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndiakjai";
 
-$webAppVersion="20180129";  //Used to load the actual css und js files.
+$webAppVersion="20180502";  //Used to load the actual css und js files.
 
 $SupportedLang = array("hu"); //First language ist the default language.
 

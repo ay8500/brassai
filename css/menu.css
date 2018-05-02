@@ -179,7 +179,7 @@
 
 
 .diak_image_medium, .diak_image_empty {
-	max-height:240px;
+	max-height:200px;
 	max-width:155px;
 	border-radius: 5px;
 	margin-bottom:5px;

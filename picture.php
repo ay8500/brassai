@@ -45,7 +45,8 @@ if ($type=="classID") {
 	$subtitle="A tanárok és diákok együtt a ballagási tablón és csoportképeken. ".getAktClassName();
 } if ($type=="personID") { 
 	$person=$db->getPersonByID($typeId);
-	$subtitle=getPersonLinkAndPicture($person)." képei";
+	$subtitle=getPersonName($person)." képei";
+	$link=getPersonLinkAndPicture($person)." képei";
 } if ($type=="schoolID") { 
 	$subtitle="Képek iskolánkról. ".$album;
 } if ($type=="tablo") { 
@@ -55,7 +56,7 @@ $SiteTitle=$subtitle;
 include("homemenu.php");
 ?>
 <div class="container-fluid">
-<h2 class="sub_title"><?php echo $subtitle ?></h2>
+<h2 class="sub_title"><?php echo $type=="personID"?$link:$subtitle ?></h2>
 <?php include_once 'pictureinc.php';?>
 
 </div>

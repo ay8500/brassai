@@ -433,6 +433,16 @@ class dbDAO {
 		//usort($ret, "compareAlphabetical");
 		return $ret;
 	}
+	
+	public function dbUtilitySetDeceasedYear() {
+		$sql ="update  person set deceasedYear=convert(substring(firstname,instr(firstname,'†')+3) ,signed) where firstname like '%†%'";
+		$this->dataBase->query($sql);
+		$sql ="update  person set 	firstname=substring(firstname,1,instr(firstname,'†')-1) where firstname like '%†%'";
+		$this->dataBase->query($sql);
+		$sql ="update  person set 	deceasedYear=null where deceasedYear = -1";
+		$this->dataBase->query($sql);
+		return "ok";
+	}
 
 	/**
 	 * get last activity group by date

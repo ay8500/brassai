@@ -1,6 +1,20 @@
 <?php 
+include_once('tools/ltools.php');
+
+if (getParam("action")=="rip") {
+    include_once("tools/sessionManager.php");
+	include_once("config.php");
+	include_once("logon.php");
+	include_once("data.php");
+
+	$db = new dbDAO;
+	
+	echo ($db->dbUtilitySetDeceasedYear());
+	
+	die();
+}
+
 include('homemenu.php');
-include_once('tools/userManager.php');
 $resultDBoperation="";
 
 //if (userIsAdmin()) {$resultDBoperation='<div class="alert alert-warning" >Ok</div>';}  	
@@ -63,6 +77,25 @@ $resultDBoperation="";
 			<div class="input-group input-group-sm">
 	  			<span id="inputwidth" class="input-group-addon">Result</span>	
 	       		<span style="display: inherit;" type="text" class="form-control" id="pictureResult"></span>
+	  		</div>
+	  	</li>
+	</ul>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<label id="dbDetails">Database tools</label> 
+	</div>
+	<ul class="list-group">
+  		<li class="list-group-item">
+  			<div class="input-group input-group-sm">
+  	  			<button class="btn btn-danger" onclick="rip();" >RIP</button>
+  	  		</div>
+  		</li>
+  		<li class="list-group-item">
+			<div class="input-group input-group-sm">
+	  			<span id="inputwidth" class="input-group-addon">Result</span>	
+	       		<span style="display: inherit;" type="text" class="form-control" id="databaseResult"></span>
 	  		</div>
 	  	</li>
 	</ul>
@@ -156,6 +189,20 @@ function createZipFile() {
 		},
 		error:function(error) {
 		    $('#pictureResult').html("Error:"+data);
+		}
+    });
+}
+
+function rip() {
+    $('#databaseResult').html('working....');
+    $.ajax({
+		url:"database.php?action=rip",
+		type:"GET",
+		success:function(data){
+		    $('#databaseResult').html(data);
+		},
+		error:function(error) {
+		    $('#databaseResult').html("Error:"+data);
 		}
     });
 }

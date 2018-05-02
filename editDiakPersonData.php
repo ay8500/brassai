@@ -7,6 +7,11 @@
 	<?php //Person picture?>
 	<div class="diak_picture" style="display: inline-block;">
 		<img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
+		<?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
+		<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+			<?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
+		</div>
+		<?php }?>
 	</div>
 	
 	<?php //Person picture download only  if person already saved?>

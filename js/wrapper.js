@@ -39,9 +39,16 @@ function addWrapperDiv(id) {
         var width=Math.round(0.5+w/Math.round(0.5+w/wrapperWidth));
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
-        html +='<div style="display: inline-block; width:160px;">';
+        html +='<div style="display: inline-block; margin: 0px 10px">';
         html +='<a href="editDiak.php?uid='+d.id+'" title="'+d.name+'">';
+        html +='<div >';
         html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium">';
+        if (d["deceasedYear"]!=null && parseInt(d["deceasedYear"])>=0) {
+        	html +='<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">';
+        	html += parseInt(d["deceasedYear"])==0?"†":"† "+parseInt(d["deceasedYear"]); 
+			html +='</div>';
+		}
+        html +='</div>';
         html +='</a></div>';
         html +='<div style="display: inline-block;max-width:50%;vertical-align: top;margin-bottom:10px;">';
         html +='<h4>'+d.name+'</h4>';

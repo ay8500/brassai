@@ -15,10 +15,20 @@ $i=0;
 while (notUnique($idArray,$p["id"]) && $i++<10)		
 	$p=getRandomPerson();
 
+//Testperson
+/*
+$p=$db->getPersonByID(1344);
+$class=$db->getClassById($p["classID"]);
+$p["classText"]=$class["text"];
+$p["classEvening"]=$class["eveningClass"];
+*/
+	
 $person = Array();
 
 $person["name"]=$p["lastname"]." ".$p["firstname"];
 $person["id"]=$p["id"];
+if (isset($p["deceasedYear"]))
+	$person["deceasedYear"]=$p["deceasedYear"];
 $person["classID"]=$p["classID"];
 $person["classText"]=$p["classText"];
 $person["classText"].=(intval($p["classEvening"])==0)?"":" esti tagozat";

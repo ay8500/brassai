@@ -29,7 +29,14 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	<div class="element">
 		<div style="display: inline-block; ">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
-				<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+				<div>
+					<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+					<?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
+						<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+							<?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
+						</div>
+					<?php }?>
+				</div>
 			</a>
 			<?php  if (userIsAdmin() || userIsSuperuser()) {?>
 			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">

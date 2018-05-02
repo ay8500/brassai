@@ -90,20 +90,11 @@
 				$(".resultDBoperation").slideUp("slow");
 		}		
 	</script>
-
-	<script type="text/javascript" src="//s522513082.online.de/stat/track.php?mode=js"></script>
-	<noscript><img src="//s522513082.online.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
-	<script type="text/javascript">
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-20252557-2']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-	</script>
+	<?php if (isset($showWrapper)) {?>
+		<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>
+	<?php }?>
+	<script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>
+	<noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 
 </html>
 <?php ob_end_flush();?>
