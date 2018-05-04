@@ -119,6 +119,7 @@
 				<ul class="dropdown-menu">
 					<li><a href="index.php">Start</a></li>
 					<li><a href="start.php">Újdonságok</a></li>
+					<li><a href="rip.php">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable.php?classid=<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>

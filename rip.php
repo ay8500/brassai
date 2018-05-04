@@ -149,8 +149,14 @@ function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
 	}
 	function lightCandle(id) {
 		candles[id] = ++candles[id];
-		showCandles(id,candles[id]);
-		$("#light-button"+id).prop("disabled",true);
+		$.ajax({
+			url: "setCandleLighter.php?id="+id
+		}).success(function(data) {
+			showCandles(id,candles[id]);
+			$("#light-button"+id).prop("disabled",true);
+		}).error (function(data) {
+			alert('Nem sikerült.');
+		}) ;
 	}
 
 	var candles = {

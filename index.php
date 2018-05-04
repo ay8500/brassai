@@ -39,8 +39,8 @@ include("homemenu.php");
 			<div class="inlineBox">Üzenetek küldése osztálytársnak iskolatársaknak vagy az egész világnak.</div>
 		</div>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="editDiak.php?uid=levi&tabOpen=0"><img img class="indeximg" src="images/identification-card.png" /></a>
-			<div class="inlineBox">Személyes adatok individuális beállítása.</div> 
+			<a class="inlineBox" href="rip.php"><img img class="indeximg" src="images/candleicon.jpg" /></a>
+			<div class="inlineBox">Emléküket örökké őrizzük.<br/>Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div> 
 		</div>
 		<div class="col-sm-4">
 			<a class="inlineBox" href="editDiak.php?uid=levi&tabOpen=4"><img img class="indeximg" src="images/hand-holding-cv.png" /></a>

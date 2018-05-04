@@ -479,11 +479,21 @@ class dbDAO {
 			$ret = $this->dataBase->queryInt($sql);
 			return ($ret==0);
 		}
-		$sql='select count(*) from candle where personId='.$id." and ip=".$_SERVER["REMOTE_ADDR"]." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+		$sql='select count(*) from candle where personId='.$id." and ip='".$_SERVER["REMOTE_ADDR"]."' and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
 		$ret = $this->dataBase->queryInt($sql);
 		return ($ret==0);
 	}
 	
+	public function setCandleLighter($id, $userId=null) {
+		$data=array();
+		if (!userIsLoggedOn()) {
+			$data=$this->dataBase->insertFieldInArray($data, "userID", $userId);
+		}
+		$data=$this->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
+		$data=$this->dataBase->insertFieldInArray($data, "lightedDate", date("Y-m-d H:i:s"));
+		$data=$this->dataBase->insertFieldInArray($data, "personID", $id);
+		$this->dataBase->insert("candle", $data);
+	}
 	
 	public function dbUtilitySetDeceasedYear() {
 		$sql ="update  person set deceasedYear=convert(substring(firstname,instr(firstname,'†')+3) ,signed) where firstname like '%†%'";
