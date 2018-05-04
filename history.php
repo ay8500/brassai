@@ -49,23 +49,6 @@ $resultDBoperation="";
 <?php } else { ?>
 	<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>
 <?php } ?>
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"></h4>
-        </div>
-        <div class="modal-body">
-          <p></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 <?php include 'homefooter.php';?>
 
 <?php 
@@ -224,14 +207,3 @@ function json_decode_utf8($json) {
 
 ?>
 
-<script type="text/javascript">
-	function showip(ip) {
-	    $.ajax({
-		  url: "http://ip-api.com/json/"+ip
-		}).success(function(data) {
-		    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
-			$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
-			$('#myModal').modal({show: 'false' });
-		});
-	}
-</script>

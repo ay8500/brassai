@@ -8,7 +8,8 @@ include_once("tools/ltools.php");
 $id=getIntParam("id");
 
 	$candles=$db->getCandleDetailByPersonId($id);
-	$html ="";	
+	$sum =$db->getCandlesByPersonId($id);
+	$html =$sum." gyertya ég, meggyújtották: <br/>";	
 	foreach ($candles as $candle) {
 		$html .='<div class="person-candle">';
 		if (isset($candle["userID"]))
@@ -17,7 +18,7 @@ $id=getIntParam("id");
 			$html.='anonim látogató';
 		$html.='<span style="float:right">'.date("Y.m.d",strtotime($candle["lightedDate"])).'</span>';
 		if (userIsAdmin()) {
-			$html.='<span title="'.$candle["ip"].'"> IP</span>';
+			$html.='<span title="'.$candle["ip"].'" onclick="showip('."'".$candle["ip"]."'".')"> IP</span>';
 		}
 		$html.='</div>';
 	}

@@ -10,7 +10,7 @@ include_once 'editDiakCard.php';
 </style>
 
 <div style="margin-top:20px;padding:10px;background-color: black; color: #ffbb66;">
-<h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére</h2>
+<h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $db->getCandlesByPersonId() ?> gyertya ég</h2>
 <div class="well" style="margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
 <b style="font-size: 30px">Emléküket örökké őrizzük</b> 
 <span style="display: inline-block;vertical-align: super;">
@@ -113,7 +113,6 @@ function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
 	  			<button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>);hideLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújtom</button>
 			</div>
 	  		<div id="person-candle<?php echo $d['id']?>" class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
-	  			Gyertyát gyújtottak
 	  			<div id="personlist<?php echo $d['id']?>"></div>
 	  			<button class="btn btn-warning" style="margin:10px;color:black" onclick="hidePersonCandle(<?php echo $d['id']?>);">Bezár</button>
 			</div>
@@ -183,12 +182,23 @@ function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
 		var candleSize = candles>30?30:candles;
 		var html="";
   		for ( var x = 1; x <= 9 && x<= candles; x++) {
-			html +='<img src="images/candle'+(Math.floor(Math.random() * 2)+1)+'.gif" style="width: '+(candleSize*2+30)+'px;">';
+			html +='<img src="images/candle'+(Math.floor(Math.random() * 5)+1)+'.gif" style="width: '+(candleSize*2+30)+'px;">';
 		}
 		$("#candles"+id).html(html);
 		$("#candles"+id).prop('title', candles+' gyertya ég. Gyújts te is gyertyát emlékére.');
 	}
 
+	<?php if (userIsAdmin()) {?>
+	function showip(ip) {
+	    $.ajax({
+	    	url: "getIpLocation.php?ip="+ip
+		}).success(function(data) {
+		    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
+			$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+			$('#myModal').modal({show: 'false' });
+		});
+	}
+	<?php }?>
 	
 	
 	

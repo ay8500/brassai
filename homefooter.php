@@ -14,6 +14,24 @@
 	      </ul>
 	</nav>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 </body>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -88,7 +106,20 @@
 		function clearDbMessages() {
 			if ($(".resultDBoperation").html()!="")
 				$(".resultDBoperation").slideUp("slow");
-		}		
+		}
+
+		<?php if (userIsAdmin()) {?>
+			function showip(ip) {
+			    $.ajax({
+			    	url: "getIpLocation.php?ip="+ip
+				}).success(function(data) {
+				    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
+					$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+					$('#myModal').modal({show: 'false' });
+				});
+			}
+		<?php } ?>
+				
 	</script>
 	<?php if (isset($showWrapper)) {?>
 		<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>
