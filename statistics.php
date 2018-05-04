@@ -6,6 +6,7 @@ $resultDBoperation="";
 
 
 $classmate=$db->getTableCount("person","isTeacher='0'");
+$classmateDeceased=$db->getTableCount("person","isTeacher='0' and deceasedYear is not null");
 $classmatePicture=$db->getTableCount("person","isTeacher='0' and (picture is not null and picture <>'')");
 $classmateEmail=$db->getTableCount("person","isTeacher='0' and (email is not null and email<>'')");
 $classmateFacebook=$db->getTableCount("person","isTeacher='0' and (facebook is not null and facebook<>'')");
@@ -13,6 +14,7 @@ $classmateWikipedia=$db->getTableCount("person","isTeacher='0' and homepage like
 $classmatePictures=$db->getTableCount("picture","personID is not null");
 
 $teacher=$db->getTableCount("person","isTeacher='1'");
+$teacherDeceased=$db->getTableCount("person","isTeacher='1' and deceasedYear is not null");
 $teacherPicture=$db->getTableCount("person","isTeacher='1' and (picture is not null and picture <>'')");;
 $teacherEmail=$db->getTableCount("person","isTeacher='1' and (email is not null and email<>'')");
 $teacherFacebook=$db->getTableCount("person","isTeacher='1' and (facebook is not null and facebook<>'')");
@@ -45,6 +47,13 @@ $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->mod
 	  			<span class="input-group-addon"><span class="statw">Összesen</span></span>
 	       		<span type="text" class="form-control"><?php echo $teacher?></span>
 	       		<div class="input-group-btn"><a href="search.php?type=teacher" class="btn btn-default">Mutasd</a></div>
+	  		</div>
+  		</li>
+  		<li>
+			<div class="input-group input-group-sm">
+	  			<span class="input-group-addon"><span class="statw">Elhunyt</span></span>
+	       		<span type="text" class="form-control"><?php echo $teacherDeceased?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=teacherdeceased" class="btn btn-default">Mutasd</a></div>
 	  		</div>
   		</li>
   		<li>
@@ -88,6 +97,13 @@ $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->mod
   				<span class="input-group-addon"><span class="statw">Összesen</span></span>
        			<span type="text" class="form-control"><?php echo $classmate?></span>
 	       		<div class="input-group-btn"><a href="search.php?type=classmate" class="btn btn-default">Mutasd</a></div>
+	       	</div>
+  		</li>
+  		<li>
+  			<div class="input-group input-group-sm">
+  				<span class="input-group-addon"><span class="statw">Elhunyt</span></span>
+       			<span type="text" class="form-control"><?php echo $classmateDeceased?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=classmatedeceased" class="btn btn-default">Mutasd</a></div>
 	       	</div>
   		</li>
   		<li>
@@ -168,6 +184,7 @@ $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->mod
         var data1 = google.visualization.arrayToDataTable([
 			['','',{ role: 'style' }],                                                          
             ['Összesen',<?php echo $teacher?>,'red'],
+            ['Elhunyt',<?php echo $teacherDeceased?>,'darkgray'],
             ['Képpel',<?php echo $teacherPicture?>,'green'],
             ['E-Mail',<?php echo $teacherEmail?>,'blue'],
             ['Facebook',<?php echo $teacherFacebook?>,'lightblue'],
@@ -176,6 +193,7 @@ $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->mod
         var data2 = google.visualization.arrayToDataTable([
  		  ['','',{ role: 'style' }],                                                          
           ['Összesen',<?php echo $classmate?>,'red'],
+          ['Összesen',<?php echo $classmateDeceased?>,'darkgray'],
           ['Képpel',<?php echo $classmatePicture?>,'green'],
           ['E-Mail',<?php echo $classmateEmail?>,'blue'],
           ['Facebook',<?php echo $classmateFacebook?>,'lightblue'],

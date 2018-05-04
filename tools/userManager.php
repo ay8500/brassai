@@ -6,7 +6,7 @@
 	 */
 	function getLoggedInUserId() {
 		if (!isset($_SESSION["uId"]))
-			return -1;
+			return null;
 		return intval($_SESSION["uId"]);
 	}
 	

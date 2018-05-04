@@ -93,6 +93,9 @@
 	<?php if (isset($showWrapper)) {?>
 		<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>
 	<?php }?>
+	<?php if (isset($showCandles)) {?>
+		<script type="text/javascript">	$( document ).ready(function() {showAllCandles();});</script>
+	<?php }?>
 	<script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>
 	<noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 

@@ -167,6 +167,18 @@ function compareAlphabetical($a,$b) {
 	return strcmp(getNormalisedChars($aa), getNormalisedChars($bb));
 }
 
+/**
+ * Compare persons by isTeacher,firstname,lastname,birthname
+ * @param person $a
+ * @param person $b
+ */
+function compareAlphabeticalTeacher($a,$b) {
+	$c = strcmp($a["isTeacher"]?'0':'1',$b["isTeacher"]?'0':'1');
+	if ($c!=0) {
+		return $c;
+	}
+	return compareAlphabetical($a, $b);
+}
 
 /**
  * Compare classmates by picture,firstname,lastname,birthname

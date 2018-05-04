@@ -26,7 +26,7 @@ if(sizeof($messageList)==0) {
 	$message["changeDate"]=date("Y.m.d H:i:s");
 	$message["changeUserID"]=834;
 	$message["text"] ="Kedves véndiákok,<br/><br/>ennek az ostálynak még nincsenek körlevelei.";
-	$message["text"].="Az itt folgalmazott üzenetek az összes osztálytársnak akiknek ismert az email címe el leszz küldve.";
+	$message["text"].="Az itt fogalmazott üzenetek az összes osztálytársnak akiknek ismert az email címe el leszz küldve.";
 	$message["text"].="<br/><br/>Üdvözlettel System Administrator";
 	array_push($messageList, $message);
 }

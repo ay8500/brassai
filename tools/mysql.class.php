@@ -144,7 +144,7 @@ class MySqlDb {
 			  		if ($data[$i]["value"]!="" )
 		  				$sql .=$d["value"];
 					else 
-						$sql .=0;
+						$sql .='null';
 		  		}
 		  		if ($d["type"]!="n" ) $sql .="'";
 			} else {
@@ -196,7 +196,7 @@ class MySqlDb {
 			  		if ($d["value"]!="")
 		  				$sql .=$d["value"];
 					else
-						$sql .=0;
+						$sql .='null';
 		  		}
 		  		if ($d["type"]!="n") $sql .="'";
 	  		} else {

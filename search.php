@@ -25,6 +25,12 @@ if (null==getParam("type")) {
 				$caption ="Tanárok:".$personCount;
 				break;
 			}
+			case "teacherdeceased": {
+				$personList=$db->getPersonList("isTeacher='1' and deceasedYear is not null",20,20*getIntParam("start",0));
+				$personCount=$db->getTableCount("person","isTeacher='1' and (email is not null and email <>'')");
+				$caption ="Elhunyt tanárok:".$personCount;
+				break;
+			}
 			case "teacherwithpicture": {
 				$personList=$db->getPersonList("isTeacher='1' and (picture is not null and picture <>'')",20,20*getIntParam("start",0));
 				$personCount=$db->getTableCount("person","isTeacher='1' and (picture is not null and picture <>'')");
@@ -54,6 +60,12 @@ if (null==getParam("type")) {
 				$personList=$db->getPersonList("isTeacher='0'",20,20*getIntParam("start",0));
 				$personCount=$db->getTableCount("person","isTeacher='0'");
 				$caption ="Diákok:".$personCount;
+				break;
+			}
+			case "classmatedeceased": {
+				$personList=$db->getPersonList("isTeacher='0' and deceasedYear is not null",20,20*getIntParam("start",0));
+				$personCount=$db->getTableCount("person","isTeacher='1' and (email is not null and email <>'')");
+				$caption ="Elhunyt diákok:".$personCount;
 				break;
 			}
 			case "classmatewithpicture": {

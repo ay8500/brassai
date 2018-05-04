@@ -107,7 +107,8 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayElement(getPersonName($person), getPersonName($personNext));
 	displayElementObj($person, $personNext,"picture","Pic");
 	displayElementObj($person, $personNext,"partner","P");
-
+	displayElementObj($person, $personNext,"deceasedYear","†");
+	
 	displayElementObj($person, $personNext,"phone","P");
 	displayElementObj($person, $personNext,"mobil","M");
 	displayElementObj($person, $personNext,"email","E");
@@ -198,6 +199,10 @@ function displayElement($text,$nextText,$title=null,$field="") {
 
 
 function displayElementObj($text,$nextText,$field,$title=null) {
+	if (!isset($nextText[$field]))
+		$nextText[$field]=null;
+	if (!isset($text[$field]))
+		$text[$field]=null;
 	displayElement($text[$field], $nextText[$field],$title,$field);
 }
 

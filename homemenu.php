@@ -244,8 +244,8 @@
 <div id="topLine">
 	<h1 class="appltitle">
 		<span id="o1024" >A kolozsvári </span>
-		Brassai Sámuel líceum <span id="o400" >egykori </span>diákjai 
-		<span id="o480" ><?PHP echo(getAktClassName()) ?></span>
+		Brassai Sámuel líceum <span id="o400" >egykori </span>diákjai
+		<span id="o480" > <?PHP echo(getAktClassName()) ?></span>
 	</h1>
 </div>
 

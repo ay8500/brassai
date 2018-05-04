@@ -17,13 +17,11 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 	} else {
 		$personLink="javascript:alert('Sajnos erről a személyről nincsenek adatok.');";
 	}
-	//Set the RIP value
-	strstr($d["role"],"rip")!=""?$rstyle="rip":$rstyle="";
 	//mini icon
 	if (isset($person["picture"]) && $person["picture"]!="") 
-		$rstyle.=' diak_image_medium';
+		$rstyle=' diak_image_medium';
 	else {
-		$rstyle.=' diak_image_empty';
+		$rstyle=' diak_image_empty';
 	}
 	?>
 	<div class="element">

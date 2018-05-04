@@ -64,7 +64,7 @@ if(true)  { //Name
 	array_push($dataItemProp,"","","","streetAddress","postalCode","addressLocality","addressCountry");
 	array_push($dataFieldCaption, "Diákkori név","† elhunyt","Élettárs","Cím","Irányítószám","Helység","Ország");
 	array_push($dataCheckFieldVisible, false,false,false,true,true,false,false);
-	array_push($dataFieldObl		, "leánykori családnév","csak az évszámot kell beírni, 0 ha nem tudod pontosan és -1 ha törölni akarod","ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
+	array_push($dataFieldObl		, "leánykori családnév","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe","ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
 	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
@@ -268,9 +268,12 @@ if ($tabOpen==5)
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
 	$loadTextareaEditor = true;
 
-if ($personid!=null && $personid>=0)
-	$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakja " .$diak["lastname"]." ".$diak["firstname"];
-else 
+if ($personid!=null && $personid>=0) {
+	if ($diak["isTeacher"]) 
+		$SiteTitle = "A kolozsvári Brassai Sámuel líceum tanárja " .$diak["lastname"]." ".$diak["firstname"];
+	else
+		$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakja " .$diak["lastname"]." ".$diak["firstname"];
+} else 
 	$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakjai";
 	
 include("homemenu.php"); 

@@ -430,9 +430,60 @@ class dbDAO {
 	 */
 	public function getPersonList($where=null,$limit=null,$ofset=null) {
 		$ret = $this->getElementList("person",$where,$limit,$ofset);
-		//usort($ret, "compareAlphabetical");
 		return $ret;
 	}
+
+	/**
+	 * get sorted person list!
+	 */
+	public function getSortedPersonList($where=null,$limit=null,$ofset=null) {
+		$ret = $this->getElementList("person",$where,$limit,$ofset);
+		usort($ret, "compareAlphabeticalTeacher");
+		return $ret;
+	}
+	
+	public function getLightedCandleList($where=null) {
+		$sql='select personID from candle'." where  lightedDate >'".date('Y-m-d H:i:s',strtotime("-1 month"))."'";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$candles= $this->dataBase->getRowList();
+		
+			$where='id in (';
+			foreach ($candles as $idx=>$candle) {
+				if ($idx!=0) $where .=",";
+				$where .=$candle["personID"];
+			}
+			$where.=')';
+			return $this->getSortedPersonList($where);
+		}
+		return array();
+	}
+	
+	public function getCandlesByPersonId($id) {
+		$sql='select count(*) from candle where personId='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+		return $this->dataBase->queryInt($sql)+1;
+	}
+
+	public function getCandleDetailByPersonId($id) {
+		$sql='select * from candle where personID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) 
+			return $this->dataBase->getRowList();
+		
+		return array();
+	}
+	
+	public function checkLightning($id, $userId=null) {
+		if ($userId!=null) {
+			$sql='select count(*) from candle where personId='.$id." and userID=".$userId." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+			$ret = $this->dataBase->queryInt($sql);
+			return ($ret==0);
+		}
+		$sql='select count(*) from candle where personId='.$id." and ip=".$_SERVER["REMOTE_ADDR"]." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+		$ret = $this->dataBase->queryInt($sql);
+		return ($ret==0);
+	}
+	
 	
 	public function dbUtilitySetDeceasedYear() {
 		$sql ="update  person set deceasedYear=convert(substring(firstname,instr(firstname,'†')+3) ,signed) where firstname like '%†%'";

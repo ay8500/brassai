@@ -21,31 +21,31 @@ $personList = array(
 		//
 		$db->getPersonByID(1508), //Sallai Zsuzsa 1991
 		$db->getPersonByID(2474), //Kántor Melinda 1992
-		createPerson("Csoma","Botond",1993),
-		createPerson("Kovács","Ferenc",1994),
+		$db->getPersonByID(4992), //Csoma Botond 1993
+		$db->getPersonByID(4956),//"Kovács","Ferenc",1994),
 		createPerson("Ballon","Zsuzsa",1995),
-		createPerson("Kopándi","Zoltán",1996),
-		createPerson("Hosu","Andrea",1997),
+		$db->getPersonByID(4957), //("Kopándi","Zoltán",1996),
+		$db->getPersonByID(4958), //("Hosu","Andrea",1997),
 		$db->getPersonByID(1701), //Máté Adél 1998
 		$db->getPersonByID(1547), //Fejér Ákos 1999
 		createPerson("Király","Tibor",2000),
-		$db->getPersonByID(2513), //Dobri Réka 2001
-		createPerson("Farkas","Mónika",2002),
+		$db->getPersonByID(2503),	//Dobri Réka 2001
+		$db->getPersonByID(5616),	//("Farkas","Mónika",2002),
 		createPerson("Kassai","Réka",2003),
 		//2004
 		$db->getPersonByID(2332), //Székely Zsófia 2005
 		$db->getPersonByID(2860), //Kiss Réka 2006
 		$db->getPersonByID(5137), //Azzola Katalin 2007
-		createPerson("Benkő","Levente",2008),
+		$db->getPersonByID(1883), //("Bekő","Levente",2008),
 		$db->getPersonByID(1461), //Jancsó Hajnal 2009
 		//2010
-		createPerson("Buchmüller","István",2011),
+		$db->getPersonByID(5556),	//("Buchmüller","István",2011),
 		createPerson("Jakab","Mátyás",2012),
-		createPerson("Kászoni","Noémi Éva",2013), 
-		createPerson("Mezei","Tímea",2014),
-		createPerson("Bagaméri","Lilla",2015), 
-		createPerson("Kovács","Mirjám",2016), 
-		createPerson("Szallós-Kis","Csaba",2017),
+		$db->getPersonByID(5622),	//("Kászoni","Noémi Éva",2013), 
+		$db->getPersonByID(5176),	//("Mezei","Tímea",2014),
+		$db->getPersonByID(5621),	//("Bagaméri","Lilla",2015), 
+		$db->getPersonByID(5620),	//("Kovács","Mirjám",2016), 
+		$db->getPersonByID(5619),	//("Szallós-Kis","Csaba",2017),
 );
 
 foreach ($personList as $d) {
