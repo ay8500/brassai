@@ -486,7 +486,7 @@ class dbDAO {
 	
 	public function setCandleLighter($id, $userId=null) {
 		$data=array();
-		if (!userIsLoggedOn()) {
+		if (userIsLoggedOn()) {
 			$data=$this->dataBase->insertFieldInArray($data, "userID", $userId);
 		}
 		$data=$this->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
@@ -1478,6 +1478,18 @@ class dbDAO {
 			}
 		}
 		$ret = $this->mergeBestArray($ret,$r4,1);
+
+		$sql="select count(1) as count, userID as uid from candle where userID is not null group by  userID order by count desc limit  ".$count;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->getRowList();
+			$r4=array();
+			foreach ($r as $s) {
+				$r4[$s["uid"]]=$s["count"];
+			}
+		}
+		$ret = $this->mergeBestArray($ret,$r4,2);
+		
 		
 		$rets=array();
 		for($i=0;$i<$count;$i++) {

@@ -9,8 +9,9 @@ $tabOpen= getIntParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
 if($personid!=null){
-	if ($db->getPersonByID($personid)!=null) {
+	if ($person=$db->getPersonByID($personid)!=null) {
 		setAktUserId($personid);	//save actual person in case of tab changes
+		setAktClass($person["classID"]);
 	} else {
 		$person=$db->getPersonByUser($personid);
 		if ($person!=null) {

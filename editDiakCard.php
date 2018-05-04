@@ -37,7 +37,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				</div>
 			</a>
 			<?php  if (userIsAdmin() || userIsSuperuser()) {?>
-			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" style="display:inline-block;">
+			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" style="position: relative;top: -37px;left: 10px;display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$d["id"]))?></span>
 			</a>
 			<?php }?>

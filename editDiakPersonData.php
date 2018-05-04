@@ -12,6 +12,11 @@
 			<?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
 		</div>
 		<?php }?>
+		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+			<br/><a href="history.php?table=person&id=<?php echo $diak["id"]?>" style="position: relative;top: -37px;left: 10px;display:inline-block;">
+				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$diak["id"]))?></span>
+			</a>
+		<?php }?>
 	</div>
 	
 	<?php //Person picture download only  if person already saved?>
