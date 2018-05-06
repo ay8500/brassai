@@ -5,8 +5,8 @@ include("homemenu.php");
 include_once 'editDiakCard.php';
 ?>
 <style>
-.person-candle {margin:5px;}
-.person-candle>a { color: #ffbb66 }
+	.person-candle {margin:5px;}
+	.person-candle>a { color: #ffbb66 }
 </style>
 
 <div style="margin-top:20px;padding:10px;background-color: black; color: #ffbb66;">
@@ -23,6 +23,7 @@ include_once 'editDiakCard.php';
 </div>
 <?php 
 
+//Type of canlde list new, teacher, people 
 if (getParam("action")=="teacher")
 	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher=1");
 else if (getParam("action")=="person")
@@ -188,20 +189,9 @@ function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
 		$("#candles"+id).prop('title', candles+' gyertya ég. Gyújts te is gyertyát emlékére.');
 	}
 
-	<?php if (userIsAdmin()) {?>
-	function showip(ip) {
-	    $.ajax({
-	    	url: "getIpLocation.php?ip="+ip
-		}).success(function(data) {
-		    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
-			$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
-			$('#myModal').modal({show: 'false' });
-		});
-	}
-	<?php }?>
-	
-	
-	
 </script>
-<?php $showCandles=true; include ("homefooter.php");?>
+<?php 
+	$showCandles=true; 
+	include ("homefooter.php");
+?>
 

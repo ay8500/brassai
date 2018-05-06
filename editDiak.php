@@ -81,7 +81,7 @@ if (userIsAdmin()) { //only for admin
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
 	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false);
 }
-if ((isset($classId) && $classId==0) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
+if ((isset($classId) && $db->isClassIdForStaf($classId)) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
 	$dataFieldCaption[17]="Tantárgy";
 	$dataFieldCaption[18]="Osztályfönök";
 	$dataFieldObl[18]="Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
@@ -293,12 +293,12 @@ include("homemenu.php");
 <?php }
 
 //initialize tabs
-if (getAktClassId()==0 && !userIsAdmin() && !userIsSuperuser()) {
+if ($db->isClassIdForStaf(getAktClassId()) && !userIsAdmin() && !userIsSuperuser()) {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz");
 } else if ( userIsSuperuser() ) { 
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Infók");
 } else if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) { 
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok","Infók");
 } else {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Térkép");
 }
@@ -334,11 +334,18 @@ $tabUrl="editDiak.php";
 		}
 		//Change geo place
 		if ($tabOpen==5) { 
-			include("editDiakPickGeoPlace.php");
+			if (userIsSuperuser())
+				include("editDiakActivities.php");
+			else
+				include("editDiakPickGeoPlace.php");
 		}
 		//Change password, usename, facebook
 		if ($tabOpen==6) {
 			include("editDiakUserPassword.php");
+		}
+		//Activities
+		if ($tabOpen==7) {
+			include("editDiakActivities.php");
 		}
 		?>
 	</div>

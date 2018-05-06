@@ -89,7 +89,7 @@ include("homemenu.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
 				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
-				<option value="2">Hiányzik a te iskolád, akkor küldj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
+				<option value="2">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
 			</select>
 		</div>
 		<div class="input-group " style="margin-bottom: 25px;">
@@ -130,7 +130,7 @@ include("homemenu.php");
 			<option value="0">...válassz...</option>
 			<option value="-1">...nincs a listán...</option>
 			<?php
-				$teachers=$db->getPersonListByClassId(0);
+				$teachers=$db->getPersonListByClassId($db->getStafClassIdBySchoolId(getAktSchoolId()));
 				foreach ($teachers as $t) {
 					if ($t["isTeacher"]==1) {
 			?>
@@ -142,6 +142,11 @@ include("homemenu.php");
 	</div>
 	
 	<div class="well">
+		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+			<a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
+				<span class="badge"><?php echo sizeof($db->getHistoryInfo("class",$class["id"]))?></span>
+			</a>
+		<?php }?>
 		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>

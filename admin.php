@@ -26,7 +26,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
 	include("tabs.php");
 	if ($tabOpen==0) {?>
-	<form action="<?php echo($SCRIPT_NAME);?>" method="get" name="mail">
+	<form method="get" name="mail">
 		<textarea id="story" name="T" style="width:95%;height:300px" wrap="off" onchange="fieldChanged();">
 <b>Kedves %%name%%</b><br/>
 <p>

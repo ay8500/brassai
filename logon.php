@@ -133,6 +133,7 @@ function writeLogonDiv() {
 	function handleLogon() {
 	    closeSearch();
 	    $("#uLogon").slideDown("slow");
+	    $("#loUser").focus();
 	    onResize(220);
 	    $(":input").keyup(function (e) {
 			if (e.which == 13) {

@@ -176,11 +176,11 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 		    $("#page2").hide("slow");
 		    return;
 		}
-		var url="getPersonList.php?class=";
+		var url="getPersonList.php";
 		if (role==4 || role==3)
-			url+="0 staf";
+			url+="?classid="+<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>;
 		else
-			url+=$("#year").val()+" "+$("#class").val();
+			url+="?class="+$("#year").val()+" "+$("#class").val();
 		if (role==2 || role==3) {
 			url+="&guest=true"
 		}

@@ -443,7 +443,6 @@
 	 * read login log  
 	 */
 	function readLogingData($action,$year) {
-		backupLoginData();
 		$logData = array();
 		$logDataField = array("IP","Date","Scool","Result","ID","Action","CUser","Passw");
 		$file=fopen("login.log","r");
@@ -496,10 +495,4 @@
 		return $output;
 	}
 	
-	function backupLoginData() {
-		//TODO
-		;
-
-	}
-
 ?>

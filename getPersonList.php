@@ -1,4 +1,7 @@
 <?php
+/*
+Used by sign in procedure (singnin.php)
+*/
 header('Content-Type: application/json');
 
 include_once("tools/sessionManager.php");
@@ -7,6 +10,10 @@ include_once("tools/ltools.php");
 
 
 $class=$db->getClassByText(getParam("class"));
+if (null==$class) {
+	$class=$db->getClassById(getParam("classid"));
+}
+
 $guest = getParam("guest","")=="true";
 $fid=getParam("fid","");
 
@@ -26,7 +33,8 @@ if ($class!=null) {
 			$n["email"]="";
 		array_push($personList, $n);		
 	}
-} 
+}
+
 
 echo(json_encode($personList));
 ?>

@@ -1,9 +1,6 @@
 <?php 
 include_once 'tools/sessionManager.php';
 
-if (!isset($siteHeader)) $siteHeader='';
-$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css" /> ';
-
 //Test facebook
 /*
 if (true) {
@@ -57,23 +54,24 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php
-		$bests=$db->getPersonChangeBest();
+		$bests=$db->getPersonChangeBest(30);
 		foreach ($bests as $uid=>$count) {
 			if ($count>=1) {
 				$person=$db->getPersonByID($uid);
 				$personName=$person["lastname"]." ".$person["firstname"];
-				if (strlen($personName)<4) $personName="Anonim";
+				if ($uid>0 && strlen($personName)>2) {
 				?>
 				<div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
 					<span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
 					<span style="width: 146px;display: inline-block;"><a href="editDiak.php?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
 	   				<span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
 	   			</div>
-			<?php
+				<?php
+				}
 			}
 		}
 		?>
-		<div>Pontok:  Bejelentkezés=1000, Képek=5, új személy=3, gyertya gyújtás=2, személy módosítás=1 </div>
+		<div>Pontok:  bejelentkezés=1000, zenelista=7, képek=5, új személy=3, gyertya gyújtás=2, személy módosítás=1 </div>
 		<div style="font-size:x-small">Pontokat csak bejelentkezett véndiákok kaphatnak, a bejelentkezésí pontszám minden nap egy ponttal csökken.</div>
 	</div>
 				
@@ -87,7 +85,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		foreach ($persons as $person) {
 			displayPerson($db,$person,true,true);
 		}
-	?>
+		?>
 		</div>
 		<a href="start.php?persons=200" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
 	</div>
@@ -98,11 +96,11 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php 
-		$pictures=$db->getRecentPictureList(getIntParam("pictures", 18));
-		foreach ($pictures as $picture) {
-			displayPicture($db,$picture);
-		}
-	?>
+			$pictures=$db->getRecentPictureList(getIntParam("pictures", 18));
+			foreach ($pictures as $picture) {
+				displayPicture($db,$picture);
+			}
+		?>
 		</div>
 		<a href="start.php?pictures=100" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
 	</div>
@@ -128,13 +126,10 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 			</ul>
 		</div>
 	</div>
-	<div id="wrapper"></div>
-	<?php  include ("homefooter.php");?>
-	<script type="text/javascript" src="js/wrapper.js?v=<?php echo $webAppVersion?>"></script>
+	<?php 
+	include ("homefooter.php");
+} 
 
-
-<?php } ?>
-<?php 
 function sortBests($a,$b) {
 	if (intval($a)<intval($b))
 		return 1;

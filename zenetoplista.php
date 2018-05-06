@@ -1,8 +1,14 @@
-<?PHP 
-$SiteTitle="A véndiákok ezt hallgatják szívesen";
-include("homemenu.php");
+<?php
+include_once 'tools/sessionManager.php';
 include_once("tools/userManager.php");
+include_once("tools/ltools.php");
+
+$SiteTitle="A véndiákok ezt hallgatják szívesen";
+if (getParam("classid")==-1) unsetAktClass();
+
+include("homemenu.php");
 $resultDBoperation="";
+
 
 //User can make changes in the toplist
 $edit = (userIsLoggedOn() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin();
@@ -77,7 +83,7 @@ if ($delVote>=0 && $edit) {
    } 
 	
    //Read voters List by ClassID
-   	if (getAktClassId()!=0)
+   	if (getAktClassId()!=-1)
 		$votersList=$db->getVotersListByClassId(getRealId(getAktClass()));
    	else
 		$votersList=$db->getVotersListBySchoolId(getRealId(getAktSchool()));
@@ -106,7 +112,7 @@ if ($delVote>=0 && $edit) {
 	}
 ?>
 
-<?php if (getAktClassId()==0) { ?>
+<?php if (getAktClassId()==-1) { ?>
 	<div class="sub_title">Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.</div>
 <?php } else {?>
 	<div class="sub_title">A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.</div>
@@ -203,7 +209,7 @@ if ($delVote>=0 && $edit) {
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);
-  	 	else if (userIsAdmin() || getAktClassId()==0)
+  	 	else if (userIsAdmin() || getAktClassId()==-1)
   	 		$listLength=sizeof($topList);
   	 	else if (userIsLoggedOn())
   	 		$listLength=100;

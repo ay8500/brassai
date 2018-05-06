@@ -488,7 +488,7 @@ function getPersonId($person) {
 }
 
 /**
- * The real class id
+ * The real object id
  * @param object $entry 
  */
 function getRealId($entry) {

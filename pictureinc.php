@@ -209,6 +209,11 @@ if(isset($picture)) {
 							<img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
 						</div>
 					<?php } ?>
+					<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+						<br/><a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: relative;top: -50px;left: 17px;display:inline-block;">
+							<span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?></span>
+						</a>
+					<?php }?>
 				</div>
 				<div  id="list-table" >
 					<div id="edit_<?php echo $pict["id"] ?>" style="margin:10px;display: none; background-color: white;border-radius: 7px;padding: 5px;" >
@@ -263,10 +268,7 @@ if(isset($picture)) {
 					orderValue=<?php echo $pict["file"]?><br/>
 					uploaded=<?php echo date("Y.m.d H:i:s",strtotime($pict["uploadDate"]));?></br>
 					changed=<?php echo date("Y.m.d H:i:s",strtotime($pict["changeDate"]));?></br>
-					user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?></br>
-					changes=<a href="history.php?table=picture&id=<?php echo $pict["id"]?>">
-								<?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?>
-							</a></br>
+					user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
 				</div></div>
 				<?php } ?>
 			</div>

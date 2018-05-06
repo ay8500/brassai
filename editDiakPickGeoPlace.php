@@ -65,7 +65,7 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==getLoggedInUserClass
 			<input class="btn btn-default" type="button" value="Keres" onclick="doSearch();return true;"/><br />
 		</div>
 	</div>
-	<form action="<?PHP echo($SCRIPT_NAME); ?>" method="get" name="geo">
+	<form name="geo">
 		<input type="hidden" value="changegeo" name="action" />
 		<input type="hidden" value="<?PHP echo(getAktUserId())?>" name="uid" />
 		<input type="hidden" value="<?PHP echo($tabOpen); ?>" name="tabOpen" />

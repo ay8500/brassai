@@ -13,7 +13,7 @@
 		</div>
 		<?php }?>
 		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
-			<br/><a href="history.php?table=person&id=<?php echo $diak["id"]?>" style="position: relative;top: -37px;left: 10px;display:inline-block;">
+			<br/><a href="history.php?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -37px;left: 10px;display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$diak["id"]))?></span>
 			</a>
 		<?php }?>
@@ -61,7 +61,7 @@
 	<?php } ?>
 	
 	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-<form action="<?php echo $SCRIPT_NAME ?>" method="get" name="edit_form" >
+<form method="get" name="edit_form" >
 	
 	<?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
 		$optionClasses=$db->getClassList(getAktSchoolId());
@@ -139,7 +139,7 @@
 					<?php
 					$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	getFieldValueNull($diak,$dataFieldNames[$i]));
 					$fieldString = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $fieldString);
-					if ($classId==0  && $dataFieldNames[$i]=="children") {
+					if ($db->isClassIdForStaf($classId) && $dataFieldNames[$i]=="children") {
 						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
 						echo('<div  class="form-control" style="height:auto;">');
 						foreach ($c as $id=>$cc) {

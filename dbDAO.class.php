@@ -74,21 +74,43 @@ class dbDAO {
 	
 //************************ Class ******************************************* 	
 
+	/**
+	 * this calld id is for staf only
+	 * @return boolean
+	 */
+	public function isClassIdForStaf($classId) {
+		$ret = $this->getEntryById("class", $classId);
+		return $ret["graduationYear"]==0;
+	}
+	
 	public function getClassById($id,$forceThisID=false) {
 		return $this->getEntryById("class", $id,$forceThisID);
 	}
 	
 	public function getClassByText($text) {
-		return $this->getEntryByField("class", "text",$text);
+		$sql="select * from class where text='".trim($text)."'";
+		$sql .=" and changeForID is null";
+		$sql .=" and schoolId =".getAktSchoolId();
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()==1) {
+			$entry = $this->dataBase->fetchRow();
+			return $this->getEntryById('class', $entry["id"]);
+		} else {
+			return null;
+		}
 	}
 	
 	public function getClassIdByText($text) {
-		$ret=$this->getEntryByField("class", "text",$text);
+		$ret=$this->getClassByText($text);
+		if (null==$ret)
+			return null;
 		return $ret["id"];
 	}
 
 	public function getStafClassIdBySchoolId($schoolId) {
-		$ret=$this->getEntry("class", "schoolID=".$schoolId." and graduationYear=0");
+		$ret=$this->getStafClassBySchoolId($schoolId);
+		if (null==$ret)
+			return null;
 		return $ret["id"];
 	}
 
@@ -275,15 +297,26 @@ class dbDAO {
 		return $this->getEntryByField("person", "user", $username,$nullChangeForID);
 	}
 
+	/**
+	 * get a person by email
+	 * @param string $email
+	 * @return person array or NULL
+	 */
 	public function getPersonByEmail($email) {
 		if ($email==null || trim($email)=="")
 			return null;
 		$person = $this->getEntryByField("person", "email", $email);
+		//the protected email
 		if ($person==null)
 			$person = $this->getEntryByField("person", "email", "~".$email);
 		return $person;
 	}
 
+	/**
+	 * get a person by lastname and firstname eg. Müller Peter
+	 * @param string lastname firstname
+	 * @return person array or NULL
+	 */
 	public function getPersonByLastnameFirstname($name) {
 		if ($name==null || trim($name)=="")
 			return null;
@@ -303,6 +336,11 @@ class dbDAO {
 		return null;
 	}
 	
+	/**
+	 * get a person by Facebook ID
+	 * @param string facebookid
+	 * @return person array or NULL
+	 */
 	public function getPersonByFacobookId($fbid) {
 		if ($fbid==null || trim($fbid)=="")
 			return null;
@@ -337,6 +375,12 @@ class dbDAO {
 		return $ret;
 	}
 	
+	/**
+	 * Merge two person lists and return a list of persons that existst in both of the input array
+	 * If one of the input arrays are empty the return the other one
+	 * @param unknown $array1
+	 * @param unknown $array2
+	 */
 	private function personMerge($array1,$array2) {
 		$ret=array();
 		if (sizeof($array1)==0)
@@ -362,8 +406,9 @@ class dbDAO {
 		$name=trim($name);
 		if( strlen($name)>1) {
 			
-			$sql="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person left join  class on class.id=person.classID where ";  
-			$sql .=" (classID != 0 or isTeacher = 1)";
+			$sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
+			$sql .=" left join  class on class.id=person.classID";  
+			$sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
 			$sql .=" and person.changeForID is null";
 			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 			$this->dataBase->query($sql);
@@ -376,8 +421,9 @@ class dbDAO {
 			}
 			
 			//Reorganise the list with the self change entrys
-			$sql="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person join  class on class.id=person.classID where ";
-			$sql .=" (classID != 0 or isTeacher = 1)";
+			$sql  ="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person";
+			$sql .=" join  class on class.id=person.classID ";
+			$sql .=" where (graduationYear != 0 or isTeacher = 1)";
 			$sql .=" and person.changeForID is not null";
 			$sql .=" and person.changeIP ='".$_SERVER["REMOTE_ADDR"]."'";
 			$sql .=" limit 50";
@@ -508,6 +554,9 @@ class dbDAO {
 		$this->dataBase->insert("candle", $data);
 	}
 	
+	/**
+	 * @deprecated
+	 */
 	public function dbUtilitySetDeceasedYear() {
 		$sql ="update  person set deceasedYear=convert(substring(firstname,instr(firstname,'†')+3) ,signed) where firstname like '%†%'";
 		$this->dataBase->query($sql);
@@ -560,7 +609,7 @@ class dbDAO {
 	}
 	
 	/**
-	 * get person count
+	 * get entry count 
 	 * @param unknown $where
 	 * @param unknown $limit
 	 * @param unknown $ofset
@@ -665,7 +714,7 @@ class dbDAO {
 				$sql .=" and not(role like '%guest%')";
 			$sql .=" and changeForID is null ";
 			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-			if ($classId==0)
+			if ($this->isClassIdForStaf($classId))
 				$sql .=" and isTeacher = 1";
 			$this->dataBase->query($sql);
 			return $this->dataBase->count();
@@ -1443,47 +1492,60 @@ class dbDAO {
 		$sql="select changeUserID from history where entyID =".$id." and changeUserID>0 order by changeDate limit 1";
 		$this->dataBase->queryInt($sql);
 	}
-
-	public function getPersonChangeBest($count=12) {
-		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID order by count desc limit ".$count;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r1=array();
-			foreach ($r as $s) {
-				$r1[$s["uid"]]=$s["count"];
-			}
-		}
-		$ret = $this->mergeBestArray(array(),$r1,1);
 	
-		$sql="select count(1) as count, changeUserID as uid from person where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r2=array();
-			foreach ($r as $s) {
-				$r2[$s["uid"]]=$s["count"];
-			}
+	public function getPersonActivities($id) {
+		$ret = array();
+		$sql="select count(1) as count from history where changeUserID=".$id." and `table`='person' ";
+		$ret["personChange"]=$this->dataBase->queryInt($sql);
+		
+		$sql="select count(1) as count from person where changeUserID=".$id;
+		$ret["newPerson"]=$this->dataBase->queryInt($sql);
+		
+		$sql="select count(1) as count from picture where changeUserID=".$id;
+		$ret["newPicture"]=$this->dataBase->queryInt($sql);
+		
+		$sql="select count(1) as count from candle where userID=".$id;
+		$ret["lightedCandles"]=$this->dataBase->queryInt($sql);
+
+		$sql="select count(1) as count from songvote where personID=".$id;
+		$ret["songVotes"]=$this->dataBase->queryInt($sql);
+		
+		$sql="select count(1) as count from song where changeUserID=".$id;
+		$ret["songs"]=$this->dataBase->queryInt($sql);
+		
+		$sql="select count(1) as count from interpret where changeUserID=".$id;
+		$ret["interprets"]=$this->dataBase->queryInt($sql);
+		
+		$person = $this->getPersonByID($id);
+		$r=0;
+		if (isset($person["userLastLogin"])) {
+			$diff=date_diff(new DateTime($person["userLastLogin"]),new DateTime(),true);
+			if ($diff->days<1000)
+				$r=1000- ($diff->days);
 		}
-		$ret = $this->mergeBestArray(array(),$r2,3);
+		$ret["lastLoginPoints"]=$r;
+		
+		
+		
+		return  $ret;
+		
+	}
+	
+	public function getPersonChangeBest($count=12) {
+		$sql="select count(1) as count, changeUserID as uid from history where changeUserID>=0 and `table`='person' group by changeUserID order by count desc limit ".$count;
+		$ret = $this->mergeBestArrays(array(),$sql,1);
+	
+		$sql="select count(1) as count, changeUserID as uid from person where changeUserID>=0 group by  changeUserID order by count desc limit  ".$count;
+		$ret = $this->mergeBestArrays($ret,$sql,3);
 	
 		$sql="select count(1) as count, changeUserID as uid from picture where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r3=array();
-			foreach ($r as $s) {
-				$r3[$s["uid"]]=$s["count"];
-			}
-		}
-		$ret = $this->mergeBestArray($ret,$r3,5);
-
+		$ret = $this->mergeBestArrays($ret,$sql,5);
+		
 		$sql="select userLastLogin, id as uid from person where userLastLogin is not null and changeForID is null order by userLastLogin desc limit  ".$count;
 		$this->dataBase->query($sql);
+		$r4=array();
 		if ($this->dataBase->count()>0) {
 			$r = $this->dataBase->getRowList();
-			//var_dump($r);
-			$r4=array();
 			foreach ($r as $s) {
 				$diff=date_diff(new DateTime($s["userLastLogin"]),new DateTime(),true);
 				if ($diff->days<1000)
@@ -1493,21 +1555,22 @@ class dbDAO {
 		$ret = $this->mergeBestArray($ret,$r4,1);
 
 		$sql="select count(1) as count, userID as uid from candle where userID is not null group by  userID order by count desc limit  ".$count;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r4=array();
-			foreach ($r as $s) {
-				$r4[$s["uid"]]=$s["count"];
-			}
-		}
-		$ret = $this->mergeBestArray($ret,$r4,2);
+		$ret = $this->mergeBestArrays($ret,$sql,2);
 		
+		$sql="select count(1) as count, personID as uid from songvote where personID !=0 group by  personID order by count desc limit  ".$count;
+		$ret = $this->mergeBestArrays($ret,$sql,7);
+
+		$sql="select count(1) as count, changeUserID as uid from song where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
+		$ret = $this->mergeBestArrays($ret,$sql,7);
+
+		$sql="select count(1) as count, changeUserID as uid from interpret where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
+		$ret = $this->mergeBestArrays($ret,$sql,7);
 		
 		$rets=array();
 		for($i=0;$i<$count;$i++) {
 			$value=0;
 			foreach ($ret as $uid=>$counts) {
+	
 				if($counts>$value) {
 					$value=$counts;
 					$vuid=$uid;
@@ -1528,6 +1591,18 @@ class dbDAO {
 				$a1[$idx]=$a*$factor;
 		}
 		return $a1;
+	}
+
+	private function mergeBestArrays($inputArray,$sql,$factor=1) {
+		$this->dataBase->query($sql);
+		$rr=array();
+		if ($this->dataBase->count()>0) {
+			$r = $this->dataBase->getRowList();
+			foreach ($r as $s) {
+				$rr[$s["uid"]]=$s["count"];
+			}
+		}
+		return $this->mergeBestArray($inputArray,$rr,$factor);
 	}
 	
 	/**

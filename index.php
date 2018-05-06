@@ -1,9 +1,10 @@
 <?PHP 
 include_once("tools/sessionManager.php");
+include_once 'config.php';
 include_once("data.php");
 
 if (!isset($siteHeader)) $siteHeader='';
-$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v=02052018" /> ';
+$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v='.$webAppVersion.'"/>';
 $showWrapper=true;
 
 unsetAktClass();
@@ -12,7 +13,7 @@ unsetAktClass();
 
 include("homemenu.php");
 ?>
-<div class="sub_title">Szeretettel köszöntünk a Brassaista Véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista osztálytársaiddal és iskolatársaiddal!<br/></div>
+<div class="sub_title">Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!<br/></div>
 <div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <div class="container-fluid">
 	<div  style="padding:15px;margin-top:20px" class="col-sm-4" >
@@ -59,14 +60,14 @@ include("homemenu.php");
 			<div class="inlineBox">Osztályfelelősők körlevelet (E-mailt) küldhetnek volt osztálytársuknak.</div> 
 		</div>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="zenetoplista.php?classid=0"><img img class="indeximg" src="images/record-player.png" /></a>
+			<a class="inlineBox" href="zenetoplista.php?classid=-1"><img img class="indeximg" src="images/record-player.png" /></a>
 			<div class="inlineBox">Véndiákok toplistája, milyen zenére mullatnak az egykori diákok.</div> 
 		</div>
 	</div>
 	<div class="row">&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. február 17.</b>-én.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. május 05.</b>-én.
 	</div>
 </div>
 

@@ -10,7 +10,7 @@ else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"];
 else $tabOpen=0;
 if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
 if (!isset($tabUrl)) 
-	$tabUrl=$SCRIPT_NAME;
+	$tabUrl=getenv("SCRIPT_NAME");
 ?>
 
 <script language="JavaScript" type="text/javascript">

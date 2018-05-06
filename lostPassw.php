@@ -67,7 +67,7 @@ if (isActionParam('newUser')) {
 	<div class="panel panel-default">
 		<div class="panel-heading"><h4>Elfelejtettem a jelszavam, szeretnék az email címemre egy újjat.</h4></div>
   		<div class="panel-body">
-			<form action="<?PHP echo("$SCRIPT_NAME");?>" method="get">
+			<form method="get">
 				<input type="hidden"  name="action" value="newPassword" />
   				<div class="alert alert-info">
 					Akkor használd ezt a funkciót, ha már felhasználó vagy és ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.

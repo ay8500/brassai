@@ -92,7 +92,7 @@ if (isset($_GET["action"]) && $_GET["action"]=="setPersonID" && userIsAdmin()) {
   </button>
 </div>
 	<div id="message" style="margin-bottom: 10px;">
-		<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" >
+		<form method="get" >
 			<?php if (!userIsLoggedOn()) {?>
 			<div class="input-group">
 				<span style="min-width:120px; text-align:right" class="input-group-addon" id="basic-addon1">Név</span>
@@ -114,7 +114,7 @@ if (isset($_GET["action"]) && $_GET["action"]=="setPersonID" && userIsAdmin()) {
 				<button value="checkMessage" name="action" class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-check"></span> magyar?</button>
 			<?php } ?>
 		</form>
-		<form action="<?PHP echo($SCRIPT_NAME);?>" method="get" id="deleteForm">
+		<form method="get" id="deleteForm">
 			<input type="hidden" name="id" id="deleteId"/>
 			<input type="hidden" name="action" value="deleteMessage"/>
 		</form>

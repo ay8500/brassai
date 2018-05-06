@@ -75,7 +75,7 @@ if (getParam("action")=="vote") {
 	{ 
 		$vote=$db->getVote(getPersonId($d),$classMeetingCount);
 		?>
-		<form action="<?PHP echo($SCRIPT_NAME);?>" method="post"">
+		<form method="post"">
 		<tr class="votetable"> 
 		<td>
 			<img src="<?php echo getPersonPicture($d) ?>" style="height:30px; border-radius:3px; margin:2px;" />

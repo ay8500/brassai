@@ -8,7 +8,6 @@
 	$db = new dbDAO;
 	$resultDBoperation="";
 	
-	$SCRIPT_NAME = getenv("SCRIPT_NAME");
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
@@ -24,7 +23,7 @@
 	   $class=getAktClass();   
 	}
 	
-	if (getParam("schoolid", "")!="") {
+	if ($schoolid=getParam("schoolid", "")!="") {
 		unsetAktClass();
 		setAktSchool($schoolid);
 	}
@@ -129,7 +128,7 @@
         			<li><a href="laureates.php">Juhász Máthé díjasok</a></li>
         			<li><a href="worldmap.php?classid=-1">Térkép</a></li>
         			<li><a href="statistics.php">Statisztika</a></li>
-        			<li><a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
+        			<li><a href="zenetoplista.php?classid=-1">Zenetoplista</a></li>
        			</ul>
       		</li>
       		<?php if ((getAktClassId()!=$db->getStafClassIdBySchoolId(getAktSchoolId()) && getAktClassId()>=0) || userIsAdmin()) {
@@ -257,6 +256,7 @@
 			$("#uSearch").slideDown("slow");
 		else
 		    $("#uSearch").show();
+		$("#srcText").focus();
 		onResize(135);
 	}
 	
@@ -268,7 +268,6 @@
 	function search() {
 		document.location.href="search.php?srcText="+$("#srcText").val();
 	}
-	
 </script>
 
 <?php 
