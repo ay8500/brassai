@@ -75,11 +75,11 @@ if (true) { //Communication
 	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
 }
 if (userIsAdmin()) { //only for admin
-	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","changeIP","changeDate","changeUserID","changeForID");
-	array_push($dataItemProp,"","","","","","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","IP","Dátum","User","changeForID");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false);
+	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
+	array_push($dataItemProp,"","","","","","","","","","","","");
+	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","Bejelentkezés","IP","Dátum","User","changeForID");
+	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
 }
 if ((isset($classId) && $db->isClassIdForStaf($classId)) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
 	$dataFieldCaption[17]="Tantárgy";
