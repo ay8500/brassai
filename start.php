@@ -54,7 +54,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 		</div>
 		<div class="panel-body">
 		<?php
-		$bests=$db->getPersonChangeBest(userIsAdmin()?100:20);
+		$bests=$db->getPersonChangeBest(userIsAdmin()?100:30);
 		foreach ($bests as $uid=>$count) {
 			if ($count>=1) {
 				$person=$db->getPersonByID($uid);

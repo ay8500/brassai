@@ -75,7 +75,7 @@ class dbDAO {
 //************************ Class ******************************************* 	
 
 	/**
-	 * this calld id is for staf only
+	 * this class id is for staf only
 	 * @return boolean
 	 */
 	public function isClassIdForStaf($classId) {
