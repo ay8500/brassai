@@ -141,7 +141,7 @@ class MySqlDb {
 		  		if ($d["type"]!="n") 
 		  			$sql .=$this->replaceSpecialChars($d["value"]);
 		  		else { 
-			  		if ($data[$i]["value"]!="" )
+			  		if ($data[$i]["value"]!=="" )
 		  				$sql .=$d["value"];
 					else 
 						$sql .='null';

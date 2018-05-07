@@ -33,7 +33,6 @@ if ($userId>=0) {
 unsetAktClass();
 
 include("homemenu.php");
-include_once 'editDiakCard.php';
 ?>
 
 <?php 
@@ -44,6 +43,7 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 	include("signin.php");
 	include ("homefooter.php");
 } else { 
+	include_once 'editDiakCard.php';
 ?>
 <div class="sub_title">Újdonságok</div>
 <div class="container-fluid">

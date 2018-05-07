@@ -25,7 +25,7 @@ else {
 }
 
 //Parameters
-$action=getGetParam("action","");
+$action=getParam("action","");
 $anonymousEditor=getParam("anonymousEditor")=="true";
 
 //Edit or only view variant this page
@@ -102,8 +102,8 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 					$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
 			}
 			//ClassID
-			if (isset($_GET["classID"])) {
-				$diak["classID"]=getParam("classID");
+			if (getIntParam("classID",-1)>-1) {
+				$diak["classID"]=getIntParam("classID");
 			}
 			//No dublicate email address is allowed
 			if (checkUserEmailExists($diak["id"],$diak["email"])) {
@@ -311,7 +311,6 @@ if ($action=="newperson") {
 }
 $tabUrl="editDiak.php";
 ?>
-
 <?php if (null!=getAktClass()) {?>
 <div class="container-fluid">
 	<?php  include("tabs.php"); ?>

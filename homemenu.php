@@ -6,7 +6,8 @@
 	include_once("data.php");
 
 	$db = new dbDAO;
-	$resultDBoperation="";
+	if( !isset($resultDBoperation))
+		$resultDBoperation="";
 	
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";

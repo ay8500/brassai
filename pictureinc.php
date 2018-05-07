@@ -1,4 +1,3 @@
-<?php $view=getParam("view","table"); ?>
 <style>
 .ilbuttonworld {
     background-image: url("images/world-16.png");
@@ -30,7 +29,9 @@
 .ileditcomment {border: none;width:100%;height:100px;padding:5px;}
 
 .pi100 {width:100%;}
-<?php if ($view=="table") {?>
+<?php 
+$view=getParam("view","table"); 
+if ($view=="table") {?>
 .pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;} 	
 <?php } else {?>
 .pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}
