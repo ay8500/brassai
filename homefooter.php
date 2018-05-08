@@ -119,6 +119,12 @@
 				});
 			}
 		<?php } ?>
+
+		function showModalMessage(title,text) {
+		    $(".modal-title").html(title);
+			$(".modal-body").html(text);
+			$('#myModal').modal({show: 'false' });
+		}
 				
 	</script>
 	<?php if (isset($showWrapper)) {?>

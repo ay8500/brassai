@@ -1,19 +1,19 @@
 <?php 
 include_once 'tools/sessionManager.php';
+include_once 'tools/ltools.php';
+include_once 'data.php';
 
-//Test facebook
-/*
-if (true) {
-	$_SESSION['FacebookId']="965038893537235";
-	$_SESSION["FacebookName"]="Peter Pán";
-	$_SESSION["FacebookFirstName"]="Peter";
-	$_SESSION["FacebookLastName"]="Pán";
-	$_SESSION["FacebookEmail"]="pp@tonilne.de";
-	$_SESSION["FacebookLink"]="https://www.facebook.com/rethy.levente";
+if (getParam("FacebookId")) {
+	$_SESSION['FacebookId']=getParam("FacebookId");
+	$_SESSION["FacebookName"]=getParam("last_name").' '.getParam("first_name");
+	$_SESSION["FacebookFirstName"]=getParam("first_name");
+	$_SESSION["FacebookLastName"]=getParam("last_name");
+	$_SESSION["FacebookEmail"]=getParam("email");
+	$_SESSION["FacebookLink"]="https://www.facebook.com/";
 } else {
 	unset($_SESSION['FacebookId']);
 }
-*/
+
 
 if (isset($_SESSION['FacebookId'])) {
 	$file=fopen("facebooklogin.log","a");
@@ -21,8 +21,6 @@ if (isset($_SESSION['FacebookId'])) {
 }
 $SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
 
-include_once 'tools/ltools.php';
-include_once 'data.php';
 
 $schoolClass=getParam("scoolClassFb","");
 

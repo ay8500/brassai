@@ -12,7 +12,7 @@
 	<div>
 		<h4>Aktívitási pontszámok</h4>
 		<table id="activities">
-		<tr style="background-color: lightgray"><td>Aktió					</td><td> Végrehajtások		</td><td> Szorzó </td><td> Összesen</td></tr>
+		<tr style="background-color: lightgray"><td>Akció					</td><td> Végrehajtások		</td><td> Szorzó </td><td> Összesen</td></tr>
 		<tr><td>Személy módosítások		</td><td> <?php echo $activities["personChange"]?>		</td><td> 1 </td><td><?php echo $activities["personChange"]?> </td></tr>
 		<tr><td>Új személyek			</td><td> <?php echo $activities["newPerson"]?>			</td><td> 3 </td><td><?php echo $activities["newPerson"]*3?> </td></tr>
 		<tr><td>Új képek				</td><td> <?php echo $activities["newPicture"]?>		</td><td> 5 </td><td><?php echo $activities["newPicture"]*5?> </td></tr>
@@ -20,7 +20,7 @@
 		<tr><td>Utolsó bejelentkezés 	</td><td> <?php echo $activities["lastLoginPoints"]?>	</td><td> 1 </td><td><?php echo $activities["lastLoginPoints"]?></td></tr>
 
 		<tr><td>Zene szavazatok			</td><td> <?php echo $activities["songVotes"]?>			</td><td> 7 </td><td><?php echo $activities["songVotes"]*7?></td></tr>
-		<tr><td>Zene darabok			</td><td> <?php echo $activities["songs"]?>				</td><td> 7 </td><td><?php echo $activities["songs"]*7?></td></tr>
+		<tr><td>Zene klippek			</td><td> <?php echo $activities["songs"]?>				</td><td> 7 </td><td><?php echo $activities["songs"]*7?></td></tr>
 		<tr><td>Zene előadók			</td><td> <?php echo $activities["interprets"]?>		</td><td> 7 </td><td><?php echo $activities["interprets"]*7?></td></tr>
 
 		<tr style="background-color: lightgray;font-weight: bold;"><td>Összesen				</td><td></td><td></td><td>

@@ -86,17 +86,48 @@ function writeLogonDiv() {
 		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
 		</div>
 	</form>
-	<!-- 
-	<form action="http://brassai.blue-l.de/fb" method="get">
-		<div style="text-align:center; margin: 3px">
-		<input class="loginFacebookSubmit" style="text-align:center; margin: auto;" type="submit"  value="" />
-		</div>
-	</form>
-	 -->
+	<div style="text-align:center; margin: 3px">
+		<button class="loginFacebookSubmit" onclick="fblogin();"></button>
+	</div>
 	<div style="margin-top:10px; padding:5px; border-radius:4px; display: none;" id="ajaxLStatus"></div>	
 <?php } ?> 
 </div>
 <script type="text/javascript">
+window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1606012466308740',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.0'
+    });
+    FB.AppEvents.logPageView();   
+};
+
+(function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function checkLoginState() {
+	  FB.getLoginStatus(function(response) {
+		  if(response.status=="connected") {
+		  	FB.api('/me?fields=id,first_name,last_name,email,link,about,picture', function(response) {
+			    console.log(JSON.stringify(response));
+			    var url="start.php?action=facebooklogin&FacebookId="+response.id+"&first_name="+response.first_name+"&last_name="+response.last_name+"&email="+response.email;
+			    console.log(url);
+			    location.href=url;
+			});
+		  }
+	  });
+	}
+
+function fblogin() {
+	FB.login(checkLoginState, {scope: 'email'});
+}
+
 	function logon() {
 		$.ajax({
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
