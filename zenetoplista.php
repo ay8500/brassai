@@ -248,7 +248,7 @@ if ($delVote>=0 && $edit) {
 						$voted='<a href="zenetoplista.php?delVote='.$v['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
 						$dh='<span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span>';
 					} else {
-						if (($voteCount<$maxVoteCount)&&(getLoggedInUserId()>0))
+						if (($voteCount<$maxVoteCount)&&userIsLoggedOn())
 							$voted='<a href="zenetoplista.php?song='.$v['songID'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
 						else
 							$voted='';

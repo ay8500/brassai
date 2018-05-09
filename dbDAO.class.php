@@ -1380,7 +1380,7 @@ class dbDAO {
 		}
 		$data =$this->dataBase->changeFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
 		$data =$this->dataBase->changeFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
-		if (getLoggedInUserId()>=0) {
+		if (userIsLoggedOn()) {
 			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", getLoggedInUserId());
 		} else {
 			$data =$this->dataBase->setFieldInArrayToNull($data,"changeUserID");
@@ -1389,7 +1389,7 @@ class dbDAO {
 		//Update
 		if ($entry["id"]>=0) {
 			//User is loggen on
-			if (getLoggedInUserId()>=0) {
+			if (userIsLoggedOn()) {
 				$this->createHistoryEntry($table,$entry["id"]);
 				if ($this->dataBase->update($table,$data,"id",$entry["id"])) {
 					return $entry["id"];
@@ -1655,7 +1655,7 @@ class dbDAO {
 		$data=$this->dataBase->insertFieldInArray($data, "jsonData", json_encode((object)$entry),JSON_HEX_TAG+JSON_HEX_AMP+JSON_HEX_APOS+JSON_HEX_QUOT);
 		$data =$this->dataBase->insertFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
 		$data =$this->dataBase->insertFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
-		if (getLoggedInUserId()>=0) {
+		if (userIsLoggedOn()) {
 			$data =$this->dataBase->insertFieldInArray($data,"changeUserID", getLoggedInUserId());
 		}  
 		$data =$this->dataBase->insertFieldInArray($data,"deleted", $delete?1:0 );

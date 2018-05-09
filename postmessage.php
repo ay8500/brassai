@@ -110,7 +110,7 @@ function writeMessage($text,$privacy,$name) {
 	$message["text"]=$text;
 	$message["privacy"]=$privacy;
 	$message["isDeleted"]=0;
-	if (getLoggedInUserId()==-1) {
+	if (!userIsLoggedOn()) {
 		$message["name"]=$name;
 		$message["privacy"]="world";
 	}

@@ -4,9 +4,36 @@
  */
 
 include_once "tools/userManager.php";
+include_once 'tools/ltools.php';
 include_once 'dbDAO.class.php';
 
 $db = new dbDAO;
+
+/**
+ * handle the params that change the class or school
+ * @return number|NULL
+ */
+function handleClassSchoolChange() {
+	global $db;
+	if (null!=getParam("classid")) {
+		$class=$db->getClassById(getParam("classid"));
+		if ($class==null)
+			$class=$db->getClassByText(getParam("classid"));
+			if ($class!=null) {
+				setAktClass($class["id"]);
+				setAktSchool($class["schoolID"]);
+			}
+	} else {
+		$class=getAktClass();
+	}
+	return $class;
+}
+
+if ($schoolid=getParam("schoolid", "")!="") {
+	unsetAktClass();
+	setAktSchool($schoolid);
+}
+
 
 /**
  * The folder of the aktual persons class
@@ -84,7 +111,7 @@ function getAktPerson() {
  */
 function getPersonLogedOn() {
 	global $db;
-	if ( null!=getLoggedInUserId())  { 
+	if ( userIsLoggedOn())  { 
 		return $db->getPersonByID(getLoggedInUserId());
 	} else {
 		return null;
