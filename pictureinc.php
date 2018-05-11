@@ -1,8 +1,8 @@
-<style>
+<?php 
+$view=getParam("view","table");
+Appl::addCssStyle('
 .ilbuttonworld {
-    background-image: url("images/world-16.png");
-    background-repeat: no-repeat;
-    background-position: 11px 7px;
+    background-image: url("images/world-16.png");background-repeat: no-repeat;background-position: 11px 7px;
 }
 
 .iluser {
@@ -27,33 +27,26 @@
 }
 .iledittitle {	border: none;width:100%;padding:5px;font-weight: bold;}
 .ileditcomment {border: none;width:100%;height:100px;padding:5px;}
-
 .pi100 {width:100%;}
-<?php 
-$view=getParam("view","table"); 
-if ($view=="table") {?>
-.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;} 	
-<?php } else {?>
-.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}
 #list-table { display:inline-block;vertical-align: text-top;}
-<?php }?>
-</style>
-
-<?php 
-$resultDBoperation="";
+');
+if ($view=="table") 
+	Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
+else 
+	Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
 	if ($db->getCountOfRequest(changeType::deletepicture,24)<5) {
 		if (deletePicture(getIntParam("did"))>=0) {
-			$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+			Appl::$resultDbOperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 			$db->saveRequest(changeType::deletepicture);
 			saveLogInInfo("PictureDelete",getAktUserId(),"",getParam("id", ""),true);
 		} else {
-			$resultDBoperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
 		}
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" >Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!</div>';
 	}
 }
 
@@ -66,9 +59,9 @@ if (getParam("action","")=="changeOrder" && (userIsAdmin() || userIsSuperuser() 
 //Delete and unlink Picture
 if (getParam("action","")=="unlinkPicture" && (userIsAdmin() || userIsSuperuser()) )  {
 	if (deletePicture(getIntParam("did"),true)>=0) {
-		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+		Appl::$resultDbOperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
 	}
 }
 
@@ -113,30 +106,30 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							if ($db->savePicture($upicture)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,1800,1800);
-								$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
+								Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
 								saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);
 							} else {
-								$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+								Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
 							}
 						} else {
-							$resultDBoperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve és felülírva.</div>";
+							Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve és felülírva.</div>";
 						}
 					} else {
-						$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+						Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
 					}
 				}
 				else {
-					$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
+					Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
 					saveLogInInfo("PictureUpload",$uid,$diak["user"],"to big",false);
 				}
 			}
 			else {
-				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
+				Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
 				saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"only jpg",false);
 			}
 		}
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" >Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!</div>';
 	}
 }
 
@@ -183,7 +176,6 @@ if(isset($picture)) {
 			<?php }?>
 			<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
 		</div>
-		<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<?php endif; ?>
 	
 	
@@ -286,7 +278,7 @@ function savePicture(id) {
 	$('#commentShow_'+id).html(c);
 	if (id>0) {
 		$.ajax({
-			url:"editDiakPictureTitle.php?id="+id+"&title="+t+"&comment="+c,
+			url:encodeURI("editDiakPictureTitle.php?id="+id+"&title="+t+"&comment="+c),
 			type:"GET",
 			dataType: 'json',
 			success:function(data){

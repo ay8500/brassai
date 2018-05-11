@@ -1,4 +1,4 @@
-<?PHP
+<?php
 $SiteTitle="Brassai Sámuel életrajza"; 
 $SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai";
 include("homemenu.php"); 

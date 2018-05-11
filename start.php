@@ -1,28 +1,9 @@
 <?php 
 include_once 'tools/sessionManager.php';
 include_once 'tools/ltools.php';
+include_once 'tools/appl.class.php';
 include_once 'data.php';
 
-if (getParam("FacebookId")) {
-	$_SESSION['FacebookId']=getParam("FacebookId");
-	$_SESSION["FacebookName"]=getParam("last_name").' '.getParam("first_name");
-	$_SESSION["FacebookFirstName"]=getParam("first_name");
-	$_SESSION["FacebookLastName"]=getParam("last_name");
-	$_SESSION["FacebookEmail"]=getParam("email");
-	$_SESSION["FacebookLink"]="https://www.facebook.com/";
-} else {
-	unset($_SESSION['FacebookId']);
-}
-
-
-if (isset($_SESSION['FacebookId'])) {
-	$file=fopen("facebooklogin.log","a");
-	fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".print_r($_SESSION,true)."\r\n");
-}
-$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
-
-
-$schoolClass=getParam("scoolClassFb","");
 
 $userId=getIntParam("userId",-1);
 if ($userId>=0) {
@@ -30,20 +11,11 @@ if ($userId>=0) {
 }
 unsetAktClass();
 
+$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
+Appl::$subTitle = 'Újdonságok';
 include("homemenu.php");
+include_once 'editDiakCard.php';
 ?>
-
-<?php 
-if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") {
-	include("lostPassw.php");
-	include ("homefooter.php");
-} elseif ((isset($_SESSION['FacebookId']) || getParam("action")=="newUser")&& !userIsLoggedOn()) { 
-	include("signin.php");
-	include ("homefooter.php");
-} else { 
-	include_once 'editDiakCard.php';
-?>
-<div class="sub_title">Újdonságok</div>
 <div class="container-fluid">
 	<div class="panel panel-default " >
 
@@ -124,9 +96,9 @@ if (getParam("action","")=="lostpassw" || getParam("action","")=="newPassword") 
 			</ul>
 		</div>
 	</div>
-	<?php 
-	include ("homefooter.php");
-} 
+</div>
+<?php 
+include ("homefooter.php"); 
 
 function sortBests($a,$b) {
 	if (intval($a)<intval($b))

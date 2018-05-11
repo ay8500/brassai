@@ -1,15 +1,41 @@
 <?php 
-// This code is loaded from start.php wenn a new facebook or internet user wnat to sign in
+include_once("tools/userManager.php");//login logoff
+include_once 'tools/ltools.php';
+include_once 'tools/appl.class.php';
+include_once("data.php");		//the database
+include_once("sendMail.php");	//send mail
 
-$resultDBoperation="";
+//this is the facebook callback page
+if (getParam("FacebookId")) {
+	$_SESSION['FacebookId']=getParam("FacebookId");
+	$_SESSION["FacebookName"]=getParam("last_name").' '.getParam("first_name");
+	$_SESSION["FacebookFirstName"]=getParam("first_name");
+	$_SESSION["FacebookLastName"]=getParam("last_name");
+	$_SESSION["FacebookEmail"]=getParam("email");
+	$_SESSION["FacebookLink"]="https://www.facebook.com/";
+} else {
+	unset($_SESSION['FacebookId']);
+	unset($_SESSION["FacebookName"]);
+	unset($_SESSION["FacebookFirstName"]);
+	unset($_SESSION["FacebookLastName"]);
+	unset($_SESSION["FacebookEmail"]);
+}
 
+include_once 'logon.php';
+if (userIsLoggedOn()) {
+	header('Location: index.php?loginok=true');
+}
+//New User
 if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", "")!="") {
-	if ($db->getCountOfRequest(changeType::newuser)>2) {
-		$resultDBoperation='<div class="alert alert-warning" >Túl sok bejelenkezést szeretnél létrehozni, kérünk probálkozz késöbb még egyszer!</div>';
+	if ($db->getCountOfRequest(changeType::newuser)>5) {
+		logoutUser();
+		Appl::$resultDbOperation='<div class="alert alert-warning" >Túl sok bejelenkezést szeretnél létrehozni, kérünk probálkozz késöbb még egyszer!</div>';
 	} else {
-		if ($db->getPersonByEmail(getParam("email", ""))!=null) {
-			$resultDBoperation='<div class="alert alert-warning" >A megadott email cím már létezik, kérünk probálkozz még egyszer egy másik email címmel!</div>';
+		if (checkUserEmailExists(getParam('id',html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8")))) {
+			logoutUser();
+			Appl::$resultDbOperation='<div class="alert alert-warning" >A megadott email cím már létezik, kérünk probálkozz még egyszer egy másik email címmel!</div>';
 		} else {
+			setUserInSession("", "dummy", 0); //simulate user is loged on to not create duplicate users
 			$classtext=getParam("classtext","");
 			$class=$db->getClassByText($classtext);
 			if ($class==null) {
@@ -24,7 +50,8 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 				$classid=getRealId($class);
 			}
 			if ($classid<0) {
-				$resultDBoperation='<div class="alert alert-warning" >Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer!<br/>Hibacód:65132</div>';
+				logoutUser();
+				Appl::$resultDbOperation='<div class="alert alert-warning" >Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer!<br/>Hibacód:65132</div>';
 			} else {
 				if (getIntParam("id", -1)==-1) {
 					//create a new person
@@ -35,53 +62,47 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 					$person["email"]=html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8");
 					$person["role"]=getParam("role","");
 					$person["classID"]=$classid;
-					$_SESSION["uId"]=0;
-					$ret = $db->savePerson($person);
-					unset($_SESSION["uId"]);
+					$newUserReturnValue = $db->savePerson($person);
 				} else {
 					//update a person
 					$person=$db->getPersonByID(getIntParam("id"));
 					if ($person!=null)
 						$person=$db->getPersonByID(getRealId($person));
 					if ($person==null) {
-						$ret=-12;
+						$newUserReturnValue=-12;
 					} else {
 						$person["lastname"]=html_entity_decode(getParam("lastname"),ENT_QUOTES,"UTF-8");
 						$person["firstname"]=html_entity_decode(getParam("firstname"),ENT_QUOTES,"UTF-8");
 						$person["email"]=html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8");
-						$person["facebookid"]=getIntParam("fid",0);
-						$_SESSION["uId"]=0;
-						$ret = $db->savePerson($person);
-						unset($_SESSION["uId"]);
+						$person["facebookid"]=getParam("fid");
+						$newUserReturnValue = $db->savePerson($person);
 					}
 				}
-				if ($ret>=0) {
-					$person["id"]=$ret;
+				if ($newUserReturnValue>=0) {
+					$person["id"]=$newUserReturnValue;
 					$db->saveRequest(changeType::newuser);
-					$resultDBoperation='<div class="alert alert-info" >Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.</div>';
-					setUserInSession($person["role"],$person["user"],$ret);
+					Appl::setMessage('Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.', 'info');
+					setUserInSession($person["role"],$person["user"],$newUserReturnValue);
 					sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"],$person["user"], "", $class["graduationYear"], $class["name"],$person["id"]);
 				} else {
-					$resultDBoperation='<div class="alert alert-warning" >Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer!<br/>Hibacód:64432</div>';
+					logoutUser();
+					Appl::setMessage('Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer!','warning');
 				}
 			}
 		}
 	}
 }
-
+Appl::$subTitle='Bejelentkezés';
+Appl::addCssStyle('
+	.fb-radio{width: 25px;height: 25px;position: relative;top: -6px;}
+');
+include 'homemenu.php';
 ?>
 
-<style>
-<!--
-.fb-radio{width: 25px;height: 25px;padding:20px}
--->
-</style>
-
-<div class="sub_title">Bejelentkezés</div>
 <div class="container-fluid">
 <div class="well">
 	<div class="panel panel-default">
-		<?php if (!isset($ret)) {?>
+		<?php if (!isset($newUserReturnValue)) {?>
 		<div class="panel-heading">
 			<label id="dbDetails">
 				<?php if (isset($_SESSION["FacebookId"])) {?> 
@@ -92,7 +113,6 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 				<?php  } ?>
 			</label> 
 		</div>
-		<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 		<div id="page1">
 			<h4 class="margin-hor">Kapcsolatom a <?php  echo getAktSchoolName() ?> diákjaival:</h4> 
 			<div class="margin-def">
@@ -161,7 +181,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 		</div>		
 		<button class="margin-def btn btn-default disabled"  onclick="signin()" id="signin">Bejelentkezem</button>
 		<?php } else {?>
-			<button class="btn btn-default" onclick="javascript:document.location.href='editDiak.php?uid=<?php echo $ret?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
+			<button class="btn btn-default" onclick="javascript:document.location.href='editDiak.php?uid=<?php echo $newUserReturnValue?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
 		<?php } ?>
 	</div>
 </div></div>
@@ -256,7 +276,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 			msg="Bejelentkezés nem lehetséges mert:\n\n"+msg;
 			alert(msg);
 		} else {
-			var url="start.php?action=newUser";
+			var url="signin.php?action=newUser";
 			if (role==1 || role==4) url+="&role=";
 			if (role==2 || role==3) url+="&role=guest";
 			if (role==3 || role==4) url+="&classtext=0 staf";	
@@ -287,3 +307,4 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 	}
 	
 </script>
+<?php include "homefooter.php"; die();?>

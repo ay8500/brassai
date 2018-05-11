@@ -2,12 +2,17 @@
 include_once 'tools/sessionManager.php';
 include_once("tools/userManager.php");
 include_once("tools/ltools.php");
+include_once 'tools/appl.class.php';
+include_once 'data.php';
 
 $SiteTitle="A véndiákok ezt hallgatják szívesen";
 if (getParam("classid")==-1) unsetAktClass();
+if (getAktClassId()==-1) { 
+	Appl::$subTitle='Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.';
+} else {
+	Appl::$subTitle='A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.';
+} 
 
-include("homemenu.php");
-$resultDBoperation="";
 
 
 //User can make changes in the toplist
@@ -17,9 +22,9 @@ $edit = (userIsLoggedOn() && getRealId(getAktClass())==getLoggedInUserClassId())
 $delVote = intval(getGetParam("delVote", "-1"));
 if ($delVote>=0 && $edit) {
    	if ($db->deleteVote($delVote))
-		$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidból törölve!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-success" >Zene sikeresen a szavazataidból törölve!</div>';
 	else 
-		$resultDBoperation='<div class="alert alert-warning" >Szavazat törlése nem sikerült.</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" >Szavazat törlése nem sikerült.</div>';
    	$psong=0;$pinterpret=0;
 }
 
@@ -33,9 +38,9 @@ if ($delVote>=0 && $edit) {
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
    		$pinterpret=$db->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
    		if ($pinterpret>=0) 
-   			$resultDBoperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
+   			Appl::$resultDbOperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
    		else
-   			$resultDBoperation='<div class="alert alert-warning" >Előadó az adatbankban már létezik! Kimentés nem volt szükséges.</div>';
+   			Appl::$resultDbOperation='<div class="alert alert-warning" >Előadó az adatbankban már létezik! Kimentés nem volt szükséges.</div>';
    }
    
    //Parameter Song
@@ -56,17 +61,17 @@ if ($delVote>=0 && $edit) {
 	   					'id'=>-1,
 	   					'personID'=>getLoggedInUserId(),
 	   					'songID'=>$psong])>=0) {
-	   				$resultDBoperation='<div class="alert alert-success" >Zene és a szavazatod sikeresen kimentve.</div>';
+	   				Appl::$resultDbOperation='<div class="alert alert-success" >Zene és a szavazatod sikeresen kimentve.</div>';
 	   			} else {
-	   				$resultDBoperation='<div class="alert alert-warning" >Zene kimentése sikertelen!</div>';
+	   				Appl::$resultDbOperation='<div class="alert alert-warning" >Zene kimentése sikertelen!</div>';
 	   			}
 	   			$psong=0;$pinterpret=0;
 	   		} else {
-	   			$resultDBoperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
+	   			Appl::$resultDbOperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
 	   			$psong=0;
 	   		}
    		} else {
-   			$resultDBoperation='<div class="alert alert-warning" >Videó nem létezik a youtubeon! Írd be a youtoube linkböl a videó anzonosítót pédául:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51</div>';
+   			Appl::$resultDbOperation='<div class="alert alert-warning" >Videó nem létezik a youtubeon! Írd be a youtoube linkböl a videó anzonosítót pédául:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51</div>';
    			$psong=0;
    		}
    } 
@@ -76,9 +81,9 @@ if ($delVote>=0 && $edit) {
    		$vote["songID"]=$psong;
    		$vote["personID"]=getLoggedInUserId();
    		if ($db->saveSongVote($vote))
-			$resultDBoperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
+			Appl::$resultDbOperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
 		else 
-			$resultDBoperation='<div class="alert alert-warning" >Szavazat nem sikerült.</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" >Szavazat nem sikerült.</div>';
    		$psong=0;$pinterpret=0;
    } 
 	
@@ -110,18 +115,12 @@ if ($delVote>=0 && $edit) {
 		else
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}
+
+	include("homemenu.php");
 ?>
 
-<?php if (getAktClassId()==-1) { ?>
-	<div class="sub_title">Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.</div>
-<?php } else {?>
-	<div class="sub_title">A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.</div>
-<?php } ?>
 <div class="container-fluid">
-	<div class="well">
-		<?php echo $voteStatus?>
-	</div>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
+	<div class="well"><?php echo $voteStatus?></div>
 
 	<?php if ( $voteCount<$maxVoteCount && $edit ) { ?>
 	<form action="zenetoplista.php">

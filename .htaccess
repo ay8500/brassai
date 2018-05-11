@@ -11,5 +11,4 @@ RewriteEngine On
 Options FollowSymLinks 
 
 RewriteCond %{HTTPS} !=on
-RewriteCond %{HTTP_HOST} =localhost$ [NC]
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] 

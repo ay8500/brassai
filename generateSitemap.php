@@ -14,7 +14,7 @@ function writeSitemapPerson($id,$link) {
 function writeSitemapLink($link) 
 {
 	echo("<url>"."\r\n");
-	echo("\t<loc>http://brassai.blue-l.de/".$link."</loc>"."\r\n");
+	echo("\t<loc>https://brassai.blue-l.de/".$link."</loc>"."\r\n");
 	echo("\t<priority>0.5</priority>"."\r\n");
 	echo("\t<lastmod>".date('Y-m-d')."</lastmod>"."\r\n");
 	echo("\t<changefreq>monthly</changefreq>"."\r\n");

@@ -1,11 +1,30 @@
-<?PHP 
-$loadTextareaEditor=true;
-include("homemenu.php"); 
-include_once("data.php");
+<?php 
 include_once("tools/userManager.php");
+include_once("tools/appl.class.php");
+include_once("data.php");
+include_once 'tools/appl.class.php';
+
+Appl::addCss('editor/ui/trumbowyg.min.css');
+Appl::addJs('editor/trumbowyg.min.js');
+Appl::addJs('editor/langs/hu.min.js');
+Appl::addJsScript("
+$( document ).ready(function() {
+	$('#story').trumbowyg({
+		fullscreenable: false,
+		closable: false,
+		lang: 'hu',
+		btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
+		removeformatPasted: true,
+		autogrow: true
+	});
+});
+");
+
+Appl::$subTitle='Osztálytárs körlevek';
+include("homemenu.php"); 
 include_once 'chatinc.php';
 
-$resultDBoperation = "";
+
 
 if (getGetParam("sendAction")=="sendMail" && userIsLoggedOn()) {
 	$mailsSent = 0;
@@ -16,7 +35,7 @@ if (getGetParam("sendAction")=="sendMail" && userIsLoggedOn()) {
 			$mailsSent++;
 		}
 	}
-	$resultDBoperation = "</div>Elküldött e-mailek száma:".$mailsSent."</div>";
+	Appl::$resultDbOperation= "</div>Elküldött e-mailek száma:".$mailsSent."</div>";
 }
 
 $personList=$db->getPersonListByClassId(getRealId(getAktClass()),null,null,true);
@@ -33,8 +52,6 @@ if(sizeof($messageList)==0) {
 
 ?>
 <div class="container-fluid">   
-	<h2 class="sub_title" >Osztálytárs körlevek</h2>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<?php showChatEnterfields($personList); ?>
 	<div>
 		<?php foreach ($messageList as $message) {

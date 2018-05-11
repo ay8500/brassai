@@ -1,4 +1,3 @@
-<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <table class="editpagetable">
 	<?php if (isAktUserTheLoggedInUser() ) :?>
 		<tr><td colspan="3"><p style="text-align:left" ><h2>Képes album:</h2>A feltöltött képeket csak az osztálytársaid látják. Ha akkarod eggyeseket megjelölhetsz és akkor mindenki látni fogja.</p></td></tr>

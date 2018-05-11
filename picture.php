@@ -2,6 +2,7 @@
 include_once("tools/sessionManager.php");
 include_once ('tools/userManager.php');
 include_once 'tools/ltools.php';
+include_once 'tools/appl.class.php';
 include_once("data.php");
 
 $id=getIntParam("id",-1);
@@ -53,13 +54,11 @@ if ($type=="classID") {
 	$subtitle="Iskolánk tabló képei.";
 }  
 $SiteTitle=$subtitle;
+Appl::$subTitle= $type=="personID"?$link:$subtitle;
 include("homemenu.php");
 ?>
 <div class="container-fluid">
-<h2 class="sub_title"><?php echo $type=="personID"?$link:$subtitle ?></h2>
 <?php include_once 'pictureinc.php';?>
-
 </div>
 
 <?php include 'homefooter.php'; ?> 
-

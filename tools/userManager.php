@@ -2,7 +2,7 @@
 	
 	/**
 	 * get the user id form logged in user
-	 * @return NULL if no user logged on
+	 * @return integer or NULL if no user logged on
 	 */
 	function getLoggedInUserId() {
 		if (!isset($_SESSION["uId"]))
@@ -10,6 +10,10 @@
 		return intval($_SESSION["uId"]);
 	}
 	
+	/**
+	 * get the logged in user class id 
+	 * @return integer or -1 if no user logged on
+	 */
 	function getLoggedInUserClassId() {
 		global $db;
 		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
@@ -19,6 +23,10 @@
 			return -1;
 	}
 	
+	/**
+	 * get logged in name including first and lastname
+	 * @return string
+	 */
 	function getLoggedInUserName() {
 		global $db;
 		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
@@ -40,7 +48,7 @@
 	
 	/**
 	 * get aktual viewed user id
-	 * @return unknown
+	 * @return integer or null
 	 */
 	function getAktUserId() {
 		if (isset($_SESSION["aktUId"]))
@@ -76,7 +84,7 @@
 	
 	/**
 	* The aktual person class id
-	* @return number|-1
+	* @return integer or -1
 	*/
 	function getAktClassId() {
 		if (isset($_SESSION['aktClass'])) {
@@ -194,18 +202,17 @@
 	 */
 	function checkFacebookUserLogin($facebookId) {
 		global $db;
-		$ret = false;
 		$usr =$db->getPersonByFacobookId($facebookId);
 		if (null != $usr) {
 			setUserInSession(
 				$usr["role"],
 				$usr["user"],
 				$usr["id"]);
-			$ret = true;
 			if (!userIsAdmin() && userIsLoggedOn())
-				saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,$ret);
+				saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,"true");
+			return true;
 		}		
-		return $ret;
+		return false;
 	}
 	
 	/**
@@ -227,12 +234,14 @@
 	 * Logout user
 	 */
 	function logoutUser() {
-		$_SESSION['uRole']="";
-		$_SESSION['uName']="";
-		$_SESSION['uId']=NULL;
-		$_SESSION['FacebookId'] = NULL;
-		$_SESSION['FacebookName'] = NULL;
-		$_SESSION['FacebookEmail'] =  NULL;
+		unset($_SESSION['uRole']);
+		unset($_SESSION['uName']);
+		unset($_SESSION['uId']);
+		unset($_SESSION['FacebookId'] );
+		unset($_SESSION['FacebookName']);
+		unset($_SESSION['FacebookEmail']);
+		unset($_SESSION["FacebookFirstName"]);
+		unset($_SESSION["FacebookLastName"]);
 		unsetAktClass();
 	}
 	

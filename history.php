@@ -1,20 +1,14 @@
 <?php 
-include('homemenu.php');
 include_once('tools/userManager.php');
-$resultDBoperation="";
-
-//if (userIsAdmin()) {$resultDBoperation='<div class="alert alert-warning" >Ok</div>';}  	
-?>
-<style>
+include_once 'tools/appl.class.php';
+Appl::$subTitle="Adatmódosítások";
+Appl::addCssStyle('
 	.history {margin:10px;}
 	.history tr td {vertical-align: top;padding:5px;}
 	.history tr  {border-spacing: 2px};
-</style>
-<div class="container-fluid">   
-	<div class="sub_title">Adatmódosítások</div>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-</div>
-
+');
+include('homemenu.php');
+?>
 
 <?php if (userIsAdmin() || userIsSuperuser()) {
 	$history=$db->getHistory(getParam("table"), getParam("id"));

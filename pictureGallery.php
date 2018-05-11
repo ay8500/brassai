@@ -1,12 +1,14 @@
-<?PHP 
+<?php
+include_once 'tools/appl.class.php';
+
 	if (isset($_GET["gallery"])) 
 		$gallery=$_GET["gallery"];
 	else
 		$gallery="BALLAGAS";
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndikok képtára: ".$gallery;
+	Appl::$subTitle='Emlékeik képekben';
 	include("homemenu.php"); 
 ?>
-<div class="sub_title">Emlékeik képekben</div>
 <?PHP /*
 	<table style="width:100%;height:100%;">
 		<tr style="width:100%;height:100%">

@@ -45,7 +45,7 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$text .="ezt az üzenetet a -Brassai Sámuel liceum végzős diakjai- honoldaláról azért kaptad, mert ".$name;
 	$text .=" szertné ha többet olvashatna rólad az -".$title."- oldalon.<br /><br />";
 	$text .="Légyszíves szakíts két perc időt és egészítsd ki az oldalt egy egyszerü kattintással a következö linkre.";
-	$text .='<a href="http://brassai.blue-l.de/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />'; 
+	$text .='<a href="https://brassai.blue-l.de/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />'; 
 	$text .='Üdvözlettel '.$name;
 
 	if (!sendHtmlMail(getFieldValue($diak["email"]),$text,"Brassai Sámuel líceum véndiákjai. Kérés kiegészítésre.")) {

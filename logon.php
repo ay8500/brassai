@@ -1,6 +1,7 @@
 <?PHP
 	include_once 'tools/sessionManager.php';
 	include_once("tools/userManager.php");
+	include_once 'tools/appl.class.php';
 	include_once 'tools/ltools.php';
 	include_once 'sendMail.php';
 	include_once 'config.php';
@@ -46,10 +47,17 @@
 		logoutUser();
 	}
 	
+	if (isActionParam("logoffok")) {
+		Appl::setMessage("Kijelentkezés megtörtént, köszünjük a látogatást, tövábbi szép időtöltést kivánunk.", "success");
+	}
+	
+	if (isActionParam("loginok")) {
+		Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
+	}
+	
 	//Facebook login
 	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
-			//logoutUser();
 			$logOnMessage=getTextRes("LogInError");
 		}
 		if (! userIsAdmin()) {
@@ -116,7 +124,7 @@ function checkLoginState() {
 		  if(response.status=="connected") {
 		  	FB.api('/me?fields=id,first_name,last_name,email,link,about,picture', function(response) {
 			    console.log(JSON.stringify(response));
-			    var url="start.php?action=facebooklogin&FacebookId="+response.id+"&first_name="+response.first_name+"&last_name="+response.last_name+"&email="+response.email;
+			    var url="signin.php?action=facebooklogin&FacebookId="+response.id+"&first_name="+response.first_name+"&last_name="+response.last_name+"&email="+response.email;
 			    console.log(url);
 			    location.href=url;
 			});
@@ -132,7 +140,12 @@ function fblogin() {
 		$.ajax({
 			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
-				url=location.href.replace("action","location");
+				var url=location.href;
+				url=location.href.replace("action","loginok");
+				if (url.indexOf("?") !== -1) 
+					url=location.href+"&action=loginok";
+				else
+					url=location.href+"?action=loginok";
 				location.href=url;
 			},
 			error:function(data){
@@ -148,14 +161,19 @@ function fblogin() {
 	}
 
 	function lostlogon() {
-		location.href="start.php?action=lostpassw";
+		location.href="lostpassw.php";
 	}
 	
 	function handleLogoff() {
 		$.ajax({
 			url:"logon.php?action=logoff",
 			success:function(data){
-				url=location.href.replace("action","location");
+				var url=location.href;
+				url=location.href.replace("action","logoffok");
+				if (url.indexOf("?") !== -1) 
+					url=location.href+"&action=logoffok";
+				else
+					url=location.href+"?action=logoffok";
 				location.href=url;
 			}
 		});

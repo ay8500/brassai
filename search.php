@@ -94,7 +94,7 @@ if (null==getParam("type")) {
 			}
 		}
 	} else {
-		$resultDBoperation='<div class="alert alert-warning">Ezeket az adatokat csak visszajelzett felhasználok láthatják.</div>';
+		Appl::setMessage('Ezeket az adatokat csak visszajelzett felhasználok láthatják.', "warming");
 	}
 }
 
@@ -102,7 +102,6 @@ if (null==getParam("type")) {
 
 <div class="container-fluid">
 	<h2 style="text-align: center;"  class="sub_title" >Találatok a véndiákok adatbankjában</h2>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<?php if(sizeof($personList)>0) {?>
 		<div class="well">
 			<?php if (strlen($name)>0) {?>

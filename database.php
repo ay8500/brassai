@@ -1,5 +1,6 @@
 <?php 
 include_once('tools/ltools.php');
+include_once 'tools/appl.class.php';
 
 if (getParam("action")=="rip") {
     include_once("tools/sessionManager.php");
@@ -14,18 +15,11 @@ if (getParam("action")=="rip") {
 	die();
 }
 
+Appl::$subTitle="Adatbank eszközök";
 include('homemenu.php');
-$resultDBoperation="";
-
-//if (userIsAdmin()) {$resultDBoperation='<div class="alert alert-warning" >Ok</div>';}  	
-?>
-<div class="container-fluid">   
-	<div class="sub_title">Adatbank eszközök</div>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-</div>
 
 
-<?php if (userIsAdmin()) {?>
+if (userIsAdmin()) {?>
 
 <div class="panel panel-default">
 	<div class="panel-heading">

@@ -1,13 +1,8 @@
 <?php 
-include('homemenu.php');
 include_once('tools/userManager.php');
-$resultDBoperation="";
+include_once 'tools/appl.class.php';
 
 if (userIsAdmin()) {
-	$id=getIntParam("id"); 
-	$ret=false;
-	$show=false;
-	
 	if (getParam("action")=="deleteMessageChange") {
   		$ret =$db->deleteMessageEntry($id);$show=true;
 	} 	
@@ -19,17 +14,21 @@ if (userIsAdmin()) {
 	} 	
 	if ($show) {
 		if ($ret===true) {
-			$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';
+			Appl::setMessage('Rendben, a müvelet sikerült','success');
 		} else {
-			$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';
+			Appl::setMessage('Sajnos nem sikerült a müvelet!','danger');
 		}
 	}
 }  	
-?>
-<div class="sub_title">Adatok vizsgálása és jóváhagyása</div>
-<?php
-if (userIsAdmin()) {  
 
+Appl::$subTitle='Adatok vizsgálása és jóváhagyása';
+include('homemenu.php');
+
+if (userIsAdmin()) {  
+	$id=getIntParam("id");
+	$ret=false;
+	$show=false;
+	
 	//initialise tabs
 	$clist=$db->getClassListToBeChecked();
 	$plist=$db->getPersonListToBeChecked();
@@ -134,9 +133,6 @@ if (userIsAdmin()) {
 	   	
 	</p>
 	<?php }?>
-
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-
 <?php }
 else
 	echo '<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>';
@@ -177,7 +173,6 @@ else
  */
 function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionList,$id,$emptyEntry,$functionGetByID,$functionDelete,$functionSave ) {
 	global $db;
-	global $resultDBoperation;
   	$show=false;
   	if (getParam("action")=="delete".$fieldDb."Change") {
  		$ret =call_user_func_array(array($db,$functionDelete),array($id,false));$show=true;
@@ -187,9 +182,9 @@ function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionL
   	}
   	if ($show) {
   		if ($ret===true) {
-  			$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
+  			Appl::$resultDbOperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
   		else {
-  			$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+  			Appl::$resultDbOperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
   	}
 	$list = call_user_func(array($db,$functionList));
 ?>
@@ -227,9 +222,9 @@ function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionL
 	  			$op[$field]=$cp[$field];
   				$ret=call_user_func_array(array($db,$functionSave),array($op))>=0;
 	  			if ($ret) {
-					$resultDBoperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
+					Appl::setMessage('Rendben, a müvelet sikerült','success');}
 				else {
-					$resultDBoperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+					Appl::setMessage('Sajnos nem sikerült a müvelet!','danger');}
 	  		}
 		?>
 			<?php //** The table of the changes ?>

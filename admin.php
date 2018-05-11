@@ -1,9 +1,23 @@
 <?PHP 
-$loadTextareaEditor=true;
-include("homemenu.php"); 
 include_once("data.php");
 include_once("tools/userManager.php");
+include_once 'tools/appl.class.php';
 
+Appl::addCss('editor/ui/trumbowyg.min.css');
+Appl::addJs('editor/trumbowyg.min.js');
+Appl::addJs('editor/langs/hu.min.js');
+Appl::addJsScript("
+	$( document ).ready(function() {
+		$('#story').trumbowyg({
+			fullscreenable: false,
+			closable: false,
+			lang: 'hu',
+			btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
+			removeformatPasted: true,
+			autogrow: true
+		});
+	});
+");
 
 if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 	if ( userIsAdmin() ) {
@@ -17,10 +31,13 @@ if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
 		}
 	}
 }
+
+Appl::$subTitle='Adminisztráció';
+include("homemenu.php");
+
 ?>
 
 <div class="container-fluid">   
-<h2 class="sub_title" >Adminisztráció</h2>
 
 <?php if (userIsAdmin() || userIsEditor() ) { 
 	$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
@@ -36,7 +53,7 @@ Ide kell írni a szöveget....
 Üdvözlettel <?php $dd=getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
 <p>
-Ezt az e-mailt <a href=http://brassai.blue-l.de/index.php?<?PHP echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
+Ezt az e-mailt <a href=https://brassai.blue-l.de/index.php?<?PHP echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
 </p>
 		</textarea>
 		<input type="checkbox" name="U"/> Bejelentkezési adatokat is elküld.<br/>

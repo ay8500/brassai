@@ -1,37 +1,21 @@
 <?php
     ob_start("ob_gzhandler");
     include_once("tools/sessionManager.php");
+    include_once 'tools/appl.class.php';
 	include_once("config.php");
 	include_once("logon.php");
 	include_once("data.php");
 
 	$db = new dbDAO;
-	if( !isset($resultDBoperation))
-		$resultDBoperation="";
-	
+		
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
-	if (null!=getParam("classid")) {
-		$class=$db->getClassById(getParam("classid"));
-		if ($class==null)
-			$class=$db->getClassByText(getParam("classid"));
-			if ($class!=null) {
-		      setAktClass($class["id"]);
-		      setAktSchool($class["schoolID"]);
-		    }
-	} else {
-	   $class=getAktClass();   
-	}
-	
-	if ($schoolid=getParam("schoolid", "")!="") {
-		unsetAktClass();
-		setAktSchool($schoolid);
-	}
+	$class = handleClassSchoolChange();
 	
 	//Login if crypted loginkey present and correct
 	if (isset($_GET['key'])) {
-	    $resultDBoperation=directLogin($db,$_GET['key']);
+	    Appl::setMessage(directLogin($db,$_GET['key']),"");
 	}
 	
 	function directLogin($db,$key){
@@ -60,7 +44,6 @@
 	}
 	
 	?>
-
 <!DOCTYPE html>
 <html lang="hu">
   <head>
@@ -83,20 +66,14 @@
 		<meta name="description" content="<?PHP echo($SiteTitle) ?>" />
 	<?PHP } ?>
 	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
-	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />
-	
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />	
+	<?php Appl::addCss("css/bootstrap.min.css");?>
 	<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->	 
-	<link rel="stylesheet" type="text/css" href="css/menu.css?v=<?php echo $webAppVersion?>" />
-	<?php if (isset($loadTextareaEditor)) :?>
-		<link rel="stylesheet" href="editor/ui/trumbowyg.min.css">
-	<?php endif?>
-	<?php if (isset($siteHeader)) { 
-		echo $siteHeader;
-	}?>
+    <![endif]-->
+    <?php Appl::addCss("css/menu.css");?>	 
+	<?php Appl::includeCss();?>
  </head>
 <body>
 <div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
@@ -249,8 +226,11 @@
 		<span id="o480" > <?PHP echo(getAktClassName()) ?></span>
 	</h1>
 </div>
+<div class="sub_title"><?php echo Appl::$subTitle?></div>
+<div class="resultDBoperation" ><?php echo Appl::$resultDbOperation ?></div>
 
-<script type="text/javascript">
+<?php 
+Appl::addJsScript('
 	function showSearchBox(noAnimation) {
 	    closeLogin();
 		if (noAnimation==null || noAnimation==false)
@@ -269,9 +249,7 @@
 	function search() {
 		document.location.href="search.php?srcText="+$("#srcText").val();
 	}
-</script>
-
-<?php 
+');
 
 function showClassList($db,$classes,$eveningClass,$menuText) { ?>
 	<li class="dropdown">

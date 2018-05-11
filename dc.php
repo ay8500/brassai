@@ -1,10 +1,11 @@
 <?php
+include_once 'tools/appl.class.php';
 
 $su= explode("?",$_SERVER["REQUEST_URI"]);
 $su = explode("/",$su[0]);
 
 if (sizeof($su)>2) {
-	$location ="Location: http://brassai.blue-l.de/".$su[1];
+	$location ="Location: https://brassai.blue-l.de/".$su[1];
 	for ($i=2;$i<sizeof($su);$location .="-".$su[$i++]);
 	header($location);
 	die();
@@ -86,7 +87,7 @@ exit;
 function error() { 
 	header("status: 404"); 
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum: hiba oldal";
-	$siteHeader="<link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>";
+	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
 	include_once("homemenu.php"); 
 	?>
 	<h2 class="sub_title">Sajnos ez az oldal nem létezik ezen a szerveren.</h2>

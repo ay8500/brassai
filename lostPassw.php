@@ -1,8 +1,8 @@
-<?PHP 
-include_once("data.php");		//the database
-include_once("sendMail.php");	//send mail
-include_once("tools/userManager.php");//login logoff
+<?php 
+include_once("tools/userManager.php");
 include_once 'tools/ltools.php';
+include_once 'tools/appl.class.php';
+include_once("sendMail.php");
 
 $mail='';$myname="";$resultText='';$rights="";
 
@@ -13,55 +13,20 @@ if (isActionParam('newPassword')) {
 		$ret=resetUserPasswort($mail, createPassword(8) );
 		if ($ret>0) { 
 			SendNewPassword($ret);
-			$resultText='<div class="alert alert-success">Új jelszó a következő címre elküldve : '.$mail.'</div>';
+			Appl::setMessage('Új jelszó a következő címre elküldve : '.$mail, 'success');
 		}
     	else if ($ret==-1)
-    		$resultText='<div class="alert alert-danger">Mailcímet az adatbank nem ismeri!</div>';
+    		Appl::setMessage('Mailcímet az adatbank nem ismeri!', 'danger');
     	else
-    		$resultText='<div class="alert alert-danger">Jelszó módósítás nem lehetséges!</div>';
+    		Appl::setMessage('Jelszó módósítás nem lehetséges!', 'danger');
 	}
 	else
-	   $resultText='<div class="alert alert-danger">Mail cím nem helyes!</div>';
+	   Appl::setMessage('Mail cím nem helyes, vagy a mező üres.!', 'danger');
 }
 
-//new user
-if (isActionParam('newUser')) {
-	$mail=getParam('mail',"");
-	if (checkEmail($mail)) {
-		$passw= ""; 
-		if (isset($_GET['myname'])) $myname=$_GET['myname'];
-		$xname=split(' ',$myname);
-		if (isset($xname[0]) && isset($xname[1])) {
-			if (checkFirstName($xname[1])) {
-				if (intval(getParam("role", ""))>0) {	
-					if (strlen(getParam("year", ""))>0 || intval(getParam("role", ""))>4) {
-						if (strlen(getParam("class", ""))>0 || intval(getParam("role", ""))>4) {
-							$r=intval(getParam("role", ""));
-							//$ret=createNewUser($myname,$mail,$passw,$arRoleValue[$r],getParam("class", ""),getParam("year",""));
-							sendNewUserMail($xname[1],$xname[0],$mail,$passw,$arRoleValue[$r],getParam("class", ""),getParam("year",""));
-							$resultText='<div class="alert alert-success">Sikeres bejelentkezés, hamarosan e-mailt fogsz kapni: ' .$mail.'</div>';
-						}
-			    		else
-			    			$resultText='<div class="alert alert-danger">Válassz egy osztályt!</div>';
-			    	}
-			    	else 
-			    		$resultText='<div class="alert alert-danger">Válaszd ki melyik évben volt a ballagás!</div>';
-				}
-				else 
-					$resultText='<div class="alert alert-danger">Válaszd ki milyen szereped van az osztályban!</div>';
-			}
-			else
-				$resultText='<div class="alert alert-danger">A keresztnevedet nem ismeri fel a honoldal.</div>';
-		}
-		else
-			$resultText='<div class="alert alert-danger">Ird be család és keresztneved!</div>';
-	}
-	else
-	   $resultText='<div class="alert alert-danger">Mail cím nem helyes!</div>';
-}
-
+Appl::$subTitle='Bejelentkezni szeretnék!';
+include 'homemenu.php';
 ?>
-<div class="sub_title">Bejelentkezni szeretnék!</div>
 <div class="container-fluid">
 
 	<div class="panel panel-default">
@@ -72,17 +37,15 @@ if (isActionParam('newUser')) {
   				<div class="alert alert-info">
 					Akkor használd ezt a funkciót, ha már felhasználó vagy és ismert az e-mail címed. A generált új jelszót e-mailben kapod meg, ezt bármikor megtudod módosítani.
 				</div>
-				<div class="input-group"> 
+				<div class="input-group" > 
   					<span style="min-width:150px; text-align:right" class="input-group-addon">E-Mail címem:</span> 
 					<input type="text" name="mail" value="<?PHP echo($mail); ?>" class="form-control" onkeyup="validateEmailInput(this,'#send_passw');" /> 
 				</div>  
-				<button class="btn btn-default" type="submit" id="send_passw"><span class="glyphicon glyphicon-envelope"></span> Szeretnék új jelszót</button>
+				<button style="margin-top:10px;" class="btn btn-default" type="submit" id="send_passw"><span class="glyphicon glyphicon-envelope"></span> Szeretnék új jelszót</button>
 			</form>
 		</div>
 	</div>
-	
-	<div class="resultDBoperation"><?PHP echo($resultText); ?></div>
-	
+		
 	<div class="panel panel-default">
   		<div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni.</h4></div>
   		<div class="panel-body">
@@ -115,12 +78,9 @@ if (isActionParam('newUser')) {
 
 
 <script type="text/javascript">
-	function changeClass() {
-		
-	}
 
 	function newUser () {
-		document.location.href="start.php?action=newUser";
+		document.location.href="signin.php?action=newUser";
 	}
 
 	function validateEmailInput(sender,button) { 
@@ -138,5 +98,5 @@ if (isActionParam('newUser')) {
 	   	return re.test(mail);
 	}
 	
-		
 </script>
+<?php include ("homefooter.php");?>

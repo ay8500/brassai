@@ -1,9 +1,7 @@
 <?php 
-$SiteTitle="A kolozsvári Brassai Sámuel líceum statisztikai adatai";
-include('homemenu.php');
 include_once('tools/userManager.php');
-$resultDBoperation="";
-
+include_once 'tools/appl.class.php';
+include_once 'data.php';
 
 $classmate=$db->getTableCount("person","isTeacher='0'");
 $classmateDeceased=$db->getTableCount("person","isTeacher='0' and deceasedYear is not null");
@@ -26,15 +24,13 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 
 $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
 
-
+$SiteTitle="A kolozsvári Brassai Sámuel líceum statisztikai adatai";
+Appl::setSiteSubTitle("Statisztikai adatok");
+Appl::addCssStyle('
+	.statw {width:150px; text-align:right; display: inline-block;};
+');
+include('homemenu.php');
 ?>
-<style>
-.statw {width:150px; text-align:right; display: inline-block;};
-</style>
-<div class="container-fluid">   
-	<div class="sub_title">Statistikai adatok</div>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-</div>
 
 <div  style="margin:30px">
 <div class="panel panel-default"  style="padding:5px; max-width:650px" id="calendargg"></div>

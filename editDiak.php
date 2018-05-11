@@ -2,9 +2,9 @@
 include_once("tools/sessionManager.php");
 include_once ('tools/userManager.php');
 include_once 'tools/ltools.php';
+include_once 'tools/appl.class.php';
 include_once("data.php");
 
-$resultDBoperation="";
 $tabOpen= getIntParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
@@ -26,6 +26,7 @@ else {
 
 //Parameters
 $action=getParam("action","");
+
 $anonymousEditor=getParam("anonymousEditor")=="true";
 
 //Edit or only view variant this page
@@ -107,36 +108,38 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			}
 			//No dublicate email address is allowed
 			if (checkUserEmailExists($diak["id"],$diak["email"])) {
-				$resultDBoperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
-				//Validate the mail address if no admin logged on
+				Appl::$resultDbOperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
 			} elseif ((isset($diak["classID"]) && $diak["classID"]==="-1") || !isset($diak["classID"])) {
-				$resultDBoperation='<div class="alert alert-warning">Osztály nincs kiválasztva!</div>';
+				Appl::$resultDbOperation='<div class="alert alert-warning">Osztály nincs kiválasztva!</div>';
+			} elseif (checkUserNameExists($diak["id"], $diak["user"])) {
+				Appl::$resultDbOperation='<div class="alert alert-warning">Felhasználó név már létezik!<br/>Az adatok kimentése sikertelen.</div>';
+				//Validate the mail address if no admin logged on
 			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-				$resultDBoperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
+				Appl::$resultDbOperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
 			} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
-				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
+				Appl::$resultDbOperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
 			} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
-				$resultDBoperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
+				Appl::$resultDbOperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
 			} else {
 				$personid = $db->savePerson($diak);
 				if ($personid>=0) {
 					setAktUserId($personid);		//set actual person in case of tab changes
 					setAktClass($diak["classID"]);	//set actual class in case of class changes
-					$resultDBoperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
+					Appl::$resultDbOperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
 					$db->saveRequest(changeType::personchange);
 					if (!userIsAdmin()) {
 						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
 					}
-					header("location:hometable.php?class=".$diak["classID"]);
+					header("location:hometable.php?class=".$diak["classID"]."&action=saveok");
 				} else {
-					$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
+					Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
 				}
 			}
 		} else {
-			$resultDBoperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
 		}
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlátozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
 	}
 	if ($personid==-1) {
 		if ($action=="savenewteacher") $action="newteacher";
@@ -155,14 +158,14 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 			if ($ret>=0) {
 				if (!userIsAdmin()) 
 					saveLogInInfo("SavePassw",$diak["id"],$diak["user"],"",true);
-				$resultDBoperation='<div class="alert alert-success"">Jelszó módosíva!</div>';
+					Appl::setMessage("Jelszó módosíva!", "success");
 			} else {
-				$resultDBoperation='<div class="alert alert-warning">Jelszó kimentése nem sikerült!</div>';
+				Appl::setMessage("Jelszó kimentése nem sikerült!", "warning");
 			}
 		}
-		else $resultDBoperation='<div class="alert alert-warning">Jelszó ismétlése hibás!</div>';
+		else Appl::setMessage("Jelszó ismétlése hibás!", "warning");
 	}
-	else $resultDBoperation='<div class="alert alert-warning">Jelszó rövid, minimum 6 karakter!</div>';
+	else Appl::setMessage("Jelszó rövid, minimum 6 karakter!", "warning");
 }
 
 //Change user name
@@ -175,16 +178,16 @@ if ($action=="changeuser" && userIsLoggedOn()) {
 				$_SESSION["USER"]=$user;
 				if (!userIsAdmin()) 
 					saveLogInInfo("SaveUsername",$personid,$diak["user"],"",true);
-				$resultDBoperation='<div class="alert alert-success">Becenév módosíva!</div>';
+					Appl::setMessage("Becenév módosíva!", "success");
 			} else {
-				$resultDBoperation='<div class="alert alert-warning">Becenév módosítása nem sikerült!</div>';
+				Appl::setMessage("Becenév módosítása nem sikerült!", "warning");
 			}
 		}
 		else
-			$resultDBoperation='<div class="alert alert-warning">Becenév már létezik válassz egy másikat!</div>';
+			Appl::setMessage("Becenév már létezik válassz egy másikat!", "warning");
 	}
 	else
-		$resultDBoperation='<div class="alert alert-warning"">Becenév rövid, minimum 3 karakter!</div>';
+		Appl::setMessage("Becenév rövid, minimum 3 karakter!", "warning");
 }
 
 //Remove Facebook connection
@@ -197,10 +200,10 @@ if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
 //Delete Picture
 if ($action=="deletePicture" && userIsLoggedOn()) {
 	if (deletePicture(getParam("id", ""))>=0) {
-		$resultDBoperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+		Appl::setMessage("Kép sikeresen törölve","success");
 		saveLogInInfo("PictureDelete",getLoggedInUserId(),$diak["user"],getParam("id", ""),true);
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" >Kép törlés sikertelen!</div>';
+		Appl::setMessage("Kép törlés sikertelen!","warning");
 	}
 }
 
@@ -236,39 +239,53 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 							if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,400,400,"o");
-								$resultDBoperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
+								Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
 								saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
 							} else {
-								$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+								Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
 							}
 						} else {
 							resizeImage($uploadfile,400,400,"o");
-							$resultDBoperation='<div class="alert alert-success">Kép sikeresen kicserélve</div>';
+							Appl::$resultDbOperation='<div class="alert alert-success">Kép sikeresen kicserélve</div>';
 						}
 					} else {
-						$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
+						Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
 					}
 				}
 				else {
-					$resultDBoperation='<div class="alert alert-warning">'.$fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.</div>";
+					Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.</div>";
 					saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
 				} 	
 			}
 			else {
-				$resultDBoperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.<br />Probáld a képet jpg formátumba konvertálni, és töltsd fel újra.</div>";
+				Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.<br />Probáld a képet jpg formátumba konvertálni, és töltsd fel újra.</div>";
 				saveLogInInfo("PictureUpload",$personid,$diak["user"],"only jpg",false);
 			}
 		} else {
-			$resultDBoperation='<div class="alert alert-warning">'."Sajnáljuk, de tul sok képet probálsz feltölteni!<br/>Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>";
+			Appl::$resultDbOperation='<div class="alert alert-warning">'."Sajnáljuk, de tul sok képet probálsz feltölteni!<br/>Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>";
 		}
 	}
 }
 
 if ($tabOpen==5) 
 	$diakEditGeo = true;
-if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4)
-	$loadTextareaEditor = true;
-
+if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
+	Appl::addCss('editor/ui/trumbowyg.min.css');
+	Appl::addJs('editor/trumbowyg.min.js');
+	Appl::addJs('editor/langs/hu.min.js');
+	Appl::addJsScript("
+	$( document ).ready(function() {
+		$('#story').trumbowyg({
+			fullscreenable: false,
+			closable: false,
+			lang: 'hu',
+			btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
+			removeformatPasted: true,
+			autogrow: true
+		});
+	});
+	");
+}
 if ($personid!=null && $personid>=0) {
 	if ($diak["isTeacher"]) 
 		$SiteTitle = "A kolozsvári Brassai Sámuel líceum tanárja " .$diak["lastname"]." ".$diak["firstname"];

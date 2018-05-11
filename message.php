@@ -1,11 +1,25 @@
 <?PHP 
-$loadTextareaEditor=true;
-include("homemenu.php"); 
 include_once("data.php");
 include_once("tools/userManager.php");
+include_once 'tools/appl.class.php';
 include 'postmessage.php';
 
-$resultDBoperation="";
+Appl::addCss('editor/ui/trumbowyg.min.css');
+Appl::addJs('editor/trumbowyg.min.js');
+Appl::addJs('editor/langs/hu.min.js');
+Appl::addJsScript("
+	$( document ).ready(function() {
+		$('#story').trumbowyg({
+			fullscreenable: false,
+			closable: false,
+			lang: 'hu',
+			btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
+			removeformatPasted: true,
+			autogrow: true
+		});
+	});
+");
+
 $paramName=getParam("name", "");
 $paramText=getParam("T", "");
 
@@ -13,41 +27,41 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 	if (userIsLoggedOn()) {
 		if (checkMessageContent($paramText)) {
 			if (writeMessage($paramText, getParam("privacy"), getLoggedInUserName())>=0) {
-				$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+				Appl::$resultDbOperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
 				$paramName="";
 				$paramText="";
 			} else {
-				$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+				Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
 			}
 		} else 
-			$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
 	}
 	else {
 		if (strlen($paramName)<4) {
-			$resultDBoperation='<div class="alert alert-warning" >Írd be család és keresztneved!</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" >Írd be család és keresztneved!</div>';
 		}
 		else { 
 			if (checkMessageContent($paramText)) {
 				if (checkRequesterIP(changeType::message)) {
 					if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
-						$resultDBoperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+						Appl::$resultDbOperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
 						$paramName="";
 						$paramText="";
 					} else {
-						$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+						Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
 					}
 				} else {
-					$resultDBoperation='<div class="alert alert-warning" > Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.</div>';
+					Appl::$resultDbOperation='<div class="alert alert-warning" > Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.</div>';
 				}
 			}
 			else 
-				$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
+				Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
 		} 
 	}
 }
 
 if (isset($_GET["action"]) && ($_GET["action"]=="checkMessage")) {
-	$resultDBoperation='<div class="alert alert-warning" > A beadott üzenet tartalmaz '.
+	Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet tartalmaz '.
 		checkMessageContent($paramText,true).
 		' magyar kifejezést.Eredmény:'.
 		(checkMessageContent($paramText)?"Ok":"nem jo").' </div>';
@@ -58,32 +72,33 @@ if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
 	$id=getIntParam("id",-1);
 	if ($id!=-1) {
 		if (deleteMessage($id)>=0)
-			$resultDBoperation='<div class="alert alert-success" > Az üzenet ki lett törölve!</div>';
+			Appl::$resultDbOperation='<div class="alert alert-success" > Az üzenet ki lett törölve!</div>';
 		else
-			$resultDBoperation='<div class="alert alert-warning" > Az üzenet törlése nem sikerült!</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" > Az üzenet törlése nem sikerült!</div>';
 	}
 }
 
 if (isset($_GET["action"]) && $_GET["action"]=="commentMessage" && userIsAdmin()) {
 	if ($db->saveMessageComment(getIntParam("id"),getParam("comment"))===true) {
-		$resultDBoperation='<div class="alert alert-success" > A beadott kommentár elküldése sikerült!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-success" > A beadott kommentár elküldése sikerült!</div>';
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" > A beadott kommentár kimentése nem sikerült!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott kommentár kimentése nem sikerült!</div>';
 	}
 }
 
 if (isset($_GET["action"]) && $_GET["action"]=="setPersonID" && userIsAdmin()) {
 	if ($db->saveMessagePersonID(getIntParam("id"),getParam("personid"))===true) {
-		$resultDBoperation='<div class="alert alert-success" > Személy cserérés sikerült!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-success" > Személy cserérés sikerült!</div>';
 	} else {
-		$resultDBoperation='<div class="alert alert-warning" > Személy csrélés nem sikerült!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" > Személy csrélés nem sikerült!</div>';
 	}
 }
+
+Appl::$subTitle='Üzenőfal';
+include("homemenu.php"); 
 ?>
 
 <div class="container-fluid">   
-<h2 class="sub_title" >Üzenőfal</h2>
-<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <div class="dropdown" style="margin-bottom: 10px;">
  	<button onclick="showMessage();" class="btn btn-default" type="button" >
 	<span class="glyphicon glyphicon-pencil"></span>

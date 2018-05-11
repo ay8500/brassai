@@ -9,11 +9,11 @@ if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		if ($db->savePersonGeolocation($diak["id"],$geolat,$geolng)>=0) {
 			if (!userIsAdmin())
 				saveLogInInfo("SaveGeo",$diak["id"],$diak["user"],"",true);
-			$resultDBoperation='<div class="alert alert-success">Geokoordináták sikeresen módósítva!</div>';
+			Appl::setMessage('Geokoordináták sikeresen módósítva!', 'success');
 			$diak["geolat"]=$geolat;
 			$diak["geolng"]=$geolng;
 		} else {
-			$resultDBoperation='<div class="alert alert-warning">Geokoordináták módósítása nem sikerült!</div>';
+			Appl::setMessage('Geokoordináták módósítása nem sikerült!', 'warning');
 		}
 	}
 }
@@ -48,7 +48,6 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==getLoggedInUserClass
 <?php } ?>	
 	
 	<div id="map_canvas" style="width: 100%x; height: 400px;"></div>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	
 <?php if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>	
 	<div  class="panel panel-default" style="display: block;">

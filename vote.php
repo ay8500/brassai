@@ -1,8 +1,17 @@
 <?php 
+include_once("data.php");
+include_once 'tools/appl.class.php';
+
 $SiteTitle="Brassai Sámuel liceum a következő érettségi találkozónk"; 
 $SiteDescription="A következő érettségi találkozónk szavazati listája";
+
+Appl::addCssStyle('
+	.votetable:nth-child(odd){background-color: #f0f0f0;};
+	.votetable:nth-child(even){background-color: #e0e0e0;};
+');
+Appl::setSiteSubTitle('A következő érettségi találkozónk');
+
 include("homemenu.php"); 
-include_once("data.php");
 
 //$class=$db->getClassById(getRealId(getAktClass()));
 $classMeetingCount=date("Y")-intval($class["graduationYear"]);
@@ -10,8 +19,6 @@ $classMeetingCount=date("Y")-intval($class["graduationYear"]);
 if (($classMeetingCount % 5)!=0) $classMeetingCount += 5 - ($classMeetingCount % 5);
 if ($classMeetingCount<10) $classMeetingCount=10;
 $classMeetingYear = intval($class["graduationYear"])+$classMeetingCount;
-
-$resultDBoperation="";
 
 $data=$db->getPersonListByClassId(getRealId(getAktClass()));
 
@@ -33,17 +40,12 @@ if (getParam("action")=="vote") {
 		$vote["id"]=intval(getParam("id","-1"));
 		$ret=$db->saveVote($vote)>=0?0:1;
 		if ($ret==0)
-			$resultDBoperation='<div class="alert alert-success">Sikeresen kimentve. Köszönjük bejegyzésed.</div>';
+			Appl::setMessage('Sikeresen kimentve. Köszönjük bejegyzésed.', 'success'); 
 		else
-			$resultDBoperation='<div class="alert alert-warning">Szavazat kimentése nem sikerült!</div>';
+			Appl::setMessage('Szavazat kimentése nem sikerült!', 'warning');
 	}
 }
 ?>
-<style>
-	.votetable:nth-child(odd){background-color: #f0f0f0;};
-	.votetable:nth-child(even){background-color: #e0e0e0;};
-</style>
-<h4 class="sub_title" >A következő érettségi találkozónk</h4>
 
 <div class="container-fluid">
 <div class="well well-lg">
@@ -52,8 +54,6 @@ if (getParam("action")=="vote") {
 	<?PHP if (!userIsLoggedOn()) echo(' jelenkezz be '); ?> 
 	és töltsd ki a táblázatot egyszerübb organizáció miatt.
 </div>
-
-<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 
 <table class="pannel" style="width:auto" >
 <tr style="font-weight:bold">
@@ -101,8 +101,13 @@ if (getParam("action")=="vote") {
 			<?php if ($dis=="") :?>
 				<?php if (isset($vote["id"])) {?>
 					<button value="<?php echo $vote["id"]?>" name="id" type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-save"></span> Kiment</button>
-					<a href="history.php?table=vote&id=<?php echo $vote["id"]?>" style="display:inline-block;">
-					<span class="badge"><?php echo sizeof($db->getHistoryInfo("vote",$vote["id"]))?></span>
+					<?php if (userIsAdmin() || userIsEditor() || userIsSuperuser()) {?>
+						<a title="módosítások" href="history.php?table=vote&id=<?php echo $vote["id"]?>" style="display:inline-block;">
+							<span class="badge"><?php echo sizeof($db->getHistoryInfo("vote",$vote["id"]))?></span>
+						</a>
+					<?php } else {?>
+						<span title="módosítások" class="badge"><?php echo sizeof($db->getHistoryInfo("vote",$vote["id"]))?></span>
+					<?php } ?>
 				<?php } else {?>
 					<button value="-1" name="id" type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-save"></span> Kiment</button>
 				<?php }?>

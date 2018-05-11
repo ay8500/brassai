@@ -1,47 +1,53 @@
 <?php
 include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/ltools.php';
+include_once 'tools/appl.class.php';
 include_once("config.php");
 include_once("data.php");
-include_once 'tools/ltools.php';
+include_once 'editDiakCard.php';
 
 // Title of the page schoolmate or guests
-// $class=getAktClass();
 $guests = getParam("guests", "")=="true";
+$class = handleClassSchoolChange();
+
 if (istAktClassStaf()) {
-	$subTitle=$guests?"Barátaink":"Tanáraink";
-	$SiteTitle = $SiteTitle.': '.$subTitle;
+	Appl::$subTitle=$guests?"Barátaink":"Tanáraink";
+	$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 } else {
 	if ($guests) {
-		$subTitle="Vendégek, jó barátok";
-		$SiteTitle = $SiteTitle.': '.$subTitle;
+		Appl::$subTitle="Vendégek, jó barátok";
+		$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 	} else {
 		if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			$headTeacher=$db->getPersonByID($class["headTeacherID"]);
-			$subTitle="Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
+			Appl::$subTitle="Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
 			$SiteTitle = $SiteTitle.". Osztályfőnök ".getPersonName($headTeacher);
 		} else {
-			$subTitle="Osztálytársak";
-			$SiteTitle = $SiteTitle.': '.$subTitle;
+			Appl::$subTitle="Osztálytársak";
+			$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 		}
 	}
 }
 
-include("homemenu.php");
-include_once 'editDiakCard.php';
+if (isActionParam("saveok")) {
+	Appl::setMessage("Köszzönjük szépen, személyes adatok kimentése sikerült.", "success");
+}
 include_once 'chatinc.php';
+
+include("homemenu.php");
 
 
 if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" )))
-		$resultDBoperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
 	else
-		$resultDBoperation='<div class="alert alert-warning">Véndiák törölése sikertelen! Hibakód:9811</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning">Véndiák törölése sikertelen! Hibakód:9811</div>';
 }
 $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 
 // Toolbar for new schoolmate or guests
 ?>
-<h2 class="sub_title"><?php echo $subTitle?></h2>
 <div class="container-fluid">
 	<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
 		<form action="editDiak.php">
@@ -63,7 +69,6 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 			Tanárok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } ?>
 	</div>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 <?php
 foreach ($personList as $d)	
 { 

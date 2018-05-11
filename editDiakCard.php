@@ -156,7 +156,7 @@ function displayPicture($db,$picture,$showSchool=false) {
 			</a>
 		</div>
 		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
-			<a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;">
+			<br/><a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$picture["id"]))?></span>
 			</a>
 		<?php } ?>

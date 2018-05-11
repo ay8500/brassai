@@ -1,22 +1,22 @@
-<?PHP
+<?php
+include_once 'tools/appl.class.php';
 $SiteTitle="Brassai Sámuel osztályok"; 
-$SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai";
+$SiteDescription="A kolozsvári Brassai Sámuel líceum osztályai";
+Appl::addCssStyle('
+	.classdiv {
+        margin: 3px 2px 3px 2px;
+    	width: 154px;
+    	height: 67px;
+    	vertical-align: top;
+    	background-color: #f0f0f0;
+    	padding: 5px;
+    	border-radius: 10px;
+	}
+');
+Appl::setSiteSubTitle("Osztályok");
 include("homemenu.php"); 
 $classes = $db->getClassList();
 ?>
-<style>
-	.classdiv {
-        margin: 3px 2px 3px 2px;
-    width: 154px;
-    height: 67px;
-    vertical-align: top;
-    background-color: #f0f0f0;
-    padding: 5px;
-    border-radius: 10px;
-	}
-</style>
-<h2 class="sub_title">Osztályok</h2>
-
 <div class="container-fluid">
 	<div class="panel panel-default " >
 		<div class="panel-heading">

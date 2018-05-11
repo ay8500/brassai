@@ -3,19 +3,18 @@ include_once 'tools/sessionManager.php';
 include_once("data.php");
 include_once 'tools/ltools.php';
 
-
-$resultDBoperation="";
 $action = getParam("action","");
+
 $classid= getIntParam("classid",-1);
 if ($classid>=0) {
 	$class=$db->getClassById($classid);
 	$personCount=sizeof($db->getPersonListByClassId($class["id"]));
 	if ($action=="deleteclass" && $personCount==0 && userIsAdmin()) {
 		if ($db->deleteClass($classid)) {
-			$resultDBoperation='<div class="alert alert-success">Új osztály sikeresen törölve!</div>';
+			Appl::setMessage("Új osztály sikeresen törölve!","success");
 			$classid=-1;
 		} else {
-			$resultDBoperation='<div class="alert alert-warning">Új osztály törlése sikertelen!</div>';
+			Appl::setMessage("Új osztály törlése sikertelen!","warning");
 		}
 	}
 } 
@@ -23,7 +22,7 @@ if ($action=="saveclass") {
 	if ($classid<0) 
 		$class= $db->getClassByText(getParam("year")." ".getParam("class"));
 	if ($class!=null && $classid<0) 
-		$resultDBoperation='<div class="alert alert-warning">Ez az osztály már létezik!</div>';
+		Appl::setMessage("Ez az osztály már létezik!","warning");
 	else {
 		$classid=$db->saveClass([
 				"id"=>$classid,
@@ -35,11 +34,11 @@ if ($action=="saveclass") {
 				"headTeacherID"=>getIntParam("teacher",0)
 		]);
 		if ($classid>=0 ) {
-			$resultDBoperation='<div class="alert alert-success">Osztály sikeresen kimentve!</div>';
+			Appl::setMessage("Osztály sikeresen kimentve!","success");
 			setAktClass($classid);
 			$class=$db->getClassById($classid);
 		} else {
-			$resultDBoperation='<div class="alert alert-warning">Osztály kimentése sikertelen!</div>';
+			Appl::setMessage("Osztály kimentése sikertelen!","warning");
 		}
 	}
 }
@@ -54,9 +53,6 @@ include("homemenu.php");
 		<h2 class="sub_title">Új végzős osztály létrehozása</h2>
 	<?php } ?>
 
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
-	
-	
 	<?php if ($classid>=0 && !userIsAdmin()) {  //Edit an existing class?>
 		<div class="input-group " style="margin-bottom: 25px;">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		

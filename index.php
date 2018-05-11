@@ -1,20 +1,22 @@
 <?PHP 
-include_once("tools/sessionManager.php");
+include_once 'tools/sessionManager.php';
+include_once 'tools/appl.class.php';
 include_once 'config.php';
-include_once("data.php");
+include_once 'data.php';
 
-if (!isset($siteHeader)) $siteHeader='';
-$siteHeader .='<link rel="stylesheet" type="text/css" href="css/wrapper.css?v='.$webAppVersion.'"/>';
-$showWrapper=true;
+Appl::addCss("css/wrapper.css");
+Appl::addJs("js/wrapper.js");
 
 unsetAktClass();
+Appl::$subTitle='Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!<br/>';
 
-
+if (getParam('loginok')=="true")
+	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
+	
 
 include("homemenu.php");
 ?>
-<div class="sub_title">Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!<br/></div>
-<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
+
 <div class="container-fluid">
 	<div  style="padding:15px;margin-top:20px" class="col-sm-4" >
 		<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>

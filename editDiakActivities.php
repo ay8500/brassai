@@ -1,14 +1,15 @@
-<style>
+<?php 
+Appl::addCssStyle('
 	#activities {
 		background-color: white;margin:10px;padding:10px;
 	}
 	#activities>tbody>tr>td {
 		padding: 10px; text-align: right;
 	}
-</style>
-<?php $activities=$db->getPersonActivities($personid); ?>
+');
+$activities=$db->getPersonActivities($personid); 
+?>
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser() || userIsSuperuser()) { ?>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<div>
 		<h4>Aktívitási pontszámok</h4>
 		<table id="activities">

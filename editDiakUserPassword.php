@@ -1,6 +1,5 @@
 <?php $diak = $db->getPersonByID($personid);?>
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser()) { ?>
-	<div class="resultDBoperation" ><?php echo $resultDBoperation;?></div>
 	<table style="width:90%" class="editpagetable">
 		<form action="editDiak.php" method="get">
 			<tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-user"></span> Becenév módosítása</h3> A becenév minimum 6 karakter hosszú kell legyen. </p></td></tr>
