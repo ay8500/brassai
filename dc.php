@@ -2,93 +2,43 @@
 include_once 'tools/appl.class.php';
 
 $su= explode("?",$_SERVER["REQUEST_URI"]);
+
 $su = explode("/",$su[0]);
 
-if (sizeof($su)>2) {
-	$location ="Location: https://brassai.blue-l.de/".$su[1];
-	for ($i=2;$i<sizeof($su);$location .="-".$su[$i++]);
-	header($location);
-	die();
-}
-include_once 'tools/ltools.php';
+$su = explode("-",$su[sizeof($su)-1]);
 
-if(getGetParam("p", "")=="") {
-	$qs = explode("-",$_SERVER["REQUEST_URI"]) ;
-} else {
-	$qs = explode("-",getGetParam("p", ""));
-}
-/*
-if  (($su[1]=='Levi') || ($su[1]=='levi'))  {
-  header('Location:Maier_Levente');
-}
+//print_r ($su[sizeof($su)-1]);
+//die();
 
-else if  ($su[1]=='impressum') {
-  header("status: 200"); 
-  include_once('impressum.php');
-}
-*/
-if (sizeof($qs)==2) {
-	include_once 'tools/sessionManager.php';
-	include_once 'tools/userManager.php';
-	include_once 'data.php';
-	setAktUserId($qs[1]);
-	$diak=$db->getPersonByID($qs[1]);
+$id=$su[sizeof($su)-1];
+
+include_once 'tools/sessionManager.php';
+include_once 'tools/appl.class.php';
+include_once 'config.php';
+include_once 'tools/userManager.php';
+include_once 'data.php';
+
+if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
+	$diak=$db->getPersonByID($id);
 	if ($diak==null) {
-		error();
+		ppperror();
 		exit;
 	} else {
+		setAktUserId($diak["id"]);
 		header("status: 200");
 		include ("editDiak.php");
 		exit();
 	}
 }
-
-if (sizeof($qs)==3) {
-	include_once 'tools/sessionManager.php';
-	include_once 'tools/userManager.php';
-	include_once 'data.php';
-	$classText=substr($qs[1],3,7)." ".substr($qs[1],0,3);
-	$classId = $db->getClassByText($classText);
-	if ($classId!=null) {
-		setAktClass($classId);
-	}
-	$diak=getPersonByNormalisedName($qs[0],$classId["id"]);
-	if ($diak==null) {
-		error();
-		exit;
-	} else {
-		setAktUserId($diak["id"]);
-		header("status: 200");
-		include ("editDiak.php");
-		exit;
-	}
-}
-
-if (sizeof($qs)==1) {
-	include_once 'tools/sessionManager.php';
-	include_once 'tools/userManager.php';
-	include_once 'data.php';
-	$diak=getPersonByNormalisedName($qs[0]);
-	if ($diak==null) {
-		error();
-		exit;
-	} else {
-		setAktUserId($diak["id"]);
-		header("status: 200");
-		include ("editDiak.php");
-		exit;
-	}
-}
-
-
-error();
+ppperror();
 exit;
 
-function error() { 
+function ppperror() { 
 	header("status: 404"); 
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum: hiba oldal";
 	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
-	include_once("homemenu.php"); 
+	setAktSchool(1);unsetAktClass();
+	include("homemenu.php"); 
 	?>
 	<h2 class="sub_title">Sajnos ez az oldal nem létezik ezen a szerveren.</h2>
 	<div style="background-image: url('images/kretatabla.jpg');background-size: cover;height: 600px;margin: 20px;border-radius: 30px;">	
@@ -98,7 +48,7 @@ function error() {
 		</div>
 	</div>
 	<?php
-	include_once("homefooter.php");
+	include("homefooter.php");
 }
 ?>
 

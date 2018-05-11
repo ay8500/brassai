@@ -83,6 +83,12 @@ class dbDAO {
 		return $ret["graduationYear"]==0;
 	}
 	
+	/**
+	 * get class by id
+	 * @param integer $id
+	 * @param boolean $forceThisID
+	 * @return object or null
+	 */
 	public function getClassById($id,$forceThisID=false) {
 		return $this->getEntryById("class", $id,$forceThisID);
 	}
@@ -1310,6 +1316,8 @@ class dbDAO {
 				return null;
 		}
 		//First get the original entry by the id
+		if ($id==null || $id=='') 
+			return null;
 		$sql="select * from ".$table.' where id='.$id." and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {

@@ -109,7 +109,7 @@
         			<li><a href="zenetoplista.php?classid=-1">Zenetoplista</a></li>
        			</ul>
       		</li>
-      		<?php if ((getAktClassId()!=$db->getStafClassIdBySchoolId(getAktSchoolId()) && getAktClassId()>=0) || userIsAdmin()) {
+      		<?php if ( (null!=$class && !isAktClassStaf($class)) || userIsAdmin()) {
       			$classStat=$db->getClassStatistics(getAktClassId(),true);
       			?>
 				<li id="classmenu" class="dropdown">

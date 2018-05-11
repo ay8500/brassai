@@ -61,7 +61,7 @@ $json = json_decode($response);
 				<h2>Toplista teljes lejátszása <?php echo getParam("listdir","")?></h2>
 			<?php endif;?>
 			<object  class="embed-responsive embed-responsive-16by9">
-				<embed src="http://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  ></embed>
+				<embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  ></embed>
 			</object>
 		<?php } else {?>
 			<div class="resultDBoperation" ><div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?></div></div>

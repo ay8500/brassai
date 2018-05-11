@@ -106,11 +106,16 @@
 		return null;
 	}
 	
+	/**
+	 * is tha classid for a staf 
+	 * @return boolean
+	 */
 	function isAktClassStaf() {
 		global $db;
 		if (isset($_SESSION['aktClass'])) {
 			$class= $db->getClassById(intval($_SESSION['aktClass']));
-			return intval($class["graduationYear"])==0;
+			if (null!=$class)
+				return intval($class["graduationYear"])==0;
 		}
 		return false;
 	}
@@ -139,7 +144,7 @@
 	 * @return number|-1
 	 */
 	function getAktSchoolId() {
-		if (isset($_SESSION['aktSchool']))
+		if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)
 			return intval($_SESSION['aktSchool']);
 		else 
 			return 1;

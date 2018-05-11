@@ -38,13 +38,17 @@ class MySqlDb {
  
   /* Execute a query get results with $this->fetchRow() and $this->count() */
   public function query($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-  	$this->counter=NULL;
+  	if (strstr($query,"id= and")===false) {
+  		$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 1:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+  		$this->counter=NULL;
+  	} else {
+  		return false;
+  	}
   }
   
   /* Execute a query that return a single iteger value */
   public function queryInt($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 2:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
 	if(!$this->result===false) {
   		$r =mysqli_fetch_row($this->result);
   		return  intval($r[0]);
@@ -54,7 +58,7 @@ class MySqlDb {
 
   /* Execute a query that return a single row*/
   public function querySignleRow($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 3:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   	$this->counter=null;
   	if ($this->count()==1)
   		return $this->fetchRow();
@@ -116,7 +120,7 @@ class MySqlDb {
     		$sql="select sum(".$field." * ".$multField." ) from ".$table;
     	else
     		$sql="select sum(".$field." * ".$multField." )  from ".$table." where ".$where;
-    	$this->result=mysqli_query($this->connection,$sql) or logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+    	$this->result=mysqli_query($this->connection,$sql) or logger("MySQL ERROR 4:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   		return $this->queryInt($sql);
   }
 
