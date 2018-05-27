@@ -85,10 +85,10 @@ include 'homemenu.php';
 
 	function validateEmailInput(sender,button) { 
 	    	if (validateEmail(sender.value)) {
-	    		sender.style.color="green";
+	    		sender.style.borderColor="green";
 	    		$(button).removeClass("disabled");
 	    	} else {
-	    		sender.style.color="red";
+	    		sender.style.borderColor="red";
 	    		$(button).addClass("disabled");
 	    	}
   	} 

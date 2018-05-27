@@ -31,7 +31,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 		logoutUser();
 		Appl::$resultDbOperation='<div class="alert alert-warning" >Túl sok bejelenkezést szeretnél létrehozni, kérünk probálkozz késöbb még egyszer!</div>';
 	} else {
-		if (checkUserEmailExists(getParam('id',html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8")))) {
+		if (checkUserEmailExists(getParam('id'),html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8"))) {
 			logoutUser();
 			Appl::$resultDbOperation='<div class="alert alert-warning" >A megadott email cím már létezik, kérünk probálkozz még egyszer egy másik email címmel!</div>';
 		} else {

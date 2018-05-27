@@ -83,9 +83,9 @@ if (userIsAdmin()) { //only for admin
 	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
 }
 if ((isset($classId) && $db->isClassIdForStaf($classId)) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-	$dataFieldCaption[17]="Tantárgy";
-	$dataFieldCaption[18]="Osztályfönök";
-	$dataFieldObl[18]="Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+	$dataFieldCaption[18]="Tantárgy";
+	$dataFieldCaption[19]="Osztályfönök";
+	$dataFieldObl[19]="Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {

@@ -30,7 +30,7 @@ include("homemenu.php");
 	<div  style="padding:15px;" class="col-sm-8" >
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="editDiak.php?action=newperson"><img img class="indeximg" src="images/classmatex.png" /></a>
+			<a class="inlineBox" href="editDiak.php?editDiak.php?uid=658"><img img class="indeximg" src="images/classmatex.png" /></a>
 			<div class="inlineBox">Véndiákok névsorának bővítése és ápolása.</div>
 		</div>
 		<div class="col-sm-4">

@@ -393,7 +393,9 @@ function getFieldValue($person,$field=null) {
 	else {
   		if (!isset($person[$field]) || $person[$field]=="") 
   			return "";
-		  $ret = ltrim($person[$field],"~");
+  		if (!showField($person, $field))
+  			return "";
+		$ret = ltrim($person[$field],"~");
 	}
   $ret = trim($ret);
   $ret= str_replace("%3D", "=", $ret); 
@@ -444,7 +446,7 @@ function getFieldChecked($diak,$field) {
 }
 
 /*
- * is a field content printable
+ * is a field content allowed to print
  */
 function showField($diak,$field) {
   if (!isset($diak[$field]) || $diak[$field]=="") 

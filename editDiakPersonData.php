@@ -59,6 +59,9 @@
 			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
 		</div>
 	<?php } ?>
+	<div style="display: inline-block;margin:15px;vertical-align: bottom;">
+		<button onclick="document.location='gdpr.php?id=<?php echo($diak["id"]);?>';" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
+	</div>
 	
 <form method="get" name="edit_form" >	
 	<?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
