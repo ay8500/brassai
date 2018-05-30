@@ -8,10 +8,15 @@ Appl::addCssStyle('
     	width: 154px;
     	height: 67px;
     	vertical-align: top;
-    	background-color: #f0f0f0;
+    	background-color: #e0e0e0;
     	padding: 5px;
     	border-radius: 10px;
 	}
+	.classdiv:hover		{background-color: #f8f8f8;}
+	.classdiv-a 		{background-color: #f0f0d0;}
+	.classdiv-a:hover	{background-color: #ffffd8;}
+	.classdiv-b 		{background-color: #e0d0d0;}
+	.classdiv-b:hover	{background-color: #f8e8e8;}
 ');
 Appl::setSiteSubTitle("Osztályok");
 include("homemenu.php"); 
@@ -44,6 +49,12 @@ function classList($db,$classes,$eveningClass) {
 				$aktualClass="classdiv actual_class_in_menu";
 			else
 				$aktualClass="classdiv";
+			if (substr($cclass["name"],-1)==="A") {
+				$aktualClass .=" classdiv-a";
+			}
+			if (substr($cclass["name"],-1)==="B") {
+				$aktualClass .=" classdiv-b";
+			}
 			?>
   			<div style="display: inline-block;" class="<?php echo($aktualClass);?>" >
   				<a style="font-size: large;" href="hometable.php?classid=<?php echo($cclass["id"]);?>">

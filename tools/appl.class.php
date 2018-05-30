@@ -16,7 +16,7 @@ class Appl {
 	private static $cssStyle ="";
 	private static $jsScript = "";
 	
-	private static $webAppVersion = '2018-05-05';
+	private static $webAppVersion = '2018-05-29';
 	
 	public static function setSiteTitle($title,$subtitle=null,$description=null) {
 		self::$title=$title;
