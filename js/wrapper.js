@@ -139,3 +139,7 @@ function getWrapperData() {
      });
 
 }
+
+function hiddenData(title) {
+	showModalMessage(title,'Személyes adat védve!<br/>Csak iskola vagy osztálytárs tekintheti meg ezt az informácíót.');
+}
