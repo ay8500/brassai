@@ -77,8 +77,9 @@ function addWrapperDiv(id) {
         if (d.employer!=null)
     		html +='<div><div>Munkahely:</div><div>'+d.employer+'</div></div>';
         html +='<div class="diakCardIcons">';
-        if(d.email!=null)
-    		html +='<a href="mailto:'+d.email+'"><img src="images/email.png" /></a>';
+        
+        if(d.email!=null) 
+    		html +='<a href='+d.email+'><img src="images/email.png" /></a>';
         if (d.facebook!=null)
     		html +='&nbsp;<a target="_new" href='+d.facebook+'><img src="images/facebook.png" /></a>';
         if (d.twitter!=null)

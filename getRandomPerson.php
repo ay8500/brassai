@@ -15,14 +15,6 @@ $i=0;
 while (notUnique($idArray,$p["id"]) && $i++<10)		
 	$p=getRandomPerson();
 
-//Testperson
-/*
-$p=$db->getPersonByID(1344);
-$class=$db->getClassById($p["classID"]);
-$p["classText"]=$class["text"];
-$p["classEvening"]=$class["eveningClass"];
-*/
-	
 $person = Array();
 
 $person["name"]=$p["lastname"]." ".$p["firstname"];
@@ -52,7 +44,7 @@ if (strlen($person["place"])<5)
 if (isset($p["facebook"]) && strlen($p["facebook"])>8)
 	$person["facebook"]	=showField($p,"facebook") 	? getFieldValue($p,"facebook")	: 'javascript:hiddenData("Facebook");';
 if (isset($p["email"]) && strlen($p["email"])>8)
-	$person["email"]	=showField($p,"email") 		? getFieldValue($p,"email")		: 'javascript:hiddenData("E_Mail");';
+	$person["email"]	=showField($p,"email") 		? 'mailto:'.getFieldValue($p,"email")	: 'javascript:hiddenData("E-Mail");';
 if (isset($p["twitter"]) && strlen($p["twitter"])>8 )
 	$person["twitter"]	= showField($p,"twitter") 	? getFieldValue($p,"twitter")	: 'javascript:hiddenData("Twitter");';
 if (isset($p["homepage"]) && strlen($p["homepage"])>8 )
@@ -79,7 +71,8 @@ function getRandomPerson() {
 	$idrow=$personList[rand(0,sizeof($personList)-1)];
 	
 	$p=$db->getPersonByID($idrow["id"]);
-	$p=$db->getPersonByID(700);
+	// Testperson
+	// $p=$db->getPersonByID(700);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	$p["classEvening"]=$class["eveningClass"];
