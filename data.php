@@ -451,7 +451,7 @@ function getFieldChecked($diak,$field) {
 function showField($diak,$field) {
   if (!isset($diak[$field]) || $diak[$field]=="") 
   	return false;
-  if (($diak[$field][0]!="~") ||  userIsLoggedOn()) { 
+  if (($diak[$field][0]!="~") || userIsLoggedOn()) { 
   	if (ltrim($diak[$field],"~")!="") {
   		return true;
   	} else { 

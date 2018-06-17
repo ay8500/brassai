@@ -65,22 +65,22 @@ if(true)  { //Name
 	array_push($dataFieldNames, "birthname","deceasedYear","partner","address","zipcode","place","country");
 	array_push($dataItemProp,"","","","streetAddress","postalCode","addressLocality","addressCountry");
 	array_push($dataFieldCaption, "Diákkori név","† elhunyt","Élettárs","Cím","Irányítószám","Helység","Ország");
-	array_push($dataCheckFieldVisible, false,false,false,true,true,false,false);
+	array_push($dataCheckFieldVisible, false,false,true,true,true,false,false);
 	array_push($dataFieldObl		, "leánykori családnév","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe","ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
 	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
 	array_push($dataItemProp,"","","","","","","","","","","","");
 	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible,true ,true ,true ,false,false,true ,true ,false,true ,true );
+	array_push($dataCheckFieldVisible,true ,true ,true ,true,true,true ,true ,true,true ,true );
 	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
 }
 if (userIsAdmin()) { //only for admin
 	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
 	array_push($dataItemProp,"","","","","","","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","Bejelentkezés","IP","Dátum","User","changeForID");
+	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
 if ((isset($classId) && $db->isClassIdForStaf($classId)) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
 	$dataFieldCaption[18]="Tantárgy";
@@ -95,12 +95,12 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 				$tilde="";
 				if ($dataCheckFieldVisible[$i]) {
-					if (isset($_GET["cb_".$dataFieldNames[$i]]))
+					if (getParam("cb_".$dataFieldNames[$i])!=null)
 						$tilde="~";
 				}
 				//save the fields in the person array
-				if (isset($_GET[$dataFieldNames[$i]]))
-					$diak[$dataFieldNames[$i]]=$tilde.$_GET[$dataFieldNames[$i]];
+				if (getParam($dataFieldNames[$i])!=null)
+					$diak[$dataFieldNames[$i]]=$tilde.getParam($dataFieldNames[$i]);
 			}
 			//ClassID
 			if (getIntParam("classID",-1)>-1) {

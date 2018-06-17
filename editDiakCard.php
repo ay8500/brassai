@@ -93,14 +93,26 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
 					echo('<div class="xxx_diakCardIcons" style="margin-top:10px">');
-						if(showField($d,"email"))
-							echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
+						if (isset($d["email"]) && strlen($d["email"])>8)  
+							if(showField($d,"email"))
+								echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
+							else
+								echo '<a href="javascript:showModalMessage(\'E-Mail cím\',\'Személyes adat védve!\');" title="E-Mail"><img src="images/email.png" /></a>';
 						if (isset($d["facebook"]) && strlen($d["facebook"])>8)
-							echo '&nbsp;<a target="_new" href="'.getFieldValue($d["facebook"]).'" title="Facebook"><img src="images/facebook.png" /></a>';
+							if (showField($d,"facebook"))
+								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["facebook"]).'" title="Facebook"><img src="images/facebook.png" /></a>';
+							else
+								echo '&nbsp;<a href="javascript:showModalMessage(\'Facebook link\',\'Személyes adat védve!\');" title="Facebook"><img src="images/facebook.png" /></a>';
 						if (isset($d["twitter"]) && strlen($d["twitter"])>8)
-							echo '&nbsp;<a target="_new" href="'.getFieldValue($d["twitter"]).'" title="Twitter"><img src="images/twitter.png" /></a>';
+							if (showField($d,"twitter"))
+								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["twitter"]).'" title="Twitter"><img src="images/twitter.png" /></a>';
+							else
+								echo '&nbsp;<a href="javascript:showModalMessage(\'Twitter\',\'Személyes adat védve!\');" title="Twitter"><img src="images/twitter.png" /></a>';
 						if (isset($d["homepage"]) && strlen($d["homepage"])>8)
-							echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
+							if (showField($d,"homepage"))
+								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
+							else
+								echo '&nbsp;<a href="javascript:showModalMessage(\'Honoldal\',\'Személyes adat védve!\');" title="Honoldal"><img src="images/www.png" /></a>';
 						if (sizeof($db->getListOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2))>0)
 							echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")
