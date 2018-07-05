@@ -7,6 +7,8 @@ class MySqlDb {
   private $result = NULL;
   private $counter=NULL;
  
+  private $countQuerys=0;
+  private $countChanges=0;
  
   /**
    * Constructor
@@ -41,6 +43,7 @@ class MySqlDb {
   	if (strstr($query,"id= and")===false) {
   		$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 1:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   		$this->counter=NULL;
+  		$this->countQuerys++;
   	} else {
   		return false;
   	}
@@ -49,6 +52,7 @@ class MySqlDb {
   /* Execute a query that return a single iteger value */
   public function queryInt($query) {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 2:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+  	$this->countQuerys++;
 	if(!$this->result===false) {
   		$r =mysqli_fetch_row($this->result);
   		return  intval($r[0]);
@@ -60,6 +64,7 @@ class MySqlDb {
   public function querySignleRow($query) {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 3:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   	$this->counter=null;
+  	$this->countQuerys++;
   	if ($this->count()==1)
   		return $this->fetchRow();
   	else 
@@ -98,6 +103,7 @@ class MySqlDb {
 
   /* select count */
   public function tableCount($table, $where="") {
+  		$this->countQuerys++;
     	if ($where=="")
     		$sql="select count(1) from ".$table;
     	else
@@ -107,7 +113,8 @@ class MySqlDb {
 
   /* the sum of one field in a table */
   public function tableSumField($table,$field, $where="") {
-    	if ($where=="")
+  	$this->countQuerys++;
+  	if ($where=="")
     		$sql="select sum(".$field.") from ".$table;
     	else
     		$sql="select sum(".$field.") from ".$table." where ".$where;
@@ -116,7 +123,8 @@ class MySqlDb {
 
   /* the sum of a field multiplicated with an other field */
   public function tableSumMultField($table,$field, $multField, $where="") {
-    	if ($where=="")
+    $this->countQuerys++;
+    if ($where=="")
     		$sql="select sum(".$field." * ".$multField." ) from ".$table;
     	else
     		$sql="select sum(".$field." * ".$multField." )  from ".$table." where ".$where;
@@ -131,7 +139,8 @@ class MySqlDb {
   	 * $data[0]["value"]='value';
   	 * */
 	public function insert($table, $data) {
-	  	$sql  ="insert into `".$table."` (";
+		$this->countChanges++;
+		$sql  ="insert into `".$table."` (";
 	  	foreach ($data as $i=>$d) {
 	  		if ($i!=0) $sql .=",";
 	  		$sql .="`".$d["field"]."`";
@@ -186,7 +195,8 @@ class MySqlDb {
 	 * @return boolean
 	 */
 	public function update($table, $data, $whereField="", $whereValue="") {
-	  	$sql="update ".$table." set ";
+		$this->countChanges++;
+		$sql="update ".$table." set ";
 	  	$notFirstElement=false;
 	  	foreach ($data as $d) {
 	  		if ($notFirstElement) $sql .=",";
@@ -225,7 +235,8 @@ class MySqlDb {
 	 *  @return boolean 
 	 **/
 	public function delete($table, $whereField, $whereValue) {
-   	  	$where=$whereField."=".$whereValue;
+		$this->countChanges++;
+		$where=$whereField."=".$whereValue;
    	  	return $this->deleteWhere($table, $where);
 	}
 	
@@ -234,6 +245,7 @@ class MySqlDb {
 	 *  @return boolean 
 	 **/
 	public function deleteWhere($table, $where) {
+		$this->countChanges++;
 		$sql="delete from ".$table." where ".$where;
 		if ($this->result=mysqli_query($this->connection,$sql)) {
 			return true;
@@ -321,6 +333,19 @@ class MySqlDb {
 		return $fieldArray;
 	}
 	
+	public function resetCounter()
+	{
+		$this->countChanges=0;
+		$this->countQuerys=0;
+	}
+
+	public function getCounter()
+	{
+		$ret = new stdClass();
+		$ret->changes = $this->countChanges;
+		$ret->querys = $this->countQuerys;
+		return $ret;
+	}
 	
 }
 ?>

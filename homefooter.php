@@ -13,6 +13,7 @@
 			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">&copy; 2018 Levi</span></li>
 	      </ul>
 	</nav>
+	<?php echo $db->getRequestCounter()->querys;?>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">

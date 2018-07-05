@@ -1687,5 +1687,9 @@ class dbDAO {
 			return -1;
 	}
 	
+	public function getRequestCounter() {
+		return $this->dataBase->getCounter();
+	}
+	
 }
 ?>
