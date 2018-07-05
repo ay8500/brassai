@@ -173,7 +173,6 @@ include("homemenu.php");
 	</div>
 </div>
 
-<?php include_once 'homefooter.php';?>
 
 <script>
 	function changeYear() {
@@ -238,3 +237,5 @@ include("homemenu.php");
 	    	document.location='editclass.php?action=deleteclass&classid=<?php echo $classid?>';
 	}
 </script>
+
+<?php include_once 'homefooter.php';?>

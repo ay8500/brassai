@@ -7,7 +7,9 @@
  * Safety get paramateter read 
  */
 function getGetParam($name,$def=null) {
-	return html_entity_decode(htmlentities(isset($_GET[$name]) ? $_GET[$name] : $def,ENT_QUOTES),ENT_NOQUOTES);
+	if (isset($_GET[$name]))
+		return html_entity_decode(htmlentities($_GET[$name],ENT_QUOTES),ENT_NOQUOTES);
+	return  $def;
 		
 }
 

@@ -225,8 +225,8 @@ class MySqlDb {
 	   		return true;
 	   	}
 	   	else {
-	   		return false;
 	   		logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
+	   		return false;
 	   	}
 	}
    	  

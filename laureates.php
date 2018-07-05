@@ -46,6 +46,7 @@ $personList = array(
 		$db->getPersonByID(5621),	//("Bagaméri","Lilla",2015), 
 		$db->getPersonByID(5620),	//("Kovács","Mirjám",2016), 
 		$db->getPersonByID(5619),	//("Szallós-Kis","Csaba",2017),
+		$db->getPersonByID(6011),	//Szabó Norbert 2018,
 );
 
 foreach ($personList as $d) {

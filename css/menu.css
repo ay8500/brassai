@@ -183,8 +183,8 @@
 	max-width:138px;
 	border-radius: 5px;
 	margin-bottom:5px;
-	filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
+	/*filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);*/
 }
 
 .diak_image_empty_rip {
@@ -195,8 +195,8 @@
 .diak_image_icon , .diak_image_sicon{
 	height:30px;
 	border-radius: 3px;
-	filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
+	/*filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);*/
 }
 
 .diak_image_sicon {	height:20px; }

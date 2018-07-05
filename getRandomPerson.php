@@ -15,14 +15,6 @@ $i=0;
 while (notUnique($idArray,$p["id"]) && $i++<10)		
 	$p=getRandomPerson();
 
-//Testperson
-/*
-$p=$db->getPersonByID(1344);
-$class=$db->getClassById($p["classID"]);
-$p["classText"]=$class["text"];
-$p["classEvening"]=$class["eveningClass"];
-*/
-	
 $person = Array();
 
 $person["name"]=$p["lastname"]." ".$p["firstname"];
@@ -48,14 +40,16 @@ if (isset($p["place"]) && showField($p,"place"))
 	$person["place"] .=" ".getFieldValue($p,"place");
 if (strlen($person["place"])<5)
 	unset($person["place"]);
-if (isset($p["facebook"]) && showField($p,"facebook"))
-	$person["facebook"]=getFieldValue($p,"facebook");
-if (isset($p["email"]) && showField($p,"email"))
-	$person["email"]=getFieldValue($p,"email");
-if (isset($p["twitter"]) && showField($p,"twitter"))
-	$person["twitter"]=getFieldValue($p,"twitter");
-if (isset($p["homepage"]) && showField($p,"homepage"))
-	$person["homepage"]=getFieldValue($p,"homepage");
+
+if (isset($p["facebook"]) && strlen($p["facebook"])>8)
+	$person["facebook"]	=showField($p,"facebook") 	? getFieldValue($p,"facebook")	: 'javascript:hiddenData("Facebook");';
+if (isset($p["email"]) && strlen($p["email"])>8)
+	$person["email"]	=showField($p,"email") 		? 'mailto:'.getFieldValue($p,"email")	: 'javascript:hiddenData("E-Mail");';
+if (isset($p["twitter"]) && strlen($p["twitter"])>8 )
+	$person["twitter"]	= showField($p,"twitter") 	? getFieldValue($p,"twitter")	: 'javascript:hiddenData("Twitter");';
+if (isset($p["homepage"]) && strlen($p["homepage"])>8 )
+	$person["homepage"]	= showField($p,"homepage")	? getFieldValue($p,"homepage") 	: 'javascript:hiddenData("Honoldal");';
+
 if (isset($p["function"]) && showField($p,"function"))
 	$person["function"]=getFieldValue($p,"function");
 if (isset($p["children"]) && showField($p,"children"))
@@ -77,6 +71,8 @@ function getRandomPerson() {
 	$idrow=$personList[rand(0,sizeof($personList)-1)];
 	
 	$p=$db->getPersonByID($idrow["id"]);
+	// Testperson
+	// $p=$db->getPersonByID(700);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	$p["classEvening"]=$class["eveningClass"];

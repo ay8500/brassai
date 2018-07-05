@@ -161,7 +161,7 @@ function fblogin() {
 	}
 
 	function lostlogon() {
-		location.href="lostpassw.php";
+		location.href="lostPassw.php";
 	}
 	
 	function handleLogoff() {
