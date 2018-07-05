@@ -129,7 +129,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			}
 		}
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" >Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!</div>';
+		Appl::$resultDbOperation='<div class="alert alert-warning" >A feltöltött képek száma meghaladta a naponta megengedett határt!</div>';
 	}
 }
 

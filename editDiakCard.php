@@ -14,6 +14,8 @@ Appl::addJsScript("
  * @param bool $showDate
  */
 function displayPerson($db,$person,$showClass=false,$showDate=false) {
+	if ($person==null)
+		return;
 	$d=$person;
 	if ($d["id"]!=-1) {
 		if (userIsLoggedOn() || isLocalhost()) {
