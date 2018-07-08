@@ -92,6 +92,20 @@ if (null==getParam("type")) {
 				$caption ="Diákok wikipédia oldallal:".$personCount;
 				break;
 			}
+			case "nogeo": {
+				$sql="(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%' and geolat not like '46.77191%'";
+				$personList=$db->getPersonList($sql,20,20*getIntParam("start",0));
+				$personCount=$db->getTableCount("person",$sql);
+				$caption ="Diákok geokoordináta nélkül:".$personCount;
+				break;
+			}
+			case "fbconnection": {
+				$sql="facebookid <> '0' and facebookid is not null";
+				$personList=$db->getPersonList($sql,20,20*getIntParam("start",0));
+				$personCount=$db->getTableCount("person",$sql);
+				$caption ="Diákok facebook kapcsolattal:".$personCount;
+				break;
+			}
 		}
 	} else {
 		Appl::setMessage('Ezeket az adatokat csak visszajelzett felhasználok láthatják.', "warming");

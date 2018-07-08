@@ -166,8 +166,27 @@ include('homemenu.php');
 </div>
 <div class="panel panel-default"  style="padding:5px;width:400px; display:inline-block;vertical-align: top;" id="classgg"></div>
 <br/>
-
+<?php if (userIsAdmin()) {?>
+<div id="adminok" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
+	<div class="panel-heading text-center"><label >Administrátoroknak</label></div>
+	<ul class="list-group"  style="list-style: none;">
+  		<li>
+  			<div class="input-group input-group-sm">
+  				<span class="input-group-addon"><span class="statw">Geokoordináta</span></span>
+       			<span type="text" class="form-control"><?php echo $db->getTableCount("person","(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%' and geolat not like '46.77191%'");?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=nogeo" class="btn btn-default">Mutasd</a></div>
+	       	</div>
+  		</li>
+  		<li>
+  			<div class="input-group input-group-sm">
+  				<span class="input-group-addon"><span class="statw">Facebook kapcsolat</span></span>
+       			<span type="text" class="form-control"><?php echo $db->getTableCount("person","facebookid <> '0' and facebookid is not null");?></span>
+	       		<div class="input-group-btn"><a href="search.php?type=fbconnection" class="btn btn-default">Mutasd</a></div>
+	       	</div>
+  		</li>
+	</ul>
 </div>
+<?php }?>
 
 <script type="text/javascript" src="//www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
