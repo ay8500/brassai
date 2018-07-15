@@ -16,6 +16,10 @@ $db = new dbDAO;
 function handleClassSchoolChange() {
 	global $db;
 	if (null!=getParam("classid")) {
+		if ('all'==getParam("classid")) {
+			unsetAktClass();
+			return ;
+		}
 		$class=$db->getClassById(getParam("classid"));
 		if ($class==null)
 			$class=$db->getClassByText(getParam("classid"));

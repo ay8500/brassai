@@ -38,18 +38,9 @@
 </div>
 
 </body>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    
-	<?php if (isset($googleMap)) :?>
-		<script type="text/javascript" src="//maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakMap.js?v=<?php echo $webAppVersion?>"></script>
-	<?php endif ?>
-	<?php if (isset($diakEditGeo)) :?>
-		<script type="text/javascript" src="//maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAt_D9PjCp6KIewCC6DftsBTV4tYwmYR0tDWyEKlffNzbwkWE4hTrbEDIZOQBwqdYefOLpNQ7swehXg" ></script>
-		<script type="text/javascript" src="js/diakEditGeo.js?v=<?php echo $webAppVersion?>"></script>
-	<?php endif?>
-	
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" >
 	$( document ).ready(function() {
     	$(window).resize(function() {

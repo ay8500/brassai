@@ -7,9 +7,8 @@ $lat2=$_GET["lat2"];
 $lng2=$_GET["lng2"];
 
 $points = Array();
-
 $classId=getAktClassId();
-$where="geolat is not null and geolat !='' ";
+$where="geolat is not null and geolat <>'' ";
 if($classId<0) {
 	$classList=$db->getClassList(getAktSchoolId());
 	$classIdList=array();
@@ -21,6 +20,7 @@ if($classId<0) {
 	$classList = array($db->getClassById($classId));
 	$where .=" and classID=".$classId;
 }
+
 
 if ( userIsLoggedOn() && getAktClassId()==getLoggedInUserClassId()) {
 	$xrandom=0;

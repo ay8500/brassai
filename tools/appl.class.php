@@ -53,10 +53,11 @@ class Appl {
 	/**
 	 * add a javascript file
 	 */
-	public static function addJs($javascriptFile,$phpInterpreter=false) {
+	public static function addJs($javascriptFile,$phpInterpreter=false,$verion=true) {
 		$j = new stdClass();
 		$j->file=$javascriptFile;
 		$j->interpret=json_encode($phpInterpreter);
+		$j->version=$verion;
 		array_push(self::$js, $j);
 	}
 
@@ -90,7 +91,11 @@ class Appl {
 				include $j->file;
 				echo  "\n".'</script>'."\n";
 			} else {
-				echo('<script type="text/javascript" src="'.$j->file.'?v='.self::$webAppVersion.'"></script>'."\n");
+				if ($j->version) {
+					echo('<script type="text/javascript" src="'.$j->file.'?v='.self::$webAppVersion.'"></script>'."\n");
+				} else {
+					echo('<script type="text/javascript" src="'.$j->file.'"></script>'."\n");
+				}
 			}
 		}
 		echo('<script type="text/javascript">'."\n// Included js".self::$jsScript.'</script>');

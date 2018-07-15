@@ -104,7 +104,7 @@
         			<li><a href="picture.php?type=tablo&typeid=tablo">Iskola tablói</a></li>
         			<li><a href="picture.php?type=schoolID&typeid=1&album=Iskolánk sportolói">Iskolánk sportolói</a></li>
         			<li><a href="laureates.php">Juhász Máthé díjasok</a></li>
-        			<li><a href="worldmap.php?classid=-1">Térkép</a></li>
+        			<li><a href="worldmap.php?classid=all">Térkép</a></li>
         			<li><a href="statistics.php">Statisztika</a></li>
         			<li><a href="zenetoplista.php?classid=-1">Zenetoplista</a></li>
        			</ul>

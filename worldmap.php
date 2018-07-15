@@ -1,13 +1,16 @@
 <?PHP 	
 include_once("tools/sessionManager.php"); 
+include_once 'tools/appl.class.php';
 
 $SiteTitle = "A diakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
-$googleMap = true;
+Appl::$subTitle="Merre szóródtak szét az osztálytársak";
+Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
+Appl::addJs("js/diakMap.js");
+
 include("homemenu.php");
 ?>
 
-<h2 class="sub_title">Merre szóródtak szét az osztálytársak:</h2>
 <table class="pannel" style="width:100%">
 	<tr>
 		<td>

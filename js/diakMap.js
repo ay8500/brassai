@@ -1,14 +1,8 @@
-var application;	//Google Mao
-var mapPoints=0;
-var xmlHttp;		//AJAX
+var map; 
+var markers=Array();
 
 $(document).ready(function() {
-    if (GBrowserIsCompatible()) {
-        application = new MyApplication();
-        zoomMap(6);
-        
-        setTimeout( function(){fillPoints()},500);
-    }
+    application = initialize();
     
     $.fn.redraw = function(){
 	  $(this).each(function(){
@@ -21,55 +15,74 @@ $(document).ready(function() {
 function zoomMap(i) {
     var zoom = 11;
     var center = null;
-    if (i==1) { zoom=11; center = new GLatLng(46.769,23.591); }
-    if (i==2) { zoom=10; center = new GLatLng(47.4984,19.0411);}
-    if (i==3) { zoom=7; center = new GLatLng(47,23);}
-    if (i==4) { zoom=7; center = new GLatLng(47.4984,19.0411);}
-    if (i==5) { zoom=7; center = new GLatLng(49.84,9.97);}
-    if (i==6) { zoom=5; center = new GLatLng(47.4984,15.0411);}
-    if (i==7) { zoom=4; center = new GLatLng(41,-42);}
-    application.map.setCenter(center, zoom);
+    if (i==1) { zoom=11; center = ({lat:46.769,lng:23.591}); }
+    if (i==2) { zoom=10; center = ({lat:47.4984,lng:19.0411});}
+    if (i==3) { zoom=7; center =  ({lat:47,lng:23});}
+    if (i==4) { zoom=7; center =  ({lat:47.4984,lng:19.0411});}
+    if (i==5) { zoom=7; center =  ({lat:49.84,lng:9.97});}
+    if (i==6) { zoom=5; center =  ({lat:47.4984,lng:15.0411});}
+    if (i==7) { zoom=3; center =  ({lat:41,lng:-42});}
+    map.setCenter(center)
+    map.setZoom(zoom);
     fillPoints();
 }
 	
 	
-function MyApplication() {
-    if (GBrowserIsCompatible()) {
-	this.map = new GMap2(document.getElementById("map_canvas"));
-	this.map.enableScrollWheelZoom();
-        this.map.addControl(new GSmallMapControl());
-        this.map.addControl(new GMapTypeControl());
-        var center = new GLatLng(41,-42);
-        this.map.setCenter(center, 2);
-	GEvent.bind(this.map, "dragend", this, this.onMapDragEnd);
+function initialize() {
+    map = new google.maps.Map(
+	        document.getElementById('map_canvas'), {
+	          center: new google.maps.LatLng(47, 18),
+	          zoom: 5,
+	          mapTypeId: google.maps.MapTypeId.ROADMAP,
+	          zoomControl: true,
+	          mapTypeControl: true,
+	          scaleControl: true,
+	          streetViewControl: true,
+	          rotateControl: true,
+	          fullscreenControl:false,
+	          gestureHandling: 'greedy',
 
-    }
+	       });
+	//this.map.enableScrollWheelZoom();
+    	map.addListener('idle', function() {
+    	    fillPoints();
+    	});
+    	map.addListener('dragend', function() {
+    	    fillPoints();
+    	});
+    	map.addListener('zoom_changed', function() {
+    	    fillPoints();
+    	});
+
 }
+
     
-MyApplication.prototype.onMapDragEnd = function() {
-	fillPoints();
-};
-
-
     
 function fillPoints() {
-    document.getElementById("txtPerson").innerHTML='Adat keresés <img src="images/loading.gif" />';
-    application.map.clearOverlays();
-    var SW= new GLatLng();SW=application.map.getBounds().getSouthWest();
-    var NE= new GLatLng();NE=application.map.getBounds().getNorthEast();
-    var url="getGeoPoints.php";
-    url +="?lat1="+SW.lat();
-    url +="&lng1="+SW.lng();
-    url +="&lat2="+NE.lat();
-    url +="&lng2="+NE.lng();
-    $.ajax({
-	url:url,
-	type:"GET",
-	//dataType: 'json',
-	success:function(data){
-	    setMarkers(data);
-	}
-    });
+    if (map.getBounds()!=null) {
+        document.getElementById("txtPerson").innerHTML='Adat keresés <img src="images/loading.gif" />';
+        for(var i=0;i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        while(markers.length > 0) {
+            markers.pop();
+        }
+        var SW=(map.getBounds().b);
+        var NE=(map.getBounds().f);
+        var url="getGeoPoints.php";
+        url +="?lat1="+NE.b;
+        url +="&lng1="+SW.b;
+        url +="&lat2="+NE.f;
+        url +="&lng2="+SW.f;
+        $.ajax({
+    	url:url,
+    	type:"GET",
+    	//dataType: 'json',
+    	success:function(data){
+    	    setMarkers(data);
+    	}
+        });
+    }
 }
 	
 function setMarkers(data)	{ 
@@ -78,12 +91,11 @@ function setMarkers(data)	{
 	if (pointArr[i]!="") {
 	    var point = new Array();
 	    point = pointArr[i].split(":");
-	    latlng = new GLatLng(point[0],point[1]);
-	    markerOptions = { title:point[2]};
-	    marker = new GMarker(latlng,markerOptions);
-	    application.map.addOverlay(marker);
-	    document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(i+1);
+	    var latlng = {lat:parseFloat(point[0]),lng:parseFloat(point[1])};
+	    markers[i] = new google.maps.Marker({position:latlng,map:map,title:point[2]});
+	    
 	}				
     }
+    document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(i+1);
 } 
 

@@ -267,8 +267,10 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	}
 }
 
-if ($tabOpen==5) 
-	$diakEditGeo = true;
+if ($tabOpen==5) { 
+	Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
+	Appl::addJs("js/diakEditGeo.js");
+}
 if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 	Appl::addCss('editor/ui/trumbowyg.min.css');
 	Appl::addJs('editor/trumbowyg.min.js');
@@ -297,7 +299,7 @@ if ($personid!=null && $personid>=0) {
 include("homemenu.php"); 
 ?>
 
-<?php if (strstr($action,"new")==""){?>
+<?php if (isActionParam("new")=="" && isset($diak)){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
 		<img src="<?php echo getPersonPicture($diak) ?>" class="diak_image_icon" />
