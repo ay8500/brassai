@@ -81,7 +81,7 @@ function setMarkers(data)	{
 	if (pointArr[i]!="") {
 	    var point = new Array();
 	    point = pointArr[i].split(":");
-	    var latlng = [parseFloat(point[0]),parseFloat(point[1])];
+	    var latlng = {lat:parseFloat(point[0]),lon:parseFloat(point[1])};
 	    markers[i] = L.marker(latlng,{title:point[2],riseOnHover:true}).addTo(map);
 	    
 	}				
