@@ -97,7 +97,6 @@ if (userIsAdmin()) {?>
 
 
 <?php }?>
-<?php include 'homefooter.php';?>
 
 <script type="text/javascript">
 
@@ -204,3 +203,4 @@ function rip() {
 
 
 </script>
+<?php include 'homefooter.php';?>
