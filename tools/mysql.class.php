@@ -9,6 +9,7 @@ class MySqlDb {
  
   private $countQuerys=0;
   private $countChanges=0;
+  private $sqlRequest = array();
  
   /**
    * Constructor
@@ -44,6 +45,7 @@ class MySqlDb {
   		$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 1:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   		$this->counter=NULL;
   		$this->countQuerys++;
+  		array_push($this->sqlRequest,$query);
   	} else {
   		return false;
   	}
@@ -53,6 +55,7 @@ class MySqlDb {
   public function queryInt($query) {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 2:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   	$this->countQuerys++;
+  	array_push($this->sqlRequest,$query);
 	if(!$this->result===false) {
   		$r =mysqli_fetch_row($this->result);
   		return  intval($r[0]);
@@ -65,6 +68,7 @@ class MySqlDb {
   	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 3:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
   	$this->counter=null;
   	$this->countQuerys++;
+  	array_push($this->sqlRequest,$query);
   	if ($this->count()==1)
   		return $this->fetchRow();
   	else 
@@ -344,6 +348,7 @@ class MySqlDb {
 		$ret = new stdClass();
 		$ret->changes = $this->countChanges;
 		$ret->querys = $this->countQuerys;
+		$ret->sql = $this->sqlRequest;
 		return $ret;
 	}
 	

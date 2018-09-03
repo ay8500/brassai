@@ -81,7 +81,7 @@ include_once 'editDiakCard.php';
 		</div>
 		<div class="panel-body">
 			<ul>
-				<li>Május 2018: <a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a>Az oldal https biztonságos kommunikációt használ a szmélyes adatok megvédésére.
+				<li>Május 2018: <a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a>Az oldal https biztonságos kommunikációt használ a személyes adatok megvédésére.
 				<li>Január 2018: <a href="hometable.php?classid="></a> Estisek tanfolyamok névsora új menüponton keresztül érhetbő el.</li>
 				<li>December 2017: <a href="start.php"></a> Ez az oldal az utólsó frissitéseket illetve bejegyzéseket is tartalmazza.</li>
 				<li>December 2016: <a href="picture.php?type=tablo&typeid=tablo">Tablók</a> albumával bővült az oldal.</li>

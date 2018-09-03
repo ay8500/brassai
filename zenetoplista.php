@@ -306,8 +306,7 @@ if ($delVote>=0 && $edit) {
 
 
 </div>
- <?PHP  include "homefooter.php" ?>
-
+ 
 <script>
 var songs = [<?php foreach($topList as $i=>$v) echo(($i!=0?',"':'"').$v['songVideo'].'"');?>];
 
@@ -369,7 +368,8 @@ function autoComplete (field, select, property, forcematch) {
 </script>
  
  <?php 
- 
+ include "homefooter.php";
+		
  function getSongName($song) {
  	$apiPublicKey="AIzaSyDsdHR0UNecnOH6s9OdQZhJkFpOZv02ncM";
  	$response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $song. '&key=' . $apiPublicKey);
@@ -379,5 +379,4 @@ function autoComplete (field, select, property, forcematch) {
  	else 
  		return ""; 
  }
- 
  ?>

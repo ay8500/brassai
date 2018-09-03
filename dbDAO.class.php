@@ -1243,9 +1243,10 @@ class dbDAO {
 
 	
 	/**
+	 * thist is the ol version of getlementList 
 	 * get a array of elements, or an empty array if no elements found
 	 */
-	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
+	private function getOldElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
 		$rows=$this->getIdList($table,$where,$limit,$offset,$orderby);
 		$ret=array();
 		foreach ($rows as $row) {
@@ -1253,26 +1254,32 @@ class dbDAO {
 		}
 		return $ret;
 	}
-	private function getNewElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-	    //normal entrys
-	    $sql="select * from ".$table." where ( (changeForID is null and changeUserID is not null) ";
-	    //anonymous new entrys from the aktual ip
-        $sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
-        if ($where!=null)
-            $sql.=" and ".$where;
-        if ($orderby!=null)
-	       $sql.=" order by ".$orderby;
-        if ($limit!=null)
-            $sql.=" limit ".$limit;
-        if ($offset!=null)
-            $sql.=" offset ".$offset;
-        $this->dataBase->query($sql);
-        if ($this->dataBase->count()==0) {
-            return array();
-        } else {
-            $ret=$this->dataBase->getRowList();
-            return $ret;
-        }
+
+	/**
+	 * get a array of elements, or an empty array if no elements found
+	 */
+	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
+		//normal entrys
+		$sql="select * from ".$table." where ( (changeForID is null and changeUserID is not null";
+		//without the anonymous entrys that are changed from this ip
+		$sql.=" and id not in ( select changeForID from ".$table." where  changeForID is not null and changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
+		$sql.=") ";
+		//anonymous entrys and new entrys from the aktual ip
+		$sql.=" or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
+		if ($where!=null)
+			$sql.=" and ".$where;
+		if ($orderby!=null)
+			$sql.=" order by ".$orderby;
+		if ($limit!=null)
+			$sql.=" limit ".$limit;
+		if ($offset!=null)
+			$sql.=" offset ".$offset;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
+		}
 	}
 	
 	/**

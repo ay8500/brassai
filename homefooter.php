@@ -15,7 +15,11 @@
 	</nav>
 	<?php 
 		if (userIsAdmin()) {
-		echo "Querys:".$db->getRequestCounter()->querys." Changes:".$db->getRequestCounter()->changes;
+			echo "Querys:".$db->getRequestCounter()->querys." Changes:".$db->getRequestCounter()->changes."<br/>";
+			$sql=$db->getRequestCounter()->sql;
+			foreach ($sql as $s) {
+				echo($s."<br/>");
+			}
 		}
 	?>
 </div>
