@@ -1241,26 +1241,13 @@ class dbDAO {
 	
 //********************* Private ******************************************	
 
-	
 	/**
-	 * thist is the ol version of getlementList 
-	 * get a array of elements, or an empty array if no elements found
+	 * Get an array of elements, or an empty array if no elements found.
+	 * Anonymous changes from the user IP will be considered 
 	 */
-	private function getOldElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-		$rows=$this->getIdList($table,$where,$limit,$offset,$orderby);
-		$ret=array();
-		foreach ($rows as $row) {
-			array_push($ret, $this->getEntryById($table, $row["id"]));
-		}
-		return $ret;
-	}
-
-	/**
-	 * get a array of elements, or an empty array if no elements found
-	 */
-	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
+	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
 		//normal entrys
-		$sql="select * from ".$table." where ( (changeForID is null and changeUserID is not null";
+		$sql="select ".$field." from ".$table." where ( (changeForID is null and changeUserID is not null";
 		//without the anonymous entrys that are changed from this ip
 		$sql.=" and id not in ( select changeForID from ".$table." where  changeForID is not null and changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
 		$sql.=") ";
@@ -1276,55 +1263,45 @@ class dbDAO {
 			$sql.=" offset ".$offset;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
-			return $this->dataBase->getRowList();
+			$ret = $this->dataBase->getRowList();
+			/*for ($i=0;$i<sizeof($ret);$i++) {
+				if (isset($ret[$i]["changeForID"]))
+					$ret[$i]["id"]=$ret[$i]["changeForID"];
+			}*/
+			return $ret;
 		} else {
 			return array();
 		}
 	}
 	
 	/**
-	 * get a array of ids, or an empty array if no ids found
+	 * Get an array of ids, or an empty array if no ids found
+	 * Anonymous changes from the user IP will be considered
 	 */
 	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-		//normal entrys
-		$sql="select id from ".$table." where ( (changeForID is null and changeUserID is not null) ";
-		//anonymous new entrys from the aktual ip
-		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
-		if ($where!=null)
-			$sql.=" and ".$where;
-		if ($orderby!=null)
-			$sql.=" order by ".$orderby;
-		if ($limit!=null)
-			$sql.=" limit ".$limit;
-		if ($offset!=null)
-			$sql.=" offset ".$offset;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			return $this->dataBase->getRowList();
-		} else {
-			return array();
-		}
+		return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
 	}
 	
 	
 	/**
 	 * Returns a signle entry from a table in consideration of the anonymous changes or NULL if no entry found
-	 * even if the copy is returned the id will be from the original
+	 * even if the anonymous copy is returned the id will be from the original
 	 * @return the entry of null if not found
 	 */
 	public function getEntryById($table,$id,$forceThisID=false) {
+		if ($id==null || $id=='') 
+			return null;
 		//First get the foced entry by the id
 		if ($forceThisID==true) {
 			$sql="select * from ".$table.' where id='.$id;
 			$this->dataBase->query($sql);
 			if ($this->dataBase->count()==1) {
 				return  $this->dataBase->fetchRow();
-			} else 
+			} else {
 				return null;
+			}
 		}
 		//First get the original entry by the id
-		if ($id==null || $id=='') 
-			return null;
 		$sql="select * from ".$table.' where id='.$id." and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
@@ -1342,8 +1319,9 @@ class dbDAO {
 			$this->dataBase->query($sql);
 			if ($this->dataBase->count()==1) {
 				return $this->dataBase->fetchRow();
-			} else 
+			} else {
 				return null;
+			}
 		}
 	}
 	
@@ -1352,7 +1330,7 @@ class dbDAO {
 	 * @return NULL is no entry or more then one entry found 
 	 */
 	private function getEntryByField($table,$fieldName,$fieldValue) {
-		$sql="select * from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
+		$sql="select id from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
 		$sql .=" and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
@@ -1368,7 +1346,7 @@ class dbDAO {
 	 * @return NULL is no entry or more then one entry found
 	 */
 	public function getEntry($table,$where) {
-		$sql="select * from ".$table." where ".$where;
+		$sql="select id from ".$table." where ".$where;
 		$sql .=" and changeForID is null";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {

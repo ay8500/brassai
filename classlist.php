@@ -42,6 +42,7 @@ $classes = $db->getClassList();
 <?PHP  include ("homefooter.php");
 
 function classList($db,$classes,$eveningClass) { 
+	//TODO StafClassId from Session
 	$stafClassId=$db->getStafClassIdBySchoolId(getAktSchoolId());
 	foreach($classes as $cclass) {
 		if ($cclass["id"]!=$stafClassId && $eveningClass==$cclass["eveningClass"]) {
