@@ -188,7 +188,6 @@ class MySqlDb {
 		return mysqli_insert_id($this->connection);
 	}
 	
-	
 	/**
 	 * Update data in a table
 	 * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
@@ -199,7 +198,23 @@ class MySqlDb {
 	 * @return boolean
 	 */
 	public function update($table, $data, $whereField="", $whereValue="") {
-		$this->countChanges++;
+		if ($whereField!="") {
+			$sql=$whereField."='".$whereValue."'";
+	  	} else {
+	  		$sql="1==2";
+	  	}
+		return $this->updateWhere($table,$data,$sql);
+	}
+		
+	/**
+	 * Update data in a table
+	 * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
+	 * @param string $table
+	 * @param array $data
+	 * @param string $where where condition example: firstName='Levi'
+	 * @return boolean
+	 */
+	public function updateWhere($table, $data, $where=null) {
 		$sql="update ".$table." set ";
 	  	$notFirstElement=false;
 	  	foreach ($data as $d) {
@@ -221,17 +236,21 @@ class MySqlDb {
 	  			$sql .="null";
 	  		}
 	  	}
-	  	if ($whereField!="") {
-			$sql.=" where ".$whereField."=".$whereValue;
+	  	if ($where!=null) {
+			$sql.=" where ".$where." ";
+	  	} else {
+	  		$sql.=" where 1==2 ";
 	  	}
-	  	
-	   	if ($this->result=mysqli_query($this->connection,$sql)) {
-	   		return true;
+	  	$this->countChanges++;
+	  	array_push($this->sqlRequest,$sql);
+	   	if (mysqli_query($this->connection,$sql) === TRUE) {
+	   		return TRUE;
 	   	}
 	   	else {
 	   		logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-	   		return false;
+	   		return FALSE;
 	   	}
+	   	mysqli_commit($this->connection);
 	}
    	  
 	/**

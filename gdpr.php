@@ -70,7 +70,7 @@ include 'homemenu.php';
 		<h4 class="margin-hor">Mit tud rólam ez az oldal?</h4>
 		<div class="margin-def">
 			<input class="left fb-radio" type="radio" name="action" value="alldatamail" onclick="checkgdpr();"/> 
-			<div class="margin-hor1"> Szeretnék egy e-mail az összes személyes adataimról.</div></div>
+			<div class="margin-hor1"> Szeretnék egy e-mail-t az összes személyes adataimról.</div></div>
 		<div style="clear:both;"></div>
 	</div>
 	

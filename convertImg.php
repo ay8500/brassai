@@ -80,6 +80,9 @@ if (!in_array($ext,$limitedext)) {
 
 
 //if($ext== ".jpeg" || $ext == ".jpg"){
+	if (!file_exists($file_name)) {
+		$file_name="images/avatar.jpg";
+	}
 	$new_img = imagecreatefromjpeg($file_name);
 /*
 }elseif($ext == ".png" ){

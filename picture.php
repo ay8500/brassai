@@ -41,16 +41,15 @@ if (!isset($typeId)) {
 }
 $album=getParam("album","");
 
-
 if ($type=="classID") {
-	$subtitle="A tanárok és diákok együtt a ballagási tablón és csoportképeken. ".getAktClassName();
+	$subtitle="Osztályképek: ".getAktClassName()." ".$album;
 } if ($type=="personID") { 
 	$person=$db->getPersonByID($typeId);
 	$subtitle=getPersonName($person)." képei";
 	$link=getPersonLinkAndPicture($person)." képei";
 } if ($type=="schoolID") { 
-	$subtitle="Képek iskolánkról. ".$album;
-} if ($type=="tablo") { 
+	$subtitle="Képek iskolánkról: ".$album;
+} if ($album=="_tablo_") { 
 	$subtitle="Iskolánk tabló képei.";
 }  
 $SiteTitle=$subtitle;

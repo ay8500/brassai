@@ -284,7 +284,7 @@ function deletePicture($pictureId,$unlink=false) {
 	if ($picture==null)
 		return false;
 	if ($unlink) {
-		$db->deletePictureEntry($pictureId);
+		return $db->deletePictureEntry($pictureId);
 	} else {
 		$picture["isDeleted"]=1;
 		return $db->savePicture($picture);

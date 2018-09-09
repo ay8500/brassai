@@ -1,5 +1,4 @@
 <?php 
-$view=getParam("view","table");
 Appl::addCssStyle('
 .ilbuttonworld {
     background-image: url("images/world-16.png");background-repeat: no-repeat;background-position: 11px 7px;
@@ -25,15 +24,58 @@ Appl::addCssStyle('
     padding: 5px 6px;
     display: inline-block;
 }
+		
+.folderdiv, .folderdivwhite {
+    padding-top: 50px;
+	margin-right: 30px;
+    position: relative;
+    text-align: left;
+	display:inline-block;
+	min-width: 57px;
+}
+		
+.folderdiv:after, .folderdivwhite:after {
+    content: " ";
+    width: 50px;
+    height: 32px;
+    border-radius: 0 5px 5px 5px;
+    box-shadow: 3px 3px 0 1px #CCCCCC;
+    display: block;
+    background-color: #e0e0e0;
+    position: absolute;
+    top: 15px;
+    left: 0px;    
+}
+
+.folderdivwhite:after {
+    background-color: #708090;
+}
+
+.folderdiv:before, .folderdivwhite:before {
+    content: " ";
+    width: 25px;
+    height: 5px;
+    border-radius: 5px 15px 0 0;
+    display: block;
+    background-color: #e0e0e0;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+}		
+
+.folderdivwhite:before {
+    background-color: #708090;
+}		
+		
+.folderdiv:hover:after, .folderdivwhite:hover:after, .folderdiv:hover:before, .folderdivwhite:hover:before{
+	background-color: white;
+}
+		
 .iledittitle {	border: none;width:100%;padding:5px;font-weight: bold;}
 .ileditcomment {border: none;width:100%;height:100px;padding:5px;}
 .pi100 {width:100%;}
 #list-table { display:inline-block;vertical-align: text-top;}
 ');
-if ($view=="table") 
-	Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
-else 
-	Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
@@ -50,18 +92,35 @@ if (getParam("action","")=="deletePicture" ) {
 	}
 }
 
-//changeOrder
+//change picture order
 if (getParam("action","")=="changeOrder" && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
 	$db->changePictureOrderValues(getIntParam("id1", -1), getIntParam("id2", -1));
 }
 
+//change picture albumname
+if (isActionParam("changePictureAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
+	if ($db->changePictureAlbumName(getIntParam("id", -1), getParam("album", ""))) {
+		Appl::setMessage("Kép sikeresen áthelyezve","success");
+	} else {
+		Appl::setMessage("Kép éthelyezése sikertelen","warning");
+	}
+}
+
+//change albumname
+if (isActionParam("renameAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
+	if ($db->changeAlbumName($type, $typeId, getParam("oldAlbum", ""), getParam("album", ""))) {
+		Appl::setMessage("Album sikeresen étnevezve","success");
+	} else {
+		Appl::setMessage("Album átnevezése sikertelen","warning");
+	}
+}
 
 //Delete and unlink Picture
 if (getParam("action","")=="unlinkPicture" && (userIsAdmin() || userIsSuperuser()) )  {
 	if (deletePicture(getIntParam("did"),true)>=0) {
-		Appl::$resultDbOperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+		Appl::setMessage("Kép sikeresen törölve","success");
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
+		Appl::setMessage("Kép törlése sikertelen!","warning");
 	}
 }
 
@@ -133,13 +192,21 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 	}
 }
 
-$notDeletedPictures=0;
+//View 
+$album=getParam("album","");
+$view=getParam("view","table");
+if ($view=="table")
+	Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
+	else
+		Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
 
+//The list of pictures
+$notDeletedPictures=0;
 if(isset($picture)) {
-	$pictures = array($picture);	//Only one picture
+	$pictures = array($picture);	//Only one picture => convert to array
 	$notDeletedPictures=1;
 } else {
-	if ($type!="tablo")
+	if (getParam("album")!="_tablo_")
 		$pictures = $db->getListOfPictures($typeId, $type, 2, 2, getParam("album"));
 	else
 		$pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
@@ -149,9 +216,75 @@ if(isset($picture)) {
 		}
 	}
 }
+
+//Albumlist
+$startAlbumList=array(array("albumName"=>"","albumText"=>"Főalbum"));
+if ($type=="schoolID") {
+	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".$typeId."&album=_tablo_","albumText"=>"Tablók","albumName"=>"_tablo_")));
+}
+$albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
+
+//Check if a new album want to be created
+if (getParam("album")!=null) {
+	$newAlbum = true;
+	foreach ($albumList as $alb) {
+		if ($alb["albumName"]==getParam("album"))
+			$newAlbum=false;
+	}
+	if ($newAlbum) {
+		$albumList = array_merge($albumList,array(array("albumName"=>getParam("album"),"albumText"=>getParam("album"))));
+	}
+}
 ?>
+	<div class="well">
+		<?php foreach ($albumList as $alb) {?>
+			<?php 
+			if (isset($alb["albumName"])) {
+				$albumLink = basename($_SERVER['SCRIPT_FILENAME'], ".php").".php?type=".$type."&typeid=".$typeId."&album=".$alb["albumName"].(getParam("tabOpen")!=null?"&tabOpen=".getParam("tabOpen"):""); 
+			} else { 
+				$albumLink =$alb["albumLink"]; 
+			}?> 
+			<a href="<?php echo $albumLink?>">
+			<?php if ($album==$alb["albumName"]) {?>
+				<span class="folderdivwhite"><?php echo $alb["albumText"]?></span>
+			<?php } else {?>
+				<span class="folderdiv"><?php echo $alb["albumText"]?></span>
+			<?php } ?>
+			</a>
+		<?php }?>
+		<?php if ( (userIsAdmin() || userIsSuperuser()) ) {?>
+			<div style="display:inline-block">
+				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+					<?php if (getParam("tabOpen")!=null) {?>
+						<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
+					<?php } ?>
+					<?php if (getParam("type")!=null) {?>
+						<input name="type" type="hidden" value="<?php echo getParam('type')?>" /> 
+					<?php } ?>
+					<?php if (getParam("typeid")!=null) {?>
+						<input name="typeid" type="hidden" value="<?php echo getParam('typeid')?>" /> 
+					<?php } ?>
+					<input name="album" class="form-control" placeholder="Album címe"/><br/>
+					<button class="btn btn-default" style="margin-top: -15px;">Új albumot létrehoz</button>
+				</form>
+			</div>
+		<?php } ?>
+		<?php if (getParam("album")!=null && $album!="" && getParam("album")!="_tablo_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser()) ) {?>
+			<div style="display:inline-block">
+				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+					<?php if (getParam("tabOpen")!=null) {?>
+						<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
+					<?php } ?>
+					<input name="oldAlbum" type="hidden" value="<?php echo getParam('album')?>" />
+					<input name="album" class="form-control" value="<?php echo getParam('album')?>"/><br/>
+					<button name="action" value="renameAlbum" class="btn btn-default" style="margin-top: -15px;">Albumot átnevez</button>
+				</form>
+			</div>
+		<?php }?>
+	</div>
+	
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $type!="tablo") :?>
+	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $type!="tablo") {?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
@@ -176,7 +309,7 @@ if(isset($picture)) {
 			<?php }?>
 			<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
 		</div>
-	<?php endif; ?>
+	<?php } ?>
 	
 	
 	<?php if ($notDeletedPictures==0) :?>
@@ -216,14 +349,36 @@ if(isset($picture)) {
 						<div >
 							<?php if (userIsLoggedOn()) { ?>
 								<span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
-							<?php } ?> 
+							<?php }?> 
 							<button class="btn btn_default"  title="Kimenti a kép módosításait" onclick="savePicture(<?php echo $pict["id"] ?>,this);return false;"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>							
-							<?php if ($pict["isDeleted"]!=1): ?>
+							<?php if ($pict["isDeleted"]!=1) { ?>
 								<button class="btn btn_default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
-							<?php endif ?>
-							<?php if (userIsAdmin()) : ?>
+							<?php } ?>
+							<?php if (userIsAdmin()) { ?>
 								<button class="btn btn_default" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
-							<?php endif ?>
+							<?php }?>
+							<?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser()) { ?>
+								<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+								<input type="hidden" name="id" value="<?php echo $pict["id"]?>" />
+								<?php if (getParam("tabOpen")!=null) {?>
+									<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
+								<?php } ?>
+								<?php if (getParam("type")!=null) {?>
+									<input name="type" type="hidden" value="<?php echo getParam('type')?>" /> 
+								<?php } ?>
+								<?php if (getParam("typeid")!=null) {?>
+									<input name="typeid" type="hidden" value="<?php echo getParam('typeid')?>" /> 
+								<?php } ?>
+								<select name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
+									<?php foreach ($albumList as $alb) {?>
+										<?php if ($alb["albumName"]!=$album && $alb["albumName"]!="_tablo_" ) { ?>
+											<option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
+										<?php }?>
+									<?php }?>
+								</select>
+								<button name="action" value="changePictureAlbum" class="btn btn-default inline">Áthelyezz!</button>
+								</form>
+							<?php }?>
 							<button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
 						</div> 
 					</div>
@@ -233,11 +388,11 @@ if(isset($picture)) {
 							<?php  if ($idx!=0) {?>
 								<button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);return false;" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
 							<?php } else {?>
-								<span style="margin: 0px 40px 0 10px;" >&nbsp</span>
+								<span style="margin: 0px 40px 0 10px;" >&nbsp;</span>
 							<?php } if ($idx+1<sizeof($pictures)) {?>
 								<button id="picsort" style="margin: 0px 10px 0 5px;" class="btn btn-default" onclick="changeOrder(<?php echo $pictures[$idx+1]["id"] ?>,<?php echo $pictures[$idx]["id"] ?>);return false;" title="eggyel hátrébb"><span class="glyphicon glyphicon-arrow-down"></span></button>
 							<?php } else {?>
-								<span style="margin: 0px 5px 0 40px;" >&nbsp</span>
+								<span style="margin: 0px 5px 0 40px;" >&nbsp;</span>
 							<?php } ?>
 						<?php endif;?>
 						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;max-width: 320px;">
@@ -259,8 +414,8 @@ if(isset($picture)) {
 					id=<?php echo $pict["id"]?>
 					orderValue=<?php echo $pict["orderValue"]?><br/>
 					orderValue=<?php echo $pict["file"]?><br/>
-					uploaded=<?php echo date("Y.m.d H:i:s",strtotime($pict["uploadDate"]));?></br>
-					changed=<?php echo date("Y.m.d H:i:s",strtotime($pict["changeDate"]));?></br>
+					uploaded=<?php echo date("Y.m.d H:i:s",strtotime($pict["uploadDate"]));?><br/>
+					changed=<?php echo date("Y.m.d H:i:s",strtotime($pict["changeDate"]));?><br/>
 					user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
 				</div></div>
 				<?php } ?>

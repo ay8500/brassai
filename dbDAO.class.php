@@ -814,6 +814,16 @@ class dbDAO {
 		return $this->getElementList("picture",$sql,null,null,"title asc");	
 	}
 	
+	/*
+	 * get the list of picture albums 
+	 */
+	public function getListOfAlbum($type,$typeId,$startList=array()) {
+		$sql = " where ".$type."=".$typeId. " and albumName <> ''";
+		$sql="select distinct(albumName) as albumName, albumName as albumText from picture".$sql;
+		$this->dataBase->query($sql);
+		return array_merge($startList,$this->dataBase->getRowList());
+	}
+	
 	public function changePictureOrderValues($id1,$id2) {
 		$orderValue1=$this->dataBase->queryInt("select orderValue from picture where id=".$id1);
 		$orderValue2=$this->dataBase->queryInt("select orderValue from picture where id=".$id2);
@@ -822,6 +832,26 @@ class dbDAO {
 		$this->dataBase->update("picture", $data, "id", $id2);
 		$data=$this->dataBase->changeFieldInArray($data, "orderValue", $orderValue2);
 		$this->dataBase->update("picture", $data, "id", $id1);
+	}
+
+	public function changePictureAlbumName($id,$albumName) {
+		$data=array();
+		$data=$this->dataBase->insertFieldInArray($data, "albumName", $albumName);
+		return $this->dataBase->update("picture", $data, "id", $id);
+	}
+	
+	/**
+	 * change Album name
+	 * @param unknown $type 'classID' or 'schoolID' or 'personID'
+	 * @param unknown $typeId the ID
+	 * @param unknown $oldAlbumName
+	 * @param unknown $newAlbumName
+	 */
+	public function changeAlbumName($type, $typeId, $oldAlbumName,$newAlbumName) {
+		$data=array();
+		$data=$this->dataBase->insertFieldInArray($data, "albumName", $newAlbumName);
+		$where = $type."='".$typeId."' and albumName='".$oldAlbumName."'";
+		return $this->dataBase->updateWhere("picture", $data, $where);
 	}
 	
 	public function getPictureByFileName($filename) {
@@ -1279,7 +1309,25 @@ class dbDAO {
 	 * Anonymous changes from the user IP will be considered
 	 */
 	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-		return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
+		//NOT GOOD return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
+		//normal entrys
+		$sql="select id from ".$table." where ( (changeForID is null and changeUserID is not null) ";
+		//anonymous new entrys from the aktual ip
+		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
+		if ($where!=null)
+			$sql.=" and ".$where;
+		if ($orderby!=null)
+			$sql.=" order by ".$orderby;
+		if ($limit!=null)
+			$sql.=" limit ".$limit;
+		if ($offset!=null)
+			$sql.=" offset ".$offset;
+		$this->dataBase->query($sql);
+		if ($this->dataBase->count()>0) {
+			return $this->dataBase->getRowList();
+		} else {
+			return array();
+		}
 	}
 	
 	
