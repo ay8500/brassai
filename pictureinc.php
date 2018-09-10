@@ -81,14 +81,14 @@ Appl::addCssStyle('
 if (getParam("action","")=="deletePicture" ) {
 	if ($db->getCountOfRequest(changeType::deletepicture,24)<5) {
 		if (deletePicture(getIntParam("did"))>=0) {
-			Appl::$resultDbOperation='<div class="alert alert-success" >Kép sikeresen törölve.</div>';
+			Appl::setMessage("Kép sikeresen törölve","success");
 			$db->saveRequest(changeType::deletepicture);
 			saveLogInInfo("PictureDelete",getAktUserId(),"",getParam("id", ""),true);
 		} else {
-			Appl::$resultDbOperation='<div class="alert alert-warning" >Kép törlése sikertelen!</div>';
+			Appl::setMessage("Kép törlése sikertelen!","warning");
 		}
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" >Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!</div>';
+		Appl::setMessage("Anonim felhasználó jogai nem elegendők a kivánt művelet végrehajtására!","warning");
 	}
 }
 
@@ -165,35 +165,35 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							if ($db->savePicture($upicture)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,1800,1800);
-								Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve.</div>";
+								Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve.","success");
 								saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);
 							} else {
-								Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+								Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
 							}
 						} else {
-							Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[0].".".$fileName[1]." sikeresen feltöltve és felülírva.</div>";
+							Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve és felülírva.","success");
 						}
 					} else {
-						Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+						Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
 					}
 				}
 				else {
-					Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.</div>";
+					Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.","warning");
 					saveLogInInfo("PictureUpload",$uid,$diak["user"],"to big",false);
 				}
 			}
 			else {
-				Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.</div>";
+				Appl::setMessage($fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.","warning");
 				saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"only jpg",false);
 			}
 		}
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" >A feltöltött képek száma meghaladta a naponta megengedett határt!</div>';
+		Appl::setMessage("A feltöltött képek száma meghaladta a naponta megengedett határt!","warning");
 	}
 }
 
 //View 
-$album=getParam("album","");
+$albumParam = getParam("album","");
 $view=getParam("view","table");
 if ($view=="table")
 	Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
@@ -206,8 +206,8 @@ if(isset($picture)) {
 	$pictures = array($picture);	//Only one picture => convert to array
 	$notDeletedPictures=1;
 } else {
-	if (getParam("album")!="_tablo_")
-		$pictures = $db->getListOfPictures($typeId, $type, 2, 2, getParam("album"));
+	if ($albumParam!="_tablo_")
+		$pictures = $db->getListOfPictures($typeId, $type, 2, 2, $albumParam);
 	else
 		$pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
 	foreach ($pictures as $pict) {
@@ -245,7 +245,7 @@ if (getParam("album")!=null) {
 				$albumLink =$alb["albumLink"]; 
 			}?> 
 			<a href="<?php echo $albumLink?>">
-			<?php if ($album==$alb["albumName"]) {?>
+			<?php if ($albumParam==$alb["albumName"]) {?>
 				<span class="folderdivwhite"><?php echo $alb["albumText"]?></span>
 			<?php } else {?>
 				<span class="folderdiv"><?php echo $alb["albumText"]?></span>
@@ -269,7 +269,7 @@ if (getParam("album")!=null) {
 				</form>
 			</div>
 		<?php } ?>
-		<?php if (getParam("album")!=null && $album!="" && getParam("album")!="_tablo_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser()) ) {?>
+		<?php if ($albumParam!="" && $albumParam!="_tablo_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -284,7 +284,7 @@ if (getParam("album")!=null) {
 	</div>
 	
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $type!="tablo") {?>
+	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $albumParam!="_tablo_") {?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
@@ -310,6 +310,7 @@ if (getParam("album")!=null) {
 			<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
 		</div>
 	<?php } ?>
+	</form>
 	
 	
 	<?php if ($notDeletedPictures==0) :?>
@@ -320,10 +321,8 @@ if (getParam("album")!=null) {
 	<?php 
 	foreach ($pictures as $idx=>$pict) {
 		if ( $pict["isDeleted"]==0  || userIsAdmin() ) {
-			$checked="";
-			if ($pict["isVisibleForAll"]==1) $checked="checked";
+			$checked= ($pict["isVisibleForAll"]==1)?"checked":"";
 	?>
-	
 			<div class="pictureframe" >
 				<div id="list-table">
 					<?php if ($view=="table") {?>
@@ -359,24 +358,24 @@ if (getParam("album")!=null) {
 							<?php }?>
 							<?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser()) { ?>
 								<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-								<input type="hidden" name="id" value="<?php echo $pict["id"]?>" />
-								<?php if (getParam("tabOpen")!=null) {?>
-									<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
-								<?php } ?>
-								<?php if (getParam("type")!=null) {?>
-									<input name="type" type="hidden" value="<?php echo getParam('type')?>" /> 
-								<?php } ?>
-								<?php if (getParam("typeid")!=null) {?>
-									<input name="typeid" type="hidden" value="<?php echo getParam('typeid')?>" /> 
-								<?php } ?>
-								<select name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
-									<?php foreach ($albumList as $alb) {?>
-										<?php if ($alb["albumName"]!=$album && $alb["albumName"]!="_tablo_" ) { ?>
-											<option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
+									<input type="hidden" name="id" value="<?php echo $pict["id"]?>" />
+									<?php if (getParam("tabOpen")!=null) {?>
+										<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
+									<?php } ?>
+									<?php if (getParam("type")!=null) {?>
+										<input name="type" type="hidden" value="<?php echo getParam('type')?>" /> 
+									<?php } ?>
+									<?php if (getParam("typeid")!=null) {?>
+										<input name="typeid" type="hidden" value="<?php echo getParam('typeid')?>" /> 
+									<?php } ?>
+									<select name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
+										<?php foreach ($albumList as $alb) {?>
+											<?php if ($alb["albumName"]!=$albumParam && $alb["albumName"]!="_tablo_" ) { ?>
+												<option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
+											<?php }?>
 										<?php }?>
-									<?php }?>
-								</select>
-								<button name="action" value="changePictureAlbum" class="btn btn-default inline">Áthelyezz!</button>
+									</select>
+									<button name="action" value="changePictureAlbum" class="btn btn-default inline">Áthelyezz!</button>
 								</form>
 							<?php }?>
 							<button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
@@ -421,7 +420,6 @@ if (getParam("album")!=null) {
 				<?php } ?>
 			</div>
 	<?php }	}?>
-	</form>
 	
 
 <script type="text/javascript">
