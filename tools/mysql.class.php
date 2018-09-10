@@ -2,374 +2,415 @@
 
 include_once 'logger.class.php';
 
-class MySqlDb {
-  private $connection = NULL;
-  private $result = NULL;
-  private $counter=NULL;
- 
-  private $countQuerys=0;
-  private $countChanges=0;
-  private $sqlRequest = array();
- 
-  /**
-   * Constructor
-   * @return boolean true if the connection is ok
-   */
-  public function __construct($host, $database, $user="", $pass=""){
-	$this->connection = mysqli_connect($host,$user,$pass,$database);
-	if (mysqli_connect_errno()) {
-		die ('Database connection:'.$host. " Error nr:" . mysqli_connect_errno());
-	}
-  }
- 
-  /**
-   * "Destructor"
-   */
-  public function disconnect() {
-    if (is_resource($this->connection))				
-        mysqli_close($this->connection);
-		logger('Database disconnected',loggerLevel::info);
-  }
-  
-  /**
-   * Commit Work
-   */
-  public function commit() {
-  	return mysqli_commit($this->connection);
-  }
-  
- 
-  /* Execute a query get results with $this->fetchRow() and $this->count() */
-  public function query($query) {
-  	if (strstr($query,"id= and")===false) {
-  		$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 1:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-  		$this->counter=NULL;
-  		$this->countQuerys++;
-  		array_push($this->sqlRequest,$query);
-  	} else {
-  		return false;
-  	}
-  }
-  
-  /* Execute a query that return a single iteger value */
-  public function queryInt($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 2:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-  	$this->countQuerys++;
-  	array_push($this->sqlRequest,$query);
-	if(!$this->result===false) {
-  		$r =mysqli_fetch_row($this->result);
-  		return  intval($r[0]);
-	}
-	return 0;
-  }
+class MySqlDb
+{
+    private $connection = NULL;
+    private $result = NULL;
+    private $counter = NULL;
 
-  /* Execute a query that return a single row*/
-  public function querySignleRow($query) {
-  	$this->result=mysqli_query($this->connection,$query)  or logger("MySQL ERROR 3:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-  	$this->counter=null;
-  	$this->countQuerys++;
-  	array_push($this->sqlRequest,$query);
-  	if ($this->count()==1)
-  		return $this->fetchRow();
-  	else 
-  		return array();
-  }
-  
-  
-  /* fech a query result row */	 
-  public function fetchRow() {
-  	if ($this->result!==false)
-  		return mysqli_fetch_assoc($this->result);
-  	else 
-  		return null;
-  }
-  
-  /* get result list as an array */
-  public function getRowList() {
-  		$ret=array();
-  		while ($row = mysqli_fetch_assoc($this->result)) {
-  			array_push($ret, $row);
-  		}
-  		return $ret;
-  }
- 
-  /* howmanny rows are in the query result */
-  public function count() {
-	  	try {
-	  		if($this->counter==NULL && isset($this->result) && gettype($this->result)=="object" ) {
-	  			$this->counter=mysqli_num_rows($this->result);
-	  		}
-	  		return $this->counter;
-	  	} catch (Exception $e) {
-	  		return 0;
-	  	}
-  }
+    private $countQuerys = 0;
+    private $countChanges = 0;
+    private $sqlRequest = array();
 
-  /* select count */
-  public function tableCount($table, $where="") {
-  		$this->countQuerys++;
-    	if ($where=="")
-    		$sql="select count(1) from ".$table;
-    	else
-    		$sql="select count(1) from ".$table." where ".$where;
-		return $this->queryInt($sql);
-  }
+    /**
+     * Constructor
+     * @param string $host
+     * @param string $database
+     * @param string $user
+     * @param string $pass
+     * @return boolean true if the connection is ok
+     */
+    public function __construct($host, $database, $user = "", $pass = "")
+    {
+        $this->connection = mysqli_connect($host, $user, $pass, $database);
+        if (mysqli_connect_errno()) {
+            die ('Database connection:' . $host . " Error nr:" . mysqli_connect_errno());
+        }
+        return true;
+    }
 
-  /* the sum of one field in a table */
-  public function tableSumField($table,$field, $where="") {
-  	$this->countQuerys++;
-  	if ($where=="")
-    		$sql="select sum(".$field.") from ".$table;
-    	else
-    		$sql="select sum(".$field.") from ".$table." where ".$where;
-    	return $this->queryInt($sql);
-  }
+    /**
+     * "Destructor"
+     */
+    public function disconnect()
+    {
+        if (is_resource($this->connection))
+            mysqli_close($this->connection);
+        logger('Database disconnected', loggerLevel::info);
+    }
 
-  /* the sum of a field multiplicated with an other field */
-  public function tableSumMultField($table,$field, $multField, $where="") {
-    $this->countQuerys++;
-    if ($where=="")
-    		$sql="select sum(".$field." * ".$multField." ) from ".$table;
-    	else
-    		$sql="select sum(".$field." * ".$multField." )  from ".$table." where ".$where;
-    	$this->result=mysqli_query($this->connection,$sql) or logger("MySQL ERROR 4:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-  		return $this->queryInt($sql);
-  }
+    /**
+     * Commit Work
+     */
+    public function commit()
+    {
+        return mysqli_commit($this->connection);
+    }
 
-  
-  	/** Insert and update need a $data array for the values 
-  	 * $data[0]["field"]='Fieldname';
-  	 * $data[0]["type"]='s';            //Types s=string, d=datatime, n=number
-  	 * $data[0]["value"]='value';
-  	 * */
-	public function insert($table, $data) {
-		$this->countChanges++;
-		$sql  ="insert into `".$table."` (";
-	  	foreach ($data as $i=>$d) {
-	  		if ($i!=0) $sql .=",";
-	  		$sql .="`".$d["field"]."`";
-	  	}
-		$sql .=") values (";
-	  	foreach ($data as $i=>$d) {
-			if ($i!=0) $sql .=",";
 
-			if (isset($d["value"])) {
-		  		if ($d["type"]!="n") $sql .="'";
-		  		if ($d["type"]!="n") 
-		  			$sql .=$this->replaceSpecialChars($d["value"]);
-		  		else { 
-			  		if ($data[$i]["value"]!=="" )
-		  				$sql .=$d["value"];
-					else 
-						$sql .='null';
-		  		}
-		  		if ($d["type"]!="n" ) $sql .="'";
-			} else {
-				$sql .="null";
-			}
-	  	}
-		$sql .=")";
-	    if ($this->result=mysqli_query($this->connection,$sql)) {
-	   		return true;
-	   	}
-	   	else {
-	   		 return false;
-	   		 logger("MySQL ERROR:".$query." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-	   	}
-	}
+    /**
+     * Execute a query get results with $this->fetchRow() and $this->count()
+     * @param string $query
+     * @return bool
+     */
+    public function query($query)
+    {
+        if (strstr($query, "id= and") === false) {
+            $this->result = mysqli_query($this->connection, $query) or logger("MySQL ERROR 1:" . $query . " MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+            $this->counter = NULL;
+            $this->countQuerys++;
+            array_push($this->sqlRequest, $query);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	/* Error message from last request */
-	public function getErrorMessage() {
-		mysqli_error($this->connection);
-	}
-	
-	/* last autogenerated id */
-	public function getInsertedId() {
-		return mysqli_insert_id($this->connection);
-	}
-	
-	/**
-	 * Update data in a table
-	 * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
-	 * @param string $table
-	 * @param array $data
-	 * @param string $whereField
-	 * @param string $whereValue
-	 * @return boolean
-	 */
-	public function update($table, $data, $whereField="", $whereValue="") {
-		if ($whereField!="") {
-			$sql=$whereField."='".$whereValue."'";
-	  	} else {
-	  		$sql="1==2";
-	  	}
-		return $this->updateWhere($table,$data,$sql);
-	}
-		
-	/**
-	 * Update data in a table
-	 * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
-	 * @param string $table
-	 * @param array $data
-	 * @param string $where where condition example: firstName='Levi'
-	 * @return boolean
-	 */
-	public function updateWhere($table, $data, $where=null) {
-		$sql="update ".$table." set ";
-	  	$notFirstElement=false;
-	  	foreach ($data as $d) {
-	  		if ($notFirstElement) $sql .=",";
-	  		$notFirstElement = true;
-	  		$sql .="`".$d["field"]."`=";
-	  		if(isset($d["value"])) {
-		  		if ($d["type"]!="n") $sql .="'";
-		  		if ($d["type"]!="n") 
-		  			$sql .=$this->replaceSpecialChars($d["value"]);
-		  		else { 
-			  		if ($d["value"]!="")
-		  				$sql .=$d["value"];
-					else
-						$sql .='null';
-		  		}
-		  		if ($d["type"]!="n") $sql .="'";
-	  		} else {
-	  			$sql .="null";
-	  		}
-	  	}
-	  	if ($where!=null) {
-			$sql.=" where ".$where." ";
-	  	} else {
-	  		$sql.=" where 1==2 ";
-	  	}
-	  	$this->countChanges++;
-	  	array_push($this->sqlRequest,$sql);
-	   	if (mysqli_query($this->connection,$sql) === TRUE) {
-	   		return TRUE;
-	   	}
-	   	else {
-	   		logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-	   		return FALSE;
-	   	}
-	   	mysqli_commit($this->connection);
-	}
-   	  
-	/**
-	 *  delete from a table with where field and value
-	 *  @return boolean 
-	 **/
-	public function delete($table, $whereField, $whereValue) {
-		$this->countChanges++;
-		$where=$whereField."=".$whereValue;
-   	  	return $this->deleteWhere($table, $where);
-	}
-	
-	/**
-	 *  delete from a table with where clausel
-	 *  @return boolean 
-	 **/
-	public function deleteWhere($table, $where) {
-		$this->countChanges++;
-		$sql="delete from ".$table." where ".$where;
-		if ($this->result=mysqli_query($this->connection,$sql)) {
-			return true;
-		}
-		else {
-			return false;
-			logger("MySQL ERROR:".$sql." MySQL Message:".mysqli_error($this->connection),loggerLevel::error);
-		}
-	}
-	
-	public function getNextAutoIncrement($table) {
-		$sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='".$table."'";
-		return $this->queryInt($sql);
-	}
-   	  
-	private function mysqli_result($res, $row, $field=0) {
-   	  	$res->data_seek($row);
-   	  	$datarow = $res->fetch_array();
-   	  	return $datarow[$field];
-	}
-   	  
-	public function replaceSpecialChars($s) {
-   	  	return str_replace("'", "\'", $s);
-	}
-	
-	public function rereplaceSpecialChars($s) {
-		return str_replace("\'", "'", $s);
-	}
-	
-	public function createFieldArray($type,$name,$value) {
-		$ret = array();
-		$ret["field"]=$name;
-		$ret["type"]=$type;
-		$ret["value"]=$value;
-		return $ret;
-	}
-   	  
-	public function insertFieldInArray($array,$fieldName,$fieldValue) {
-		$type=null;
-		//Ends with id, year oder start with is => integer
-		if (preg_match('/id\\z/i', $fieldName)  || preg_match('/Year\\z/', $fieldName)  || preg_match('/\\Ais/', $fieldName) ) {
-			$type="n";}
-		//Ends with date => date
-		else if (preg_match('/Date\\z/i', $fieldName)) {
-			$type="d";}
-		//its a string
-		else /*if ($fieldValue!=null) */{
-			$type="s";
-			$fieldValue=$this->replaceSpecialChars($fieldValue);
-		}
-		if ($type!=null) {
-			$ret = array();
-			$ret["field"]=$fieldName;
-			$ret["type"]=$type;
-			$ret["value"]=$fieldValue;
-			array_push($array, $ret);
-		}
-		return $array;
-	}
-	
-	public function changeFieldInArray($fieldArray,$fieldName,$fieldValue) {
-		$arrayIdx = array_search($fieldName, array_column($fieldArray,"field"));
-		if (!$arrayIdx===false) {
-			$fieldArray[$arrayIdx]["value"]=$fieldValue;
-			return $fieldArray;
-		} else {
-			return $this->insertFieldInArray($fieldArray,$fieldName,$fieldValue);
-		}
-	}
+    /* Execute a query that return a single iteger value */
+    public function queryInt($query)
+    {
+        $this->result = mysqli_query($this->connection, $query) or logger("MySQL ERROR 2:" . $query . " MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+        $this->countQuerys++;
+        array_push($this->sqlRequest, $query);
+        if (!$this->result === false) {
+            $r = mysqli_fetch_row($this->result);
+            return intval($r[0]);
+        }
+        return 0;
+    }
 
-	public function deleteFieldInArray($fieldArray,$fieldName) {
-		$arrayIdx = array_search($fieldName, array_column($fieldArray,"field"));
-		if (!$arrayIdx===false) {
-			unset($fieldArray[$arrayIdx]);
-		}
-		return $fieldArray;
-	}
-	
-	
-	public function setFieldInArrayToNull($fieldArray,$fieldName) {
-		$arrayIdx = array_search($fieldName, array_column($fieldArray,"field"));
-		if (!$arrayIdx===false) {
-			unset($fieldArray[$arrayIdx]["value"]);
-		} 
-		return $fieldArray;
-	}
-	
-	public function resetCounter()
-	{
-		$this->countChanges=0;
-		$this->countQuerys=0;
-	}
+    /* Execute a query that return a single row*/
+    public function querySignleRow($query)
+    {
+        $this->result = mysqli_query($this->connection, $query) or logger("MySQL ERROR 3:" . $query . " MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+        $this->counter = null;
+        $this->countQuerys++;
+        array_push($this->sqlRequest, $query);
+        if ($this->count() == 1)
+            return $this->fetchRow();
+        else
+            return array();
+    }
 
-	public function getCounter()
-	{
-		$ret = new stdClass();
-		$ret->changes = $this->countChanges;
-		$ret->querys = $this->countQuerys;
-		$ret->sql = $this->sqlRequest;
-		return $ret;
-	}
-	
+
+    /* fech a query result row */
+    public function fetchRow()
+    {
+        if ($this->result !== false)
+            return mysqli_fetch_assoc($this->result);
+        else
+            return null;
+    }
+
+    /* get result list as an array */
+    public function getRowList()
+    {
+        $ret = array();
+        while ($row = mysqli_fetch_assoc($this->result)) {
+            array_push($ret, $row);
+        }
+        return $ret;
+    }
+
+    /* howmanny rows are in the query result */
+    public function count()
+    {
+        try {
+            if ($this->counter == NULL && isset($this->result) && gettype($this->result) == "object") {
+                $this->counter = mysqli_num_rows($this->result);
+            }
+            return $this->counter;
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+
+    /* select count */
+    public function tableCount($table, $where = "")
+    {
+        $this->countQuerys++;
+        if ($where == "")
+            $sql = "select count(1) from " . $table;
+        else
+            $sql = "select count(1) from " . $table . " where " . $where;
+        return $this->queryInt($sql);
+    }
+
+    /* the sum of one field in a table */
+    public function tableSumField($table, $field, $where = "")
+    {
+        $this->countQuerys++;
+        if ($where == "")
+            $sql = "select sum(" . $field . ") from " . $table;
+        else
+            $sql = "select sum(" . $field . ") from " . $table . " where " . $where;
+        return $this->queryInt($sql);
+    }
+
+    /* the sum of a field multiplicated with an other field */
+    public function tableSumMultField($table, $field, $multField, $where = "")
+    {
+        $this->countQuerys++;
+        if ($where == "")
+            $sql = "select sum(" . $field . " * " . $multField . " ) from " . $table;
+        else
+            $sql = "select sum(" . $field . " * " . $multField . " )  from " . $table . " where " . $where;
+        $this->result = mysqli_query($this->connection, $sql) or logger("MySQL ERROR  MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+        return $this->queryInt($sql);
+    }
+
+
+    /** Insert and update need a $data array for the values
+     * $data[0]["field"]='Fieldname';
+     * $data[0]["type"]='s';            //Types s=string, d=datatime, n=number
+     * $data[0]["value"]='value';
+     * */
+    public function insert($table, $data)
+    {
+        $this->countChanges++;
+        $sql = "insert into `" . $table . "` (";
+        foreach ($data as $i => $d) {
+            if ($i != 0) $sql .= ",";
+            $sql .= "`" . $d["field"] . "`";
+        }
+        $sql .= ") values (";
+        foreach ($data as $i => $d) {
+            if ($i != 0) $sql .= ",";
+
+            if (isset($d["value"])) {
+                if ($d["type"] != "n") $sql .= "'";
+                if ($d["type"] != "n")
+                    $sql .= $this->replaceSpecialChars($d["value"]);
+                else {
+                    if ($data[$i]["value"] !== "")
+                        $sql .= $d["value"];
+                    else
+                        $sql .= 'null';
+                }
+                if ($d["type"] != "n") $sql .= "'";
+            } else {
+                $sql .= "null";
+            }
+        }
+        $sql .= ")";
+        if ($this->result = mysqli_query($this->connection, $sql)) {
+            return true;
+        } else {
+            logger("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+            return false;
+        }
+    }
+
+    /* Error message from last request */
+    public function getErrorMessage()
+    {
+        mysqli_error($this->connection);
+    }
+
+    /* last autogenerated id */
+    public function getInsertedId()
+    {
+        return mysqli_insert_id($this->connection);
+    }
+
+    /**
+     * Update data in a table
+     * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
+     * @param string $table
+     * @param array $data
+     * @param string $whereField
+     * @param string $whereValue
+     * @return boolean
+     */
+    public function update($table, $data, $whereField = "", $whereValue = "")
+    {
+        if ($whereField != "") {
+            $sql = $whereField . "='" . $whereValue . "'";
+        } else {
+            $sql = "1==2";
+        }
+        return $this->updateWhere($table, $data, $sql);
+    }
+
+    /**
+     * Update data in a table
+     * Example for data [["field"=>"facebookid","type"=>"s","value"=>$facebookId]]
+     * @param string $table
+     * @param array $data
+     * @param string $where where condition example: firstName='Levi'
+     * @return boolean
+     */
+    public function updateWhere($table, $data, $where = null)
+    {
+        $sql = "update " . $table . " set ";
+        $notFirstElement = false;
+        foreach ($data as $d) {
+            if ($notFirstElement) $sql .= ",";
+            $notFirstElement = true;
+            $sql .= "`" . $d["field"] . "`=";
+            if (isset($d["value"])) {
+                if ($d["type"] != "n") $sql .= "'";
+                if ($d["type"] != "n")
+                    $sql .= $this->replaceSpecialChars($d["value"]);
+                else {
+                    if ($d["value"] != "")
+                        $sql .= $d["value"];
+                    else
+                        $sql .= 'null';
+                }
+                if ($d["type"] != "n") $sql .= "'";
+            } else {
+                $sql .= "null";
+            }
+        }
+        if ($where != null) {
+            $sql .= " where " . $where . " ";
+        } else {
+            $sql .= " where 1==2 ";
+        }
+        $this->countChanges++;
+        array_push($this->sqlRequest, $sql);
+        if (mysqli_query($this->connection, $sql) === TRUE) {
+            return TRUE;
+        } else {
+            logger("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+            return FALSE;
+        }
+    }
+
+    /**
+     *  delete from a table with where field and value
+     * @return boolean
+     **/
+    public function delete($table, $whereField, $whereValue)
+    {
+        $this->countChanges++;
+        $where = $whereField . "=" . $whereValue;
+        return $this->deleteWhere($table, $where);
+    }
+
+    /**
+     *  delete from a table with where clausel
+     * @return boolean
+     **/
+    public function deleteWhere($table, $where)
+    {
+        $this->countChanges++;
+        $sql = "delete from " . $table . " where " . $where;
+        if ($this->result = mysqli_query($this->connection, $sql)) {
+            return true;
+        } else {
+            logger("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), loggerLevel::error);
+            return false;
+        }
+    }
+
+    public function getNextAutoIncrement($table)
+    {
+        $sql = "SELECT Auto_increment FROM information_schema.tables WHERE table_name='" . $table . "'";
+        return $this->queryInt($sql);
+    }
+
+    /**
+     * @param $res
+     * @param $row
+     * @param int $field
+     * @return mixed
+     */
+    private function mysqli_result($res, $row, $field = 0)
+    {
+        $res->data_seek($row);
+        $datarow = $res->fetch_array();
+        return $datarow[$field];
+    }
+
+    public function replaceSpecialChars($s)
+    {
+        return str_replace("'", "\'", $s);
+    }
+
+    public function rereplaceSpecialChars($s)
+    {
+        return str_replace("\'", "'", $s);
+    }
+
+    public function createFieldArray($type, $name, $value)
+    {
+        $ret = array();
+        $ret["field"] = $name;
+        $ret["type"] = $type;
+        $ret["value"] = $value;
+        return $ret;
+    }
+
+    public function insertFieldInArray($array, $fieldName, $fieldValue)
+    {
+        $type = null;
+        //Ends with id, year oder start with is => integer
+        if (preg_match('/id\\z/i', $fieldName) || preg_match('/Year\\z/', $fieldName) || preg_match('/\\Ais/', $fieldName)) {
+            $type = "n";
+        } //Ends with date => date
+        else if (preg_match('/Date\\z/i', $fieldName)) {
+            $type = "d";
+        } //its a string
+        else /*if ($fieldValue!=null) */ {
+            $type = "s";
+            $fieldValue = $this->replaceSpecialChars($fieldValue);
+        }
+        if ($type != null) {
+            $ret = array();
+            $ret["field"] = $fieldName;
+            $ret["type"] = $type;
+            $ret["value"] = $fieldValue;
+            array_push($array, $ret);
+        }
+        return $array;
+    }
+
+    public function changeFieldInArray($fieldArray, $fieldName, $fieldValue)
+    {
+        $arrayIdx = array_search($fieldName, array_column($fieldArray, "field"));
+        if (!$arrayIdx === false) {
+            $fieldArray[$arrayIdx]["value"] = $fieldValue;
+            return $fieldArray;
+        } else {
+            return $this->insertFieldInArray($fieldArray, $fieldName, $fieldValue);
+        }
+    }
+
+    public function deleteFieldInArray($fieldArray, $fieldName)
+    {
+        $arrayIdx = array_search($fieldName, array_column($fieldArray, "field"));
+        if (!$arrayIdx === false) {
+            unset($fieldArray[$arrayIdx]);
+        }
+        return $fieldArray;
+    }
+
+
+    public function setFieldInArrayToNull($fieldArray, $fieldName)
+    {
+        $arrayIdx = array_search($fieldName, array_column($fieldArray, "field"));
+        if (!$arrayIdx === false) {
+            unset($fieldArray[$arrayIdx]["value"]);
+        }
+        return $fieldArray;
+    }
+
+    public function resetCounter()
+    {
+        $this->countChanges = 0;
+        $this->countQuerys = 0;
+    }
+
+    public function getCounter()
+    {
+        $ret = new stdClass();
+        $ret->changes = $this->countChanges;
+        $ret->querys = $this->countQuerys;
+        $ret->sql = $this->sqlRequest;
+        return $ret;
+    }
+
 }
 ?>

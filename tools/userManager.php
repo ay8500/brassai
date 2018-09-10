@@ -416,12 +416,15 @@
 	}
 
 //*********************** Loging *************************************************	
-	
-	
-	/**
-	 * Save login information for statistics and sequrity reasons
-	 * parameter $user SaveData,SavePassw,SaveGeo, NewPassword, 
-	 */
+
+/**
+ * Save login information for statistics and sequrity reasons
+ * @param string $action SaveData,SavePassw,SaveGeo, NewPassword
+ * @param string $uid
+ * @param string $cuser
+ * @param string $cpassw
+ * @param string $result
+ */
 	function saveLogInInfo($action,$uid,$cuser,$cpassw,$result) {
 		$file=fopen("login.log","a");
 		if ($result) $res="true"; else $res="false";

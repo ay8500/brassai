@@ -35,7 +35,6 @@ exit;
 
 function ppperror() { 
 	header("status: 404"); 
-	$SiteTitle="A kolozsvári Brassai Sámuel líceum: hiba oldal";
 	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
 	setAktSchool(1);unsetAktClass();
 	include("homemenu.php"); 

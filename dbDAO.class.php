@@ -841,11 +841,11 @@ class dbDAO {
 	}
 	
 	/**
-	 * change Album name
-	 * @param unknown $type 'classID' or 'schoolID' or 'personID'
-	 * @param unknown $typeId the ID
-	 * @param unknown $oldAlbumName
-	 * @param unknown $newAlbumName
+	 * change picture album name
+	 * @param string $type 'classID' or 'schoolID' or 'personID'
+	 * @param integer $typeId the ID
+	 * @param string $oldAlbumName
+	 * @param string $newAlbumName
 	 */
 	public function changeAlbumName($type, $typeId, $oldAlbumName,$newAlbumName) {
 		$data=array();
@@ -1215,10 +1215,11 @@ class dbDAO {
 	
 	/**
 	 * get the amount of requests
-	 * @param changeType $type
+	 * @param integer $type
 	 * @param integer $hours
+     * @return integer
 	 */
-	public function getCountOfRequest($type,$hours=0) {
+	public function getCountOfRequest( $type,$hours=0) {
 		$sql="SELECT count(1) FROM request";
 		$sql .=" where typeID=".$type;
 		$sql .=" and ip='".$_SERVER["REMOTE_ADDR"]."'";
@@ -1256,7 +1257,7 @@ class dbDAO {
 
 	/**
 	 * Save request
-	 * @param  changeType $type
+	 * @param  integer  $type changeType
 	 */
 	public function saveRequest($type) {
 		if (!userIsLoggedOn()) {

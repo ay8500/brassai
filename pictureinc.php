@@ -179,7 +179,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 				}
 				else {
 					Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.","warning");
-					saveLogInInfo("PictureUpload",$uid,$diak["user"],"to big",false);
+					saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"to big",false);
 				}
 			}
 			else {

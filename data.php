@@ -43,7 +43,6 @@ if ($schoolid=getParam("schoolid", "")!="") {
  * The folder of the aktual persons class
  */
 function getAktClassFolder() {
-	global $db;
 	$class=getAktClass();
 	if ($class!=null)
 		return $class["name"].$class["graduationYear"];
@@ -84,7 +83,6 @@ function getClassName($class,$short=false) {
  * The name of the aktual persons school
  */
 function getAktSchoolName() {
-	global $db;
 	$school=getAktSchool();
 	if ($school!=null) {
 		if ($school["id"]==0)
