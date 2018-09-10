@@ -99,7 +99,7 @@ if (getParam("action","")=="changeOrder" && (userIsAdmin() || userIsSuperuser() 
 
 //change picture albumname
 if (isActionParam("changePictureAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
-	if ($db->changePictureAlbumName(getIntParam("id", -1), getParam("album", ""))) {
+	if ($db->changePictureAlbumName(getIntParam("pictureid", -1), getParam("album", ""))) {
 		Appl::setMessage("Kép sikeresen áthelyezve","success");
 	} else {
 		Appl::setMessage("Kép éthelyezése sikertelen","warning");
@@ -358,7 +358,7 @@ if (getParam("album")!=null) {
 							<?php }?>
 							<?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser()) { ?>
 								<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
-									<input type="hidden" name="id" value="<?php echo $pict["id"]?>" />
+									<input type="hidden" name="pictureid" value="<?php echo $pict["id"]?>" />
 									<?php if (getParam("tabOpen")!=null) {?>
 										<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
 									<?php } ?>

@@ -11,7 +11,6 @@ if ($userId>=0) {
 }
 unsetAktClass();
 
-$SiteTitle="A kolozsvári Brassai Sámuel véndiákok bejelentkezési oldala";
 Appl::$subTitle = 'Újdonságok';
 include("homemenu.php");
 include_once 'editDiakCard.php';
@@ -24,7 +23,7 @@ include_once 'editDiakCard.php';
 		</div>
 		<div class="panel-body">
 		<?php
-		$bests=$db->getPersonChangeBest(userIsAdmin()?100:30);
+		$bests=$db->getPersonChangeBest(userIsAdmin()?24:12);
 		foreach ($bests as $uid=>$count) {
 			if ($count>=1) {
 				$person=$db->getPersonByID($uid);
