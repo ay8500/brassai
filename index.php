@@ -4,6 +4,8 @@ include_once 'tools/appl.class.php';
 include_once 'config.php';
 include_once 'data.php';
 
+use maierlabs\lpfw\Appl as Appl;
+
 Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
 
@@ -34,7 +36,7 @@ include("homemenu.php");
 			<div class="inlineBox">Véndiákok névsorának bővítése és ápolása.</div>
 		</div>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="hometable.php?classid=0"><img img class="indeximg" src="images/teacher.png" /></a>
+			<a class="inlineBox" href="hometable.php?classid=10"><img img class="indeximg" src="images/teacher.png" /></a>
 			<div class="inlineBox">Tanáraink névsorának bővítése és kiegészítése.</div>
 		</div>
 		<div class="col-sm-4">
@@ -54,7 +56,7 @@ include("homemenu.php");
 			<div class="inlineBox">Térképen megjelenített szétszóródása az osztálytársaknak.</div> 
 		</div>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="vote.php?classid=64"><img img class="indeximg" src="images/vote.png" /></a>
+			<a class="inlineBox" href="vote.php?classid=74"><img img class="indeximg" src="images/vote.png" /></a>
 			<div class="inlineBox">Találkozók szervezésére alkalmas szavazati lista.</div> 
 		</div>
 		<div class="col-sm-4">
@@ -62,16 +64,16 @@ include("homemenu.php");
 			<div class="inlineBox">Osztályfelelősők körlevelet (E-mailt) küldhetnek volt osztálytársuknak.</div> 
 		</div>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="zenetoplista.php?classid=-1"><img img class="indeximg" src="images/record-player.png" /></a>
+			<a class="inlineBox" href="zenetoplista.php?classid=all"><img img class="indeximg" src="images/record-player.png" /></a>
 			<div class="inlineBox">Véndiákok toplistája, milyen zenére mullatnak az egykori diákok.</div> 
 		</div>
 	</div>
 	<div class="row">&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. május 05.</b>-én.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. szeptember 12.</b>-én.
 	</div>
 </div>
 
-<?php  include ("homefooter.php");?>
+<?php include ("homefooter.php");?>
 

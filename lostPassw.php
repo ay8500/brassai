@@ -4,6 +4,8 @@ include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
 include_once("sendMail.php");
 
+use \maierlabs\lpfw\Appl as Appl;
+
 $mail='';$myname="";$resultText='';$rights="";
 
 //change the password

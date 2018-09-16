@@ -1,8 +1,8 @@
 <?php 
 include_once('tools/userManager.php');
 include_once 'tools/appl.class.php';
-Appl::$subTitle="Adatmódosítások";
-Appl::addCssStyle('
+\maierlabs\lpfw\Appl::$subTitle="Adatmódosítások";
+\maierlabs\lpfw\Appl::addCssStyle('
 	.history {margin:10px;}
 	.history tr td {vertical-align: top;padding:5px;}
 	.history tr  {border-spacing: 2px};

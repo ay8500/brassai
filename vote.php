@@ -2,6 +2,8 @@
 include_once("data.php");
 include_once 'tools/appl.class.php';
 
+use maierlabs\lpfw\Appl as Appl;
+
 $SiteTitle="Brassai Sámuel liceum a következő érettségi találkozónk"; 
 $SiteDescription="A következő érettségi találkozónk szavazati listája";
 
@@ -14,13 +16,13 @@ Appl::setSiteSubTitle('A következő érettségi találkozónk');
 include("homemenu.php"); 
 
 //$class=$db->getClassById(getRealId(getAktClass()));
-$classMeetingCount=date("Y")-intval($class["graduationYear"]);
+$classMeetingCount=date("Y")-intval(Appl::getMemeber("aktClass")["graduationYear"]);
 
 if (($classMeetingCount % 5)!=0) $classMeetingCount += 5 - ($classMeetingCount % 5);
 if ($classMeetingCount<10) $classMeetingCount=10;
-$classMeetingYear = intval($class["graduationYear"])+$classMeetingCount;
+$classMeetingYear = intval(Appl::getMemeber("aktClass")["graduationYear"])+$classMeetingCount;
 
-$data=$db->getPersonListByClassId(getRealId(getAktClass()));
+$data=$db->getPersonListByClassId(Appl::getMemeberId("aktClass"));
 
 
 //Save vote data 

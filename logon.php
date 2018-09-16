@@ -48,11 +48,11 @@
 	}
 	
 	if (isActionParam("logoffok")) {
-		Appl::setMessage("Kijelentkezés megtörtént, köszünjük a látogatást, tövábbi szép időtöltést kivánunk.", "success");
+        \maierlabs\lpfw\Appl::setMessage("Kijelentkezés megtörtént, köszünjük a látogatást, tövábbi szép időtöltést kivánunk.", "success");
 	}
 	
 	if (isActionParam("loginok")) {
-		Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
+        \maierlabs\lpfw\Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
 	}
 	
 	//Facebook login

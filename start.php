@@ -11,7 +11,7 @@ if ($userId>=0) {
 }
 unsetAktClass();
 
-Appl::$subTitle = 'Újdonságok';
+\maierlabs\lpfw\Appl::$subTitle = 'Újdonságok';
 include("homemenu.php");
 include_once 'editDiakCard.php';
 ?>

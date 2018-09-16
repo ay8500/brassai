@@ -14,11 +14,11 @@ $person=$db->getPersonByID(getParam("id"));
 if (null!=$person) {
 	if (getParam("action")!=null) {
 	
-		if (!userIsLoggedOn() && getParam('code')!=$_SESSION['SECURITY_CODE']) {
+		if (!userIsLoggedOn() && isset($_SESSION['SECURITY_CODE']) && getParam('code')!=$_SESSION['SECURITY_CODE']) {
 			Appl::setMessage("Biztonságí kód nem helyes. Probáld még egyszer!","warning");
 		} 
 
-		if (userIsLoggedOn() || getParam('code')==$_SESSION['SECURITY_CODE']) {
+		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')==$_SESSION['SECURITY_CODE'])) {
 			Appl::setMessage("Személyes adatok védelme kérvényezve. Hamarosan visszajelzük mailben vagy telefonon.","info");
 			include_once 'sendMail.php';
 			$html="";

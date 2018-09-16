@@ -122,13 +122,13 @@ function sendHtmlMail($recipient,$text,$subject="") {
 	$headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n"; 
 	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
-	if (strpos($_SERVER["REMOTE_ADDR"],"::")===false) {
+	if (!isLocalhost()) {
 		mail("brassai@blue-l.de", $subject, $message, $headers);
 		if (isset($recipient)) {
 			return mail($recipient, $subject, $message, $headers);
 		} 
 	} else {
-		Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
+        \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
 	}
 	return false;
 }

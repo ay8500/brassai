@@ -1,10 +1,13 @@
 <?php
-/**********************************************
- * Levi PHP Tools for easy parameter reading  *
- **********************************************/
+/*
+ * Maierlabs PHP Tools for easy parameter reading  *
+ */
 
 /**
- * Safety get paramateter read 
+ * Safety get paramateter read
+ * @param string $name
+ * @param string $def
+ * @return string
  */
 function getGetParam($name,$def=null) {
 	if (isset($_GET[$name]))
@@ -14,7 +17,10 @@ function getGetParam($name,$def=null) {
 }
 
 /**
- * Safety post paramateter read 
+ * Safety post paramateter read
+ * @param string $name
+ * @param string $def
+ * @return string
  */
 function getPostParam($name,$def=null) {
 	return html_entity_decode(htmlentities(isset($_POST[$name]) ? $_POST[$name] : $def,ENT_QUOTES),ENT_NOQUOTES);
@@ -23,13 +29,18 @@ function getPostParam($name,$def=null) {
 
 /**
  * Check the value of parameter with the name "action"
+ * @param string $action
+ * @return string
  **/
 function isActionParam($action) {
 	return getParam("action")===$action;
 }
 
 /**
- * Safety paramateter read default value can be specified othewise is NULL 
+ * Safety paramateter read default value can be specified othewise is NULL
+ * @param string $name
+ * @param string $def
+ * @return string
  */
 function getParam($name,$def=null) {
 	if (isset($_POST[$name]))
@@ -39,7 +50,10 @@ function getParam($name,$def=null) {
 }
 
 /**
- * Read an integer paramateter.Default value can be specified othewise is 0 
+ * Read an integer paramateter.Default value can be specified othewise is 0
+ * @param string $name
+ * @param int $def
+ * @return int
  */
 function getIntParam($name,$def=0) {
 	$ret = getParam($name);
@@ -51,22 +65,26 @@ function getIntParam($name,$def=0) {
 
 /**
  * Is the server the localhost?
- * @return true if localhost
+ * @return boolean true if localhost
  */
 function isLocalhost() {
-	$whitelist = array('127.0.0.1','::1');
+	$whitelist = array('127.0.0.1','::1','192.168.201.40');
 	return in_array($_SERVER['REMOTE_ADDR'], $whitelist);
 }
 
 /**
  * Returns the readable name of a enum constant value
- * @param unknown $className
- * @param unknown $value
+ * @param string $className
+ * @param string $value
+ * @return string
  */
 function getConstantName($className,$value)
 {
-	$class = new ReflectionClass($className);
+	try{
+		$class = new ReflectionClass($className);
+	} catch (Exception $e) {
+		$class = new stdClass();
+	}
 	$constants = array_flip($class->getConstants());
 	return $constants[$value];
 }
-?>

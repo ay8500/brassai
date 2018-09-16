@@ -7,11 +7,12 @@ include_once("config.php");
 include_once("data.php");
 include_once 'editDiakCard.php';
 
+use \maierlabs\lpfw\Appl as Appl;
 // Title of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
 $class = handleClassSchoolChange();
 
-if (istAktClassStaf()) {
+if (isAktClassStaf()) {
 	Appl::$subTitle=$guests?"Barátaink":"Tanáraink";
 	$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 } else {
@@ -53,7 +54,7 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 		<form action="editDiak.php">
 			<?php if ($guests) {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newguest"><span class="glyphicon glyphicon-user"></span> Névsor bővítése jó baráttal</button>
-			<?php } elseif (!istAktClassStaf()) {?>
+			<?php } elseif (!isAktClassStaf()) {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newperson"><span class="glyphicon glyphicon-user"></span> Névsor bővítése új véndiákkal</button> 
 			<?php } else  {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newteacher"><span class="glyphicon glyphicon-user"></span> Névsor bővítése új tanárral</button>

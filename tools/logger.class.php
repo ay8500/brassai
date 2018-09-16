@@ -1,134 +1,141 @@
 <?php
-if(!isset($_SESSION)) session_start();
- 
-class loggerLevel
+
+namespace maierlabs\lpfw;
+
+include_once "loggerType.class.php";
+include_once  "loggerLevel.class.php";
+
+
+class Logger
 {
-    const info = "info";
-    const debug = "debug";
-    const error = "error";
+
+    //LoggerLevel aus der Sessiom
+    public static function setLoggerLevel($loggerLevel)
+    {
+        $_SESSION['loggerLevel'] = $loggerLevel;
+    }
+
+    //LoggerType aus der Session
+    public static function setLoggerType($loggerType)
+    {
+        $_SESSION['loggerType'] = $loggerType;
+    }
+
+    //Check settings
+    private static  function checkLoggerSettings() {
+        if(!isset($_SESSION)) session_start();
+        if (!isset($_SESSION['loggerLevel'])) self::setLoggerLevel(LoggerLevel::info);
+        if (!isset($_SESSION['loggerType']))  self::setLoggerType(LoggerType::file);
+    }
+
+    /**
+     * log text
+     * @param string $text
+     * @param string $level
+     */
+    public static function _($text, $level = LoggerLevel::info)
+    {
+        self::checkLoggerSettings();
+        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
+            if ($_SESSION['loggerType'] == LoggerType::html) {
+                echo('<span style="color:black;background-color:white;">' . $text . "</span><br/>");
+            }
+            if ($_SESSION['loggerType'] == LoggerType::file) {
+                Logger::logToFile($text, $level);
+            }
+        }
+    }
+
+    //Text Loggen wenn condition falsch, dann als Fehler
+    //Condition wird unverändert zurück gegeben
+    public static function loggerConditioned($condition, $text, $level = LoggerLevel::debug)
+    {
+        self::checkLoggerSettings();
+        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
+            if ($_SESSION['loggerType'] == LoggerType::html) {
+                echo('<span style="color:black;background-color:white;">' . $text . "</span><br/>");
+            }
+            if ($_SESSION['loggerType'] == LoggerType::file) {
+                if ($condition)
+                    Logger::logToFile($text, $level);
+                else
+                    Logger::logToFile($text, LoggerLevel::error);
+            }
+        }
+        return $condition;
+    }
+
+    //Array loggen
+    public static function loggerArray($arr, $level = LoggerLevel::info)
+    {
+        self::checkLoggerSettings();
+        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
+            if ($_SESSION['loggerType'] == LoggerType::html) {
+                echo("<table>");
+                foreach ($arr as $key => $value) {
+                    echo("<tr>");
+                    echo("<td>" . $key . "</td><td>" . $value . "</td>");
+                    echo("</tr>");
+                }
+                echo("</table>");
+            }
+            if ($_SESSION['loggerType'] == LoggerType::file) {
+                Logger::logToFile("Array: " . var_export($arr, true), $level);
+            }
+        }
+    }
+
+    //Tabelle logen
+    public static function loggerTable($table, $level = LoggerLevel::info)
+    {
+        self::checkLoggerSettings();
+        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
+            if ($_SESSION['loggerType'] == LoggerType::html) {
+                if (count($table) > 0) {
+                    echo("<table>");
+                    echo("<tr>");
+                    foreach ($table[0] as $key => $value) {
+                        echo("<td>" . $key . "</td>");
+                    }
+                    echo("</tr>");
+                    foreach ($table as $arr) {
+                        echo("<tr>");
+                        foreach ($arr as $key => $value) {
+                            echo("<td>" . $value . "</td>");
+                        }
+                        echo("</tr>");
+                    }
+                    echo("</table>");
+                }
+            }
+            if ($_SESSION['loggerType'] == LoggerType::file) {
+                if (count($table) > 0) {
+                    foreach ($table as $qkey => $arr) {
+                        $line = "Line:" . $qkey . ";";
+                        foreach ($arr as $key => $value) {
+                            $line .= $key . ":" . $value . ",";
+                        }
+                        Logger::logToFile($line, $level);
+                    }
+                }
+            }
+        }
+    }
+
+    public static function logToFile($logText, $level)
+    {
+        $file = './log';
+        $text = date('Y-m-d H:i:s') . "\t";
+        $text .= $level . "\t";
+        $text .= $_SERVER["REMOTE_ADDR"] . "\t";
+        $text .= $_SERVER["SCRIPT_NAME"] . "\t";
+        $text .= $_SERVER["REQUEST_URI"] . "\t";
+        if (isset($_SESSION['USER']))
+            $text .= $_SESSION['USER'] . "\t";
+        $text .= $logText . "\t";
+        $text .= "\r\n";
+        file_put_contents($file, $text, FILE_APPEND | LOCK_UN);
+    }
 }
 
-class loggerType
-{
-	const none="";
-	const html="html";
-	const file="file";
-	const db="db";
-}
 
-//Default loggerLevel setzen
-if (!isset($_SESSION['loggerLevel']))
-    $_SESSION['loggerLevel']=loggerLevel::debug.loggerLevel::info.loggerLevel::error;
-
-//Default loggerType setzen
-if (!isset($_SESSION['loggerType']))
-    $_SESSION['loggerType']=loggerType::html;
-
-//LoggerLevel aus der Sessiom
-function setLoggerLevel($loggerLevel) {
-    $_SESSION['loggerLevel']=$loggerLevel;
-}
-
-//LoggerType aus der Session
-function setLoggerType($loggerType) {
-    $_SESSION['loggerType']=$loggerType;
-}
-
-//Text Loggen
-function logger($text, $level=loggerLevel::info) {
-	if (strrpos ($_SESSION['loggerLevel'],$level)>-1) {
-		if ($_SESSION['loggerType']==loggerType::html) {
-			echo('<span style="color:black;backgroundcolor:white;">'.$text."</span><br/>");
-		}
-		if ($_SESSION['loggerType']==loggerType::file) {
-			logToFile($text,$level);
-		}
-	}
-}
-
-//Text Loggen wenn condition falsch, dann als Fehler
-//Condition wird unver�ndert zur�ck gegeben
-function loggerConditioned($condition, $text, $level=loggerLevel::debug) {
-	if (strrpos ($_SESSION['loggerLevel'],$level)>-1) {
-		if ($_SESSION['loggerType']==loggerType::html) {
-			echo('<span style="color:black;backgroundcolor:white;">'.$text."</span><br/>");
-		}
-		if ($_SESSION['loggerType']==loggerType::file) {
-			if ($condition)
-				logToFile($text,$level);
-			else
-				logToFile($text,loggerLevel::error);
-		}
-	}
-	return $condition;
-}
-
-//Array loggen
-function loggerArray($arr, $level=loggerLevel::info) {
-	if (strrpos ($_SESSION['loggerLevel'],$level)>-1) {
-		if ($_SESSION['loggerType']==loggerType::html) {
-		   echo("<table>");
-		   foreach($arr as $key=>$value) {
-			  echo("<tr>");
-			  echo("<td>".$key."</td><td>".$value."</td>");
-			  echo("</tr>");
-		   }
-		   echo("</table>");
-		 }
-		if ($_SESSION['loggerType']==loggerType::file) {
-			logToFile("Array: ".var_export($arr, true),$level);
-		}
-	}
-}
-
-//Tabelle logen
-function loggerTable($table, $level=loggerLevel::info) {
-	if (strrpos ($_SESSION['loggerLevel'],$level)>-1) {
-		if ($_SESSION['loggerType']==loggerType::html) {
-			if (count($table)>0) {
-				echo("<table>");
-				echo("<tr>");
-				foreach($table[0] as $key=>$value) {
-					echo("<td>".$key."</td>");
-				}
-				echo("</tr>");
-				foreach($table as $arr) {
-					echo("<tr>");
-					foreach($arr as $key=>$value) {
-						echo("<td>".$value."</td>");
-					}
-					echo("</tr>");
-				}
-				echo("</table>");
-			}
-		}
-		if ($_SESSION['loggerType']==loggerType::file) {
-			if (count($table)>0) {
-				foreach($table as $qkey=>$arr) {
-					$line="Line:".$qkey.";";
-					foreach($arr as $key=>$value) {
-						$line .=$key.":".$value.",";
-					}
-					logToFile($line,$level);
-				}
-			}
-		}
-	}
-}
-
-function logToFile($logText,$level){
-	$file = './log';
-	$text =date('Y-m-d H:i:s')."\t";
-	$text .=$level."\t";
-	$text .=$_SERVER["REMOTE_ADDR"]."\t";
-	$text .=$_SERVER["SCRIPT_NAME"]."\t";
-	$text .=$_SERVER["REQUEST_URI"]."\t";
-	if (isset($_SESSION['USER']))
-		$text .=$_SESSION['USER']."\t";
-	$text .=$logText."\t";
-	$text .= "\r\n";
-	file_put_contents($file, $text, FILE_APPEND | LOCK_UN);
-}
-
-
-?>

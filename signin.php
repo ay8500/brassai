@@ -1,4 +1,5 @@
-<?php 
+<?php
+include_once 'tools/sessionManager.php';
 include_once("tools/userManager.php");//login logoff
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';

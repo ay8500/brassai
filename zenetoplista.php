@@ -5,12 +5,14 @@ include_once("tools/ltools.php");
 include_once 'tools/appl.class.php';
 include_once 'data.php';
 
+use \maierlabs\lpfw\Appl as Appl;
+
 $SiteTitle="A véndiákok ezt hallgatják szívesen";
 if (getParam("classid")==-1) unsetAktClass();
-if (getAktClassId()==-1) { 
-	Appl::$subTitle='Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.';
+if (getAktClassId()==-1) {
+    Appl::$subTitle='Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.';
 } else {
-	Appl::$subTitle='A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.';
+    Appl::$subTitle='A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.';
 } 
 
 
@@ -372,7 +374,11 @@ function autoComplete (field, select, property, forcematch) {
 		
  function getSongName($song) {
  	$apiPublicKey="AIzaSyDsdHR0UNecnOH6s9OdQZhJkFpOZv02ncM";
- 	$response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $song. '&key=' . $apiPublicKey);
+ 	try {
+        $response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $song . '&key=' . $apiPublicKey);
+    } catch (Exception $e) {
+ 	    $response="";
+    }
  	$json = json_decode($response);
  	if (is_object($json))
  		return $json->title;

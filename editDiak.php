@@ -5,6 +5,8 @@ include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
 include_once("data.php");
 
+use \maierlabs\lpfw\Appl as Appl;
+
 $tabOpen= getIntParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
@@ -107,7 +109,7 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				$diak["classID"]=getIntParam("classID");
 			}
 			//No dublicate email address is allowed
-			if (checkUserEmailExists($diak["id"],$diak["email"])) {
+			if (isset($diak["email"]) && checkUserEmailExists($diak["id"],$diak["email"])) {
 				Appl::$resultDbOperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
 			} elseif ((isset($diak["classID"]) && $diak["classID"]==="-1") || !isset($diak["classID"])) {
 				Appl::$resultDbOperation='<div class="alert alert-warning">Osztály nincs kiválasztva!</div>';

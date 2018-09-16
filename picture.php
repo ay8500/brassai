@@ -49,11 +49,11 @@ if ($type=="classID") {
 	$link=getPersonLinkAndPicture($person)." képei";
 } if ($type=="schoolID") { 
 	$subtitle="Képek iskolánkról: ".$album;
-} if ($album=="_tablo_") { 
+} if ($album=="_tablo_" || $type=='tablo') {
 	$subtitle="Iskolánk tabló képei.";
 }  
 $SiteTitle=$subtitle;
-Appl::$subTitle= $type=="personID"?$link:$subtitle;
+\maierlabs\lpfw\Appl::$subTitle= $type=="personID"?$link:$subtitle;
 include("homemenu.php");
 ?>
 <div class="container-fluid">

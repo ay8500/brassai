@@ -114,7 +114,7 @@
 	}
 			
 </script>
-<?php Appl::includeJs();?>
+<?php \maierlabs\lpfw\Appl::includeJs();?>
 <script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>
 <noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 

@@ -1,5 +1,5 @@
-<?php 
-Appl::addCssStyle('
+<?php
+\maierlabs\lpfw\Appl::addCssStyle('
 	#activities {
 		background-color: white;margin:10px;padding:10px;
 	}

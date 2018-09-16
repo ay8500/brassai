@@ -77,7 +77,7 @@
 			<?php } ?> 
 		<?php } ?>
 	<?php }  ?>
-	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px; display: anone;"></div>
+	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px;"></div>
 
 
 

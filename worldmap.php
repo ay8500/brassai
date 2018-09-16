@@ -4,14 +4,14 @@ include_once 'tools/appl.class.php';
 
 $SiteTitle = "A diakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
-Appl::$subTitle="Merre szóródtak szét az osztálytársak";
+\maierlabs\lpfw\Appl::$subTitle="Merre szóródtak szét az osztálytársak";
 /*
 Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
 Appl::addJs("js/diakMap.js");
 */
-Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
-Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");
-Appl::addJs("js/diakMapLeaflet.js");
+\maierlabs\lpfw\Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
+\maierlabs\lpfw\Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");
+\maierlabs\lpfw\Appl::addJs("js/diakMapLeaflet.js");
 
 include("homemenu.php");
 ?>

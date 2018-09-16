@@ -15,7 +15,7 @@ if (getParam("action")=="rip") {
 	die();
 }
 
-Appl::$subTitle="Adatbank eszközök";
+\maierlabs\lpfw\Appl::$subTitle="Adatbank eszközök";
 include('homemenu.php');
 
 

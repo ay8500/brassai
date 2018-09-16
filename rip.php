@@ -4,7 +4,7 @@ include_once 'tools/appl.class.php';
 include_once 'data.php';
 $SiteTitle="Brassai Sámuel emlék oldala"; 
 $SiteDescription="Elhunyt tanáraink és diákok";
-Appl::addCssStyle('
+\maierlabs\lpfw\Appl::addCssStyle('
 	.person-candle {margin:5px;}
 	.person-candle>a { color: #ffbb66 }
 ');
@@ -17,7 +17,7 @@ else if (isActionParam("person"))
 else {
 	$personList = $db->getLightedCandleList();
 }
-Appl::addJs('js/candles.js',true);
+\maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 include("homemenu.php"); 
 ?>
 

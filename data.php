@@ -11,7 +11,7 @@ $db = new dbDAO;
 
 /**
  * handle the params that change the class or school
- * @return number|NULL
+ * @return array|NULL of school class
  */
 function handleClassSchoolChange() {
 	global $db;
@@ -23,10 +23,10 @@ function handleClassSchoolChange() {
 		$class=$db->getClassById(getParam("classid"));
 		if ($class==null)
 			$class=$db->getClassByText(getParam("classid"));
-			if ($class!=null) {
-				setAktClass($class["id"]);
-				setAktSchool($class["schoolID"]);
-			}
+		if ($class!=null) {
+			setAktClass($class["id"]);
+			setAktSchool($class["schoolID"]);
+		}
 	} else {
 		$class=getAktClass();
 	}
@@ -56,8 +56,9 @@ function getAktClassFolder() {
  * @return string
  */
 function getAktClassName($short=false) {
+    if (isAktClassStaf())
+    	return "";
 	$class=getAktClass();
-	if (istAktClassStaf()) return "";
 	return getClassName($class,$short);
 }
 
@@ -69,7 +70,7 @@ function getAktClassName($short=false) {
  */
 function getClassName($class,$short=false) {
 	if (null==$class) return "";
-	if ($class["graduationYear"]===0) return "";
+	if (!isset($class["graduationYear"]) || $class["graduationYear"]===0) return "";
 
 	$ret= str_replace(" ", "&nbsp;", $class["text"]);
 	if (!$short) {

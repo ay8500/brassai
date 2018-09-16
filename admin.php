@@ -3,6 +3,8 @@ include_once("data.php");
 include_once("tools/userManager.php");
 include_once 'tools/appl.class.php';
 
+use \maierlabs\lpfw\Appl as Appl;
+
 Appl::addCss('editor/ui/trumbowyg.min.css');
 Appl::addJs('editor/trumbowyg.min.js');
 Appl::addJs('editor/langs/hu.min.js');

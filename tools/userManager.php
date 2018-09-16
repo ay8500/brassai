@@ -107,21 +107,6 @@
 	}
 	
 	/**
-	 * is tha classid for a staf 
-	 * @return boolean
-	 */
-	function isAktClassStaf() {
-		global $db;
-		if (isset($_SESSION['aktClass'])) {
-			$class= $db->getClassById(intval($_SESSION['aktClass']));
-			if (null!=$class)
-				return intval($class["graduationYear"])==0;
-		}
-		return false;
-	}
-	
-	
-	/**
 	 * The aktual school id
 	 * @return number|NULL
 	 */
@@ -134,7 +119,7 @@
 	 * The aktual school staf class id
 	 * @return number|NULL
 	 */
-	function istAktClassStaf() {
+	function isAktClassStaf() {
 		global $db;
 		return $db->getStafClassIdBySchoolId(getAktSchoolId())==getAktClassId();
 	}
@@ -254,7 +239,7 @@
 	 * a user is logged on
 	 */
 	function userIsLoggedOn() {
-		return ( isset($_SESSION['uId']) && $_SESSION['uId']>-1 );	
+		return ( isset($_SESSION['uId']) && intval($_SESSION['uId'])>-1 );
 			
 	}
 	

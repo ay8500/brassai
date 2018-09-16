@@ -2,6 +2,8 @@
 include_once('tools/userManager.php');
 include_once 'tools/appl.class.php';
 
+use \maierlabs\lpfw\Appl as Appl;
+
 if (userIsAdmin()) {
 	if (getParam("action")=="deleteMessageChange") {
   		$ret =$db->deleteMessageEntry($id);$show=true;

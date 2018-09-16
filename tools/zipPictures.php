@@ -8,5 +8,3 @@ echo("Zipping Pictures<br/>");
 
 echo exec('zip -r '.$_SERVER["DOCUMENT_ROOT"].'/images/images.zip  '.$_SERVER["DOCUMENT_ROOT"].'/images/*');
 echo("<br/>Done<br/>");
-
-?>

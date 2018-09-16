@@ -25,8 +25,8 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
 
 $SiteTitle="A kolozsvári Brassai Sámuel líceum statisztikai adatai";
-Appl::setSiteSubTitle("Statisztikai adatok");
-Appl::addCssStyle('
+\maierlabs\lpfw\Appl::setSiteSubTitle("Statisztikai adatok");
+\maierlabs\lpfw\Appl::addCssStyle('
 	.statw {width:150px; text-align:right; display: inline-block;};
 ');
 include('homemenu.php');

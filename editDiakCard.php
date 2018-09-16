@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-Appl::addJsScript("
+\maierlabs\lpfw\Appl::addJsScript("
 	function hiddenData(title) {
 		showModalMessage(title,'Személyes adat védve!<br/>Csak iskola vagy osztálytárs tekintheti meg ezt az informácíót.');
 	}

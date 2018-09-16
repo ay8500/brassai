@@ -1,7 +1,9 @@
 <?php
 include_once 'tools/logger.class.php';
 
-setLoggerType(loggerType::file);
+use maierlabs\lpfw\Logger as Logger;
+
+Logger::setLoggerType(  \maierlabs\lpfw\LoggerType::file);
 
 if (!isset($SiteTitle))
 	$SiteTitle="A kolozsvári Brassai Sámuel líceum véndiakjai";

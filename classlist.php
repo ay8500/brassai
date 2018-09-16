@@ -2,7 +2,7 @@
 include_once 'tools/appl.class.php';
 $SiteTitle="Brassai Sámuel osztályok"; 
 $SiteDescription="A kolozsvári Brassai Sámuel líceum osztályai";
-Appl::addCssStyle('
+\maierlabs\lpfw\Appl::addCssStyle('
 	.classdiv {
         margin: 3px 2px 3px 2px;
     	width: 154px;
@@ -18,7 +18,7 @@ Appl::addCssStyle('
 	.classdiv-b 		{background-color: #e0d0d0;}
 	.classdiv-b:hover	{background-color: #f8e8e8;}
 ');
-Appl::setSiteSubTitle("Osztályok");
+\maierlabs\lpfw\Appl::setSiteSubTitle("Osztályok");
 include("homemenu.php"); 
 $classes = $db->getClassList();
 ?>
@@ -66,10 +66,10 @@ function classList($db,$classes,$eveningClass) {
    		  		<?php if (userIsAdmin()) {?>
    			  		<span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
    		  		<?php } ?>
-   		  		<div style="margin-top: 5px">
+   		  		<div>
    		  		<?php 
    		  		if (isset($stat->teacher->picture)) {
-   		  			echo('<img src="images/'.$stat->teacher->picture.'" class="diak_image_sicon"/>&nbsp;');
+   		  			echo('<img src="images/'.$stat->teacher->picture.'" class="diak_image_nsicon"/>&nbsp;');
    		  		}
    		  		if (isset($stat->teacher->lastname)) {
    		  			echo ($stat->teacher->lastname." ".$stat->teacher->firstname);
