@@ -65,7 +65,7 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 		<?php if ($guests) {?>
 			Vendégek&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } elseif (!isAktClassStaf()) {?>
-			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
+			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(Appl::getMemeber("aktClass")), $guests));?></span>
 		<?php } else  {?>
 			Tanárok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } ?>

@@ -371,7 +371,9 @@ class dbDAO {
 	 * Returns a signle person in consideration of the anonymous changes or NULL if no entry found
 	 */
 	public function getPersonByID($personid,$forceThisID=false) {
-		return $this->getEntryById("person", $personid,$forceThisID);
+	    if (intval($personid)>=0)
+		    return $this->getEntryById("person", $personid,$forceThisID);
+	    return getPersonDummy();
 	}
 	
 	/**
@@ -651,7 +653,7 @@ class dbDAO {
 	 * get the recently updated person list
 	 */
 	public function getRecentChangedPersonList($limit) {
-		$where=" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+		$where=null; //" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 		$ret = $this->getElementList("person",$where,$limit,null,"changeDate desc");
 		//usort($ret, "compareAlphabeticalPicture");
 		return $ret;
@@ -729,26 +731,20 @@ class dbDAO {
 	
 	public function getCountOfPersons($classId,$guests) {
 		if(null!=$classId) {
-			$sql="select 1 from person where ";
-			$sql .=" classID = ".$classId;
+			$sql =" classID = ".$classId;
 			if ($guests)
 				$sql .=" and role like '%guest%'";
 			else
 				$sql .=" and not(role like '%guest%')";
-			$sql .=" and changeForID is null ";
-			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 			if ($this->isClassIdForStaf($classId))
 				$sql .=" and isTeacher = 1";
-			$this->dataBase->query($sql);
-			return $this->dataBase->count();
+			return sizeof($this->getIdList("person",$sql));
 		}
 		return 0;
 	}
 	
 	public function getPersonIdListWithPicture() {
 		$where="picture is not null and picture != ''";
-		$where .=" and (changeUserID is not null or changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-		
 		return $this->getIdList("person",$where);
 	}
 	
@@ -817,8 +813,33 @@ class dbDAO {
 		}
 		return $this->getElementList("picture",$sql,null,null,"orderValue desc");	
 	}
-	
-	/**
+
+    /**
+     * Get list of pictures
+     * @param integer $id if null get all pictures of a type
+     * @param string $type the type of picture personID, classID, schoolID
+     * @return array of pictures
+     */
+    public function getNrOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1,$album=null) {
+        $sql="";
+        if($id!=null)
+            $sql.=$type."=".$id;
+        else
+            $sql.=$type." is not null ";
+        if ($isDeleted<2) {
+            $sql.=" and isDeleted=".$isDeleted;}
+        if ($isVisibleForAll<2) {
+            $sql.=" and isVisibleForAll=".$isVisibleForAll; }
+        if (null!=$album) {
+            $sql.=" and albumName='".$album."'";
+        } else {
+            $sql.=" and (albumName is null or albumName='')";
+        }
+        return $this->getIdList("picture",$sql);
+    }
+
+
+    /**
 	 * Get list of pictures by where
 	 * @param string where 
 	 * @return array of pictures  
@@ -1291,15 +1312,15 @@ class dbDAO {
 	 * Anonymous changes from the user IP will be considered 
 	 */
 	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
+	    $sqlanonymous="changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
 		//normal entrys
-		$sql="select ".$field." from ".$table." where ( (changeForID is null and changeUserID is not null";
+		$sql="select ".$field." from ".$table." where ( (changeForID is null ";
 		//without the anonymous entrys that are changed from this ip
-		$sql.=" and id not in ( select changeForID from ".$table." where  changeForID is not null and changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
-		$sql.=") ";
+		$sql.=" and id not in ( select changeForID from ".$table." where  ".$sqlanonymous." ) ";
 		//anonymous entrys and new entrys from the aktual ip
-		$sql.=" or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
+		$sql.=") or (".$sqlanonymous.")  )";
 		if ($where!=null)
-			$sql.=" and ".$where;
+			$sql.=" and ( ".$where." )";
 		if ($orderby!=null)
 			$sql.=" order by ".$orderby;
 		if ($limit!=null)
@@ -1324,7 +1345,7 @@ class dbDAO {
 	 * Anonymous changes from the user IP will be considered
 	 */
 	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-		//NOT GOOD return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
+		return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
 		//normal entrys
 		$sql="select id from ".$table." where ( (changeForID is null and changeUserID is not null) ";
 		//anonymous new entrys from the aktual ip
@@ -1358,37 +1379,25 @@ class dbDAO {
 		if ($id==null || $id=='') 
 			return null;
 		//First get the foced entry by the id
-		if ($forceThisID==true) {
+
+        if ($forceThisID==true) {
 			$sql="select * from ".$table.' where id='.$id;
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==1) {
+			if ($this->dataBase->query($sql)) {
 				return  $this->dataBase->fetchRow();
 			} else {
 				return null;
 			}
 		}
-		//First get the original entry by the id
-		$sql="select * from ".$table.' where id='.$id." and changeForID is null";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			$entry = $this->dataBase->fetchRow();
-			//Check if a changed version for the ip is available
-			$sql="select * from ".$table." where changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id;
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==1) {
-				return  $this->dataBase->fetchRow();
-			}
-			return $entry;
-		//Try to get the copy
-		} else { 
-			$sql="select * from ".$table.' where id='.$id." and changeForID is not null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-			$this->dataBase->query($sql);
-			if ($this->dataBase->count()==1) {
-				return $this->dataBase->fetchRow();
-			} else {
-				return null;
-			}
+		//First get the entry modified by the aktual ip and then the original entry, the original entry has olways a smaler id then a copy
+		$sql="select * from ".$table.' where id='.$id." or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id.") order by id desc";
+		if ($this->dataBase->query($sql)) {
+			$ret =  $this->dataBase->getRowList();
+			if (sizeof($ret)>1) {
+			    $ret[0]["id"]=$ret[sizeof($ret)-1]["changeForID"];
+            }
+            return $ret[0];
 		}
+		return null;
 	}
 	
 	/**
@@ -1720,7 +1729,7 @@ class dbDAO {
     }
 
 
-        public function getRequestCounter() {
+    public function getRequestCounter() {
 		return $this->dataBase->getCounter();
 	}
 	

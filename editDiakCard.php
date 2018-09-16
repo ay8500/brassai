@@ -8,7 +8,7 @@
 		
 /**
  * Display a person div including person picture class, education,ocupation,address and change date an user 
- * @param object $db
+ * @param dbDAO $db
  * @param array $person
  * @param bool $showClass
  * @param bool $showDate
@@ -122,7 +122,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
 							else
 								echo '&nbsp;<a href="#" onclick="hiddenData(\'Honoldal\');" title="Honoldal"><img src="images/www.png" /></a>';
-						if (sizeof($db->getListOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2))>0)
+						if ($db->getNrOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2)>0)
 							echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")
 							echo '&nbsp;<a href="editDiak.php?tabOpen=2&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
@@ -134,13 +134,13 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 							echo '&nbsp;<a href="editDiak.php?tabOpen=5&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
 						?>
 					</div>
-				<?php  if ($showDate) {
+				<?php  if ($showDate && $d["changeUserID"]>=0) {
 					$changePerson=$db->getPersonByID($d["changeUserID"]);
 				?>
-				<div class="diakCardIcons">
-					Módosította:<a href="editDiak.php?uid=<?php echo $d["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
-					Dátum:<?php echo date("Y.m.d H:i:s",strtotime($d["changeDate"]));?><br/>
-				</div>
+                    <div class="diakCardIcons">
+                        Módosította:<a href="editDiak.php?uid=<?php echo $d["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
+                        Dátum:<?php echo date("Y.m.d H:i:s",strtotime($d["changeDate"]));?><br/>
+                    </div>
 				<?php }?>
 	  		</div>
 		</div>

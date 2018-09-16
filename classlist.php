@@ -69,10 +69,10 @@ function classList($db,$classes,$eveningClass) {
    		  		<div>
    		  		<?php 
    		  		if (isset($stat->teacher->picture)) {
-   		  			echo('<img src="images/'.$stat->teacher->picture.'" class="diak_image_nsicon"/>&nbsp;');
+   		  			echo('<div style="display:inline"><img src="images/'.$stat->teacher->picture.'" class="diak_image_sicon"/></div>');
    		  		}
    		  		if (isset($stat->teacher->lastname)) {
-   		  			echo ($stat->teacher->lastname." ".$stat->teacher->firstname);
+   		  			echo ('<div style="display:inline">'.$stat->teacher->lastname." ".$stat->teacher->firstname.'</div>');
 				}?>
 				</div>
   			</div>

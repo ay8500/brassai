@@ -200,7 +200,7 @@
 }
 
 .diak_image_sicon {	height:20px; }
-.diak_image_nsicon {	height:35px; }
+.diak_image_nsicon {height:35px; }
 
 .diak_image:hover, .diak_image_medium:hover, .diak_image_icon:hover, .diak_image_sicon:hover {
 	filter: grayscale(0%);
