@@ -509,8 +509,9 @@ function getPersonByNormalisedName($personLink,$classId=null) {
 
 /**
  * The real person id
- * @param unknown $person
  * @deprecated use getRealId
+ * @param array $person
+ * @return  int
  */
 function getPersonId($person) {
 	if (isset($person["changeForID"]))
@@ -521,7 +522,8 @@ function getPersonId($person) {
 
 /**
  * The real object id
- * @param object $entry 
+ * @param array $entry
+ * @return int
  */
 function getRealId($entry) {
 	if(null==$entry)

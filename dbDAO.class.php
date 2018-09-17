@@ -27,7 +27,6 @@ class changeType
 class dbDAO {
 	private $dataBase = NULL;
 
-
     /**
      * dbDAO constructor.
      */
@@ -38,7 +37,7 @@ class dbDAO {
 		} else { 
 			$this->dataBase = new MySqlDbAUH('localhost',"db652851844",'root','root');
 		}
-	}
+    }
 
     /**
      * Disconnect from database
@@ -46,6 +45,15 @@ class dbDAO {
     public function disconnect() {
 		$this->dataBase->disconnect();
 	}
+
+	private function getSqlAnonymous($table=null)
+    {
+        if ($table!=null)
+            return $table.".changeForID is not null and ".$table.".changeUserID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+        else
+            return "changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+    }
+
 
 //************************ School *******************************************
 
@@ -425,37 +433,20 @@ class dbDAO {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
-			
 			$sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
 			$sql .=" left join  class on class.id=person.classID";  
 			$sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
-			$sql .=" and person.changeForID is null";
-			$sql .=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
+			$sql .=" and ( person.changeForID is null";
+            $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
+            $sql.=") or (".$this->getSqlAnonymous("person").")";
 			$this->dataBase->query($sql);
+			$name=$this->clearUTF($name);
 			while ($person=$this->dataBase->fetchRow()) {
-				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
-					stristr(html_entity_decode($person["firstname"]), $name)!="" ||
-					(isset($person["birthname"]) && stristr(html_entity_decode($person["birthname"]), $name)!="")) {
-					array_push($ret, $person);
-				}
-			}
-			
-			//Reorganise the list with the self change entrys
-			$sql  ="select person.*, class.graduationYear as scoolYear, class.name as scoolClass from person";
-			$sql .=" join  class on class.id=person.classID ";
-			$sql .=" where (graduationYear != 0 or isTeacher = 1)";
-			$sql .=" and person.changeForID is not null";
-			$sql .=" and person.changeIP ='".$_SERVER["REMOTE_ADDR"]."'";
-			$sql .=" limit 50";
-				
-			$this->dataBase->query($sql);
-			while ($person=$this->dataBase->fetchRow()) {
-				if (stristr(html_entity_decode($person["lastname"]), $name)!="" ||
-					stristr(html_entity_decode($person["firstname"]), $name)!="" ||
-					(isset($person["birthname"]) && stristr(html_entity_decode($person["birthname"]), $name)!="")) {
-					
-					$arrayIdx = array_search($person["changeForID"], array_column($ret,"id"));
-					unset($ret[$arrayIdx]);	
+				if (stristr($this->clearUTF(html_entity_decode($person["lastname"])), $name)!="" ||
+					stristr($this->clearUTF(html_entity_decode($person["firstname"])), $name)!="" ||
+					(isset($person["birthname"]) && stristr($this->clearUTF(html_entity_decode($person["birthname"])), $name)!="")) {
+                    if (isset($person["changeForID"]))
+                        $person["id"]=$person["changeForID"];
 					array_push($ret, $person);
 				}
 			}
@@ -490,7 +481,30 @@ class dbDAO {
 			return $ret;
 		}
 		return array();
-	}	
+	}
+
+
+    /**
+     * If you need to strip as many national characters from UTF-8 as possible and keep the rest of input unchanged
+     * (i.e. convert whatever can be converted to ASCII and leave the rest)
+     * @param string $s
+     * @return string
+     */
+    private function clearUTF($s)
+    {
+        setlocale(LC_ALL, 'en_US.UTF8');
+        $r = '';
+        $s1 = iconv('UTF-8', 'ASCII//TRANSLIT', $s);
+        for ($i = 0; $i < strlen($s1); $i++)
+        {
+            $ch1 = $s1[$i];
+            $ch2 = mb_substr($s, $i, 1);
+
+            if ($ch1!="'" && $ch1!='"')
+                $r .= $ch1=='?'?$ch2:$ch1;
+        }
+        return $r;
+    }
 
 	/**
 	 * get the person list!
@@ -818,7 +832,7 @@ class dbDAO {
      * Get list of pictures
      * @param integer $id if null get all pictures of a type
      * @param string $type the type of picture personID, classID, schoolID
-     * @return array of pictures
+     * @return int
      */
     public function getNrOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1,$album=null) {
         $sql="";
@@ -832,10 +846,8 @@ class dbDAO {
             $sql.=" and isVisibleForAll=".$isVisibleForAll; }
         if (null!=$album) {
             $sql.=" and albumName='".$album."'";
-        } else {
-            $sql.=" and (albumName is null or albumName='')";
         }
-        return $this->getIdList("picture",$sql);
+        return sizeof($this->getIdList("picture",$sql));
     }
 
 
@@ -1309,16 +1321,16 @@ class dbDAO {
 
 	/**
 	 * Get an array of elements, or an empty array if no elements found.
-	 * Anonymous changes from the user IP will be considered 
+	 * Anonymous changes from the user IP will be considered
+     * even if the anonymous copys are returned the ids will be from the original entrys
 	 */
 	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
-	    $sqlanonymous="changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
 		//normal entrys
 		$sql="select ".$field." from ".$table." where ( (changeForID is null ";
 		//without the anonymous entrys that are changed from this ip
-		$sql.=" and id not in ( select changeForID from ".$table." where  ".$sqlanonymous." ) ";
+		$sql.=" and id not in ( select changeForID from ".$table." where  ".$this->getSqlAnonymous()." ) ";
 		//anonymous entrys and new entrys from the aktual ip
-		$sql.=") or (".$sqlanonymous.")  )";
+		$sql.=") or (".$this->getSqlAnonymous().")  )";
 		if ($where!=null)
 			$sql.=" and ( ".$where." )";
 		if ($orderby!=null)
@@ -1330,10 +1342,10 @@ class dbDAO {
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$ret = $this->dataBase->getRowList();
-			/*for ($i=0;$i<sizeof($ret);$i++) {
+			for ($i=0;$i<sizeof($ret);$i++) {
 				if (isset($ret[$i]["changeForID"]))
 					$ret[$i]["id"]=$ret[$i]["changeForID"];
-			}*/
+			}
 			return $ret;
 		} else {
 			return array();
@@ -1346,24 +1358,6 @@ class dbDAO {
 	 */
 	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
 		return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
-		//normal entrys
-		$sql="select id from ".$table." where ( (changeForID is null and changeUserID is not null) ";
-		//anonymous new entrys from the aktual ip
-		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
-		if ($where!=null)
-			$sql.=" and ".$where;
-		if ($orderby!=null)
-			$sql.=" order by ".$orderby;
-		if ($limit!=null)
-			$sql.=" limit ".$limit;
-		if ($offset!=null)
-			$sql.=" offset ".$offset;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			return $this->dataBase->getRowList();
-		} else {
-			return array();
-		}
 	}
 	
 	
@@ -1376,10 +1370,9 @@ class dbDAO {
 	 * @return array the entry of null if not found
 	 */
 	public function getEntryById($table,$id,$forceThisID=false) {
-		if ($id==null || $id=='') 
+		if ($id==null || $id=='')
 			return null;
 		//First get the foced entry by the id
-
         if ($forceThisID==true) {
 			$sql="select * from ".$table.' where id='.$id;
 			if ($this->dataBase->query($sql)) {
@@ -1388,7 +1381,7 @@ class dbDAO {
 				return null;
 			}
 		}
-		//First get the entry modified by the aktual ip and then the original entry, the original entry has olways a smaler id then a copy
+		//First get the entry modified by the aktual ip and then the original entry, the original entry has allways a smaler id then a copy
 		$sql="select * from ".$table.' where id='.$id." or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id.") order by id desc";
 		if ($this->dataBase->query($sql)) {
 			$ret =  $this->dataBase->getRowList();
