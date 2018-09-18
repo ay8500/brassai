@@ -104,7 +104,7 @@ class MySqlDb
 
 
     /**
-     * fech a query result row
+     * fetch a query result row
      * @return array|null
      */
     public function fetchRow()

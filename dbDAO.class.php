@@ -379,7 +379,7 @@ class dbDAO {
 	 * Returns a signle person in consideration of the anonymous changes or NULL if no entry found
 	 */
 	public function getPersonByID($personid,$forceThisID=false) {
-	    if (intval($personid)>=0)
+	    if ($personid!=null && intval($personid)>=0)
 		    return $this->getEntryById("person", $personid,$forceThisID);
 	    return getPersonDummy();
 	}
@@ -1372,7 +1372,7 @@ class dbDAO {
 	public function getEntryById($table,$id,$forceThisID=false) {
 		if ($id==null || $id=='')
 			return null;
-		//First get the foced entry by the id
+		//First get the forced entry by the id
         if ($forceThisID==true) {
 			$sql="select * from ".$table.' where id='.$id;
 			if ($this->dataBase->query($sql)) {
@@ -1387,6 +1387,8 @@ class dbDAO {
 			$ret =  $this->dataBase->getRowList();
 			if (sizeof($ret)>1) {
 			    $ret[0]["id"]=$ret[sizeof($ret)-1]["changeForID"];
+            } else {
+			    return null;
             }
             return $ret[0];
 		}

@@ -56,8 +56,8 @@ class Appl {
 	public static function setSiteDesctiption($description) {
 		self::$description=$description;
 	}
-	
-	/**
+
+  	/**
 	 * add a css file
      * @param string $cssFile
      * @return void

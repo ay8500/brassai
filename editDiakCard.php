@@ -134,7 +134,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 							echo '&nbsp;<a href="editDiak.php?tabOpen=5&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
 						?>
 					</div>
-				<?php  if ($showDate && $d["changeUserID"]>=0) {
+				<?php  if ($showDate) {
 					$changePerson=$db->getPersonByID($d["changeUserID"]);
 				?>
                     <div class="diakCardIcons">

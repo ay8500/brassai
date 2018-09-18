@@ -8,24 +8,19 @@ include_once  "loggerLevel.class.php";
 
 class Logger
 {
+    private static $loggerLevel=LoggerLevel::info;
+    private static $loggerType=LoggerType::file;
 
-    //LoggerLevel aus der Sessiom
+    //LoggerLevel aus der Session
     public static function setLoggerLevel($loggerLevel)
     {
-        $_SESSION['loggerLevel'] = $loggerLevel;
+        self::$loggerLevel = $loggerLevel;
     }
 
     //LoggerType aus der Session
     public static function setLoggerType($loggerType)
     {
-        $_SESSION['loggerType'] = $loggerType;
-    }
-
-    //Check settings
-    private static  function checkLoggerSettings() {
-        if(!isset($_SESSION)) session_start();
-        if (!isset($_SESSION['loggerLevel'])) self::setLoggerLevel(LoggerLevel::info);
-        if (!isset($_SESSION['loggerType']))  self::setLoggerType(LoggerType::file);
+        self::$loggerType = $loggerType;
     }
 
     /**
@@ -35,12 +30,11 @@ class Logger
      */
     public static function _($text, $level = LoggerLevel::info)
     {
-        self::checkLoggerSettings();
-        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
-            if ($_SESSION['loggerType'] == LoggerType::html) {
+        if (strrpos(self::$loggerLevel, $level) > -1) {
+            if (self::$loggerType == LoggerType::html) {
                 echo('<span style="color:black;background-color:white;">' . $text . "</span><br/>");
             }
-            if ($_SESSION['loggerType'] == LoggerType::file) {
+            if (self::$loggerType == LoggerType::file) {
                 Logger::logToFile($text, $level);
             }
         }
@@ -50,7 +44,6 @@ class Logger
     //Condition wird unverändert zurück gegeben
     public static function loggerConditioned($condition, $text, $level = LoggerLevel::debug)
     {
-        self::checkLoggerSettings();
         if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
             if ($_SESSION['loggerType'] == LoggerType::html) {
                 echo('<span style="color:black;background-color:white;">' . $text . "</span><br/>");
@@ -68,7 +61,6 @@ class Logger
     //Array loggen
     public static function loggerArray($arr, $level = LoggerLevel::info)
     {
-        self::checkLoggerSettings();
         if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
             if ($_SESSION['loggerType'] == LoggerType::html) {
                 echo("<table>");
@@ -88,7 +80,6 @@ class Logger
     //Tabelle logen
     public static function loggerTable($table, $level = LoggerLevel::info)
     {
-        self::checkLoggerSettings();
         if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
             if ($_SESSION['loggerType'] == LoggerType::html) {
                 if (count($table) > 0) {
