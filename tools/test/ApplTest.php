@@ -1,16 +1,28 @@
 <?php
 
-include_once "../appl.class.php";
 use maierlabs\lpfw\Appl;
 
 class ApplTest extends PHPUnit_Framework_TestCase
 {
+    public function setup() {
+        $include = array('appl.class.php');
+        $argv=$_SERVER["argv"];
+        $p=pathinfo($argv[sizeof($argv)-1]);
+        foreach ($include as $item) {
+            if (file_exists($p["dirname"].'/'.$item)){
+                include_once $p["dirname"].'/'.$item;
+            } else if (file_exists($p["dirname"].'/brassai/tools/'.$item)){
+                include_once $p["dirname"].'/brassai/tools/'.$item;
+            } else if (file_exists($p["dirname"].'/tools/'.$item)){
+                include_once $p["dirname"].'/tools/'.$item;
+            } else if (file_exists($p["dirname"].'/../'.$item)){
+                include_once $p["dirname"].'/../'.$item;
+            } else {
+                throw (new Exception("Inludefile not found"));
+            }
+        }
+    }
 
-    /**
-     * @covers Appl::setMember
-     * @covers Appl::getMemeber
-     * @covers Appl::getMemberId
-     */
     public function testMember()
     {
         Appl::setMember("test",array("id"=>2, "name"=>"test"));
@@ -34,13 +46,14 @@ class ApplTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testCss() {
-        Appl::addCssStyle(".body { color:white}");
+     public function testCss() {
         ob_start();
+        Appl::addCssStyle(".body { color:white}");
         Appl::includeCss();
         $echo = ob_get_contents();
         ob_end_clean();
-        $this->assertTrue(strpos($echo,"<style>\n.body { color:white}</style>")!==false);
+        $res = strpos($echo,"<style>\n.body { color:white}</style>");
+        $this->assertTrue($res!==false);
     }
 
 }

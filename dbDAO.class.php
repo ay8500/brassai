@@ -25,6 +25,9 @@ class changeType
 }
 
 class dbDAO {
+    /**
+     * @var MySqlDbAUH|null
+     */
 	private $dataBase = NULL;
 
     /**
@@ -218,24 +221,6 @@ class dbDAO {
 	
 	
 	/**
-	 * List of temporary classes
-	 */
-	public function getClassListToBeChecked() {
-		$sql ="select c.*, o.id as changeForIDjoin from class as c ";
-		$sql.="left join class as o on c.changeForID=o.id  ";
-		$sql.="where c.changeUserID is null ";
-		$sql.="order by c.changeDate asc";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$ret= $this->dataBase->getRowList();
-			return $ret;
-		} else
-			return array();
-	}
-	
-	
-	
-	/**
 	 * Use in combination with getQueryRow if you want to make a loop over all personen 
 	 * @return NULL
 	 */
@@ -381,7 +366,7 @@ class dbDAO {
 	public function getPersonByID($personid,$forceThisID=false) {
 	    if ($personid!=null && intval($personid)>=0)
 		    return $this->getEntryById("person", $personid,$forceThisID);
-	    return getPersonDummy();
+	    return null;
 	}
 	
 	/**
@@ -674,33 +659,57 @@ class dbDAO {
 	}
 	
 	/**
-	 * List of temporary persons
+	 * List of temporary changes made by anonymous users
+     * @param string $table
+     * @return array
 	 */
-	public function getPersonListToBeChecked() {
-		$sql ="select c.*, o.id as changeForIDjoin from person as c ";
-		$sql.="left join person as o on c.changeForID=o.id  ";
+	public function getListToBeChecked($table) {
+		$sql ="select c.*, o.id as changeForIDjoin from ".$table." as c ";
+		$sql.="left join ".$table." as o on c.changeForID=o.id  ";
 		$sql.="where c.changeUserID is null ";
 		$sql.="order by c.changeDate asc";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
-			$ret= $this->dataBase->getRowList();
-			return $ret;
+			return $this->dataBase->getRowList();
 		} else 
 			return array();
-	}	
-	
-	/**
+	}
+
+    /**
+     * Count of temporary changes made by anonymous users
+     * @param string $table
+     * @return int
+     */
+    public function getCountToBeChecked($table) {
+        $sql ="select count(1) from ".$table." as c ";
+        $sql.="left join ".$table." as o on c.changeForID=o.id  ";
+        $sql.="where c.changeUserID is null ";
+        $sql.="order by c.changeDate asc";
+        return $this->dataBase->queryInt($sql);
+    }
+
+
+    /**
 	 * Delete person from database and the picture 
 	 * @return boolean
 	 */
-	public function deletePersonEntry( $id, $deletePicture=true) {
+	public function deletePersonEntry( $id ) {
 		$this->createHistoryEntry("person",$id,true);
 		$person=$this->getPersonByID($id,true);
-		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
-		if (isset($person["picture"]) && $deletePicture)
+        if(isset($person["changeForID"]))
+            $pOriginal=$this->getPersonByID($person["changeForID"]);
+        else
+            $pOriginal=null;
+
+        $delete =    (null==$pOriginal && isset($person["picture"]))
+                  || (null!=$pOriginal && isset($pOriginal["picture"]) && isset($person["picture"]) && $pOriginal["picture"]!=$person["picture"])
+                  || (null!=$pOriginal && !isset($pOriginal["picture"]) && isset($person["picture"]) );
+        if ($delete) {
+	    	$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/";
 			$ret1 =unlink($fileFolder.$person["picture"]);
-		else 
+        } else {
 			$ret1=true;
+        }
 		$ret2= $this->dataBase->delete("person", "id", $id);
 		return $ret1 && $ret2;
 	}
@@ -965,29 +974,27 @@ class dbDAO {
 	
 	/**
 	 * Delete picture from database and the picture
+     * the picture will be not deleted if the entry is annonymous entry an the original entry has the same picture
 	 * @return boolean
 	 */
-	public function deletePictureEntry( $id) {
+	public function deletePictureEntry( $id ) {
 		$p=$this->getPictureById($id);
-		$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/";
-		$file=$p["file"];
-		$ret1 =unlink($fileFolder.$file);
+		if(isset($p["changeForID"]))
+            $pOriginal=$this->getPictureById($p["changeForID"]);
+		else
+		    $pOriginal=null;
+
+		$delete = null==$pOriginal || ( null!=$pOriginal && $pOriginal["file"]!=$p["file"]);
+		if ($delete) {
+		    $fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/";
+		    $file=$p["file"];
+		    $ret1 =unlink($fileFolder.$file);
+		} else {
+		    $ret1 = true;
+        }
 		$this->createHistoryEntry("picture",$id,true);
 		$ret2= $this->dataBase->delete("picture", "id", $id);
 		return $ret1 && $ret2;
-	}
-	
-	public function getPictureListToBeChecked() {
-		$sql ="select c.*, o.id as changeForIDjoin from picture as c ";
-		$sql.="left join picture as o on c.changeForID=o.id  ";
-		$sql.="where c.changeUserID is null ";
-		$sql.="order by c.changeDate asc";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$ret= $this->dataBase->getRowList();
-			return $ret;
-		} else
-			return array();
 	}
 	
 	public function searchForPicture($name) {
@@ -1220,19 +1227,6 @@ class dbDAO {
 	}
 	
 	
-	public function getMessageListToBeChecked()
-	{
-		$sql ="select message.*, person.lastname, person.firstname, person.birthname from message";
-		$sql.=" left join person on message.changeUserID=person.id";
-		$sql.=" where message.changeUserID is null or isDeleted=1";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$ret= $this->dataBase->getRowList();
-			return $ret;
-		} else
-			return array();
-	}
-	
 	/**
 	 * Delete message from the db
 	 * @return boolean
@@ -1375,11 +1369,7 @@ class dbDAO {
 		//First get the forced entry by the id
         if ($forceThisID==true) {
 			$sql="select * from ".$table.' where id='.$id;
-			if ($this->dataBase->query($sql)) {
-				return  $this->dataBase->fetchRow();
-			} else {
-				return null;
-			}
+			return  $this->dataBase->querySignleRow($sql);
 		}
 		//First get the entry modified by the aktual ip and then the original entry, the original entry has allways a smaler id then a copy
 		$sql="select * from ".$table.' where id='.$id." or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id.") order by id desc";
@@ -1387,10 +1377,9 @@ class dbDAO {
 			$ret =  $this->dataBase->getRowList();
 			if (sizeof($ret)>1) {
 			    $ret[0]["id"]=$ret[sizeof($ret)-1]["changeForID"];
-            } else {
-			    return null;
             }
-            return $ret[0];
+            if (sizeof($ret)>0)
+                return $ret[0];
 		}
 		return null;
 	}

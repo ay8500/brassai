@@ -15,12 +15,14 @@
 	 * @return integer or -1 if no user logged on
 	 */
 	function getLoggedInUserClassId() {
+	    if (null==getLoggedInUserId())
+	        return -1;
 		global $db;
 		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
 		if ($loggedInUser!=null)
 			return intval($loggedInUser["classID"]);
-		else 
-			return -1;
+
+		return -1;
 	}
 	
 	/**
@@ -28,6 +30,8 @@
 	 * @return string
 	 */
 	function getLoggedInUserName() {
+        if (null==getLoggedInUserId())
+            return "Anonim felhasználó";
 		global $db;
 		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
 		if ($loggedInUser!=null) {
@@ -268,6 +272,8 @@
 	 *User is logged in and have the role of  editor
 	 */
 	function userIsEditor() {
+	    if (null==getLoggedInUserId())
+	        return false;
 		global $db;
 		//User is editor in his own db
 		if (isset($_SESSION['uRole']) && getAktClassId()==getLoggedInUserClassId()) {
@@ -469,8 +475,8 @@
 	
 	/**
 	 * Krypt or encrypt a string
-	 * @param unknown $action
-	 * @param unknown $string
+	 * @param string $action
+	 * @param string $string
 	 * @return string
 	 */
 	function encrypt_decrypt($action, $string) {

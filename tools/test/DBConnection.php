@@ -1,5 +1,4 @@
 <?php
-include_once "../mysql.class.php";
 
 use \maierlabs\lpfw\MySqlDb as MySqlDb;
 /**
@@ -14,6 +13,25 @@ class DBConnection extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
+
+        $include = array('mysql.class.php');
+        $argv=$_SERVER["argv"];
+        $p=pathinfo($argv[sizeof($argv)-1]);
+        foreach ($include as $item) {
+            if (file_exists($p["dirname"].'/'.$item)){
+                include_once $p["dirname"].'/'.$item;
+            } else if (file_exists($p["dirname"].'/brassai/tools/'.$item)){
+                include_once $p["dirname"].'/brassai/tools/'.$item;
+            } else if (file_exists($p["dirname"].'/tools/'.$item)){
+                include_once $p["dirname"].'/tools/'.$item;
+            } else if (file_exists($p["dirname"].'/../'.$item)){
+                include_once $p["dirname"].'/../'.$item;
+            } else {
+                throw (new Exception("Inludefile not found"));
+            }
+        }
+
+
         $this->db = new MySqlDb("localhost","db652851844","root","root");
 
     }

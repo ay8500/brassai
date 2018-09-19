@@ -63,7 +63,7 @@
 		<button onclick="document.location='gdpr.php?id=<?php echo($diak["id"]);?>';" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
 	</div>
 	
-<form method="post" name="edit_form" >	
+<form method="get" name="edit_form" >
 	<?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
 		$optionClasses=$db->getClassList(getAktSchoolId());
 		unset($optionClasses[0]); //The first class is the teachers list

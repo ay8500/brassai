@@ -4,62 +4,57 @@ include_once 'tools/appl.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-if (userIsAdmin()) {
-	if (getParam("action")=="deleteMessageChange") {
-  		$ret =$db->deleteMessageEntry($id);$show=true;
-	} 	
-	if (getParam("action")=="acceptMessageChange") {
-  		$ret =$db->acceptChangeForMessage($id)>=0;$show=true;
-	} 	
-	if (getParam("action")=="resetChange") {
-  		$ret =$db->deleteRequest(getIntParam("type"),getParam("ip"));$show=true;
-	} 	
-	if ($show) {
-		if ($ret===true) {
-			Appl::setMessage('Rendben, a müvelet sikerült','success');
-		} else {
-			Appl::setMessage('Sajnos nem sikerült a müvelet!','danger');
-		}
-	}
-}  	
-
 Appl::$subTitle='Adatok vizsgálása és jóváhagyása';
 include('homemenu.php');
 
-if (userIsAdmin()) {  
-	$id=getIntParam("id");
-	$ret=false;
-	$show=false;
-	
+$id=getIntParam("id");
+$ret=false;
+$show=false;
+
+if (userIsAdmin()) {
+    if (isActionParam("deleteMessageChange")) {
+        $ret =$db->deleteMessageEntry($id);$show=true;
+    }
+    if (isActionParam("acceptMessageChange")) {
+        $ret =$db->acceptChangeForMessage($id)>=0;$show=true;
+    }
+    if (isActionParam("resetChange")) {
+        $ret =$db->deleteRequest(getIntParam("type"),getParam("ip"));$show=true;
+    }
+    if ($show) {
+        if ($ret===true) {
+            Appl::setMessage('Rendben, a müvelet sikerült','success');
+        } else {
+            Appl::setMessage('Sajnos nem sikerült a müvelet!','danger');
+        }
+    }
+
+
 	//initialise tabs
-	$clist=$db->getClassListToBeChecked();
-	$plist=$db->getPersonListToBeChecked();
-	$ilist=$db->getPictureListToBeChecked();
-	$mlist=$db->getMessageListToBeChecked();
-	
-	$tabsCaption=Array(	'Osztályok <span class="badge">'.sizeof($clist).'</span>',
-						'Személyek <span class="badge">'.sizeof($plist).'</span>',
-						'Képek <span class="badge">'.sizeof($ilist).'</span>',
-						'Üzenetek <span class="badge">'.sizeof($mlist).'</span>',
+	$tabsCaption=Array(	'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>',
+						'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>',
+						'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>',
+						'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>',
 						'Hozzáférések');
 	include("tabs.php");
 	if ($tabOpen==0) {
-		generateCheckHtmlTable("Osztályok", "Osztály","Class","text","getClassListToBeChecked",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
+		generateCheckHtmlTable($db,"Osztályok", "Osztály","Class","text",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
 	}
 	if ($tabOpen==1) {
 		$dummyPerson=getPersonDummy();
+        $dummyPerson["id"]="";$dummyPerson["picture"]="";
 		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["isTeacher"]="";
 		$dummyPerson["address"]="";$dummyPerson["zipcode"]="";$dummyPerson["place"]="";
 		$dummyPerson["phone"]="";$dummyPerson["mobil"]="";$dummyPerson["email"]="";
 		$dummyPerson["homepage"]="";$dummyPerson["skype"]="";$dummyPerson["education"]="";
 		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
-		generateCheckHtmlTable("Személyek", "Személy","Person","lastname","getPersonListToBeChecked",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
+		generateCheckHtmlTable($db,"Személyek", "Személy","Person","lastname",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
 	}
 	if ($tabOpen==2) { 
-		generateCheckHtmlTable("Képek", "Kép","Picture","file","getPictureListToBeChecked",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
+		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
 	}
 	if ($tabOpen==3) {
-		$list=$db->getMessageListToBeChecked();
+		$list=$db->getListToBeChecked('message');
 ?>
 	<p align="center">
 	   Üzenetek:<br/>	
@@ -138,48 +133,42 @@ if (userIsAdmin()) {
 <?php }
 else
 	echo '<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>';
-?>
-	
-<?php include 'homefooter.php';?>
-
-<script>
-	function deleteMessageChange(id) {
-	    if (confirm("Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=deleteMessageChange&id="+id;
-	}
-	function acceptMessageChange(id) {
-	    if (confirm("Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=acceptMessageChange&id="+id;
-	}
-	function resetChange(ip,type) {
-	    if (confirm("Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=resetChange&type="+type+"&ip="+ip;
-	}
-
-</script>
 
 
-<?php 
+Appl::addJsScript('
+    function deleteMessageChange(id) {
+        if (confirm("Üzenetet törölsz, biztos vagy?"))
+            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=deleteMessageChange&id="+id;
+    }
+    function acceptMessageChange(id) {
+        if (confirm("Üzenet módosítást jóváhagysz, biztos vagy?"))
+            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=acceptMessageChange&id="+id;
+    }
+    function resetChange(ip,type) {
+        if (confirm("Müvelet erre az IP címre visszaálítsz, biztos vagy?"))
+            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=resetChange&type="+type+"&ip="+ip;
+    }
+');
+
 /**
  * Generate php code for check table
- * @param unknown $title 
- * @param unknown $fieldText
- * @param unknown $fieldDb
- * @param unknown $showField
- * @param unknown $functionList
- * @param unknown $id
- * @param unknown $emptyEntry
- * @param unknown $functionGetByID
- * @param unknown $functionDelete
- * @param unknown $functionSave
+ * @param dbDAO $db DB
+ * @param string $title Title
+ * @param string $fieldText Fieldtext
+ * @param string $fieldDb DB Field
+ * @param boolean $showField
+ * @param int $id
+ * @param array $emptyEntry
+ * @param string $functionGetByID
+ * @param string $functionDelete
+ * @param string $functionSave
  */
-function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionList,$id,$emptyEntry,$functionGetByID,$functionDelete,$functionSave ) {
-	global $db;
+function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$emptyEntry,$functionGetByID,$functionDelete,$functionSave ) {
   	$show=false;
-  	if (getParam("action")=="delete".$fieldDb."Change") {
+  	if (isActionParam("delete".$fieldDb."Change")) {
  		$ret =call_user_func_array(array($db,$functionDelete),array($id,false));$show=true;
   	}
-  	if (getParam("action")=="accept".$fieldDb."Change") {
+  	if (isActionParam("accept".$fieldDb."Change")) {
  		$ret =$db->acceptChangeForEntry(strtolower($fieldDb),$id);$show=true;
   	}
   	if ($show) {
@@ -188,7 +177,8 @@ function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionL
   		else {
   			Appl::$resultDbOperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
   	}
-	$list = call_user_func(array($db,$functionList));
+	$list = $db->getListToBeChecked(strtolower($fieldDb));
+
 ?>
 <p align="center">
 <?php echo($title)?>:<br/>
@@ -213,7 +203,7 @@ function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionL
 	  		}
 	  	?>
 	  	<?php //Parameter read and action handling
-	  	if ((getParam("action")=="show".$fieldDb."Change" || getParam("action")=="accept".$fieldDb."FieldChange") && userIsAdmin()) {
+	  	if ((isActionParam("show".$fieldDb."Change") || isActionParam("accept".$fieldDb."FieldChange")) && userIsAdmin()) {
   			$cp=call_user_func_array(array($db,$functionGetByID),array($id,true));
   			if ($compare = isset($cp["changeForID"])) 
   				$op=call_user_func_array(array($db,$functionGetByID),array($cp["changeForID"],true));
@@ -280,21 +270,23 @@ function generateCheckHtmlTable($title,$fieldText,$fieldDb,$showField,$functionL
 		?>
 	 </table>  
 </p>
-<script>
-	function delete<?php echo $fieldDb?>Change(id) {
-		if (confirm("<?php echo $fieldText?> módosítást akarsz törölni. Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=delete<?php echo $fieldDb?>Change&id="+id;
-	}
-	function edit<?php echo $fieldDb?>Change(id) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=show<?php echo $fieldDb?>Change&id="+id;
-	}
-	function accept<?php echo $fieldDb?>Change(id) {
-	if (confirm("<?php echo $fieldText?> módosítást akarsz jóváhagyni. Biztos vagy?"))
-			document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=accept<?php echo $fieldDb?>Change&id="+id;
-	}
-	function accept<?php echo $fieldDb?>FieldChange(id,field) {
-		document.location="dataCheck.php?tabOpen=<?php echo getParam("tabOpen")?>&action=accept<?php echo $fieldDb?>FieldChange&id="+id+"&field="+field;
-	}
-</script>
-<?php }?>
+<?php
+    Appl::addJsScript('
+        function delete'.$fieldDb.'Change(id) {
+            if (confirm("'.$fieldText.' módosítást akarsz törölni. Biztos vagy?"))
+                document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=delete'.$fieldDb.'Change&id="+id;
+        }
+        function edit'.$fieldDb.'Change(id) {
+            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=show'.$fieldDb.'Change&id="+id;
+        }
+        function accept'.$fieldDb.'Change(id) {
+        if (confirm("'.$fieldText.' módosítást akarsz jóváhagyni. Biztos vagy?"))
+                document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=accept'.$fieldDb.'Change&id="+id;
+        }
+        function accept'.$fieldDb.'FieldChange(id,field) {
+            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=accept'.$fieldDb.'FieldChange&id="+id+"&field="+field;
+        }
+    ');
+}
+include 'homefooter.php';
 
