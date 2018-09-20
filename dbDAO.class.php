@@ -451,7 +451,6 @@ class dbDAO {
 	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false) {
 		if ($classId>=0) {
 			$where ="classID=".$classId;
-			$where.=" and (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
 			if (!$all) {
 				if($guest)
 					$where.=" and role like '%guest%'";
@@ -652,9 +651,7 @@ class dbDAO {
 	 * get the recently updated person list
 	 */
 	public function getRecentChangedPersonList($limit) {
-		$where=null; //" (person.changeUserID is not null or person.changeIP ='".$_SERVER["REMOTE_ADDR"]."')";
-		$ret = $this->getElementList("person",$where,$limit,null,"changeDate desc");
-		//usort($ret, "compareAlphabeticalPicture");
+		$ret = $this->getElementList("person",null,$limit,null,"changeDate desc");
 		return $ret;
 	}
 	
@@ -1319,32 +1316,35 @@ class dbDAO {
      * even if the anonymous copys are returned the ids will be from the original entrys
 	 */
 	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
+        $ret = array();
 		//normal entrys
-		$sql="select ".$field." from ".$table." where ( (changeForID is null ";
-		//without the anonymous entrys that are changed from this ip
-		$sql.=" and id not in ( select changeForID from ".$table." where  ".$this->getSqlAnonymous()." ) ";
-		//anonymous entrys and new entrys from the aktual ip
-		$sql.=") or (".$this->getSqlAnonymous().")  )";
-		if ($where!=null)
-			$sql.=" and ( ".$where." )";
-		if ($orderby!=null)
-			$sql.=" order by ".$orderby;
-		if ($limit!=null)
-			$sql.=" limit ".$limit;
-		if ($offset!=null)
-			$sql.=" offset ".$offset;
+		$sql="select ".$field.",id from ".$table." where changeForID is null";
+		if ($where!=null)		$sql.=" and ( ".$where." )";
+		if ($orderby!=null)		$sql.=" order by ".$orderby;
+		if ($limit!=null)		$sql.=" limit ".$limit;
+		if ($offset!=null)		$sql.=" offset ".$offset;
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
-			$ret = $this->dataBase->getRowList();
-			for ($i=0;$i<sizeof($ret);$i++) {
-				if (isset($ret[$i]["changeForID"]))
-					$ret[$i]["id"]=$ret[$i]["changeForID"];
-			}
-			return $ret;
-		} else {
-			return array();
-		}
-	}
+            $ret = $this->dataBase->getRowList();
+        }
+        //anonymous entrys
+        $sql="select ".$field.",changeForID from ".$table.' where '.$this->getSqlAnonymous();
+        if ($where!=null)		$sql.="  and ( ".$where." )";
+        $this->dataBase->query($sql);
+        if ($this->dataBase->count()>0) {
+            //Change the entrys with the anonymous entrys
+            $anyonymous=$this->dataBase->getRowList();
+            foreach ($ret as $i=>$r) {
+                $found=array_search($r["id"],array_column($anyonymous,"changeForID"));
+                if ($found!==false) {
+                    $ret[$i]=$anyonymous[$found];
+                    //the original id
+                    $ret[$i]["id"]=$r["id"];
+                }
+            }
+        }
+        return $ret;
+    }
 	
 	/**
 	 * Get an array of ids, or an empty array if no ids found

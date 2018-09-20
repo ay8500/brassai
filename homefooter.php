@@ -119,4 +119,8 @@
 <noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 
 </html>
-<?php ob_end_flush();?>
+
+<?php
+$db->disconnect();
+ob_end_flush();
+?>

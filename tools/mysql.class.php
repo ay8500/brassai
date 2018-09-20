@@ -45,7 +45,7 @@ class MySqlDb
     {
         if (is_resource($this->connection))
             mysqli_close($this->connection);
-        Logger::_('Database disconnected', LoggerLevel::info);
+        //Logger::_('Database disconnected', LoggerLevel::info);
     }
 
     /**
@@ -65,11 +65,12 @@ class MySqlDb
      */
     public function query($query)
     {
-        $this->countQuerys++;
-        array_push($this->sqlRequest, $query);
+        $timer=microtime(true);
         if (strstr($query, "id= and") === false) {
             $this->result = mysqli_query($this->connection, $query) or Logger::_("MySQL ERROR 1:" . $query . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
             $this->counter = NULL;
+            $this->countQuerys++;
+            array_push($this->sqlRequest, number_format((microtime(true)-$timer) * 1000,2)."ms ".$query);
             return $this->result!==false;
         } else {
             return false;
