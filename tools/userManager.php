@@ -56,7 +56,7 @@
 	 */
 	function getAktUserId() {
 		if (isset($_SESSION["aktUId"]))
-			return $_SESSION["aktUId"];
+			return intval($_SESSION["aktUId"]);
 		else 
 			return null;
 	}
@@ -272,10 +272,12 @@
 	 *User is logged in and have the role of  editor
 	 */
 	function userIsEditor() {
-	    if (null==getLoggedInUserId())
+	    if (null==getLoggedInUserId())              //No logged in user
 	        return false;
+	    if (getLoggedInUserId()==getAktUserId())    //Logged in user views his entry
+	        return true;
 		global $db;
-		//User is editor in his own db
+		//User is editor in his own class
 		if (isset($_SESSION['uRole']) && getAktClassId()==getLoggedInUserClassId()) {
 			return strstr($_SESSION['uRole'],"editor")!="";
 		} else { 

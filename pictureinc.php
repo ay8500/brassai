@@ -254,7 +254,7 @@ if (getParam("album")!=null) {
 			<?php } ?>
 			</a>
 		<?php }?>
-		<?php if ( (userIsAdmin() || userIsSuperuser()) ) {?>
+		<?php if ( (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -271,7 +271,7 @@ if (getParam("album")!=null) {
 				</form>
 			</div>
 		<?php } ?>
-		<?php if ($albumParam!="" && $albumParam!="_tablo_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser()) ) {?>
+		<?php if ($albumParam!="" && $albumParam!="_tablo_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -358,7 +358,7 @@ if (getParam("album")!=null) {
 							<?php if (userIsAdmin()) { ?>
 								<button class="btn btn_default" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
 							<?php }?>
-							<?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser()) { ?>
+							<?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
 									<select id="changeAlbum" name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
 										<?php foreach ($albumList as $alb) {?>
 											<?php if ($alb["albumName"]!=$albumParam && $alb["albumName"]!="_tablo_" ) { ?>

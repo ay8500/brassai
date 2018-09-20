@@ -1318,7 +1318,7 @@ class dbDAO {
 	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
         $ret = array();
 		//normal entrys
-		$sql="select ".$field.",id from ".$table." where changeForID is null";
+		$sql="select ".$field.",id from ".$table." where changeForID is null and changeUserID is not null";
 		if ($where!=null)		$sql.=" and ( ".$where." )";
 		if ($orderby!=null)		$sql.=" order by ".$orderby;
 		if ($limit!=null)		$sql.=" limit ".$limit;

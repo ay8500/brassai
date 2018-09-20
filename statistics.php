@@ -29,9 +29,35 @@ $SiteTitle="A kolozsvári Brassai Sámuel líceum statisztikai adatai";
 \maierlabs\lpfw\Appl::addCssStyle('
 	.statw {width:150px; text-align:right; display: inline-block;};
 ');
-include('homemenu.php');
-?>
+include('homemenu.php');?>
 
+<div class="panel panel-default " >
+    <div class="panel-heading">
+        <h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb tanáraink és véndiákok</h4>
+    </div>
+    <div class="panel-body">
+        <?php
+        $bests=$db->getPersonChangeBest(userIsAdmin()?24:12);
+        foreach ($bests as $uid=>$count) {
+            if ($count>=1) {
+                $person=$db->getPersonByID($uid);
+                $personName=$person["lastname"]." ".$person["firstname"];
+                if ($uid>0 && strlen($personName)>2) {
+                    ?>
+                    <div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
+                        <span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
+                        <span style="width: 146px;display: inline-block;"><a href="editDiak.php?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
+                        <span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
+                    </div>
+                    <?php
+                }
+            }
+        }
+        ?>
+        <div>Pontok:  bejelentkezés=1000, zenelista=7, képek=5, új személy=3, gyertya gyújtás=2, személy módosítás=1 </div>
+        <div style="font-size:x-small">Pontokat csak bejelentkezett véndiákok kaphatnak, a bejelentkezésí pontszám minden nap egy ponttal csökken.</div>
+    </div>
+</div>
 <div  style="margin:30px">
 <div class="panel panel-default"  style="padding:5px; max-width:650px" id="calendargg"></div>
 <br/>
