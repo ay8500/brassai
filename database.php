@@ -2,15 +2,15 @@
 include_once('tools/ltools.php');
 include_once 'tools/appl.class.php';
 
-if (getParam("action")=="rip") {
+if (getParam("action")=="passw") {
     include_once("tools/sessionManager.php");
 	include_once("config.php");
 	include_once("logon.php");
 	include_once("data.php");
 
 	$db = new dbDAO;
-	
-	echo ($db->dbUtilitySetDeceasedYear());
+
+	echo ($db->dbUtilityEncryptPasword());
 	
 	die();
 }
@@ -83,7 +83,7 @@ if (userIsAdmin()) {?>
 	<ul class="list-group">
   		<li class="list-group-item">
   			<div class="input-group input-group-sm">
-  	  			<button class="btn btn-danger" onclick="rip();" >RIP</button>
+  	  			<button class="btn btn-danger" onclick="rip('passw');" >EncryptPassw</button>
   	  		</div>
   		</li>
   		<li class="list-group-item">
@@ -186,10 +186,10 @@ function createZipFile() {
     });
 }
 
-function rip() {
+function rip(action) {
     $('#databaseResult').html('working....');
     $.ajax({
-		url:"database.php?action=rip",
+		url:"database.php?action="+action,
 		type:"GET",
 		success:function(data){
 		    $('#databaseResult').html(data);

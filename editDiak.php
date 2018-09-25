@@ -156,7 +156,7 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
 		if ($newpwd1==$newpwd2) {
-			$ret=$db->savePersonField(getAktUserId(), "passw", $newpwd1);
+			$ret=$db->savePersonField(getAktUserId(), "passw", encrypt_decrypt("encrypt",$newpwd1));
 			if ($ret>=0) {
 				if (!userIsAdmin()) 
 					saveLogInInfo("SavePassw",$diak["id"],$diak["user"],"",true);

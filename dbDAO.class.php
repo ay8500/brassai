@@ -1716,5 +1716,21 @@ class dbDAO {
     public function getRequestCounter() {
 		return $this->dataBase->getCounter();
 	}
-	
+
+    public function dbUtilityEncryptPasword()
+    {
+        $ret=0;
+        $this->dataBase->query("select user,passw,firstname,lastname,id from person");
+        while ($row = $this->dataBase->fetchRow()) {
+            $p=$row["passw"];
+            $ep=encrypt_decrypt("encrypt",$p);
+            //Change
+            if (strlen($p)!=32) {
+                $this->dataBase->update("person", array(["field"=>"passw","type"=>"s","value"=>$ep]),"id",$row["id"]);
+                $ret++;
+            }
+            return "Elements=".$this->dataBase->count()." Encrypted=".$ret;
+        }
+    }
+
 }

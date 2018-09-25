@@ -156,7 +156,8 @@
 		global $db;
 		$ret = false;
 		$usr = $db->getPersonByUser($user);
-		if (null != $usr && $usr["passw"]==$passw) {
+		$dpassw= encrypt_decrypt("encrypt",$passw);
+		if (null != $usr && $usr["passw"]==$dpassw) {
 			setUserInSession(
 				$usr["role"],
 				$usr["user"],
@@ -165,7 +166,7 @@
 		}
 		else {
 			$usr =$db->getPersonByEmail($user);
-			if (null != $usr && $usr["passw"]==$passw) {
+			if (null != $usr && $usr["passw"]==$dpassw) {
 				setUserInSession(
 					$usr["role"],
 					$usr["user"],
@@ -173,7 +174,7 @@
 				$ret = true;
 			} else {
 				$usr =$db->getPersonByLastnameFirstname($user);
-				if (null != $usr && $usr["passw"]==$passw) {
+				if (null != $usr && $usr["passw"]==$dpassw) {
 					setUserInSession(
 							$usr["role"],
 							$usr["user"],
@@ -181,12 +182,6 @@
 					$ret = true;
 				}				
 			}
-		}
-		if (!userIsAdmin()) {
-			if (isset($_SESSION['uId']))
-				saveLogInInfo("Login",$_SESSION['uId'],$user,$passw,$ret);
-			else 
-				saveLogInInfo("Login","",$user,$passw,$ret);
 		}
 		return $ret;
 	}

@@ -8,7 +8,6 @@
 
 namespace maierlabs\lpfw;
 
-use nameSyntax;
 
 class NameSyntaxCheck extends \PHPUnit_Framework_TestCase
 {

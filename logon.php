@@ -27,9 +27,9 @@
 					http_response_code(400);
 					$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
 					$db->saveRequest(changeType::login);
-					saveLogInInfo("Login","",$paramName,$paramPassw,"false");
+					saveLogInInfo("Login","",$paramName,strlen($paramPassw),"false");
 				} else {
-					saveLogInInfo("Login",getLoggedInUserId(),"","","true");
+					saveLogInInfo("Login",getLoggedInUserId(),$paramName,strlen($paramPassw),"true");
 					$logOnMessage = "Ok";
 				}
 			}
@@ -37,7 +37,7 @@
 		if (! userIsAdmin()) {
 			sendHtmlMail(null,
 				"<h2>Login</h2>".
-				"Parameter:".$paramName." : ".$paramPassw."<br/>".
+				"Parameter:".$paramName." : ".strlen($paramPassw)."<br/>".
 				"Login result:".$logOnMessage," Login");
 		}
 		echo($logOnMessage);
