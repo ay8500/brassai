@@ -9,11 +9,11 @@ if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		if ($db->savePersonGeolocation($diak["id"],$geolat,$geolng)>=0) {
 			if (!userIsAdmin())
 				saveLogInInfo("SaveGeo",$diak["id"],$diak["user"],"",true);
-			Appl::setMessage('Geokoordináták sikeresen módósítva!', 'success');
+			\maierlabs\lpfw\Appl::setMessage('Geokoordináták sikeresen módósítva!', 'success');
 			$diak["geolat"]=$geolat;
 			$diak["geolng"]=$geolng;
 		} else {
-			Appl::setMessage('Geokoordináták módósítása nem sikerült!', 'warning');
+			\maierlabs\lpfw\Appl::setMessage('Geokoordináták módósítása nem sikerült!', 'warning');
 		}
 	}
 }

@@ -6,6 +6,8 @@ include_once 'tools/appl.class.php';
 include_once("data.php");		//the database
 include_once("sendMail.php");	//send mail
 
+use \maierlabs\lpfw\Appl as Appl;
+
 //this is the facebook callback page
 if (getParam("FacebookId")) {
 	$_SESSION['FacebookId']=getParam("FacebookId");
