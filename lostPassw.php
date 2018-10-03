@@ -19,8 +19,8 @@ if (isActionParam('newPassword')) {
 		}
     	else if ($ret==-1)
     		Appl::setMessage('Mailcímet az adatbank nem ismeri!', 'danger');
-    	else
-    		Appl::setMessage('Jelszó módósítás nem lehetséges!', 'danger');
+    	else if ($ret==-3)
+    		Appl::setMessage('Jelszó módósítás nem lehetséges!<br/>Naponta csak egyszer lehet új jelszót kérni.', 'danger');
 	}
 	else
 	   Appl::setMessage('Mail cím nem helyes, vagy a mező üres.!', 'danger');

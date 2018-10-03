@@ -6,9 +6,9 @@ include_once 'sendMail.php';
  * @param integer $elements
  * @return string
  */
-function readMessageList($elements) {
+function readMessageList($elements, $offset=0) {
 	global $db;
-	$h=$db->getMessages($elements);
+	$h=$db->getMessages($elements,$offset);
 	$ret="";
 	foreach ($h as $message) {
 		$diak=null;

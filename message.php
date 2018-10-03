@@ -1,7 +1,8 @@
-<?PHP 
-include_once("data.php");
+<?PHP
+include_once("tools/sessionManager.php");
 include_once("tools/userManager.php");
 include_once 'tools/appl.class.php';
+include_once("data.php");
 include 'postmessage.php';
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -25,7 +26,7 @@ Appl::addJsScript("
 $paramName=getParam("name", "");
 $paramText=getParam("T", "");
 
-if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
+if (isActionParam("postMessage")) {
 	if (userIsLoggedOn()) {
 		if (checkMessageContent($paramText)) {
 			if (writeMessage($paramText, getParam("privacy"), getLoggedInUserName())>=0) {
@@ -36,7 +37,7 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 				Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
 			}
 		} else 
-			Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
+			Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthető magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
 	}
 	else {
 		if (strlen($paramName)<4) {
@@ -46,53 +47,51 @@ if (isset($_GET["action"]) && ($_GET["action"]=="postMessage")) {
 			if (checkMessageContent($paramText)) {
 				if (checkRequesterIP(changeType::message)) {
 					if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
-						Appl::$resultDbOperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
+						Appl::setMessage('A beadott üzenet elküldése sikerült!',"success");
 						$paramName="";
 						$paramText="";
 					} else {
-						Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet kimentése nem sikerült!</div>';
+                        Appl::setMessage("A beadott üzenet kimentése nem sikerült!","warning");
 					}
 				} else {
-					Appl::$resultDbOperation='<div class="alert alert-warning" > Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.</div>';
+                    Appl::setMessage("Az anonym üzenetek küldése csak egy bizonyos mértékben lehetséges!<br />Kérünk jelentkezz be ha szeretnél újjabb üzenetet küldeni.","warning");
 				}
 			}
-			else 
-				Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.</div>';
+			else
+                Appl::setMessage("A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.","warning");
 		} 
 	}
 }
 
-if (isset($_GET["action"]) && ($_GET["action"]=="checkMessage")) {
-	Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott üzenet tartalmaz '.
-		checkMessageContent($paramText,true).
-		' magyar kifejezést.Eredmény:'.
-		(checkMessageContent($paramText)?"Ok":"nem jo").' </div>';
+if (isActionParam("checkMessage")) {
+    Appl::setMessage('A beadott üzenet tartalmaz-e magyar kifejezést? Eredmény:'.
+        (checkMessageContent($paramText)?"igen, rendben":"nem, probálkozz újból"),checkMessageContent($paramText)?"success":"warning");
 }
 
 
-if (isset($_GET["action"]) && ($_GET["action"]=="deleteMessage")) {
+if (isActionParam("deleteMessage")) {
 	$id=getIntParam("id",-1);
 	if ($id!=-1) {
 		if (deleteMessage($id)>=0)
-			Appl::$resultDbOperation='<div class="alert alert-success" > Az üzenet ki lett törölve!</div>';
+            Appl::setMessage("Az üzenet ki lett törölve!","success");
 		else
-			Appl::$resultDbOperation='<div class="alert alert-warning" > Az üzenet törlése nem sikerült!</div>';
+            Appl::setMessage("Az üzenet törlése nem sikerült!","warning");
 	}
 }
 
-if (isset($_GET["action"]) && $_GET["action"]=="commentMessage" && userIsAdmin()) {
+if (isActionParam("commentMessage") && userIsAdmin()) {
 	if ($db->saveMessageComment(getIntParam("id"),getParam("comment"))===true) {
-		Appl::$resultDbOperation='<div class="alert alert-success" > A beadott kommentár elküldése sikerült!</div>';
+        Appl::setMessage("A beadott kommentár elküldése sikerült.","success");
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" > A beadott kommentár kimentése nem sikerült!</div>';
+        Appl::setMessage("A beadott kommentár kimentése nem sikerült!","warning");
 	}
 }
 
-if (isset($_GET["action"]) && $_GET["action"]=="setPersonID" && userIsAdmin()) {
+if (isActionParam("setPersonID") && userIsAdmin()) {
 	if ($db->saveMessagePersonID(getIntParam("id"),getParam("personid"))===true) {
-		Appl::$resultDbOperation='<div class="alert alert-success" > Személy cserérés sikerült!</div>';
+        Appl::setMessage("Személy cserérés sikerült.","success");
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" > Személy csrélés nem sikerült!</div>';
+        Appl::setMessage("Személy csrélés nem sikerült!","warning");
 	}
 }
 
@@ -126,7 +125,7 @@ include("homemenu.php");
 				<div title="Az osztálytársak" class="cradio radio_class"><input type="radio" name="privacy" value="class" <?php echo getFieldCheckedClass($text)?> onclick="saveMessage();" /></div>
 			</div> 
 			<?php } ?>
-			<button value="postMessage" name="action" class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-send"></span> küldés!</button>
+			<button value="postMessage" name="action" class="btn btn-success" type="submit" ><span class="glyphicon glyphicon-send"></span> küldés!</button>
 			<?php if (userIsAdmin()) {?>
 				<button value="checkMessage" name="action" class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-check"></span> magyar?</button>
 			<?php } ?>

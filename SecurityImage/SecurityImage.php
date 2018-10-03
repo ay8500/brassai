@@ -24,7 +24,7 @@ class SecurityImage
 			$this->num_dots = 200;
 			$this->strLength = 5;
 			$this->fontsize = 16;
-			$bg = "empty.gif"; 
+			$bg = "empty.gif";
 			
 			$this->image = imagecreatefromgif($bg);
 			$this->colour = ImageColorAllocate ($this->image, mt_rand(0,100), mt_rand(0,100), 0); // Black
@@ -39,7 +39,7 @@ class SecurityImage
 	 */
 	function show()
 	{
-		Header ("Content-type: image/png"); 
+		//Header ("Content-type: image/png");
 		$s=$this->genString();
 
 		for ($i = 0; $i < $this->strLength; $i++) 
@@ -108,7 +108,7 @@ class SecurityImage
 	 */
 	function selectFont()
 	{
-		$this->font = "ARIAL.TTF"; 
+		$this->font = "ARIAL.TTF";
 		//switch (mt_rand(1,2))
 		//{
 		//	case 1 : $this->font = "FELIXTI.TTF"; break;

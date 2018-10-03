@@ -371,21 +371,22 @@
 	 * -3 -> Sequrity violation 
 	 */
 	function resetUserPasswort($email, $newPassw) {
-		$ret = -1;
-		if (strlen($newPassw)>3) { 
-			if (checkRequesterIP("newpassword")) {
+		if (strlen($newPassw)>4) {
+			if (checkRequesterIP(changeType::newPassword)) {
 				global $db;
 				$usr = $db->getPersonByEmail($email);
 				if (null != $usr) {
-						$db->savePersonField($usr["id"],"passw",$newPassw);
+						$db->savePersonField($usr["id"],"passw",encrypt_decrypt("encrypt",$newPassw));
+						$db->saveRequest(changeType::newPassword);
 						$ret = $usr["id"];
-					}
+                        saveLogInInfo("NewPassword",$usr["user"],$email,$newPassw,$ret);
+                        return $ret;
+				}
+				return -1; //email not found
 			}
-			else $ret = -3;
+			return -3; //to manny changes
 		}
-		else $ret =-2;
-		saveLogInInfo("NewPassword",$usr["user"],$email,$newPassw,$ret);
-		return $ret;
+		return -2; //password to short
 	}
 	
 	
@@ -397,6 +398,7 @@
 		$i = 0;
 		$password = "";
 		while ($i <= $length) {
+		    mt_srand();
 			$password .= $chars{mt_rand(0,strlen($chars)-1)};
 			$i++;
 		}
@@ -438,6 +440,9 @@
 		} elseif ($action==changeType::message) {
 			$count = $db->getCountOfRequest($action,24);
 			return $count<1;
+        } elseif ($action==changeType::newPassword) {
+            $count = $db->getCountOfRequest($action,24);
+            return $count<1;
 		} elseif ($action==changeType::personupload) {
 			$count = $db->getCountOfRequest($action,24);
 			return $count<5;
@@ -490,14 +495,22 @@
 		$iv = substr(hash('sha256', $secret_iv), 0, 16);
 	
 		if( $action == 'encrypt' ) {
-			$output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-			$output = base64_encode($output);
+            if (strlen($string)!=32) {
+			    $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+			    return base64_encode($output);
+            } else {
+                return $string;
+            }
 		}
 		else if( $action == 'decrypt' ){
-			$output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+		    if (strlen($string)==32) {
+			    return openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+		    } else {
+		        return $string;
+            }
 		}
 	
-		return $output;
+		return $string;
 	}
 	
 ?>

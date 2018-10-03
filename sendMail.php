@@ -24,13 +24,13 @@ if ($action == 'sendMail')
 function SendNewPassword($uid) {
 	global $db;
 	global $sendMailMsg;
-	$diak = $db->getPersonByID($uid);
+	$diak = $db->getPersonByID($uid,true);
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
 	$text.="Ezt az e-mail azért kapod mert kérdésedre megvátoztak a bejelentkezési adataid.<br />";
 	$text.="<p>";
 	$text.="Végzős osztály:".getAktClassName()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
-	$text.="Jelszó:".$diak["passw"]."<br/>";
+	$text.="Jelszó:".encrypt_decrypt("decrypt",$diak["passw"])."<br/>";
 	$text.='Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
 	$text.='<a href=https://brassai.blue-l.de/index.php?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
@@ -127,10 +127,9 @@ function sendHtmlMail($recipient,$text,$subject="") {
 		if (isset($recipient)) {
 			return mail($recipient, $subject, $message, $headers);
 		} 
-	} else {
-        \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
 	}
-	return false;
+     \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
+     return true;
 }
 
 /**

@@ -1,9 +1,9 @@
-<?php 
+<?php
+include_once("tools/sessionManager.php");
 include_once('tools/ltools.php');
 include_once 'tools/appl.class.php';
 
 if (getParam("action")=="passw") {
-    include_once("tools/sessionManager.php");
 	include_once("config.php");
 	include_once("logon.php");
 	include_once("data.php");
@@ -14,6 +14,20 @@ if (getParam("action")=="passw") {
 	
 	die();
 }
+
+if (getParam("action")=="decrypt") {
+    include_once("tools/ltools.php");
+    include_once("tools/userManager.php");
+    echo (encrypt_decrypt("decrypt",getParam("param")));
+    die();
+}
+if (getParam("action")=="encrypt") {
+    include_once("tools/ltools.php");
+    include_once("tools/userManager.php");
+    echo (encrypt_decrypt("encrypt",getParam("param")));
+    die();
+}
+
 
 \maierlabs\lpfw\Appl::$subTitle="Adatbank eszközök";
 include('homemenu.php');
@@ -84,8 +98,16 @@ if (userIsAdmin()) {?>
   		<li class="list-group-item">
   			<div class="input-group input-group-sm">
   	  			<button class="btn btn-danger" onclick="rip('passw');" >EncryptPassw</button>
+                <button class="btn btn-default" onclick="rip('decrypt');" >DecryptText</button>
+                <button class="btn btn-default" onclick="rip('encrypt');" >EncryptText</button>
   	  		</div>
   		</li>
+        <li class="list-group-item">
+            <div class="input-group input-group-sm">
+                <span id="inputwidth" class="input-group-addon">Text</span>
+                <input type="text" id="dbText" class="form-control" />
+            </div>
+        </li>
   		<li class="list-group-item">
 			<div class="input-group input-group-sm">
 	  			<span id="inputwidth" class="input-group-addon">Result</span>	
@@ -189,7 +211,7 @@ function createZipFile() {
 function rip(action) {
     $('#databaseResult').html('working....');
     $.ajax({
-		url:"database.php?action="+action,
+		url:"database.php?action="+action+"&param="+$('#dbText').val(),
 		type:"GET",
 		success:function(data){
 		    $('#databaseResult').html(data);

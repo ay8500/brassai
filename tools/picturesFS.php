@@ -94,7 +94,7 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
 		else
 			$notFoundImg = $notFound;
 		echo('Not in the DB:'.$notFound.' <a href="'.$notFound.'" target="not_found"><img style="height:50px" src="'.$notFoundImg.'"/></a>');
-
+        echo(date ("Y.m.d H:i:s.",filemtime(dirname(__DIR__)."/images/".$notFound)));
 		$fa= explode("-",basename($notFound),2);
 		if (sizeof($fa)==2 && substr($fa[0],0,1)=="d") {
 			$sql="select * from person where id =".substr($fa[0], 1);

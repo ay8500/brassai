@@ -22,6 +22,7 @@ class changeType
 	const classupload = 5;      //changes für class pictures
 	const deletepicture = 6;    //changes für class pictures
 	const newuser= 7;           //create a new user
+    const newPassword = 8;
 }
 
 class dbDAO {
@@ -49,12 +50,30 @@ class dbDAO {
 		$this->dataBase->disconnect();
 	}
 
+    /**
+     * SQL Statement to select the anonymous changes
+     * @param string $table
+     * @return string
+     */
 	private function getSqlAnonymous($table=null)
     {
         if ($table!=null)
             return $table.".changeForID is not null and ".$table.".changeUserID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."'";
         else
             return "changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+    }
+
+    /**
+     * SQL Statement to select the new anonymous entrys
+     * @param string $table
+     * @return string
+     */
+    private function getSqlAnonymousNew($table=null)
+    {
+        if ($table!=null)
+            return $table.".changeForID is null and ".$table.".changeUserID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+        else
+            return "changeForID is null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
     }
 
 
@@ -271,7 +290,7 @@ class dbDAO {
 	public function savePersonField($personId,$fieldName,$fieldValue=null) {
 		$person=$this->getPersonByID($personId);
 		if ($person!=null) {
-			if ($fieldName==null )
+			if ($fieldValue==null )
 				unset($person[$fieldName]);
 			else
 				$person[$fieldName]=$fieldValue;
@@ -417,23 +436,25 @@ class dbDAO {
 	private function searchForPersonOneString($name) {
 		$ret = array();
 		$name=trim($name);
-		if( strlen($name)>1) {
+		if( strlen($name)>1 && intval($name)==0) {
+            $name=$this->clearUTF($name);
 			$sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
 			$sql .=" left join  class on class.id=person.classID";  
 			$sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
 			$sql .=" and ( person.changeForID is null";
+            $sql .=" and (soundex(person.lastname) like soundex('".$name."') ";
+            $sql .=" or soundex(person.firstname) like soundex('".$name."') ";
+            if( strtolower($this->wildcardUTF($name))=="eva")
+                $sql .=" or (person.firstname) = 'Éva'";
+            $sql .=" or soundex(person.birthname) like soundex('".$name."') )";
             $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
-            $sql.=") or (".$this->getSqlAnonymous("person").")";
+            $sql.=") or (".$this->getSqlAnonymous("person").") limit 50";
 			$this->dataBase->query($sql);
-			$name=$this->clearUTF($name);
+
 			while ($person=$this->dataBase->fetchRow()) {
-				if (stristr($this->clearUTF(html_entity_decode($person["lastname"])), $name)!="" ||
-					stristr($this->clearUTF(html_entity_decode($person["firstname"])), $name)!="" ||
-					(isset($person["birthname"]) && stristr($this->clearUTF(html_entity_decode($person["birthname"])), $name)!="")) {
                     if (isset($person["changeForID"]))
                         $person["id"]=$person["changeForID"];
 					array_push($ret, $person);
-				}
 			}
 			usort($ret, "compareAlphabetical");
 		}
@@ -490,7 +511,31 @@ class dbDAO {
         return $r;
     }
 
-	/**
+    /**
+     * If you need to strip as many national characters from UTF-8 as possible and keep the rest of input unchanged
+     * (i.e. convert whatever can be converted to ASCII and leave the rest)
+     * @param string $s
+     * @return string
+     */
+    private function wildcardUTF($s)
+    {
+        setlocale(LC_ALL, 'en_US.UTF8');
+        $r = '';
+        $s1 = iconv('UTF-8', 'ASCII//TRANSLIT', $s);
+        for ($i = 0; $i < strlen($s1); $i++)
+        {
+            $ch1 = $s1[$i];
+            $ch2 = mb_substr($s, $i, 1);
+
+            if ($ch1!="'" && $ch1!='"')
+                $r .= $ch1=='?'?$ch2:$ch1;
+            else
+                $r .= '_';
+        }
+        return $r;
+    }
+
+    /**
 	 * get the person list!
 	 */
 	public function getPersonList($where=null,$limit=null,$ofset=null) {
@@ -1169,15 +1214,15 @@ class dbDAO {
 	/**
 	 * get chat messages
 	 */
-	public function getMessages($count=null,$limit=null) {
-		return $this->getElementList("message","classID is null",$count,$limit,"changeDate desc");
+	public function getMessages($limit=null,$offset=null) {
+		return $this->getElementList("message","classID is null",$limit,$offset,"changeDate desc");
 	}
 
 	/**
 	 * get class messages
 	 */
-	public function getClassMessages($classId,$count=null,$limit=null) {
-		return $this->getElementList("message","classID =".$classId,$count,$limit,"changeDate desc");
+	public function getClassMessages($classId,$limit=null,$offset=null) {
+		return $this->getElementList("message","classID =".$classId,$limit,$offset,"changeDate desc");
 	}
 	
 	/**
@@ -1318,7 +1363,9 @@ class dbDAO {
 	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
         $ret = array();
 		//normal entrys
-		$sql="select ".$field.",id from ".$table." where changeForID is null and changeUserID is not null";
+		$sql="select ".$field.",id from ".$table." where ((changeForID is null and changeUserID is not null)";
+		//and anonymous new entrys
+        $sql.=" or (".$this->getSqlAnonymousNew().") )";
 		if ($where!=null)		$sql.=" and ( ".$where." )";
 		if ($orderby!=null)		$sql.=" order by ".$orderby;
 		if ($limit!=null)		$sql.=" limit ".$limit;
@@ -1376,7 +1423,7 @@ class dbDAO {
 		if ($this->dataBase->query($sql)) {
 			$ret =  $this->dataBase->getRowList();
 			if (sizeof($ret)>1) {
-			    $ret[0]["id"]=$ret[sizeof($ret)-1]["changeForID"];
+			    $ret[0]["id"]=$ret[0]["changeForID"];
             }
             if (sizeof($ret)>0)
                 return $ret[0];
@@ -1723,14 +1770,15 @@ class dbDAO {
         $this->dataBase->query("select user,passw,firstname,lastname,id from person");
         while ($row = $this->dataBase->fetchRow()) {
             $p=$row["passw"];
-            $ep=encrypt_decrypt("encrypt",$p);
             //Change
             if (strlen($p)!=32) {
+                $ep=encrypt_decrypt("encrypt",$p);
                 $this->dataBase->update("person", array(["field"=>"passw","type"=>"s","value"=>$ep]),"id",$row["id"]);
                 $ret++;
             }
-            return "Elements=".$this->dataBase->count()." Encrypted=".$ret;
         }
+        return "Elements=".$this->dataBase->count()." Encrypted=".$ret;
+
     }
 
 }

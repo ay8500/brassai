@@ -1,6 +1,9 @@
-<?php 
+<?php
+include_once 'tools/sessionManager.php';
 include_once 'tools/appl.class.php';
 include_once 'data.php';
+
+use \maierlabs\lpfw\Appl as Appl;
 
 Appl::addCssStyle('
 	.fb-radio{width: 25px;height: 25px;position: relative;top: -6px;}
@@ -18,7 +21,7 @@ if (null!=$person) {
 			Appl::setMessage("Biztonságí kód nem helyes. Probáld még egyszer!","warning");
 		} 
 
-		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')==$_SESSION['SECURITY_CODE'])) {
+		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')!=$_SESSION['SECURITY_CODE'])) {
 			Appl::setMessage("Személyes adatok védelme kérvényezve. Hamarosan visszajelzük mailben vagy telefonon.","info");
 			include_once 'sendMail.php';
 			$html="";
@@ -27,7 +30,7 @@ if (null!=$person) {
 			$html .='<div>Remote-Addr:'.print_r($_SERVER["REMOTE_ADDR"],true).'</div>';
 			$html .='<div>Request-Time:'.date("Y.m.d H:i:s",print_r($_SERVER["REQUEST_TIME"],true)).'</div>';
 			$html .='<div>'.print_r($_REQUEST,true).'</div>';
-		sendHtmlMail("code@blue-l.de", $html);
+		    sendHtmlMail("code@blue-l.de", $html);
 		}
 	}
 }
