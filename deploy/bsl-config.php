@@ -70,6 +70,7 @@ define('DELETE_FILES',false);
 define('EXCLUDE', serialize(array(
 	'.git',
 	'data',
+    '.htaccess',
 	'login.log',
 	'access.log',
 	'facebooklogin.log'
