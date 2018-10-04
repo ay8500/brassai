@@ -11,7 +11,8 @@ $tabOpen= getIntParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
 if($personid!=null){
-	if ($person=$db->getPersonByID($personid)!=null) {
+    $person=$db->getPersonByID($personid);
+	if ($person!=null) {
 		setAktUserId($personid);	//save actual person in case of tab changes
 		setAktClass($person["classID"]);
 	} else {
@@ -101,8 +102,10 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 						$tilde="~";
 				}
 				//save the fields in the person array
-				if (getParam($dataFieldNames[$i])!=null)
-					$diak[$dataFieldNames[$i]]=$tilde.getParam($dataFieldNames[$i]);
+				$fvalue =trim(getParam($dataFieldNames[$i]));
+                if ($fvalue!==null) {
+                    $diak[$dataFieldNames[$i]] = $tilde . $fvalue;
+                }
 			}
 			//ClassID
 			if (getIntParam("classID",-1)>-1) {

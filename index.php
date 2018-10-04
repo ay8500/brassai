@@ -14,7 +14,10 @@ Appl::$subTitle='Szeretettel köszöntünk a Brassaista véndiákok honlapján<b
 
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
-	
+
+$personIdList=$db->getPersonIdListWithPicture();
+$randPersonID=$personIdList[rand(0,sizeof($personIdList)-1)];
+
 
 include("homemenu.php");
 ?>
@@ -32,7 +35,7 @@ include("homemenu.php");
 	<div  style="padding:15px;" class="col-sm-8" >
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
 		<div class="col-sm-4">
-			<a class="inlineBox" href="editDiak.php?editDiak.php?uid=658"><img img class="indeximg" src="images/classmatex.png" /></a>
+			<a class="inlineBox" href="editDiak.php?uid=<?php echo $randPersonID["id"]?>"><img img class="indeximg" src="images/classmatex.png" /></a>
 			<div class="inlineBox">Véndiákok névsorának bővítése és ápolása.</div>
 		</div>
 		<div class="col-sm-4">
@@ -45,7 +48,7 @@ include("homemenu.php");
 		</div>
 		<div class="col-sm-4">
 			<a class="inlineBox" href="rip.php"><img img class="indeximg" src="images/candleicon.jpg" /></a>
-			<div class="inlineBox">Emléküket örökké őrizzük.<br/>Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div> 
+			<div class="inlineBox">Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div>
 		</div>
 		<div class="col-sm-4">
 			<a class="inlineBox" href="editDiak.php?uid=levi&tabOpen=4"><img img class="indeximg" src="images/hand-holding-cv.png" /></a>

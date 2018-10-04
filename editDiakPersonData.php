@@ -50,6 +50,7 @@
 	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button id="saveButton" onclick="document.forms['edit_form'].submit();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
+            <button onclick="javascript:location.href='editDiak.php'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
 		</div>
 	<?php } ?>
 	
