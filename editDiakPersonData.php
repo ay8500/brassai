@@ -1,4 +1,4 @@
-	<span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék. 
+	<span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék.
 	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">"1 und 1"</a> cég szamitógépközpontjában. 
 	Biztonsági másolatok a személyes adatokról csak a internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az adatok maximum 6 hónapig vannak tárolva. 
 	A személyes adatok megjelennek külömbőző internet kereső oldalok találati listáján. 
@@ -76,7 +76,7 @@
    		<div style="min-height:30px" class="input-group">
       		<span style="min-width:110px;" class="input-group-addon" >Iskola</span>
       		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-			<select class="form-control">
+			<select class="form-control" name="schoolID" id="schoolID">
 				<option>Brassai Sámuel líceum</option>
 			</select>
    		</div>
@@ -90,10 +90,11 @@
 					<option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
 				<?php } ?>
 			</select>
-   		</div>	
-   		<?php } else {?>
-   			<input type="hidden" name="classID" value="0" />
-   		<?php } ?>
+   		</div>
+        <?php } ?>
+    <?php } else {?>
+        <input type="hidden" name="classID" value="<?php echo getAktClassId()?>" />
+        <input type="hidden" name="schoolID" value="<?php echo getAktSchoolId()?>" />
    	<?php } ?>
    	
    	
