@@ -17,15 +17,15 @@ if (isAktClassStaf()) {
 	$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 } else {
 	if ($guests) {
-		Appl::$subTitle="Vendégek, jó barátok";
+		Appl::$subTitle=getAktClassName()." Vendégek, jó barátok";
 		$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 	} else {
 		if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			$headTeacher=$db->getPersonByID($class["headTeacherID"]);
-			Appl::$subTitle="Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
-			$SiteTitle = $SiteTitle.". Osztályfőnök ".getPersonName($headTeacher);
+			Appl::$subTitle=getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
+			$SiteTitle = $SiteTitle." ".getAktClassName()." Osztályfőnök ".getPersonName($headTeacher);
 		} else {
-			Appl::$subTitle="Osztálytársak";
+			Appl::$subTitle=getAktClassName()." Osztálytársak";
 			$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
 		}
 	}

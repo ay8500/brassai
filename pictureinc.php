@@ -386,7 +386,7 @@ if (getParam("album")!=null) {
 						<?php endif;?>
 						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;max-width: 320px;">
 							<b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
-							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo $pict["comment"] ?></span>
+							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
 						</div>
 						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button>
 						<?php  if (userIsAdmin()){?>

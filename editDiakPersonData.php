@@ -140,8 +140,6 @@
 					?>
 					<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
 					<?php
-					$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	getFieldValueNull($diak,$dataFieldNames[$i]));
-					$fieldString = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $fieldString);
 					if ($db->isClassIdForStaf($classId) && $dataFieldNames[$i]=="children") {
 						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
 						echo('<div  class="form-control" style="height:auto;">');
@@ -152,7 +150,7 @@
 						}
 						echo('</div>');
 					} else {
-						echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.$fieldString.'</div>');
+						echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.createLink(getFieldValueNull($diak,$dataFieldNames[$i])).'</div>');
 					}
 				 }
 			}?>

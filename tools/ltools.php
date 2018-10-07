@@ -88,3 +88,19 @@ function getConstantName($className,$value)
 	$constants = array_flip($class->getConstants());
 	return $constants[$value];
 }
+
+/**
+ * Create a link for http address or mailto für e-mail
+ * @param $text
+ * @return null|string|string[]
+ */
+function createLink($text,$short=false) {
+    if ($short) {
+        $text = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]#-/\(\)]~", "<a target=\"_blank\" href=\"\\0\">Link</a>", $text);
+        $text = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">E-Mail</a>', $text);
+    } else {
+        $text = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]#-/\(\)]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>", $text);
+        $text = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $text);
+    }
+    return $text;
+}

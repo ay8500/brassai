@@ -102,26 +102,12 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
 					echo('<div class="xxx_diakCardIcons" style="margin-top:10px">');
-						if (isset($d["email"]) && strlen($d["email"])>8)  
-							if(showField($d,"email"))
-								echo '<a href="mailto:'.getFieldValue($d["email"]).'" title="E-Mail"><img src="images/email.png" /></a>';
-							else
-								echo '<a href="#" onclick="hiddenData(\'E-Mail cím\');" title="E-Mail"><img src="images/email.png" /></a>';
-						if (isset($d["facebook"]) && strlen($d["facebook"])>8)
-							if (showField($d,"facebook"))
-								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["facebook"]).'" title="Facebook"><img src="images/facebook.png" /></a>';
-							else
-								echo '&nbsp;<a href="#" onclick="hiddenData(\'Facebook link\');" title="Facebook"><img src="images/facebook.png" /></a>';
-						if (isset($d["twitter"]) && strlen($d["twitter"])>8)
-							if (showField($d,"twitter"))
-								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["twitter"]).'" title="Twitter"><img src="images/twitter.png" /></a>';
-							else
-								echo '&nbsp;<a href="#" onclick="hiddenData(\'Twitter\');" title="Twitter"><img src="images/twitter.png" /></a>';
-						if (isset($d["homepage"]) && strlen($d["homepage"])>8)
-							if (showField($d,"homepage"))
-								echo '&nbsp;<a target="_new" href="'.getFieldValue($d["homepage"]).'" title="Honoldal"><img src="images/www.png" /></a>';
-							else
-								echo '&nbsp;<a href="#" onclick="hiddenData(\'Honoldal\');" title="Honoldal"><img src="images/www.png" /></a>';
+					    displayIcon($d,"phone","phone.png","Telefon","tel:");
+                        displayIcon($d,"mobil","mobile.png","Mobil","tel:");
+                        displayIcon($d,"email","email.png","E-Mail","mailto:");
+                        displayIcon($d,"facebook","facebook.png","Facebook","");
+                        displayIcon($d,"twitter","twitter.png","Twitter","");
+                        displayIcon($d,"homepage","www.png","Honoldal","");
 						if ($db->getNrOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2)>0)
 							echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")
@@ -154,45 +140,59 @@ function displayPicture($db,$picture,$showSchool=false) {
 		$type="school";
 		$typeid=$picture[$type."ID"];
 		$school=$db->getSchoolById($typeid);
-		$typeText="Iskolakép: ".$school["name"];
+		$typeText="<b>Iskolakép:</b><br/>".$school["name"];
 	}
 	if (isset($picture["classID"])){
 		$type="class";
 		$typeid=$picture[$type."ID"];
 		$class=$db->getClassById($typeid);
-		$typeText="Osztálykép csoportkép: ".$class["text"];
+		$typeText="<b>Osztálykép:</b><br/>".$class["text"];
 	}
 	if (isset($picture["personID"])){
 		$type="person";
 		$typeid=$picture[$type."ID"];
 		$picturePerson=$db->getPersonByID($typeid);
-		$typeText="Személyes kép: ".getPersonName($picturePerson);
+		$typeText="<b>Személyes kép:</b><br/>".getPersonName($picturePerson);
 	}
 	
 	?>
 	<div class="element">
-		<div style="display: inline-block; ">
-			<a href="picture.php?type=<?php echo $type?>&typeid=<?php echo $typeid?>&id=<?php echo $picture["id"]?>">
-				<image src="convertImg.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" />
-			</a>
-		</div>
-		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
-			<br/><a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
-				<span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$picture["id"]))?></span>
-			</a>
-		<?php } ?>
-		<br/>
+        <div>
+            <div style="display: inline-block; ">
+                <a href="picture.php?type=<?php echo $type?>&typeid=<?php echo $typeid?>&id=<?php echo $picture["id"]?>">
+                    <image src="convertImg.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
+                </a>
+                <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+                    <br/><a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
+                        <span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$picture["id"]))?></span>
+                    </a>
+                <?php } ?>
+            </div>
+            <div style="display: inline-block;max-width:160px;min-width:150px; vertical-align: top;margin-bottom:10px;">
+                <?php echo $typeText;?><br/>
+                <?php if (isset($picture["albumName"])&&$picture["albumName"]!="") {?>
+                    Album:<?php echo $picture["albumName"]?><br/>
+                <?php }?>
+                <br/>
+                <b>Kép címe:</b><br/>
+                <?php echo $picture["title"];?>
+            </div>
+        </div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-			<b><?php echo $picture["title"];?></b><br/>
-			<?php echo $typeText;?><br/>
-			<?php if (isset($picture["albumName"])&&$picture["albumName"]!="") {?>
-				Album:<?php echo $picture["albumName"]?><br/>
-			<?php }?>
-			Feltőltötte: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
-			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["uploadDate"]));?>
+            Módosította: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
+			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["changeDate"]));?>
 		</div>
 	</div>
 <?php } 
+
+
+function displayIcon($d,$field,$image,$title,$appl) {
+    if (isset($d[$field]) && strlen($d[$field])>8)
+        if(showField($d,"phone"))
+            echo '&nbsp;<a href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+        else
+            echo '&nbsp;<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+}
 
 function displayClass($db,$d,$showDate=false) { 
 	if (userIsLoggedOn() || isLocalhost()) {

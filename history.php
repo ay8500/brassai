@@ -1,8 +1,11 @@
 <?php 
 include_once('tools/userManager.php');
 include_once 'tools/appl.class.php';
-\maierlabs\lpfw\Appl::$subTitle="Adatmódosítások";
-\maierlabs\lpfw\Appl::addCssStyle('
+
+use \maierlabs\lpfw\Appl as Appl;
+
+Appl::$subTitle="Adatmódosítások";
+Appl::addCssStyle('
 	.history {margin:10px;}
 	.history tr td {vertical-align: top;padding:5px;}
 	.history tr  {border-spacing: 2px};
@@ -11,6 +14,10 @@ include('homemenu.php');
 ?>
 
 <?php if (userIsAdmin() || userIsSuperuser()) {
+    if (isActionParam("delete")) {
+        $db->deleteHistoryEntry(getParam("did"));
+    }
+
 	$history=$db->getHistory(getParam("table"), getParam("id"));
 ?>
 
@@ -43,7 +50,6 @@ include('homemenu.php');
 <?php } else { ?>
 	<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>
 <?php } ?>
-<?php include 'homefooter.php';?>
 
 <?php 
 function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=false) {
@@ -60,27 +66,27 @@ function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=
 				$picture=$db->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$picture=json_decode_utf8($item["jsonData"]);
-			displayPicture($db, $picture,json_decode_utf8($itemNext["jsonData"]));
+			displayPicture($db, $item, $picture,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "vote" :
 			if ($original) 
 				$vote=$db->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$vote=json_decode_utf8($item["jsonData"]);
-			displayVote($db, $vote,json_decode_utf8($itemNext["jsonData"]));
+			displayVote($db, $item, $vote,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "class" :
 			if ($original) 
 				$class=$db->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$class=json_decode_utf8($item["jsonData"]);
-			displayClass($db, $class,json_decode_utf8($itemNext["jsonData"]));
+			displayClass($db, $item,$class,json_decode_utf8($itemNext["jsonData"]));
 			break;
 	}
 }
 
 function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
-	displayChangeData($db,$person);
+	displayChangeData($db,$person,$item["id"]);
 	displayElement(getPersonName($person), getPersonName($personNext));
 	displayElementObj($person, $personNext,"picture","Pic");
 	displayElementObj($person, $personNext,"partner","P");
@@ -113,27 +119,27 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayElementObj($person, $personNext,"classID","C");
 	displayElementObj($person, $personNext,"isTeacher","T");
 	if ($item["changeUserID"]!=$person["changeUserID"] && !$lastElement && userIsAdmin())
-		displayChangeData($db,$item);	
+		displayChangeData($db,$item,0);
 }
 
-function displayClass($db,$class,$classNext) {
-	displayChangeData($db,$class);
+function displayClass($db,$item,$class,$classNext) {
+	displayChangeData($db,$class,$item["id"]);
 	displayElementObj($class, $classNext, "schoolID");
 	displayElementObj($class, $classNext, "name");
 	displayElementObj($class, $classNext, "graduationYear");
 	displayElement(getPersonName($db->getPersonByID($class["headTeacherID"])), getPersonName($db->getPersonByID($classNext["headTeacherID"])));
 }
 
-function displayPicture($db,$picture,$pictureNext) {
-	displayChangeData($db,$picture);
+function displayPicture($db,$item,$picture,$pictureNext) {
+	displayChangeData($db,$picture,$item["id"]);
 	displayElementObj($picture, $pictureNext, "title" );
 	displayElementObj($picture, $pictureNext, "comment");
 	displayElementObj($picture, $pictureNext, "isVisibleForAll" );
 	displayElementObj($picture, $pictureNext, "isDeleted");
 }
 
-function displayVote($db,$vote,$voteNext) {
-	displayChangeData($db,$vote);
+function displayVote($db,$item,$vote,$voteNext) {
+	displayChangeData($db,$vote,$item["id"]);
 	displayElementObj($vote, $voteNext, "eventDay", "D");
 	displayElementObj($vote, $voteNext, "isSchool", "I");
 	displayElementObj($vote, $voteNext, "isCemetery", "T");
@@ -145,11 +151,12 @@ function displayVote($db,$vote,$voteNext) {
 /**
  * Display: ChangeDate, IP, Username
  */
-function displayChangeData($db,$item) {
+function displayChangeData($db,$item,$historyId) {
 	$changePerson=$db->getPersonByID($item["changeUserID"]);
 	?><td><?php echo date("Y.m.d",strtotime($item["changeDate"]))?> <?php echo date("H:i:s",strtotime($item["changeDate"]))?></td>
 	<?php if (userIsAdmin()) {?>
 		<td onclick="showip('<?php echo $item["changeIP"]?>');" class="btn">IP</td>
+        <td><button onclick="deleteHistory(<?php echo $historyId.",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>
 	<?php } ?>
 	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td><?php
 }
@@ -198,6 +205,14 @@ function json_decode_utf8($json) {
 	}
 	return null;
 }
+
+Appl::addJsScript('
+    function deleteHistory(id,table,tid) {
+        document.location="history.php?table="+table+"&id="+tid+"&action=delete&did="+id;
+    }
+');
+
+include 'homefooter.php';
 
 ?>
 

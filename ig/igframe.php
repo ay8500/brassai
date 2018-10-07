@@ -293,6 +293,5 @@
 		$i++;
 	}
 ?>
-    <div class="fb-like" data-href="<?php echo('http://'.$_SERVER['SERVER_NAME'].getenv("SCRIPT_NAME").'?'.$_SERVER['QUERY_STRING']);?>" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
 
 </div>

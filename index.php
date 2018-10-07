@@ -34,41 +34,59 @@ include("homemenu.php");
 	</div>
 	<div  style="padding:15px;" class="col-sm-8" >
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="editDiak.php?uid=<?php echo $randPersonID["id"]?>"><img img class="indeximg" src="images/classmatex.png" /></a>
-			<div class="inlineBox">Véndiákok névsorának bővítése és ápolása.</div>
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="editDiak.php?uid=<?php echo $randPersonID["id"]?>">
+                <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" /></div>
+			    <div class="inlineBox" style="vertical-align: middle;">Véndiákok névsorának bővítése és ápolása.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="hometable.php?classid=10"><img img class="indeximg" src="images/teacher.png" /></a>
-			<div class="inlineBox">Tanáraink névsorának bővítése és kiegészítése.</div>
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="hometable.php?classid=10">
+                <div class="inlineBox"><img img class="indeximg" src="images/teacher.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Tanáraink névsorának bővítése és kiegészítése.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="message.php"><img class="indeximg" src="images/speech-bubble.png" /></a>
-			<div class="inlineBox">Üzenetek küldése osztálytársnak iskolatársaknak vagy az egész világnak.</div>
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="message.php">
+                <div class="inlineBox"><img class="indeximg" src="images/speech-bubble.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Üzenetek küldése osztálytársnak iskolatársaknak vagy az egész világnak.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="rip.php"><img img class="indeximg" src="images/candleicon.jpg" /></a>
-			<div class="inlineBox">Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div>
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="rip.php">
+                <div class="inlineBox"><img img class="indeximg" src="images/candleicon.jpg" /></div>
+			    <div class="inlineBox" style="vertical-align: middle;">Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="editDiak.php?uid=levi&tabOpen=4"><img img class="indeximg" src="images/hand-holding-cv.png" /></a>
-			<div class="inlineBox">Történetek, képek és életrajz megosztása.</div> 
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="editDiak.php?uid=levi&tabOpen=4">
+                <div class="inlineBox"><img img class="indeximg" src="images/hand-holding-cv.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Történetek, képek és életrajz megosztása.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="worldmap.php"><img img class="indeximg" src="images/geography.png" /></a>
-			<div class="inlineBox">Térképen megjelenített szétszóródása az osztálytársaknak.</div> 
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="worldmap.php">
+                <div class="inlineBox"><img img class="indeximg" src="images/geography.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Térképen megjelenített szétszóródása az osztálytársaknak.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="vote.php?classid=74"><img img class="indeximg" src="images/vote.png" /></a>
-			<div class="inlineBox">Találkozók szervezésére alkalmas szavazati lista.</div> 
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="vote.php?classid=74">
+                <div class="inlineBox"><img img class="indeximg" src="images/vote.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Találkozók szervezésére alkalmas szavazati lista.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="#"><img img class="indeximg" src="images/group.png" /></a>
-			<div class="inlineBox">Osztályfelelősők körlevelet (E-mailt) küldhetnek volt osztálytársuknak.</div> 
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="#">
+                <div class="inlineBox"><img img class="indeximg" src="images/group.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Osztályfelelősők körlevelet (E-mailt) küldhetnek volt osztálytársuknak.</div>
+            </a>
 		</div>
-		<div class="col-sm-4">
-			<a class="inlineBox" href="zenetoplista.php?classid=all"><img img class="indeximg" src="images/record-player.png" /></a>
-			<div class="inlineBox">Véndiákok toplistája, milyen zenére mullatnak az egykori diákok.</div> 
+		<div class="col-sm-4" style="margin-top: 14px;">
+			<a class="inlineBox" href="zenetoplista.php?classid=all">
+                <div class="inlineBox"><img img class="indeximg" src="images/record-player.png" /></div>
+                <div class="inlineBox" style="vertical-align: middle;">Véndiákok toplistája, milyen zenére mullatnak az egykori diákok.</div>
+            </a>
 		</div>
 	</div>
 	<div class="row">&nbsp;</div>

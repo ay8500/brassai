@@ -1072,7 +1072,22 @@ class dbDAO {
 		}
 		return $ret;
 	}
-	
+
+
+    /**
+     * Union select the ids from the latest changes
+     * @param DateTime $dateFrom
+     * @param int $limit
+     * @return array
+     */
+	public function getRecentChangeList($dateFrom,$limit=50) {
+	    $sql  = " select id, changeDate, 'person' as type from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+	    $sql .= " union ";
+        $sql .= " select id, changeDate, 'picture' as type from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+        $sql .= " order by changeDate desc limit ".$limit;
+        $this->dataBase->query($sql);
+        return $this->dataBase->getRowList();
+    }
 
 //******************** Vote DAO *******************************************
 	
@@ -1779,6 +1794,16 @@ class dbDAO {
         }
         return "Elements=".$this->dataBase->count()." Encrypted=".$ret;
 
+    }
+
+    /**
+     * Delete history entry
+     * @param int $id
+     * @return bool
+     */
+    public function deleteHistoryEntry($id)
+    {
+        return $this->dataBase->delete("history", "id", $id);
     }
 
 }
