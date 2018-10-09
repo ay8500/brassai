@@ -230,8 +230,10 @@ $albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
 if (getParam("album")!=null) {
 	$newAlbum = true;
 	foreach ($albumList as $alb) {
-		if ($alb["albumName"]==getParam("album"))
-			$newAlbum=false;
+		if ($alb["albumName"]==getParam("album")) {
+            $newAlbum=false;
+            break;
+        }
 	}
 	if ($newAlbum) {
 		$albumList = array_merge($albumList,array(array("albumName"=>getParam("album"),"albumText"=>getParam("album"))));

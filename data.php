@@ -44,10 +44,12 @@ if ($schoolid=getParam("schoolid", "")!="") {
  */
 function getAktClassFolder() {
 	$class=getAktClass();
-	if ($class!=null)
-		return $class["name"].$class["graduationYear"];
-	else
-		return "";
+	if ($class!=null) {
+        return $class["name"] . $class["graduationYear"];
+    } else {
+		return "school".getAktSchoolId();
+	}
+
 }
 
 /**
@@ -551,7 +553,8 @@ function getPersonLink($lastname,$firstname) {
 
 /**
  * Translate special chars in normal chars eg. á->a
- * @param unknown $s
+ * @param string $s
+ * @return string
  */
 function getNormalisedChars($s) {
   $trans = array (

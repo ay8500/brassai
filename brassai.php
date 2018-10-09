@@ -1,9 +1,13 @@
 <?php
-$SiteTitle="Brassai Sámuel életrajza"; 
-$SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai";
+include_once("tools/userManager.php");
+include_once 'tools/appl.class.php';
+
+use \maierlabs\lpfw\Appl as Appl;
+
+Appl::setSiteTitle("Iskolánk névadója Brassai Sámuel");
+Appl::setSiteSubTitle("Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai");
 include("homemenu.php"); 
 ?>
-<h2 class="sub_title">Brassai Sámuel életrajzi adatai</h2>
 
 <div style="text-align: center;">
  <div style="margin-left: auto;"><img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/></div>
