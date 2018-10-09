@@ -38,7 +38,7 @@ include_once 'editDiakCard.php';
 		?>
 		</div>
 		<a href="start.php?limit=100" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
-        <a href="start.php?limit=300" class="btn btn-default" style="margin:10px;text-decoration: none;" >Sokat szeretnék látni</a>
+        <a href="start.php?limit=300" class="btn btn-default" style="margin:10px;text-decoration: none;" >Nagyon sokat szeretnék látni</a>
 	</div>
 
 
