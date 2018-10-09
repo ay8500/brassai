@@ -1082,8 +1082,10 @@ class dbDAO {
      */
 	public function getRecentChangeList($dateFrom,$limit=50) {
 	    $sql  = " select id, changeDate, 'person' as type from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+        $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
 	    $sql .= " union ";
         $sql .= " select id, changeDate, 'picture' as type from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+        $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
         $sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
