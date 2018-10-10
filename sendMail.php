@@ -2,21 +2,6 @@
 include_once("data.php");
 include_once 'tools/appl.class.php';
 
-//Mail send operation message
-$sendMailMsg = "";
-
-//Count of sent mails
-$sendMailCount = 0;
-
-//Automatic send option not usesd yet
-/*
-$action=""; if (isset($_POST["action"])) $action=$_POST["action"];
-if ($action == 'sendMail')
-{
-
-}
-*/
-
 /**
  * Send new password
  * todo: use mail template instead of hard coded text
@@ -75,19 +60,15 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
  */
 function SendMail($uid,$text,$userData) {
 		global $db;
-		global $sendMailCount;
-		global $sendMailMsg;
 		$diak = $db->getPersonByID($uid);
 		
 		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
 		$text=str_replace("\"","&quot;",$text);
 		$text.='<hr/><p>Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
 		if ($userData) {
-			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".$diak["passw"]."<br/></p>";
+			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
 		sendHtmlMail(getFieldValue($diak["email"]),$text);
-		$sendMailCount++;
-		$sendMailMsg="Elködött mailek száma:".$sendMailCount;
 }
 
 

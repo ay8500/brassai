@@ -1,7 +1,8 @@
 <?php $diak = $db->getPersonByID($personid);?>
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser()) { ?>
 	<table style="width:90%" class="editpagetable">
-		<form action="editDiak.php" method="get">
+
+        <form action="editDiak.php" method="get">
 			<tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-user"></span> Becenév módosítása</h3> A becenév minimum 6 karakter hosszú kell legyen. </p></td></tr>
 			<tr><td class="caption1">Becenév</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="<?php  echo $diak["user"] ?>" /></td></tr>
 			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="btn btn-default" value="Új becenév!" title="Új becenév kimentése" /></td></tr>
@@ -9,7 +10,8 @@
 			<input type="hidden" value="<?php echo getAktUserId(); ?>" name="uid" />
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
-		<tr><td colspan="3"><hr/> </td></tr>
+
+        <tr><td colspan="3"><hr/> </td></tr>
 			<form action="editDiak.php" method="get">
 			<tr><td colspan="3"><p style="text-align:left"><h3><span class="glyphicon glyphicon-sunglasses"></span> Jelszó módosítása</h3> A jelszó minimum 6 karakter hosszú kell legyen. </p></td></tr>
 			<tr><td class="caption1">Jelszó</td><td>&nbsp;</td>
@@ -23,7 +25,14 @@
 			<input type="hidden" value="<?php echo getAktUserId(); ?>" name="uid" />
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
-		<?php if (isset($_SESSION['FacebookId']) && isset($diak["facebookid"]) && $diak["facebookid"]==$_SESSION['FacebookId']) : ?>		
+
+        <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-wrench"></span> Direkt link az adataimhoz</h3> Ezzel a linkkel becenév és jelszó nélül lehet bejelentkezni.</p></td></tr>
+        <tr><td class="caption1">Link</td><td>&nbsp;</td><td><a href="editDiak.php?key=<?php echo generateUserLoginKey(getAktUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
+
+        <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
+        <tr><td class="caption1">Dátum</td><td>&nbsp;</td><td><?php echo $diak["userLastLogin"]?></a></td></tr>
+
+        <?php if (isset($_SESSION['FacebookId']) && isset($diak["facebookid"]) && $diak["facebookid"]==$_SESSION['FacebookId']) : ?>
 		<tr><td colspan="3"><hr/> </td></tr>
 		<tr><td colspan="3">
 			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo $_SESSION["FacebookName"] ?>" Facebook felhasználóval.<br />
@@ -40,6 +49,6 @@
 		</td></tr>
 		<?php endif ?>
 	</table>
-<?php } else {	?>
-	<div class="resultDBoperation" ><div class="alert alert-warning">Hozzáférésí jog hiánzik!</div></div>
-<?php }?>	
+<?php } else {
+	\maierlabs\lpfw\Appl::setMessage('Oldal hozzáférésí jog hiánzik!',"warning");
+}?>

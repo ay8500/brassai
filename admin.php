@@ -1,7 +1,8 @@
-<?PHP 
-include_once("data.php");
-include_once("tools/userManager.php");
+<?PHP
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
+include_once 'data.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -21,16 +22,20 @@ Appl::addJsScript("
 	});
 ");
 
-if (isset($_GET["action"]) && ($_GET["action"]=="sendMail")) {
+if (isActionParam("sendMail")) {
 	if ( userIsAdmin() ) {
 		include_once ("sendMail.php");
 		$persons = $db->getPersonListByClassId(getAktClassId());
+		$mailsSent =0;
 		foreach ($persons as $person) {
 			$uid=$person["id"];
 			if (isset($_GET["D".$uid])) {
-				SendMail($uid, $_GET["T"],isset($_GET["U"]) );
+                if (SendMail($uid, $_GET["T"], isset($_GET["U"]))) {
+                    $mailsSent += 1;
+                }
 			}
 		}
+		Appl::setMessage("Elküldött e-mailek száma:".$mailsSent,$mailsSent>0?"success":"warning");
 	}
 }
 
@@ -154,11 +159,14 @@ Ezt az e-mailt <a href=https://brassai.blue-l.de/index.php?<?PHP echo('classid='
 		?>
 		</table>
 	<?PHP } ?>
-<?php } else { ?>
-	<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>
-<?php } ?>
+<?php } else {
+    Appl::setMessage("Adat hozzáférési jog hiányzik!", "warning");
+}
+?>
 </div>
-<script language="JavaScript" type="text/javascript">
+
+<?php
+Appl::addJsScript("
 	function checkUncheckAll(state) {
 		for(var z=0; z < document.mail.elements.length; z++) {
 			if (document.mail.elements[z].type == 'checkbox') {
@@ -167,5 +175,5 @@ Ezt az e-mailt <a href=https://brassai.blue-l.de/index.php?<?PHP echo('classid='
 	  		}
      	}
     }
-</script>
-<?php include 'homefooter.php'; ?>
+");
+include 'homefooter.php'; ?>
