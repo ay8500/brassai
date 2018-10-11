@@ -70,7 +70,7 @@ function classList($db,$classes,$eveningClass) {
    		  		<?php } ?>
    		  		<div>
    		  		<?php 
-   		  		if (isset($stat->teacher->picture)) {
+   		  		if (isset($stat->teacher->picture) && strlen($stat->teacher->picture)>1) {
    		  			echo('<div style="display:inline"><img src="images/'.$stat->teacher->picture.'" class="diak_image_sicon"/></div>');
    		  		}
    		  		if (isset($stat->teacher->lastname)) {

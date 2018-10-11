@@ -14,7 +14,7 @@ if (isActionParam('newPassword')) {
 	if (checkEmail($mail)) {
 		$ret=resetUserPasswort($mail, createPassword(8) );
 		if ($ret>0) { 
-			SendNewPassword($ret);
+			SendNewPassword($db->getPersonByID($ret));
 			Appl::setMessage('Új jelszó a következő címre elküldve : '.$mail, 'success');
 		}
     	else if ($ret==-1)

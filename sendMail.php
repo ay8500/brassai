@@ -6,23 +6,20 @@ include_once 'tools/appl.class.php';
  * Send new password
  * todo: use mail template instead of hard coded text
  */
-function SendNewPassword($uid) {
-	global $db;
-	global $sendMailMsg;
-	$diak = $db->getPersonByID($uid,true);
+function SendNewPassword($diak) {
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
 	$text.="Ezt az e-mail azért kapod mert kérdésedre megvátoztak a bejelentkezési adataid.<br />";
 	$text.="<p>";
 	$text.="Végzős osztály:".getAktClassName()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".encrypt_decrypt("decrypt",$diak["passw"])."<br/>";
-	$text.='Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
+	$text.='Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($diak['id']).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
 	$text.='<a href=https://brassai.blue-l.de/index.php?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
-	sendHtmlMail("brassai@blue-l.de",$text," New password");
+	sendHtmlMail("brassai@blue-l.de",$text," new password request");
 }
 
 /**

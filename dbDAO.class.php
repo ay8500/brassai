@@ -336,7 +336,7 @@ class dbDAO {
 		//the protected email
 		if ($person==null)
 			$person = $this->getEntryByField("person", "email", "~".$email);
-		return $person;
+		return $this->getPersonByID(getRealId($person));
 	}
 
 	/**
