@@ -188,7 +188,7 @@ function displayPicture($db,$picture,$showSchool=false) {
 
 function displayIcon($d,$field,$image,$title,$appl) {
     if (isset($d[$field]) && strlen($d[$field])>8)
-        if(showField($d,"phone"))
+        if(showField($d,$field))
             echo '&nbsp;<a href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
         else
             echo '&nbsp;<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
