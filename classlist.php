@@ -2,7 +2,8 @@
 include_once 'tools/appl.class.php';
 $SiteTitle="Brassai Sámuel osztályok"; 
 $SiteDescription="A kolozsvári Brassai Sámuel líceum osztályai";
-\maierlabs\lpfw\Appl::addCssStyle('
+use maierlabs\lpfw\Appl as Appl;
+Appl::addCssStyle('
 	.classdiv {
         margin: 3px 2px 3px 2px;
     	width: 154px;
@@ -18,7 +19,7 @@ $SiteDescription="A kolozsvári Brassai Sámuel líceum osztályai";
 	.classdiv-b 		{background-color: #e0d0d0;}
 	.classdiv-b:hover	{background-color: #f8e8e8;}
 ');
-\maierlabs\lpfw\Appl::setSiteSubTitle("Osztályok");
+Appl::setSiteSubTitle("Osztályok");
 include("homemenu.php"); 
 $classes = $db->getClassList();
 ?>
@@ -39,11 +40,12 @@ $classes = $db->getClassList();
 			<?php classList($db,$classes,1);?>
 		</div>
 	</div>
-<?PHP  include ("homefooter.php");
+
+
+<?php
 
 function classList($db,$classes,$eveningClass) { 
-	//TODO StafClassId from Session
-	$stafClassId=$db->getStafClassIdBySchoolId(getAktSchoolId());
+	$stafClassId=Appl::getMemeberId("staffClass");
 	foreach($classes as $cclass) {
 		if ($cclass["id"]!=$stafClassId && $eveningClass==$cclass["eveningClass"]) {
 			if (getAktClassId()==$cclass["id"])
@@ -68,7 +70,7 @@ function classList($db,$classes,$eveningClass) {
    		  		<?php } ?>
    		  		<div>
    		  		<?php 
-   		  		if (isset($stat->teacher->picture)) {
+   		  		if (isset($stat->teacher->picture) && strlen($stat->teacher->picture)>1) {
    		  			echo('<div style="display:inline"><img src="images/'.$stat->teacher->picture.'" class="diak_image_sicon"/></div>');
    		  		}
    		  		if (isset($stat->teacher->lastname)) {
@@ -79,4 +81,7 @@ function classList($db,$classes,$eveningClass) {
   		<?php 
 		}
 	}
-}?>
+}
+
+include ("homefooter.php");
+?>

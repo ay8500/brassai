@@ -63,122 +63,131 @@
 	<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 		<button onclick="document.location='gdpr.php?id=<?php echo($diak["id"]);?>';" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
 	</div>
-	
-<form method="get" name="edit_form" >
-	<?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
-		$optionClasses=$db->getClassList(getAktSchoolId());
-		unset($optionClasses[0]); //The first class is the teachers list
-	?>
-		<div style="min-height:30px" class="input-group">
-      		<span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
-      		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-			<input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />
-   		</div>
-   		<div style="min-height:30px" class="input-group">
-      		<span style="min-width:110px;" class="input-group-addon" >Iskola</span>
-      		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-			<select class="form-control" name="schoolID" id="schoolID">
-				<option>Brassai Sámuel líceum</option>
-			</select>
-   		</div>
-   		<?php if (getAktClassId()!=0) {?>	
-   		<div style="min-height:30px" class="input-group">
-      		<span style="min-width:110px;" class="input-group-addon" >Osztály</span>
-      		<span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-			<select class="form-control" name="classID" id="classID">
-				<option value="-1" >...válassz...</option>
-				<?php foreach ($optionClasses as $optionClass) {?>
-					<option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
-				<?php } ?>
-			</select>
-   		</div>
+
+<?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
+    <form method="get" name="edit_form" >
+        <?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
+            $optionClasses=$db->getClassList(getAktSchoolId());
+            unset($optionClasses[0]); //The first class is the teachers list
+        ?>
+            <div style="min-height:30px" class="input-group">
+                <span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
+                <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+                <input type="text" readonly  id="highlight" class="form-control" value="Ha azt szeretnéd, hogy az adataidat csak a bejelentkezett diákok/osztálytársak lássák, akkor jelöld meg öket!" />
+            </div>
+            <div style="min-height:30px" class="input-group">
+                <span style="min-width:110px;" class="input-group-addon" >Iskola</span>
+                <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+                <select class="form-control" name="schoolID" id="schoolID">
+                    <option>Brassai Sámuel líceum</option>
+                </select>
+            </div>
+            <?php if (getAktClassId()!=0) {?>
+            <div style="min-height:30px" class="input-group">
+                <span style="min-width:110px;" class="input-group-addon" >Osztály</span>
+                <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+                <select class="form-control" name="classID" id="classID">
+                    <option value="-1" >...válassz...</option>
+                    <?php foreach ($optionClasses as $optionClass) {?>
+                        <option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <?php } ?>
+        <?php } else {?>
+            <input type="hidden" name="classID" value="<?php echo getAktClassId()?>" />
+            <input type="hidden" name="schoolID" value="<?php echo getAktSchoolId()?>" />
         <?php } ?>
-    <?php } else {?>
-        <input type="hidden" name="classID" value="<?php echo getAktClassId()?>" />
-        <input type="hidden" name="schoolID" value="<?php echo getAktSchoolId()?>" />
-   	<?php } ?>
-   	
-   	
-	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
-	<?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
-		<div class="input-group">
-			<?php
-			//Placeholder
-			$obl=$dataFieldObl[$i];
-			$dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
-			//Inpufields
-			if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
-				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
-				<?php if ( userIsLoggedOn()) {?>	      		
-				<span style="width:40px" id="highlight" class="input-group-addon">
-		      		<?php if ($dataCheckFieldVisible[$i]) {
-		        		echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
-		      		} ?>
-	      		</span>
-	      		<?php }?>
-	      		<?php   
-	      		$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-	      		echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-	      		if ($dataFieldNames[$i]=="changeUserID") {
-	      			$person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
-	      			echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
-	      		}?>
-			<?php //Inpufields new person
-			} elseif ($anonymousEditor) {?>
-				<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>	      		
-	      		<?php 
-	      		if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
-	      			$dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-	      			echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-	      		} else {
-	      			echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
-	      		}
-	      	//Display fields
-			} else {
-				if (showField($diak,$dataFieldNames[$i])) {
-					$itemprop=$dataItemProp[$i]==""?"":'itemprop="'.$dataItemProp[$i].'"';
-					?>
-					<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
-					<?php
-					if ($db->isClassIdForStaf($classId) && $dataFieldNames[$i]=="children") {
-						$c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
-						echo('<div  class="form-control" style="height:auto;">');
-						foreach ($c as $id=>$cc) {
-							if ($id!=0) echo(',');
-							$class= $db->getClassByText($cc);
-							echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
-						}
-						echo('</div>');
-					} else {
-						echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.createLink(getFieldValueNull($diak,$dataFieldNames[$i])).'</div>');
-					}
-				 }
-			}?>
-		</div>	
-	<?php } ?>
-	</div>
-	<?php 
-	//Hidden fields action, uid, tabOpen,role
-	if ($edit || $createNewPerson) {
-		if ($action=="newperson") {
-			echo('<input type="hidden" name="action" value="savenewperson" id="form_action" />');
-		} 
-		else if ($action=="newteacher") {
-			echo('<input type="hidden" name="action" value="savenewteacher" id="form_action" />');
-		} 
-		else if ($action=="newguest") {
-			echo('<input type="hidden" name="action" value="savenewguest" id="form_action" />');
-		} 
-		else {
-			echo('<input type="hidden" name="action" value="changediak" id="form_action" />');
-		}
-		echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
-		echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
-		if (!userIsAdmin())
-			echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
-	}
-?>
-</form>
+
+
+        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
+        <?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
+            <div class="input-group">
+                <?php
+                //Placeholder
+                $obl=$dataFieldObl[$i];
+                $dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
+                //Inpufields
+                if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
+                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
+                    <?php if ( userIsLoggedOn()) {?>
+                    <span style="width:40px" id="highlight" class="input-group-addon">
+                        <?php if ($dataCheckFieldVisible[$i]) {
+                            echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
+                        } ?>
+                    </span>
+                    <?php }?>
+                    <?php
+                    $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
+                    echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+                    if ($dataFieldNames[$i]=="changeUserID") {
+                        $person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
+                        echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
+                    }?>
+                <?php //Inpufields new person
+                } elseif ($anonymousEditor) {?>
+                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
+                    <?php
+                    if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
+                        $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
+                        echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+                    } else {
+                        echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
+                    }
+                //Display fields
+                } else {
+                    if (showField($diak,$dataFieldNames[$i])) {
+                        $itemprop=$dataItemProp[$i]==""?"":'itemprop="'.$dataItemProp[$i].'"';
+                        ?>
+                        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
+                        <?php
+                        if ($db->isClassIdForStaf($classId) && $dataFieldNames[$i]=="children") {
+                            $c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
+                            echo('<div  class="form-control" style="height:auto;">');
+                            foreach ($c as $id=>$cc) {
+                                if ($id!=0) echo(',');
+                                $class= $db->getClassByText($cc);
+                                echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
+                            }
+                            echo('</div>');
+                        } else {
+                            echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.createLink(getFieldValueNull($diak,$dataFieldNames[$i])).'</div>');
+                        }
+                     }
+                }?>
+            </div>
+        <?php } ?>
+        </div>
+        <?php
+        //Hidden fields action, uid, tabOpen,role
+        if ($edit || $createNewPerson) {
+            if ($action=="newperson") {
+                echo('<input type="hidden" name="action" value="savenewperson" id="form_action" />');
+            }
+            else if ($action=="newteacher") {
+                echo('<input type="hidden" name="action" value="savenewteacher" id="form_action" />');
+            }
+            else if ($action=="newguest") {
+                echo('<input type="hidden" name="action" value="savenewguest" id="form_action" />');
+            }
+            else {
+                echo('<input type="hidden" name="action" value="changediak" id="form_action" />');
+            }
+            echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
+            echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
+            if (!userIsAdmin())
+                echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
+        }
+    ?>
+    </form>
+<?php } else {
+    ?>
+    <br/><br/><br/><div>
+        <?php echo $person["lastname"] ?> <?php echo $person["firstname"] ?> a <?php echo getAktSchool()["name"] ?>-ban végzett.
+        Utolsó diákéveit a <?php echo getAktClass()["name"] ?>-ban járta.
+        <?php if (isset($person["birthname"])) { ?> Osztálytársai <?php echo $person["birthname"] ?> diákkori nevén ismerik. <?php } ?>
+    </div>
+<?php } ?>
 
 <script>
 	function validateEmailInput(sender,button) { 

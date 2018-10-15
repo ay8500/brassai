@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c26d1f2e-1940-427d-98ef-d2697b486335" name="Xampp" url="http://192.168.201.40/brassai">
+        <fileTransfer port="0" mountedRoot="C:\xampp\htdocs\brassai" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>
