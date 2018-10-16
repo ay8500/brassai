@@ -15,6 +15,21 @@ unsetAktClass();
 Appl::$subTitle = 'Újdonságok';
 include("homemenu.php");
 include_once 'editDiakCard.php';
+
+function showRecentChanges($db) {
+    $ids=$db->getRecentChangeList(new \DateTime(), getIntParam("limit",30));
+    foreach ($ids as $id) {
+        if ($id["type"]=="person") {
+            $person = $db->getPersonByID($id["id"]);
+            displayPerson($db,$person,true,true);
+        } elseif ($id["type"]=="picture") {
+            $picture=$db->getPictureById($id["id"]);
+            displayPicture($db,$picture);
+        }
+
+    }
+}
+
 ?>
 <div class="container-fluid">
 	<div class="panel panel-default " >
@@ -23,19 +38,7 @@ include_once 'editDiakCard.php';
 			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések </h4>
 		</div>
 		<div class="panel-body">
-		<?php 
-		$ids=$db->getRecentChangeList(new \DateTime(), getIntParam("limit",30));
-		foreach ($ids as $id) {
-		    if ($id["type"]=="person") {
-		        $person = $db->getPersonByID($id["id"]);
-                displayPerson($db,$person,true,true);
-            } elseif ($id["type"]=="picture") {
-		        $picture=$db->getPictureById($id["id"]);
-                displayPicture($db,$picture);
-            }
-
-		}
-		?>
+		<?php showRecentChanges($db);?>
 		</div>
 		<a href="start.php?limit=100" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
         <a href="start.php?limit=300" class="btn btn-default" style="margin:10px;text-decoration: none;" >Sokkal többet szeretnék látni</a>
@@ -67,16 +70,5 @@ include_once 'editDiakCard.php';
 		</div>
 	</div>
 </div>
-<?php
 
-include ("homefooter.php");
-
-function sortBests($a,$b) {
-	if (intval($a)<intval($b))
-		return 1;
-	elseif (intval($a)>intval($b))
-		return -1;
-	else
-		return 0;
-}
-?>
+<?php include ("homefooter.php"); ?>

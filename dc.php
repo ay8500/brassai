@@ -1,6 +1,8 @@
 <?php
 include_once 'tools/appl.class.php';
 
+use \maierlabs\lpfw\Appl as Appl;
+
 $su= explode("?",$_SERVER["REQUEST_URI"]);
 
 $su = explode("/",$su[0]);
