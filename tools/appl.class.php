@@ -2,6 +2,7 @@
 
 namespace maierlabs\lpfw;
 
+include_once __DIR__ . "/../config.class.php";
 
 /**
  * /**
@@ -22,8 +23,6 @@ class Appl {
 	private static $cssStyle ="";
 	private static $jsScript = "";
 	
-	private static $webAppVersion = '2018-08-14';
-
 	private static $members = array();
 
     /**
@@ -109,7 +108,7 @@ class Appl {
 	 */
 	public static function includeCss() {
 		foreach (self::$css as $cssfile) {
-			echo('<link rel="stylesheet" type="text/css" href="'.$cssfile.'?v='.self::$webAppVersion.'"></link>'."\n");
+			echo('<link rel="stylesheet" type="text/css" href="'.$cssfile.'?v='.\Config::$webAppVersion.'"></link>'."\n");
 		}
 		if (self::$cssStyle!='')
 			echo("<style>".self::$cssStyle."</style>\n");
@@ -129,7 +128,7 @@ class Appl {
 				echo  "\n".'</script>'."\n";
 			} else {
 				if ($j->version) {
-					echo('<script type="text/javascript" src="'.$j->file.'?v='.self::$webAppVersion.'"></script>'."\n");
+					echo('<script type="text/javascript" src="'.$j->file.'?v='.\Config::$webAppVersion.'"></script>'."\n");
 				} else {
 					echo('<script type="text/javascript" src="'.$j->file.'"></script>'."\n");
 				}
@@ -168,7 +167,7 @@ class Appl {
      * @param object $default
      * @return object
      */
-    public static function getMemeber($name,$default=null) {
+    public static function getMember($name, $default=null) {
 	    if (isset(self::$members[$name])) {
 	        return self::$members[$name];
         } else {
@@ -183,9 +182,9 @@ class Appl {
      * @param string $name
      * @return int|null
      */
-    public static function getMemeberId(string $name)
+    public static function getMemberId(string $name)
     {
-        $m =self::getMemeber($name);
+        $m =self::getMember($name);
         return ($m!=null && isset($m["id"]))?$m["id"]:null;
     }
 }

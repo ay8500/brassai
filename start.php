@@ -57,7 +57,7 @@ function showRecentChanges($db) {
 				<li>Január 2018: <a href="hometable.php?classid=340">Estis tanfolyamok névsora.</a></li>
 				<li>December 2017: <a href="start.php">Újdonságok,</a> ezen az oldalon az utólsó frissitéseket illetve bejegyzéseket lehet megtekinteni.</li>
 				<li>December 2016: <a href="picture.php?type=schoolID&typeid=1&album=_tablo_">Tablók</a> albumával bővült az oldal.</li>
-				<li>Március 2016: <a href="hometable.php?classid=<?php echo Appl::getMemeberId("staffClass")?>">Tanárok</a> listályával bővült az oldal.</li>
+				<li>Március 2016: <a href="hometable.php?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanárok</a> listályával bővült az oldal.</li>
                 <a>Junius 2015: <a href="message.php">Üzenőfal</a> híreknek, véleményeknek, szervezésnek, újdonságoknak.</>
 				<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
 				<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>

@@ -1,4 +1,10 @@
 <?php
+session_start();
+//User is logged in and have the role of admin
+if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
+    die("Only for admins");
+
+include_once __DIR__ . "/../config.class.php";
 
 error_reporting(0);
 set_time_limit(0);
@@ -6,11 +12,8 @@ set_time_limit(0);
 $password=isset($_GET["password"])?$_GET["password"]:"";
 $password=($password==="levi");
 
-if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
-	db_restore("db652851844.db.1and1.com", 'dbo652851844','levi1967', 'db652851844', __DIR__."/backup.sql",$password) ;
-} else {
-	db_restore("localhost", "root", "root", "db652851844", __DIR__."/backup.sql",$password);
-}
+$db = \Config::getDatabasePropertys();
+db_restore($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$password) ;
 
 
 // ab hier nichts mehr ändern
@@ -19,7 +22,7 @@ function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $password)
 	$allRows=0;
 	$okRows=0;
 	$errorRows=0;
-	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd, $dbname) or die(mysql_error());
+	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd, $dbname) or die(mysqli_error());
 	$f = fopen($dbrestore, "r");
 	echo("Restorefile:".$dbrestore."<br/>");
 	if ($f) {

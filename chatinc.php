@@ -50,12 +50,12 @@ function showChatEnterfields($personList) {
 					<div style="display: inline-block;">
 						<div class="input-group input-group" style="margin: 3px;">
 			    			<span class="input-group-addon" style="width:30px;" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
-			    			<input name="paramName" type="text" class="form-control" id="loginUser" placeholder="<?php echo getTextRes("LogInUser"); ?>" style="display: inline-block;" />
+			    			<input name="paramName" type="text" class="form-control" id="loginUser" placeholder="<?php echo Config::_text("LogInUser"); ?>" style="display: inline-block;" />
 					</div></div>
 					<div style="display: inline-block;">
 						<div class="input-group input-group" style="margin: 3px;">
 			    			<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
-			    			<input name="paramPassw" type="password" class="form-control" id="loginPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
+			    			<input name="paramPassw" type="password" class="form-control" id="loginPassw" placeholder=<?php echo Config::_text("LogInPassw"); ?>  >
 					</div></div>
 					<?php }?>
 				</div>

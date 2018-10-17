@@ -11,13 +11,13 @@
 // =========================================[ Configuration start ]===
 
 /**
- * It's preferable to configure the script using `deploy-config.php` file.
+ * It's preferable to configure the script using `deploy-config.class.php` file.
  *
- * Rename `deploy-config.example.php` to `deploy-config.php` and edit the
+ * Rename `deploy-config.example.php` to `deploy-config.class.php` and edit the
  * configuration options there instead of here. That way, you won't have to edit
  * the configuration again if you download the new version of `deploy.php`.
  */
-if (file_exists(basename(__FILE__, '.php').'-config.php')) require_once basename(__FILE__, '.php').'-config.php';
+if (file_exists(basename(__FILE__, '.php').'-config.class.php')) require_once basename(__FILE__, '.php').'-config.class.php';
 
 /**
  * Protect the script from unauthorized access by using a secret access token.

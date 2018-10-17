@@ -4,7 +4,7 @@
  *
  * It's preferable to configure the script using this file istead of directly.
  *
- * Rename this file to `deploy-config.php` and edit the
+ * Rename this file to `deploy-config.class.php` and edit the
  * configuration options here instead of directly in `deploy.php`.
  * That way, you won't have to edit the configuration again if you download the
  * new version of `deploy.php`.

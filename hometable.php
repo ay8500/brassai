@@ -3,7 +3,7 @@ include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
-include_once("config.php");
+include_once("config.class.php");
 include_once("data.php");
 include_once 'editDiakCard.php';
 
@@ -65,7 +65,7 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 		<?php if ($guests) {?>
 			Vendégek&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } elseif (!isAktClassStaf()) {?>
-			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(Appl::getMemeber("aktClass")), $guests));?></span>
+			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(Appl::getMember("aktClass")), $guests));?></span>
 		<?php } else  {?>
 			Tanárok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getAktClass()), $guests));?></span>
 		<?php } ?>

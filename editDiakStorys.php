@@ -37,7 +37,7 @@
 			</div> 
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >
-					<input type="submit" class="btn btn-default" value="<?php echo getTextRes("Save");?>" />
+					<input type="submit" class="btn btn-default" value="<?php echo Config::_text("Save");?>" />
 				</div>
 			</div>
 		</form>

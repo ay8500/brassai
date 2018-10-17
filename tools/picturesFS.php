@@ -7,15 +7,11 @@ if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
 error_reporting(1);
 set_time_limit(0);
 
-if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
-	db_pictures("db652851844.db.1and1.com", 'dbo652851844','levi1967', 'db652851844', __DIR__."/backup.sql") ;
-} else {
-	db_pictures("localhost", "root", "root", "db652851844", __DIR__."/backup.sql");
-}
+include_once __DIR__ . "/../config.class.php";
+$db = \Config::getDatabasePropertys();
+db_pictures($db->host,$db->user,$db->password,$db->database) ;
 
-
-
-function db_pictures($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup)
+function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 {
 	echo("Result of pictures checking source filesystem<br/>");
 	

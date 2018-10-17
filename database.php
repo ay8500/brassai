@@ -1,10 +1,13 @@
 <?php
 include_once("tools/sessionManager.php");
+if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
+    die("Only for admins");
+
 include_once('tools/ltools.php');
 include_once 'tools/appl.class.php';
 
 if (getParam("action")=="passw") {
-	include_once("config.php");
+	include_once("config.class.php");
 	include_once("logon.php");
 	include_once("data.php");
 

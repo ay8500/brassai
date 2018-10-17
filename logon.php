@@ -4,7 +4,7 @@
 	include_once 'tools/appl.class.php';
 	include_once 'tools/ltools.php';
 	include_once 'sendMail.php';
-	include_once 'config.php';
+	include_once 'config.class.php';
 
 	$logOnMessage="";
 	
@@ -15,17 +15,17 @@
 		if ((null==$paramName) || (null==$paramPassw)) { 
 			logoutUser();
 			http_response_code(400);
-			$logOnMessage =getTextRes("LogInError")."<br />".getTextRes("LogInUserPassw");
+			$logOnMessage =Config::_text("LogInError")."<br />".Config::_text("LogInUserPassw");
 		} else {
 			if (!checkRequesterIP(changeType::login)) {
 				logoutUser();
 				http_response_code(400);
-				$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInToManyErrors");
+				$logOnMessage = Config::_text("LogInError")."<br />".Config::_text("LogInToManyErrors");
 			} else {
 				if (!checkUserLogin($paramName,$paramPassw)) {
 					logoutUser();
 					http_response_code(400);
-					$logOnMessage = getTextRes("LogInError")."<br />".getTextRes("LogInUserPasErr");
+					$logOnMessage = Config::_text("LogInError")."<br />".Config::_text("LogInUserPasErr");
 					$db->saveRequest(changeType::login);
 					saveLogInInfo("Login","",$paramName,strlen($paramPassw),"false");
 				} else {
@@ -58,7 +58,7 @@
 	//Facebook login
 	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
-			$logOnMessage=getTextRes("LogInError");
+			$logOnMessage=Config::_text("LogInError");
 		}
 		if (! userIsAdmin()) {
 			saveLogInInfo("Facebook",getLoggedInUserId(),$_SESSION['FacebookId'],"","true");
@@ -83,15 +83,15 @@ function writeLogonDiv() {
 		<input type="hidden" value="logon" name="action"/>
 		<div class="input-group input-group" style="margin: 3px;">
     		<span class="input-group-addon" style="width:30px" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
-    		<input name="paramName" type="text" class="form-control" id="loUser" placeholder="<?php echo getTextRes("LogInUser"); ?>">
+    		<input name="paramName" type="text" class="form-control" id="loUser" placeholder="<?php echo Config::_text("LogInUser"); ?>">
 		</div>
 		<div class="input-group input-group" style="margin: 3px;">
     		<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
-    		<input name="paramPassw" type="password" class="form-control" id="loPassw" placeholder=<?php echo getTextRes("LogInPassw"); ?>  >
+    		<input name="paramPassw" type="password" class="form-control" id="loPassw" placeholder=<?php echo Config::_text("LogInPassw"); ?>  >
 		</div>
 		<div style="text-align:center; margin: 3px">
-			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo getTextRes("LogIn"); ?></button>
-		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo getTextRes("LogInLostData"); ?></button>
+			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo Config::_text("LogIn"); ?></button>
+		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo Config::_text("LogInLostData"); ?></button>
 		</div>
 	</form>
 	<div style="text-align:center; margin: 3px">

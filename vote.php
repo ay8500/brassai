@@ -16,13 +16,13 @@ Appl::setSiteSubTitle('A következő érettségi találkozónk');
 include("homemenu.php"); 
 
 //$class=$db->getClassById(getRealId(getAktClass()));
-$classMeetingCount=date("Y")-intval(Appl::getMemeber("aktClass")["graduationYear"]);
+$classMeetingCount=date("Y")-intval(Appl::getMember("aktClass")["graduationYear"]);
 
 if (($classMeetingCount % 5)!=0) $classMeetingCount += 5 - ($classMeetingCount % 5);
 if ($classMeetingCount<10) $classMeetingCount=10;
-$classMeetingYear = intval(Appl::getMemeber("aktClass")["graduationYear"])+$classMeetingCount;
+$classMeetingYear = intval(Appl::getMember("aktClass")["graduationYear"])+$classMeetingCount;
 
-$data=$db->getPersonListByClassId(Appl::getMemeberId("aktClass"));
+$data=$db->getPersonListByClassId(Appl::getMemberId("aktClass"));
 
 
 //Save vote data 

@@ -2,7 +2,7 @@
     ob_start("ob_gzhandler");
     include_once("tools/sessionManager.php");
     include_once 'tools/appl.class.php';
-	include_once("config.php");
+	include_once("config.class.php");
 	include_once("logon.php");
 	include_once("data.php");
 
@@ -53,7 +53,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?PHP echo($SiteTitle) ?></title>
+    <title><?PHP echo(Config::$SiteTitle) ?></title>
 	<?PHP if (strstr(getenv("QUERY_STRING"),"=thumbnails")!="") { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
@@ -66,7 +66,7 @@
 	<?PHP if (isset($SiteDescription) && $SiteDescription!="") { ?>
 		<meta name="description" content="<?PHP echo($SiteDescription) ?>" />
 	<?PHP } else { ?>
-		<meta name="description" content="<?PHP echo($SiteTitle) ?>" />
+		<meta name="description" content="<?PHP echo(Config::$SiteTitle) ?>" />
 	<?PHP } ?>
 	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />	
@@ -100,7 +100,7 @@
 					<li><a href="index.php">Start</a></li>
 					<li><a href="start.php">Újdonságok</a></li>
 					<li><a href="rip.php">Emléküket örökké őrizzük</a></li>
-					<li><a href="hometable.php?classid=<?php echo Appl::getMemeberId("staffClass")?>">Tanáraink</a></li>
+					<li><a href="hometable.php?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
         			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
         			<li><a href="iskola.php">Liceum története</a></li>
         			<li><a href="picture.php?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
@@ -113,23 +113,23 @@
         			<li><a href="zenetoplista.php?classid=all">Zenetoplista</a></li>
        			</ul>
       		</li>
-      		<?php if ( Appl::getMemeberId("aktClass")!=null && (Appl::getMemeber("aktClass")!=Appl::getMemeber("staffClass") || userIsAdmin())) {
-                $classStat = $db->getClassStatistics(Appl::getMemeberId("aktClass"), true);
+      		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || userIsAdmin())) {
+                $classStat = $db->getClassStatistics(Appl::getMemberId("aktClass"), true);
             ?>
             <li id="classmenu" class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getClassName(Appl::getMemeber("aktClass"),true)); ?><b
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getClassName(Appl::getMember("aktClass"),true)); ?><b
                             class="caret"></b></a>
                 <ul class="dropdown-menu multi-level">
-                    <li><a href="hometable.php?classid=<?php echo Appl::getMemeberId("aktClass") ?>">Véndiákok</a></li>
-                    <li><a href="hometable.php?guests=true&classid=<?php echo Appl::getMemeberId("aktClass") ?>">Vendégek és
+                    <li><a href="hometable.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Véndiákok</a></li>
+                    <li><a href="hometable.php?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek és
                             barátok</a></li>
                     <?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>
-                    <li><a href="worldmap.php?classid=<?php echo Appl::getMemeberId("aktClass") ?>">Térkép</a></li>
-                    <li><a href="picture.php?classid=<?php echo Appl::getMemeberId("aktClass") ?>">Osztályképek
+                    <li><a href="worldmap.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
+                    <li><a href="picture.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
                             <?php if ($classStat->classPictures > 0) { ?><span
                                     class="badge"><?php echo $classStat->classPictures ?></span><?php } ?>
                         </a></li>
-                    <?php if (Appl::getMemeberId("aktClass") == $db->getClassIdByText("1985 12A")) { ?>
+                    <?php if (Appl::getMemberId("aktClass") == $db->getClassIdByText("1985 12A")) { ?>
                         <li class="dropdown-submenu"><a>Régi képek</a>
                             <ul class="dropdown-menu">
                                 <li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
@@ -179,9 +179,9 @@
                             </ul>
                         </li>
                     <?php } ?>
-                    <li><a href="vote.php?classid=<?php echo Appl::getMemeberId("aktClass") ?>">A következő Találkozó</a></li>
-                    <li><a href="zenetoplista.php?classid=<?php echo Appl::getMemeberId("aktClass") ?>">Zenetoplista</a></li>
-                    <li><a href="editclass.php?classid=<?php echo Appl::getMemeberId("aktClass") ?>">Osztályinformációk</a></li>
+                    <li><a href="vote.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">A következő Találkozó</a></li>
+                    <li><a href="zenetoplista.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Zenetoplista</a></li>
+                    <li><a href="editclass.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályinformációk</a></li>
                 </ul>
             </li>
             <?php } ?>
@@ -251,7 +251,7 @@
     <h1 class="appltitle">
         <span id="o1024">A kolozsvári </span>
         Brassai Sámuel líceum <span id="o400">egykori </span>diákjai
-        <span id="o480"> <?PHP echo(getClassName(Appl::getMemeberId("aktClass"))) ?></span>
+        <span id="o480"> <?PHP echo(getClassName(Appl::getMemberId("aktClass"))) ?></span>
     </h1>
 </div>
 <div class="sub_title"><?php echo Appl::$subTitle ?></div>

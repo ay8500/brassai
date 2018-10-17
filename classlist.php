@@ -45,7 +45,7 @@ $classes = $db->getClassList();
 <?php
 
 function classList($db,$classes,$eveningClass) { 
-	$stafClassId=Appl::getMemeberId("staffClass");
+	$stafClassId=Appl::getMemberId("staffClass");
 	foreach($classes as $cclass) {
 		if ($cclass["id"]!=$stafClassId && $eveningClass==$cclass["eveningClass"]) {
 			if (getAktClassId()==$cclass["id"])

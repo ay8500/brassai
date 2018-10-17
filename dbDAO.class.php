@@ -8,6 +8,7 @@ use maierlabs\lpfw\MySqlDbAUH ;
 include_once 'tools/mysqldbauh.class.php';
 include_once 'tools/logger.class.php';
 include_once 'tools/ltools.php';
+include_once 'config.class.php';
 
 /**
  * data change types 
@@ -36,11 +37,8 @@ class dbDAO {
      */
     public function __construct(){
 		//Connect to the DB
-		if (!isLocalhost()) {
-			$this->dataBase = new MySqlDbAUH('db652851844.db.1and1.com','db652851844','dbo652851844','levi1967');
-		} else { 
-			$this->dataBase = new MySqlDbAUH('localhost',"db652851844",'root','root');
-		}
+        $db = \Config::getDatabasePropertys();
+		$this->dataBase = new MySqlDbAUH($db->host,$db->database,$db->user,$db->password);
     }
 
     /**

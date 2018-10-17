@@ -1,6 +1,8 @@
 <?php
 
+include_once __DIR__ . "/../../config.class.php";
 use \maierlabs\lpfw\MySqlDb as MySqlDb;
+
 /**
  * Class PasswortTest
  */
@@ -31,8 +33,8 @@ class PasswordTest extends PHPUnit_Framework_TestCase
             }
         }
 
-
-        $this->db = new MySqlDb("localhost","db652851844","root","root");
+        $db = \Config::getDatabasePropertys();
+        $this->db = new MySqlDb($db->host,$db->database,$db->user,$db->password);
 
     }
 
@@ -40,12 +42,14 @@ class PasswordTest extends PHPUnit_Framework_TestCase
     public function testDB():void
     {
         $this->assertTrue($this->db->query("select user,passw,firstname,lastname,id from person"));
+        /*
         while ($row = $this->db->fetchRow()) {
             $p=$row["passw"];
             $dp=encrypt_decrypt("decrypt",$p);
             $this->assertTrue(strlen($p)==32);
             $this->assertTrue(strlen($dp)!=32);
         }
+        */
     }
 
 }

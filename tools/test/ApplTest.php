@@ -27,13 +27,13 @@ class ApplTest extends PHPUnit_Framework_TestCase
     {
         Appl::setMember("test",array("id"=>2, "name"=>"test"));
 
-        $this->assertTrue(Appl::getMemeberId("test")===2);
+        $this->assertTrue(Appl::getMemberId("test")===2);
 
-        $this->assertFalse(Appl::getMemeberId("nix")===2);
+        $this->assertFalse(Appl::getMemberId("nix")===2);
 
-        $this->assertTrue(Appl::getMemeberId("nix")===null);
+        $this->assertTrue(Appl::getMemberId("nix")===null);
 
-        $this->assertTrue(Appl::getMemeber("test")["name"]==="test");
+        $this->assertTrue(Appl::getMember("test")["name"]==="test");
     }
 
     public function testCssFile() {

@@ -1,12 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Levi
- * Date: 20.09.2018
- * Time: 16:07
- */
 
 namespace maierlabs\lpfw;
+
+include_once __DIR__ . "/../../config.class.php";
+
 
 
 class NameSyntaxCheck extends \PHPUnit_Framework_TestCase
@@ -42,8 +39,8 @@ class NameSyntaxCheck extends \PHPUnit_Framework_TestCase
             }
         }
 
-
-        $this->db = new MySqlDb("localhost","db652851844","root","root");
+        $db = \Config::getDatabasePropertys();
+        $this->db = new MySqlDb($db->host,$db->database,$db->user,$db->password);
 
     }
 

@@ -1,4 +1,10 @@
 <?php
+session_start();
+//User is logged in and have the role of admin
+if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
+    die("Only for admins");
+
+include_once __DIR__ . "/../config.class.php";
 
 error_reporting(0);
 set_time_limit(0);
@@ -6,11 +12,9 @@ set_time_limit(0);
 $password=isset($_GET["password"])?$_GET["password"]:"";
 $password=($password==="levi");
 
-if (strpos($_SERVER["SERVER_NAME"],"lue-l.de")>0 || strpos($_SERVER["SERVER_NAME"],".online.de")>0) {
-	db_backup("db652851844.db.1and1.com", 'dbo652851844','levi1967', 'db652851844', __DIR__."/backup.sql",$password) ;
-} else {
-	db_backup("localhost", "root", "root", "db652851844", __DIR__."/backup.sql",$password);
-}
+$db = \Config::getDatabasePropertys();
+db_backup($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$password) ;
+
 
 
 
