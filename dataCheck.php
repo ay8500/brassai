@@ -1,5 +1,6 @@
-<?php 
-include_once('tools/userManager.php');
+<?php
+include_once  'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
