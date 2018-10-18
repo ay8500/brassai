@@ -9,21 +9,21 @@ include_once __DIR__ . "/../config.class.php";
 error_reporting(0);
 set_time_limit(0);
 
-$password=isset($_GET["password"])?$_GET["password"]:"";
-$password=($password==="levi");
+$areYouSure=isset($_GET["password"])?$_GET["password"]:"";
+$areYouSure=($areYouSure==="levi");
 
 $db = \Config::getDatabasePropertys();
-db_backup($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$password) ;
+db_backup($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$areYouSure) ;
 
 
 
 
 // ab hier nichts mehr ändern
-function db_backup($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$password)
+function db_backup($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$areYouSure)
 {
 	$allRows=0;
 	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd,$dbname) or die(mysqli_error());
-	if ($password) {
+	if ($areYouSure) {
 		$f = fopen($dbbackup, "w");
 		echo("Backupfile:".$dbbackup."<br/>");
 	} else {
@@ -50,7 +50,7 @@ function db_backup($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$password)
 				$num = mysqli_num_fields($data);
 				while ($row = mysqli_fetch_array($data))
 				{
-					if($password) {
+					if($areYouSure) {
 						$line = "INSERT INTO `".$table."` VALUES(";
 						for ($i=1;$i<=$num;$i++)
 						{
@@ -70,7 +70,7 @@ function db_backup($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$password)
 			echo("<br/>");
 		}
 	}
-	if ($password) fclose($f);
+	if ($areYouSure) fclose($f);
 	echo("All rows:<b>".$allRows."</b>");
 }
 ?>

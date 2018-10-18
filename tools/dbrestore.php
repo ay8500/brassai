@@ -9,15 +9,15 @@ include_once __DIR__ . "/../config.class.php";
 error_reporting(0);
 set_time_limit(0);
 
-$password=isset($_GET["password"])?$_GET["password"]:"";
-$password=($password==="levi");
+$areYouSure=isset($_GET["password"])?$_GET["password"]:"";
+$areYouSure=($areYouSure==="levi");
 
 $db = \Config::getDatabasePropertys();
-db_restore($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$password) ;
+db_restore($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$areYouSure) ;
 
 
 // ab hier nichts mehr ändern
-function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $password)
+function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $areYouSure)
 {
 	$allRows=0;
 	$okRows=0;
@@ -27,7 +27,7 @@ function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $password)
 	echo("Restorefile:".$dbrestore."<br/>");
 	if ($f) {
 		while (($line = fgets($f)) !== false) {
-			if ($password) { 
+			if ($areYouSure) {
 				$res = mysqli_query($conn,trim($line,";"));
 				if ($res) {
 					//echo("OK:".substr($line,0,150)."<br/>");
