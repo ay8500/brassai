@@ -25,6 +25,9 @@ function showRecentChanges($db) {
         } elseif ($id["type"]=="picture") {
             $picture=$db->getPictureById($id["id"]);
             displayPicture($db,$picture);
+        } elseif ($id["type"]=="candle") {
+            $person = $db->getPersonByID($id["id"]);
+            displayPersonCandle($db,$person,$id["changeDate"]);
         }
 
     }

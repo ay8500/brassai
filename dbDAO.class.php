@@ -550,8 +550,11 @@ class dbDAO {
 		return $ret;
 	}
 	
-	public function getLightedCandleList($where=null) {
-		$sql='select personID from candle'." where  lightedDate >'".date('Y-m-d H:i:s',strtotime("-1 month"))."'";
+	public function getLightedCandleList($id=null) {
+		$sql = 'select personID from candle'." where  lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+		if($id!=null) {
+            $sql .=' and userID='.$id;
+        }
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
 			$candles= $this->dataBase->getRowList();
@@ -562,9 +565,6 @@ class dbDAO {
 				$sql .=$candle["personID"];
 			}
 			$sql.=')';
-			if ($where!=null) {
-			    $sql .= ' and '.$where;
-            }
 			return $this->getSortedPersonList($sql);
 		}
 		return array();
@@ -572,7 +572,7 @@ class dbDAO {
 	
 	/**
 	 * Count of candles by person id always +1 from the system :)
-	 * if Id = null all candles + 1 candle for eack deceased person from system
+	 * if Id = null all candles + 1 candle for each deceased person from system
 	 * @param integer $id
      * @return integer
 	 */
@@ -597,7 +597,16 @@ class dbDAO {
 		
 		return array();
 	}
-	
+
+    public function getCandleDetailByUserId($id) {
+        $sql='select * from candle where userID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+        $this->dataBase->query($sql);
+        if ($this->dataBase->count()>0)
+            return $this->dataBase->getRowList();
+
+        return array();
+    }
+
 	public function checkLightning($id, $userId=null) {
 		if ($userId!=null) {
 			$sql='select count(*) from candle where personId='.$id." and userID=".$userId." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
@@ -1084,6 +1093,8 @@ class dbDAO {
 	    $sql .= " union ";
         $sql .= " select id, changeDate, 'picture' as type from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
+        $sql .= " union ";
+        $sql .= " select userID as id, lightedDate as changeDate, 'candle' as type from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID)";
         $sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();

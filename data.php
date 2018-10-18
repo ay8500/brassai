@@ -178,6 +178,11 @@ function writePersonLinkAndPicture($person) {
 	echo(getPersonLinkAndPicture($person));		
 }
 
+function writePersonName($person) {
+    echo($person["lastname"]." ".$person["firstname"]);
+}
+
+
 /**
  * Compare classmates by firstname,lastname,birthname
  * @param person $a

@@ -238,4 +238,61 @@ function displayClass($db,$d,$showDate=false) {
 		<?php }?>
 	</div>
 <?php }
-?>
+
+
+
+function displayPersonCandle($db,$person,$date) {
+    if ($person==null) {
+        $person = getPersonDummy();
+        $person["id"]=0;$person["classID"]=-1;$person["isTeacher"]=null;$person["lastname"]="Anonim látogató";
+    }
+    $d=$person;
+    //mini icon
+    if (isset($person["picture"]) && $person["picture"]!="")
+        $rstyle=' diak_image_medium';
+    else {
+        $rstyle=' diak_image_empty';
+    }
+    ?>
+    <div class="element">
+        <div style="display: inline-block; ">
+            <a href="rip.php<?php echo $person["id"]!=0?'?id='.$person["id"]:'' ?>" style="display:inline-block;">
+                <div>
+                    <img src="images/candle2.gif" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+                    <?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
+                        <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                            <?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
+                        </div>
+                    <?php }?>
+                </div>
+            </a>
+        </div>
+        <div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <a href="rip.php<?php echo $person["id"]!=0?'?id='.$person["id"]:'' ?>"><h4><?php echo getPersonName($d);?><br/>gyertyát gyújtott</h4></a>
+            <?php if(true) {?>
+                <?php if ($d["isTeacher"]==1) { ?>
+                    <h5>Tanár</h5>
+                <?php } else {
+                    $diakClass = $db->getClassById($d["classID"]);
+                    if ($diakClass!=null) {
+                        $classText = getClassName($diakClass);
+                        if (isPersonGuest($d) == 1) {
+                            if ($d["classID"] != 0)
+                                echo '<h5>Jó barát:<a href="hometable.php?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
+                            else
+                                echo '<h5>Vendég:<a href="hometable.php?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
+                        } else {
+                            if (null != $diakClass)
+                                echo '<h5>Véndiák:<a href="hometable.php?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
+                            else
+                                echo('<h5>Véndiák:' . -1 * $d["classID"] . '</h5>'); //Graduation year for laurates that are not in the db
+                        }
+                    }
+                } ?>
+            <?php } ?>
+            <div class="diakCardIcons">
+                 Dátum:<?php echo date("Y.m.d H:i:s",strtotime($date));?><br/>
+             </div>
+        </div>
+    </div>
+<?php } ?>

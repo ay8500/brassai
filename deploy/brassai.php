@@ -1,4 +1,6 @@
 <?php
+if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
+    die("Only for admins");
 /**
  * Simple PHP Git deploy script
  *
@@ -7,8 +9,6 @@
  * @version 1.3.1
  * @link    https://github.com/markomarkovic/simple-php-git-deploy/
  */
-
-// =========================================[ Configuration start ]===
 
 /**
  * It's preferable to configure the script using `deploy-config.class.php` file.
@@ -26,7 +26,7 @@ if (file_exists(basename(__FILE__, '.php').'-config.class.php')) require_once ba
  *
  * @var string
  */
-if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'BetterChangeMeNowOrSufferTheConsequences');
+if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', '');
 
 /**
  * The address of the remote Git repository that contains the code that's being
@@ -35,7 +35,7 @@ if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'BetterChange
  *
  * @var string
  */
-if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'https://github.com/markomarkovic/simple-php-git-deploy.git');
+if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', '');
 
 /**
  * The branch that's being deployed.

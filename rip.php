@@ -1,4 +1,5 @@
 <?php
+include_once 'tools/sessionManager.php';
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
 include_once 'data.php';
@@ -15,7 +16,7 @@ if (isActionParam("teacher"))
 else if (isActionParam("person"))
 	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher<>1");
 else {
-	$personList = $db->getLightedCandleList();
+	$personList = $db->getLightedCandleList(getIntParam("id",null));
 }
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 include("homemenu.php"); 
@@ -25,7 +26,9 @@ include("homemenu.php");
 	<h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $db->getCandlesByPersonId() ?> gyertya ég</h2>
 	<div class="well" style="margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
 		<form>
-			<b style="font-size: 30px">Emléküket örökké őrizzük</b> 
+			<b style="font-size: 20px;color: #ffbb66;">Emléküket örökké őrizzük!
+                <?php if (getGetParam("id")!=null) { writePersonName($db->getPersonByID(getGetParam("id")));echo(' megemlékezései'); } ?>
+            </b>
 			<span style="display: inline-block;vertical-align: super;">
 				<button class="btn btn-warning" style="margin:10px;color:black" name="action" value="recent">Nemrég gyújtott gyertyák</button>
 				<button class="btn btn-warning" style="margin:10px;color:black" name="action" value="teacher">Tanáraink emlékére</button>
