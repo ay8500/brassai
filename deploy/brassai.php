@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
     die("Only for admins");
 /**
@@ -35,7 +36,7 @@ if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', '');
  *
  * @var string
  */
-if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', '');
+if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'levi67');
 
 /**
  * The branch that's being deployed.

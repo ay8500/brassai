@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
     die("Only for admins");
 /**
@@ -26,7 +27,7 @@ if (file_exists(basename(__FILE__, '.php').'-config.class.php')) require_once ba
  *
  * @var string
  */
-if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', '');
+if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'levi67');
 
 /**
  * The address of the remote Git repository that contains the code that's being
