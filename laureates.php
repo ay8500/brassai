@@ -1,6 +1,11 @@
 <?php
-$SiteTitle="Brassai Sámuel díjas tanulói"; 
-$SiteDescription="Kitüntetett díjazott diákok";
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/appl.class.php';
+use \maierlabs\lpfw\Appl as Appl;
+
+Appl::setSiteTitle("Díjas tanulók");
+Appl::setSiteTitle("Kitüntetett díjazott diákok");
 include("homemenu.php"); 
 include_once 'editDiakCard.php';
 ?>

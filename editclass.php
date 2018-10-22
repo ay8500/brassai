@@ -6,6 +6,8 @@ include_once 'tools/ltools.php';
 
 use maierlabs\lpfw\Appl as Appl;
 
+Appl::setSiteTitle("Osztályok módosítása","Osztályok módosítása","Osztályok módosítása");
+
 $action = getParam("action","");
 
 $classid= getIntParam("classid",-1);
@@ -141,7 +143,7 @@ include("homemenu.php");
 	</div>
 	
 	<div class="well">
-		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+		<?php  if ((userIsAdmin() || userIsSuperuser()) && isset($class)) {?>
 			<a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("class",$class["id"]))?></span>
 			</a>

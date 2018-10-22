@@ -1,11 +1,15 @@
-<?php 
-include_once("data.php");
+<?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
+use \maierlabs\lpfw\Appl as Appl;
+include_once("data.php");
 
-use maierlabs\lpfw\Appl as Appl;
 
-$SiteTitle="Brassai Sámuel liceum a következő érettségi találkozónk"; 
+$sTitle="Következő érettségi találkozónk";
 $SiteDescription="A következő érettségi találkozónk szavazati listája";
+
+Appl::setSiteTitle($sTitle,$sTitle,$SiteDescription);
 
 Appl::addCssStyle('
 	.votetable:nth-child(odd){background-color: #f0f0f0;};

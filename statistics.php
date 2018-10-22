@@ -1,5 +1,6 @@
-<?php 
-include_once('tools/userManager.php');
+<?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
 include_once 'data.php';
 
@@ -24,8 +25,7 @@ $classPicture=$db->getTableCount("picture","classID is not null");
 
 $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
 
-$SiteTitle="A kolozsvári Brassai Sámuel líceum statisztikai adatai";
-\maierlabs\lpfw\Appl::setSiteSubTitle("Statisztikai adatok");
+\maierlabs\lpfw\Appl::setSiteTitle("Statisztikai adatok", "Statistikai adatok");
 \maierlabs\lpfw\Appl::addCssStyle('
 	.statw {width:150px; text-align:right; display: inline-block;};
 ');

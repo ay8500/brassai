@@ -1,10 +1,14 @@
 <?php
 include_once 'tools/sessionManager.php';
-include_once 'tools/ltools.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
+use \maierlabs\lpfw\Appl as Appl;
+include_once 'tools/ltools.php';
 include_once 'data.php';
-$SiteTitle="Brassai Sámuel emlék oldala"; 
+
 $SiteDescription="Elhunyt tanáraink és diákok";
+Appl::setSiteTitle($SiteDescription);
+
 \maierlabs\lpfw\Appl::addCssStyle('
 	.person-candle {margin:5px;}
 	.person-candle>a { color: #ffbb66 }

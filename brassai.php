@@ -1,6 +1,7 @@
 <?php
-include_once("tools/userManager.php");
-include_once 'tools/appl.class.php';
+include_once "tools/sessionManager.php";
+include_once "tools/userManager.php";
+include_once "tools/appl.class.php";
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -10,7 +11,7 @@ include("homemenu.php");
 ?>
 
 <div style="text-align: center;">
- <div style="margin-left: auto;"><img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/></div>
+<div style="margin-left: auto;"><img src="images/BRASSAI.JPG" width=101 height=142 border=0 alt="Brassai Sámuel"/></div>
 <div>Brassai S&aacute;muel (1800-1897)</div>
 </div>
 <div class="container-fluid">

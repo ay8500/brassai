@@ -1,11 +1,13 @@
-<?PHP
-$SiteTitle="Brassaista Véndiákok"; 
-$SiteDescription="Brassaista Véndiákok keresés";
+<?php
 include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/appl.class.php';
+use \maierlabs\lpfw\Appl as Appl;
+
+Appl::setSiteTitle(" Keresés");
+
 include("homemenu.php");
 include_once 'editDiakCard.php';
-
-use \maierlabs\lpfw\Appl as Appl;
 
 $personList=array();
 $classList=array();

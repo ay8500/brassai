@@ -1,6 +1,11 @@
 <?PHP
-$SiteTitle="30-éves véndiák találkozó"; 
-$SiteDescription="Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai";
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/appl.class.php';
+use \maierlabs\lpfw\Appl as Appl;
+
+$sTitle="30-éves véndiák találkozó";
+Appl::setSiteTitle($sTitle,$sTitle);
 include("homemenu.php"); 
 ?>
 

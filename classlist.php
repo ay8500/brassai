@@ -1,8 +1,10 @@
 <?php
+include_once 'tools/sessionManager.php';
 include_once 'tools/appl.class.php';
-$SiteTitle="Brassai Sámuel osztályok"; 
-$SiteDescription="A kolozsvári Brassai Sámuel líceum osztályai";
+include_once 'data.php';
+
 use maierlabs\lpfw\Appl as Appl;
+
 Appl::addCssStyle('
 	.classdiv {
         margin: 3px 2px 3px 2px;
@@ -20,8 +22,12 @@ Appl::addCssStyle('
 	.classdiv-b:hover	{background-color: #f8e8e8;}
 ');
 Appl::setSiteSubTitle("Osztályok");
-include("homemenu.php"); 
-$classes = $db->getClassList();
+Appl::setSiteDesctiption(getAktSchoolName()." osztályai");
+include("homemenu.php");
+
+/** @var array $classes */
+$classes = $db->getClassList(getAktSchoolId());
+
 ?>
 <div class="container-fluid">
 	<div class="panel panel-default " >
@@ -30,21 +36,26 @@ $classes = $db->getClassList();
 			<a class="btn btn-default" href="editclass.php?action=newclass">Új osztály</a></h4>
 		</div>
 		<div class="panel-body">
-			<?php classList($db,$classes,0);?>
+			<?php displayClassList($db,$classes,0);?>
 		</div>
 		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-star"></span> Esti tagozat
 			<a class="btn btn-default" href="editclass.php?action=newclass">Új osztály</a></h4>
 		</div>
 		<div class="panel-body">
-			<?php classList($db,$classes,1);?>
+			<?php displayClassList($db,$classes,1);?>
 		</div>
 	</div>
 
 
 <?php
-
-function classList($db,$classes,$eveningClass) { 
+/**
+ * get scholl class list
+ * @param dbDAO $db
+ * @param array $classes
+ * @param int $eveningClass
+ */
+function displayClassList($db, $classes, $eveningClass) {
 	$stafClassId=Appl::getMemberId("staffClass");
 	foreach($classes as $cclass) {
 		if ($cclass["id"]!=$stafClassId && $eveningClass==$cclass["eveningClass"]) {

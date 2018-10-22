@@ -1,6 +1,12 @@
-<?php 
-$SiteTitle="A kolozsvári Brassai Sámuel véndiák zenedoboz";
+<?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/appl.class.php';
+use \maierlabs\lpfw\Appl as Appl;
+
+$Title="A kolozsvári Brassai Sámuel véndiák zenedoboz";
 $SiteDescription="Kendvenc zenénket itt lejátszhatod";
+Appl::setSiteTitle($Title,$Title,$SiteDescription);
 include("homemenu.php");
 
 //Save Youtube id

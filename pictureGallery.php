@@ -1,6 +1,7 @@
 <?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
-
 use \maierlabs\lpfw\Appl as Appl;
 
 if (isset($_GET["gallery"]))
@@ -8,7 +9,7 @@ if (isset($_GET["gallery"]))
 else
 	$gallery="BALLAGAS";
 
-$SiteTitle="A kolozsvári Brassai Sámuel líceum véndikok képtára: ".$gallery;
+Appl::setSiteTitle("Képtár: ".$gallery);
 Appl::$subTitle='Emlékeik képekben';
 Appl::addCss("ig/ig.css");
 

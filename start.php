@@ -12,7 +12,7 @@ if ($userId>=0) {
 }
 unsetAktClass();
 
-Appl::$subTitle = 'Újdonságok';
+Appl::setSiteTitle('Újdonságok','Újdonságok');
 include("homemenu.php");
 include_once 'editDiakCard.php';
 

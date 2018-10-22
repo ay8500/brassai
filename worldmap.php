@@ -2,9 +2,9 @@
 include_once("tools/sessionManager.php"); 
 include_once 'tools/appl.class.php';
 
-$SiteTitle = "A diakok a vílág térképén";
+$sTitle = "A diakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
-\maierlabs\lpfw\Appl::$subTitle="Merre szóródtak szét az osztálytársak";
+\maierlabs\lpfw\Appl::setSiteTitle($sTitle,"Merre szóródtak szét az osztálytársak",$SiteDescription);
 /*
 Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
 Appl::addJs("js/diakMap.js");

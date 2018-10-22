@@ -293,14 +293,13 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 	});
 	");
 }
-if ($personid!=null && $personid>=0) {
+if ($personid!=null) {
 	if ($diak["isTeacher"]) 
-		$SiteTitle = "A kolozsvári Brassai Sámuel líceum tanárja " .$diak["lastname"]." ".$diak["firstname"];
+		Appl::setSiteTitle("Tanár: " .$diak["lastname"]." ".$diak["firstname"]);
 	else
-		$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakja " .$diak["lastname"]." ".$diak["firstname"];
-} else 
-	$SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakjai";
-	
+		Appl::setSiteTitle(" Véndiak: " .$diak["lastname"]." ".$diak["firstname"]);
+}
+
 include("homemenu.php"); 
 ?>
 

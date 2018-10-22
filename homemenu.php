@@ -53,7 +53,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?PHP echo(Config::$SiteTitle) ?></title>
+    <title><?PHP echo(Config::$SiteTitle.' '.Appl::$title) ?></title>
 	<?PHP if (strstr(getenv("QUERY_STRING"),"=thumbnails")!="") { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
@@ -63,11 +63,7 @@
 	<meta name="geo.placename" content="Kolozsvár" />
 	<meta name="geo.position" content="46.771919;23.592248" />
 	<meta name="author" content="Levente Maier" />
-	<?PHP if (isset($SiteDescription) && $SiteDescription!="") { ?>
-		<meta name="description" content="<?PHP echo($SiteDescription) ?>" />
-	<?PHP } else { ?>
-		<meta name="description" content="<?PHP echo(Config::$SiteTitle) ?>" />
-	<?PHP } ?>
+	<meta name="description" content="<?php echo(Config::$SiteTitle.' '.Appl::$description) ?>" />
 	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
 	<meta name="verify-v1" content="jYT06J7jVoHpWvFoNfx7qwVaERZQFvm1REgT7N4jMFA=" />	
 	<?php Appl::addCss("css/bootstrap.min.css");?>

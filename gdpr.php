@@ -10,7 +10,7 @@ Appl::addCssStyle('
 	.margin-hor1{margin-left:40px;}
 ');
 
-$SiteTitle="GDPR Adatok törlésének kérvényezése";
+Appl::setSiteTitle("GDPR Adatok törlésének kérvényezése");
 Appl::$subTitle='Személyes adatok törlésének kérvényezése';
 
 $person=$db->getPersonByID(getParam("id"));

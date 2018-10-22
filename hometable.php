@@ -14,19 +14,19 @@ $class = handleClassSchoolChange();
 
 if (isAktClassStaf()) {
 	Appl::$subTitle=$guests?"Barátaink":"Tanáraink";
-	$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
+    Appl::setSiteTitle(Appl::$subTitle);
 } else {
 	if ($guests) {
 		Appl::$subTitle=getAktClassName()." Vendégek, jó barátok";
-		$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
+        Appl::setSiteTitle(Appl::$subTitle);
 	} else {
 		if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			$headTeacher=$db->getPersonByID($class["headTeacherID"]);
 			Appl::$subTitle=getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
-			$SiteTitle = $SiteTitle." ".getAktClassName()." Osztályfőnök ".getPersonName($headTeacher);
+            Appl::setSiteTitle(getAktClassName()." Osztályfőnök ".getPersonName($headTeacher));
 		} else {
 			Appl::$subTitle=getAktClassName()." Osztálytársak";
-			$SiteTitle = $SiteTitle.': '.Appl::$subTitle;
+            Appl::setSiteTitle(Appl::$subTitle);
 		}
 	}
 }

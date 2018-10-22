@@ -7,7 +7,7 @@ include_once 'data.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-$SiteTitle="A véndiákok ezt hallgatják szívesen";
+Appl::setSiteTitle("A véndiákok ezt hallgatják szívesen");
 if (getParam("classid")==-1) unsetAktClass();
 if (getAktClassId()==-1) {
     Appl::$subTitle='Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.';

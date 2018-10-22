@@ -1,6 +1,11 @@
-<?PHP 
-$SiteTitle="A kolozsvári Brassai Sámuel líceum története 1993-ig";
-$SiteDescription="Az iskolánk története a XVI század és 1993 között";
+<?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
+include_once 'tools/appl.class.php';
+use maierlabs\lpfw\Appl as Appl;
+
+Appl::setSiteTitle("Iskolánk története 1993-ig");
+Appl::setSiteSubTitle("Az iskolánk története a XVI század és 1993 között");
 include("homemenu.php"); 
 ?>
 <div class="container-fluid">

@@ -446,7 +446,7 @@ class dbDAO {
                 $sql .=" or (person.firstname) = 'Éva'";
             $sql .=" or soundex(person.birthname) like soundex('".$name."') )";
             $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
-            $sql.=") or (".$this->getSqlAnonymous("person").") limit 50";
+            $sql.=") or (".$this->getSqlAnonymous("person").") limit 150";
 			$this->dataBase->query($sql);
 
 			while ($person=$this->dataBase->fetchRow()) {

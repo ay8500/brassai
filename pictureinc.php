@@ -361,7 +361,7 @@ if (getParam("album")!=null) {
 								<button class="btn btn_default" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
 							<?php }?>
 							<?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
-									<select id="changeAlbum" name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
+									<select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
 										<?php foreach ($albumList as $alb) {?>
 											<?php if ($alb["albumName"]!=$albumParam && $alb["albumName"]!="_tablo_" ) { ?>
 												<option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
@@ -506,7 +506,7 @@ function changePictureAlbum(id) {
  	if (a!='') url +='&type='+a;
  	a="<?php echo getParam('typeid','')?>";
  	if (a!='') url +='&typeid='+a;
- 	url +='&album='+$("#changeAlbum").val();
+ 	url +='&album='+$("#changeAlbum"+id).val();
  	url +='&action=changePictureAlbum';
     window.location.href="<?php echo $_SERVER["PHP_SELF"].'?'?>"+url;
 }
