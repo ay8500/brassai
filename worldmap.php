@@ -5,10 +5,6 @@ include_once 'tools/appl.class.php';
 $sTitle = "A diakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
 \maierlabs\lpfw\Appl::setSiteTitle($sTitle,"Merre szóródtak szét az osztálytársak",$SiteDescription);
-/*
-Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
-Appl::addJs("js/diakMap.js");
-*/
 \maierlabs\lpfw\Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
 \maierlabs\lpfw\Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");
 \maierlabs\lpfw\Appl::addJs("js/diakMapLeaflet.js");

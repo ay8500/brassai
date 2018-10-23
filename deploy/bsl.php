@@ -18,7 +18,7 @@ if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
  * configuration options there instead of here. That way, you won't have to edit
  * the configuration again if you download the new version of `deploy.php`.
  */
-if (file_exists(basename(__FILE__, '.php').'-config.class.php')) require_once basename(__FILE__, '.php').'-config.class.php';
+if (file_exists(basename(__FILE__, '.php').'-config.php')) require_once basename(__FILE__, '.php').'-config.php';
 
 /**
  * Protect the script from unauthorized access by using a secret access token.
@@ -27,7 +27,7 @@ if (file_exists(basename(__FILE__, '.php').'-config.class.php')) require_once ba
  *
  * @var string
  */
-if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'levi67');
+if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', '');
 
 /**
  * The address of the remote Git repository that contains the code that's being

@@ -100,7 +100,7 @@
 	
 	/**
 	 * The aktual person class id
-	 * @return number|NULL
+	 * @return array|NULL
 	 */
 	function getAktClass() {
 		global $db;
@@ -112,7 +112,7 @@
 	
 	/**
 	 * The aktual school id
-	 * @return number|NULL
+	 * @return array|NULL
 	 */
 	function getAktSchool() {
 		global $db;
@@ -503,7 +503,7 @@
             }
 		}
 		else if( $action == 'decrypt' ){
-		    if (strlen($string)==32) {
+		    if (strlen($string)==32 || strlen($string)==88 ) {
 			    return openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
 		    } else {
 		        return $string;

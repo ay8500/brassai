@@ -136,20 +136,20 @@ if ($delVote>=0 && $edit) {
  	 		</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Az adatbázisból </label>
-				<select name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" class="form-control">
+				<select id="interpret" name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" class="form-control">
 					<option value="0">...válassz!...</option>
 					<?php
 						$interpretList= $db->getInterpretList(); 
 						foreach ($interpretList as $interpret)	{
 							if ($interpret['id']==$pinterpret) $def="selected"; else $def="";
-							echo('<option value='.$interpret['id'].' '.$def.' >'.$interpret['name'].'</option>');
+							echo('<option value="'.$interpret['id'].'" '.$def.' >'.$interpret['name'].'</option>');
 						} 
 					?>	 
 				</select>
 			</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="newinterpret" id="search_left">vagy írj be egy újat <br />Például: ABBA, Hungaria, Vangelis stb.</label>
-	    	   	<input name="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)" class="form-control" />
+	    	   	<input name="newinterpret" id="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)" class="form-control" />
 	    	</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" ></label>
@@ -164,11 +164,11 @@ if ($delVote>=0 && $edit) {
  	 		</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Előadó</label>
-	    	   	<input readonly class="form-control" value="<?php echo $db->getInterpretById($pinterpret)["name"]?>"/>
+	    	   	<input readonly id="interpret" class="form-control" value="<?php echo $db->getInterpretById($pinterpret)["name"]?>"/>
 	    	</div>
 			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Az adatbázisból </label>
-				<select name="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';this.form.newLink.value='';" class="form-control"  />
+	    	   	<label style="min-width:300px;" for="song" id="search_left">Az adatbázisból </label>
+				<select name="song" id="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';" class="form-control"  >
 					<option value="0">...válassz!...</option>
 				  	 <?php
 				  	 	$songList= $db->getSongList($pinterpret);
@@ -181,18 +181,13 @@ if ($delVote>=0 && $edit) {
 				</select>
 			</div> 	 		
 			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="interpret" >vagy írj be egy újat<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
-	    	   	<input name="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control" value="<?php echo $pnewSong; ?>" />
+	    	   	<label style="min-width:300px;" for="newSong" >vagy írj be egy újat<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
+	    	   	<input name="newSong" id="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control" value="<?php echo $pnewSong; ?>" />
 	    	</div>
 			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="interpret" >Youtube link vagy cód</label>
-		    	<input name="newVideo" type="text" size="50" class="form-control" value="<?php echo $pnewVideo; ?>" />
+	    	   	<label style="min-width:300px;" for="newVideo" >Youtube link vagy cód</label>
+		    	<input name="newVideo" id="newVideo" type="text" size="50" class="form-control" value="<?php echo $pnewVideo; ?>" />
 		    </div>
-		    <?php /*
-  			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="interpret" >Honoldal<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
-  				<input name="newLink" type="text" size="50" class="form-control" />
-  			</div> */ ?>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" ></label>
 	    		<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
@@ -223,7 +218,7 @@ if ($delVote>=0 && $edit) {
 			<label id="dbDetails">Top <?php echo $listLength?> zenelista lejátszó</label><br/> 
 			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-attributes"></span> Legjobb szám elsőnek</button>
 			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Legjobb szám utoljára</button>
-			<button class="btn btn-default"onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
+			<button class="btn btn-default" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
 		</div>
 		<div class="form-group navbar-form navbar" >
 			<table>
@@ -279,7 +274,7 @@ if ($delVote>=0 && $edit) {
 		</div>
 	</div>
 	<?php if (userIsAdmin()) :?>
-		<button onclick="javascript:document.location='zenetoplista.php?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
+		<button onclick="document.location='zenetoplista.php?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
 	<?php endif;?>
 </div>
 
@@ -310,11 +305,13 @@ if ($delVote>=0 && $edit) {
 </div>
  
 <script>
-var songs = [<?php foreach($topList as $i=>$v) echo(($i!=0?',"':'"').$v['songVideo'].'"');?>];
+const songs = [<?php foreach($topList as $i=>$v) echo(($i!=0?',"':'"').$v['songVideo'].'"');?>];
 
 function playBackward() {
     var url="zenePlayer.php?listdir=előre&link="+songs[0]+"&list=";
-    for (var i=1;i<songs.length;url+=songs[i++]+",");
+    for (var i=1;i<songs.length;i++) {
+        url =url + songs[i]+",";
+    }
     window.location.href=url;
 }
 
@@ -373,7 +370,7 @@ function autoComplete (field, select, property, forcematch) {
  include "homefooter.php";
 		
  function getSongName($song) {
- 	$apiPublicKey="AIzaSyDsdHR0UNecnOH6s9OdQZhJkFpOZv02ncM";
+ 	$apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
  	try {
         $response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $song . '&key=' . $apiPublicKey);
     } catch (Exception $e) {
