@@ -12,26 +12,45 @@ if ($userId>=0) {
 }
 unsetAktClass();
 
-Appl::setSiteTitle('Újdonságok','Újdonságok');
-include("homemenu.php");
 include_once 'editDiakCard.php';
 
-function showRecentChanges($db) {
-    $ids=$db->getRecentChangeList(new \DateTime(), getIntParam("limit",30));
+if (isActionParam('showmore')) {
+    $date=showRecentChanges($db,getParam('date'));
+    echo('#'.$date);
+    return;
+}
+
+/**
+ * Show recent changes
+ * @param dbDAO $db
+ * @return void
+ */
+function showRecentChanges($db,$date=null) {
+    if ($date==null) {
+        $date=new \DateTime();
+    } else {
+        $date=new \DateTime($date);
+    }
+    $ids=$db->getRecentChangeList($date, getIntParam("limit",30));
     foreach ($ids as $id) {
         if ($id["type"]=="person") {
             $person = $db->getPersonByID($id["id"]);
             displayPerson($db,$person,true,true);
         } elseif ($id["type"]=="picture") {
-            $picture=$db->getPictureById($id["id"]);
+            $picture = $db->getPictureById($id["id"]);
             displayPicture($db,$picture);
         } elseif ($id["type"]=="candle") {
             $person = $db->getPersonByID($id["id"]);
             displayPersonCandle($db,$person,$id["changeDate"]);
         }
-
     }
+    $date=strtotime($ids[sizeof($ids)-1]["changeDate"])-1;
+
+    return date("Y-m-d H:i:s",$date);
 }
+
+Appl::setSiteTitle('Újdonságok','Újdonságok');
+include("homemenu.php");
 
 ?>
 <div class="container-fluid">
@@ -40,11 +59,11 @@ function showRecentChanges($db) {
 		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések </h4>
 		</div>
-		<div class="panel-body">
-		<?php showRecentChanges($db);?>
+		<div class="panel-body" id="changes">
+		<?php $lastDate=showRecentChanges($db);?>
 		</div>
-		<a href="start.php?limit=100" class="btn btn-default" style="margin:10px;text-decoration: none;" >Többet szeretnék látni</a>
-        <a href="start.php?limit=300" class="btn btn-default" style="margin:10px;text-decoration: none;" >Sokkal többet szeretnék látni</a>
+        <input type="hidden" id="date" value="<?php echo $lastDate?>"/>
+        <button id="buttonmore" class="btn btn-default" style="margin:10px;" onclick="showmore()">Többet szeretnék látni</button>
 	</div>
 
 
@@ -61,7 +80,7 @@ function showRecentChanges($db) {
 				<li>December 2017: <a href="start.php">Újdonságok,</a> ezen az oldalon az utólsó frissitéseket illetve bejegyzéseket lehet megtekinteni.</li>
 				<li>December 2016: <a href="picture.php?type=schoolID&typeid=1&album=_tablo_">Tablók</a> albumával bővült az oldal.</li>
 				<li>Március 2016: <a href="hometable.php?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanárok</a> listályával bővült az oldal.</li>
-                <a>Junius 2015: <a href="message.php">Üzenőfal</a> híreknek, véleményeknek, szervezésnek, újdonságoknak.</>
+                <li>Junius 2015: <a href="message.php">Üzenőfal</a> híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
 				<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
 				<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>
 				<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>
@@ -74,4 +93,25 @@ function showRecentChanges($db) {
 	</div>
 </div>
 
-<?php include ("homefooter.php"); ?>
+<?php
+Appl::addJsScript("
+    function showmore(date) {
+        $('#buttonmore').hide();
+        $.ajax({
+    		url:'start.php?action=showmore&date='+$('#date').val(),
+	    	type:'GET',
+    		success:function(data){
+    		    var idx=data.lastIndexOf('#');
+	    	    $('#changes').html($('#changes').html()+data.substring(0,idx-1));
+	    	    $('#date').val(data.substring(idx+1));
+	    	    $('#buttonmore').show();
+		    },
+		    error:function(error) {
+		        showMessage('Több bejegyzés nincs!');
+		        $('#buttonmore').show();
+		    }
+        });
+    }
+");
+include ("homefooter.php");
+?>

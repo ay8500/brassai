@@ -12,7 +12,7 @@ class Config {
 
     public static $SiteTitle = "A kolozsvári Brassai Sámuel líceum véndiakjai. ";
 
-    public static $webAppVersion = "20181017";  //Used to load the actual css und js files.
+    public static $webAppVersion = "20181023";  //Used to load the actual css und js files.
 
     private static $SupportedLang = array("hu"); //First language ist the default language.
 

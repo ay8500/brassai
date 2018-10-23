@@ -107,22 +107,29 @@
                 //Placeholder
                 $obl=$dataFieldObl[$i];
                 $dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
+                //field onclick
+                $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
                 //Inpufields
                 if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
                     <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
                     <?php if ( userIsLoggedOn()) {?>
-                    <span style="width:40px" id="highlight" class="input-group-addon">
-                        <?php if ($dataCheckFieldVisible[$i]) {
-                            echo('<input type="checkbox" name="cb_'.$dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i]).' title="A megjelölt mezöket csak az osztálytásaid látják." />');
-                        } ?>
-                    </span>
+                        <span style="width:40px" id="highlight" class="input-group-addon">
+                            <?php if ($dataCheckFieldVisible[$i]) {?>
+                                <input type="checkbox" name="cb_'<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?>' title="A megjelölt mezöket csak az osztálytásaid látják." />
+                            <?php } ?>
+                        </span>
                     <?php }?>
                     <?php
-                    $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-                    echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-                    if ($dataFieldNames[$i]=="changeUserID") {
-                        $person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
-                        echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
+                    if ($dataItemProp[$i]==="combobox") {
+                            echo('<select class="form-control" >');
+                            echo('<option>'.getFieldValueNull($diak,$dataFieldNames[$i]).'</option>');
+                            echo('</select>');
+                    } else {
+                        echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+                        if ($dataFieldNames[$i]=="changeUserID") {
+                            $person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
+                            echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
+                        }
                     }?>
                 <?php //Inpufields new person
                 } elseif ($anonymousEditor) {?>
@@ -134,10 +141,12 @@
                     } else {
                         echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
                     }
-                //Display fields
+                //Display fields no editing just show
                 } else {
                     if (showField($diak,$dataFieldNames[$i])) {
-                        $itemprop=$dataItemProp[$i]==""?"":'itemprop="'.$dataItemProp[$i].'"';
+                        $itemprop="";
+                        if ($dataItemProp[$i]!="" && $dataItemProp[$i]!="combobox")
+                            $itemprop='itemprop="'.$dataItemProp[$i].'"';
                         ?>
                         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
                         <?php

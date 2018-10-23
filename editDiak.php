@@ -59,17 +59,24 @@ if ($personid!=null && $personid>=0) {
 } 
 
 //preparation of the field to be edited and the itemprop characteristic
-$dataFieldNames 	=array("lastname","firstname","email");
-$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail");
-$dataItemProp       =array("","","");
-$dataCheckFieldVisible	=array(false,false,true);
-$dataFieldObl			=array(true,true,"fontos mező");
-if(true)  { //Name
-	array_push($dataFieldNames, "birthname","deceasedYear","partner","address","zipcode","place","country");
-	array_push($dataItemProp,"","","","streetAddress","postalCode","addressLocality","addressCountry");
-	array_push($dataFieldCaption, "Diákkori név","† elhunyt","Élettárs","Cím","Irányítószám","Helység","Ország");
-	array_push($dataCheckFieldVisible, false,false,true,true,true,false,false);
-	array_push($dataFieldObl		, "leánykori családnév","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe","ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
+$dataFieldNames 	=array("lastname","firstname","email","birthname","deceasedYear");
+$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail","Diákkori név","† elhunyt");
+$dataItemProp       =array("","","","","");
+$dataCheckFieldVisible	=array(false,false,true,false,false);
+$dataFieldObl			=array(true,true,"fontos mező","leánykori családnév","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");
+if (isset($diak["deceasedYear"])){
+    array_push($dataFieldNames ,"cementery","gravestone");
+    array_push($dataFieldCaption,"Temető","Sírhely");
+    array_push($dataItemProp,"","");
+    array_push($dataCheckFieldVisible,false,false);
+    array_push($dataFieldObl,"Temető neve, helyiség nélkül","");
+}
+if(true)  { //Address
+	array_push($dataFieldNames, "partner","address","zipcode","place","country");
+	array_push($dataItemProp,"","streetAddress","postalCode","addressLocality","addressCountry");
+	array_push($dataFieldCaption, "Élettárs","Cím","Irányítószám","Helység","Ország");
+	array_push($dataCheckFieldVisible, true,true,true,false,false);
+	array_push($dataFieldObl		, "ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
 	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
@@ -86,15 +93,14 @@ if (userIsAdmin()) { //only for admin
 	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
 if ((isset($classId) && $db->isClassIdForStaf($classId)) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-	$dataFieldCaption[18]="Tantárgy";
-	$dataFieldCaption[19]="Osztályfönök";
-	$dataFieldObl[19]="Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+    $dataFieldCaption[18] = "Tantárgy";
+    $dataFieldCaption[19] = "Osztályfönök";
+    $dataFieldObl[19] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
 	if (checkRequesterIP(changeType::personchange)) {
 		if ($diak!=null) {
-			$personid=-1;
 			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 				$tilde="";
 				if ($dataCheckFieldVisible[$i]) {
@@ -347,7 +353,7 @@ $tabUrl="editDiak.php";
 		//Pictures
 		if ($tabOpen==1) { 
 			$type="personID";
-			$typeId=$personid;
+			$typeId=getRealId($diak);
 			include("pictureinc.php");
 		}
 		//Change storys cv, scool trory, sparetime

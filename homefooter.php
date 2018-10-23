@@ -13,8 +13,8 @@
 			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">&copy; 2018 Levi</span></li>
 	      </ul>
 	</nav>
-	<?php 
-		if (userIsAdmin()) {
+	<?php
+		if (getParam('showDatabaseQuery')!=null) {
 			echo "Querys:".$db->getRequestCounter()->querys." Changes:".$db->getRequestCounter()->changes."<br/>";
 			$sql=$db->getRequestCounter()->sql;
 			foreach ($sql as $s) {
@@ -52,7 +52,7 @@
 		});
 		onResize();
 		setTimeout(clearDbMessages, 10000);
-	
+	    setTimeout(checkSession,10000);
 	});
 	var logoTimer;
 	var logoTop=-20;
@@ -100,12 +100,23 @@
 		    $.ajax({
 		    	url: "getIpLocation.php?ip="+ip
 			}).success(function(data) {
-			    $(".modal-title").html("IP cím:"+ip+" földrajzi adatai");
-				$(".modal-body").html("Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
-				$('#myModal').modal({show: 'false' });
+			    showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
 			});
 		}
 	<?php } ?>
+
+    function checkSession() {
+        $.ajax({
+            url: "ajax/userSessionAlive.php",
+            type:"GET",
+            success:function(data){
+                setTimeout(checkSession,10000);
+            },
+            error:function(error) {
+                showModalMessage("Kedves felhasználó",'<div class="alert alert-warning">Sajnos rég nem frissitetted ezt az óldalt, idéglenes adataid emiatt törlödtek. <br/><br/>Jelentkezz be újból!</div>');
+            }
+        });
+    }
 
 	function showModalMessage(title,text) {
 	    $(".modal-title").html(title);

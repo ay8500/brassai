@@ -1,23 +1,23 @@
 <?PHP
-include_once("tools/sessionManager.php");
-include_once("data.php");
+include_once __DIR__ . '/../tools/sessionManager.php';
+include_once __DIR__ . '/../data.php';
+
 $lat1=$_GET["lat1"];
 $lng1=$_GET["lng1"];
 $lat2=$_GET["lat2"];
 $lng2=$_GET["lng2"];
 
 $points = Array();
-$classId=getAktClassId();
+$classId=getRealId(getAktClass());
 $where="geolat is not null and geolat <>'' ";
-if($classId<0) {
-	$classList=$db->getClassList(getAktSchoolId());
+if($classId==null) {
+	$classList=$db->getClassList(getRealId(getAktSchool()));
 	$classIdList=array();
 	foreach ($classList as $c) {
-		array_push($classIdList,$c["id"]);
+		array_push($classIdList,getRealId($db->getClassById($c["id"])));
 	}
 	$where .=" and classID in (".implode(",",$classIdList).")";
 } else {
-	$classList = array($db->getClassById($classId));
 	$where .=" and classID=".$classId;
 }
 

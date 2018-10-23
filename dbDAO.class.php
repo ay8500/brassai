@@ -1411,8 +1411,8 @@ class dbDAO {
                 $found=array_search($r["id"],array_column($anyonymous,"changeForID"));
                 if ($found!==false) {
                     $ret[$i]=$anyonymous[$found];
-                    //the original id
-                    $ret[$i]["id"]=$r["id"];
+                    /*the original id
+                    $ret[$i]["id"]=$r["id"];*/
                 }
             }
         }
@@ -1448,9 +1448,11 @@ class dbDAO {
 		$sql="select * from ".$table.' where id='.$id." or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id.") order by id desc";
 		if ($this->dataBase->query($sql)) {
 			$ret =  $this->dataBase->getRowList();
+			/* Change the ID to the original ID
 			if (sizeof($ret)>1) {
 			    $ret[0]["id"]=$ret[0]["changeForID"];
             }
+			*/
             if (sizeof($ret)>0)
                 return $ret[0];
 		}

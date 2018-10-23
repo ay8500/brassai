@@ -69,7 +69,7 @@ function fillPoints() {
         }
         var SW=(map.getBounds().b);
         var NE=(map.getBounds().f);
-        var url="getGeoPoints.php";
+        var url="ajax/getGeoPoints.php";
         url +="?lat1="+NE.b;
         url +="&lng1="+SW.b;
         url +="&lat2="+NE.f;

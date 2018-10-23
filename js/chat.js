@@ -1,4 +1,4 @@
-	var loggedInUser=<?php echo getLoggedInUserId()?>;
+	var loggedInUser=<?php echo getLoggedInUserId()==null?'null':getLoggedInUserId()?>;
 	var loginShowed=false;
 
 	var text0="<br/>";

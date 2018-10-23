@@ -317,7 +317,9 @@ function playBackward() {
 
 function playForward() {
     var url="zenePlayer.php?listdir=visszafele&link="+songs[songs.length-1]+"&list=";
-    for (var i=songs.length-2;i>=0;url+=songs[i--]+",");
+    for (var i=songs.length-2;i>=0;i--) {
+        url+=songs[i]+",";
+    }
     window.location.href=url;
 }
 
@@ -327,7 +329,7 @@ function playRandom() {
     songs[idx]="";
     for (var i=1;i<songs.length;i++) {
 		idx=Math.floor(Math.random()*(songs.length));
-		while (songs[idx]=="") {
+		while (songs[idx]==="") {
 		    idx=Math.floor(Math.random()*(songs.length));
 		}
 		url+=songs[idx]+",";
@@ -339,8 +341,8 @@ function playRandom() {
 function autoComplete (field, select, property, forcematch) {
 	var found = false;
 	for (var i = 0; i < select.options.length; i++) {
-	if (select.options[i][property].toUpperCase().indexOf(field.value.toUpperCase()) == 0) {
-		found=true; break;
+	    if (select.options[i][property].toUpperCase().indexOf(field.value.toUpperCase()) == 0) {
+		    found=true; break;
 		}
 	}
 	if (found) { select.selectedIndex = i; }
@@ -368,18 +370,22 @@ function autoComplete (field, select, property, forcematch) {
  
  <?php 
  include "homefooter.php";
-		
- function getSongName($song) {
+
+/**
+ * Get the soung title using youtube API
+ * @param string $youtubeId
+ * @return string
+ */
+ function getSongName($youtubeId) {
  	$apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
  	try {
-        $response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $song . '&key=' . $apiPublicKey);
+        $response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $youtubeId . '&key=' . $apiPublicKey);
+        $json = json_decode($response);
+        if (is_object($json))
+            return $json->title;
     } catch (Exception $e) {
- 	    $response="";
+ 	    return "";
     }
- 	$json = json_decode($response);
- 	if (is_object($json))
- 		return $json->title;
- 	else 
- 		return ""; 
+	return "";
  }
  ?>

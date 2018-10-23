@@ -426,7 +426,7 @@ function savePicture(id) {
 	$('#commentShow_'+id).html(c);
 	if (id>0) {
 		$.ajax({
-			url:encodeURI("editDiakPictureTitle.php?id="+id+"&title="+t+"&comment="+c),
+			url:encodeURI("ajax/editDiakPictureTitle.php?id="+id+"&title="+t+"&comment="+c),
 			type:"GET",
 			dataType: 'json',
 			success:function(data){

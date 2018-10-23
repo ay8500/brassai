@@ -122,20 +122,19 @@ else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
 //visibility
-if (sizeof($picture>0)) {
-	if (isset($picture["isDeleted"]) && ($picture["isDeleted"]==0 || userIsAdmin())) {
-		//resizing the image
-		imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
-		if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
-			imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 16,true);
-			imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
-		}
-	}
-	else {
-		imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
-		
+if (isset($picture["isDeleted"]) && ($picture["isDeleted"]==0 || userIsAdmin())) {
+	//resizing the image
+	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+	if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
+		imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 16,true);
+		imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
 	}
 }
+else {
+	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+
+}
+
 //finally, return the image
 Header ("Content-type: image/png");
 ImageJpeg ($resized_img,null,$quality);

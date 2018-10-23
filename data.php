@@ -530,7 +530,7 @@ function getPersonId($person) {
 /**
  * The real object id
  * @param array $entry
- * @return int
+ * @return int | null
  */
 function getRealId($entry) {
 	if(null==$entry)
