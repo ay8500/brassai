@@ -109,7 +109,8 @@ function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
 				} ?>
 			<?php } ?>
 			<div class="fields" style="color: #ffbb66;"> 
-			<?php 
+			<?php
+                if(showField($d,"cementery")) 	echo '<div><div>Temető:</div><div style="color: #ffbb66;">'.getFieldValue($d["cementery"])."</div></div>";
 				if(showField($d,"country")) 	echo '<div><div>Ország:</div><div style="color: #ffbb66;">'.getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo '<div><div>Város:</div><div style="color: #ffbb66;">'.getFieldValue($d["place"])."</div></div>";
 			?>

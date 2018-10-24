@@ -59,6 +59,7 @@ if ($personid!=null && $personid>=0) {
 } 
 
 //preparation of the field to be edited and the itemprop characteristic
+$offset=0;
 $dataFieldNames 	=array("lastname","firstname","email","birthname","deceasedYear");
 $dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail","Diákkori név","† elhunyt");
 $dataItemProp       =array("","","","","");
@@ -70,6 +71,7 @@ if (isset($diak["deceasedYear"])){
     array_push($dataItemProp,"","");
     array_push($dataCheckFieldVisible,false,false);
     array_push($dataFieldObl,"Temető neve, helyiség nélkül","");
+    $offset=2;
 }
 if(true)  { //Address
 	array_push($dataFieldNames, "partner","address","zipcode","place","country");
@@ -92,10 +94,10 @@ if (userIsAdmin()) { //only for admin
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
 	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
-if ((isset($classId) && $db->isClassIdForStaf($classId)) || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-    $dataFieldCaption[18] = "Tantárgy";
-    $dataFieldCaption[19] = "Osztályfönök";
-    $dataFieldObl[19] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
+    $dataFieldCaption[18+$offset] = "Tantárgy";
+    $dataFieldCaption[19+$offset] = "Osztályfönök";
+    $dataFieldObl[19+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
@@ -299,12 +301,32 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 	});
 	");
 }
-if ($personid!=null) {
-	if ($diak["isTeacher"]) 
-		Appl::setSiteTitle("Tanár: " .$diak["lastname"]." ".$diak["firstname"]);
-	else
-		Appl::setSiteTitle(" Véndiak: " .$diak["lastname"]." ".$diak["firstname"]);
+
+
+// Title an subtitle of the page schoolmate or guests
+$guests = isPersonGuest($person);
+if (isAktClassStaf()) {
+    if (intval($person["isTeacher"])==1)
+        Appl::setSiteSubTitle("Tanári kar");
+    else
+        Appl::setSiteSubTitle(" Barátaink");
+    Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($person));
+} else {
+    if ($guests) {
+        Appl::setSiteSubTitle(getAktClassName()." Vendég jó barát");
+        Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($person));
+    } else {
+        if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
+            $headTeacher=$db->getPersonByID($class["headTeacherID"]);
+            Appl::setSiteSubTitle(getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
+            Appl::setSiteTitle(getAktClassName()." Osztályfőnök ".getPersonName($headTeacher));
+        } else {
+            Appl::setSiteSubTitle("Osztály ".getAktClassName());
+            Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($person));
+        }
+    }
 }
+
 
 include("homemenu.php"); 
 ?>

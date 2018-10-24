@@ -8,24 +8,24 @@ include_once("data.php");
 include_once 'editDiakCard.php';
 
 use \maierlabs\lpfw\Appl as Appl;
-// Title of the page schoolmate or guests
-$guests = getParam("guests", "")=="true";
 $class = handleClassSchoolChange();
 
+// Title an subtitle of the page schoolmate or guests
+$guests = getParam("guests", "")=="true";
 if (isAktClassStaf()) {
-	Appl::$subTitle=$guests?"Barátaink":"Tanáraink";
+	Appl::setSiteSubTitle($guests?"Barátaink":"Tanáraink");
     Appl::setSiteTitle(Appl::$subTitle);
 } else {
 	if ($guests) {
-		Appl::$subTitle=getAktClassName()." Vendégek, jó barátok";
+		Appl::setSiteSubTitle(getAktClassName()." Vendégek, jó barátok");
         Appl::setSiteTitle(Appl::$subTitle);
 	} else {
 		if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			$headTeacher=$db->getPersonByID($class["headTeacherID"]);
-			Appl::$subTitle=getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
+			Appl::setSiteSubTitle(getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
             Appl::setSiteTitle(getAktClassName()." Osztályfőnök ".getPersonName($headTeacher));
 		} else {
-			Appl::$subTitle=getAktClassName()." Osztálytársak";
+			Appl::setSiteSubTitle(getAktClassName()." Osztálytársak");
             Appl::setSiteTitle(Appl::$subTitle);
 		}
 	}

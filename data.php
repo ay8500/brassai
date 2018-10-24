@@ -153,7 +153,7 @@ function getPersonDummy() {
 	return [
 		"firstname"=>"",
 		"lastname"=>"",
-		"user"=>createPassword(8),
+		"user"=>encrypt_decrypt("encrypt",createPassword(8)),
 		"passw"=>createPassword(8),
 		"role"=>""
 	];

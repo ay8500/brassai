@@ -1,5 +1,9 @@
 <?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
+include_once 'config.class.php';
+include_once 'data.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -14,28 +18,21 @@ $su = explode("-",$su[sizeof($su)-1]);
 
 $id=$su[sizeof($su)-1];
 
-include_once 'tools/sessionManager.php';
-include_once 'tools/appl.class.php';
-include_once 'config.class.php';
-include_once 'tools/userManager.php';
-include_once 'data.php';
-
 if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
 	$diak=$db->getPersonByID($id);
 	if ($diak==null) {
-		ppperror();
+		pageNotFound();
 		exit;
 	} else {
 		setAktUserId($diak["id"]);
-		header("status: 200");
 		include ("editDiak.php");
 		exit();
 	}
 }
-ppperror();
-exit;
+pageNotFound();
 
-function ppperror() { 
+
+function pageNotFound() {
 	header("status: 404"); 
 	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
 	setAktSchool(1);unsetAktClass();

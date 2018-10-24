@@ -34,13 +34,13 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
 	if (isset($uid) && null!=$uid) {
-		$text.='Direkt link az én adataimhoz: <a hrefs="http://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
+		$text.='Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
 	}
 	if ($passw=="") {
 		$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
 	} else {
 		$text.="Felhasználóneved: ".$user."<br/>";
-		$text.="Jelszavad: ".$passw."<br/>";
+		$text.="Jelszavad: ".encrypt_decrypt("decrypt",$passw)."<br/>";
 	}
 	if ($rights!="") {
 		$text.="<p>Szerep: ".$rights."</p>";

@@ -52,7 +52,9 @@
 		});
 		onResize();
 		setTimeout(clearDbMessages, 10000);
-	    setTimeout(checkSession,10000);
+        <?php if (getParam('logoffSessionTimeout')==null) {?>
+	        setTimeout(checkSession,10000);
+        <?php } ?>
 	});
 	var logoTimer;
 	var logoTop=-20;
@@ -113,7 +115,7 @@
                 setTimeout(checkSession,10000);
             },
             error:function(error) {
-                showModalMessage("Kedves felhasználó",'<div class="alert alert-warning">Sajnos rég nem frissitetted ezt az óldalt, idéglenes adataid emiatt törlödtek. <br/><br/>Jelentkezz be újból!</div>');
+                document.location.href="index.php?logoffSessionTimeout=true";
             }
         });
     }

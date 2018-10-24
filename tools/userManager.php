@@ -121,7 +121,7 @@
 	
 	/**
 	 * The aktual school staf class id
-	 * @return number|NULL
+	 * @return boolean
 	 */
 	function isAktClassStaf() {
 		global $db;
@@ -232,6 +232,7 @@
 		unset($_SESSION["FacebookFirstName"]);
 		unset($_SESSION["FacebookLastName"]);
 		unsetAktClass();
+		session_destroy();
 	}
 	
 	/**
