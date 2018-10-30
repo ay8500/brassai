@@ -153,8 +153,8 @@ function getPersonDummy() {
 	return [
 		"firstname"=>"",
 		"lastname"=>"",
-		"user"=>encrypt_decrypt("encrypt",createPassword(8)),
-		"passw"=>createPassword(8),
+		"user"=>createPassword(8),
+		"passw"=>encrypt_decrypt("encrypt",createPassword(8)),
 		"role"=>""
 	];
 }
@@ -450,7 +450,7 @@ function getFieldChecked($diak,$field) {
   if (null== $field || null==$diak || !isset($diak[$field]) || $diak[$field]=="" ) 
   	return "";
   $c=$diak[$field];
-  if ($c[0]=="~") 
+  if ($c[0]==="~")
   	return "checked";
   return "";
 }

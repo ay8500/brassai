@@ -175,7 +175,7 @@ class dbDAO {
      * @return array
      */
 	public function getClassList($schoolID=1) {
-		return   $this->getElementList("class","schoolID=".$schoolID,null,null,"text asc");
+		return   $this->getElementList("class","schoolID=".$schoolID." and graduationYear <> 0",null,null,"text asc");
 	}
 	
 	/**
@@ -1365,8 +1365,9 @@ class dbDAO {
 	}
 
 	/**
-	 * Save request
+	 * Save request if user is not loggen on
 	 * @param  integer  $type changeType
+     * @return void
 	 */
 	public function saveRequest($type) {
 		if (!userIsLoggedOn()) {

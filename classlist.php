@@ -56,9 +56,8 @@ $classes = $db->getClassList(getAktSchoolId());
  * @param int $eveningClass
  */
 function displayClassList($db, $classes, $eveningClass) {
-	$stafClassId=Appl::getMemberId("staffClass");
 	foreach($classes as $cclass) {
-		if ($cclass["id"]!=$stafClassId && $eveningClass==$cclass["eveningClass"]) {
+		if ($eveningClass==$cclass["eveningClass"]) {
 			if (getAktClassId()==$cclass["id"])
 				$aktualClass="classdiv actual_class_in_menu";
 			else

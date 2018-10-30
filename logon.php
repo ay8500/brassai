@@ -66,6 +66,7 @@
 				"<h2>Facebooklogin</h2>".
 				"FacebookId:".$_SESSION['FacebookId']."<br/>".
 				"FacebookName:".$_SESSION['FacebookName']."<br/>".
+                "E-Mail:".$_SESSION['FacebookEmail']."<br/>".
 				"Login result:".$logOnMessage,"Login");
 		}
 	} 

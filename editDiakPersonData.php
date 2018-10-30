@@ -50,7 +50,7 @@
 	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button id="saveButton" onclick="document.forms['edit_form'].submit();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
-            <button onclick="javascript:location.href='editDiak.php'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
+            <button onclick="location.href='editDiak.php'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
 		</div>
 	<?php } ?>
 	
@@ -68,7 +68,6 @@
     <form method="get" name="edit_form" >
         <?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
             $optionClasses=$db->getClassList(getAktSchoolId());
-            unset($optionClasses[0]); //The first class is the teachers list
         ?>
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
@@ -131,7 +130,7 @@
                             echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
                         }
                     }?>
-                <?php //Inpufields new person
+                <?php //Inpufields anonymous user
                 } elseif ($anonymousEditor) {?>
                     <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
                     <?php

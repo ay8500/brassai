@@ -56,7 +56,20 @@ if ($personid!=null && $personid>=0) {
 		header('Location:dc.php');
 		exit;
 	}
-} 
+}
+
+//GDPS person requested all data to be deleted exept name
+if (getFieldChecked($diak,"place")!="") {
+    include_once "homemenu.php";
+    ?>
+        <div class="well">
+            <h3><?php echo ($diak["lastname"].' '.$diak["firstname"]) ?></h3>
+            Személyes adatok védve vannak. Módosítás vagy bővítés a személy kérésére nem lehetséges.
+        </div>
+    <?php
+    include_once "homefooter.php";
+    die();
+}
 
 //preparation of the field to be edited and the itemprop characteristic
 $offset=0;
@@ -140,9 +153,6 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 					setAktClass($diak["classID"]);	//set actual class in case of class changes
 					Appl::$resultDbOperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
 					$db->saveRequest(changeType::personchange);
-					if (!userIsAdmin()) {
-						saveLogInInfo("SaveData",$personid,$diak["user"],"",true);
-					}
 					header("location:hometable.php?class=".$diak["classID"]."&action=saveok");
 				} else {
 					Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
@@ -304,17 +314,17 @@ if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
 
 
 // Title an subtitle of the page schoolmate or guests
-$guests = isPersonGuest($person);
+$guests = isPersonGuest($diak);
 if (isAktClassStaf()) {
-    if (intval($person["isTeacher"])==1)
+    if (intval($diak["isTeacher"])==1)
         Appl::setSiteSubTitle("Tanári kar");
     else
         Appl::setSiteSubTitle(" Barátaink");
-    Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($person));
+    Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($diak));
 } else {
     if ($guests) {
         Appl::setSiteSubTitle(getAktClassName()." Vendég jó barát");
-        Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($person));
+        Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($diak));
     } else {
         if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
             $headTeacher=$db->getPersonByID($class["headTeacherID"]);
@@ -322,7 +332,7 @@ if (isAktClassStaf()) {
             Appl::setSiteTitle(getAktClassName()." Osztályfőnök ".getPersonName($headTeacher));
         } else {
             Appl::setSiteSubTitle("Osztály ".getAktClassName());
-            Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($person));
+            Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($diak));
         }
     }
 }
@@ -347,11 +357,11 @@ include("homemenu.php");
 if ($db->isClassIdForStaf(getAktClassId()) && !userIsAdmin() && !userIsSuperuser()) {
 	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz");
 } else if ( userIsSuperuser() ) { 
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Infók");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz","Diákkoromból","Szabadidőmben","Infók");
 } else if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) { 
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok","Infók");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok","Infók");
 } else {
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajzom","Diákkoromból","Szabadidőmben","Térkép");
+	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz","Diákkoromból","Szabadidőmben","Térkép");
 }
 if ($action=="newperson") { 
 	$tabsCaption=Array("Új diák adatai");
@@ -359,6 +369,11 @@ if ($action=="newperson") {
 	$tabsCaption=Array("Új barát vagy vendég adatai");
 } else if ($action=="newteacher") {
 	$tabsCaption=Array("Új tanárnő vagy tanár adatai");
+}
+$tabOffset=0;
+if (isset($diak["deceasedYear"])) {
+    $tabOffset=1;
+    array_splice($tabsCaption, 1, 0, Array("Gyertyák"));
 }
 $tabUrl="editDiak.php";
 ?>
@@ -372,29 +387,37 @@ $tabUrl="editDiak.php";
 		if ($tabOpen==0) {
 			include("editDiakPersonData.php");
 		}
+        //Candles
+        if ($tabOpen==1 && $tabOffset>0) {
+            include("rip.inc.php");
+            $personList=array();
+            $personList[0]=$diak;
+            \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
+            displayRipPerson($db,$diak);
+        }
 		//Pictures
-		if ($tabOpen==1) { 
+		if ($tabOpen==1+$tabOffset) {
 			$type="personID";
 			$typeId=getRealId($diak);
 			include("pictureinc.php");
 		}
 		//Change storys cv, scool trory, sparetime
-		if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
+		if ($tabOpen==2+$tabOffset || $tabOpen==3+$tabOffset || $tabOpen==4+$tabOffset) {
 			include("editDiakStorys.php");
 		}
 		//Change geo place
-		if ($tabOpen==5) { 
+		if ($tabOpen==5+$tabOffset) {
 			if (userIsSuperuser())
 				include("editDiakActivities.php");
 			else
 				include("editDiakPickGeoPlace.php");
 		}
 		//Change password, usename, facebook
-		if ($tabOpen==6) {
+		if ($tabOpen==6+$tabOffset) {
 			include("editDiakUserPassword.php");
 		}
 		//Activities
-		if ($tabOpen==7) {
+		if ($tabOpen==7+$tabOffset) {
 			include("editDiakActivities.php");
 		}
 		?>

@@ -5,15 +5,15 @@
 	$person=$db->getPersonByID($personid);
 	
 	$tab=getIntParam("tabOpen", 0);
-	if ($tab==2) {
+	if ($tab==2+$tabOffset) {
 		$title="Rövid életrajzom: továbbképzések munkahelyek";
 		$type="cv";
 		$text = $person["cv"];
-	} elseif ($tab==3) {
+	} elseif ($tab==3+$tabOffset) {
 		$title="Kedvenc diákkori történetek";
 		$type="story";
 		$text = $person["story"];
-	} elseif ($tab==4) {
+	} elseif ($tab==4+$tabOffset) {
 		$title="Ezt szeretem csinálni szabadidőmben";
 		$type="spare";
 		$text = $person["aboutMe"];
