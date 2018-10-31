@@ -11,15 +11,15 @@ $tabOpen= getIntParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
 if($personid!=null){
-    $person=$db->getPersonByID($personid);
-	if ($person!=null) {
+    $diak = $db->getPersonByID($personid);
+	if ($diak!=null) {
 		setAktUserId($personid);	//save actual person in case of tab changes
-		setAktClass($person["classID"]);
+		setAktClass($diak["classID"]);
 	} else {
-		$person=$db->getPersonByUser($personid);
-		if ($person!=null) {
-			$personid=$person["id"];
-			setAktUserId($person["id"]);
+		$diak=$db->getPersonByUser($personid);
+		if ($diak!=null) {
+			$personid=$diak["id"];
+			setAktUserId($diak["id"]);
 		}
 	}
 }
@@ -215,9 +215,15 @@ if ($action=="changeuser" && userIsLoggedOn()) {
 
 //Remove Facebook connection
 if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
-	unset($diak["facebookid"]);
-	$db->savePersonField(getLoggedInUserId(), "facebookid", null);
-	saveLogInInfo("FacebookDelete",$personid,$diak["user"],"",true);
+	$ret = $db->savePersonField(getLoggedInUserId(), "facebookid", 0);
+	$diak=$db->getPersonByID(getLoggedInUserId());
+	if ((!isset($diak["facebookid"]) || $diak["facebookid"]=null) && $ret>=0) {
+        Appl::setMessage("Facebook kapcsolat törlése sikerült","success");
+        unset($_SESSION['FacebookId']);
+        saveLogInInfo("FacebookDelete",$diak["id"],$diak["user"],"",true);
+    } else {
+        Appl::setMessage("Facebook kapcsolat törlése nem sikerült","warning");
+    }
 }
 
 //Delete Picture

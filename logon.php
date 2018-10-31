@@ -145,10 +145,15 @@ function writeLogonDiv() {
 			success:function(data){
 				var url=location.href;
 				url=location.href.replace("action","loginok");
-				if (url.indexOf("?") !== -1) 
-					url=location.href+"&action=loginok";
-				else
+				if (url.indexOf("?") !== -1) {
+				    if (url.indexOf("logoffSessionTimeout") !== -1) {
+				        url="index.php?action=loginok";
+				    } else {
+					    url=location.href+"&action=loginok";
+					}
+				} else {
 					url=location.href+"?action=loginok";
+				}
 				location.href=url;
 			},
 			error:function(data){

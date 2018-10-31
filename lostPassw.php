@@ -52,7 +52,7 @@ include 'homemenu.php';
   		<div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni.</h4></div>
   		<div class="panel-body">
   			<div class="alert alert-info">
-				Te is a <?php echo getAktSchoolName()?> véndiákja tanárnöje vagy tanárja vagy és szeretnél volt osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
+				Te is a <?php echo getAktSchoolName()?> véndiákja tanárnője vagy tanárja vagy és szeretnél volt osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
 				<br />
 				Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.
 			</div>
@@ -69,7 +69,8 @@ include 'homemenu.php';
 				<ul>
 					<li>A becenév nem tartalmaz ékezetes betüket.</li>
 					<li>E-mail címedet is használhatod mint felhasználó név.</li>
-					<li>Javaskript jogok be kell legyenek kapcsolva ahoz, hogy bejelenkezzhess.
+					<li>Használd a Facebook felhasználó bejelentkezési lehetőséget.
+                    <li>Javaskript jogok be kell legyenek kapcsolva ahoz, hogy bejelenkezzhess.
 				</ul>
 				Küldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre ha bármilyen kérdésed vagy megjegyzésed van.
 			</div>

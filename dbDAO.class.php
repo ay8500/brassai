@@ -283,15 +283,12 @@ class dbDAO {
 	
 	/**
 	 * save changes on only one field 
-	 * @return integer positiv integer if the save operation is succeded
+	 * @return integer -1 on error or person id if operation is succeded
 	 */
 	public function savePersonField($personId,$fieldName,$fieldValue=null) {
 		$person=$this->getPersonByID($personId);
 		if ($person!=null) {
-			if ($fieldValue==null )
-				unset($person[$fieldName]);
-			else
-				$person[$fieldName]=$fieldValue;
+		    $person[$fieldName]=$fieldValue;
 			return $this->savePerson($person);
 		}
 		return -1;

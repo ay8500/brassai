@@ -232,7 +232,6 @@
 		unset($_SESSION["FacebookFirstName"]);
 		unset($_SESSION["FacebookLastName"]);
 		unsetAktClass();
-		session_destroy();
 	}
 	
 	/**

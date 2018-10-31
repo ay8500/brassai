@@ -29,7 +29,7 @@ if (userIsLoggedOn()) {
 	header('Location: index.php?loginok=true');
 }
 //New User
-if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", "")!="") {
+if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!="") {
 	if ($db->getCountOfRequest(changeType::newuser)>5) {
 		logoutUser();
 		Appl::$resultDbOperation='<div class="alert alert-warning" >Túl sok bejelenkezést szeretnél létrehozni, kérünk probálkozz késöbb még egyszer!</div>';
@@ -64,6 +64,7 @@ if (!userIsLoggedOn() && getParam("action")=="newUser" && getParam("classtext", 
 					$person["firstname"]=html_entity_decode(getParam("firstname"),ENT_QUOTES,"UTF-8");
 					$person["email"]=html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8");
 					$person["role"]=getParam("role","");
+                    $person["facebookid"]=getParam("fid");
 					$person["classID"]=$classid;
 					$newUserReturnValue = $db->savePerson($person);
 				} else {
@@ -105,7 +106,14 @@ include 'homemenu.php';
 <div class="container-fluid">
 <div class="well">
 	<div class="panel panel-default">
-		<?php if (!isset($newUserReturnValue)) {?>
+		<?php if (!isset($newUserReturnValue)) {
+		    Appl::addJsScript("
+		        $( document ).ready(function() {
+		            $('.navbar-nav').css('opacity','0.2');
+                    $('.navbar-nav').css('pointer-events','none');
+                });  
+    		");
+		    ?>
 		<div class="panel-heading">
 			<label id="dbDetails">
 				<?php if (isset($_SESSION["FacebookId"])) {?> 
@@ -114,10 +122,11 @@ include 'homemenu.php';
 				<?php  } else {?>
 				<div class="inline">Kedves látogató szeretettel köszöntünk a véndiákok honoldalán.</div>
 				<?php  } ?>
+                <div>Légyszíves és állítsd be milyen viszonyban állsz a véndiákokkal.</div>
 			</label> 
 		</div>
 		<div id="page1">
-			<h4 class="margin-hor">Kapcsolatom a <?php  echo getAktSchoolName() ?> diákjaival:</h4> 
+			<h4 class="margin-hor">Kapcsolatom a <?php  echo getAktSchoolName() ?> véndiákjaival:</h4>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,1);"/> 
 				<div class="inline margin-hor"> Véndiák vagyok, ebben az iskolában éretségiztem és ballagtam.</div></div>
@@ -132,7 +141,7 @@ include 'homemenu.php';
 			<div style="clear:both;"></div>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(false,4);"/> 
-				<div class="inline margin-hor">Ennek az iskolának tanárnöje, tanárja voltam vagy vagyok </div></div>
+				<div class="inline margin-hor">Ennek az iskolának tanárnője, tanárja voltam vagy vagyok </div></div>
 			<div style="clear:both;"></div>
 			<div id="idclass" style="margin:10px;display:none">
 				<div class="input-group" id="grpyear"> 
@@ -182,7 +191,8 @@ include 'homemenu.php';
 				<input type="text" class="form-control" id="email" onchange="validateEmailInput(this);" onkeyup="validateEmailInput(this);"/>
 			</div>
 		</div>		
-		<button class="margin-def btn btn-default disabled"  onclick="signin()" id="signin">Bejelentkezem</button>
+		<button class="margin-def btn btn-success disabled"  onclick="signin()" id="signin">Bejelentkezem</button>
+        <button class="margin-def btn btn-warning"  onclick="document.location.href='index.php'" >Kilép</button>
 		<?php } else {?>
 			<button class="btn btn-default" onclick="javascript:document.location.href='editDiak.php?uid=<?php echo $newUserReturnValue?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
 		<?php } ?>
