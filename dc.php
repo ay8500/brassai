@@ -3,7 +3,7 @@ include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
 include_once 'config.class.php';
-include_once 'data.php';
+include_once 'dbBL.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 

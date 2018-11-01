@@ -20,7 +20,7 @@ if (!userIsLoggedOn() && getParam("name", "")=="") {
 	return;
 }
 
-include_once 'data.php';
+include_once 'dbBL.class.php';
 include_once 'sendMail.php';
 
 $title = getParam("title", "");

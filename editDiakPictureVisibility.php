@@ -1,7 +1,7 @@
 <?php
 include_once 'tools/sessionManager.php';
 include_once 'tools/ltools.php';
-include_once 'data.php';
+include_once 'dbBL.class.php';
 
 $id = getIntParam("id",-1 );
 $visibility = getParam("attr", "");

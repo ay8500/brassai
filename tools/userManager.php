@@ -148,8 +148,33 @@
 		return (getAktUserId()==getLoggedInUserId() );
 	}
 
-	
-	/**
+
+
+    /**
+     * is the person a guest
+     * @return boolean*/
+    function isPersonGuest($person) {
+        return (isset($person["role"]) && strstr($person["role"],"guest")!="");
+    }
+
+    /**
+     * is the person a admin
+     * @return boolean*/
+    function isPersonAdmin($person) {
+        return (isset($person["role"]) && strstr($person["role"],"admin")!="");
+    }
+
+    /**
+     * is the person a editor
+     * @return boolean
+     */
+    function isPersonEditor($person) {
+        return (isset($person["role"]) && strstr($person["role"],"editor")!="");
+    }
+
+
+
+/**
 	 * Check login data in each client 
 	 */
 	function checkUserLogin($user,$passw) {

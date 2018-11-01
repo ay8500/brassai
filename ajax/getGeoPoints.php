@@ -1,6 +1,6 @@
 <?PHP
 include_once __DIR__ . '/../tools/sessionManager.php';
-include_once __DIR__ . '/../data.php';
+include_once __DIR__ . '/../dbBL.class.php';
 
 $lat1=$_GET["lat1"];
 $lng1=$_GET["lng1"];

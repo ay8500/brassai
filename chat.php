@@ -1,8 +1,9 @@
-<?php 
-include_once("tools/userManager.php");
-include_once("tools/appl.class.php");
-include_once("data.php");
+<?php
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
+include_once 'tools/appl.class.php';
+include_once 'dbBL.class.php';
 
 use maierlabs\lpfw\Appl as Appl;
 
@@ -28,16 +29,21 @@ include_once 'chatinc.php';
 
 
 
-if (getGetParam("sendAction")=="sendMail" && userIsLoggedOn()) {
+if (isActionParam("sendMessage") && userIsLoggedOn()) {
 	$mailsSent = 0;
 	include_once ("sendMail.php");
 	$persons = $db->getPersonListByClassId(getAktClassId());
+    $senderPerson=$db->getPersonLogedOn();
 	foreach ($persons as $person) {
-		if (sendChatMail(getAktPerson(), $person, getGetParam("Text") )) {
+		if (    isset($person["email"]) && strlen($person["email"])>8 &&
+		        sendChatMail($senderPerson, $person, getParam("Text") )) {
 			$mailsSent++;
 		}
 	}
-	Appl::$resultDbOperation= "</div>Elküldött e-mailek száma:".$mailsSent."</div>";
+	Appl::setMessage("Elküldött e-mailek száma:".$mailsSent,"success");
+	$entry["classID"]=getAktClassId();
+	$entry["text"]=htmlspecialchars_decode(urldecode(getParam("Text")));
+	$db->saveNewMessage($entry);
 }
 
 $personList=$db->getPersonListByClassId(getRealId(getAktClass()),null,null,true);

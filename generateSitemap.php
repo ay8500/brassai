@@ -22,7 +22,7 @@ function writeSitemapLink($link)
 }
 
 include_once("dbDAO.class.php");
-include_once("data.php");
+include_once("dbBL.class.php");
 
 	$list=$db->getSongList();
 	foreach ($list as $element) {

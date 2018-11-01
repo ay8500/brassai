@@ -7,50 +7,89 @@ include_once "tools/userManager.php";
 include_once 'tools/ltools.php';
 include_once 'dbDAO.class.php';
 
-$db = new dbDAO;
+class dbBL extends dbDAO
+{
 
-/**
- * handle the params that change the class or school
- * @return array|NULL of school class
- */
-function handleClassSchoolChange() {
-	global $db;
-	if (null!=getParam("classid")) {
-		if ('all'==getParam("classid")) {
-			unsetAktClass();
-			return ;
-		}
-		$class=$db->getClassById(getParam("classid"));
-		if ($class==null)
-			$class=$db->getClassByText(getParam("classid"));
-		if ($class!=null) {
-			setAktClass($class["id"]);
-			setAktSchool($class["schoolID"]);
-		}
-	} else {
-		$class=getAktClass();
-	}
-	return $class;
+    /**
+     * handle the params that change the class or school
+     * @return array NULL | school class
+     */
+    public function handleClassSchoolChange($classId = "all", $schoolId = null)
+    {
+
+        if ($schoolId != null) {
+            unsetAktClass();
+            setAktSchool($schoolId);
+        }
+
+        if (null != $classId) {
+            if ('all' == $classId) {
+                unsetAktClass();
+                return null;
+            }
+            $class = $this->getClassById($classId);
+            if ($class == null)
+                $class = $this->getClassByText($classId);
+            if ($class != null) {
+                setAktClass($class["id"]);
+                setAktSchool($class["schoolID"]);
+            }
+        } else {
+            $class = getAktClass();
+        }
+        return $class;
+    }
+
+    /**
+     * The picture folder of the aktual persons class or school
+     */
+    public function getAktClassFolder()
+    {
+        $class = getAktClass();
+        if ($class != null) {
+            return $class["name"] . $class["graduationYear"];
+        } else {
+            return "school" . getAktSchoolId();
+        }
+
+    }
+
+    /**
+     * returns logged in person
+     * @return object person or null
+     */
+    public function getPersonLogedOn() {
+         if ( userIsLoggedOn())  {
+            return $this->getPersonByID(getLoggedInUserId());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * returns an empty person
+	 * @return array
+     */
+    public function getPersonDummy() {
+        return [
+            "firstname"=>"",
+            "lastname"=>"",
+            "user"=>createPassword(8),
+            "passw"=>encrypt_decrypt("encrypt",createPassword(8)),
+            "role"=>""
+        ];
+    }
+
 }
 
-if ($schoolid=getParam("schoolid", "")!="") {
-	unsetAktClass();
-	setAktSchool($schoolid);
-}
+
+$db = new dbBL;
 
 
-/**
- * The folder of the aktual persons class
- */
-function getAktClassFolder() {
-	$class=getAktClass();
-	if ($class!=null) {
-        return $class["name"] . $class["graduationYear"];
-    } else {
-		return "school".getAktSchoolId();
-	}
 
-}
+
+
+
 
 /**
  * The name of the aktual school class
@@ -97,67 +136,10 @@ function getAktSchoolName() {
 }
 
 
-/**
- * returns aktual person
- * @return object person or null
- */
-function getAktPerson() {
-	global $db;
-	if ( null!=getAktUserId())  {
-		return $db->getPersonByID(getAktUserId());
-	} else {
-		return null;
-	}
-}
-
-/**
- * returns logged in person
- * @return object person or null
- */
-function getPersonLogedOn() {
-	global $db;
-	if ( userIsLoggedOn())  { 
-		return $db->getPersonByID(getLoggedInUserId());
-	} else {
-		return null;
-	}
-}
 
 
-/**
- * is the person a guest
- * @return boolean*/
-function isPersonGuest($person) {
-	return (isset($person["role"]) && strstr($person["role"],"guest")!="");
-}
 
-/**
- * is the person a admin
- * @return boolean*/
-function isPersonAdmin($person) {
-	return (isset($person["role"]) && strstr($person["role"],"admin")!="");
-}
 
-/**
- * is the person a editor
- * @return boolean
- */
-function isPersonEditor($person) {
-	return (isset($person["role"]) && strstr($person["role"],"editor")!="");
-}
-
-/**
- * returns an empty person
- */
-function getPersonDummy() {
-	return [
-		"firstname"=>"",
-		"lastname"=>"",
-		"user"=>createPassword(8),
-		"passw"=>encrypt_decrypt("encrypt",createPassword(8)),
-		"role"=>""
-	];
-}
 
 function getPersonPicture($person) {
 	if (null==$person || !isset($person["picture"]) || $person["picture"]=="") {
@@ -187,6 +169,7 @@ function writePersonName($person) {
  * Compare classmates by firstname,lastname,birthname
  * @param person $a
  * @param person $b
+ * @return int
  */
 function compareAlphabetical($a,$b) {
 	if (strstr($a["lastname"],"Dr. ")!="")
@@ -208,6 +191,7 @@ function compareAlphabetical($a,$b) {
  * Compare persons by isTeacher,firstname,lastname,birthname
  * @param person $a
  * @param person $b
+ * @return int
  */
 function compareAlphabeticalTeacher($a,$b) {
 	$c = strcmp($a["isTeacher"]?'0':'1',$b["isTeacher"]?'0':'1');
@@ -221,6 +205,7 @@ function compareAlphabeticalTeacher($a,$b) {
  * Compare classmates by picture,firstname,lastname,birthname
  * @param person $a
  * @param person $b
+ * @return int
  */
 function compareAlphabeticalPicture($a,$b) {
 	$c = strcmp(isset($a["picture"])?'1':'0',isset($b["picture"])?'1':'0');
@@ -234,6 +219,7 @@ function compareAlphabeticalPicture($a,$b) {
  * Compare classmates by email
  * @param person $a
  * @param person $b
+ * @return int
  */
 function compairEmail($d1,$d2) {
 	if (!isset($d1["email"]) || !isset($d2["email"]))
@@ -245,6 +231,7 @@ function compairEmail($d1,$d2) {
  * Compare classmates by username
  * @param person $a
  * @param person $b
+ * @return string
  */
 function compairUser($d1,$d2) {
 	if (!isset($d1["user"]) || !isset($d2["user"]))
@@ -256,6 +243,7 @@ function compairUser($d1,$d2) {
  * Compare classmates by username link
  * @param person $a
  * @param person $b
+ * @return boolean
  */
 function compairUserLink($d1,$d2) {
 	if (isset($d1["lastname"]) && isset($d2["lastname"]) && isset($d1["firstname"]) && isset($d2["firstname"])) {
@@ -265,18 +253,6 @@ function compairUserLink($d1,$d2) {
 		return false;
 	}
 
-/**
- * Set picture visibility 
- * @param int $pictureId
- * @param int $visibleforall
- * @return integer >=0 ok,
- */
-function setPictureVisibleForAll($pictureId, $visibleforall){
-	global $db;
-	$picture=$db->getPictureById($pictureId);
-	$picture["isVisibleForAll"]=$visibleforall?1:0;
-	return $db->savePicture($picture);
-}
 
 /**
  * Mark picture as deleted or delete it from the db and filesystem

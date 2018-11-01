@@ -42,7 +42,7 @@ if (userIsAdmin()) {
 		generateCheckHtmlTable($db,"Osztályok", "Osztály","Class","text",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
 	}
 	if ($tabOpen==1) {
-		$dummyPerson=getPersonDummy();
+		$dummyPerson=$db->getPersonDummy();
         $dummyPerson["id"]="";$dummyPerson["picture"]="";
 		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["isTeacher"]="";
 		$dummyPerson["address"]="";$dummyPerson["zipcode"]="";$dummyPerson["place"]="";

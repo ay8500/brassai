@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 include_once("tools/sessionManager.php");
-include_once("data.php");
+include_once("dbBL.class.php");
 include_once("tools/ltools.php");
 
 $idList= getGetParam("ids", "");

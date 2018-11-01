@@ -60,7 +60,7 @@ function showChatEnterfields($personList) {
 					<?php }?>
 				</div>
 				<div style="display: inline-block;">
-				<button type="button" class="btn btn-warning btn-t" name="sendAction" value="sendMessage" onclick="sendMessage();"><span class="glyphicon glyphicon-send"></span> küldés</button>
+				<button class="btn btn-warning btn-t" name="action" value="sendMessage" onclick="sendMessage();"><span class="glyphicon glyphicon-send"></span> küldés</button>
 				</div>
 				<br/>
 			</div>

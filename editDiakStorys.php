@@ -1,6 +1,6 @@
 <?php
 	include_once 'tools/ltools.php';
-	include_once 'data.php';
+	include_once 'dbBL.class.php';
 	
 	$person=$db->getPersonByID($personid);
 	
@@ -50,7 +50,7 @@
 		} else { 
 			$name="";
 			if (userIsLoggedOn()) {
-				$p =getPersonLogedOn();
+				$p =$db->getPersonLogedOn();
 				$name=$p["user"];
 			}
 			?>

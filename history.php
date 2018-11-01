@@ -91,7 +91,8 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayElementObj($person, $personNext,"picture","Pic");
 	displayElementObj($person, $personNext,"partner","P");
 	displayElementObj($person, $personNext,"deceasedYear","†");
-	
+    displayElementObj($person, $personNext,"cementery","†");
+
 	displayElementObj($person, $personNext,"phone","P");
 	displayElementObj($person, $personNext,"mobil","M");
 	displayElementObj($person, $personNext,"email","E");
@@ -124,10 +125,12 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 
 function displayClass($db,$item,$class,$classNext) {
 	displayChangeData($db,$class,$item["id"]);
-	displayElementObj($class, $classNext, "schoolID");
+	displayElementObj($class, $classNext, "schoolID","S");
 	displayElementObj($class, $classNext, "name");
 	displayElementObj($class, $classNext, "graduationYear");
-	displayElement(getPersonName($db->getPersonByID($class["headTeacherID"])), getPersonName($db->getPersonByID($classNext["headTeacherID"])));
+    displayElementObj($class, $classNext, "eveningClass","E");
+    displayElementObj($class, $classNext, "text");
+	displayElement(getPersonName($db->getPersonByID(array_get($class,"headTeacherID",null))), getPersonName($db->getPersonByID(array_get($classNext,"headTeacherID",null))));
 }
 
 function displayPicture($db,$item,$picture,$pictureNext) {
@@ -152,13 +155,19 @@ function displayVote($db,$item,$vote,$voteNext) {
  * Display: ChangeDate, IP, Username
  */
 function displayChangeData($db,$item,$historyId) {
-	$changePerson=$db->getPersonByID($item["changeUserID"]);
-	?><td><?php echo date("Y.m.d",strtotime($item["changeDate"]))?> <?php echo date("H:i:s",strtotime($item["changeDate"]))?></td>
+    ?><td><?php echo date("Y.m.d",strtotime(array_get($item,"changeDate")))?> <?php echo date("H:i:s",strtotime(array_get($item,"changeDate")))?></td>
 	<?php if (userIsAdmin()) {?>
-		<td onclick="showip('<?php echo $item["changeIP"]?>');" class="btn">IP</td>
+		<td onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</td>
         <td><button onclick="deleteHistory(<?php echo $historyId.",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>
-	<?php } ?>
-	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td><?php
+	<?php }
+        if (isset($item["changeUserID"])) {
+            $changePerson=$db->getPersonByID($item["changeUserID"]);
+    ?>
+    	    <td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
+    <?php
+        } else {
+            echo('<td></td>');
+        }
 }
 
 function displayElement($text,$nextText,$title=null,$field="") {
@@ -204,6 +213,12 @@ function json_decode_utf8($json) {
 		return $js;
 	}
 	return null;
+}
+
+function array_get($array,$field,$default='') {
+    if (isset($array[$field]))
+        return $array[$field];
+    return $default;
 }
 
 Appl::addJsScript('

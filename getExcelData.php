@@ -3,7 +3,7 @@ header("Content-type: application/vnd-ms-excel");
 header("Content-Disposition: attachment; filename=diakok.xls");
 header("Pragma: no-cache");
 header("Expires: 0");
-include_once("data.php");  
+include_once("dbBL.class.php");
 ?>
 <table>
 <tr style="background-color:#ffffcb;font-weight:bold;"><td>Sz.</td><td>Név</td><td>Feleség/férj neve</td><td>Cím</td><td>Email</td><td>Telefon</td><td>Mobil</td><td>Skype</td><td>Munkahely</td><td>Beosztás</td><td>Gyerekek</td></tr>

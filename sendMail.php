@@ -1,5 +1,5 @@
 <?PHP
-include_once("data.php");
+include_once("dbBL.class.php");
 include_once 'tools/appl.class.php';
 
 /**
@@ -52,6 +52,9 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 	sendHtmlMail($mail,$text," új bejelenkezés");
 }
 
+function sendChatMail($senderPerson,$toPerson,$text) {
+    return true;
+}
 /**
  *send mail  
  */

@@ -22,7 +22,7 @@ if ( !isset($_SESSION['lastReq']) ) {
 	echo("Access not allowed!");
 	exit;
 }
-include_once 'data.php';
+include_once 'dbBL.class.php';
 include_once 'tools/ltools.php';
 
 

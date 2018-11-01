@@ -2,7 +2,7 @@
 include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
-include_once 'data.php';
+include_once 'dbBL.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -57,7 +57,7 @@ include("homemenu.php");
 Ide kell írni a szöveget....
 </p>
 <p>
-Üdvözlettel <?php $dd=getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
+Üdvözlettel <?php $dd=$db->getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
 <p>
 Ezt az e-mailt <a href=https://brassai.blue-l.de/index.php?<?PHP echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.

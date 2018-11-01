@@ -3,7 +3,7 @@ include_once("tools/sessionManager.php");
 include_once ('tools/userManager.php');
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
-include_once("data.php");
+include_once("dbBL.class.php");
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -38,7 +38,7 @@ $edit = (userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLog
 //Create new person 
 $createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher" || $action=="savenewperson" || $action=="savenewguest" || $action=="savenewteacher";
 if ( $createNewPerson ) {
-	$diak = getPersonDummy();
+	$diak = $db->getPersonDummy();
 	$diak["id"] = -1;
 	$diak["classID"] = getAktClassId();
 	$action=="newteacher" || $action=="savenewteacher" ? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
@@ -245,7 +245,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 			//Only jpg
 			if (strcasecmp($fileName[1],"jpg")==0) {
 				//Create folder is doesn't exists
-				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".getAktClassFolder();
+				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".$db->getAktClassFolder();
 				if (!file_exists($fileFolder)) {
  	   				mkdir($fileFolder, 0777, true);
 				}
@@ -264,8 +264,8 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 					$uploadfile=$fileFolder.$pFileName;
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 						if (!$overwrite) {
-							$diak['picture']=getAktClassFolder().$pFileName;
-							if ($db->savePersonField($personid, "picture", getAktClassFolder().$pFileName)>=0) {
+							$diak['picture']=$db->getAktClassFolder().$pFileName;
+							if ($db->savePersonField($personid, "picture", $db->getAktClassFolder().$pFileName)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,400,400,"o");
 								Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";

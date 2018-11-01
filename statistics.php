@@ -2,7 +2,7 @@
 include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
-include_once 'data.php';
+include_once 'dbBL.class.php';
 
 $classmate=$db->getTableCount("person","isTeacher='0'");
 $classmateDeceased=$db->getTableCount("person","isTeacher='0' and deceasedYear is not null");

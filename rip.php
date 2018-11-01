@@ -4,7 +4,7 @@ include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 include_once 'tools/ltools.php';
-include_once 'data.php';
+include_once 'dbBL.class.php';
 include_once 'rip.inc.php';
 
 $SiteDescription="Elhunyt tanáraink és diákok";

@@ -52,9 +52,9 @@ class MySqlDbAUH extends MySqlDb
         } elseif(null==$table && null!=$id) {
             $sql="select * from history where `changeUserID`='".$id."' order by entryID desc, id desc limit 1000";
         } elseif(null!=$table) {
-            $sql="select * from history where `table`='".$table."' order by entryID desc, id desc limit 1000";
+            $sql="select * from history where `table`='".$table."' order by entryID desc, id desc limit 300";
         } else {
-            $sql="select * from history  order by `table` asc, entryID desc, id desc limit 1000";
+            $sql="select * from history  order by `table` asc, entryID desc, id desc limit 50";
         }
 
         $this->query($sql);

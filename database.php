@@ -9,7 +9,7 @@ include_once 'tools/appl.class.php';
 if (getParam("action")=="passw") {
 	include_once("config.class.php");
 	include_once("logon.php");
-	include_once("data.php");
+	include_once("dbBL.class.php");
 
 	$db = new dbDAO;
 

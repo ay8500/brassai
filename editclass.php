@@ -1,7 +1,7 @@
 <?php
 include_once 'tools/sessionManager.php';
 include_once 'tools/appl.class.php';
-include_once("data.php");
+include_once("dbBL.class.php");
 include_once 'tools/ltools.php';
 
 use maierlabs\lpfw\Appl as Appl;

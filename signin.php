@@ -3,7 +3,7 @@ include_once 'tools/sessionManager.php';
 include_once("tools/userManager.php");//login logoff
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
-include_once("data.php");		//the database
+include_once("dbBL.class.php");		//the database
 include_once("sendMail.php");	//send mail
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -58,7 +58,7 @@ if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 			} else {
 				if (getIntParam("id", -1)==-1) {
 					//create a new person
-					$person=getPersonDummy();
+					$person=$db->getPersonDummy();
 					$person["id"]=-1;
 					$person["lastname"]=html_entity_decode(getParam("lastname"),ENT_QUOTES,"UTF-8");
 					$person["firstname"]=html_entity_decode(getParam("firstname"),ENT_QUOTES,"UTF-8");

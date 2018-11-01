@@ -243,7 +243,7 @@ function displayClass($db,$d,$showDate=false) {
 
 function displayPersonCandle($db,$person,$date) {
     if ($person==null) {
-        $person = getPersonDummy();
+        $person = $db->getPersonDummy();
         $person["id"]=0;$person["classID"]=-1;$person["isTeacher"]=null;$person["lastname"]="Anonim látogató";
     }
     $d=$person;

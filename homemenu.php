@@ -4,15 +4,14 @@
     include_once 'tools/appl.class.php';
 	include_once("config.class.php");
 	include_once("logon.php");
-	include_once("data.php");
+	include_once("dbBL.class.php");
 
     use maierlabs\lpfw\Appl as Appl;
-	$db = new dbDAO;
 		
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
-	Appl::setMember("aktClass",handleClassSchoolChange());
+	Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
 	Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getAktSchoolId()));
 
 	//Login if crypted loginkey present and correct
@@ -32,6 +31,7 @@
 	        setAktUserId($keyStr);
 	        setUserInSession($person["role"], $person["user"],$keyStr);
 	        $class=$db->getClassById($person["classID"]);
+	        Appl::setMember("aktClass",$class);
 	        setAktClass($class["id"]);
 	        setAktSchool($class["schoolID"]);
 	        if (!userIsAdmin()) {
@@ -195,7 +195,7 @@
                 </div>
             </form>
             <?php if (userIsLoggedOn()) {
-                $person = getPersonLogedOn(); ?>
+                $person = $db->getPersonLogedOn(); ?>
                 <form class="navbar-form navbar-right" role="search">
                     <div class="input-group input-group" style="margin: 3px;">
 						<span class="input-group-addon" style="width:130px">

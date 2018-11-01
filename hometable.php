@@ -4,11 +4,13 @@ include_once 'tools/userManager.php';
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
 include_once("config.class.php");
-include_once("data.php");
+include_once("dbBL.class.php");
 include_once 'editDiakCard.php';
+include_once 'chatinc.php';
+include("homemenu.php");
 
 use \maierlabs\lpfw\Appl as Appl;
-$class = handleClassSchoolChange();
+$class = Appl::getMember("aktClass");
 
 // Title an subtitle of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
@@ -34,9 +36,6 @@ if (isAktClassStaf()) {
 if (isActionParam("saveok")) {
 	Appl::setMessage("Köszzönjük szépen, személyes adatok kimentése sikerült.", "success");
 }
-include_once 'chatinc.php';
-
-include("homemenu.php");
 
 
 if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
