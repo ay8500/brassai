@@ -109,4 +109,23 @@ class MySqlDbAUH extends MySqlDb
             return -1;
     }
 
+    /**
+     * Delete history entry
+     * @param int $id
+     * @return bool
+     */
+    public function deleteHistoryEntry($id)
+    {
+        $hist = $this->querySignleRow("select * from history where id=".$id);
+        if (sizeof($hist)>0) {
+            $json=json_decode_utf8($hist["jsonData"]);
+            $changeDate=$json["changeDate"];
+            $ret = $this->update($hist["table"],[["field"=>"changeDate","type"=>"s","value"=>$changeDate]],"id",$hist["entryID"]);
+            if ($ret!==false)
+                return $this->delete("history", "id", $id);
+        }
+        return false;
+    }
+
+
 }

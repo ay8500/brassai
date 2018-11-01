@@ -1765,6 +1765,15 @@ class dbDAO {
     }
 
     /**
+     * delete history entry and restore the change date from source entry
+     * @param int $id
+     * @return bool
+     */
+    public function deleteHistoryEntry($id) {
+        return $this->dataBase->deleteHistoryEntry($id);
+    }
+
+    /**
      * Create a history entry in the history table
      * @param string $table
      * @param string $id
@@ -1807,14 +1816,4 @@ class dbDAO {
 
     }
 
-    /**
-     * Delete history entry
-     * @param int $id
-     * @return bool
-     */
-    public function deleteHistoryEntry($id)
-    {
-        return $this->dataBase->delete("history", "id", $id);
-    }
-
-}
+  }

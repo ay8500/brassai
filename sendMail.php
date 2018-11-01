@@ -105,8 +105,9 @@ function sendHtmlMail($recipient,$text,$subject="") {
 		if (isset($recipient)) {
 			return mail($recipient, $subject, $message, $headers);
 		} 
+	} else {
+	    \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
 	}
-     \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
      return true;
 }
 
