@@ -79,7 +79,7 @@ if (getParam("action")=="vote") {
 <?php
 	foreach ($data as $d)	
 	{ 
-		$vote=$db->getVote(getPersonId($d),$classMeetingCount);
+		$vote=$db->getVote(getRealId($d),$classMeetingCount);
 		?>
 		<form method="post"">
 		<tr class="votetable"> 

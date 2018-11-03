@@ -1,6 +1,6 @@
 <?php
-	include_once 'tools/ltools.php';
-	include_once 'dbBL.class.php';
+include_once 'tools/ltools.php';
+include_once 'dbBL.class.php';
 	
 	$person=$db->getPersonByID($personid);
 	
@@ -17,7 +17,7 @@
 		$title="Ezt szeretem csinálni szabadidőmben";
 		$type="spare";
 		$text = $person["aboutMe"];
-	} 
+	}
 ?>		
 
 	<h3><?php  echo $title; ?></h3>
@@ -79,47 +79,45 @@
 	<?php }  ?>
 	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px;"></div>
 
-
-
-<?php if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) : ?>
-<script type="text/javascript">
-
+<?php
+if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
+    \maierlabs\lpfw\Appl::addJsScript("
 	function saveStory() {
 	    fieldSaved();
 		var data = {
-			id: "<?php echo $personid; ?>",
-		    type:"<?php  echo $type; ?>",
-		    privacy:$('input[name=privacy]:checked', '#stroryForm').val(),
-		    story: $("#story").val()
+			id : ".$personid.",
+		    type : '".$type."',
+		    privacy : $('input[name=privacy]:checked', '#stroryForm').val(),
+		    story : $('#story').val()
 		};
-		$('#ajaxStatus').html('küldés...');
+		$('#ajaxStatus').html('kiment...');
 		$.ajax({
-			url:"editDiakStorySave.php",
-			type:"POST",
-			dataType: 'json',
+			url : 'ajax/editDiakStorySave.php',
+			type : 'POST',
+			dataType : 'json',
 			success:function(data){
-				showAjaxStatus(' Kimetés sikerült. ',"lightgreen");
+				showAjaxStatus(' Kimetés sikerült. ','lightgreen');
 			},
 			data:data
 		});
 	}
-</script>
-<?php endif ?>
-<script>
+");
+}
+\maierlabs\lpfw\Appl::addJsScript("
 	function sendMoreInfoRequest() {
 		$.ajax({
-			url:"editDiakStoryMoreInfoRequest.php?title=<?php echo $title?>&tab=<?php echo $tab?>&code="+$("#code").val()+"&name="+$("#name").val(),
-			success:function(data){
-				showAjaxStatus(' Üzenet sikeresen elküldve. ',"lightgreen");
+			url : 'ajax/editDiakStoryMoreInfoRequest.php?title=".$title."&tab=".$tab."&code='+$('#code').val()+'&name='+$('#name').val(),
+			success : function(data){
+				showAjaxStatus(' Üzenet sikeresen elküldve. ','lightgreen');
 			},
 			error:function(data){
-				showAjaxStatus(data.responseText,"lightcoral");
+				showAjaxStatus(data.responseText,'lightcoral');
 			}
 		});
 	}
 
 	function showAjaxStatus(m,color) {
-	    $('#ajaxStatus').css("background-color",color);
+	    $('#ajaxStatus').css('background-color',color);
 		$('#ajaxStatus').html(m);
 		$('#ajaxStatus').show();
 		setTimeout(function(){
@@ -127,4 +125,4 @@
 	    	$('#ajaxStatus').hide();
 		}, 4000);
 	}
-</script>
+");

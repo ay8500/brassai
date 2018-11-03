@@ -5,7 +5,7 @@ Header ("Content-type: text/txt");
 
 function writeSitemapPerson($id,$link) {
 	if (isset($_GET["htacces"])) {
-		echo("Redirect 301 /".$link." /".$link."-".$db."-".$id."\r\n");
+		echo("Redirect 301 /".$link." /".$link."-".$id."\r\n");
 	} else {
 		writeSitemapLink($link."-".$id);
 	}

@@ -439,7 +439,7 @@ function savePicture(id) {
 function changeVisibility(id) {
 	var c = $('#visibility'+id).prop('checked')?1:0;
 	$.ajax({
-		url:"editDiakPictureVisibility.php?id="+id+"&attr="+c,
+		url:"ajax/changePictureVisibility.php?id="+id+"&attr="+c,
 		type:"GET",
 		success:function(data){
 			$('#ajaxStatus').html(' Kimetés sikerült. ');

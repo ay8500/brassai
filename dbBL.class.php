@@ -490,18 +490,6 @@ function getPersonByNormalisedName($personLink,$classId=null) {
 	return null;
 }
 
-/**
- * The real person id
- * @deprecated use getRealId
- * @param array $person
- * @return  int
- */
-function getPersonId($person) {
-	if (isset($person["changeForID"]))
-		return $person["changeForID"];
-	else
-		return $person["id"];
-}
 
 /**
  * The real object id
