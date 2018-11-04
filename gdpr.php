@@ -30,7 +30,7 @@ if (null!=$person) {
 			$html .='<div>Remote-Addr:'.print_r($_SERVER["REMOTE_ADDR"],true).'</div>';
 			$html .='<div>Request-Time:'.date("Y.m.d H:i:s",print_r($_SERVER["REQUEST_TIME"],true)).'</div>';
 			$html .='<div>'.print_r($_REQUEST,true).'</div>';
-		    sendHtmlMail("code@blue-l.de", $html);
+		    sendHtmlMail(Config::$siteMail, $html);
 		}
 	}
 }

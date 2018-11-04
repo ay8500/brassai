@@ -127,7 +127,7 @@ function getWrapperData() {
     }
     //get new data
     $.ajax({
-	url:"getRandomPerson.php?ids="+ids,
+	url:"ajax/getRandomPerson.php?ids="+ids,
  	type:"GET",
  	async:true,
  	success:function(person){

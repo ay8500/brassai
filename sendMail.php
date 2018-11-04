@@ -13,13 +13,13 @@ function SendNewPassword($diak) {
 	$text.="Végzős osztály:".getAktClassName()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".encrypt_decrypt("decrypt",$diak["passw"])."<br/>";
-	$text.='Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($diak['id']).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
+	$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak.php?key='.generateUserLoginKey($diak['id']).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
-	$text.='<a href=https://brassai.blue-l.de/index.php?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
+	$text.='<a href='.Config::$siteUrl.'/index.php?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
-	sendHtmlMail("brassai@blue-l.de",$text," new password request");
+	sendHtmlMail(Config::$siteMail,$text," new password request");
 }
 
 /**
@@ -34,7 +34,7 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
 	if (isset($uid) && null!=$uid) {
-		$text.='Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
+		$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak.php?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
 	}
 	if ($passw=="") {
 		$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
@@ -46,7 +46,7 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 		$text.="<p>Szerep: ".$rights."</p>";
 	}
 	$text.="</p><p>";
-	$text.='<a href=https://brassai.blue-l.de/index.php?classid='.$year.' '.$class.'>A véndiakok honlapja</a>';
+	$text.='<a href='.Config::$siteUrl.'/index.php?classid='.$year.' '.$class.'>A véndiakok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
 	sendHtmlMail($mail,$text," új bejelenkezés");
@@ -64,7 +64,7 @@ function SendMail($uid,$text,$userData) {
 		
 		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
 		$text=str_replace("\"","&quot;",$text);
-		$text.='<hr/><p>Direkt link az én adataimhoz: <a href="https://brassai.blue-l.de/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
+		$text.='<hr/><p>Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
 		if ($userData) {
 			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
@@ -77,19 +77,19 @@ function SendMail($uid,$text,$userData) {
  */
 function sendHtmlMail($recipient,$text,$subject="") {
 	/* sender */
-	$absender = 'brassai<brassai@blue-l.de>';
+	$absender = '<'.Config::$siteMail.'>';
 
 	/* reply */
 	$reply = '';
 
 	/* subject */
-	$subject = 'Brassai Samuel Líceum Véndiakok Honlapja '.$subject;
+	$subject = Config::$SiteTitle.' '.$subject;
 
 	/* Nachricht */
 	$message = '<html>
 	    <head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	        <title>Brassai Samuel Liceum Véndiakok Honlapja</title>
+	        <title>'.Config::$SiteTitle.'</title>
 	    </head>
 	    <body>'.$text.'
 	    </body>
@@ -104,7 +104,7 @@ function sendHtmlMail($recipient,$text,$subject="") {
 	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
 	if (!isLocalhost()) {
-		mail("brassai@blue-l.de", $subject, $message, $headers);
+		mail(Config::$siteMail, $subject, $message, $headers);
 		if (isset($recipient)) {
 			return mail($recipient, $subject, $message, $headers);
 		} 

@@ -5,7 +5,7 @@ $( document ).ready(
 function showPersonCandle(id) {
 	hideLightCandle(id);
 	$.ajax({
-		url: "getCandleLighters.php?id="+id
+		url: "ajax/getCandleLighters.php?id="+id
 	}).success(function(data) {
 		$("#personlist"+id).html(data);
 		$("#person-candle"+id).show();
@@ -27,7 +27,7 @@ function hideLightCandle(id) {
 function lightCandle(id) {
 	candles[id] = ++candles[id];
 	$.ajax({
-		url: "setCandleLighter.php?id="+id
+		url: "ajax/setCandleLighter.php?id="+id
 	}).success(function(data) {
 		showCandles(id,candles[id]);
 		$("#light-button"+id).prop("disabled",true);

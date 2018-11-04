@@ -1,5 +1,6 @@
 <?PHP 
 include_once 'tools/sessionManager.php';
+include_once 'config.class.php';
 Header ("Content-type: text/txt");
 
 
@@ -14,7 +15,7 @@ function writeSitemapPerson($id,$link) {
 function writeSitemapLink($link) 
 {
 	echo("<url>"."\r\n");
-	echo("\t<loc>https://brassai.blue-l.de/".$link."</loc>"."\r\n");
+	echo("\t<loc>".Config::$siteUrl."/".$link."</loc>"."\r\n");
 	echo("\t<priority>0.5</priority>"."\r\n");
 	echo("\t<lastmod>".date('Y-m-d')."</lastmod>"."\r\n");
 	echo("\t<changefreq>monthly</changefreq>"."\r\n");

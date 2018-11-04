@@ -92,7 +92,7 @@ if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedI
 		};
 		$('#ajaxStatus').html('kiment...');
 		$.ajax({
-			url : 'ajax/editDiakStorySave.php',
+			url : 'ajax/setPersonStory.php',
 			type : 'POST',
 			dataType : 'json',
 			success:function(data){
@@ -106,7 +106,7 @@ if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedI
 \maierlabs\lpfw\Appl::addJsScript("
 	function sendMoreInfoRequest() {
 		$.ajax({
-			url : 'ajax/editDiakStoryMoreInfoRequest.php?title=".$title."&tab=".$tab."&code='+$('#code').val()+'&name='+$('#name').val(),
+			url : 'ajax/requestMoreInfo.php?title=".$title."&tab=".$tab."&code='+$('#code').val()+'&name='+$('#name').val(),
 			success : function(data){
 				showAjaxStatus(' Üzenet sikeresen elküldve. ','lightgreen');
 			},

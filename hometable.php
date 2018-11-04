@@ -3,14 +3,13 @@ include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
-include_once("config.class.php");
-include_once("dbBL.class.php");
+include_once 'config.class.php';
+include_once 'dbBL.class.php';
 include_once 'editDiakCard.php';
 include_once 'chatinc.php';
-include("homemenu.php");
 
 use \maierlabs\lpfw\Appl as Appl;
-$class = Appl::getMember("aktClass");
+$class = getAktClass();
 
 // Title an subtitle of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
@@ -33,6 +32,8 @@ if (isAktClassStaf()) {
 	}
 }
 
+include("homemenu.php");
+
 if (isActionParam("saveok")) {
 	Appl::setMessage("Köszzönjük szépen, személyes adatok kimentése sikerült.", "success");
 }
@@ -40,9 +41,9 @@ if (isActionParam("saveok")) {
 
 if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" )))
-		Appl::$resultDbOperation='<div class="alert alert-success">Véndiák sikeresen törölve!</div>';
+		Appl::setMessage("Véndiák sikeresen törölve!","success");
 	else
-		Appl::$resultDbOperation='<div class="alert alert-warning">Véndiák törölése sikertelen! Hibakód:9811</div>';
+		Appl::setMessage("Véndiák törölése sikertelen! ","warning");
 }
 $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 

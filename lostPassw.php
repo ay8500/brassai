@@ -72,7 +72,7 @@ include 'homemenu.php';
 					<li>Használd a Facebook felhasználó bejelentkezési lehetőséget.
                     <li>Javaskript jogok be kell legyenek kapcsolva ahoz, hogy bejelenkezzhess.
 				</ul>
-				Küldj egy e-mailt a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre ha bármilyen kérdésed vagy megjegyzésed van.
+				Küldj egy e-mailt a <a href="mailto:<?php echo Config::$siteMail?>"><?php echo Config::$siteMail?></a> címre ha bármilyen kérdésed vagy megjegyzésed van.
 			</div>
 		</div> 
 	</div>

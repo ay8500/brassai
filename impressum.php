@@ -19,12 +19,10 @@ include_once("homemenu.php");
 		<p>Levente Maier fenntartja a jogot, hogy a véndiákok veboldalait bármikor módosítsa, vagy átdolgozza, illetve elérhetoségüket korlátozza, vagy megszüntesse. Levente Maier nem garantálja, hogy a weboldalakhoz való hozzáférés folyamatos vagy hibamentes lesz.</p>
 		<p>Levente Maier nem vállal felelősséget olyan, harmadik fél által létrehozott, továbbított, tárolt, hozzáférhetővé tett, vagy publikált tartalmakért, melyekhez a véndiákok weboldalai kapcsolódnak, vagy amelyekre hivatkoznak</p>
 		<p>
-			A honlappal kapcsolatos technikai, formai kérdéseket, észrevételeket kérjük a <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a> címre küldeni.<br/> 
-			Ha pedig kérdésük a tartalomra vagy a Brassai Sámuel líceumra vonatkozik, üzenetüket küldjék a <a href="mailto:levente@blue-l.de">levente@blue-l.de</a> címre. 
+			A honlappal kapcsolatos tartalmi, technikai, formai kérdéseket, észrevételeket kérjük a <a href="mailto:<?php echo Config::$siteMail?>"><?php echo Config::$siteMail?></a> címre küldeni.<br/>
 		</p>
 		<p>
-			Should you have any questions or comments regarding the technical issues of this web site<br/> please contact the webmaster at <a href="mailto:brassai@blue-l.de">brassai@blue-l.de</a><br>
-			Questions and requests concerning the content of this web site or the Brassai Samuel high school<br/> should be addressed to <a href="mailto:levente@blue-l.de">levente@blue-l.de</a>.
+			Should you have any questions or comments regarding the content or technical issues of this web site<br/> please contact the webmaster at <a href="mailto:<?php echo Config::$siteMail?>"><?php echo Config::$siteMail?></a><br>
 		</p>
 		<p>
 			Az oldal németországban van hosztolva, emiatt a következő szöveg a törvények  (GDPR) miatt kötelező.

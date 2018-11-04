@@ -90,7 +90,7 @@ include("homemenu.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
 				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
-				<option value="2">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. brassai@blue-l.de</option>
+				<option value="2">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. <?php echo Config::$siteMail?></option>
 			</select>
 		</div>
 		<div class="input-group " style="margin-bottom: 25px;">
@@ -151,7 +151,7 @@ include("homemenu.php");
 		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>
-		<a class="btn btn-default"   id="btMail" href="mailto:brassai@blue-l.de" style="display:none">
+		<a class="btn btn-default"   id="btMail" href="mailto:<?php echo Config::$siteMail?>" style="display:none">
 			<span class="glyphicon glyphicon-email"></span> Új iskolát szeretnék
 		</a>
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>

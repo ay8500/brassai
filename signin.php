@@ -209,7 +209,7 @@ include 'homemenu.php';
 		    $("#page2").hide("slow");
 		    return;
 		}
-		var url="getPersonList.php";
+		var url="ajax/getPersonsInClass.php";
 		if (role==4 || role==3)
 			url+="?classid="+<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>;
 		else

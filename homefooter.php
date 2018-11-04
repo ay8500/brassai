@@ -100,7 +100,7 @@
 	<?php if (userIsAdmin()) {?>
 		function showip(ip) {
 		    $.ajax({
-		    	url: "getIpLocation.php?ip="+ip
+		    	url: "ajax/getIpLocation.php?ip="+ip
 			}).success(function(data) {
 			    showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
 			});
@@ -109,7 +109,7 @@
 
     function checkSession() {
         $.ajax({
-            url: "ajax/userSessionAlive.php",
+            url: "ajax/isSessionAlive.php",
             type:"GET",
             success:function(data){
                 setTimeout(checkSession,10000);
