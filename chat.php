@@ -22,8 +22,12 @@ $( document ).ready(function() {
 	});
 });
 ");
+$class = $db->getClassById($db->getLoggedInUserClassId());
+if ($class!=null)
+    setAktClass($class["id"]);
 
-Appl::$subTitle='Osztálytárs körlevek';
+
+Appl::$subTitle='Osztálytárs körlevek '.getAktClassName();
 include("homemenu.php"); 
 include_once 'chatinc.php';
 
@@ -32,7 +36,7 @@ include_once 'chatinc.php';
 if (isActionParam("sendMessage") && userIsLoggedOn()) {
 	$mailsSent = 0;
 	include_once ("sendMail.php");
-	$persons = $db->getPersonListByClassId(getAktClassId());
+	$persons = $db->getPersonListByClassId(getAktClassId(),null,null,true);
     $senderPerson=$db->getPersonLogedOn();
 	foreach ($persons as $person) {
 		if (    isset($person["email"]) && strlen($person["email"])>8 &&
@@ -48,13 +52,24 @@ if (isActionParam("sendMessage") && userIsLoggedOn()) {
 
 $personList=$db->getPersonListByClassId(getRealId(getAktClass()),null,null,true);
 $messageList=$db->getClassMessages(getAktClassId());
+$administrator=$db->getAktSchoolAdminPerson();
+if(!userIsLoggedOn()) {
+    $message=array();
+    $message["changeDate"]=date("Y-m-d H:i:s");
+    $message["changeUserID"]=$administrator["id"];
+    $message["text"] ="Kedves véndiák,<br/><br/>sajnos csak bejelentkezett diákok láthatják a körleveleket. ";
+    $message["text"].="Használd a bejelenkezési lehetőségeket felhasználó névvel és jelszóval, vagy facebookon keresztül.";
+    $message["text"].="<br/><br/>Üdvözlettel ".getPersonName($administrator);
+    array_push($messageList, $message);
+}
+
 if(sizeof($messageList)==0) {
 	$message=array();
-	$message["changeDate"]=date("Y.m.d H:i:s");
-	$message["changeUserID"]=834;
-	$message["text"] ="Kedves véndiákok,<br/><br/>ennek az ostálynak még nincsenek körlevelei.";
-	$message["text"].="Az itt fogalmazott üzenetek az összes osztálytársnak akiknek ismert az email címe el leszz küldve.";
-	$message["text"].="<br/><br/>Üdvözlettel System Administrator";
+	$message["changeDate"]=date("Y-m-d H:i:s");
+	$message["changeUserID"]=$db->getAktSchoolAdminPerson()["id"];
+	$message["text"] ="Kedves véndiákok,<br/><br/>ennek az osztálynak még nincsenek körlevelei. ";
+	$message["text"].="Az itt fogalmazott üzenetek az összes osztálytársnak akiknek ismert az email címe el lessz küldve.";
+	$message["text"].="<br/><br/>Üdvözlettel ".getPersonName($administrator);;
 	array_push($messageList, $message);
 }
 
@@ -77,8 +92,4 @@ if(sizeof($messageList)==0) {
 	</div>
 </div>
 <?php include 'homefooter.php'; ?>
-<script type="text/javascript">
-	$( document ).ready(function() {
-		//showMessage();			
-	});
-</script>
+

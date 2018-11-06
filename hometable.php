@@ -9,7 +9,9 @@ include_once 'editDiakCard.php';
 include_once 'chatinc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
-$class = getAktClass();
+Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
+Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getAktSchoolId()));
+$class = Appl::getMember("aktClass");
 
 // Title an subtitle of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
@@ -39,7 +41,7 @@ if (isActionParam("saveok")) {
 }
 
 
-if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
+if (getParam("action","")=="delete_diak" &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==$db->getLoggedInUserClassId()) || userIsAdmin() || userIsSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" )))
 		Appl::setMessage("Véndiák sikeresen törölve!","success");
 	else

@@ -303,7 +303,7 @@ class dbDAO {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
 		if($countPictures) {
-			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null");
+			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null and picture<>''");
 			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
 			$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
 		}
@@ -1459,7 +1459,7 @@ class dbDAO {
 	
 	/**
 	 * get a db entry by a field
-	 * @return array  NULL is no entry or more then one entry found
+	 * @return array | NULL if no entry or more then one entry found
 	 */
 	private function getEntryByField($table,$fieldName,$fieldValue) {
 		$sql="select id from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
@@ -1475,13 +1475,13 @@ class dbDAO {
 
 	/**
 	 * get a db entry by a field
-	 * @return NULL is no entry or more then one entry found
+	 * @return array | NULL is no entry found
 	 */
 	public function getEntry($table,$where) {
 		$sql="select id from ".$table." where ".$where;
 		$sql .=" and changeForID is null";
 		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
+		if ($this->dataBase->count()>0) {
 			$entry = $this->dataBase->fetchRow();
 			return $this->getEntryById($table, $entry["id"]);
 		} else {

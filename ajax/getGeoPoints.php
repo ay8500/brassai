@@ -22,7 +22,7 @@ if($classId==null) {
 }
 
 
-if ( userIsLoggedOn() && getAktClassId()==getLoggedInUserClassId()) {
+if ( userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId()) {
 	$xrandom=0;
 	$yrandom=0;
 } else {

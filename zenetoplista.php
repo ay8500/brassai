@@ -18,7 +18,7 @@ if (getAktClassId()==-1) {
 
 
 //User can make changes in the toplist
-$edit = (userIsLoggedOn() && getRealId(getAktClass())==getLoggedInUserClassId()) || userIsAdmin();
+$edit = (userIsLoggedOn() && getRealId(getAktClass())==$db->getLoggedInUserClassId()) || userIsAdmin();
 
 //action  delete vote
 $delVote = intval(getGetParam("delVote", "-1"));
@@ -113,7 +113,7 @@ if ($delVote>=0 && $edit) {
 			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
 	} else {
 		if (userIsLoggedOn())
-			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.getLoggedInUserClassId().'">Az én osztályom toplistálya</a>';
+			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.$db->getLoggedInUserClassId().'">Az én osztályom toplistálya</a>';
 		else
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}

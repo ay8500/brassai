@@ -30,6 +30,8 @@ class dbBL extends dbDAO
             $class = $this->getClassById($classId);
             if ($class == null)
                 $class = $this->getClassByText($classId);
+            if ($class == null)
+                $class = $this->getClassByText(substr($classId,3,4).' '.substr($classId,0,3));
             if ($class != null) {
                 setAktClass($class["id"]);
                 setAktSchool($class["schoolID"]);
@@ -67,6 +69,21 @@ class dbBL extends dbDAO
     }
 
     /**
+     * get the logged in user class id
+     * @return integer or -1 if no user logged on
+     */
+    function getLoggedInUserClassId() {
+        if (null==getLoggedInUserId())
+            return -1;
+        $loggedInUser=$this->getPersonByID(getLoggedInUserId());
+        if ($loggedInUser!=null)
+            return intval($loggedInUser["classID"]);
+
+        return -1;
+    }
+
+
+    /**
      * returns an empty person
 	 * @return array
      */
@@ -78,6 +95,14 @@ class dbBL extends dbDAO
             "passw"=>encrypt_decrypt("encrypt",createPassword(8)),
             "role"=>""
         ];
+    }
+
+    /**
+	 * get the first school admin person
+     * @return array | null  person
+     */
+    public function getAktSchoolAdminPerson() {
+    	return $this->getEntry('person',"role like '%admin%' and classID=".$this->getStafClassBySchoolId(getAktSchoolId())["id"]);
     }
 
 }
@@ -345,9 +370,10 @@ function resizeImage($fileName,$maxWidth,$maxHight,$originalFileSufix="")
 //****************************** Tools *********************
 
 function getFieldAccessValue($field) {
+	global $db;
 	if (userIsAdmin() || isAktUserTheLoggedInUser())
 		return getFieldValue($field);
-	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClassId()==getLoggedInUserClassId())
+	else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClassId()==$db->getLoggedInUserClassId())
 		return getFieldValue($field);
 	else if (userIsLoggedOn() && getFieldCheckedScool($field)=="checked")
 		return getFieldValue($field);

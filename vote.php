@@ -91,7 +91,7 @@ if (getParam("action")=="vote") {
 			if (showField($d,"birthname")) echo(' ('.$d["birthname"].')');?>
 		</td>
 		<?php 
-		if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || $d["id"]==getLoggedInUserId() && getRealId(getAktClass())==getLoggedInUserClassId()  ) { 
+		if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || $d["id"]==getLoggedInUserId() && getRealId(getAktClass())==$db->getLoggedInUserClassId()  ) {
 			$dis="";$ro="";
 		} else {
 			$dis="disabled";$ro="readonly";

@@ -19,6 +19,8 @@ else {
 	$personList = $db->getLightedCandleList(getIntParam("id",null));
 }
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
+
+
 include("homemenu.php"); 
 ?>
 

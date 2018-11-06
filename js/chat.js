@@ -3,13 +3,13 @@
 
 	var text0="<br/>";
 	var text1="Kedves osztálytársak, barátok,<br/><br/>....<br/><br/>";
-	    text1+="<br>Mindenkit üdvözlök <?php echo userIsLoggedOn()?getLoggedInUserName():''?>";
+	    text1+="<br>Mindenkit üdvözlök <?php echo getLoggedInUserName()?>";
 	var text2="Kedves osztálytársak, barátok,<br/><br>szeretettel köszöntelek a brassaista véndiákok honlapján keresztül.";
 	    text2+="<br/><br/>...<br/><br/>Remélem jól vagytok és várjátok újra találkozzunk.<br/><br/>";
-	    text2+="Barátsággal <?php echo userIsLoggedOn()?getLoggedInUserName():''?>";
+	    text2+="Barátsággal <?php echo getLoggedInUserName()?>";
 	var text3="Kedves osztálytársak, barátok,<br/><br>sok szeretettel köszöntelek a brassaista véndiákok honlapján keresztül.";
 	    text3+="<br/><br/>...<br/><br/>Remélem boldogak, egészségesek vagytok és nagyon várjátok újra találkozzunk.<br/><br/>";
-	    text3+="Mindenkit ölelek és puszilok <?php echo userIsLoggedOn()?getLoggedInUserName():''?>";
+	    text3+="Mindenkit ölelek és puszilok <?php echo getLoggedInUserName()?>";
 
 	
 	function sendMessage() {

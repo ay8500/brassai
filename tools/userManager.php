@@ -10,35 +10,21 @@
 		return intval($_SESSION["uId"]);
 	}
 	
-	/**
-	 * get the logged in user class id 
-	 * @return integer or -1 if no user logged on
-	 */
-	function getLoggedInUserClassId() {
-	    if (null==getLoggedInUserId())
-	        return -1;
-		global $db;
-		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
-		if ($loggedInUser!=null)
-			return intval($loggedInUser["classID"]);
 
-		return -1;
-	}
-	
 	/**
 	 * get logged in name including first and lastname
 	 * @return string
 	 */
 	function getLoggedInUserName() {
         if (null==getLoggedInUserId())
-            return "Anonim felhasználó";
+            return "";
 		global $db;
 		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
 		if ($loggedInUser!=null) {
 			return getPersonName($loggedInUser);
 		} 
 		else
-			return "Anonim felhasználó";
+			return "";
 	}
 	
 	
@@ -63,7 +49,7 @@
 
 	/**
 	 * Set aktual person class id
-	 * @param unknown $classId
+	 * @param int $classId
 	 */
 	function setAktClass($classId) {
 		$_SESSION['aktClass']=$classId;
@@ -298,7 +284,7 @@
 	        return true;
 		global $db;
 		//User is editor in his own class
-		if (isset($_SESSION['uRole']) && getAktClassId()==getLoggedInUserClassId()) {
+		if (isset($_SESSION['uRole']) && getAktClassId()==$db->getLoggedInUserClassId()) {
 			return strstr($_SESSION['uRole'],"editor")!="";
 		} else { 
 			$p=$db->getPersonByID(getLoggedInUserId());

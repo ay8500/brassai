@@ -26,12 +26,13 @@ Appl::addCssStyle('
 ?>
 <?php 
 function showChatEnterfields($personList) {
+    global $db;
 	$personWithEmail=0;
 	foreach ($personList as $d) {
-		if($d["email"]!="")
+		if(isset($d["email"]) && strlen($d["email"])>6)
 			$personWithEmail++;
 	}
-	if ( userIsAdmin() || (false && $personWithEmail>=0 && getAktClassId()==getLoggedInUserClassId() )) {
+	if ( userIsAdmin() || (false && $personWithEmail>0 && getAktClassId()==$db->getLoggedInUserClassId() )) {
 		?>
 		<form action="chat.php" method="post" id="chatform">
 			<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>

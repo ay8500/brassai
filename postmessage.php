@@ -16,7 +16,7 @@ function readMessageList($elements, $offset=0) {
 			$diak=$db->getPersonByID($message["changeUserID"]);
 		}
 		if	(	userIsAdmin() ||  	//Admin
-				($diak!=null && $diak["classID"]==getLoggedInUserClassId()) || //User
+				($diak!=null && $diak["classID"]==$db->getLoggedInUserClassId()) || //User
 				($message["isDeleted"]==0 &&  
 				$message["privacy"]=="world" && 
 				(isset($message["changeUserID"]) || (!isset($message["changeUserID"]) && $message["changeIP"]==$_SERVER["REMOTE_ADDR"]))

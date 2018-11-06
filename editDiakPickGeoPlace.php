@@ -17,7 +17,7 @@ if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		}
 	}
 }
-if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==getLoggedInUserClassId()) ) {
+if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId()) ) {
 	$xrandom=0;
 	$yrandom=0;
 } else {
