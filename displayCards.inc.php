@@ -124,7 +124,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				<?php }?>
 	  		</div>
 		</div>
-    <?php if(userIsAdmin()) displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1')); ?>
+    <?php if(userIsAdmin() || userIsSuperuser()) displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1')); ?>
 	</div>
 <?php
 }
@@ -179,7 +179,7 @@ function displayPicture($db,$picture,$showSchool=false) {
             Módosította: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
 			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["changeDate"]));?>
 		</div>
-        <?php if(userIsAdmin()) displayPictureOpinion($db,$picture["id"]); ?>
+        <?php if(userIsAdmin() || userIsSuperuser()) displayPictureOpinion($db,$picture["id"]); ?>
 	</div>
 <?php } 
 
@@ -295,7 +295,13 @@ function displayIcon($d,$field,$image,$title,$appl) {
             echo '&nbsp;<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
 }
 
+/**
+ * @param dbBL $db
+ * @param int $id
+ * @param bool $teacher
+ */
 function displayPersonOpinion($db,$id,$teacher) {
+    $o=$db->getPersonOpinionCount($id);
     ?>
     <div>
         <buton onclick="<?php
@@ -306,32 +312,43 @@ function displayPersonOpinion($db,$id,$teacher) {
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <a href="javascript:showPersonOpinions(<?php echo $id ?>)" title="Vélemények száma: 42">
+        <?php if ($o->opinions>0) {?>
+        <a href="javascript:showPersonOpinions(<?php echo $id ?>)" title="Vélemények száma: <?php echo $o->opinions ?>">
             <span style="margin-left: 20px;">
-                <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag">42</span>
+                <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
         </a>
-        <a href="javascript:showPersonFriendship(<?php echo $id ?>)" title="Baráságainak száma: 12">
+        <?php } if ($o->friends>0) {
+            if ($teacher) $ttt="Kedvenc tanárja ".$o->friends." véndiáknak"; else $ttt="Barátságainak száma: ".$o->friends ;?>
+        <a href="javascript:showPersonFriendship(<?php echo $id ?>)" title="<?php echo $ttt ?>">
             <span style="margin-left: 20px;">
-             <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag">12</span>
+             <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag"><?php echo $o->friends ?></span>
             </span>
         </a>
-        <a href="javascript:showPersonFunny(<?php echo $id ?>)" title="Kedves vicces személy 312 vélemény alapján">
+        <?php } if ($o->funny>0) {?>
+        <a href="javascript:showPersonFunny(<?php echo $id ?>)" title="Kedves vicces személy <?php echo $o->funny ?> vélemény alapján">
             <span style="margin-left: 20px;">
-                <img src="images/funny.png" style="width: 32px"/><span class="countTag">312</span>
+                <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->funny ?></span>
             </span>
         </a>
-        <a href="javascript:showPersonSport(<?php echo $id ?>)" title="Sportoló 2 személy véleménye alapján">
+        <?php } if ($o->sport>0) {?>
+        <a href="javascript:showPersonSport(<?php echo $id ?>)" title="Sportoló <?php echo $o->sport ?> személy véleménye alapján">
             <span style="margin-left: 20px;">
-                <img src="images/runner.jpg" style="width: 32px"/><span class="countTag">2</span>
+                <img src="images/runner.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->sport ?></span>
             </span>
         </a>
+        <?php } ?>
     </div>
     <div id="o-person-<?php echo $id ?>"></div>
 <?php
 }
 
+/**
+ * @param dbBL $db
+ * @param int $id
+ */
 function displayPictureOpinion($db,$id){
+    $o = $db->getPictureOpinionCount($id);
 ?>
     <div>
         <buton onclick="<?php
@@ -339,18 +356,31 @@ function displayPictureOpinion($db,$id){
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <span style="margin-left: 20px;">
+        <?php if ($o->opinions>0) {?>
+        <a href="javascript:showPictureOpinions(<?php echo $id ?>)" title="Vélemények száma: <?php echo $o->opinions ?>">
+            <span style="margin-left: 20px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag">42</span>
             </span>
-        <span style="margin-left: 20px;">
+        </a>
+        <?php } if ($o->favorite>0) {?>
+        <a href="javascript:showPictureFavorites(<?php echo $id ?>)" title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik.">
+            <span style="margin-left: 20px;">
                 <img src="images/favorite.png" style="width: 32px"/><span class="countTag">12</span>
             </span>
-        <span style="margin-left: 20px;">
+        </a>
+        <?php } if ($o->content>0) {?>
+        <a href="javascript:showPictureContent(<?php echo $id ?>)" title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma.">
+            <span style="margin-left: 20px;">
                 <img src="images/funny.png" style="width: 32px"/><span class="countTag">312</span>
             </span>
-        <span style="margin-left: 20px;">
+        </a>
+        <?php } if ($o->nice>0) {?>
+        <a href="javascript:showPictureNice(<?php echo $id ?>)" title="Ennek a képnek szép a tartalma <?php echo $o->opinions ?> vélemény szerint.">
+            <span style="margin-left: 20px;">
                 <img src="images/star.png" style="width: 32px"/><span class="countTag">2</span>
             </span>
+        </a>
+        <?php } ?>
     </div>
 <div id="o-picture-<?php echo $id ?>"></div>
 <?php

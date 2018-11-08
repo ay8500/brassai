@@ -1785,8 +1785,49 @@ class dbDAO {
 		return $this->dataBase->getCounter();
 	}
 
-    public function dbUtilityEncryptPasword()
-    {
+    /**
+     * get the opinions for a person
+     * @param $id person id
+     */
+	public function getPersonOpinionCount($id) {
+        $ret = new stdClass();
+        $ret->opinions=rand(-5,4);   if ($ret->opinions<0) $ret->opinions=0;
+        $ret->friends=rand(0,10);   if ($ret->friends<5) $ret->friends=0;
+        $ret->funny=rand(0,100);    if ($ret->funny>30) $ret->funny=0;
+        $ret->sport=rand(0,20);     if ($ret->sport>7) $ret->sport=0;
+        return $ret;
+    }
+
+    /**
+     * get the opinions for a person
+     * @param $id person id
+     */
+    public function getPictureOpinionCount($id) {
+        $ret = new stdClass();
+        $ret->opinions=rand(-5,4);   if ($ret->opinions<0) $ret->opinions=0;
+        $ret->favorite=rand(0,10);   if ($ret->favorite<5) $ret->favorite=0;
+        $ret->content=rand(0,100);    if ($ret->content>30) $ret->content=0;
+        $ret->nice=rand(0,20);     if ($ret->nice>7) $ret->nice=0;
+        return $ret;
+    }
+
+
+    /**
+     * get the opinions for a person
+     * @param $id person id
+     */
+    public function getPersonOpinions($id) {
+        $ret = array();
+        for ($i=0;$i<rand(-5,5);$i++) {
+            $opinion=new stdClass();
+            $opinion->text='Es itt egy vélemény, az én véleményem. Egy jó vélemény.';
+            $opinion->person=rand(500,1000);
+            $ret[$i]=$opinion;
+        }
+        return $ret;
+    }
+
+    public function dbUtilityEncryptPasword(){
         $ret=0;
         $this->dataBase->query("select user,passw,firstname,lastname,id from person");
         while ($row = $this->dataBase->fetchRow()) {
