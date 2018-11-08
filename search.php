@@ -6,8 +6,8 @@ use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle(" Keresés");
 
-include("homemenu.php");
-include_once 'editDiakCard.php';
+include("homemenu.inc.php");
+include_once 'displayCards.inc.php';
 
 $personList=array();
 $classList=array();
@@ -167,7 +167,7 @@ if (null==getParam("type")) {
 </div>
 
 
-<?php include ("homefooter.php");?>
+<?php include("homefooter.inc.php");?>
 
 <script type="text/javascript">
 	$( document ).ready(function() {

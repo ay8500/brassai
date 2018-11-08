@@ -42,7 +42,7 @@ $json = json_decode($response);
 $Title="Zenedoboz".(is_object($json)?': '.$json->title:'');
 $SiteDescription="Kendvenc zenénket itt lejátszhatod";
 Appl::setSiteTitle($Title,$Title,$SiteDescription);
-include("homemenu.php");
+include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
@@ -98,5 +98,5 @@ include("homemenu.php");
 <?php } ?>
 
 
- <?php  include "homefooter.php" ?>
+ <?php include "homefooter.inc.php" ?>
 

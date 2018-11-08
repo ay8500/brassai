@@ -6,7 +6,7 @@ use maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("Impresszum");
 
-include_once("homemenu.php"); 
+include_once("homemenu.inc.php");
 ?>
 <div class="container-fluid">
 <h1>Impresszum: </h1 >
@@ -44,4 +44,4 @@ include_once("homemenu.php");
 		<p>Diese Seite verwendet eine einzige Cookie um die Sitzung zu identifizieren. Dabei wird eine einzige Zeichenkette z.B. "1as23das09fds.81+4tetsd23498712" auf Ihrem Browser lokal gespeichert.</p>  
 		<p>Sie können die Installation der Cookies durch eine entsprechende Einstellung Ihrer Browser Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website voll umfänglich nutzen können. Durch die Nutzung dieser Website erklären Sie sich mit der Bearbeitung der über Sie erhobenen Daten durch Google in der zuvor beschriebenen Art und Weise und zu dem zuvor benannten Zweck einverstanden.</p>
 </div>
-<?php  include("homefooter.php");?>
+<?php  include("homefooter.inc.php");?>

@@ -27,7 +27,7 @@ if (isActionParam('newPassword')) {
 }
 
 Appl::$subTitle='Bejelentkezni szeretnék!';
-include 'homemenu.php';
+include 'homemenu.inc.php';
 ?>
 <div class="container-fluid">
 
@@ -102,4 +102,4 @@ include 'homemenu.php';
 	}
 	
 </script>
-<?php include ("homefooter.php");?>
+<?php include("homefooter.inc.php");?>

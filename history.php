@@ -11,7 +11,7 @@ Appl::addCssStyle('
 	.history tr td {vertical-align: top;padding:5px;}
 	.history tr  {border-spacing: 2px};
 ');
-include('homemenu.php');
+include('homemenu.inc.php');
 ?>
 
 <?php if (userIsAdmin() || userIsSuperuser()) {
@@ -227,7 +227,7 @@ Appl::addJsScript('
     }
 ');
 
-include 'homefooter.php';
+include 'homefooter.inc.php';
 
 ?>
 

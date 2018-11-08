@@ -89,7 +89,9 @@ function getConstantName($className,$value)
 		$class = new stdClass();
 	}
 	$constants = array_flip($class->getConstants());
-	return $constants[$value];
+	if (isset($constants[$value]))
+	    return $constants[$value];
+	return '';
 }
 
 /**

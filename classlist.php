@@ -23,7 +23,7 @@ Appl::addCssStyle('
 ');
 Appl::setSiteSubTitle("Osztályok");
 Appl::setSiteDesctiption(getAktSchoolName()." osztályai");
-include("homemenu.php");
+include("homemenu.inc.php");
 
 /** @var array $classes */
 $classes = $db->getClassList(getAktSchoolId());
@@ -93,5 +93,5 @@ function displayClassList($db, $classes, $eveningClass) {
 	}
 }
 
-include ("homefooter.php");
+include("homefooter.inc.php");
 ?>

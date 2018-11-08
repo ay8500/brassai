@@ -382,9 +382,9 @@
 	 * -3 -> Sequrity violation 
 	 */
 	function resetUserPasswort($email, $newPassw) {
+	    global $db;
 		if (strlen($newPassw)>4) {
-			if (checkRequesterIP(changeType::newPassword)) {
-				global $db;
+			if ($db->checkRequesterIP(changeType::newPassword)) {
 				$usr = $db->getPersonByEmail($email);
 				if (null != $usr) {
 						$db->savePersonField($usr["id"],"passw",encrypt_decrypt("encrypt",$newPassw));
@@ -433,32 +433,6 @@
 		
 	}
 	
-	
-	
-	/**
-	 * Check the requester IP 
-	 * if the IP can't login more then a defined time on a day then return value will set to false 
-	 * this is a safety funtion to prevent automatic loging of password crack or to mutch anonymous changes
-	 */
-	function checkRequesterIP($action) {
-		global $db;
-		if ($action==changeType::login) {
-			$count = $db->getCountOfRequest($action,24);
-			return $count<20;
-		} elseif ($action==changeType::personchange) {
-			$count = $db->getCountOfRequest($action,24);
-			return $count<30;
-		} elseif ($action==changeType::message) {
-			$count = $db->getCountOfRequest($action,24);
-			return $count<1;
-        } elseif ($action==changeType::newPassword) {
-            $count = $db->getCountOfRequest($action,24);
-            return $count<1;
-		} elseif ($action==changeType::personupload) {
-			$count = $db->getCountOfRequest($action,24);
-			return $count<5;
-		} 
-	}
 
 	/**
 	 * read login log  
@@ -488,7 +462,7 @@
 	
 	/**
 	 * Krypt or encrypt a string
-	 * @param string $action
+	 * @param string $action "encrypt" or "decrypt"
 	 * @param string $string
 	 * @return string
 	 */

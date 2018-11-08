@@ -128,7 +128,7 @@ if (getParam("action","")=="unlinkPicture" && (userIsAdmin() || userIsSuperuser(
 
 //Upload Image
 if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
-	if ($db->getCountOfRequest(changeType::classupload,24)<10) {
+	if ($db->checkRequesterIP(changeType::classupload)) {
 		if (basename( $_FILES['userfile']['name'])!="") {
 			$fileName = explode( ".", basename( $_FILES['userfile']['name']));
 			$idx=$db->getNextPictureId();
@@ -165,7 +165,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							}
 							$upicture["uploadDate"]=date("Y-m-d H:i:s");
 							if ($db->savePicture($upicture)>=0) {
-								$db->saveRequest(changeType::personupload);
+								$db->saveRequest(changeType::classupload);
 								resizeImage($uploadfile,1800,1800);
                                 Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve.","success");
 								saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);

@@ -15,7 +15,7 @@ $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nag
 }
 ');
 
-include("homemenu.php");
+include("homemenu.inc.php");
 ?>
 
 <table class="pannel" style="width:100%">
@@ -45,4 +45,4 @@ include("homemenu.php");
 	</tr>
 	<tr><td id="status"></td></tr>
 </table>
-<?php include("homefooter.php");?>
+<?php include("homefooter.inc.php");?>

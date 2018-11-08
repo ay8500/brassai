@@ -54,10 +54,10 @@ if ($type=="classID") {
 }  
 \maierlabs\lpfw\Appl::setSiteTitle($subtitle);
 \maierlabs\lpfw\Appl::$subTitle= $type=="personID"?$link:$subtitle;
-include("homemenu.php");
+include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
-<?php include_once 'pictureinc.php';?>
+<?php include_once 'picture.inc.php';?>
 </div>
 
-<?php include 'homefooter.php'; ?> 
+<?php include 'homefooter.inc.php'; ?>

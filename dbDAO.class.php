@@ -10,21 +10,6 @@ include_once 'tools/logger.class.php';
 include_once 'tools/ltools.php';
 include_once 'config.class.php';
 
-/**
- * data change types 
- */
-class changeType
-{
-	const login = 0;
-	const message = 1;
-	const personupload = 2;
-	const personchange = 3;
-	const classchange = 4;      //changes für class pictures
-	const classupload = 5;      //changes für class pictures
-	const deletepicture = 6;    //changes für class pictures
-	const newuser= 7;           //create a new user
-    const newPassword = 8;
-}
 
 class dbDAO {
     /**
@@ -1364,10 +1349,11 @@ class dbDAO {
 	/**
 	 * Save request if user is not loggen on
 	 * @param  integer  $type changeType
+     * @param boolean $forceCount increment request counter even the user is logged on
      * @return void
 	 */
-	public function saveRequest($type) {
-		if (!userIsLoggedOn()) {
+	public function saveRequest($type,$forceCount=false) {
+		if (!userIsLoggedOn() || $forceCount) {
 			$data=array();
 			$data=$this->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
 			$data=$this->dataBase->insertFieldInArray($data, "date", date("Y-m-d H:i:s"));

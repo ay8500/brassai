@@ -1,5 +1,4 @@
 <?php
-
 namespace maierlabs\lpfw;
 
 include_once 'logger.class.php';
@@ -7,10 +6,9 @@ include_once 'loggerType.class.php';
 include_once 'loggerLevel.class.php';
 
 /**
-* Class MySqlDb
-* @package maierlabs\lpfw
-*/
-class MySqlDb
+ *@package maierlabs\lpfw
+ */
+class MySql
 {
     private $connection = NULL;
     private $result = NULL;
@@ -502,4 +500,3 @@ class MySqlDb
         return $ret;
     }
 }
-

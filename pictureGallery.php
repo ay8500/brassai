@@ -13,7 +13,7 @@ Appl::setSiteTitle("Képtár: ".$gallery);
 Appl::$subTitle='Emlékeik képekben';
 Appl::addCss("ig/ig.css");
 
-include("homemenu.php");
+include("homemenu.inc.php");
 $_SESSION['multipleGalleries']=0;
 include ("ig/igframe.php"); 
-include ("homefooter.php");
+include("homefooter.inc.php");

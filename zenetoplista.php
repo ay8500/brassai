@@ -118,7 +118,7 @@ if ($delVote>=0 && $edit) {
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}
 
-	include("homemenu.php");
+	include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
@@ -369,7 +369,7 @@ function autoComplete (field, select, property, forcematch) {
 </script>
  
  <?php 
- include "homefooter.php";
+ include "homefooter.inc.php";
 
 /**
  * Get the soung title using youtube API

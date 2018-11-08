@@ -40,7 +40,7 @@ if (isActionParam("sendMail")) {
 }
 
 Appl::$subTitle='Adminisztráció';
-include("homemenu.php");
+include("homemenu.inc.php");
 
 ?>
 
@@ -48,7 +48,7 @@ include("homemenu.php");
 
 <?php if (userIsAdmin() || userIsEditor() ) { 
 	$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
-	include("tabs.php");
+	include("tabs.inc.php");
 	if ($tabOpen==0) {?>
 	<form method="get" name="mail">
 		<textarea id="story" name="T" style="width:95%;height:300px" wrap="off" onchange="fieldChanged();">
@@ -176,4 +176,4 @@ Appl::addJsScript("
      	}
     }
 ");
-include 'homefooter.php'; ?>
+include 'homefooter.inc.php'; ?>

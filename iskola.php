@@ -6,7 +6,7 @@ use maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("Iskolánk története 1993-ig");
 Appl::setSiteSubTitle("Az iskolánk története a XVI század és 1993 között");
-include("homemenu.php"); 
+include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
 <h2 class="sub_title">Az iskolánk története</h2>
@@ -112,4 +112,4 @@ indítottak be. Mivel ezzel párhuzamosan a magyar osztályok számát csökkent
 
 <h4><a href="#000">Vissza</a></h4>
 </div>
-<?PHP  include ("homefooter.php");?>
+<?PHP  include("homefooter.inc.php");?>

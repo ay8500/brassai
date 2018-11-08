@@ -36,7 +36,8 @@ function pageNotFound() {
 	header("status: 404"); 
 	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
 	setAktSchool(1);unsetAktClass();
-	include("homemenu.php"); 
+	global $db;
+	include("homemenu.inc.php");
 	?>
 	<h2 class="sub_title">Sajnos ez az oldal nem létezik ezen a szerveren.</h2>
 	<div style="background-image: url('images/kretatabla.jpg');background-size: cover;height: 600px;margin: 20px;border-radius: 30px;">	
@@ -46,7 +47,7 @@ function pageNotFound() {
 		</div>
 	</div>
 	<?php
-	include("homefooter.php");
+	include("homefooter.inc.php");
 }
 ?>
 

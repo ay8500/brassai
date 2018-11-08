@@ -1,13 +1,7 @@
 <?php
 
-\maierlabs\lpfw\Appl::addJsScript("
-	function hiddenData(title) {
-		showModalMessage(title,'Személyes adat védve!<br/>Csak iskola vagy osztálytárs tekintheti meg ezt az informácíót.');
-	}
-");
-		
 /**
- * Display a person div including person picture class, education,ocupation,address and change date an user 
+ * Display a person including person picture class, education,ocupation,address and change date an user
  * @param dbDAO $db
  * @param array $person
  * @param bool $showClass
@@ -130,8 +124,11 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				<?php }?>
 	  		</div>
 		</div>
+    <?php if(userIsAdmin()) displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1')); ?>
 	</div>
-<?php } 
+<?php
+}
+
 
 function displayPicture($db,$picture,$showSchool=false) {
 	$p=$picture;
@@ -182,17 +179,10 @@ function displayPicture($db,$picture,$showSchool=false) {
             Módosította: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
 			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["changeDate"]));?>
 		</div>
+        <?php if(userIsAdmin()) displayPictureOpinion($db,$picture["id"]); ?>
 	</div>
 <?php } 
 
-
-function displayIcon($d,$field,$image,$title,$appl) {
-    if (isset($d[$field]) && strlen($d[$field])>8)
-        if(showField($d,$field))
-            echo '&nbsp;<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
-        else
-            echo '&nbsp;<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
-}
 
 function displayClass($db,$d,$showDate=false) { 
 	if (userIsLoggedOn() || isLocalhost()) {
@@ -238,7 +228,6 @@ function displayClass($db,$d,$showDate=false) {
 		<?php }?>
 	</div>
 <?php }
-
 
 
 function displayPersonCandle($db,$person,$date) {
@@ -295,4 +284,202 @@ function displayPersonCandle($db,$person,$date) {
              </div>
         </div>
     </div>
-<?php } ?>
+<?php }
+
+
+function displayIcon($d,$field,$image,$title,$appl) {
+    if (isset($d[$field]) && strlen($d[$field])>8)
+        if(showField($d,$field))
+            echo '&nbsp;<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+        else
+            echo '&nbsp;<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+}
+
+function displayPersonOpinion($db,$id,$teacher) {
+    ?>
+    <div>
+        <buton onclick="<?php
+        if ($teacher)
+            echo 'showTeacherOpinion('.$id.','.getLoggedInUserId().')';
+        else
+            echo 'showPersonOpinion('.$id.','.getLoggedInUserId().')';
+        ?>" class="btn btn-default" >
+            <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
+        </buton>
+        <a href="javascript:showPersonOpinions(<?php echo $id ?>)" title="Vélemények száma: 42">
+            <span style="margin-left: 20px;">
+                <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag">42</span>
+            </span>
+        </a>
+        <a href="javascript:showPersonFriendship(<?php echo $id ?>)" title="Baráságainak száma: 12">
+            <span style="margin-left: 20px;">
+             <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag">12</span>
+            </span>
+        </a>
+        <a href="javascript:showPersonFunny(<?php echo $id ?>)" title="Kedves vicces személy 312 vélemény alapján">
+            <span style="margin-left: 20px;">
+                <img src="images/funny.png" style="width: 32px"/><span class="countTag">312</span>
+            </span>
+        </a>
+        <a href="javascript:showPersonSport(<?php echo $id ?>)" title="Sportoló 2 személy véleménye alapján">
+            <span style="margin-left: 20px;">
+                <img src="images/runner.jpg" style="width: 32px"/><span class="countTag">2</span>
+            </span>
+        </a>
+    </div>
+    <div id="o-person-<?php echo $id ?>"></div>
+<?php
+}
+
+function displayPictureOpinion($db,$id){
+?>
+    <div>
+        <buton onclick="<?php
+            echo 'showPictureOpinion('.$id.','.getLoggedInUserId().')';
+        ?>" class="btn btn-default" >
+            <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
+        </buton>
+        <span style="margin-left: 20px;">
+                <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag">42</span>
+            </span>
+        <span style="margin-left: 20px;">
+                <img src="images/favorite.png" style="width: 32px"/><span class="countTag">12</span>
+            </span>
+        <span style="margin-left: 20px;">
+                <img src="images/funny.png" style="width: 32px"/><span class="countTag">312</span>
+            </span>
+        <span style="margin-left: 20px;">
+                <img src="images/star.png" style="width: 32px"/><span class="countTag">2</span>
+            </span>
+    </div>
+<div id="o-picture-<?php echo $id ?>"></div>
+<?php
+}
+
+\maierlabs\lpfw\Appl::addJsScript("
+	function hiddenData(title) {
+		showModalMessage(title,'Személyes adat védve!<br/>Csak iskola vagy osztálytárs tekintheti meg ezt az informácíót.');
+	}
+");
+
+\maierlabs\lpfw\Appl::addCssStyle("
+.optiondiv {
+    background-color: #9ba3ab; border-radius: 5px; width: 100%; 
+    padding: 5px; margin-top:5px;
+}
+
+.countTag{
+    border-radius: 4px;background-color: sandybrown;
+    font-size: 10px;color: black;
+    position: relative;left: -13px;top: 9px;
+}
+.btnb, .btns {
+    width:105px; height:26px;  margin-top:2px; text-align: left;
+}
+
+.btns {
+    position:relative;
+    top:15px;
+}
+");
+
+\maierlabs\lpfw\Appl::addJsScript("
+    function showPersonOpinion(id,uid) {
+        showOpinion(id,uid,$('#opinionperson').html());
+    }
+    function showTeacherOpinion(id,uid) {
+        showOpinion(id,uid,$('#opinionteacher').html());
+    }
+    
+    function showOpinion(id,uid,html) {
+        html = html.replace(new RegExp('{id}', 'g'),id);
+        html = html.replace(new RegExp('{uid}', 'g'),uid);
+        $('#o-person-'+id).hide();
+        $('#o-person-'+id).html(html);
+        $('#o-person-'+id).show('slow');
+    }
+
+    function showPictureOpinion(id,uid) {
+        var html=$('#opinionpicture').html();
+        html = html.replace(new RegExp('{id}', 'g'),id);
+        html = html.replace(new RegExp('{uid}', 'g'),uid);
+        $('#o-picture-'+id).hide();
+        $('#o-picture-'+id).html(html);
+        $('#o-picture-'+id).show('slow');
+    }
+
+    function savePersonOpinion(id,uid) {
+        $('#o-person-'+id).hide('slow');
+        $('#o-person-'+id).html('');
+        alert('2');
+    }
+
+    function savePictureOpinion(id,uid) {
+        $('#o-picture-'+id).hide('slow');
+        $('#o-picture-'+id).html('');
+    }
+    
+    function addFriendship(id,uid) {
+        alert('Friendship '+id);
+    }
+
+    function addFriendly(id,uid) {
+        alert('Friendly '+id);
+    }
+
+    function addSports(id,uid) {
+        alert('Sports '+id);
+    }
+    
+    function showPersonOpinions(id) {
+        $('#o-person-'+id).hide();
+        $('#o-person-'+id).html('kjahsdkjhaskjdh');
+        $('#o-person-'+id).show('slow');
+    }
+");
+?>
+<div id="opinionperson" style="display: none">
+    <div class="optiondiv">
+        <span style="display: inline-block; float: right;">
+            <button onclick="addFriendship({id},{uid})" title="Jó barátok vagyunk illetve voltunk." class="btnb btn btn-sm"><img src="images/friendship.jpg" style="width: 16px"/> Barátom</button><br/>
+            <button onclick="addFriendly({id},{uid})" title="Kellemes, jókedvű, vicces és szóraztató" class="btnb btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Vicces</button><br/>
+            <button onclick="addSports({id},{uid})" title="Sportoló, aktív beállítotságú" class="btnb btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button><br/>
+            <button onclick="savePersonOpinion({id},{uid})" title="Kimentem megjegyzésem" class="btns btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button><br/>
+        </span>
+        <span style="display: inline-block; height:130px;width:75%">
+            <textarea style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </span>
+    </div>
+</div>
+
+<div id="opinionteacher" style="display: none">
+    <div class="optiondiv">
+        <span style="display: inline-block; float: right;">
+            <button onclick="addFriendship({id},{uid})" title="Kedvenc tanáraim közé tartozik." class="btnb btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button><br/>
+            <button onclick="addFriendly({id},{uid})" title="Kellemes, jókedvű" class="btnb btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Kellemes</button><br/>
+            <button onclick="addSports({id},{uid})" title="Aktív beállítotságú" class="btnb btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button><br/>
+            <button onclick="savePersonOpinion({id},{uid})" title="Kimentem megjegyzésem" class="btns btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button><br/>
+        </span>
+        <span style="display: inline-block; height:130px;width:75%">
+            <textarea style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </span>
+    </div>
+</div>
+
+
+<div id="opinionpicture" style="display: none">
+    <div class="optiondiv">
+        <span style="display: inline-block; float: right;">
+            <button onclick="addFriendship({id},{uid})" title="Kedvenc képeim közé tartozik." class="btnb btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button><br/>
+            <button onclick="addFriendly({id},{uid})" title="Nagyon jó a kép tartalma" class="btnb btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó tartalom</button><br/>
+            <button onclick="addSports({id},{uid})" title="Nagyon szép a kép tartalma" class="btnb btn btn-sm"><img src="images/star.png" style="width: 16px"/> Szép kép</button><br/>
+            <button onclick="savePictureOpinion({id},{uid})" title="Kimentem megjegyzésem" class="btns btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button><br/>
+        </span>
+        <span style="display: inline-block; height:130px;width:75%">
+            <textarea style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </span>
+    </div>
+</div>
+
+
+

@@ -21,7 +21,7 @@ include_once "mysql.class.php";
 * Extension for anonymous user entrys and history features
 * @package maierlabs\lpfw
 */
-class MySqlDbAUH extends MySqlDb
+class MySqlDbAUH extends MySql
 {
     /**
      * get history info

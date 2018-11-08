@@ -17,7 +17,7 @@
 			http_response_code(400);
 			$logOnMessage =Config::_text("LogInError")."<br />".Config::_text("LogInUserPassw");
 		} else {
-			if (!checkRequesterIP(changeType::login)) {
+			if (!$db->checkRequesterIP(changeType::login)) {
 				logoutUser();
 				http_response_code(400);
 				$logOnMessage = Config::_text("LogInError")."<br />".Config::_text("LogInToManyErrors");

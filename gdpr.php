@@ -34,7 +34,7 @@ if (null!=$person) {
 		}
 	}
 }
-include 'homemenu.php';
+include 'homemenu.inc.php';
 ?>
 <form>
 <div class="container-fluid">
@@ -151,4 +151,4 @@ Appl::addJsScript("
 		
 ");
 ?>
-<?php include_once("homefooter.php");?>
+<?php include_once("homefooter.inc.php");?>

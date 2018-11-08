@@ -6,8 +6,8 @@ use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("Díjas tanulók");
 Appl::setSiteTitle("Kitüntetett díjazott diákok");
-include("homemenu.php"); 
-include_once 'editDiakCard.php';
+include("homemenu.inc.php");
+include_once 'displayCards.inc.php';
 ?>
 <h2 class="sub_title">Juhász Máté István díjasok</h2>
 <div class="well">Az iskolánk legjelentősebb díját a Juhász Máté István Emlékdíjat az iskola egykori diákja, a műegyetem hallgatójaként rákban elhunyt kiváló tanuló emlékére alapította családja és ösztályfőnöke, Gáll Dénes.</div>
@@ -72,4 +72,4 @@ function createPerson($lastname,$firstname,$year) {
 
 ?>
 
-<?php include ("homefooter.php");?>
+<?php include("homefooter.inc.php");?>

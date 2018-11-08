@@ -33,7 +33,7 @@ if (getParam("action")=="encrypt") {
 
 
 \maierlabs\lpfw\Appl::$subTitle="Adatbank eszközök";
-include('homemenu.php');
+include('homemenu.inc.php');
 
 
 if (userIsAdmin()) {?>
@@ -228,4 +228,4 @@ function rip(action) {
 
 
 </script>
-<?php include 'homefooter.php';?>
+<?php include 'homefooter.inc.php';?>

@@ -7,7 +7,7 @@ use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("Iskolánk névadója Brassai Sámuel");
 Appl::setSiteSubTitle("Brassai Sámuel: nyelvész, filozófus, természettudós, az „utolsó erdélyi polihisztor” életrajzi adatai");
-include("homemenu.php"); 
+include("homemenu.inc.php");
 ?>
 
 <div style="text-align: center;">
@@ -48,4 +48,4 @@ Brassai Sámuel hit- és életelveit a következőképpen foglalta össze:
 <p>(Dr. Boros György: Dr. Brassai Sámuel élete)
 </div>
 
-<?PHP  include ("homefooter.php");?>
+<?PHP  include("homefooter.inc.php");?>

@@ -29,7 +29,7 @@ $calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->mod
 \maierlabs\lpfw\Appl::addCssStyle('
 	.statw {width:150px; text-align:right; display: inline-block;};
 ');
-include('homemenu.php');?>
+include('homemenu.inc.php');?>
 
 <div class="panel panel-default " >
     <div class="panel-heading">
@@ -304,4 +304,4 @@ include('homemenu.php');?>
         
       }
 </script>
-<?php include 'homefooter.php';?>
+<?php include 'homefooter.inc.php';?>

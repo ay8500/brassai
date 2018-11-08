@@ -100,7 +100,7 @@ Appl::$subTitle='Bejelentkezés';
 Appl::addCssStyle('
 	.fb-radio{width: 25px;height: 25px;position: relative;top: -6px;}
 ');
-include 'homemenu.php';
+include 'homemenu.inc.php';
 ?>
 
 <div class="container-fluid">
@@ -320,4 +320,4 @@ include 'homemenu.php';
 	}
 	
 </script>
-<?php include "homefooter.php"; die();?>
+<?php include "homefooter.inc.php"; die();?>

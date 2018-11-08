@@ -5,10 +5,20 @@
 
 include_once "tools/userManager.php";
 include_once 'tools/ltools.php';
+include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
+
 
 class dbBL extends dbDAO
 {
+    /**
+     * Check the requester IP
+     * User can't login more then a defined time per day. This is a safety function
+	 * to prevent automatic loging of password crack or to mutch anonymous changes and uploads
+     */
+    function checkRequesterIP($action) {
+        return $this->getCountOfRequest($action,24) < $action;
+    }
 
     /**
      * handle the params that change the class or school
@@ -30,7 +40,7 @@ class dbBL extends dbDAO
             $class = $this->getClassById($classId);
             if ($class == null)
                 $class = $this->getClassByText($classId);
-            if ($class == null)
+            if ($class == null && $classId!=null)
                 $class = $this->getClassByText(substr($classId,3,4).' '.substr($classId,0,3));
             if ($class != null) {
                 setAktClass($class["id"]);
@@ -106,6 +116,8 @@ class dbBL extends dbDAO
     }
 
 }
+
+
 
 
 $db = new dbBL;

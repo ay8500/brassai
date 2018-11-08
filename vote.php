@@ -17,7 +17,7 @@ Appl::addCssStyle('
 ');
 Appl::setSiteSubTitle('A következő érettségi találkozónk');
 
-include("homemenu.php"); 
+include("homemenu.inc.php");
 
 //$class=$db->getClassById(getRealId(getAktClass()));
 $classMeetingCount=date("Y")-intval(Appl::getMember("aktClass")["graduationYear"]);
@@ -132,4 +132,4 @@ if (getParam("action")=="vote") {
 </table>
 </div>
 <div>&nbsp;</div>
-<?php include 'homefooter.php';?>
+<?php include 'homefooter.inc.php';?>

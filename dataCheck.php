@@ -6,7 +6,7 @@ include_once 'tools/appl.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 
 Appl::$subTitle='Adatok vizsgálása és jóváhagyása';
-include('homemenu.php');
+include('homemenu.inc.php');
 
 $id=getIntParam("id");
 $ret=false;
@@ -37,7 +37,7 @@ if (userIsAdmin()) {
 						'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>',
 						'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>',
 						'Hozzáférések');
-	include("tabs.php");
+	include("tabs.inc.php");
 	if ($tabOpen==0) {
 		generateCheckHtmlTable($db,"Osztályok", "Osztály","Class","text",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
 	}
@@ -289,5 +289,5 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
         }
     ');
 }
-include 'homefooter.php';
+include 'homefooter.inc.php';
 

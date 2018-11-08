@@ -1,7 +1,7 @@
 <?php
     include_once 'tools/sessionManager.php';
     include_once 'tools/userManager.php';
-	include('homemenu.php');
+	include('homemenu.inc.php');
 ?>
 <div class="sub_title">Loging</div>
 <?PHP
@@ -10,7 +10,7 @@ if (userIsAdmin()) {
 
 	//initialise tabs
 	$tabsCaption=Array("Bejelentkezés","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");
-	include("tabs.php");
+	include("tabs.inc.php");
 	?>
 	
 	<?PHP if ($tabOpen==0) { ?>
@@ -96,7 +96,7 @@ if (userIsAdmin()) {
 else
 	echo '<div class="alert alert-danger" >Adat hozzáférési jog hiányzik!</div>';
 	
-include 'homefooter.php';
+include 'homefooter.inc.php';
 ?>
 
 

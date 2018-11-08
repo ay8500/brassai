@@ -21,7 +21,7 @@ else {
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 
 
-include("homemenu.php"); 
+include("homemenu.inc.php");
 ?>
 
 <div style="margin-top:20px;padding:10px;background-color: black; color: #ffbb66;">
@@ -45,7 +45,7 @@ include("homemenu.php");
 	?>
 </div>
 <?php 
-include 'homefooter.php';
+include 'homefooter.inc.php';
 
 
 

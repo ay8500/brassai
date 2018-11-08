@@ -28,7 +28,7 @@ $personIdList=$db->getPersonIdListWithPicture();
 $randPersonID=$personIdList[rand(0,sizeof($personIdList)-1)];
 
 
-include("homemenu.php");
+include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
@@ -105,5 +105,5 @@ include("homemenu.php");
 	</div>
 </div>
 
-<?php include ("homefooter.php");?>
+<?php include("homefooter.inc.php");?>
 

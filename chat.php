@@ -28,8 +28,8 @@ if ($class!=null)
 
 
 Appl::$subTitle='Osztálytárs körlevek '.getAktClassName();
-include("homemenu.php"); 
-include_once 'chatinc.php';
+include("homemenu.inc.php");
+include_once 'chat.inc.php';
 
 
 
@@ -91,5 +91,5 @@ if(sizeof($messageList)==0) {
 		<?php }?>
 	</div>
 </div>
-<?php include 'homefooter.php'; ?>
+<?php include 'homefooter.inc.php'; ?>
 

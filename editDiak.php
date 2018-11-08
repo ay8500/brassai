@@ -60,14 +60,14 @@ if ($personid!=null && $personid>=0) {
 
 //GDPS person requested all data to be deleted exept name
 if (getFieldChecked($diak,"place")!="") {
-    include_once "homemenu.php";
+    include_once "homemenu.inc.php";
     ?>
         <div class="well">
             <h3><?php echo ($diak["lastname"].' '.$diak["firstname"]) ?></h3>
             Személyes adatok védve vannak. Módosítás vagy bővítés a személy kérésére nem lehetséges.
         </div>
     <?php
-    include_once "homefooter.php";
+    include_once "homefooter.inc.php";
     die();
 }
 
@@ -114,7 +114,7 @@ if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { 
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
-	if (checkRequesterIP(changeType::personchange)) {
+	if ($db->checkRequesterIP(changeType::personchange)) {
 		if ($diak!=null) {
 			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
 				$tilde="";
@@ -241,7 +241,7 @@ if ($action=="deletePicture" && userIsLoggedOn()) {
 if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
 		$fileName = preg_split( "/[.]/", basename( $_FILES['userfile']['name']));
-		if (checkRequesterIP(changeType::personupload)) {
+		if ($db->checkRequesterIP(changeType::personupload)) {
 			//Only jpg
 			if (strcasecmp($fileName[1],"jpg")==0) {
 				//Create folder is doesn't exists
@@ -344,7 +344,7 @@ if (isAktClassStaf()) {
 }
 
 
-include("homemenu.php"); 
+include("homemenu.inc.php");
 ?>
 
 <?php if (isActionParam("new")=="" && isset($diak)){?>
@@ -385,7 +385,7 @@ $tabUrl="editDiak.php";
 ?>
 <?php if (null!=getAktClass()) {?>
 <div class="container-fluid">
-	<?php  include("tabs.php"); ?>
+	<?php  include("tabs.inc.php"); ?>
 	<div class="well">
 
 		<?php
@@ -405,7 +405,7 @@ $tabUrl="editDiak.php";
 		if ($tabOpen==1+$tabOffset) {
 			$type="personID";
 			$typeId=getRealId($diak);
-			include("pictureinc.php");
+			include("picture.inc.php");
 		}
 		//Change storys cv, scool trory, sparetime
 		if ($tabOpen==2+$tabOffset || $tabOpen==3+$tabOffset || $tabOpen==4+$tabOffset) {
@@ -444,5 +444,5 @@ $tabUrl="editDiak.php";
 	<p>Osztály névsórának a módosótásához elöbször válassz ki egy osztályt az "Osztályok" menü segítségével!</p>
 </div>
 <?php } ?>
-<?php include 'homefooter.php'; ?>
+<?php include 'homefooter.inc.php'; ?>
 

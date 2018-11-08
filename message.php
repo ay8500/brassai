@@ -3,7 +3,7 @@ include_once("tools/sessionManager.php");
 include_once("tools/userManager.php");
 include_once 'tools/appl.class.php';
 include_once("dbBL.class.php");
-include 'postmessage.php';
+include 'message.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -45,8 +45,9 @@ if (isActionParam("postMessage")) {
 		}
 		else { 
 			if (checkMessageContent($paramText)) {
-				if (checkRequesterIP(changeType::message)) {
+				if ($db->checkRequesterIP(changeType::message)) {
 					if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
+                        $db->saveRequest(changeType::message);
 						Appl::setMessage('A beadott üzenet elküldése sikerült!',"success");
 						$paramName="";
 						$paramText="";
@@ -96,7 +97,7 @@ if (isActionParam("setPersonID") && userIsAdmin()) {
 }
 
 Appl::$subTitle='Üzenőfal';
-include("homemenu.php"); 
+include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">   
@@ -158,4 +159,4 @@ include("homemenu.php");
         }
     }
 </script>
-<?php include 'homefooter.php'; ?>
+<?php include 'homefooter.inc.php'; ?>

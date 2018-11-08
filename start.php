@@ -12,7 +12,7 @@ if ($userId>=0) {
 }
 unsetAktClass();
 
-include_once 'editDiakCard.php';
+include_once 'displayCards.inc.php';
 
 if (isActionParam('showmore')) {
     $date=showRecentChanges($db,getParam('date'));
@@ -50,7 +50,7 @@ function showRecentChanges($db,$date=null) {
 }
 
 Appl::setSiteTitle('Újdonságok','Újdonságok');
-include("homemenu.php");
+include("homemenu.inc.php");
 
 ?>
 <div class="container-fluid">
@@ -113,5 +113,5 @@ Appl::addJsScript("
         });
     }
 ");
-include ("homefooter.php");
+include("homefooter.inc.php");
 ?>

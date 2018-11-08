@@ -5,8 +5,8 @@ include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
 include_once 'config.class.php';
 include_once 'dbBL.class.php';
-include_once 'editDiakCard.php';
-include_once 'chatinc.php';
+include_once 'displayCards.inc.php';
+include_once 'chat.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
@@ -34,7 +34,7 @@ if (isAktClassStaf()) {
 	}
 }
 
-include("homemenu.php");
+include("homemenu.inc.php");
 
 if (isActionParam("saveok")) {
 	Appl::setMessage("Köszzönjük szépen, személyes adatok kimentése sikerült.", "success");
@@ -79,4 +79,4 @@ foreach ($personList as $d)
 }
 ?>
 </div>
-<?php  include ("homefooter.php");?>
+<?php  include("homefooter.inc.php");?>

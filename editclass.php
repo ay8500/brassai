@@ -48,7 +48,7 @@ if ($action=="saveclass") {
 	}
 }
 
-include("homemenu.php");
+include("homemenu.inc.php");
 
 ?>
 <div class="container-fluid">
@@ -242,4 +242,4 @@ include("homemenu.php");
 	}
 </script>
 
-<?php include_once 'homefooter.php';?>
+<?php include_once 'homefooter.inc.php';?>

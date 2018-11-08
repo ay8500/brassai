@@ -6,7 +6,7 @@ use \maierlabs\lpfw\Appl as Appl;
 
 $sTitle="30-éves véndiák találkozó";
 Appl::setSiteTitle($sTitle,$sTitle);
-include("homemenu.php"); 
+include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
@@ -51,4 +51,4 @@ include("homemenu.php");
 	</div>
 </div>
 
-<?PHP  include ("homefooter.php");?>
+<?PHP  include("homefooter.inc.php");?>
