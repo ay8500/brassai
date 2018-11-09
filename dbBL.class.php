@@ -187,8 +187,12 @@ function getPersonPicture($person) {
 }
 
 function getPersonLinkAndPicture($person) {
-	$ret = '<img src="'.getPersonPicture($person).'"  class="diak_image_sicon"/>';
-	$ret.= ' <a href="editDiak.php?uid='.$person["id"].'">'.$person["lastname"]." ".$person["firstname"].'</a>';
+	if (isset($person["id"])) {
+        $ret = '<img src="' . getPersonPicture($person) . '"  class="diak_image_sicon"/>';
+        $ret .= ' <a href="editDiak.php?uid=' . $person["id"] . '">' . $person["lastname"] . " " . $person["firstname"] . '</a>';
+    } else {
+		$ret = 'Anonim felhasználó';
+	}
 	return $ret;
 }
 

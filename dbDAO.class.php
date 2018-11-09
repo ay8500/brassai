@@ -1789,12 +1789,27 @@ class dbDAO {
      * get the opinions for a person
      * @param $id person id
      */
-	public function getPersonOpinionCount($id) {
+	public function getPersonOpinionCount($id,$type=null) {
         $ret = new stdClass();
-        $ret->opinions=rand(-5,4);   if ($ret->opinions<0) $ret->opinions=0;
-        $ret->friends=rand(0,10);   if ($ret->friends<5) $ret->friends=0;
-        $ret->funny=rand(0,100);    if ($ret->funny>30) $ret->funny=0;
-        $ret->sport=rand(0,20);     if ($ret->sport>7) $ret->sport=0;
+        if ($type==null) {
+            $ret->opinions = rand(-5, 4);
+            if ($ret->opinions < 0) $ret->opinions = 0;
+            $ret->friends = rand(0, 10);
+            if ($ret->friends < 5) $ret->friends = 0;
+            $ret->funny = rand(0, 100);
+            if ($ret->funny > 30) $ret->funny = 0;
+            $ret->sport = rand(0, 20);
+            if ($ret->sport > 7) $ret->sport = 0;
+        } else {
+            $ret = array();
+            for ($i=0;$i<rand(1,45);$i++) {
+                $opinion=new stdClass();
+                $opinion->person=rand(500,1000);
+                $opinion->date = date('Y-m-d H:n');
+                $opinion->ip = '122.122.33.3';
+                $ret[$i]=$opinion;
+            }
+        }
         return $ret;
     }
 
@@ -1802,12 +1817,27 @@ class dbDAO {
      * get the opinions for a person
      * @param $id person id
      */
-    public function getPictureOpinionCount($id) {
+    public function getPictureOpinionCount($id,$type=null) {
         $ret = new stdClass();
-        $ret->opinions=rand(-5,4);   if ($ret->opinions<0) $ret->opinions=0;
-        $ret->favorite=rand(0,10);   if ($ret->favorite<5) $ret->favorite=0;
-        $ret->content=rand(0,100);    if ($ret->content>30) $ret->content=0;
-        $ret->nice=rand(0,20);     if ($ret->nice>7) $ret->nice=0;
+        if ($type==null) {
+            $ret->opinions = rand(-5, 4);
+            if ($ret->opinions < 0) $ret->opinions = 0;
+            $ret->favorite = rand(0, 10);
+            if ($ret->favorite < 5) $ret->favorite = 0;
+            $ret->content = rand(0, 100);
+            if ($ret->content > 30) $ret->content = 0;
+            $ret->nice = rand(0, 20);
+            if ($ret->nice > 7) $ret->nice = 0;
+        } else {
+            $ret = array();
+            for ($i=0;$i<rand(1,35);$i++) {
+                $opinion=new stdClass();
+                $opinion->person=rand(500,1000);
+                $opinion->date = date('Y-m-d H:n');
+                $opinion->ip = '122.122.33.3';
+                $ret[$i]=$opinion;
+            }
+        }
         return $ret;
     }
 
@@ -1816,12 +1846,31 @@ class dbDAO {
      * get the opinions for a person
      * @param $id person id
      */
-    public function getPersonOpinions($id) {
+    public function getPersonOpinions($id,$start=0) {
         $ret = array();
-        for ($i=0;$i<rand(-5,5);$i++) {
+        for ($i=0;$i<rand(2,9);$i++) {
+            $opinion=new stdClass();
+            $opinion->text='Ez itt egy vélemény, az én véleményem. Egy jó vélemény. Szerintem mindenkinek ez lehet a véleménye.';
+            $opinion->person=rand(500,1000);
+            $opinion->date = date('Y-m-d H:n');
+            $opinion->ip = '122.122.33.3';
+            $ret[$i]=$opinion;
+        }
+        return $ret;
+    }
+
+    /**
+     * get the opinions for a person
+     * @param $id person id
+     */
+    public function getPictureOpinions($id,$start=0) {
+        $ret = array();
+        for ($i=0;$i<rand(2,15);$i++) {
             $opinion=new stdClass();
             $opinion->text='Es itt egy vélemény, az én véleményem. Egy jó vélemény.';
             $opinion->person=rand(500,1000);
+            $opinion->date = date('Y-m-d H:n');
+            $opinion->ip = '122.122.33.3';
             $ret[$i]=$opinion;
         }
         return $ret;
