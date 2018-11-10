@@ -1076,6 +1076,8 @@ class dbDAO {
         $sql .= " select id, changeDate, 'picture' as type from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') ";
         $sql .= " union ";
+        $sql .= " select entryID as id, changeDate, `table` as type from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from opinion GROUP by entryID)";
+        $sql .= " union ";
         $sql .= " select userID as id, lightedDate as changeDate, 'candle' as type from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID)";
         $sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);
@@ -1786,95 +1788,89 @@ class dbDAO {
 	}
 
     /**
-     * get the opinions for a person
-     * @param $id person id
+     * Save opinion
+     * @param $id
+     * @param $table
+     * @param $type
+     * @param $text
+     * @return int the counter or -1 on error
      */
-	public function getPersonOpinionCount($id,$type=null) {
-        $ret = new stdClass();
-        if ($type==null) {
-            $ret->opinions = rand(-5, 4);
-            if ($ret->opinions < 0) $ret->opinions = 0;
-            $ret->friends = rand(0, 10);
-            if ($ret->friends < 5) $ret->friends = 0;
-            $ret->funny = rand(0, 100);
-            if ($ret->funny > 30) $ret->funny = 0;
-            $ret->sport = rand(0, 20);
-            if ($ret->sport > 7) $ret->sport = 0;
+	public function setOpinion($id,$uid,$table,$type,$text=null) {
+        $data = array();
+        if ($text!=null)
+            $data=$this->dataBase->insertFieldInArray($data,'text',$text);
+        $data=$this->dataBase->insertFieldInArray($data,'entryID',$id);
+        $data=$this->dataBase->insertFieldInArray($data,'table',$table);
+        $data=$this->dataBase->insertFieldInArray($data,'opinion',$type);
+        $data=$this->dataBase->insertFieldInArray($data,'changeDate',date("Y-m-d H:i:s"));
+        $data=$this->dataBase->insertFieldInArray($data,'changeIP',$_SERVER["REMOTE_ADDR"]);
+        if ($uid!=null)
+            $data=$this->dataBase->insertFieldInArray($data,'changeUserID',$uid);
+        if  ($this->dataBase->insert('opinion',$data)) {
+            return $this->dataBase->queryInt("select count(1) from opinion where `table`='".$table."' and opinion ='".$type."' and entryID=".$id);
         } else {
-            $ret = array();
-            for ($i=0;$i<rand(1,45);$i++) {
+            return -1;
+        }
+    }
+
+    /**
+     * get only one opinion from logge in user or teh ip address
+     * @param $id
+     * @param $table
+     * @param $type
+     * @return array|null
+     */
+    public function getOpinion($id,$table,$type){
+        if (userIsLoggedOn()) {
+            $this->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeUserID=".getLoggedInUserId());
+            return $this->dataBase->getRowList();
+        }
+        $this->dataBase->querySignleRow("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeIP='".$_SERVER["REMOTE_ADDR"]."'");
+        return $this->dataBase->getRowList();
+    }
+
+    /**
+     * get the opinions for a person
+     * @param int $id person id
+     */
+	public function getOpinions($id,$table,$type,$start=1) {
+        $this->dataBase->query("select * from opinion where `table`='".$table."' and opinion='".$type."' and entryID=".$id);
+        $data = $this->dataBase->getRowList();
+        $ret = array();
+        for ($i=0;$i<sizeof($data);$i++) {
                 $opinion=new stdClass();
-                $opinion->person=rand(500,1000);
-                $opinion->date = date('Y-m-d H:n');
-                $opinion->ip = '122.122.33.3';
+                $opinion->id=$data[$i]["id"];
+                $opinion->text=$data[$i]["text"];
+                $opinion->person=$data[$i]["changeUserID"];
+                $opinion->date = $data[$i]["changeDate"];
+                $opinion->ip = $data[$i]["changeIP"];
+                $opinion->myopinion = (getLoggedInUserId()==$data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"]==$_SERVER["REMOTE_ADDR"]);
                 $ret[$i]=$opinion;
-            }
         }
         return $ret;
     }
 
     /**
      * get the opinions for a person
-     * @param $id person id
+     * @param int $id person id
+     * @param string $type
+     * @return stdClass
      */
-    public function getPictureOpinionCount($id,$type=null) {
+    public function getOpinionCount($id,$type) {
         $ret = new stdClass();
-        if ($type==null) {
-            $ret->opinions = rand(-5, 4);
-            if ($ret->opinions < 0) $ret->opinions = 0;
-            $ret->favorite = rand(0, 10);
-            if ($ret->favorite < 5) $ret->favorite = 0;
-            $ret->content = rand(0, 100);
-            if ($ret->content > 30) $ret->content = 0;
-            $ret->nice = rand(0, 20);
-            if ($ret->nice > 7) $ret->nice = 0;
+        if ($type=='picture') {
+            $ret->opinions = $this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='text' and entryID=".$id);
+            $ret->favorite = $this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='favorite' and entryID=".$id);
+            $ret->content =$this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='content' and entryID=".$id);
+            $ret->nice = $this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='nice' and entryID=".$id);
         } else {
-            $ret = array();
-            for ($i=0;$i<rand(1,35);$i++) {
-                $opinion=new stdClass();
-                $opinion->person=rand(500,1000);
-                $opinion->date = date('Y-m-d H:n');
-                $opinion->ip = '122.122.33.3';
-                $ret[$i]=$opinion;
-            }
+            $ret->opinions = $this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=".$id);
+            $ret->friends= $this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=".$id);
+            $ret->sport =$this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=".$id);
         }
         return $ret;
     }
 
-
-    /**
-     * get the opinions for a person
-     * @param $id person id
-     */
-    public function getPersonOpinions($id,$start=0) {
-        $ret = array();
-        for ($i=0;$i<rand(2,9);$i++) {
-            $opinion=new stdClass();
-            $opinion->text='Ez itt egy vélemény, az én véleményem. Egy jó vélemény. Szerintem mindenkinek ez lehet a véleménye.';
-            $opinion->person=rand(500,1000);
-            $opinion->date = date('Y-m-d H:n');
-            $opinion->ip = '122.122.33.3';
-            $ret[$i]=$opinion;
-        }
-        return $ret;
-    }
-
-    /**
-     * get the opinions for a person
-     * @param $id person id
-     */
-    public function getPictureOpinions($id,$start=0) {
-        $ret = array();
-        for ($i=0;$i<rand(2,15);$i++) {
-            $opinion=new stdClass();
-            $opinion->text='Es itt egy vélemény, az én véleményem. Egy jó vélemény.';
-            $opinion->person=rand(500,1000);
-            $opinion->date = date('Y-m-d H:n');
-            $opinion->ip = '122.122.33.3';
-            $ret[$i]=$opinion;
-        }
-        return $ret;
-    }
 
     public function dbUtilityEncryptPasword(){
         $ret=0;

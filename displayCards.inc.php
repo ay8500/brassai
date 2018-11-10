@@ -125,7 +125,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 				<?php }?>
 	  		</div>
 		</div>
-    <?php if(userIsAdmin() || userIsSuperuser()) displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1')); ?>
+    <?php displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1')); ?>
 	</div>
 <?php
 }
@@ -186,7 +186,7 @@ function displayPicture($db,$picture,$showSchool=false) {
             Módosította: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
 			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["changeDate"]));?>
 		</div>
-        <?php if(userIsAdmin() || userIsSuperuser()) displayPictureOpinion($db,$picture["id"]); ?>
+        <?php  displayPictureOpinion($db,$picture["id"]); ?>
 	</div>
 <?php }
 

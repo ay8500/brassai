@@ -13,7 +13,7 @@ if ( !isset($_SESSION['lastReq']) ) {
     $interval=date_diff($date,$dateNew);
     echo('<br/>');
     $minutes=$interval->format("%i");
-    echo('Interwal:'.$minutes);
+    echo('Minutes:'.$minutes);
     if ($minutes>30) {
         session_destroy();
         http_response_code(401);

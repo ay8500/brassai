@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Display the opinion block for a person
  * @param dbBL $db the database business layer
@@ -7,7 +6,7 @@
  * @param bool $teacher
  */
 function displayPersonOpinion($db,$id,$teacher) {
-    $o=$db->getPersonOpinionCount($id);
+    $o=$db->getOpinionCount($id,'person');
     if ($teacher) {
         $ttt="Kedvenc tanárja ".$o->friends." véndiáknak";
         $tt = "Véndiákok kedvenc tanárja";
@@ -17,6 +16,9 @@ function displayPersonOpinion($db,$id,$teacher) {
         $tt="Barátai";
         $t ="Kellemes vicces véndiák";
     }
+    $ooption = $o->opinions>0?'':'style="display:none"';
+    $ofriends = $o->friends>0?'':'style="display:none"';
+    $osport = $o->sport>0?'':'style="display:none"';
     ?>
     <div>
         <buton onclick="<?php
@@ -27,31 +29,21 @@ function displayPersonOpinion($db,$id,$teacher) {
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <?php if ($o->opinions>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'Vélemények','person')" title="Vélemények száma: <?php echo $o->opinions ?>">
-            <span style="margin-left: 20px;">
+        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserId() ?>)" title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $ooption?>>
+            <span style="margin-right: -8px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
-            </a>
-        <?php } if ($o->friends>0) { ?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'<?php echo $tt ?>','person','friends')" title="<?php echo $ttt ?>">
-            <span style="margin-left: 20px;">
-             <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag"><?php echo $o->friends ?></span>
+        </a>
+        <a id="c-person-friend-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'<?php echo $tt ?>','person','friend',<?php echo getLoggedInUserId() ?>)" title="<?php echo $ttt ?>" <?php echo $ofriends?>>
+            <span style="margin-right: -8px;">
+                <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag"><?php echo $o->friends ?></span>
             </span>
-            </a>
-        <?php } if ($o->funny>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'<?php echo $t ?>','person','friendly')" title="Kedves vicces személy <?php echo $o->funny ?> vélemény alapján">
-            <span style="margin-left: 20px;">
-                <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->funny ?></span>
-            </span>
-            </a>
-        <?php } if ($o->sport>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'Aktív beálítottságú','person','sport')" title="Sportoló <?php echo $o->sport ?> személy véleménye alapján">
-            <span style="margin-left: 20px;">
+        </a>
+        <a id="c-person-sport-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Aktív beálítottságú','person','sport',<?php echo getLoggedInUserId() ?>)" title="Sportoló <?php echo $o->sport ?> személy véleménye alapján" <?php echo $osport?>>
+            <span style="margin-right: -8px;">
                 <img src="images/runner.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->sport ?></span>
             </span>
-            </a>
-        <?php } ?>
+        </a>
     </div>
     <div id="o-person-<?php echo $id ?>"></div>
     <?php
@@ -63,7 +55,11 @@ function displayPersonOpinion($db,$id,$teacher) {
  * @param int $id picture id
  */
 function displayPictureOpinion($db,$id){
-    $o = $db->getPictureOpinionCount($id);
+    $o = $db->getOpinionCount($id,'picture');
+    $onice = $o->nice>0?'':'style="display:none"';
+    $oopinion = $o->opinions>0?'':'style="display:none"';
+    $ofavorite = $o->favorite>0?'':'style="display:none"';
+    $ocontent = $o->content>0?'':'style="display:none"';
     ?>
     <div>
         <buton onclick="<?php
@@ -71,31 +67,26 @@ function displayPictureOpinion($db,$id){
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <?php if ($o->opinions>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'Vélemények','picture')" title="Vélemények száma: <?php echo $o->opinions ?>">
-            <span style="margin-left: 20px;">
+        <a id="c-picture-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','picture','text',<?php echo getLoggedInUserId() ?>)" title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $oopinion?>>
+            <span style="margin-right: -8px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
-            </a>
-        <?php } if ($o->favorite>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'Kedvenc képe','picture','favorite')" title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik.">
-            <span style="margin-left: 20px;">
+        </a>
+        <a id="c-picture-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc képe','picture','favorite',<?php echo getLoggedInUserId() ?>)" title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik." <?php echo $ofavorite?>>
+            <span style="margin-right: -8px;">
                 <img src="images/favorite.png" style="width: 32px"/><span class="countTag"><?php echo $o->favorite ?></span>
             </span>
-            </a>
-        <?php } if ($o->content>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'Képnek jó tartalma','picture','content')" title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma.">
-            <span style="margin-left: 20px;">
+        </a>
+        <a id="c-picture-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Képnek jó tartalma','picture','content',<?php echo getLoggedInUserId() ?>)" title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma." <?php echo $ocontent?>>
+            <span style="margin-right: -8px;">
                 <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->content ?></span>
             </span>
-            </a>
-        <?php } if ($o->nice>0) {?>
-            <a href="javascript:showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice')" title="Ennek a képnek szép a tartalma <?php echo $o->opinions ?> vélemény szerint.">
-            <span style="margin-left: 20px;">
-                <img src="images/star.png" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
+        </a>
+        <a id="c-picture-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice',<?php echo getLoggedInUserId() ?>)" title="Ennek a képnek szép a tartalma <?php echo $o->opinions ?> vélemény szerint." <?php echo $onice?>>
+            <span style="margin-right: -8px;">
+                <img src="images/star.png" style="width: 32px"/><span class="countTag"><?php echo $o->nice ?></span>
             </span>
-            </a>
-        <?php } ?>
+        </a>
     </div>
     <div id="o-picture-<?php echo $id ?>"></div>
     <?php
@@ -109,15 +100,14 @@ function displayPictureOpinion($db,$id){
 }
 
 .countTag{
-    border-radius: 4px;background-color: sandybrown;
-    font-size: 10px;color: black;
+    border-radius: 7px;background-color: sandybrown;
+    font-size: 10px;color: black; padding: 2px;
     position: relative;left: -13px;top: 9px;
 }
-.btnb, .btns { width:105px; height:26px;  margin-top:2px; text-align: left;}
 
-.btns { position:relative;top:15px;}
-
-.uname {     background-color: lightgray; padding: 4px; margin: 3px; border-radius: 4px; }
+.aopinion {cursor:pointer}
+.taopinion {display: inline-block; height:150px; width:100%; overflow:auto; background-color:white;border-radius: 5px;} 
+.uname {background-color: lightgray; padding: 4px; margin: 3px; border-radius: 4px; }
 ");
 
 \maierlabs\lpfw\Appl::addJsScript("
@@ -131,49 +121,63 @@ function displayPictureOpinion($db,$id){
     function showOpinion(id,uid,html) {
         html = html.replace(new RegExp('{id}', 'g'),id);
         html = html.replace(new RegExp('{uid}', 'g'),uid);
-        $('#o-person-'+id).hide();
+        html = html.replace(new RegExp('{type}', 'g'),'person');
         $('#o-person-'+id).html(html);
-        $('#o-person-'+id).show('slow');
+        $('#o-person-'+id).show('fast');
     }
 
     function showPictureOpinion(id,uid) {
         var html=$('#opinionpicture').html();
         html = html.replace(new RegExp('{id}', 'g'),id);
         html = html.replace(new RegExp('{uid}', 'g'),uid);
-        $('#o-picture-'+id).hide();
+        html = html.replace(new RegExp('{type}', 'g'),'picture');
         $('#o-picture-'+id).html(html);
-        $('#o-picture-'+id).show('slow');
+        $('#o-picture-'+id).show('fast');
     }
 
-    function savePersonOpinion(id,uid) {
-        $('#o-person-'+id).hide('slow');
-        $('#o-person-'+id).html('');
+    function saveOpinion(id,type,stype,uid) {
+        closeOpinionList(id,type);
+        var text='';
+        if (stype=='text')
+            text=$('#t-'+type+'-'+id).val();
+        $.ajax({
+            url:'ajax/setOpinion.php?id='+id+'&type='+type+'&count='+stype+'&text='+text,
+            type:'GET',
+            success:function(data){
+                if (data.result=='ok') {
+                    showOpinionLogo(id,type,stype,data.count);
+                } else if (data.result=='empty') {
+                    showModalMessage('Vélemény','Sajnos a vélemény mező szövege üres. Kérjük ismételd meg véleményed. Köszönjük szépen.');
+                } else if (data.result=='exists') {
+                    showModalMessage('Vélemény','Ezt a tipusú véleményt már megadtad.');
+                } else if (data.result=='count') {
+                    showModalMessage('Anonim felhasználó véleménye','Sajnos véleményt mint anonim felhasználó csak bizonyos mértékben adhatsz. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.');
+                } else if (data.result=='login') {
+                    showModalMessage('Anonim felhasználó véleménye','Sajnos ezt a véleményt csak bejelentkezett felhasználók adhatják meg. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.');
+                }
+            },
+            error:function(error) {
+                $('#o-'+type+'-'+id).html('error');
+                $('#o-'+type+'-'+id).show('fast');
+            }
+        });
     }
 
-    function savePictureOpinion(id,uid) {
-        $('#o-picture-'+id).hide('slow');
-        $('#o-picture-'+id).html('');
+    function showOpinionLogo(id,type,stype,count) {
+        $('#c-'+type+'-'+stype+'-'+id).show();
+        $($($('#c-'+type+'-'+stype+'-'+id).children()[0]).children()[1]).html(count);
     }
 
+    
     function closeOpinionList(id,type) {
-        $('#o-'+type+'-'+id).hide('slow');
-        $('#o-'+type+'-'+id).html('');
+        $('#o-'+type+'-'+id).hide('fast');
     }
     
-    function addFriendship(id,uid) {
-        alert('Friendship '+id);
-    }
 
-    function addFriendly(id,uid) {
-        alert('Friendly '+id);
-    }
-
-    function addSports(id,uid) {
-        alert('Sports '+id);
-    }
-    
-    function showOpinions(id,title,type,count) {
+    function showOpinions(id,title,type,count,uid) {
         if (count==null) count='';
+        $('#o-'+type+'-'+id).html('pillanat <img src=\"images/loading.gif\" />');
+        $('#o-'+type+'-'+id).show();
         $.ajax({
             url:'ajax/getOpinions.php?id='+id+'&type='+type+'&count='+count,
             type:'GET',
@@ -182,7 +186,11 @@ function displayPictureOpinion($db,$id){
                 var text = '';
                 data.forEach(function(e) {
                     text +='<div><div class=\"uname\">'+e.name;
-                    text +='<span style=\"float:right\">'+e.date+'</span></div>';
+                    text +='<span style=\"float:right\">'+e.date;
+                    if (e.myopinion) {
+                        text +='<span class=\"glyphicon glyphicon-remove\" onclick=\"deleteOpinion('+e.id+')\"></span>';
+                    }
+                    text +='</span></div>';
                     if (null!=e.text)
                      text +=e.text;
                     text +='</div>';
@@ -190,15 +198,28 @@ function displayPictureOpinion($db,$id){
                 html = html.replace(new RegExp('{id}', 'g'),id);
                 html = html.replace(new RegExp('{type}', 'g'),type);
                 html = html.replace(new RegExp('{text}', 'g'),text);
+                html = html.replace(new RegExp('{uid}', 'g'),uid);
                 html = html.replace(new RegExp('{title}', 'g'),title);
                 $('#o-'+type+'-'+id).hide();
                 $('#o-'+type+'-'+id).html(html);
-                $('#o-'+type+'-'+id).show('slow');
+                $('#o-'+type+'-'+id).show('fast');
             },
             error:function(error) {
-                $('#o-'+type+'-'+id).hide();
                 $('#o-'+type+'-'+id).html('error');
-                $('#o-'+type+'-'+id).show('slow');
+                $('#o-'+type+'-'+id).show('fast');
+            }
+        });
+    }
+    
+    function deleteOpinion(id) {
+                $.ajax({
+            url:'ajax/deleteOpinion.php?id='+id,
+            type:'GET',
+            success:function(data){
+                showOpinionLogo(data.id,data.type,data.stype,data.count);
+            },
+            error:function(error) {
+                alert('error');
             }
         });
     }
@@ -206,43 +227,57 @@ function displayPictureOpinion($db,$id){
 ?>
 <div id="opinionperson" style="display: none">
     <div class="optiondiv">
+        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="addFriendship({id},{uid})" title="Jó barátok vagyunk illetve voltunk." class="btnb btn btn-sm"><img src="images/friendship.jpg" style="width: 16px"/> Barátom</button><br/>
-            <button onclick="addFriendly({id},{uid})" title="Kellemes, jókedvű, vicces és szóraztató" class="btnb btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Vicces</button><br/>
-            <button onclick="addSports({id},{uid})" title="Sportoló, aktív beállítotságú" class="btnb btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button><br/>
-            <button onclick="savePersonOpinion({id},{uid})" title="Kimentem megjegyzésem" class="btns btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button><br/>
+            <button onclick="saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
-        <span style="display: inline-block; height:130px;width:75%">
-            <textarea style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
-        </span>
+        <div  class="taopinion">
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </div>
+        <div>
+            <hr/>
+            <button onclick="saveOpinion({id},'person','friend',{uid})" title="Jó barátok vagyunk illetve voltunk." class="btn btn-sm"><img src="images/friendship.jpg" style="width: 16px"/> Barátom</button>
+            <button onclick="saveOpinion({id},'person','sport',{uid})" title="Aktív beállítotságú (sportoló)" class="btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button>
+        </div>
     </div>
+
 </div>
 
 <div id="opinionteacher" style="display: none">
     <div class="optiondiv">
+        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem volt tanáromról</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="addFriendship({id},{uid})" title="Kedvenc tanáraim közé tartozik." class="btnb btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button><br/>
-            <button onclick="addFriendly({id},{uid})" title="Kellemes, jókedvű" class="btnb btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Kellemes</button><br/>
-            <button onclick="addSports({id},{uid})" title="Aktív beállítotságú" class="btnb btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button><br/>
-            <button onclick="savePersonOpinion({id},{uid})" title="Kimentem megjegyzésem" class="btns btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button><br/>
+            <button onclick="saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
-        <span style="display: inline-block; height:130px;width:75%">
-            <textarea style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
-        </span>
+        <div  class="taopinion">
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </div>
+        <div>
+            <hr/>
+            <button onclick="saveOpinion({id},'person','friend',{uid})" title="Kedvenc tanáraim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
+            <button onclick="saveOpinion({id},'person','sport',{uid})" title="Aktív beállítotságú (sportoló)" class="btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Aktív</button>
+        </div>
     </div>
 </div>
 
 <div id="opinionpicture" style="display: none">
     <div class="optiondiv">
+        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem erröl a kéröl</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="addFriendship({id},{uid})" title="Kedvenc képeim közé tartozik." class="btnb btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button><br/>
-            <button onclick="addFriendly({id},{uid})" title="Nagyon jó a kép tartalma" class="btnb btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó tartalom</button><br/>
-            <button onclick="addSports({id},{uid})" title="Nagyon szép a kép tartalma" class="btnb btn btn-sm"><img src="images/star.png" style="width: 16px"/> Szép kép</button><br/>
-            <button onclick="savePictureOpinion({id},{uid})" title="Kimentem megjegyzésem" class="btns btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button><br/>
+            <button onclick="saveOpinion({id},'picture','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
-        <span style="display: inline-block; height:130px;width:75%">
-            <textarea style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
-        </span>
+        <div class="taopinion">
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </div>
+        <div>
+            <hr/>
+            <button onclick="saveOpinion({id},'picture','favorite',{uid})" title="Kedvenc képeim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
+            <button onclick="saveOpinion({id},'picture','content',{uid})" title="Nagyon jó a kép tartalma" class="btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó tartalom</button>
+            <button onclick="saveOpinion({id},'picture','nice',{uid})" title="Nagyon szép a kép tartalma" class="btn btn-sm"><img src="images/star.png" style="width: 16px"/> Szép kép</button>
+        </div>
     </div>
 </div>
 
