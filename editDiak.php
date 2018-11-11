@@ -59,7 +59,7 @@ if ($personid!=null && $personid>=0) {
 }
 
 //GDPS person requested all data to be deleted exept name
-if (getFieldChecked($diak,"place")!="") {
+if (!userIsAdmin() && getFieldChecked($diak,"place")!="") {
     include_once "homemenu.inc.php";
     ?>
         <div class="well">

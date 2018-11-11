@@ -54,7 +54,7 @@ include('homemenu.inc.php');?>
             }
         }
         ?>
-        <div>Pontok:  bejelentkezés=1000, zenelista=7, képek=5, új személy=3, gyertya gyújtás=2, személy módosítás=1 </div>
+        <div>Pontok:  bejelentkezés=1000, zenelista=7, képek=5, új személy=3, gyertya gyújtás=2, személy módosítás=1, vélemény=1 </div>
         <div style="font-size:x-small">Pontokat csak bejelentkezett véndiákok kaphatnak, a bejelentkezésí pontszám minden nap egy ponttal csökken.</div>
     </div>
 </div>

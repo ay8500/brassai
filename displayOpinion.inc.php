@@ -119,9 +119,11 @@ function displayPictureOpinion($db,$id){
 \maierlabs\lpfw\Appl::addJsScript("
     function showPersonOpinion(id,uid) {
         showOpinion(id,uid,$('#opinionperson').html());
+        return false;
     }
     function showTeacherOpinion(id,uid) {
         showOpinion(id,uid,$('#opinionteacher').html());
+        return false;
     }
     
     function showOpinion(id,uid,html) {
@@ -139,6 +141,7 @@ function displayPictureOpinion($db,$id){
         html = html.replace(new RegExp('{type}', 'g'),'picture');
         $('#o-picture-'+id).html(html);
         $('#o-picture-'+id).show('fast');
+        return false;
     }
 
     function saveOpinion(id,type,stype,uid) {
@@ -167,16 +170,19 @@ function displayPictureOpinion($db,$id){
                 $('#o-'+type+'-'+id).show('fast');
             }
         });
+        return false;
     }
 
     function showOpinionLogo(id,type,stype,count) {
         $('#c-'+type+'-'+stype+'-'+id).show();
         $($($('#c-'+type+'-'+stype+'-'+id).children()[0]).children()[1]).html(count);
+        return false;
     }
 
     
     function closeOpinionList(id,type) {
         $('#o-'+type+'-'+id).hide('fast');
+        return false;
     }
     
     var opinionTitle = '';
@@ -220,10 +226,11 @@ function displayPictureOpinion($db,$id){
                 $('#o-'+type+'-'+id).show('fast');
             }
         });
+        return false;
     }
     
     function deleteOpinion(id) {
-                $.ajax({
+        $.ajax({
             url:'ajax/deleteOpinion.php?id='+id,
             type:'GET',
             success:function(data){
@@ -236,6 +243,7 @@ function displayPictureOpinion($db,$id){
                 alert('error');
             }
         });
+        return false;
     }
 ");
 ?>
@@ -243,16 +251,16 @@ function displayPictureOpinion($db,$id){
     <div class="optiondiv">
         <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
-            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
+            <button onclick="return saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div  class="taopinion">
             <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
         </div>
         <div>
             <hr/>
-            <button onclick="saveOpinion({id},'person','friend',{uid})" title="Jó barátok vagyunk illetve voltunk." class="btn btn-sm"><img src="images/friendship.jpg" style="width: 16px"/> Barátom</button>
-            <button onclick="saveOpinion({id},'person','sport',{uid})" title="Aktív beállítotságú (sportoló)" class="btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button>
+            <button onclick="return saveOpinion({id},'person','friend',{uid})" title="Jó barátok vagyunk illetve voltunk." class="btn btn-sm"><img src="images/friendship.jpg" style="width: 16px"/> Barátom</button>
+            <button onclick="return saveOpinion({id},'person','sport',{uid})" title="Aktív beállítotságú (sportoló)" class="btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Sportoló</button>
         </div>
     </div>
 
@@ -262,16 +270,16 @@ function displayPictureOpinion($db,$id){
     <div class="optiondiv">
         <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem volt tanáromról</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
-            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
+            <button onclick="return saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div  class="taopinion">
             <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
         </div>
         <div>
             <hr/>
-            <button onclick="saveOpinion({id},'person','friend',{uid})" title="Kedvenc tanáraim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
-            <button onclick="saveOpinion({id},'person','sport',{uid})" title="Aktív beállítotságú (sportoló)" class="btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Aktív</button>
+            <button onclick="return saveOpinion({id},'person','friend',{uid})" title="Kedvenc tanáraim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
+            <button onclick="return saveOpinion({id},'person','sport',{uid})" title="Aktív beállítotságú (sportoló)" class="btn btn-sm"><img src="images/runner.jpg" style="width: 16px"/> Aktív</button>
         </div>
     </div>
 </div>
@@ -280,17 +288,17 @@ function displayPictureOpinion($db,$id){
     <div class="optiondiv">
         <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem erröl a kéröl</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="saveOpinion({id},'picture','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
-            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
+            <button onclick="return saveOpinion({id},'picture','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div class="taopinion">
             <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
         </div>
         <div>
             <hr/>
-            <button onclick="saveOpinion({id},'picture','favorite',{uid})" title="Kedvenc képeim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
-            <button onclick="saveOpinion({id},'picture','content',{uid})" title="Nagyon jó a kép tartalma" class="btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó tartalom</button>
-            <button onclick="saveOpinion({id},'picture','nice',{uid})" title="Nagyon szép a kép tartalma" class="btn btn-sm"><img src="images/star.png" style="width: 16px"/> Szép kép</button>
+            <button onclick="return saveOpinion({id},'picture','favorite',{uid})" title="Kedvenc képeim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
+            <button onclick="return saveOpinion({id},'picture','content',{uid})" title="Nagyon jó a kép tartalma" class="btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó tartalom</button>
+            <button onclick="return saveOpinion({id},'picture','nice',{uid})" title="Nagyon szép a kép tartalma" class="btn btn-sm"><img src="images/star.png" style="width: 16px"/> Szép kép</button>
         </div>
     </div>
 </div>
@@ -299,7 +307,7 @@ function displayPictureOpinion($db,$id){
     <div class="optiondiv">
         <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">{title}</span>
         <span style="display: inline-block; float: right;">
-            <button onclick="closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
+            <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div style="display: inline-block; height:150px; width:100%; overflow:auto; background-color:white;border-radius: 5px;">
             {text}

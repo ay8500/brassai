@@ -1,4 +1,5 @@
 <?php
+include_once 'displayOpinion.inc.php';
 use \maierlabs\lpfw\Appl as Appl;
 
 Appl::addCssStyle('
@@ -373,7 +374,7 @@ if (getParam("album")!=null) {
 							<button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
 						</div> 
 					</div>
-					<div id="show_<?php echo $pict["id"] ?>" style="margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
+					<div id="show_<?php echo $pict["id"] ?>" style="width:100%;margin:10px;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
 						<?php //change Order buttons?>
 						<?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
 							<?php  if ($idx!=0) {?>
@@ -386,14 +387,17 @@ if (getParam("album")!=null) {
 								<span style="margin: 0px 5px 0 40px;" >&nbsp;</span>
 							<?php } ?>
 						<?php endif;?>
-						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 0px;max-width: 320px;">
+						<div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 5px;max-width: 320px;">
 							<b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
 							<span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
 						</div>
-						<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button style="display: inline-block;margin: 0px 10px 10px 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <?php displayPictureOpinion($db,$pict["id"]); ?>
 						<?php  if (userIsAdmin()){?>
-							<button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
-							<a class="btn btn-default" target="_download" href="<?php echo $pict['file']?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
+                            <div style="margin-top: 5px;">
+							    <button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
+							    <a class="btn btn-default" target="_download" href="<?php echo $pict['file']?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
+                            </div>
 						<?php } ?>
 					</div>
 					<?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>

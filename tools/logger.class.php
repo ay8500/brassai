@@ -8,7 +8,7 @@ include_once  "loggerLevel.class.php";
 
 class Logger
 {
-    private static $loggerLevel=LoggerLevel::info;
+    private static $loggerLevel=LoggerLevel::error;
     private static $loggerType=LoggerType::file;
 
     //LoggerLevel aus der Session

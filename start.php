@@ -31,7 +31,7 @@ function showRecentChanges($db,$date=null) {
     } else {
         $date=new \DateTime($date);
     }
-    $ids=$db->getRecentChangeList($date, getIntParam("limit",30));
+    $ids=$db->getRecentChangeList($date, getIntParam("limit",48));
     foreach ($ids as $id) {
         if ($id["type"]=="person") {
             $person = $db->getPersonByID($id["id"]);
