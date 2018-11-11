@@ -1814,6 +1814,34 @@ class dbDAO {
     }
 
     /**
+     * deltete an opinion by id
+     * @param $id
+     * @return stdClass information about the deleted opinion
+     */
+    public function deleteOpinion($id) {
+	    $ret = new stdClass();
+	    $opinion=$this->dataBase->querySignleRow("select * from opinion where id=".$id);
+	    if  (   sizeof($opinion)>0 &&
+                (
+                    userIsAdmin() ||
+                    (userIsLoggedOn() && $opinion["changeUserID"]==getLoggedInUserId()) ||
+                    (!userIsLoggedOn() && $opinion["changeIP"])==$_SERVER["REMOTE_ADDR"]
+                )
+            )
+	    {
+	        $ret->table=$opinion["table"];
+	        $ret->type=$opinion["opinion"];
+	        $ret->id=$opinion["entryID"];
+	        $this->dataBase->delete("opinion","id",$id);
+	        $ret->count = $this->dataBase->queryInt("select count(1) from opinion where `table`='".$ret->table."' and opinion ='".$ret->type."' and entryID=".$ret->id);
+        }
+        else {
+            $ret->count = -1;
+        }
+        return $ret;
+    }
+
+    /**
      * get only one opinion from logge in user or teh ip address
      * @param $id
      * @param $table
@@ -1834,7 +1862,7 @@ class dbDAO {
      * @param int $id person id
      */
 	public function getOpinions($id,$table,$type,$start=1) {
-        $this->dataBase->query("select * from opinion where `table`='".$table."' and opinion='".$type."' and entryID=".$id);
+        $this->dataBase->query("select * from opinion where `table`='".$table."' and opinion='".$type."' and entryID=".$id." order by changeDate desc");
         $data = $this->dataBase->getRowList();
         $ret = array();
         for ($i=0;$i<sizeof($data);$i++) {
@@ -1842,9 +1870,9 @@ class dbDAO {
                 $opinion->id=$data[$i]["id"];
                 $opinion->text=$data[$i]["text"];
                 $opinion->person=$data[$i]["changeUserID"];
-                $opinion->date = $data[$i]["changeDate"];
+                $opinion->date = date_create($data[$i]["changeDate"])->format("Y.m.d H:n");
                 $opinion->ip = $data[$i]["changeIP"];
-                $opinion->myopinion = (getLoggedInUserId()==$data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"]==$_SERVER["REMOTE_ADDR"]);
+                $opinion->myopinion = (userIsAdmin() || getLoggedInUserId()==$data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"]==$_SERVER["REMOTE_ADDR"]);
                 $ret[$i]=$opinion;
         }
         return $ret;

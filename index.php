@@ -44,9 +44,9 @@ include("homemenu.inc.php");
 	<div  style="padding:15px;" class="col-sm-8" >
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="editDiak.php?uid=<?php echo $randPersonID["id"]?>">
+			<a class="inlineBox" href="start.php">
                 <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" /></div>
-			    <div class="inlineBox" style="vertical-align: middle;">Véndiákok névsorának bővítése és ápolása.</div>
+			    <div class="inlineBox" style="vertical-align: middle;">Újdonságok a véndiákok oldalán.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">

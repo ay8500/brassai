@@ -3,18 +3,16 @@
  * Display the opinion block for a person
  * @param dbBL $db the database business layer
  * @param int $id person id
- * @param bool $teacher
+ * @param bool $teacher is the person a teacher
  */
 function displayPersonOpinion($db,$id,$teacher) {
     $o=$db->getOpinionCount($id,'person');
     if ($teacher) {
         $ttt="Kedvenc tanárja ".$o->friends." véndiáknak";
         $tt = "Véndiákok kedvenc tanárja";
-        $t = "Kellemes tanár";
     } else {
         $ttt="Barátságainak száma: ".$o->friends ;
         $tt="Barátai";
-        $t ="Kellemes vicces véndiák";
     }
     $ooption = $o->opinions>0?'':'style="display:none"';
     $ofriends = $o->friends>0?'':'style="display:none"';
@@ -29,17 +27,20 @@ function displayPersonOpinion($db,$id,$teacher) {
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserId() ?>)" title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $ooption?>>
+        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserId() ?>)"
+           title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $ooption?>>
             <span style="margin-right: -8px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
         </a>
-        <a id="c-person-friend-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'<?php echo $tt ?>','person','friend',<?php echo getLoggedInUserId() ?>)" title="<?php echo $ttt ?>" <?php echo $ofriends?>>
+        <a id="c-person-friend-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'<?php echo $tt ?>','person','friend',<?php echo getLoggedInUserId() ?>)"
+           title="<?php echo $ttt ?>" <?php echo $ofriends?>>
             <span style="margin-right: -8px;">
                 <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag"><?php echo $o->friends ?></span>
             </span>
         </a>
-        <a id="c-person-sport-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Aktív beálítottságú','person','sport',<?php echo getLoggedInUserId() ?>)" title="Sportoló <?php echo $o->sport ?> személy véleménye alapján" <?php echo $osport?>>
+        <a id="c-person-sport-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Aktív beálítottságú','person','sport',<?php echo getLoggedInUserId() ?>)"
+           title="Sportoló <?php echo $o->sport ?> személy véleménye alapján" <?php echo $osport?>>
             <span style="margin-right: -8px;">
                 <img src="images/runner.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->sport ?></span>
             </span>
@@ -67,22 +68,26 @@ function displayPictureOpinion($db,$id){
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <a id="c-picture-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','picture','text',<?php echo getLoggedInUserId() ?>)" title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $oopinion?>>
+        <a id="c-picture-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','picture','text',<?php echo getLoggedInUserId() ?>)"
+           title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $oopinion?>>
             <span style="margin-right: -8px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
         </a>
-        <a id="c-picture-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc képe','picture','favorite',<?php echo getLoggedInUserId() ?>)" title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik." <?php echo $ofavorite?>>
+        <a id="c-picture-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc képe','picture','favorite',<?php echo getLoggedInUserId() ?>)"
+           title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik." <?php echo $ofavorite?>>
             <span style="margin-right: -8px;">
                 <img src="images/favorite.png" style="width: 32px"/><span class="countTag"><?php echo $o->favorite ?></span>
             </span>
         </a>
-        <a id="c-picture-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Képnek jó tartalma','picture','content',<?php echo getLoggedInUserId() ?>)" title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma." <?php echo $ocontent?>>
+        <a id="c-picture-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Képnek jó tartalma','picture','content',<?php echo getLoggedInUserId() ?>)"
+           title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma." <?php echo $ocontent?>>
             <span style="margin-right: -8px;">
                 <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->content ?></span>
             </span>
         </a>
-        <a id="c-picture-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice',<?php echo getLoggedInUserId() ?>)" title="Ennek a képnek szép a tartalma <?php echo $o->opinions ?> vélemény szerint." <?php echo $onice?>>
+        <a id="c-picture-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice',<?php echo getLoggedInUserId() ?>)"
+           title="Ennek a képnek szép a tartalma <?php echo $o->opinions ?> vélemény szerint." <?php echo $onice?>>
             <span style="margin-right: -8px;">
                 <img src="images/star.png" style="width: 32px"/><span class="countTag"><?php echo $o->nice ?></span>
             </span>
@@ -108,6 +113,7 @@ function displayPictureOpinion($db,$id){
 .aopinion {cursor:pointer}
 .taopinion {display: inline-block; height:150px; width:100%; overflow:auto; background-color:white;border-radius: 5px;} 
 .uname {background-color: lightgray; padding: 4px; margin: 3px; border-radius: 4px; }
+.oglyph{background-color: sandybrown; padding: 0px; cursor: pointer; border-radius: 8px;}
 ");
 
 \maierlabs\lpfw\Appl::addJsScript("
@@ -173,6 +179,7 @@ function displayPictureOpinion($db,$id){
         $('#o-'+type+'-'+id).hide('fast');
     }
     
+    var opinionTitle = '';
 
     function showOpinions(id,title,type,count,uid) {
         if (count==null) count='';
@@ -188,7 +195,7 @@ function displayPictureOpinion($db,$id){
                     text +='<div><div class=\"uname\">'+e.name;
                     text +='<span style=\"float:right\">'+e.date;
                     if (e.myopinion) {
-                        text +='<span class=\"glyphicon glyphicon-remove\" onclick=\"deleteOpinion('+e.id+')\"></span>';
+                        text +=' <span title=\"kitöröl\" class=\"oglyph glyphicon glyphicon-remove\" onclick=\"deleteOpinion('+e.id+')\"></span>';
                     }
                     text +='</span></div>';
                     if (null!=e.text)
@@ -198,7 +205,11 @@ function displayPictureOpinion($db,$id){
                 html = html.replace(new RegExp('{id}', 'g'),id);
                 html = html.replace(new RegExp('{type}', 'g'),type);
                 html = html.replace(new RegExp('{text}', 'g'),text);
-                html = html.replace(new RegExp('{uid}', 'g'),uid);
+                if (title!='') {
+                    opinionTitle=title;
+                } else {
+                    title=opinionTitle;
+                }
                 html = html.replace(new RegExp('{title}', 'g'),title);
                 $('#o-'+type+'-'+id).hide();
                 $('#o-'+type+'-'+id).html(html);
@@ -216,7 +227,10 @@ function displayPictureOpinion($db,$id){
             url:'ajax/deleteOpinion.php?id='+id,
             type:'GET',
             success:function(data){
-                showOpinionLogo(data.id,data.type,data.stype,data.count);
+                if (data.count>=0) {
+                    showOpinions(data.id,'',data.table,data.type);
+                    showOpinionLogo(data.id,data.table,data.type,data.count);
+                }
             },
             error:function(error) {
                 alert('error');

@@ -14,7 +14,7 @@ if ( !isset($_SESSION['lastReq']) ) {
     echo('<br/>');
     $minutes=$interval->format("%i");
     echo('Minutes:'.$minutes);
-    if ($minutes>30) {
+    if ($minutes>90) {
         session_destroy();
         http_response_code(401);
         echo("Session to old!");
