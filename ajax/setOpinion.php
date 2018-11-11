@@ -2,6 +2,8 @@
 include_once __DIR__ . '/../tools/sessionManager.php';
 include_once __DIR__ . '/../tools/ltools.php';
 include_once __DIR__ . '/../dbBL.class.php';
+include_once __DIR__ . '/../dbChangeType.class.php';
+include_once __DIR__ . '/../sendMail.php';
 
 header('Content-Type: application/json');
 
@@ -29,7 +31,7 @@ if ($type=='text' && trim($text)=='') {
     die();
 }
 
-if (false) {
+if (!$db->checkRequesterIP(changeType::opinion)) {
     $ret->result='count';
     echo(json_encode($ret));
     die();
@@ -44,5 +46,9 @@ if (sizeof($oldOpinion)>0 && $type!='text') {
 
 $ret->result='ok';
 $ret->count=$db->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
+$db->saveRequest(changeType::opinion);
+if ($type=='text') {
+    sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> text:'.$text,'Vélemény: '.Config::$SiteTitle);
+}
 
 echo(json_encode($ret));

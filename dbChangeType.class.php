@@ -13,4 +13,5 @@ class changeType
     const deletepicture = 3;    //changes für class pictures
     const newuser       = 35;   //create a new user
     const newPassword   = 1;
+    const opinion       = 9;
 }

@@ -110,7 +110,7 @@ if (isActionParam("changePictureAlbum") && (userIsAdmin() || userIsSuperuser() |
 
 //change albumname
 if (isActionParam("renameAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
-	if ($db->changeAlbumName($table, $typeId, getParam("oldAlbum", ""), getParam("album", ""))) {
+	if ($db->changeAlbumName($type, $typeId, getParam("oldAlbum", ""), getParam("album", ""))) {
         Appl::setMessage("Album sikeresen étnevezve","success");
 	} else {
         Appl::setMessage("Album átnevezése sikertelen","warning");
@@ -156,7 +156,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 						if ($overwrite==false) {
 							$upicture = array();
 							$upicture["id"]=-1;
-							$upicture[$table]=$typeId;
+							$upicture[$type]=$typeId;
 							$upicture["file"]="images/".$db->getAktClassFolder().$pFileName;
 							$upicture["isVisibleForAll"]=1;
 							$upicture["isDeleted"]=0;
@@ -209,7 +209,7 @@ if(isset($picture)) {
 	$notDeletedPictures=1;
 } else {
 	if ($albumParam!="_tablo_")
-		$pictures = $db->getListOfPictures($typeId, $table, 2, 2, $albumParam);
+		$pictures = $db->getListOfPictures($typeId, $type, 2, 2, $albumParam);
 	else
 		$pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
 	foreach ($pictures as $pict) {
@@ -221,10 +221,10 @@ if(isset($picture)) {
 
 //Albumlist
 $startAlbumList=array(array("albumName"=>"","albumText"=>"Főalbum"));
-if ($table=="schoolID") {
+if ($type=="schoolID") {
 	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".$typeId."&album=_tablo_","albumText"=>"Tablók","albumName"=>"_tablo_")));
 }
-$albumList = $db->getListOfAlbum($table, $typeId, $startAlbumList);
+$albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
 
 //Check if a new album want to be created
 if (getParam("album")!=null) {
@@ -244,7 +244,7 @@ if (getParam("album")!=null) {
 		<?php foreach ($albumList as $alb) {?>
 			<?php 
 			if (isset($alb["albumName"])) {
-				$albumLink = basename($_SERVER['SCRIPT_FILENAME'], ".php").".php?type=".$table."&typeid=".$typeId."&album=".$alb["albumName"].(getParam("tabOpen")!=null?"&tabOpen=".getParam("tabOpen"):"");
+				$albumLink = basename($_SERVER['SCRIPT_FILENAME'], ".php").".php?type=".$type."&typeid=".$typeId."&album=".$alb["albumName"].(getParam("tabOpen")!=null?"&tabOpen=".getParam("tabOpen"):"");
 			} else { 
 				$albumLink =$alb["albumLink"]; 
 			}?> 
@@ -293,7 +293,7 @@ if (getParam("album")!=null) {
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
-				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$table.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
+				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
 			<?php  }?>
 			<button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
 		</div>
@@ -308,7 +308,7 @@ if (getParam("album")!=null) {
 				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 			<?php endif;?>
 			<input type="hidden" value="<?PHP echo(getIntParam("tabOpen",0)) ?>" name="tabOpen" />
-			<input type="hidden" name="type" value="<?php echo ($table)?>" />
+			<input type="hidden" name="type" value="<?php echo ($type)?>" />
 			<?php if(null!=getParam("album")) {?>
 				<input type="hidden" name="album" value="<?php echo (getParam("album"))?>" />
 			<?php }?>
@@ -472,7 +472,7 @@ function toogleListBlock() {
 			$url="view=table";
 		} 
 		$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
-		$url .=isset($table)?"&type=".$table:"";
+		$url .=isset($type)?"&type=".$type:"";
 		$url .=isset($typeId)?"&typeid=".$typeId:"";
 		$url .=null!=getParam("album")?"&album=".getParam("album"):"";
 		$url .=isset($id)?"&id=".$id:"";
@@ -482,7 +482,7 @@ function toogleListBlock() {
 	
 function deletePicture(id) {
 	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen=<?php echo(getIntParam("tabOpen",0))?>&type=<?php echo $table?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
+		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen=<?php echo(getIntParam("tabOpen",0))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
 	}
 }
 
@@ -490,7 +490,7 @@ function changeOrder(id1,id2) {
 <?php 
 	$url =$view=="table"?"view=table":"view=list";
 	$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
-	$url .=isset($table)?"&type=".$table:"";
+	$url .=isset($type)?"&type=".$type:"";
 	$url .=isset($typeId)?"&typeid=".$typeId:"";
 	$url .=isset($id)?"&id=".$id:"";
 	$url .=null!=getParam("album")?"&album=".getParam("album"):"";
@@ -526,7 +526,7 @@ function displayedit(id) {
 <?php if (userIsAdmin()) :?>
     function unlinkPicture(id) {
         if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-            window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+'&tabOpen=<?php echo(getIntParam("tabOpen",0))?>&type=<?php echo $table?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>';
+            window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+'&tabOpen=<?php echo(getIntParam("tabOpen",0))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>';
         }
     }
 <?php endif;?>

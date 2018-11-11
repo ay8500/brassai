@@ -15,9 +15,10 @@ class dbBL extends dbDAO
      * Check the requester IP
      * User can't login more then a defined time per day. This is a safety function
 	 * to prevent automatic loging of password crack or to mutch anonymous changes and uploads
+	 * @param changeType $action
      */
     function checkRequesterIP($action) {
-        return $this->getCountOfRequest($action,24) < $action;
+        return userIsLoggedOn() || $this->getCountOfRequest($action,24) < $action;
     }
 
     /**
