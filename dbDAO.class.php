@@ -247,7 +247,9 @@ class dbDAO {
 	 * @return integer if negativ an error occurs
 	 */
 	public function savePerson($person) {
-		return $this->saveEntry("person", $person);
+	    $ret =$this->saveEntry("person", $person);
+	    $this->updateRecentChangesList();
+		return $ret;
 	}
 	
 	public function savePersonFacebookId($id,$facebookId) {
@@ -609,6 +611,7 @@ class dbDAO {
 		$data=$this->dataBase->insertFieldInArray($data, "lightedDate", date("Y-m-d H:i:s"));
 		$data=$this->dataBase->insertFieldInArray($data, "personID", $id);
 		$this->dataBase->insert("candle", $data);
+        $this->updateRecentChangesList();
 	}
 	
 	/**
@@ -815,6 +818,7 @@ class dbDAO {
 		if ($newEntry && $id>=0) {
 			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id]],"id",$id);
 		}
+        $this->updateRecentChangesList();
 		return $id;
 	}
 	
@@ -1064,15 +1068,43 @@ class dbDAO {
 
 
     /**
-     * Union select the ids from the latest changes
+     * Union select the ids from the latest changes use accelerator for a better performace
      * @param DateTime $dateFrom
      * @param int $limit
      * @return array
      */
 	public function getRecentChangeList($dateFrom,$limit=50) {
-	    $sql  = " (select id, changeDate, 'person' as type from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+	    if ($dateFrom!=null) {
+            return $this->getRecentChangesListByDate($dateFrom, $limit);
+	    }
+	    $ret = $this->dataBase->querySignleRow("select * from accelerator where type=1");
+	    if (sizeof($ret)>0) {
+	        $rows=json_decode($ret["json"], true);
+	        if ($limit==sizeof($rows))
+                return $rows;
+        }
+        return $this->updateRecentChangesList($dateFrom,$limit);
+    }
+
+    public function updateRecentChangesList() {
+        $ret = $this->dataBase->querySignleRow("select * from accelerator where type=1");
+        $dateFrom = date_create();
+        $rows=json_decode($ret["json"], true);
+        $limit = sizeof($rows);
+	    $rows = $this->getRecentChangesListByDate($dateFrom,$limit);
+        $data = array();
+        $data = $this->dataBase->insertFieldInArray($data,'type','1');
+        $data = $this->dataBase->insertFieldInArray($data,'json',json_encode($rows));
+        if (sizeof($ret)>0)
+            $this->dataBase->update('accelerator',$data,"type","1");
+        else
+            $this->dataBase->insert('accelerator',$data);
+    }
+
+    public function getRecentChangesListByDate($dateFrom, $limit) {
+        $sql  = " (select id, changeDate, 'person' as type from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
-	    $sql .= " union ";
+        $sql .= " union ";
         $sql .= " (select id, changeDate, 'picture' as type from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
@@ -1083,7 +1115,7 @@ class dbDAO {
         $this->dataBase->query($sql);
         $rows =$this->dataBase->getRowList();
         return $rows;
-    }
+	}
 
 //******************** Vote DAO *******************************************
 	
@@ -1814,6 +1846,7 @@ class dbDAO {
         if ($uid!=null)
             $data=$this->dataBase->insertFieldInArray($data,'changeUserID',$uid);
         if  ($this->dataBase->insert('opinion',$data)) {
+            $this->updateRecentChangesList();
             return $this->dataBase->queryInt("select count(1) from opinion where `table`='".$table."' and opinion ='".$type."' and entryID=".$id);
         } else {
             return -1;

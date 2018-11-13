@@ -26,9 +26,7 @@ if (isActionParam('showmore')) {
  * @return void
  */
 function showRecentChanges($db,$date=null) {
-    if ($date==null) {
-        $date=new \DateTime();
-    } else {
+    if ($date!=null) {
         $date=new \DateTime($date);
     }
     $ids=$db->getRecentChangeList($date, getIntParam("limit",48));

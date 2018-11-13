@@ -87,7 +87,7 @@ function displayPictureOpinion($db,$id){
             </span>
         </a>
         <a id="c-picture-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice',<?php echo getLoggedInUserId() ?>)"
-           title="Ennek a képnek szép a tartalma <?php echo $o->opinions ?> vélemény szerint." <?php echo $onice?>>
+           title="Ennek a képnek szép a tartalma <?php echo $o->nice ?> vélemény szerint." <?php echo $onice?>>
             <span style="margin-right: -8px;">
                 <img src="images/star.png" style="width: 32px"/><span class="countTag"><?php echo $o->nice ?></span>
             </span>
@@ -114,6 +114,7 @@ function displayPictureOpinion($db,$id){
 .taopinion {display: inline-block; height:150px; width:100%; overflow:auto; background-color:white;border-radius: 5px;} 
 .uname {background-color: lightgray; padding: 4px; margin: 3px; border-radius: 4px; }
 .oglyph{background-color: sandybrown; padding: 0px; cursor: pointer; border-radius: 8px;}
+.otitle{margin: 9px;display: inline-block; color:black; font-weight: bold;}
 ");
 
 \maierlabs\lpfw\Appl::addJsScript("
@@ -249,7 +250,7 @@ function displayPictureOpinion($db,$id){
 ?>
 <div id="opinionperson" style="display: none">
     <div class="optiondiv">
-        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem</span>
+        <span class="otitle">Véleményem</span>
         <span style="display: inline-block; float: right;">
             <button onclick="return saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
@@ -268,7 +269,7 @@ function displayPictureOpinion($db,$id){
 
 <div id="opinionteacher" style="display: none">
     <div class="optiondiv">
-        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem volt tanáromról</span>
+        <span class="otitle">Véleményem volt tanáromról</span>
         <span style="display: inline-block; float: right;">
             <button onclick="return saveOpinion({id},'person','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
@@ -286,7 +287,7 @@ function displayPictureOpinion($db,$id){
 
 <div id="opinionpicture" style="display: none">
     <div class="optiondiv">
-        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">Véleményem erröl a kéröl</span>
+        <span class="otitle">Véleményem erröl a kéröl</span>
         <span style="display: inline-block; float: right;">
             <button onclick="return saveOpinion({id},'picture','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
@@ -305,7 +306,7 @@ function displayPictureOpinion($db,$id){
 
 <div id="opinionlist" style="display: none">
     <div class="optiondiv">
-        <span style="color:white;margin: 9px;display: inline-block; font-weight: bold">{title}</span>
+        <span class="otitle">{title}</span>
         <span style="display: inline-block; float: right;">
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
