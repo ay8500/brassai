@@ -4,8 +4,10 @@
  * @param dbBL $db the database business layer
  * @param int $id person id
  * @param bool $teacher is the person a teacher
+ * @param bool $decesed
+ * @return void
  */
-function displayPersonOpinion($db,$id,$teacher) {
+function displayPersonOpinion($db,$id,$teacher,$decesed) {
     $o=$db->getOpinionCount($id,'person');
     if ($teacher) {
         $ttt="Kedvenc tanárja ".$o->friends." véndiáknak";
@@ -17,6 +19,7 @@ function displayPersonOpinion($db,$id,$teacher) {
     $ooption = $o->opinions>0?'':'style="display:none"';
     $ofriends = $o->friends>0?'':'style="display:none"';
     $osport = $o->sport>0?'':'style="display:none"';
+    $ocandles = $o->candles>1 & $decesed?'':'style="display:none"';
     ?>
     <div>
         <buton onclick="<?php
@@ -27,6 +30,12 @@ function displayPersonOpinion($db,$id,$teacher) {
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
+        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserId() ?>)"
+           title="Égö gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
+            <span style="margin-right: -8px;">
+                <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/><span class="countTag"><?php echo $o->candles-1?></span>
+            </span>
+        </a>
         <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserId() ?>)"
            title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $ooption?>>
             <span style="margin-right: -8px;">

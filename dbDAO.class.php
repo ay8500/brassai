@@ -1102,15 +1102,15 @@ class dbDAO {
     }
 
     public function getRecentChangesListByDate($dateFrom, $limit) {
-        $sql  = " (select id, changeDate, 'person' as type from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+        $sql  = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
-        $sql .= " (select id, changeDate, 'picture' as type from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+        $sql .= " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
-        $sql .= " (select entryID as id, changeDate, `table` as type from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from opinion GROUP by entryID) order by changeDate desc limit ".$limit.") ";
+        $sql .= " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
-        $sql .= " (select userID as id, lightedDate as changeDate, 'candle' as type from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
+        $sql .= " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
         $sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);
         $rows =$this->dataBase->getRowList();
@@ -1935,6 +1935,7 @@ class dbDAO {
             $ret->opinions = $this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=".$id);
             $ret->friends= $this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=".$id);
             $ret->sport =$this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=".$id);
+            $ret->candles = $this->getCandlesByPersonId($id);
         }
         return $ret;
     }

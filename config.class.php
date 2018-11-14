@@ -15,7 +15,7 @@ class Config {
     public static $siteUrl = "https://brassai.blue-l.de";
     public static $siteMail ="brassai@blue-l.de";
 
-    public static $webAppVersion = "20181103";  //Used to load the actual css und js files.
+    public static $webAppVersion = "20181114";  //Used to load the actual css und js files.
 
     private static $SupportedLang = array("hu"); //First language ist the default language.
 

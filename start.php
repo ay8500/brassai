@@ -23,24 +23,30 @@ if (isActionParam('showmore')) {
 /**
  * Show recent changes
  * @param dbDAO $db
- * @return void
+ * @param string $date
+ * @return string
  */
 function showRecentChanges($db,$date=null) {
     if ($date!=null) {
         $date=new \DateTime($date);
     }
     $ids=$db->getRecentChangeList($date, getIntParam("limit",48));
+    $keylist = array();
+    $entryID=0;
     foreach ($ids as $id) {
-        if ($id["type"]=="person") {
+        if ($id["type"] == "person") {
             $person = $db->getPersonByID($id["id"]);
-            displayPerson($db,$person,true,true);
-        } elseif ($id["type"]=="picture") {
+            $entryID=$person["id"];
+            if (!in_array($id["type"].$entryID,$keylist ))
+                displayPerson($db, $person, true, true,$id["action"],$id["changeUserID"],$id["changeDate"]);
+        } elseif ($id["type"] == "picture") {
             $picture = $db->getPictureById($id["id"]);
-            displayPicture($db,$picture);
-        } elseif ($id["type"]=="candle") {
-            $person = $db->getPersonByID($id["id"]);
-            displayPersonCandle($db,$person,$id["changeDate"]);
+            $entryID=$picture["id"];
+            if (!in_array($id["type"].$entryID,$keylist ))
+                displayPicture($db, $picture,false,$id["action"],$id["changeUserID"],$id["changeDate"]);
         }
+        if (!in_array($id["type"].$entryID,$keylist ))
+            array_push($keylist , $id["type"].$entryID);
     }
     $date=strtotime($ids[sizeof($ids)-1]["changeDate"])-1;
 
@@ -55,10 +61,14 @@ include("homemenu.inc.php");
 	<div class="panel panel-default " >
 
 		<div class="panel-heading">
-			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések </h4>
+			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések
+                <?php if (userIsAdmin()) { ?>
+                    <form><button name="nocache" value="true" class="btn btn-default">Új lista</button></form>
+                <?php } ?>
+            </h4>
 		</div>
 		<div class="panel-body" id="changes">
-		<?php $lastDate=showRecentChanges($db);?>
+		<?php $lastDate=showRecentChanges($db,getParam("nocache")==null?null:date("Y-m-d H:i:s"));?>
 		</div>
         <input type="hidden" id="date" value="<?php echo $lastDate?>"/>
         <button id="buttonmore" class="btn btn-default" style="margin:10px;" onclick="showmore()">Többet szeretnék látni</button>
@@ -71,6 +81,7 @@ include("homemenu.inc.php");
 		</div>
 		<div class="panel-body">
 			<ul>
+                <li>November 2018: Véleményeket lehet személyekhez és képekhez hozzáfűzni</li>
                 <li>Szeptember 2018: Fényképeket <a href="picture.php?type=schoolID&typeid=1&album=Iskolánk%20sportolói">albumokba</a> lehet csoportosítani</li>
                 <li>Junius 2018: GDPR:<a href="gdpr.php?id=658">Személyes adatok megvédésére alkalmas kérvényenési lehetőség.</a>
 				<li>Május 2018: <a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a>A weboldal https biztonságos kommunikációt használ a személyes adatok megvédésére.

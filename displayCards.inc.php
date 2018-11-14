@@ -8,7 +8,7 @@ include_once 'displayOpinion.inc.php';
  * @param bool $showClass
  * @param bool $showDate
  */
-function displayPerson($db,$person,$showClass=false,$showDate=false) {
+function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null,$changeUserID=null, $changeDate=null) {
 	if ($person==null)
 		return;
 	$d=$person;
@@ -116,16 +116,26 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
 						?>
 					</div>
 				<?php  if ($showDate) {
-					$changePerson=$db->getPersonByID($d["changeUserID"]);
+				    if ($changeUserID!=null)
+                        $changePerson=$db->getPersonByID($changeUserID);
+				    else
+					    $changePerson=$db->getPersonByID($d["changeUserID"]);
+				    if ($action=='candle') $action="Gyertyát gyújtott: ";
+				    if ($action=='change' || $action==null) $action="Módósította: ";
+                    if ($action=='opinion') $action="Vélemény: ";
+                    if ($changeDate==null)
+                        $changeDate = date("Y.m.d H:i:s",strtotime($d["changeDate"]));
+                    else
+                        $changeDate = date("Y.m.d H:i:s",strtotime($changeDate));
 				?>
                     <div class="diakCardIcons">
-                        Módosította:<a href="editDiak.php?uid=<?php echo $d["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
-                        Dátum:<?php echo date("Y.m.d H:i:s",strtotime($d["changeDate"]));?><br/>
+                        <?php echo $action ?><a href="editDiak.php?uid=<?php echo $changePerson["id"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
+                        Dátum:<?php echo $changeDate;?><br/>
                     </div>
 				<?php }?>
 	  		</div>
 		</div>
-    <?php displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1')); ?>
+    <?php displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"])); ?>
 	</div>
 <?php
 }
@@ -137,10 +147,20 @@ function displayPerson($db,$person,$showClass=false,$showDate=false) {
  * @param array $picture
  * @param bool $showSchool
  */
-function displayPicture($db,$picture,$showSchool=false) {
+function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserID=null, $changeDate=null) {
 	$p=$picture;
-	$person = $db->getPersonByID($picture["changeUserID"]);
-	if (isset($picture["schoolID"])){
+    if ($changeUserID!=null)
+        $person=$db->getPersonByID($changeUserID);
+    else
+        $person = $db->getPersonByID($picture["changeUserID"]);
+    if ($action=='change' || $action==null) $action="Módósította: ";
+    if ($action=='opinion') $action="Vélemény: ";
+    if ($changeDate==null)
+        $changeDate = date("Y.m.d H:i:s",strtotime($picture["changeDate"]));
+    else
+        $changeDate = date("Y.m.d H:i:s",strtotime($changeDate));
+
+    if (isset($picture["schoolID"])){
 		$type="school";
 		$typeid=$picture[$type."ID"];
 		$school=$db->getSchoolById($typeid);
@@ -183,8 +203,8 @@ function displayPicture($db,$picture,$showSchool=false) {
             </div>
         </div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            Módosította: <a href="editDiak.php?uid=<?php echo $picture["changeUserID"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
-			Dátum:<?php echo date("Y.m.d H:i:s",strtotime($picture["changeDate"]));?>
+            <?php echo $action?> <a href="editDiak.php?uid=<?php echo $person["id"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
+			Dátum:<?php echo $changeDate?>
 		</div>
         <?php  displayPictureOpinion($db,$picture["id"]); ?>
 	</div>
