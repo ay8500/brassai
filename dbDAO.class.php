@@ -294,7 +294,10 @@ class dbDAO {
 			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
 			$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
 		}
-		$ret->teacher=(object)$this->dataBase->querySignleRow("select firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
+		$t = $this->dataBase->querySignleRow("select firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
+		if ($t!=null) {
+		    $ret->teacher=(object)$t;
+		}
 		return $ret;
 	}
 
@@ -574,7 +577,7 @@ class dbDAO {
 	}
 
 	public function getCandleDetailByPersonId($id) {
-		$sql='select * from candle where personID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+		$sql='select * from candle where personID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."' order by id desc";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) 
 			return $this->dataBase->getRowList();
@@ -757,7 +760,7 @@ class dbDAO {
 	 */
 	public function acceptChangeForEntry($table,$id) {
 		$p=$this->dataBase->querySignleRow("select * from ".$table." where id=".$id);
-		if (sizeof($p)>0) {
+		if ($p!=null) {
 			//Accept a change
 			if (isset($p["changeForID"])) {
 				$objID=$p["changeForID"];
@@ -1078,7 +1081,7 @@ class dbDAO {
             return $this->getRecentChangesListByDate($dateFrom, $limit);
 	    }
 	    $ret = $this->dataBase->querySignleRow("select * from accelerator where type=1");
-	    if (sizeof($ret)>0) {
+	    if ($ret!=null) {
 	        $rows=json_decode($ret["json"], true);
 	        if ($limit==sizeof($rows))
                 return $rows;
@@ -1087,18 +1090,30 @@ class dbDAO {
     }
 
     public function updateRecentChangesList() {
-        $ret = $this->dataBase->querySignleRow("select * from accelerator where type=1");
-        $dateFrom = date_create();
-        $rows=json_decode($ret["json"], true);
-        $limit = sizeof($rows);
-	    $rows = $this->getRecentChangesListByDate($dateFrom,$limit);
-        $data = array();
-        $data = $this->dataBase->insertFieldInArray($data,'type','1');
-        $data = $this->dataBase->insertFieldInArray($data,'json',json_encode($rows));
-        if (sizeof($ret)>0)
-            $this->dataBase->update('accelerator',$data,"type","1");
-        else
-            $this->dataBase->insert('accelerator',$data);
+        $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=1");
+        if ($ret!=null) {
+            $rows = json_decode($ret["json"], true);
+            $limit = sizeof($rows);
+            $dateFrom = date_create();
+            $rows = $this->getRecentChangesListByDate($dateFrom, $limit);
+            $data = array();
+            $data = $this->dataBase->insertFieldInArray($data, 'type', '1');
+            $data = $this->dataBase->insertFieldInArray($data, 'json', json_encode($rows));
+            $data = $this->dataBase->insertFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
+            $this->dataBase->update('accelerator', $data, "type", "1");
+        }
+    }
+
+    /**
+     * Return the date and time as string for accelerator
+     * @param $type
+     * @return string
+     */
+    public function getAcceleratorDate($type) {
+        $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=1");
+        if ($ret!=null) {
+            return date_create($ret["changeDate"])->format("Y.m.d H:i:s");
+        }
     }
 
     public function getRecentChangesListByDate($dateFrom, $limit) {
@@ -1327,9 +1342,12 @@ class dbDAO {
 	 */
 	public function acceptChangeForMessage($id) {
 		$p=$this->dataBase->querySignleRow("select * from message where id=".$id);
-		$p["changeUserID"]=-1;
-		$this->createHistoryEntry("message",$id);
-		return $this->updateEntry("message", $p);
+		if ($p!=null) {
+		    $p["changeUserID"]=-1;
+		    $this->createHistoryEntry("message",$id);
+		    return $this->updateEntry("message", $p);
+		}
+		return -1;
 	}
 
 //********************* Request ******************************************
@@ -1453,7 +1471,7 @@ class dbDAO {
      * @param string $table
      * @param int $id
      * @param boolean $forceThisID
-	 * @return array the entry of null if not found
+	 * @return array|null  the entry
 	 */
 	public function getEntryById($table,$id,$forceThisID=false) {
 		if ($id==null || $id=='')
@@ -1861,7 +1879,7 @@ class dbDAO {
     public function deleteOpinion($id) {
 	    $ret = new stdClass();
 	    $opinion=$this->dataBase->querySignleRow("select * from opinion where id=".$id);
-	    if  (   sizeof($opinion)>0 &&
+	    if  (   $opinion!=null &&
                 (
                     userIsAdmin() ||
                     (userIsLoggedOn() && $opinion["changeUserID"]==getLoggedInUserId()) ||
@@ -1893,7 +1911,7 @@ class dbDAO {
             $this->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeUserID=".getLoggedInUserId());
             return $this->dataBase->getRowList();
         }
-        $this->dataBase->querySignleRow("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeIP='".$_SERVER["REMOTE_ADDR"]."'");
+        $this->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeIP='".$_SERVER["REMOTE_ADDR"]."'");
         return $this->dataBase->getRowList();
     }
 
@@ -1910,7 +1928,7 @@ class dbDAO {
                 $opinion->id=$data[$i]["id"];
                 $opinion->text=$data[$i]["text"];
                 $opinion->person=$data[$i]["changeUserID"];
-                $opinion->date = date_create($data[$i]["changeDate"])->format("Y.m.d H:n");
+                $opinion->date = date_create($data[$i]["changeDate"])->format("Y.m.d H:i");
                 $opinion->ip = $data[$i]["changeIP"];
                 $opinion->myopinion = (userIsAdmin() || getLoggedInUserId()==$data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"]==$_SERVER["REMOTE_ADDR"]);
                 $ret[$i]=$opinion;

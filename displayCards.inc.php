@@ -7,6 +7,10 @@ include_once 'displayOpinion.inc.php';
  * @param array $person
  * @param bool $showClass
  * @param bool $showDate
+ * @param string $action change action change,opinion,candle, if null then default will be change
+ * @param int $changeUserID the user that made the changes, if null then user will be taken from person
+ * @param string $changeDate, if null then date will be taken from person
+ * @return void
  */
 function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null,$changeUserID=null, $changeDate=null) {
 	if ($person==null)
@@ -145,7 +149,11 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
  * Display a picture including change date and username
  * @param dbDAO $db the database
  * @param array $picture
- * @param bool $showSchool
+ * @param bool $showSchool show school name
+ * @param string $action change action change,opinion, if null then default will be change
+ * @param int $changeUserID the user that made the changes, if null then user will be taken from picture
+ * @param string $changeDate, if null then date will be taken from picture
+ * @return void
  */
 function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserID=null, $changeDate=null) {
 	$p=$picture;
@@ -266,6 +274,7 @@ function displayClass($db,$class,$showDate=false) {
  * Display a lighted candle for a person
  * @param dbDAO $db the database
  * @param array $person
+ * @deprecated
 */
 function displayPersonCandle($db,$person,$date) {
     if ($person==null) {
@@ -320,10 +329,10 @@ function displayPersonCandle($db,$person,$date) {
 /**
  * Display icons for person
  * @param array $d
- * @param string $field
- * @param string $image
- * @param string $title
- * @param string $appl
+ * @param string $field the fielname with the content
+ * @param string $image the icon filename
+ * @param string $title the title
+ * @param string $appl application name mailto, phoneto
  */
 function displayIcon($d,$field,$image,$title,$appl) {
     if (isset($d[$field]) && strlen($d[$field])>8)

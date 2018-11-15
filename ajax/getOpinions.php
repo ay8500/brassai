@@ -35,7 +35,7 @@ if ($count!='candle') {
     foreach ($candles as $o) {
         $op = new stdClass();
         $op->ip = $o['ip'];
-        $op->date = $o['lightedDate'];
+        $op->date = date_create($o['lightedDate'])->format("Y.m.d H:i");
         $op->id = $o['id'];
         $op->myopinion = false;
         $person = $db->getPersonByID($o['userID']);

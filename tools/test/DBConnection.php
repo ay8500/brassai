@@ -57,10 +57,10 @@ class DBConnection extends PHPUnit_Framework_TestCase
         $this->assertTrue(2===$c->querys);
 
         $ret = $this->db->querySignleRow("select id from person limit 1");
-        $this->assertTrue(sizeof($ret)===1);
+        $this->assertTrue($ret!=null);
 
         $ret = $this->db->querySignleRow("select id from person limit 3");
-        $this->assertTrue(sizeof($ret)===0);
+        $this->assertTrue($ret==null);
 
 
 

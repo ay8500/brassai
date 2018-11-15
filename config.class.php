@@ -23,6 +23,7 @@ class Config {
 
     /**
      * initialise
+     * @return void
      */
     public static function init(){
         // Set languge include file

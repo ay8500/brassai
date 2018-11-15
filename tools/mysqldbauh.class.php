@@ -74,7 +74,7 @@ class MySqlDbAUH extends MySql
      */
     public function createHistoryEntry($table,$id,$delete=false) {
         $entry=$this->querySignleRow("select * from ".$table." where id=".$id);
-        if (sizeof($entry)==0)
+        if ($entry==null)
             return -16;
         $data = array();
         $data=$this->insertFieldInArray($data, "entryID", $id);
@@ -117,7 +117,7 @@ class MySqlDbAUH extends MySql
     public function deleteHistoryEntry($id)
     {
         $hist = $this->querySignleRow("select * from history where id=".$id);
-        if (sizeof($hist)>0) {
+        if ($hist!=null) {
             $json=json_decode_utf8($hist["jsonData"]);
             $changeDate=$json["changeDate"];
             $ret = $this->update($hist["table"],[["field"=>"changeDate","type"=>"s","value"=>$changeDate]],"id",$hist["entryID"]);

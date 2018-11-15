@@ -98,9 +98,20 @@ class MySql
     {
         if ($this->query($query) && $this->count() == 1)
             return $this->fetchRow();
-        return array();
+        return null;
     }
 
+    /**
+     * Execute a query that return the first row
+     * @param $query
+     * @return array
+     */
+    public function queryFirstRow($query)
+    {
+        if ($this->query($query) && $this->count() >= 1)
+            return $this->fetchRow();
+        return null;
+    }
 
     /**
      * fetch a query result row

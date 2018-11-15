@@ -4,7 +4,7 @@
  * @param dbBL $db the database business layer
  * @param int $id person id
  * @param bool $teacher is the person a teacher
- * @param bool $decesed
+ * @param bool $decesed person is decesed
  * @return void
  */
 function displayPersonOpinion($db,$id,$teacher,$decesed) {

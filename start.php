@@ -20,6 +20,10 @@ if (isActionParam('showmore')) {
     return;
 }
 
+if (isActionParam("updatecache")) {
+    $db->updateRecentChangesList();
+}
+
 /**
  * Show recent changes
  * @param dbDAO $db
@@ -63,12 +67,12 @@ include("homemenu.inc.php");
 		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések
                 <?php if (userIsAdmin()) { ?>
-                    <form><button name="nocache" value="true" class="btn btn-default">Új lista</button></form>
+                    <form><button name="action" value="updatecache" class="btn btn-default">Új lista <?php echo $db->getAcceleratorDate(1) ?></button></form>
                 <?php } ?>
             </h4>
 		</div>
 		<div class="panel-body" id="changes">
-		<?php $lastDate=showRecentChanges($db,getParam("nocache")==null?null:date("Y-m-d H:i:s"));?>
+		<?php $lastDate=showRecentChanges($db);?>
 		</div>
         <input type="hidden" id="date" value="<?php echo $lastDate?>"/>
         <button id="buttonmore" class="btn btn-default" style="margin:10px;" onclick="showmore()">Többet szeretnék látni</button>
