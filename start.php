@@ -67,7 +67,7 @@ include("homemenu.inc.php");
 		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések
                 <?php if (userIsAdmin()) { ?>
-                    <form><button name="action" value="updatecache" class="btn btn-default">Új lista <?php echo $db->getAcceleratorDate(1) ?></button></form>
+                    <form><button name="action" value="updatecache" class="btn btn-default">Új lista <?php echo Appl::dateTimeAsStr($db->getAcceleratorDate(1)) ?></button></form>
                 <?php } ?>
             </h4>
 		</div>
@@ -109,7 +109,7 @@ include("homemenu.inc.php");
 <?php
 Appl::addJsScript("
     function showmore(date) {
-        $('#buttonmore').hide();
+        $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
     		url:'start.php?action=showmore&date='+$('#date').val(),
 	    	type:'GET',
@@ -117,11 +117,11 @@ Appl::addJsScript("
     		    var idx=data.lastIndexOf('#');
 	    	    $('#changes').html($('#changes').html()+data.substring(0,idx-1));
 	    	    $('#date').val(data.substring(idx+1));
-	    	    $('#buttonmore').show();
+	    	     $('#buttonmore').html('Tovább !');
 		    },
 		    error:function(error) {
 		        showMessage('Több bejegyzés nincs!');
-		        $('#buttonmore').show();
+		        $('#buttonmore').html('Tovább !');
 		    }
         });
     }

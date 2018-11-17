@@ -108,8 +108,10 @@
 	<?php } ?>
 
     function checkSession() {
+        var timezone_offset_minutes = new Date().getTimezoneOffset();
+        timezone_offset_minutes = timezone_offset_minutes == 0 ? 0 : -timezone_offset_minutes;
         $.ajax({
-            url: "ajax/isSessionAlive.php",
+            url: "ajax/isSessionAlive.php?timezone="+timezone_offset_minutes,
             type:"GET",
             success:function(data){
                 setTimeout(checkSession,10000);

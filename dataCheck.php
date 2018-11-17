@@ -71,7 +71,7 @@ if (userIsAdmin()) {
 	   			else
 	   				echo("<td>".html_entity_decode($l["name"])."</td>");
 	   			echo("<td>".html_entity_decode($l["text"])."</td>");
-	   			echo("<td>".$l["changeDate"]."</td>");
+	   			echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
 	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
 	   			if ($l["isDeleted"]==0)
    					echo('<td><button class="btn btn-default" onclick="acceptMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
@@ -96,7 +96,7 @@ if (userIsAdmin()) {
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
 	   			echo("<td><a href=\"javascript:showip('".$l["ip"]."')\">".$l["ip"]."</td>");
-	   			echo("<td>".$l["date"]."</td>");
+	   			echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["date"])."</td>");
 	   			echo("<td>".getConstantName("changeType",$l["typeID"])."</td>");
 	   			echo("<td>".$l["count"]."</td>");
    				if ($l["count"]>0)
@@ -117,7 +117,7 @@ if (userIsAdmin()) {
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
 	   			echo("<td><a href=\"javascript:showip('".$l["ip"]."')\">".$l["ip"]."</td>");
-	   			echo("<td>".$l["date"]."</td>");
+	   			echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["date"])."</td>");
 	   			echo("<td>".getConstantName("changeType",$l["typeID"])."</td>");
 	   			echo("<td>".$l["count"]."</td>");
    				if ($l["count"]>=1)
@@ -191,7 +191,7 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
 	   			echo("<td>".$l[$showField]."</td>");
-	   			echo("<td>".$l["changeDate"]."</td>");
+	   			echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
 	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
 	  			if ($l["changeForIDjoin"]!=null) {
 	   				echo('<td><button class="btn btn-default" onclick="edit'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-resize-horizontal"></span></button></td>');

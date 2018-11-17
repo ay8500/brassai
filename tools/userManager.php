@@ -480,7 +480,7 @@
 		$iv = substr(hash('sha256', $secret_iv), 0, 16);
 	
 		if( $action == 'encrypt' ) {
-            if (strlen($string)!=32) {
+            if (strlen($string)!=32 && strlen($string)!=60 && strlen($string)!=88 ) {
 			    $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
 			    return base64_encode($output);
             } else {
@@ -488,7 +488,7 @@
             }
 		}
 		else if( $action == 'decrypt' ){
-		    if (strlen($string)==32 || strlen($string)==88 ) {
+		    if (strlen($string)==32 || strlen($string)==60 || strlen($string)==88 ) {
 			    return openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
 		    } else {
 		        return $string;

@@ -410,8 +410,8 @@ if (getParam("album")!=null) {
                         id=<?php echo $pict["id"]?>
                         orderValue=<?php echo $pict["orderValue"]?><br/>
                         orderValue=<?php echo $pict["file"]?><br/>
-                        uploaded=<?php echo date("Y.m.d H:i:s",strtotime($pict["uploadDate"]));?><br/>
-                        changed=<?php echo date("Y.m.d H:i:s",strtotime($pict["changeDate"]));?><br/>
+                        uploaded=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["uploadDate"]);?><br/>
+                        changed=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["changeDate"]);?><br/>
                         user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
                     </div>
                 </div>

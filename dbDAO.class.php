@@ -1112,7 +1112,7 @@ class dbDAO {
     public function getAcceleratorDate($type) {
         $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=1");
         if ($ret!=null) {
-            return date_create($ret["changeDate"])->format("Y.m.d H:i:s");
+            return date_create($ret["changeDate"]);
         }
     }
 
@@ -1928,7 +1928,7 @@ class dbDAO {
                 $opinion->id=$data[$i]["id"];
                 $opinion->text=$data[$i]["text"];
                 $opinion->person=$data[$i]["changeUserID"];
-                $opinion->date = date_create($data[$i]["changeDate"])->format("Y.m.d H:i");
+                $opinion->date = $data[$i]["changeDate"];
                 $opinion->ip = $data[$i]["changeIP"];
                 $opinion->myopinion = (userIsAdmin() || getLoggedInUserId()==$data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"]==$_SERVER["REMOTE_ADDR"]);
                 $ret[$i]=$opinion;

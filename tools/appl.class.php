@@ -56,7 +56,35 @@ class Appl {
 		self::$description=$description;
 	}
 
-  	/**
+    /**
+     * datetime as string
+     * @param string|datetime $dateTime
+     * @return string
+     */
+	public static function dateTimeAsStr($dateTime,$format=null) {
+	    if (!is_object($dateTime)) {
+	        $dateTime = new \DateTime($dateTime);
+        }
+        if (isset($_SESSION["timezone"])) {
+            $dateTime->modify(($_SESSION["timezone"]-\Config::$timeZoneOffsetMinutes).'minute');
+        }
+        if($format==null) {
+            return $dateTime->format(\Config::$dateTimeFormat);
+        } else {
+            return $dateTime->format($format);
+        }
+    }
+
+    public static function dateAsStr($date,$format=null) {
+        if($format==null) {
+            return self::dateTimeAsStr($date,\Config::$dateFormat);
+        } else {
+            return self::dateTimeAsStr($date,$format);
+        }
+    }
+
+
+    /**
 	 * add a css file
      * @param string $cssFile
      * @return void

@@ -43,7 +43,7 @@ function readMessageList($elements, $offset=0) {
 			if (isset($message["comment"]))
 				$ret .= '<br /><b>Kommentár: </b>'.html_entity_decode($message["comment"]);
 				$ret .= '<div style="margin-bottom:-5px; ">';
-				$ret .= 'Datum:'.$message["changeDate"]." ";
+				$ret .= 'Datum:'.\maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"])." ";
 			//Privacy
 			if ($message["privacy"]=="world")
 				$ret .= '<span class="cmessage message_world">Ezt az üzenetet mindenki látja.</span>';

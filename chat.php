@@ -83,7 +83,7 @@ if(sizeof($messageList)==0) {
 			<div style="display: inline-block; margin-top: 10px; margin-bottom: -1px; background-color: #e8e8e8; padding: 5px; border-left: solid 1px black;border-radius: 5px 5px 0px 0px;border-top: solid 1px black;border-right: solid 1px black;">
 				<span style="width: 36px;display: inline-block;"><img src="images/<?php echo $person["picture"] ?>" class="diak_image_sicon" style="margin:2px;"/></span>
 				<span style="width: 146px;display: inline-block;"><?php echo $person["lastname"]." ".$person["firstname"]?></span>
-   				<span style="width: 200px;display: inline-block;">Dátum:<?php echo date("Y.m.d H:i:s",strtotime($message["changeDate"]));?></span>
+   				<span style="width: 200px;display: inline-block;">Dátum:<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"]);?></span>
    			</div>
    			<div style="padding: 10px;border-radius: 0px 5px 5px 5px;border: solid 1px black;">
 				<?php echo $message["text"] ?>

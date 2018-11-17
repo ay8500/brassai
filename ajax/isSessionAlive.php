@@ -1,5 +1,9 @@
 <?php
+include_once __DIR__ . '/../tools/ltools.php';
+
 session_start();
+$_SESSION["timeZone"]=getIntParam("timezone",0);
+
 if ( !isset($_SESSION['lastReq']) ) {
     http_response_code(401);
     echo("No session!");

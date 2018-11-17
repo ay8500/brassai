@@ -120,7 +120,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 						?>
 					</div>
 				<?php  if ($showDate) {
-				    if ($changeUserID!=null)
+				    if ($action!='change')
                         $changePerson=$db->getPersonByID($changeUserID);
 				    else
 					    $changePerson=$db->getPersonByID($d["changeUserID"]);
@@ -128,9 +128,9 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				    if ($action=='change' || $action==null) $action="Módósította: ";
                     if ($action=='opinion') $action="Vélemény: ";
                     if ($changeDate==null)
-                        $changeDate = date("Y.m.d H:i:s",strtotime($d["changeDate"]));
+                        $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);
                     else
-                        $changeDate = date("Y.m.d H:i:s",strtotime($changeDate));
+                        $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
 				?>
                     <div class="diakCardIcons">
                         <?php echo $action ?><a href="editDiak.php?uid=<?php echo $changePerson["id"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
@@ -157,16 +157,16 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
  */
 function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserID=null, $changeDate=null) {
 	$p=$picture;
-    if ($changeUserID!=null)
+    if ($action!='change')
         $person=$db->getPersonByID($changeUserID);
     else
         $person = $db->getPersonByID($picture["changeUserID"]);
     if ($action=='change' || $action==null) $action="Módósította: ";
     if ($action=='opinion') $action="Vélemény: ";
     if ($changeDate==null)
-        $changeDate = date("Y.m.d H:i:s",strtotime($picture["changeDate"]));
+        $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($picture["changeDate"]);
     else
-        $changeDate = date("Y.m.d H:i:s",strtotime($changeDate));
+        $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
 
     if (isset($picture["schoolID"])){
 		$type="school";

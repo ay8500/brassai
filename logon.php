@@ -103,6 +103,8 @@ function writeLogonDiv() {
 </div>
 
 <?php
+\maierlabs\lpfw\Appl::addJs("https://connect.facebook.net/en_US/sdk.js");
+
 \maierlabs\lpfw\Appl::addJsScript('
     window.fbAsyncInit = function() {
         FB.init({

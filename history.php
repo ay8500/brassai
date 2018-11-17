@@ -155,7 +155,7 @@ function displayVote($db,$item,$vote,$voteNext) {
  * Display: ChangeDate, IP, Username
  */
 function displayChangeData($db,$item,$historyId) {
-    ?><td><?php echo date("Y.m.d",strtotime(array_get($item,"changeDate")))?> <?php echo date("H:i:s",strtotime(array_get($item,"changeDate")))?></td>
+    ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
 	<?php if (userIsAdmin()) {?>
 		<td onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</td>
         <td><button onclick="deleteHistory(<?php echo $historyId.",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>

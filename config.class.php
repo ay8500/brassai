@@ -14,6 +14,9 @@ class Config {
 
     public static $siteUrl = "https://brassai.blue-l.de";
     public static $siteMail ="brassai@blue-l.de";
+    public static $timeZoneOffsetMinutes=60;
+    public static $dateTimeFormat="<b>Y.m.d</b> H:i:s";
+    public static $dateFormat="<b>Y.m.d</b>";
 
     public static $webAppVersion = "20181114";  //Used to load the actual css und js files.
 

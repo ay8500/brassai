@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . '/../tools/sessionManager.php';
 include_once __DIR__ . '/../tools/ltools.php';
+include_once __DIR__ . '/../tools/appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 
 header('Content-Type: application/json');
@@ -19,7 +20,7 @@ if ($count!='candle') {
         if ($count == "text" || $count = "")
             $op->text = $o->text;
         $op->ip = $o->ip;
-        $op->date = $o->date;
+        $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o->date);
         $op->id = $o->id;
         $op->myopinion = $o->myopinion;
         $person = $db->getPersonByID($o->person);
@@ -35,7 +36,7 @@ if ($count!='candle') {
     foreach ($candles as $o) {
         $op = new stdClass();
         $op->ip = $o['ip'];
-        $op->date = date_create($o['lightedDate'])->format("Y.m.d H:i");
+        $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o['lightedDate']);
         $op->id = $o['id'];
         $op->myopinion = false;
         $person = $db->getPersonByID($o['userID']);
