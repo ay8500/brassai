@@ -1,4 +1,4 @@
-	body		{ line-height:normal;	}
+	body		{ /*line-height:normal;*/	}
 	form		{ display:inline;}
 	a			{ color:#101010}
 	.inline		{ display:inline;}
@@ -65,13 +65,9 @@
 	.personbox {margin:5px;display:inline-block;width:220px;padding-top:4px;padding:3px 0px 3px 8px;text-align:left;border-radius:5px;background-color: #cccccc;}    
 	
 .igLinks {
-	width:48px;
-	height:48px;
-	text-align:center;
-	display: inline-block;
-	border-style: solid;
-	border-width: 1px;
-	border-radius: 11px;
+	width:48px;height:48px;
+	text-align:center;display: inline-block;
+	border-style: solid;border-width: 1px;border-radius: 11px;
 	padding-top:13px;
 	border-color: lightgrey;
 }	
@@ -207,6 +203,8 @@
     -webkit-filter: grayscale(0%);
 }
 
+.personboxc{ display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px; }
+
 .actual_class_in_menu {  background-color: beige; }
 
 /****************** Browser width dependent content ****************************/
@@ -217,9 +215,10 @@
 
 @media ( max-width : 480px) {
 	#o480 {	display: none;}
-	.diak_image_empty {	display: none;}
+	.diak_image_empty {	height:34px;width: 42px}
 	.element{width:100%; display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 5px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
 	.panel-body {padding:0px;}
+	.personboxc {min-width: 250px;}
 }
 
 @media ( max-width : 1024px) {

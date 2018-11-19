@@ -118,9 +118,11 @@ class Logger
         $file = './log';
         $text = date('Y-m-d H:i:s') . "\t";
         $text .= $level . "\t";
-        $text .= $_SERVER["REMOTE_ADDR"] . "\t";
-        $text .= $_SERVER["SCRIPT_NAME"] . "\t";
-        $text .= $_SERVER["REQUEST_URI"] . "\t";
+        if (isset($_SERVER["REMOTE_ADDR"]) ) { //Need to be tested for PHPUnit
+            $text .= $_SERVER["REMOTE_ADDR"] . "\t";
+            $text .= $_SERVER["SCRIPT_NAME"] . "\t";
+            $text .= $_SERVER["REQUEST_URI"] . "\t";
+        }
         if (isset($_SESSION['USER']))
             $text .= $_SESSION['USER'] . "\t";
         $text .= $logText . "\t";

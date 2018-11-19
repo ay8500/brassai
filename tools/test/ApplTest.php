@@ -1,28 +1,21 @@
 <?php
+include_once __DIR__ . "/../../config.class.php";
+include_once __DIR__ . "/../appl.class.php";
+include_once __DIR__ . "/../logger.class.php";
 
 use maierlabs\lpfw\Appl;
 
 class ApplTest extends PHPUnit_Framework_TestCase
 {
     public function setup() {
-        $include = array('appl.class.php');
-        $argv=$_SERVER["argv"];
-        $p=pathinfo($argv[sizeof($argv)-1]);
-        foreach ($include as $item) {
-            if (file_exists($p["dirname"].'/'.$item)){
-                include_once $p["dirname"].'/'.$item;
-            } else if (file_exists($p["dirname"].'/brassai/tools/'.$item)){
-                include_once $p["dirname"].'/brassai/tools/'.$item;
-            } else if (file_exists($p["dirname"].'/tools/'.$item)){
-                include_once $p["dirname"].'/tools/'.$item;
-            } else if (file_exists($p["dirname"].'/../'.$item)){
-                include_once $p["dirname"].'/../'.$item;
-            } else {
-                throw (new Exception("Inludefile not found"));
-            }
-        }
+        \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
     }
 
+    /**
+     * @covers \maierlabs\lpfw\Appl::setMember
+     * @covers \maierlabs\lpfw\Appl::getMember
+     * @covers \maierlabs\lpfw\Appl::getMemberId
+     */
     public function testMember()
     {
         Appl::setMember("test",array("id"=>2, "name"=>"test"));
@@ -36,16 +29,27 @@ class ApplTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Appl::getMember("test")["name"]==="test");
     }
 
+    /**
+     * @covers \maierlabs\lpfw\Appl::addCss
+     * @covers \maierlabs\lpfw\Appl::addCssStyle
+     * @covers \maierlabs\lpfw\Appl::includeCss
+     */
     public function testCssFile() {
         Appl::addCss("css.file");
+        Appl::addCssStyle(".levi {data:ok;}");
         ob_start();
         Appl::includeCss();
         $echo = ob_get_contents();
         ob_end_clean();
         $this->assertTrue(strpos($echo,'<link rel="stylesheet" type="text/css" href="css.file?v=')!==false);
+        $this->assertTrue(strpos($echo,'.levi')!==false);
     }
 
 
+    /**
+     * @covers \maierlabs\lpfw\Appl::addCssStyle
+     * @covers \maierlabs\lpfw\Appl::includeCss
+     */
      public function testCss() {
         ob_start();
         Appl::addCssStyle(".body { color:white}");

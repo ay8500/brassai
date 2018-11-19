@@ -50,7 +50,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 			</a>
 			<?php }?>
 		</div>
-		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+		<div class="personboxc">
 			<a href="<?php echo $personLink?>"><h4><?php echo getPersonName($d);?></h4></a>
 			<?php if($showClass) {?>
 				<?php if ($d["isTeacher"]==1) { ?>
@@ -105,7 +105,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         displayIcon($d,"mobil","mobile.png","Mobil","tel:");
                         displayIcon($d,"email","email.png","E-Mail","mailto:");
                         displayIcon($d,"facebook","facebook.png","Facebook","");
-                        displayIcon($d,"twitter","twitter.png","Twitter","");
+                        //displayIcon($d,"twitter","twitter.png","Twitter","");
                         displayIcon($d,"homepage","www.png","Honoldal","");
 						if ($db->getNrOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2)>0)
 							echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';

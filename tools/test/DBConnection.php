@@ -1,8 +1,10 @@
 <?php
 
-use \maierlabs\lpfw\MySqlDb as MySqlDb;
+use \maierlabs\lpfw\MySqlDbAUH as MySqlDbAUH;
 
 include_once __DIR__ . "/../../config.class.php";
+include_once __DIR__ . "/../mysqldbauh.class.php";
+include_once __DIR__ . "/../logger.class.php";
 
 /**
  * Class DBConnection
@@ -10,41 +12,34 @@ include_once __DIR__ . "/../../config.class.php";
 class DBConnection extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var MySqlDb
+     * @var MySqlDbAUH
      */
     private $db ;
 
     public function setup()
     {
-
-        $include = array('mysql.class.php');
-        $argv=$_SERVER["argv"];
-        $p=pathinfo($argv[sizeof($argv)-1]);
-        foreach ($include as $item) {
-            if (file_exists($p["dirname"].'/'.$item)){
-                include_once $p["dirname"].'/'.$item;
-            } else if (file_exists($p["dirname"].'/brassai/tools/'.$item)){
-                include_once $p["dirname"].'/brassai/tools/'.$item;
-            } else if (file_exists($p["dirname"].'/tools/'.$item)){
-                include_once $p["dirname"].'/tools/'.$item;
-            } else if (file_exists($p["dirname"].'/../'.$item)){
-                include_once $p["dirname"].'/../'.$item;
-            } else {
-                throw (new Exception("Inludefile not found"));
-            }
-        }
-
-        $db = \Config::getDatabasePropertys();
-        $this->db = new MySqlDb($db->host,$db->database,$db->user,$db->password);
-
+        $p = \Config::getDatabasePropertys();
+        $this->db = new MySqlDbAUH($p->host,$p->database,$p->user,$p->password);
+        \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
     }
 
+    public function tearDown()
+    {
+        $this->db->disconnect();
+    }
 
     public function testDB():void
     {
         $this->assertTrue(is_object($this->db));
     }
 
+    /**
+     * @covers \maierlabs\lpfw\MySql::MySql
+     * @covers \maierlabs\lpfw\MySql::disconnect
+     * @covers \maierlabs\lpfw\MySql::query
+     * @covers \maierlabs\lpfw\MySql::getCounter
+     * @covers \maierlabs\lpfw\MySql::querySignleRow
+     */
     public function testQuery():void
     {
         $ret = $this->db->query("select * from levi");
@@ -61,9 +56,6 @@ class DBConnection extends PHPUnit_Framework_TestCase
 
         $ret = $this->db->querySignleRow("select id from person limit 3");
         $this->assertTrue($ret==null);
-
-
-
     }
 
 

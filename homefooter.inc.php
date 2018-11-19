@@ -53,7 +53,7 @@
 		onResize();
 		setTimeout(clearDbMessages, 10000);
         <?php if (getParam('logoffSessionTimeout')==null) {?>
-	        setTimeout(checkSession,10000);
+	        checkSession();
         <?php } ?>
 	});
 	var logoTimer;
