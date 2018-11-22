@@ -121,7 +121,7 @@
                 $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
                 //Inpufields
                 if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
-                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
+                    <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
                     <?php if ( userIsLoggedOn()) {?>
                         <span style="width:40px" id="highlight" class="input-group-addon">
                             <?php if ($dataCheckFieldVisible[$i]) {?>

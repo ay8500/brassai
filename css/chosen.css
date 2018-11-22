@@ -48,6 +48,8 @@
     background: #feffde;
     font-style: normal;
 }
+
+
 .chosen-container .chosen-results li.group-result {
     display: list-item;
     cursor: default;

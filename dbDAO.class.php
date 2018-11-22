@@ -193,28 +193,15 @@ class dbDAO {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
-			$sql="select c.*, p.firstname as tfname, p.lastname as tlname, p.birthname as tbname,p.picture as picture,";
-			$sql .=" cp.id as cid, cp.firstname as cfname, cp.lastname as clname, cp.birthname as cbname, cp.role as role";
-			$sql .=" from class as c"; 
-			$sql .=" left join  person as p on c.headTeacherID=p.id";
-			$sql .=" left join  person as cp on c.changeUserID=cp.id where";
-			$sql .=" c.name like '%".$name."%' ";
-			$sql .=" or c.graduationYear like '%".$name."%' ";
-			$sql .=" or c.text like '%".$name."%' ";
+			$sql="select * from class where";
+			$sql .=" name like '%".$name."%' ";
+			$sql .=" or graduationYear like '%".$name."%' ";
+			$sql .=" or text like '%".$name."%' ";
 			$sql .=" limit 50";
 				
 			$this->dataBase->query($sql);
 			while ($class=$this->dataBase->fetchRow()) {
 					array_push($ret, $class);
-			}
-			foreach ($ret as $i=>$r) {
-				$picture=$this->getGroupPictureByClassID($r["id"]);
-				if(isset($picture["id"])) {
-					$ret[$i]["classPictureID"]=$picture["id"];
-				} else {
-					$ret[$i]["classPictureID"]=false;
-				}
-				
 			}
 			asort($ret);
 		}
@@ -965,14 +952,14 @@ class dbDAO {
 		}
 	}
 
-	public function getGroupPictureByClassID($id) {
-		$sql="select * from picture where title like '%Tabló%' and classID=".$id;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			return $this->dataBase->fetchRow();
-		} else {
-			return array();
-		}
+    /**
+     * get class group picture
+     * @param $id
+     * @return array|nullg
+     */
+	public function getGroupPictureIdByClassId($id) {
+		$sql="select id from picture where title like '%Tabló%' and classID=".$id;
+		return $this->dataBase->queryInt($sql);
 	}
 	
 	/**
@@ -1127,6 +1114,8 @@ class dbDAO {
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
         $sql .= " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
+        $sql .= " union ";
+        $sql .= " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
         $sql .= " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
         $sql .= " order by changeDate desc limit ".$limit;

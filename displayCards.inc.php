@@ -16,34 +16,10 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	if ($person==null)
 		return;
 	$d=$person;
-	if ($d["id"]!=-1) {
-		if (userIsLoggedOn() || isLocalhost()) {
-			$personLink="editDiak.php?uid=".$d["id"];
-		} else {
-			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
-		}
-	} else {
-		$personLink="javascript:alert('Sajnos erről a személyről nincsenek adatok.');";
-	}
-	//mini icon
-	if (isset($person["picture"]) && $person["picture"]!="") 
-		$rstyle=' diak_image_medium';
-	else {
-		$rstyle=' diak_image_empty';
-	}
 	?>
 	<div class="element">
 		<div style="display: inline-block; ">
-			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
-				<div>
-					<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
-					<?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
-						<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
-							<?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
-						</div>
-					<?php }?>
-				</div>
-			</a>
+			<?php $personLink=displayPersonPicture($d); ?>
 			<?php  if (userIsAdmin() || userIsSuperuser()) {?>
 			<br/><a href="history.php?table=person&id=<?php echo $d["id"]?>" title="módosítások" style="position: relative;top: -37px;left: 10px;display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->getHistoryInfo("person",$d["id"]))?></span>
@@ -82,9 +58,12 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					}
 					if(showField($d,"function")) 	echo "<div><div>Beosztás:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
 				} else {
-					if (isset($d["function"]))		echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
-					if (showField($d,"children")) {	
-						echo "<div><span>Osztályfőnök:</span>";
+					if (isset($d["function"]))
+					    echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
+                    if (isset($d["employer"]))
+                        echo "<div><div>Időtartam:</div><div>".getFieldValue($d["employer"])."&nbsp;</div></div>";
+					if (showField($d,"children")) {
+						echo "<div><div>Osztályfőnök:</div><div>";
 						$c = explode(",", getFieldValue($d["children"]));
 						foreach ($c as $idx=>$cc) {
 							$class= $db->getClassByText($cc);
@@ -95,7 +74,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 								echo(' <a href="javascript:alert(\'Ennek az osztálynak még nincsenek bejegyzései ezen az oldalon. Szívesen bővitheted a véndiákok oldalát önmagad is. Hozd létre ezt az osztályt és egyenként írd be a diákoknak nevét és adatait. Előre is köszönjük!\')">'.$cc.'</a> ');
 							}
 						}
-						echo "</div>";
+						echo "</div></div>";
 					}
 				}
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
@@ -226,46 +205,41 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
  * @param bool $showDate
  */
 function displayClass($db,$class,$showDate=false) {
-	if (userIsLoggedOn() || isLocalhost()) {
-		$personLink="editDiak.php?uid=".$class["headTeacherID"];
-	} else {
-		$personLink=getPersonLink($class["tlname"],$class["tfname"])."-".$class["headTeacherID"];
-	}
-	//Set the RIP value
-	strstr($class["role"],"rip")!=""?$rip="rip":$rip=""
 	?>
 	<div class="element">
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-			Osztály: <a href="hometable.php?classid=<?php echo $class["id"]?>"><b><?php echo getClassName($class);?></b></a><br/>
-			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {?>
-				Osztályfőnök: <a href="editDiak.php?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $class["tlname"]." ".$class["tfname"]?></a> <br/>
+            <h4>Osztály: <a href="hometable.php?classid=<?php echo $class["id"]?>"><?php echo getClassName($class);?></h4></a><br/>
+			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
+			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
+				Osztályfőnök: <a href="editDiak.php?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a> <br/>
 			<?php } ?>
 		</div>
-		<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) { ;?>
-			<div style="display: inline-block; vertical-align: top;width:160px;">
-				<a href="<?php echo $personLink?>" title="<?php echo ($class["tlname"]." ".$class["tfname"])?>">
-					<img src="<?php echo getPersonPicture($class)?>" border="0" title="<?php echo $class["tlname"].' '.$class["tfname"]?>" class="diak_image_medium <?php echo $rip?>" />
-				</a>
-			</div>
-		<?php } ?>
-		<?php if ($class["classPictureID"]!==false) {?>
+		<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
+		    displayPersonPicture($headTeacher);
+		} ?>
+
+		<?php
+            $pictureId = $db->getGroupPictureIdByClassId($class["id"]);
+            if ($pictureId >0) {?>
 			<div style="display: inline-block;vertical-align: top; ">
-				<a href="picture.php?type=class&typeid=<?php  echo $class["id"]?>&id=<?php echo $class["classPictureID"]?>" >
-					<image src="convertImg.php?width=300&thumb=false&id=<?php echo $class["classPictureID"]?>" />
+				<a href="picture.php?type=class&typeid=<?php  echo $class["id"]?>&id=<?php echo $pictureId?>" >
+					<image src="convertImg.php?width=300&thumb=false&id=<?php echo $pictureId?>" />
 				</a>
 			</div>
 		<?php } ?>
-		<br/>
-		<?php if ($showDate) {?>
-			<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-				Módosítva: <a href="editDiak.php?uid=<?php echo $class["changeUserID"]?>" ><?php echo $class["clname"]." ".$class["cfname"]?></a> <br/>
-				Dátum:<?php echo date("Y.m.d H:i:s",strtotime($class["changeDate"]));?>
+
+        <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+            <br/><a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;">
+                <span class="badge"><?php echo sizeof($db->getHistoryInfo("class",$class["id"]))?></span>
+            </a>
+        <?php }?>
+		<?php if ($showDate) {
+		    $c = $db->getPersonByID($class["changeUserID"]);
+		    ?>
+            <br/><div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+				Módosította: <a href="editDiak.php?uid=<?php echo $class["changeUserID"]?>" ><?php echo $c["lastname"]." ".$c["firstname"]?></a> <br/>
+				Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
 			</div>
-		<?php }?>
-		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
-			<br/><a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;">
-				<span class="badge"><?php echo sizeof($db->getHistoryInfo("class",$class["id"]))?></span>
-			</a>
 		<?php }?>
 	</div>
 <?php }
@@ -325,6 +299,38 @@ function displayPersonCandle($db,$person,$date) {
         </div>
     </div>
 <?php }
+
+function displayPersonPicture($d)
+{
+    //mini icon
+    if (isset($d["picture"]) && $d["picture"] != "") {
+        $rstyle = ' diak_image_medium';
+    } else {
+        $rstyle = ' diak_image_empty';
+    }
+    if ($d["id"]!=-1) {
+        if (userIsLoggedOn() || isLocalhost()) {
+            $personLink="editDiak.php?uid=".$d["id"];
+        } else {
+            $personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
+        }
+    } else {
+        $personLink="javascript:alert('Sajnos erről a személyről nincsenek adatok.');";
+    }
+    ?>
+    <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
+        <div>
+            <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+            <?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
+                <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                    <?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
+                </div>
+            <?php }?>
+        </div>
+    </a>
+    <?php
+    return $personLink;
+}
 
 /**
  * Display icons for person

@@ -90,7 +90,7 @@ class MySql
             $r = mysqli_fetch_row($this->result);
             return intval($r[0]);
         }
-        return 0;
+        return -1;
     }
 
     /**

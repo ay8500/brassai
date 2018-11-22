@@ -130,6 +130,7 @@ function displayClass($db,$item,$class,$classNext) {
 	displayElementObj($class, $classNext, "graduationYear");
     displayElementObj($class, $classNext, "eveningClass","E");
     displayElementObj($class, $classNext, "text");
+    displayElementObj($class, $classNext, "teachers");
 	displayElement(getPersonName($db->getPersonByID(array_get($class,"headTeacherID",null))), getPersonName($db->getPersonByID(array_get($classNext,"headTeacherID",null))));
 }
 

@@ -48,6 +48,11 @@ function showRecentChanges($db,$date=null) {
             $entryID=$picture["id"];
             if (!in_array($id["type"].$entryID,$keylist ))
                 displayPicture($db, $picture,false,$id["action"],$id["changeUserID"],$id["changeDate"]);
+        } elseif ($id["type"] == "class") {
+            $class= $db->getClassById($id["id"]);
+            $entryID=$class["id"];
+            if (!in_array($id["type"].$entryID,$keylist ))
+                displayClass($db, $class,true,$id["action"],$id["changeUserID"],$id["changeDate"]);
         }
         if (!in_array($id["type"].$entryID,$keylist ))
             array_push($keylist , $id["type"].$entryID);
