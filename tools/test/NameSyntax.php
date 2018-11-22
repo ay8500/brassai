@@ -21,6 +21,7 @@ class NameSyntax extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
+        echo("NameSyntax\n");
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
 
         $p = \Config::getDatabasePropertys();

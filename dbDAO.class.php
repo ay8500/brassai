@@ -247,6 +247,9 @@ class dbDAO {
 	 * @return integer if negativ an error occurs
 	 */
 	public function savePerson($person) {
+	    if (isset($person["deceasedYear"]) && $person["deceasedYear"]=='') {
+            $person["deceasedYear"]=null;
+        }
 	    $ret =$this->saveEntry("person", $person);
 	    $this->updateRecentChangesList();
 		return $ret;

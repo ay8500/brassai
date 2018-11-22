@@ -116,6 +116,39 @@ class dbBL extends dbDAO
     	return $this->getEntry('person',"role like '%admin%' and classID=".$this->getStafClassBySchoolId(getAktSchoolId())["id"]);
     }
 
+    /**
+     * Mark picture as deleted or delete it from the db and filesystem
+     * @param integer $pictureId
+     * @param boolean $unlink default false
+     * @return boolean
+     */
+    function deletePicture($pictureId,$unlink=false) {
+        $picture=$this->getPictureById($pictureId);
+        if ($picture==null)
+            return false;
+        if ($unlink) {
+            return $this->deletePictureEntry($pictureId);
+        } else {
+            $picture["isDeleted"]=1;
+            return $this->savePicture($picture);
+        }
+    }
+
+    /**
+     * Mark picture as deleted or delete it from the db and filesystem
+     * @param integer $personId
+     * @return boolean
+     */
+    function unlinkPersonPicture($personId,$unlink=false) {
+        $person=$this->getPersonByID($personId);
+        if ($person==null)
+            return false;
+        $person["picture"]=null;
+        return $this->savePerson($person);
+    }
+
+
+
 }
 
 
@@ -296,24 +329,6 @@ function compairUserLink($d1,$d2) {
 	}
 
 
-/**
- * Mark picture as deleted or delete it from the db and filesystem
- * @param integer $pictureId
- * @param boolean $unlink default false
- * @return boolean
- */
-function deletePicture($pictureId,$unlink=false) {
-	global $db;
-	$picture=$db->getPictureById($pictureId);
-	if ($picture==null)
-		return false;
-	if ($unlink) {
-		return $db->deletePictureEntry($pictureId);
-	} else {
-		$picture["isDeleted"]=1;
-		return $db->savePicture($picture);
-	}
-}
 
 
 /**

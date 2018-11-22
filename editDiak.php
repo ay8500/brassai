@@ -227,10 +227,10 @@ if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
 }
 
 //Delete Picture
-if ($action=="deletePicture" && userIsLoggedOn()) {
-	if (deletePicture(getParam("id", ""))>=0) {
+if (getIntParam("deletePersonPicture",-1)>=0 && (userIsAdmin() || userIsSuperuser() || getLoggedInUserId()==getRealId($diak))) {
+	if ($db->unlinkPersonPicture(getIntParam("deletePersonPicture"))) {
 		Appl::setMessage("Kép sikeresen törölve","success");
-		saveLogInInfo("PictureDelete",getLoggedInUserId(),$diak["user"],getParam("id", ""),true);
+		$diak["picture"]=null;
 	} else {
 		Appl::setMessage("Kép törlés sikertelen!","warning");
 	}

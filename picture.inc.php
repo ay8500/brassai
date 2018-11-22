@@ -83,7 +83,7 @@ Appl::addCssStyle('
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
 	if ($db->getCountOfRequest(changeType::deletepicture,24)<5) {
-		if (deletePicture(getIntParam("did"))>=0) {
+		if ($db->deletePicture(getIntParam("did"))>=0) {
             Appl::setMessage("Kép sikeresen törölve","success");
 			$db->saveRequest(changeType::deletepicture);
 			saveLogInInfo("PictureDelete",getAktUserId(),"",getParam("id", ""),true);
@@ -120,10 +120,10 @@ if (isActionParam("renameAlbum") && (userIsAdmin() || userIsSuperuser() || userI
 
 //Delete and unlink Picture
 if (getParam("action","")=="unlinkPicture" && (userIsAdmin() || userIsSuperuser()) )  {
-	if (deletePicture(getIntParam("did"),true)>=0) {
-        Appl::setMessage("Kép sikeresen törölve","success");
+	if ($db->deletePicture(getIntParam("did"),true)>=0) {
+        Appl::setMessage("Kép sikeresen véglegesen törölve","success");
 	} else {
-        Appl::setMessage("Kép törlése sikertelen!","warning");
+        Appl::setMessage("Kép végleges törlése sikertelen!","warning");
 	}
 }
 

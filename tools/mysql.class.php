@@ -24,15 +24,14 @@ class MySql
      * @param string $database
      * @param string $user
      * @param string $pass
-     * @return boolean true if the connection is ok
      */
     public function __construct($host, $database, $user = "", $pass = "")
     {
-        $this->connection = mysqli_connect($host, $user, $pass, $database);
-        if (mysqli_connect_errno()) {
-            die ('Database connection:' . $host . " Error nr:" . mysqli_connect_errno());
+        try {
+            $this->connection = mysqli_connect($host, $user, $pass, $database);
+        } catch (\Exception $e) {
+            Logger::_('Database connection failed', LoggerLevel::error);
         }
-        return true;
     }
 
     /**
@@ -41,8 +40,9 @@ class MySql
      */
     public function disconnect()
     {
-        if (is_resource($this->connection))
+        if (isset($this->connection))
             mysqli_close($this->connection);
+        $this->connection = null;
         //Logger::_('Database disconnected', LoggerLevel::info);
     }
 
@@ -55,6 +55,14 @@ class MySql
         return mysqli_commit($this->connection);
     }
 
+    /**
+     * check db connection
+     * @return bool
+     */
+    public function isDbConnected() {
+        return isset($this->connection);
+    }
+
 
     /**
      * Execute a query get results with $this->fetchRow() and $this->count()
@@ -64,15 +72,11 @@ class MySql
     public function query($query)
     {
         $timer=microtime(true);
-        if (strstr($query, "id= and") === false) {
-            $this->result = mysqli_query($this->connection, $query) or Logger::_("MySQL ERROR 1:" . $query . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
-            $this->counter = NULL;
-            $this->countQuerys++;
-            array_push($this->sqlRequest, number_format((microtime(true)-$timer) * 1000,2)."ms ".$query);
-            return $this->result!==false;
-        } else {
-            return false;
-        }
+        $this->result = mysqli_query($this->connection, $query) or Logger::_("MySQL ERROR 1:" . $query . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
+        $this->counter = NULL;
+        $this->countQuerys++;
+        array_push($this->sqlRequest, number_format((microtime(true)-$timer) * 1000,2)."ms ".$query);
+        return $this->result!==false;
     }
 
     /**
@@ -142,18 +146,15 @@ class MySql
 
     /**
      * howmanny rows are in the query result
-     * @return int|null
+     * @return int|0
      */
     public function count()
     {
-        try {
-            if ($this->counter == NULL && isset($this->result) && gettype($this->result) == "object") {
-                $this->counter = mysqli_num_rows($this->result);
-            }
-            return $this->counter;
-        } catch (\Exception $e) {
-            return 0;
+        if ($this->counter == NULL && isset($this->result) && gettype($this->result) == "object") {
+            $this->counter = mysqli_num_rows($this->result);
+            return intval($this->counter);
         }
+        return 0;
     }
 
     /**
@@ -204,7 +205,6 @@ class MySql
             $sql = "select sum(" . $field . " * " . $multField . " ) from " . $table;
         else
             $sql = "select sum(" . $field . " * " . $multField . " )  from " . $table . " where " . $where;
-        $this->result = mysqli_query($this->connection, $sql) or Logger::_("MySQL ERROR  MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
         return $this->queryInt($sql);
     }
 
@@ -219,7 +219,6 @@ class MySql
      * */
     public function insert($table, $data)
     {
-        $this->countChanges++;
         $sql = "insert into `" . $table . "` (";
         foreach ($data as $i => $d) {
             if ($i != 0) $sql .= ",";
@@ -231,13 +230,14 @@ class MySql
 
             if (isset($d["value"])) {
                 if ($d["type"] != "n") $sql .= "'";
-                if ($d["type"] != "n")
+                if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
-                else {
-                    if ($data[$i]["value"] !== "")
-                        $sql .= $d["value"];
-                    else
+                } else {
+                    if ($d["value"]=='') {
                         $sql .= 'null';
+                    } else {
+                        $sql .= $d["value"];
+                    }
                 }
                 if ($d["type"] != "n") $sql .= "'";
             } else {
@@ -245,12 +245,10 @@ class MySql
             }
         }
         $sql .= ")";
-        if ($this->result = mysqli_query($this->connection, $sql)) {
-            return true;
-        } else {
-            Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
-            return false;
-        }
+        $this->countChanges++;
+        array_push($this->sqlRequest, $sql);
+        $this->result = mysqli_query($this->connection, $sql) or Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);;
+        return $this->result !==false;
     }
 
     /**
@@ -283,11 +281,11 @@ class MySql
     public function update($table, $data, $whereField = "", $whereValue = "")
     {
         if ($whereField != "") {
-            $sql = $whereField . "='" . $whereValue . "'";
+            $where = $whereField . "='" . $whereValue . "'";
         } else {
-            $sql = "1==2";
+            $where = null;
         }
-        return $this->updateWhere($table, $data, $sql);
+        return $this->updateWhere($table, $data, $where);
     }
 
     /**
@@ -308,13 +306,14 @@ class MySql
             $sql .= "`" . $d["field"] . "`=";
             if (isset($d["value"])) {
                 if ($d["type"] != "n") $sql .= "'";
-                if ($d["type"] != "n")
+                if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
-                else {
-                    if ($d["value"] != "")
-                        $sql .= $d["value"];
-                    else
+                } else {
+                    if ($d["value"]=='') {
                         $sql .= 'null';
+                    } else {
+                        $sql .= $d["value"];
+                    }
                 }
                 if ($d["type"] != "n") $sql .= "'";
             } else {
@@ -323,17 +322,11 @@ class MySql
         }
         if ($where != null) {
             $sql .= " where " . $where . " ";
-        } else {
-            $sql .= " where 1==2 ";
         }
         $this->countChanges++;
         array_push($this->sqlRequest, $sql);
-        if (mysqli_query($this->connection, $sql) === TRUE) {
-            return TRUE;
-        } else {
-            Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
-            return FALSE;
-        }
+        $this->result = mysqli_query($this->connection, $sql) or Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
+        return $this->result!==false;
     }
 
     /**
@@ -453,7 +446,7 @@ class MySql
     public function changeFieldInArray($fieldArray, $fieldName, $fieldValue)
     {
         $arrayIdx = array_search($fieldName, array_column($fieldArray, "field"));
-        if (!$arrayIdx === false) {
+        if ($arrayIdx !== false) {
             $fieldArray[$arrayIdx]["value"] = $fieldValue;
             return $fieldArray;
         } else {
@@ -469,8 +462,8 @@ class MySql
     public function deleteFieldInArray($fieldArray, $fieldName)
     {
         $arrayIdx = array_search($fieldName, array_column($fieldArray, "field"));
-        if (!$arrayIdx === false) {
-            unset($fieldArray[$arrayIdx]);
+        if ($arrayIdx !== false) {
+            array_splice($fieldArray, $arrayIdx, 1);
         }
         return $fieldArray;
     }
@@ -484,7 +477,7 @@ class MySql
     public function setFieldInArrayToNull($fieldArray, $fieldName)
     {
         $arrayIdx = array_search($fieldName, array_column($fieldArray, "field"));
-        if (!$arrayIdx === false) {
+        if ($arrayIdx !== false) {
             unset($fieldArray[$arrayIdx]["value"]);
         }
         return $fieldArray;
@@ -497,6 +490,7 @@ class MySql
     {
         $this->countChanges = 0;
         $this->countQuerys = 0;
+        return true;
     }
 
     /**

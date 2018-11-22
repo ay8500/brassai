@@ -2,13 +2,19 @@
 include_once __DIR__ . "/../../config.class.php";
 include_once __DIR__ . "/../appl.class.php";
 include_once __DIR__ . "/../logger.class.php";
+include_once __DIR__ . "/../userManager.php";
 
 use maierlabs\lpfw\Appl;
 
 class ApplTest extends PHPUnit_Framework_TestCase
 {
+    public static $start = false;
     public function setup() {
-        \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
+        if (self::$start==false) {
+            echo("Appl Framework\n");
+            \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
+        }
+        self::$start=true;
     }
 
     /**
@@ -27,6 +33,24 @@ class ApplTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Appl::getMemberId("nix")===null);
 
         $this->assertTrue(Appl::getMember("test")["name"]==="test");
+
+        $this->assertTrue(Appl::getMember("nix","Foo")==="Foo");
+    }
+
+    /**
+     * @covers \maierlabs\lpfw\Appl::addCssStyle
+     * @covers \maierlabs\lpfw\Appl::includeCss
+     * @covers \maierlabs\lpfw\Appl::setMessage
+     */
+    public function testCssBevorRendering() {
+        Appl::addCssStyle(".td{ color:white}");
+        Appl::setMessage("OK","success");
+        ob_start();
+        Appl::includeCss();
+        $echo = ob_get_contents();
+        ob_end_clean();
+        $this->assertTrue(strlen($echo)>0);
+        $this->assertTrue(Appl::$resultDbOperation==='<div class="alert alert-success">OK</div>');
     }
 
     /**
@@ -36,15 +60,12 @@ class ApplTest extends PHPUnit_Framework_TestCase
      */
     public function testCssFile() {
         Appl::addCss("css.file");
-        Appl::addCssStyle(".levi {data:ok;}");
         ob_start();
         Appl::includeCss();
         $echo = ob_get_contents();
         ob_end_clean();
-        $this->assertTrue(strpos($echo,'<link rel="stylesheet" type="text/css" href="css.file?v=')!==false);
-        $this->assertTrue(strpos($echo,'.levi')!==false);
+        $this->assertTrue(strpos($echo,'<link rel="stylesheet" type="text/css" href="css.file?v='.Config::$webAppVersion)!==false);
     }
-
 
     /**
      * @covers \maierlabs\lpfw\Appl::addCssStyle
@@ -58,6 +79,88 @@ class ApplTest extends PHPUnit_Framework_TestCase
         ob_end_clean();
         $res = strpos($echo,"<style>\n.body { color:white}</style>");
         $this->assertTrue($res!==false);
+    }
+
+    /**
+     * @covers \maierlabs\lpfw\Appl::addJs
+     * @covers \maierlabs\lpfw\Appl::addJsScript
+     * @covers \maierlabs\lpfw\Appl::includeJs
+     */
+    public function testJsFile() {
+        Appl::addJs("js.file");
+        Appl::addJs("__DIR__ . \"/../../js/chat.js",true);
+        Appl::addJsScript("function getLevi{return 'Levi';}");
+        ob_start();
+        Appl::includeJs();
+        $echo = ob_get_contents();
+        ob_end_clean();
+        $this->assertTrue(strpos($echo,'<script type="text/javascript" src="js.file?v='.Config::$webAppVersion)!==false);
+
+        $this->assertTrue(strpos($echo,"function getLevi{return 'Levi';}")!==false);
+
+        $this->assertTrue(strpos($echo,"var loggedInUser=null")!==false);
+    }
+
+    /**
+     * @covers \maierlabs\lpfw\Appl::setMessage
+     */
+    public function testMessage() {
+        Appl::setMessage("Hola","danger");
+        ob_start();
+        Appl::includeJs();
+        $echo = ob_get_contents();
+        ob_end_clean();
+        $this->assertTrue(strpos($echo,"showDbMessage('Hola','danger');")!==false);
+    }
+
+    /**
+     * @covers \maierlabs\lpfw\Appl::dateTimeAsStr
+     * @covers \maierlabs\lpfw\Appl::dateAsStr
+     *
+     */
+    public function testDateTime() {
+        $a=Appl::dateTimeAsStr(new DateTime(),"Y");
+        $this->assertTrue($a==date("Y"));
+
+        $a=Appl::dateAsStr(new DateTime(),"Y");
+        $this->assertTrue($a==date("Y"));
+
+        $a=Appl::dateAsStr("2018-12-31","Y+m+d");
+        $this->assertTrue($a=="2018+12+31");
+
+        $_SESSION["timezone"]=120;
+        Config::$dateTimeFormat="H";
+        $a=Appl::dateTimeAsStr("2018-12-31 13:14:16");
+        $this->assertTrue($a==='14');
+
+        Config::$dateFormat="H:i:s";
+        $a=Appl::dateAsStr("2018-12-31 13:14:16");
+        $this->assertTrue($a==='14:14:16');
+
+    }
+
+    /**
+     * @covers \maierlabs\lpfw\Appl::setSiteTitle
+     * @covers \maierlabs\lpfw\Appl::setSiteDesctiption
+     * @covers \maierlabs\lpfw\Appl::setSiteSubTitle
+     */
+    public function testApplTitle() {
+        Appl::setSiteTitle("A","B","C");
+        $this->assertTrue(Appl::$title=="A");
+        $this->assertTrue(Appl::$subTitle=="B");
+        $this->assertTrue(Appl::$description=="C");
+        Appl::setSiteTitle("AA");
+        $this->assertTrue(Appl::$title=="AA");
+        $this->assertTrue(Appl::$subTitle=="B");
+        $this->assertTrue(Appl::$description=="C");
+        Appl::setSiteTitle("AAA","BBB");
+        $this->assertTrue(Appl::$title=="AAA");
+        $this->assertTrue(Appl::$subTitle=="BBB");
+        $this->assertTrue(Appl::$description=="C");
+        Appl::setSiteSubTitle("S");
+        $this->assertTrue(Appl::$subTitle=="S");
+        Appl::setSiteDesctiption("D");
+        $this->assertTrue(Appl::$description=="D");
     }
 
 }

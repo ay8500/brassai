@@ -19,6 +19,7 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
+        echo("PasswordText\n");
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
 
         $p = \Config::getDatabasePropertys();

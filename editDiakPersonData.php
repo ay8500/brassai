@@ -28,13 +28,18 @@
 				<span>Válassz egy új jpg képet max. 2MByte</span>
 				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
 				<button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-upload"></span> Feltölt</button>
-				<?php  if (userIsAdmin()){
-				    $pic=$diak['picture'];
-				    $pic=substr($pic,0,strlen($pic)-4)."_o".substr($pic,strlen($pic)-4);
-				    ?>
-					<button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
-                    <a class="btn btn-default" target="_download" href="images/<?php echo $pic?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
-				<?php }?>
+                <?php if (isset($diak["picture"]) && $diak["picture"]!=null) {?>
+                    <?php  if (userIsAdmin()){
+                        $pic=$diak['picture'];
+                        $pic=substr($pic,0,strlen($pic)-4)."_o".substr($pic,strlen($pic)-4);
+                        ?>
+                        <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
+                        <a class="btn btn-default" target="_download" href="images/<?php echo $pic?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
+                    <?php }?>
+                    <?php if (userIsAdmin() || userIsSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
+                        <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="deletePersonPicture" value="<?php echo $diak["id"]?>"><span class="glyphicon glyphicon-upload"></span> Töröl</button>
+                    <?php } ?>
+                <?php } ?>
 				<input type="hidden" value="upload_diak" name="action" />
 				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 				<input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
