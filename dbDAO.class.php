@@ -159,8 +159,8 @@ class dbDAO {
      * @param int $schoolID
      * @return array
      */
-	public function getClassList($schoolID=1) {
-		return   $this->getElementList("class","schoolID=".$schoolID." and graduationYear <> 0",null,null,"text asc");
+	public function getClassList($schoolID=1,$originalId=false) {
+		return   $this->getElementList("class",$originalId, "schoolID=".$schoolID." and graduationYear <> 0",null,null,"text asc");
 	}
 	
 	/**
@@ -456,7 +456,7 @@ class dbDAO {
 					$where.=" and (facebookid is null or length(facebookid)<5) ";
 				}
 			}
-			$ret = $this->getElementList("person",$where);
+			$ret = $this->getElementList("person",false,$where);
 			usort($ret, "compareAlphabetical");
 			return $ret;
 		}
@@ -514,7 +514,7 @@ class dbDAO {
 	 * get the person list!
 	 */
 	public function getPersonList($where=null,$limit=null,$ofset=null) {
-		$ret = $this->getElementList("person",$where,$limit,$ofset);
+		$ret = $this->getElementList("person",false,$where,$limit,$ofset);
 		return $ret;
 	}
 
@@ -522,7 +522,7 @@ class dbDAO {
 	 * get sorted person list!
 	 */
 	public function getSortedPersonList($where=null,$limit=null,$ofset=null) {
-		$ret = $this->getElementList("person",$where,$limit,$ofset);
+		$ret = $this->getElementList("person",false,$where,$limit,$ofset);
 		usort($ret, "compareAlphabeticalTeacher");
 		return $ret;
 	}
@@ -677,14 +677,7 @@ class dbDAO {
 		return $this->dataBase->queryInt($sql);
 	}
 	
-	/**
-	 * get the recently updated person list
-	 */
-	public function getRecentChangedPersonList($limit) {
-		$ret = $this->getElementList("person",null,$limit,null,"changeDate desc");
-		return $ret;
-	}
-	
+
 	/**
 	 * List of temporary changes made by anonymous users
      * @param string $table
@@ -862,7 +855,7 @@ class dbDAO {
 		} else {
 			$sql.=" and (albumName is null or albumName='')";
 		}
-		return $this->getElementList("picture",$sql,null,null,"orderValue desc");	
+		return $this->getElementList("picture",false,$sql,null,null,"orderValue desc");
 	}
 
     /**
@@ -898,7 +891,7 @@ class dbDAO {
 		$sql.="isDeleted=0 ";
 		if ($where!="")
 			$sql.=" and ".$where; 
-		return $this->getElementList("picture",$sql,null,null,"title asc");	
+		return $this->getElementList("picture",false, $sql,null,null,"title asc");
 	}
 	
 	/*
@@ -967,9 +960,9 @@ class dbDAO {
 	 */
 	public function getPictureList($where=null) {
 		if (null==$where) {
-			return   $this->getElementList("picture","isDeleted=0");
+			return   $this->getElementList("picture",false,"isDeleted=0");
 		} else {
-			return   $this->getElementList("picture","isDeleted=0 and ".$where);
+			return   $this->getElementList("picture",false,"isDeleted=0 and ".$where);
 		}
 	}
 	
@@ -977,7 +970,7 @@ class dbDAO {
 	 * List of recent not deleted pictures
 	 */
 	public function getRecentPictureList($limit) {
-		return   $this->getElementList("picture","isDeleted=0",$limit,null,"uploadDate desc");
+		return   $this->getElementList("picture",false,"isDeleted=0",$limit,null,"uploadDate desc");
 	}
 	
 	
@@ -1200,14 +1193,14 @@ class dbDAO {
 	
 	public function getSongList($interpretId=0) {
 		if ($interpretId>0) {
-			return $this->getElementList("song","interpretID=".$interpretId);
+			return $this->getElementList("song",false,"interpretID=".$interpretId);
 		} else {
-			return $this->getElementList("song");
+			return $this->getElementList("song",false);
 		}
 	}
 
 	public function getInterpretList() {
-		return $this->getElementList("interpret",null,null,null,"name asc");
+		return $this->getElementList("interpret",false,null,null,null,"name asc");
 	}
 	
 	/*
@@ -1265,14 +1258,14 @@ class dbDAO {
 	 * get chat messages
 	 */
 	public function getMessages($limit=null,$offset=null) {
-		return $this->getElementList("message","classID is null",$limit,$offset,"changeDate desc");
+		return $this->getElementList("message",false,"classID is null",$limit,$offset,"changeDate desc");
 	}
 
 	/**
 	 * get class messages
 	 */
 	public function getClassMessages($classId,$limit=null,$offset=null) {
-		return $this->getElementList("message","classID =".$classId,$limit,$offset,"changeDate desc");
+		return $this->getElementList("message",false,"classID =".$classId,$limit,$offset,"changeDate desc");
 	}
 	
 	/**
@@ -1410,12 +1403,20 @@ class dbDAO {
 	
 //********************* Private ******************************************	
 
-	/**
-	 * Get an array of elements, or an empty array if no elements found.
-	 * Anonymous changes from the user IP will be considered
-     * even if the anonymous copys are returned the ids will be from the original entrys
-	 */
-	private function getElementList($table, $where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
+    /**
+     * Get an array of elements, or an empty array if no elements found.
+     * Anonymous changes from the user IP will be considered
+     * even if the anonymous copys are returned the ids will be from the original entrys if the parameter $originalId =true
+     * @param $table
+     * @param bool $originalId
+     * @param string $where
+     * @param int $limit
+     * @param int $offset
+     * @param string $orderby
+     * @param string $field
+     * @return array
+     */
+	private function getElementList($table,$originalId=false,$where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
         $ret = array();
 		//normal entrys
 		$sql="select ".$field.",id from ".$table." where ((changeForID is null and changeUserID is not null)";
@@ -1440,8 +1441,9 @@ class dbDAO {
                 $found=array_search($r["id"],array_column($anyonymous,"changeForID"));
                 if ($found!==false) {
                     $ret[$i]=$anyonymous[$found];
-                    /*the original id
-                    $ret[$i]["id"]=$r["id"];*/
+                    //the original id
+                    if ($originalId)
+                        $ret[$i]["id"]=$r["id"];
                 }
             }
         }
@@ -1453,7 +1455,7 @@ class dbDAO {
 	 * Anonymous changes from the user IP will be considered
 	 */
 	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-		return $this->getElementList($table,$where,$limit,$offset,$orderby,"id");
+		return $this->getElementList($table,false,$where,$limit,$offset,$orderby,"id");
 	}
 	
 	

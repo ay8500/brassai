@@ -4,16 +4,16 @@ include_once 'dbBL.class.php';
 	
 	$person=$db->getPersonByID($personid);
 	
-	$tab=getIntParam("tabOpen", 0);
-	if ($tab==2+$tabOffset) {
+	$tab=getParam("tabOpen", "cv");
+	if ($tab=="cv") {
 		$title="Rövid életrajzom: továbbképzések munkahelyek";
 		$type="cv";
 		$text = $person["cv"];
-	} elseif ($tab==3+$tabOffset) {
+	} elseif ($tab=="school") {
 		$title="Kedvenc diákkori történetek";
 		$type="story";
 		$text = $person["story"];
-	} elseif ($tab==4+$tabOffset) {
+	} elseif ($tab=="hobbys") {
 		$title="Ezt szeretem csinálni szabadidőmben";
 		$type="spare";
 		$text = $person["aboutMe"];

@@ -94,26 +94,33 @@ if(true)  { //Address
 	array_push($dataFieldObl		, "ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
-	array_push($dataFieldNames, "phone","mobil","skype","facebook","twitter","homepage","education","employer","function","children");
-	array_push($dataItemProp,"","","","","","","","","","","","");
-	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Twitter","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible,true ,true ,true ,true,true,true ,true ,true,true ,true );
-	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...',false,'http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
+	array_push($dataFieldNames, "phone","mobil","skype","facebook","homepage","education","employer","function","children");
+	array_push($dataItemProp,"","","","","","","","","");
+	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
+	array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true,true ,true );
+	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
+}
+if (userIsAdmin() || userIsSuperuser() ) {
+    array_push($dataFieldNames, "role");
+    array_push($dataItemProp,"role");
+    array_push($dataFieldCaption, "Opciók");
+    array_push($dataCheckFieldVisible, true);
+    array_push($dataFieldObl, false);
 }
 if (userIsAdmin()) { //only for admin
-	array_push($dataFieldNames, "facebookid","role","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
-	array_push($dataItemProp,"","","","","","","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","Jogok","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
+	array_push($dataFieldNames, "facebookid","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
+	array_push($dataItemProp,"","","","","","","","","","","");
+	array_push($dataFieldCaption, "FB-ID","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
+	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
+	array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
 if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-    $dataFieldObl[17+$offset] = "Évszám mettől meddig pl: 1961-1987";
-    $dataFieldCaption[17+$offset] = "Mettől meddig";
-    $dataFieldObl[18+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
-    $dataFieldCaption[18+$offset] = "Tantárgy";
-    $dataFieldCaption[19+$offset] = "Osztályfönök";
-    $dataFieldObl[19+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+    $dataFieldObl[16+$offset] = "Évszám mettől meddig pl: 1961-1987";
+    $dataFieldCaption[16+$offset] = "Mettől meddig";
+    $dataFieldObl[17+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
+    $dataFieldCaption[17+$offset] = "Tantárgy";
+    $dataFieldCaption[18+$offset] = "Osztályfönök";
+    $dataFieldObl[18+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
@@ -299,11 +306,11 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	}
 }
 
-if ($tabOpen==5) { 
+if ($tabOpen=="geoplace") {
 	Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
 	Appl::addJs("js/diakEditGeo.js");
 }
-if ($tabOpen==2 || $tabOpen==3 || $tabOpen==4) {
+if (in_array($tabOpen,array("cv","hobbys","school"))) {
 	Appl::addCss('editor/ui/trumbowyg.min.css');
 	Appl::addJs('editor/trumbowyg.min.js');
 	Appl::addJs('editor/langs/hu.min.js');
@@ -345,7 +352,7 @@ if (isAktClassStaf()) {
         }
     }
 }
-
+\maierlabs\lpfw\Appl::addCss('css/chosen.css');
 
 include("homemenu.inc.php");
 ?>
@@ -363,41 +370,45 @@ include("homemenu.inc.php");
 <?php }
 
 //initialize tabs
-if ($db->isClassIdForStaf(getAktClassId()) && !userIsAdmin() && !userIsSuperuser()) {
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz");
-} else if ( userIsSuperuser() ) { 
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz","Diákkoromból","Szabadidőmben","Infók");
-} else if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) { 
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz","Diákkoromból","Szabadidőmben","Geokoordináta","Bejelentkezési&nbsp;adatok","Infók");
-} else {
-	$tabsCaption=Array("Személyes&nbsp;adatok","Képek","Életrajz","Diákkoromból","Szabadidőmben","Térkép");
-}
-if ($action=="newperson") { 
-	$tabsCaption=Array("Új diák adatai");
+if ($action=="newperson") {
+    $tabsCaption = array(array("id" => "person", "caption" => "Új diák adatai"));
 } else if ($action=="newguest") {
-	$tabsCaption=Array("Új barát vagy vendég adatai");
+    $tabsCaption = array(array("id" => "person", "caption" => "Új barát vagy vendég adatai"));
 } else if ($action=="newteacher") {
-	$tabsCaption=Array("Új tanárnő vagy tanár adatai");
+    $tabsCaption = array(array("id" => "person", "caption" => "Új tanárnő vagy tanár adatai"));
+} else {
+    $tabsCaption = array(array("id" => "person", "caption" => "Személyes&nbsp;adatok"));
 }
-$tabOffset=0;
 if (isset($diak["deceasedYear"])) {
-    $tabOffset=1;
-    array_splice($tabsCaption, 1, 0, Array("Gyertyák"));
+    array_push($tabsCaption ,array("id" => "candles", "caption" => "Gyertyák"));
 }
+array_push($tabsCaption ,array("id" => "pictures", "caption" => "Képek"));
+array_push($tabsCaption ,array("id" => "cv", "caption" => "Életrajz"));
+array_push($tabsCaption ,array("id" => "hobbys", "caption" => "Szabadidőmben"));
+if ($diak["isTeacher"]==0) {
+    array_push($tabsCaption ,array("id" => "school", "caption" => "Diákkoromból"));
+}
+array_push($tabsCaption ,array("id" => "geoplace", "caption" => "Térkép"));
+if(userIsLoggedOn() || userIsAdmin()) {
+    if (getLoggedInUserId()==$diak["id"])
+        array_push($tabsCaption ,array("id" => "user", "caption" => "Bejelentkezési&nbsp;adatok"));
+    array_push($tabsCaption ,array("id" => "info", "caption" => "Infók"));
+}
+
 $tabUrl="editDiak.php";
 ?>
 <?php if (null!=getAktClass()) {?>
 <div class="container-fluid">
-	<?php  include("tabs.inc.php"); ?>
+	<?php  include('tabs.inc.php'); ?>
 	<div class="well">
 
 		<?php
 		//Personal Data
-		if ($tabOpen==0) {
+		if ($tabOpen=="person") {
 			include("editDiakPersonData.php");
 		}
         //Candles
-        if ($tabOpen==1 && $tabOffset>0) {
+        if ($tabOpen=="candles") {
             include("rip.inc.php");
             $personList=array();
             $personList[0]=$diak;
@@ -405,28 +416,25 @@ $tabUrl="editDiak.php";
             displayRipPerson($db,$diak);
         }
 		//Pictures
-		if ($tabOpen==1+$tabOffset) {
+		if ($tabOpen=="pictures") {
 			$type="personID";
 			$typeId=getRealId($diak);
 			include("picture.inc.php");
 		}
 		//Change storys cv, scool trory, sparetime
-		if ($tabOpen==2+$tabOffset || $tabOpen==3+$tabOffset || $tabOpen==4+$tabOffset) {
+		if (in_array($tabOpen,array("cv","hobbys","school"))) {
 			include("editDiakStorys.php");
 		}
 		//Change geo place
-		if ($tabOpen==5+$tabOffset) {
-			if (userIsSuperuser())
-				include("editDiakActivities.php");
-			else
-				include("editDiakPickGeoPlace.php");
+		if ($tabOpen=="geoplace") {
+			include("editDiakPickGeoPlace.php");
 		}
 		//Change password, usename, facebook
-		if ($tabOpen==6+$tabOffset) {
+		if ($tabOpen=="user") {
 			include("editDiakUserPassword.php");
 		}
 		//Activities
-		if ($tabOpen==7+$tabOffset) {
+		if ($tabOpen=="info") {
 			include("editDiakActivities.php");
 		}
 		?>
@@ -446,6 +454,14 @@ $tabUrl="editDiak.php";
 	<br/><br/><br/>
 	<p>Osztály névsórának a módosótásához elöbször válassz ki egy osztályt az "Osztályok" menü segítségével!</p>
 </div>
-<?php } ?>
-<?php include 'homefooter.inc.php'; ?>
+<?php
+}
+Appl::addJs('js/chosen.jquery.js');
+Appl::addJsScript('
+    $(document).ready(function(){
+        $(".chosen").chosen();
+    });
+');
+include 'homefooter.inc.php';
+?>
 

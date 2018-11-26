@@ -156,7 +156,7 @@ include("homemenu.inc.php");
 
     <div class="input-group shadowbox">
         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tanáraink</span>
-        <select class="chosen form-control" multiple="false" data-placeholder="...válassz..." id="teachers">
+        <select class="chosen form-control" multiple="true" data-placeholder="...válassz..." id="teachers">
             <?php
             if (isset($class["teachers"]) && $class["teachers"]!='') {
                 $savedTeachers = explode(',', $class["teachers"]);

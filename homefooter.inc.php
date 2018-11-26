@@ -100,9 +100,10 @@
 	<?php if (userIsAdmin()) {?>
 		function showip(ip) {
 		    $.ajax({
-		    	url: "ajax/getIpLocation.php?ip="+ip
-			}).success(function(data) {
-			    showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+		    	url: "ajax/getIpLocation.php?ip="+ip,
+			    success:function(data) {
+			        showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+		    	}
 			});
 		}
 	<?php } ?>

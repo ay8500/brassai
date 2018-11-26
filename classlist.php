@@ -26,7 +26,7 @@ Appl::setSiteDesctiption(getAktSchoolName()." osztályai");
 include("homemenu.inc.php");
 
 /** @var array $classes */
-$classes = $db->getClassList(getAktSchoolId());
+$classes = $db->getClassList(getRealId(getAktSchool()));
 
 ?>
 <div class="container-fluid">

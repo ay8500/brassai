@@ -54,7 +54,7 @@
     .acceptField {max-width:300px;max-height:300px;}
     
     /*person cards in hometable.php and search.php*/
-    .fields div div:first-child { font-weight: bold;width: 95px;text-align: right;float:left; }
+    .fields div div:first-child { font-weight: bold;width: 100px;text-align: right;float:left; }
     .fields div div:first-child + div {display:flow-root}
     .fields {vertical-align: text-top;}
     .element{width:500px;display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 10px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}

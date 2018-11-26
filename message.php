@@ -137,8 +137,8 @@ include("homemenu.inc.php");
 		</form>
 	</div>		
 
-<?PHP
-	echo(readMessageList(100));
+<?php
+	displayMessageList(100);
 ?>
 	
 </div>

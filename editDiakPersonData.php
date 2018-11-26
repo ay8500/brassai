@@ -58,7 +58,7 @@
 	<?php //Save button?>
 	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button id="saveButton" onclick="document.forms['edit_form'].submit();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
+			<button id="saveButton" onclick="savePerson();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
             <button onclick="location.href='editDiak.php'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
 		</div>
 	<?php } ?>
@@ -74,9 +74,11 @@
 	</div>
 
 <?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
-    <form method="get" name="edit_form" >
-        <?php if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
-            $optionClasses=$db->getClassList(getAktSchoolId());
+    <form method="get" id="editform" >
+        <?php
+        //Editfields school and class
+        if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
+            $optionClasses=$db->getClassList(getRealId(getAktSchool()),true);
         ?>
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
@@ -87,7 +89,7 @@
                 <span style="min-width:110px;" class="input-group-addon" >Iskola</span>
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
                 <select class="form-control" name="schoolID" id="schoolID">
-                    <option>Brassai Sámuel líceum</option>
+                    <option value="1">Brassai Sámuel líceum</option>
                 </select>
             </div>
             <?php if (isAktClassStaf()) { ?>
@@ -99,7 +101,7 @@
                     <select class="form-control" name="classID" id="classID">
                         <option value="-1" >...válassz...</option>
                         <?php foreach ($optionClasses as $optionClass) {?>
-                            <option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
+                            <option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]===$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -110,7 +112,7 @@
         <?php } ?>
 
 
-        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" style="overflow-x: hidden;">
+        <div itemtype="http://schema.org/PostalAddress" itemprop="address" itemscope >
         <?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
             <div class="input-group">
                 <?php
@@ -126,14 +128,11 @@
                         <span style="width:40px" id="highlight" class="input-group-addon">
                             <?php if ($dataCheckFieldVisible[$i]) {?>
                                 <input type="checkbox" name="cb_'<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?>' title="A megjelölt mezöket csak az osztálytásaid látják." />
-                            <?php } ?>
+                            <?php } else { echo '&nbsp'; }?>
                         </span>
-                    <?php }?>
-                    <?php
-                    if ($dataItemProp[$i]==="combobox") {
-                            echo('<select class="form-control" >');
-                            echo('<option>'.getFieldValueNull($diak,$dataFieldNames[$i]).'</option>');
-                            echo('</select>');
+                    <?php }
+                    if ($dataItemProp[$i]==="role") {
+                            showRoleField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
                     } else {
                         echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
                         if ($dataFieldNames[$i]=="changeUserID") {
@@ -194,7 +193,7 @@
             }
             echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
             echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
-            if (!userIsAdmin())
+            if (!userIsAdmin() && !userIsSuperuser())
                 echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
         }
     ?>
@@ -206,7 +205,32 @@
         Utolsó diákéveit a <?php echo getAktClass()["name"] ?>-ban járta.
         <?php if (isset($person["birthname"])) { ?> Osztálytársai <?php echo $person["birthname"] ?> diákkori nevén ismerik. <?php } ?>
     </div>
-<?php } ?>
+<?php }
+
+function showRoleField($value,$fieldName) {
+    $options = array();
+    $disabled='';
+    array_push($options, array('role' => 'unknown', 'text' => 'Nem tudunk róla','disabled'=>$disabled));
+    array_push($options, array('role' => 'jmlaureat', 'text' => "Juhász Máthé díjas",'disabled'=>$disabled));
+    if (!userIsAdmin())
+        $disabled='disabled';
+    array_push($options, array('role' => 'editor', 'text' => 'Osztályfelelős','disabled'=>$disabled));
+    array_push($options, array('role' => 'superuser', 'text' => "Rendszerfelelős",'disabled'=>$disabled));
+    array_push($options, array('role' => 'admin', 'text' => "Rendszergazda",'disabled'=>'disabled'));
+    showChosenField($value,$fieldName,$options);
+}
+
+function showChosenField($value,$fieldName,$options)
+{
+    echo('<select class="form-control chosen" multiple="true" data-placeholder="...válassz..." id="'.$fieldName.'">');
+    foreach ($options as $option) {
+        $selected = (strstr($value,$option["role"])!==false)?"selected":"";
+        echo('<option value="'.$option["role"].'" '.$selected.' '.$option["disabled"].' >' . $option["text"] . '</option>');
+    }
+    echo('</select>');
+    echo('<input type="hidden" name="'.$fieldName.'"/>');
+}
+?>
 
 <script>
 	function validateEmailInput(sender,button) { 
@@ -223,4 +247,17 @@
 		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(mail);
 	}
+
+	function savePerson() {
+        var a = $("#role").children();
+        if (a != null) {
+            var s = '';
+            for (var i = 0; i < a.length; i++) {
+                if (a[i].selected )
+                    s += a[i].value + ' ';
+            }
+            $('input[name="role"]').val(s);
+        }
+        $('#editform').submit();
+    }
 </script>

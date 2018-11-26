@@ -32,16 +32,18 @@ if (userIsAdmin()) {
 
 
 	//initialise tabs
-	$tabsCaption=Array(	'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>',
-						'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>',
-						'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>',
-						'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>',
-						'Hozzáférések');
+    $tabsCaption = array();
+    array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>'));
+    array_push($tabsCaption ,array("id" => "person", "caption" => 'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>'));
+    array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>'));
+    array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>'));
+    array_push($tabsCaption ,array("id" => "action", "caption" => 'Hozzáférések'));
+
 	include("tabs.inc.php");
-	if ($tabOpen==0) {
+	if ($tabOpen=="class") {
 		generateCheckHtmlTable($db,"Osztályok", "Osztály","Class","text",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
 	}
-	if ($tabOpen==1) {
+	if ($tabOpen=="person") {
 		$dummyPerson=$db->getPersonDummy();
         $dummyPerson["id"]="";$dummyPerson["picture"]="";
 		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["isTeacher"]="";
@@ -51,10 +53,10 @@ if (userIsAdmin()) {
 		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
 		generateCheckHtmlTable($db,"Személyek", "Személy","Person","lastname",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
 	}
-	if ($tabOpen==2) { 
+	if ($tabOpen=="picture") {
 		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
 	}
-	if ($tabOpen==3) {
+	if ($tabOpen=="message") {
 		$list=$db->getListToBeChecked('message');
 ?>
 	<p align="center">
@@ -84,7 +86,7 @@ if (userIsAdmin()) {
 	 </table>  
 	</p>
 <?php }?>
-<?php if ($tabOpen==4) { ?>
+<?php if ($tabOpen=="action") { ?>
 	<p align="center">
 	   Hozzáférések ma:<br/>
    	  <table align="center" border="1">

@@ -11,10 +11,10 @@ $points = Array();
 $classId=getRealId(getAktClass());
 $where="geolat is not null and geolat <>'' ";
 if($classId==null) {
-	$classList=$db->getClassList(getRealId(getAktSchool()));
+	$classList=$db->getClassList(getRealId(getAktSchool()),true);
 	$classIdList=array();
 	foreach ($classList as $c) {
-		array_push($classIdList,getRealId($db->getClassById($c["id"])));
+		array_push($classIdList,$c["id"]);
 	}
 	$where .=" and classID in (".implode(",",$classIdList).")";
 } else {

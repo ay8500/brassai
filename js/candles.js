@@ -5,10 +5,11 @@ $( document ).ready(
 function showPersonCandle(id) {
 	hideLightCandle(id);
 	$.ajax({
-		url: "ajax/getCandleLighters.php?id="+id
-	}).success(function(data) {
-		$("#personlist"+id).html(data);
-		$("#person-candle"+id).show();
+		url: "ajax/getCandleLighters.php?id="+id,
+		success:function(data) {
+			$("#personlist"+id).html(data);
+			$("#person-candle"+id).show();
+		}
 	});
 }
 
@@ -27,12 +28,14 @@ function hideLightCandle(id) {
 function lightCandle(id) {
 	candles[id] = ++candles[id];
 	$.ajax({
-		url: "ajax/setCandleLighter.php?id="+id
-	}).success(function(data) {
-		showCandles(id,candles[id]);
-		$("#light-button"+id).prop("disabled",true);
-	}).error (function(data) {
-		alert('Nem sikerült.');
+		url: "ajax/setCandleLighter.php?id="+id,
+		success:function(data) {
+			showCandles(id,candles[id]);
+			$("#light-button"+id).prop("disabled",true);
+		},
+		error: function(data) {
+			alert('Nem sikerült.');
+		}
 	}) ;
 }
 

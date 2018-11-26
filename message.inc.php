@@ -2,81 +2,92 @@
 include_once 'sendMail.php';
 
 /**
- * Read the messages and return it as a html list
+ * display the messag list
  * @param integer $elements
  * @return string
  */
-function readMessageList($elements, $offset=0) {
+function displayMessageList($elements, $offset=0) {
 	global $db;
-	$h=$db->getMessages($elements,$offset);
+	$messageList=$db->getMessages($elements,$offset);
 	$ret="";
-	foreach ($h as $message) {
-		$diak=null;
+	foreach ($messageList as $message) {
+		$person=null;
 		if (isset($message["changeUserID"]) && $message["changeUserID"]>=0) {
-			$diak=$db->getPersonByID($message["changeUserID"]);
+			$person=$db->getPersonByID($message["changeUserID"]);
 		}
 		if	(	userIsAdmin() ||  	//Admin
-				($diak!=null && $diak["classID"]==$db->getLoggedInUserClassId()) || //User
+				($person!=null && $person["classID"]==$db->getLoggedInUserClassId()) || //User
 				($message["isDeleted"]==0 &&  
 				$message["privacy"]=="world" && 
 				(isset($message["changeUserID"]) || (!isset($message["changeUserID"]) && $message["changeIP"]==$_SERVER["REMOTE_ADDR"]))
 				)
 			) {
-			if($message["isDeleted"]==0)
-				$ret .= '<div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">';
-			else 
-				$ret .= '<div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#fff0f0">';
-				$ret .= '<img src="'.getPersonPicture($diak).'" style="height:40px; border-radius:5px;margin:2px" />';
-			$ret .= '<div style="display: inline-block;vertical-align: bottom;margin-left:5px">';
-			if (isset($message["name"]) && strlen($message["name"])>3) {
-				$ret .=$message["name"];
-			} else if (isset($message["changeUserID"]) && $message["changeUserID"]!=1 && $message["changeUserID"]!=-1) {
-				$ret .= '<a href="editDiak.php?uid='.$message["changeUserID"].'" >';
-				$ret .= getPersonName($diak);
-				$ret .='</a>';		
-			} else {
-				$ret .= "Anonim felhasználó" ;
-			}
-			$ret .= '</div>'; 
-			$ret .= '<div style="margin:10px 0px 10px 0px">';
-				$ret .= '<div class="message_text">'.html_entity_decode($message["text"]).'</div>';
-			if (isset($message["comment"]))
-				$ret .= '<br /><b>Kommentár: </b>'.html_entity_decode($message["comment"]);
-				$ret .= '<div style="margin-bottom:-5px; ">';
-				$ret .= 'Datum:'.\maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"])." ";
-			//Privacy
-			if ($message["privacy"]=="world")
-				$ret .= '<span class="cmessage message_world">Ezt az üzenetet mindenki látja.</span>';
-			if ($message["privacy"]=="class")
-				$ret .= '<span class="cmessage message_class">Ezt az üzenetet csak az én osztálytársaim tekinthetik meg.</span>';
-			if ($message["privacy"]=="scool")
-				$ret .= '<span class="cmessage message_scool">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
-			//Delete button
-			if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
-				(isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
-				$message["changeUserID"]==getLoggedInUserId() )
-				if ($message["isDeleted"]==0) {
-					$ret .= '<button class="btn btn-danger" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
-			}
-			$ret .= "\n";
-			if (userIsAdmin()) {
-				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'"/>';
-				$ret .= ' Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;"/>';
-				$ret .= ' <button class="btn btn-warning" name="action" value="commentMessage">Kiment</button>';
-				$ret .= "</form></span>\n";
-				$ret .= '<span><form><input type="hidden" name="id" value="'.$message['id'].'"/>';
-				$ret .= ' Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;" value="'.(isset($message["changeUserID"])?$message["changeUserID"]:'').'"/>';
-				$ret .= ' <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>';
-				$ret .= "</form></span>\n\n";
-			}
-			$ret .= '</div>';
-			$ret .= '</div>';
-			$ret .= '</div><div style="width:100%; height:10px;"></div>'."\r\n";
-		}	
+		    displayMessage($message,$person);
+		}
 	}
 	return $ret;
 }
 
+/**
+ * @param $message
+ * @param $person
+ * @return void
+ */
+function displayMessage($message, $person) {
+    if($message["isDeleted"]==0) {?>
+        <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">
+    <?php } else { ?>
+        <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#fff0f0">
+    <?php }?>
+    <img src="<?php echo getPersonPicture($person)?>" style="height:40px; border-radius:5px;margin:2px" />
+    <div style="display: inline-block;vertical-align: bottom;margin-left:5px">
+    <?php if (isset($message["name"]) && strlen($message["name"])>3) {
+        echo $message["name"];
+    } else if (isset($message["changeUserID"]) && $message["changeUserID"]!=1 && $message["changeUserID"]!=-1) {
+        echo '<a href="editDiak.php?uid='.$message["changeUserID"].'" >'.getPersonName($person).'</a>';
+    } else {
+        echo "Anonim felhasználó";
+    }?>
+    </div>
+    <div style="margin:10px 0px 10px 0px">
+        <div class="message_text"><?php echo html_entity_decode($message["text"])?></div>
+        <?php if (isset($message["comment"])) {?>
+            <br /><b>Kommentár: </b><?php echo html_entity_decode($message["comment"]); ?>
+        <?php } ?>
+        <div style="margin-bottom:-5px; ">
+            <?php echo  'Datum:'.\maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"])." "; ?>
+            <?php //Privacy
+            if ($message["privacy"]=="world")
+                echo '<span class="cmessage message_world">Ezt az üzenetet mindenki látja.</span>';
+            if ($message["privacy"]=="class")
+                echo '<span class="cmessage message_class">Ezt az üzenetet csak az én osztálytársaim tekinthetik meg.</span>';
+            if ($message["privacy"]=="scool")
+                echo '<span class="cmessage message_scool">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
+            //Delete button
+            if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
+                (isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
+                $message["changeUserID"]==getLoggedInUserId() )
+                if ($message["isDeleted"]==0) {
+                    echo '<button class="btn btn-danger" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
+                }
+            if (userIsAdmin()) {?>
+                <span>
+                    <form><input type="hidden" name="id" value="<?php echo $message['id'] ?>"/>
+                        Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;"/>
+                        <button class="btn btn-warning" name="action" value="commentMessage">Kiment</button>
+                    </form>
+                </span>
+                <span>
+                    <form><input type="hidden" name="id" value="'.$message['id'].'"/>
+                        Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;" value="<?php echo (isset($message["changeUserID"])?$message["changeUserID"]:'')?>"/>
+                        <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>
+                    </form>
+                </span>
+            <?php }?>
+        </div>
+    </div>
+    </div><div style="width:100%; height:10px;"></div>
+<?php }
 
 /**
  * Delete one message from the message json file

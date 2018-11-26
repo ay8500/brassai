@@ -5,11 +5,8 @@
 // include("tabs.php");
 // if ($tabOpen==0) {......}
 
-if (isset($_GET["tabOpen"])) $tabOpen=$_GET["tabOpen"]; 
-else if (isset($_POST["tabOpen"])) $tabOpen=$_POST["tabOpen"]; 
-else $tabOpen=0;
-if ( $tabOpen> sizeof($tabsCaption)) $tabOpen=0;
-if (!isset($tabUrl)) 
+$tabOpen=getParam("tabOpen","person");
+if (!isset($tabUrl))
 	$tabUrl=getenv("SCRIPT_NAME");
 ?>
 
@@ -37,11 +34,11 @@ if (!isset($tabUrl))
 
 <ul class="nav nav-pills nav-justified" role="tablist">
 <?php 
-	foreach($tabsCaption as $key => $Caption ) {
-		if ($key==$tabOpen)
-	        echo '<li class="active"><a href="#">'.$Caption.'</a></li>';
+	foreach($tabsCaption as $tab ) {
+		if ($tab["id"]==$tabOpen)
+	        echo '<li class="active"><a href="#">'.$tab["caption"].'</a></li>';
 		else
-         	echo '<li><a href="javascript:changeTab('."'".$tabUrl.'?tabOpen='.$key."'".');" >'.$Caption.'</a></li>';
+         	echo '<li><a href="javascript:changeTab('."'".$tabUrl.'?tabOpen='.$tab["id"]."'".');" >'.$tab["caption"].'</a></li>';
 	}
 ?>       
 </ul>
