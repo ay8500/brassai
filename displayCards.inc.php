@@ -28,10 +28,12 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 		</div>
 		<div class="personboxc">
 			<a href="<?php echo $personLink?>"><h4><?php echo getPersonName($d);?></h4></a>
+            <?php if (strstr($d["role"],"jmlaureat")!==false)
+                echo('<div><a href="search.php?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
 			<?php if($showClass) {?>
 				<?php if ($d["isTeacher"]==1) { ?>
 					<h5>Tanár</h5>
-				<?php } else { 
+				<?php } else {
 					$diakClass = $db->getClassById($d["classID"]);
 					$classText = getClassName($diakClass);
 					if (isPersonGuest($d)==1) {

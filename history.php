@@ -119,6 +119,7 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayElementObj($person, $personNext,"passw","P");
 	displayElementObj($person, $personNext,"classID","C");
 	displayElementObj($person, $personNext,"isTeacher","T");
+    displayElementObj($person, $personNext,"role","R");
 	if ($item["changeUserID"]!=$person["changeUserID"] && !$lastElement && userIsAdmin())
 		displayChangeData($db,$item,0);
 }

@@ -80,7 +80,7 @@ class DBTest extends PHPUnit_Framework_TestCase
         $ret = $db->queryInt("select count(1) from phpunit ");
         self::assertTrue($ret>0);
         $ret = $db->queryInt("select count(1) from phpunit  limitare 5");
-        self::assertTrue($ret==0);
+        self::assertTrue($ret==-1);
 
         $db->query("select * from phpunit  wwhere id is not null");
         self::assertNull($db->fetchRow());

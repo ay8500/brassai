@@ -308,7 +308,7 @@ if (getParam("album")!=null) {
 			<?php if (isset($personid)):?>
 				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
 			<?php endif;?>
-			<input type="hidden" value="<?PHP echo(getIntParam("tabOpen",0)) ?>" name="tabOpen" />
+			<input type="hidden" value="<?PHP echo(getParam("tabOpen",0)) ?>" name="tabOpen" />
 			<input type="hidden" name="type" value="<?php echo ($type)?>" />
 			<?php if(null!=getParam("album")) {?>
 				<input type="hidden" name="album" value="<?php echo (getParam("album"))?>" />
