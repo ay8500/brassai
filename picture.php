@@ -43,15 +43,18 @@ $album=getParam("album","");
 
 if ($type=="classID") {
 	$subtitle="Osztályképek: ".getAktClassName()." ".$album;
-} if ($type=="personID") { 
+} elseif ($type=="personID") {
 	$person=$db->getPersonByID($typeId);
 	$subtitle=getPersonName($person)." képei";
 	$link=getPersonLinkAndPicture($person)." képei";
-} if ($type=="schoolID") { 
+} elseif ($type=="schoolID") {
 	$subtitle="Képek iskolánkról: ".$album;
-} if ($album=="_tablo_" || $type=='tablo') {
-	$subtitle="Iskolánk tabló képei.";
-}  
+}
+if ($album=="_tablo_" || $type=='tablo') {
+	$subtitle="Iskolánk tabló képei";
+} elseif ($album=="_card_" || $type=='card') {
+    $subtitle="Kicsengetésikártyák";
+}
 \maierlabs\lpfw\Appl::setSiteTitle($subtitle);
 \maierlabs\lpfw\Appl::$subTitle= $type=="personID"?$link:$subtitle;
 include("homemenu.inc.php");

@@ -48,13 +48,13 @@ class dbDAO {
 
     /**
      * SQL Statement to select the new anonymous entrys
-     * @param string $table
+     * @param string $table table name inkl . if select is joined
      * @return string
      */
     private function getSqlAnonymousNew($table=null)
     {
         if ($table!=null)
-            return $table.".changeForID is null and ".$table.".changeUserID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+            return $table."changeForID is null and ".$table."changeUserID is null and ".$table."changeIP='".$_SERVER["REMOTE_ADDR"]."'";
         else
             return "changeForID is null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
     }
@@ -513,8 +513,8 @@ class dbDAO {
     /**
 	 * get the person list!
 	 */
-	public function getPersonList($where=null,$limit=null,$ofset=null) {
-		$ret = $this->getElementList("person",false,$where,$limit,$ofset);
+	public function getPersonList($where=null,$limit=null,$ofset=null,$order=null,$field="*",$join=null) {
+		$ret = $this->getElementList("person",false,$where,$limit,$ofset,$order,$field,$join);
 		return $ret;
 	}
 
@@ -1416,12 +1416,21 @@ class dbDAO {
      * @param string $field
      * @return array
      */
-	private function getElementList($table,$originalId=false,$where=null, $limit=null, $offset=null, $orderby=null, $field="*") {
+	private function getElementList($table,$originalId=false,$where=null, $limit=null, $offset=null, $orderby=null, $field="*", $join=null) {
         $ret = array();
+        $jtable = null;
 		//normal entrys
-		$sql="select ".$field.",id from ".$table." where ((changeForID is null and changeUserID is not null)";
+		$sql="select ".$field;
+        if ($join==null)
+            $sql .= " ,id ";
+        $sql .= " from ".$table;
+		if ($join!=null) {
+            $sql .= " join " . $join;
+            $jtable = $table.'.';
+        }
+        $sql .=" where ((".$jtable."changeForID is null and ".$jtable."changeUserID is not null)";
 		//and anonymous new entrys
-        $sql.=" or (".$this->getSqlAnonymousNew().") )";
+        $sql.=" or (".$this->getSqlAnonymousNew($jtable).") )";
 		if ($where!=null)		$sql.=" and ( ".$where." )";
 		if ($orderby!=null)		$sql.=" order by ".$orderby;
 		if ($limit!=null)		$sql.=" limit ".$limit;

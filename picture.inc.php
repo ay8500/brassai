@@ -209,10 +209,12 @@ if(isset($picture)) {
 	$pictures = array($picture);	//Only one picture => convert to array
 	$notDeletedPictures=1;
 } else {
-	if ($albumParam!="_tablo_")
-		$pictures = $db->getListOfPictures($typeId, $type, 2, 2, $albumParam);
-	else
-		$pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
+	if ($albumParam=="_tablo_")
+        $pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%Tabló%' or title like '%tabló%') ");
+	elseif ($albumParam=="_card_")
+        $pictures = $db->getListOfPicturesWhere("classID is not null and (title like '%icsengetési%') ");
+    else
+        $pictures = $db->getListOfPictures($typeId, $type, 2, 2, $albumParam);
 	foreach ($pictures as $pict) {
 		if ( $pict["isDeleted"]==0 ) {
 			$notDeletedPictures++;
@@ -224,6 +226,7 @@ if(isset($picture)) {
 $startAlbumList=array(array("albumName"=>"","albumText"=>"Főalbum"));
 if ($type=="schoolID") {
 	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".$typeId."&album=_tablo_","albumText"=>"Tablók","albumName"=>"_tablo_")));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".$typeId."&album=_card_","albumText"=>"Kicsengetésikártyák","albumName"=>"_card_")));
 }
 $albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
 
@@ -274,7 +277,7 @@ if (getParam("album")!=null) {
 				</form>
 			</div>
 		<?php } ?>
-		<?php if ($albumParam!="" && $albumParam!="_tablo_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
+		<?php if ($albumParam!="" && $albumParam!="_tablo_" && $albumParam!="_card_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -290,7 +293,7 @@ if (getParam("album")!=null) {
 	
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
-	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $albumParam!="_tablo_") {?>
+	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $albumParam!="_tablo_" && $albumParam!="_card_") {?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>

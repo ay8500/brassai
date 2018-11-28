@@ -34,18 +34,17 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				<?php if ($d["isTeacher"]==1) { ?>
 					<h5>Tanár</h5>
 				<?php } else {
-					$diakClass = $db->getClassById($d["classID"]);
-					$classText = getClassName($diakClass);
+				    if (!isset($d["classText"])) {
+					    $diakClass = $db->getClassById($d["classID"]);
+					    $d["classText"] = getClassName($diakClass);
+					}
 					if (isPersonGuest($d)==1) {
-						if ($d["classID"]!=0) 
-							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+						if (strstr($d["classText"],"staf")!==fasle)
+							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
 						else
-							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
 					} else {
-						if (null!=$diakClass)
-							echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
-						else 
-							echo('<h5>Véndiák:'.-1 * $d["classID"].'</h5>'); //Graduation year for laurates that are not in the db
+							echo '<h5>Véndiák:<a href="hometable.php?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
 					}
 				} ?>
 			<?php } ?>

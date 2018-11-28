@@ -102,7 +102,7 @@
         			<li><a href="iskola.php">Liceum története</a></li>
         			<li><a href="picture.php?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
         			<li><a href="picture.php?type=schoolID&typeid=<?php echo getAktSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
-        			<li><a href="laureates.php">Juhász Máthé díjasok</a></li>
+        			<li><a href="search.php?type=jmlaureat">Juhász Máthé díjasok</a></li>
         			<li><a href="worldmap.php?classid=all">Térkép</a></li>
         			<li><a href="statistics.php">Statisztika</a></li>
         			<li><a href="zenetoplista.php?classid=all">Zenetoplista</a></li>
