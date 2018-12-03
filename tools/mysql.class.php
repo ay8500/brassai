@@ -233,7 +233,7 @@ class MySql
                 if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
                 } else {
-                    if ($d["value"]=='') {
+                    if ($d["value"]==='') {
                         $sql .= 'null';
                     } else {
                         $sql .= $d["value"];

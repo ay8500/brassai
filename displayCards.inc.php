@@ -61,7 +61,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				} else {
 					if (isset($d["function"]))
 					    echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
-                    if (isset($d["employer"]))
+                    if (isset($d["employer"]) && $d["employer"]!="")
                         echo "<div><div>Mettől meddig:</div><div>".getFieldValue($d["employer"])."&nbsp;</div></div>";
 					if (showField($d,"children")) {
 						echo "<div><div>Osztályfőnök:</div><div>";

@@ -6,14 +6,14 @@ if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
 include_once('tools/ltools.php');
 include_once 'tools/appl.class.php';
 
-if (getParam("action")=="passw") {
+if (getParam("action")=="todosomething") {
 	include_once("config.class.php");
 	include_once("logon.php");
 	include_once("dbBL.class.php");
 
 	$db = new dbDAO;
 
-	echo ($db->dbUtilityEncryptPasword());
+	echo ("This is a empty function");
 	
 	die();
 }
@@ -100,9 +100,9 @@ if (userIsAdmin()) {?>
 	<ul class="list-group">
   		<li class="list-group-item">
   			<div class="input-group input-group-sm">
-  	  			<button class="btn btn-danger" onclick="rip('passw');" >EncryptPassw</button>
-                <button class="btn btn-default" onclick="rip('decrypt');" >DecryptText</button>
-                <button class="btn btn-default" onclick="rip('encrypt');" >EncryptText</button>
+  	  			<button class="btn btn-danger" onclick="doSomething('todosomething');" >Do Something</button>
+                <button class="btn btn-default" onclick="doSomething('decrypt');" >DecryptText</button>
+                <button class="btn btn-default" onclick="doSomething('encrypt');" >EncryptText</button>
   	  		</div>
   		</li>
         <li class="list-group-item">
@@ -211,7 +211,7 @@ function createZipFile() {
     });
 }
 
-function rip(action) {
+function doSomething(action) {
     $('#databaseResult').html('working....');
     $.ajax({
 		url:"database.php?action="+action+"&param="+$('#dbText').val(),

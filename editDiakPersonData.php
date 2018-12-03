@@ -101,7 +101,7 @@
                     <select class="form-control" name="classID" id="classID">
                         <option value="-1" >...válassz...</option>
                         <?php foreach ($optionClasses as $optionClass) {?>
-                            <option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]===$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
+                            <option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
                         <?php } ?>
                     </select>
                 </div>

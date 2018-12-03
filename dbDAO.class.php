@@ -802,7 +802,7 @@ class dbDAO {
 		$newEntry=$picture["id"]==-1;
 		$id = $this->saveEntry("picture", $picture);
 		if ($newEntry && $id>=0) {
-			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id]],"id",$id);
+			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id],["field"=>"isDeleted","type"=>"i","value"=>0]],"id",$id);
 		}
         $this->updateRecentChangesList();
 		return $id;
@@ -840,7 +840,7 @@ class dbDAO {
 	 * @param string $type the type of picture personID, classID, schoolID
 	 * @return array of pictures  
 	 */
-	 public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1,$album=null) {
+	 public function getListOfPictures($id,$type,$isDeleted=0,$isVisibleForAll=1,$album=null,$limit=null,$offset=null) {
 		$sql="";
 		if($id!=null)
 			$sql.=$type."=".$id;
@@ -855,8 +855,22 @@ class dbDAO {
 		} else {
 			$sql.=" and (albumName is null or albumName='')";
 		}
-		return $this->getElementList("picture",false,$sql,null,null,"orderValue desc");
+		return $this->getElementList("picture",false,$sql,$limit,$offset,"orderValue desc");
 	}
+
+
+    /**
+     * Get list of pictures by where
+     * @param string where
+     * @return array of pictures
+     */
+    public function getListOfPicturesWhere($where="",$limit=null,$offset=null) {
+        $sql="";
+        $sql.="isDeleted=0 ";
+        if ($where!="")
+            $sql.=" and ".$where;
+        return $this->getElementList("picture",false, $sql,$limit,$offset,"title desc");
+    }
 
     /**
      * Get list of pictures
@@ -880,21 +894,7 @@ class dbDAO {
         return sizeof($this->getIdList("picture",$sql));
     }
 
-
-    /**
-	 * Get list of pictures by where
-	 * @param string where 
-	 * @return array of pictures  
-	 */
-	 public function getListOfPicturesWhere($where="") {
-		$sql="";
-		$sql.="isDeleted=0 ";
-		if ($where!="")
-			$sql.=" and ".$where; 
-		return $this->getElementList("picture",false, $sql,null,null,"title asc");
-	}
-	
-	/*
+    /*
 	 * get the list of picture albums 
 	 */
 	public function getListOfAlbum($type,$typeId,$startList=array()) {
@@ -1104,7 +1104,7 @@ class dbDAO {
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
         $sql .= " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
-        $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
+        $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') and (isDeleted=0) order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
         $sql .= " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";

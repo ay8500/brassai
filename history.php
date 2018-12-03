@@ -16,7 +16,8 @@ include('homemenu.inc.php');
 
 <?php if (userIsAdmin() || userIsSuperuser()) {
     if (isActionParam("delete")) {
-        $db->deleteHistoryEntry(getParam("did"));
+        if ($db->deleteHistoryEntry(getParam("did")))
+            $db->updateRecentChangesList();
     }
 	$history=$db->getHistory(getParam("table"), getParam("id"));
 ?>
@@ -158,7 +159,7 @@ function displayVote($db,$item,$vote,$voteNext) {
  */
 function displayChangeData($db,$item,$historyId) {
     ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
-	<?php if (userIsAdmin()) {?>
+	<?php if (userIsAdmin() || userIsSuperuser()) {?>
 		<td onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</td>
         <td><button onclick="deleteHistory(<?php echo $historyId.",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>
 	<?php }

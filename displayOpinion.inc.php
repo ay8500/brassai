@@ -30,7 +30,7 @@ function displayPersonOpinion($db,$id,$teacher,$decesed) {
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-person-candle-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserId() ?>)"
            title="Égö gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
             <span style="margin-right: -8px;">
                 <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/><span class="countTag"><?php echo $o->candles-1?></span>
@@ -256,6 +256,7 @@ function displayPictureOpinion($db,$id){
         return false;
     }
 ");
+if (!isActionParam("showmore")) {
 ?>
 <div id="opinionperson" style="display: none">
     <div class="optiondiv">
@@ -324,3 +325,4 @@ function displayPictureOpinion($db,$id){
         </div>
     </div>
 </div>
+<?php } ?>

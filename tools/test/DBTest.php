@@ -154,6 +154,10 @@ class DBTest extends PHPUnit_Framework_TestCase
         self::assertTrue($db->update("phpunit",$data,"id","2"));
         self::assertTrue($db->queryInt("select changeUserID from phpunit where id=2")==12);
         self::assertFalse($db->update("phpunit",$data,"error","2"));
+        $data = array();
+        $data = $db->insertFieldInArray($data,"changeUserID",'');
+        self::assertTrue($db->update("phpunit",$data,"id","2"));
+        self::assertTrue($db->queryInt("select count(1) from phpunit where changeUserID is null")==1);
 
         $data = array();
         $data = $db->insertFieldInArray($data,"changeIP","127.0.0.1");
@@ -171,8 +175,8 @@ class DBTest extends PHPUnit_Framework_TestCase
         //Counter
         $ret=$db->getCounter();
         self::assertTrue(is_object($ret));
-        self::assertTrue($ret->changes==15);
-        self::assertTrue($ret->querys==35);
+        self::assertTrue($ret->changes==16);
+        self::assertTrue($ret->querys==36);
 
 
         self::assertTrue($db->query("drop table phpunit"));

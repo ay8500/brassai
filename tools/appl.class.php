@@ -89,8 +89,18 @@ class Appl {
      * @param string $cssFile
      * @return void
 	 */
-	public static function addCss($cssFile) {
-		array_push(self::$css, $cssFile);
+	public static function addCss($cssFile,$phpInterpreter=false,$verion=true) {
+	    if (self::$renderingStarted) {
+            echo  '<style>'."\n"."/* iserted and interpreted css:".$cssFile."*/\n";
+            include $cssFile;
+            echo  "\n".'</style>'."\n";
+        } else {
+            $css = new \stdClass();
+            $css->file = $cssFile;
+            $css->interpret = json_encode($phpInterpreter);
+            $css->version = $verion;
+            array_push(self::$css, $css);
+        }
 	}
 	
 	/**
@@ -136,7 +146,17 @@ class Appl {
 	 */
 	public static function includeCss() {
 		foreach (self::$css as $cssfile) {
-			echo('<link rel="stylesheet" type="text/css" href="'.$cssfile.'?v='.\Config::$webAppVersion.'"></link>'."\n");
+            if ($cssfile->interpret==='true') {
+                echo  '<style>'."\n"."/* Interpreted css:*/".$cssfile->file."\n";
+                include $cssfile->file;
+                echo  "\n".'</style>'."\n";
+            } else {
+                if ($cssfile->version) {
+                    echo('<link rel="stylesheet" type="text/css" href="'.$cssfile->file.'?v='.\Config::$webAppVersion.'"></link>'."\n");
+                } else {
+                    echo('<link rel="stylesheet" type="text/css" href="'.$cssfile->file.'"></link>'."\n");
+                }
+            }
 		}
 		if (self::$cssStyle!='')
 			echo("<style>".self::$cssStyle."</style>\n");
@@ -162,7 +182,8 @@ class Appl {
 				}
 			}
 		}
-		echo('<script type="text/javascript">'."\n// Included js".self::$jsScript.'</script>');
+		if (self::$jsScript!='')
+		    echo('<script type="text/javascript">'."\n// Included js".self::$jsScript.'</script>');
 	}
 	
 	/**

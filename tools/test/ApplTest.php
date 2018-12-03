@@ -44,6 +44,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
      */
     public function testCssBevorRendering() {
         Appl::addCssStyle(".td{ color:white}");
+        Appl::addCss("css.file");
         Appl::setMessage("OK","success");
         ob_start();
         Appl::includeCss();
@@ -51,6 +52,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
         ob_end_clean();
         $this->assertTrue(strlen($echo)>0);
         $this->assertTrue(Appl::$resultDbOperation==='<div class="alert alert-success">OK</div>');
+        $this->assertTrue(strpos($echo,'<link rel="stylesheet" type="text/css" href="css.file?v='.Config::$webAppVersion)!==false);
     }
 
     /**
@@ -59,12 +61,13 @@ class ApplTest extends PHPUnit_Framework_TestCase
      * @covers \maierlabs\lpfw\Appl::includeCss
      */
     public function testCssFile() {
-        Appl::addCss("css.file");
-        ob_start();
-        Appl::includeCss();
-        $echo = ob_get_contents();
-        ob_end_clean();
-        $this->assertTrue(strpos($echo,'<link rel="stylesheet" type="text/css" href="css.file?v='.Config::$webAppVersion)!==false);
+        $exception=0;
+        try {
+            Appl::addCss("css.file");
+        } catch (Exception $e) {
+            $exception=1;
+        }
+        $this->assertTrue($exception==1);
     }
 
     /**

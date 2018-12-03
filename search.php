@@ -26,6 +26,11 @@ if (null==getParam("type")) {
     $personList=$db->getPersonList("role like '%jmlaureat%'",null,null,"class.text desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%jmlaureat%'");
     $caption ='Az iskolánk legjelentősebb díját a Juhász Máté István Emlékdíjat az iskola egykori diákja, a műegyetem hallgatójaként rákban elhunyt kiváló tanuló emlékére alapította családja és ösztályfőnöke, Gáll Dénes.';
+} elseif ('unknown'==getParam("type")) {
+    Appl::setSiteSubTitle("Iskolatársaink akikről sajnos nem tudunk semmit.");
+    $personList=$db->getPersonList("role like '%unknown%'",null,null,"class.text desc",$fields,$join);
+    $personCount=$db->getTableCount("person","role like '%unknown%'");
+    $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bérmilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
 } else {
     if (userIsAdmin() || userIsEditor() || userIsSuperuser()) {
         switch (getParam("type")) {

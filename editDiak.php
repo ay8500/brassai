@@ -41,8 +41,8 @@ if ( $createNewPerson ) {
 	$diak = $db->getPersonDummy();
 	$diak["id"] = -1;
 	$diak["classID"] = getAktClassId();
-	$action=="newteacher" || $action=="savenewteacher" ? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
-	$action=="newguest"   || $action=="savenewguest" ? $diak["role"]="guest"	:	$diak["role"]="";
+    ($action=="newteacher" || $action=="savenewteacher" )? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
+    ($action=="newguest"   || $action=="savenewguest" )? $diak["role"]="guest"	:	$diak["role"]="";
 	$personid=-1;
 }
 
