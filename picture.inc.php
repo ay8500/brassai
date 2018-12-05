@@ -289,7 +289,7 @@ if (isActionParam("showmore") ) {
         <span id="more"></span>
 </form>
 <?php if($countPictures>sizeof($pictures) ) {?>
-    <button id="buttonmore" class="btn btn-default" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
+    <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
 <?php } ?>
 
 <?php
@@ -396,18 +396,20 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
 
 Appl::addJsScript("
     var picturesStart=1;
+    var picturesButton='';
     function showmore(date) {
+        picturesButton=$('#buttonmore').html();
         $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
     		url:'".$link."'+picturesStart++,
 	    	type:'GET',
     		success:function(data){
 	    	    $('#more').replaceWith(data+'<span id=\"more\"></span>');
-	    	    $('#buttonmore').html('Tovább !');
+	    	    $('#buttonmore').html(picturesButton);
 		    },
 		    error:function(error) {
 		        showMessage('Több bejegyzés nincs!');
-		        $('#buttonmore').html('Tovább !');
+		        $('#buttonmore').html(picturesButton);
 		    }
         });
         return false;
@@ -482,7 +484,7 @@ function toogleListBlock() {
 	
 function deletePicture(id) {
 	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen=<?php echo(getIntParam("tabOpen",0))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
+		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen=<?php echo(getParam("tabOpen","pictures"))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
 	}
 }
 
@@ -526,7 +528,7 @@ function displayedit(id) {
 <?php if (userIsAdmin()) :?>
     function unlinkPicture(id) {
         if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-            window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+'&tabOpen=<?php echo(getIntParam("tabOpen",0))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>';
+            window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+'&tabOpen=<?php echo(getParam("tabOpen","pictures"))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>';
         }
     }
 <?php endif;?>

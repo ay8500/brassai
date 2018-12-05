@@ -144,6 +144,24 @@ class MySql
         return $ret;
     }
 
+
+    /**
+     * get result list as an array of one column
+     * @return array
+     */
+    public function getOneColumnList($column)
+    {
+        $ret = array();
+        if ($this->result!==false) {
+            while ($row = mysqli_fetch_assoc($this->result)) {
+                if (isset($row[$column]))
+                    array_push($ret, $row[$column]);
+            }
+        }
+        return $ret;
+    }
+
+
     /**
      * howmanny rows are in the query result
      * @return int|0

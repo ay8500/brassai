@@ -114,8 +114,7 @@
 
         <div itemtype="http://schema.org/PostalAddress" itemprop="address" itemscope >
         <?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
-            <div class="input-group">
-                <?php
+            <div class="input-group"><?php
                 //Placeholder
                 $obl=$dataFieldObl[$i];
                 $dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
@@ -123,14 +122,14 @@
                 $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
                 //Inpufields
                 if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
-                    <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
-                    <?php if ( userIsLoggedOn()) {?>
+                    <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
+                    if ( userIsLoggedOn()) {?>
                         <span style="width:40px" id="highlight" class="input-group-addon">
                             <?php if ($dataCheckFieldVisible[$i]) {?>
                                 <input type="checkbox" name="cb_'<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?>' title="A megjelölt mezöket csak az osztálytásaid látják." />
                             <?php } else { echo '&nbsp'; }?>
-                        </span>
-                    <?php }
+                        </span><?php
+                    }
                     if ($dataItemProp[$i]==="role") {
                             showRoleField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
                     } else {
@@ -139,11 +138,10 @@
                             $person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
                             echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
                         }
-                    }?>
-                <?php //Inpufields anonymous user
+                    }
+                //Inpufields anonymous user
                 } elseif ($anonymousEditor) {?>
-                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
-                    <?php
+                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
                     if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
                         $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
                         echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
@@ -157,8 +155,7 @@
                         if ($dataItemProp[$i]!="" && $dataItemProp[$i]!="combobox")
                             $itemprop='itemprop="'.$dataItemProp[$i].'"';
                         ?>
-                        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span>
-                        <?php
+                        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
                         if ($db->isClassIdForStaf($classId) && $dataFieldNames[$i]=="children") {
                             $c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
                             echo('<div  class="form-control" style="height:auto;">');
@@ -173,8 +170,8 @@
                         }
                      }
                 }?>
-            </div>
-        <?php } ?>
+            </div><?php
+        } ?>
         </div>
         <?php
         //Hidden fields action, uid, tabOpen,role

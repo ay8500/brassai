@@ -177,7 +177,7 @@
                     <?php } ?>
                     <li><a href="vote.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">A következő Találkozó</a></li>
                     <li><a href="zenetoplista.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Zenetoplista</a></li>
-                    <li><a href="editclass.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályinformációk</a></li>
+                    <li><a href="editSchoolClass.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Tanárok infók</a></li>
                 </ul>
             </li>
             <?php } ?>

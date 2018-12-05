@@ -30,7 +30,7 @@ if (null==getParam("type")) {
     Appl::setSiteSubTitle("Iskolatársaink akikről sajnos nem tudunk semmit.");
     $personList=$db->getPersonList("role like '%unknown%'",null,null,"class.text desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%unknown%'");
-    $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bérmilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
+    $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bármilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
 } else {
     if (userIsAdmin() || userIsEditor() || userIsSuperuser()) {
         switch (getParam("type")) {
@@ -123,7 +123,7 @@ if (null==getParam("type")) {
             }
         }
     } else {
-        Appl::setMessage('Ezeket az adatokat csak visszajelzett felhasználok láthatják.', "warming");
+        Appl::setMessage('Ezeknek az adatoknak a megtekintése csak bejelentkezett látogatok részére lehetséges.<br/> Jelentkezz be vagy regisztráld magad mert ez az oldal nagyon jó, barátságos, ingyenes és reklámmentes!', "warning");
     }
 }
 Appl::setSiteTitle(" Keresés");

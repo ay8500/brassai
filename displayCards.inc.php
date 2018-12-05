@@ -39,7 +39,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					    $d["classText"] = getClassName($diakClass);
 					}
 					if (isPersonGuest($d)==1) {
-						if (strstr($d["classText"],"staf")!==fasle)
+						if (strstr($d["classText"],"staf")!==false)
 							echo '<h5>Jó barát:<a href="hometable.php?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
 						else
 							echo '<h5>Vendég:<a href="hometable.php?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
@@ -48,8 +48,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					}
 				} ?>
 			<?php } ?>
-			<div class="fields"> 
-			<?php 
+			<div class="fields"><?php
 				if ($d["isTeacher"]==0) {
 					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
 					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d["education"])."</div></div>";
@@ -87,16 +86,21 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         displayIcon($d,"facebook","facebook.png","Facebook","");
                         //displayIcon($d,"twitter","twitter.png","Twitter","");
                         displayIcon($d,"homepage","www.png","Honoldal","");
-						if ($db->getNrOfPictures($d["id"], "personID",0,userIsLoggedOn()?1:2)>0)
-							echo '&nbsp;<a href="editDiak.php?tabOpen=1&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /></a>';
+                        $pictures=$db->getNrOfPictures($d["id"], "personID",null);
+						if ($pictures>0)
+							echo '&nbsp;<a href="editDiak.php?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=2&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
+							echo '&nbsp;<a href="editDiak.php?tabOpen=cv&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
 						if (isset($d["story"]) && $d["story"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=3&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
+							echo '&nbsp;<a href="editDiak.php?tabOpen=school&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
 						if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=4&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
+							echo '&nbsp;<a href="editDiak.php?tabOpen=hobbys&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
 						if (isset($d["geolat"]) && $d["geolat"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=5&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
+							echo '&nbsp;<a href="editDiak.php?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
+						$relatives=$db->getPersonRelativesCountById($d["id"]);
+						if ($relatives>0) {
+                            echo '&nbsp;<a href="editDiak.php?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
+                        }
 						?>
 					</div>
 				<?php  if ($showDate) {

@@ -33,14 +33,14 @@ $classes = $db->getClassList(getRealId(getAktSchool()));
 	<div class="panel panel-default " >
 		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-asterisk"></span> Nappali tagozat
-			<a class="btn btn-default" href="editclass.php?action=newclass">Új osztály</a></h4>
+			<a class="btn btn-default" href="editSchoolClass.php?action=newclass">Új osztály</a></h4>
 		</div>
 		<div class="panel-body">
 			<?php displayClassList($db,$classes,0);?>
 		</div>
 		<div class="panel-heading">
 			<h4><span class="glyphicon glyphicon-star"></span> Esti tagozat
-			<a class="btn btn-default" href="editclass.php?action=newclass">Új osztály</a></h4>
+			<a class="btn btn-default" href="editSchoolClass.php?action=newclass">Új osztály</a></h4>
 		</div>
 		<div class="panel-body">
 			<?php displayClassList($db,$classes,1);?>

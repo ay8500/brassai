@@ -383,6 +383,8 @@ if (isset($diak["deceasedYear"])) {
     array_push($tabsCaption ,array("id" => "candles", "caption" => "Gyertyák"));
 }
 array_push($tabsCaption ,array("id" => "pictures", "caption" => "Képek"));
+array_push($tabsCaption ,array("id" => "family", "caption" => "Családtagok"));
+
 array_push($tabsCaption ,array("id" => "cv", "caption" => "Életrajz"));
 array_push($tabsCaption ,array("id" => "hobbys", "caption" => "Szabadidőmben"));
 if ($diak["isTeacher"]==0) {
@@ -390,7 +392,7 @@ if ($diak["isTeacher"]==0) {
 }
 array_push($tabsCaption ,array("id" => "geoplace", "caption" => "Térkép"));
 if(userIsLoggedOn() || userIsAdmin()) {
-    if (getLoggedInUserId()==$diak["id"])
+    if (getLoggedInUserId()==$diak["id"] || userIsAdmin())
         array_push($tabsCaption ,array("id" => "user", "caption" => "Bejelentkezési&nbsp;adatok"));
     array_push($tabsCaption ,array("id" => "info", "caption" => "Infók"));
 }
@@ -398,14 +400,12 @@ if(userIsLoggedOn() || userIsAdmin()) {
 $tabUrl="editDiak.php";
 ?>
 <?php if (null!=getAktClass()) {?>
-<div class="container-fluid">
-	<?php  include('tabs.inc.php'); ?>
-	<div class="well">
-
-		<?php
+    <div class="container-fluid"><?php
+    include('tabs.inc.php'); ?>
+	<div class="well"><?php
 		//Personal Data
 		if ($tabOpen=="person") {
-			include("editDiakPersonData.php");
+			include("editPersonData.php");
 		}
         //Candles
         if ($tabOpen=="candles") {
@@ -423,19 +423,23 @@ $tabUrl="editDiak.php";
 		}
 		//Change storys cv, scool trory, sparetime
 		if (in_array($tabOpen,array("cv","hobbys","school"))) {
-			include("editDiakStorys.php");
+			include("editPersonStorys.php");
 		}
 		//Change geo place
 		if ($tabOpen=="geoplace") {
-			include("editDiakPickGeoPlace.php");
+			include("editPersonGeoPlace.php");
 		}
+        //Family
+        if ($tabOpen=="family") {
+            include("editPersonFamily.inc.php");
+        }
 		//Change password, usename, facebook
 		if ($tabOpen=="user") {
-			include("editDiakUserPassword.php");
+			include("editPersonUserData.php");
 		}
 		//Activities
 		if ($tabOpen=="info") {
-			include("editDiakActivities.php");
+			include("editPersonActivities.php");
 		}
 		?>
 	</div>
