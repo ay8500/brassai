@@ -79,7 +79,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				}
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
-					echo('<div class="xxx_diakCardIcons" style="margin-top:10px">');
+					echo('<div class="diakCardIcons" style="margin-top:10px">');
 					    displayIcon($d,"phone","phone.png","Telefon","tel:");
                         displayIcon($d,"mobil","mobile.png","Mobil","tel:");
                         displayIcon($d,"email","email.png","E-Mail","mailto:");
@@ -88,18 +88,18 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         displayIcon($d,"homepage","www.png","Honoldal","");
                         $pictures=$db->getNrOfPictures($d["id"], "personID",null);
 						if ($pictures>0)
-							echo '&nbsp;<a href="editDiak.php?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
+							echo '<a href="editDiak.php?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=cv&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
+							echo '<a href="editDiak.php?tabOpen=cv&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
 						if (isset($d["story"]) && $d["story"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=school&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
+							echo '<a href="editDiak.php?tabOpen=school&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
 						if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=hobbys&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
+							echo '<a href="editDiak.php?tabOpen=hobbys&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
 						if (isset($d["geolat"]) && $d["geolat"]!="")
-							echo '&nbsp;<a href="editDiak.php?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
+							echo '<a href="editDiak.php?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
 						$relatives=$db->getPersonRelativesCountById($d["id"]);
 						if ($relatives>0) {
-                            echo '&nbsp;<a href="editDiak.php?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
+                            echo '<a href="editDiak.php?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
                         }
 						?>
 					</div>
@@ -349,9 +349,9 @@ function displayPersonPicture($d)
 function displayIcon($d,$field,$image,$title,$appl) {
     if (isset($d[$field]) && strlen($d[$field])>8)
         if(showField($d,$field))
-            echo '&nbsp;<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+            echo '<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
         else
-            echo '&nbsp;<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+            echo '<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
 }
 
 
