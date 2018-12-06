@@ -110,6 +110,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					    $changePerson=$db->getPersonByID($d["changeUserID"]);
 				    if ($action=='candle') $action="Gyertyát gyújtott: ";
 				    if ($action=='change' || $action==null) $action="Módósította: ";
+                    if ($action=='family' || $action==null) $action="Rokont jelölt: ";
                     if ($action=='opinion') $action="Vélemény: ";
                     if ($changeDate==null)
                         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);

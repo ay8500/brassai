@@ -38,16 +38,19 @@ include_once 'displayCards.inc.php';
 $edit = userIsAdmin() || userIsSuperuser() || userIsEditor() || $diak["id"]==getLoggedInUserId();
 
 if (isActionParam("save")) {
-    if ($db->saveRelatives(getParam("uid"),getParam("sid"),getParam("code"),getParam("gender")))
-        Appl::setMessage("Rokonsági kapcsolat létrehozva","success");
-    else
+    if ($db->saveRelatives(getParam("uid"),getParam("sid"),getParam("code"),getParam("gender"))) {
+        $db->updateRecentChangesList();
+        Appl::setMessage("Rokonsági kapcsolat létrehozva", "success");
+    } else {
         Appl::setMessage("Rokonsági kapcsolat létrehozása nem lehetséges, mert már létezik","warning");
+    }
 }
 
 if (isActionParam("delete")) {
-    if ($db->deleteRelatives(getIntParam("id")))
-        Appl::setMessage("Rokonsági kapcsolat törölve","success");
-    else
+    if ($db->deleteRelatives(getIntParam("id"))) {
+        Appl::setMessage("Rokonsági kapcsolat törölve", "success");
+        $db->updateRecentChangesList();
+    } else
         Appl::setMessage("Rokonsági kapcsolat törése nem sikerült","warning");
 }
 

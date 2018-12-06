@@ -1309,6 +1309,8 @@ class dbDAO {
         $sql .= " union ";
         $sql .= " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
         $sql .= " union ";
+        $sql .= " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
+        $sql .= " union ";
         $sql .= " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
         $sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);
