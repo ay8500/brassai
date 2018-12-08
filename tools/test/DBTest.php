@@ -25,10 +25,10 @@ class DBTest extends PHPUnit_Framework_TestCase
     /**
      *
      */
-    public static function testDBconnectionFailure() {
+    public function testDBconnectionFailure() {
         $p = \Config::getDatabasePropertys();
         $db = new MySqlDbAUH($p->host, $p->database, $p->user . 'x', $p->password);
-        self::assertFalse($db->isDbConnected());
+        $this->assertFalse($db->isDbConnected());
     }
 
     /**

@@ -60,7 +60,7 @@ class MySql
      * @return bool
      */
     public function isDbConnected() {
-        return isset($this->connection);
+        return isset($this->connection) && $this->connection;
     }
 
 

@@ -727,25 +727,18 @@ class dbDAO {
      * @return mixed
      */
     private function cleanUpRelativeCode($code) {
-        /* [pppl=ppp ppl = pp] pl = p
-           [lccc=ccc lcc = cc] lc = c
-           sssss = ssss = sss = ss = s (Silblings)
-           sp = p (Parent)
-           ps = s (Silbing)
+        if($code=="pc") return "s";
+        //if($code=="ps") return "s";Not work!
+        /* $ret = str_replace("pl","p",$code); // [pppl=ppp ppl = pp] pl = p
+           $ret = str_replace("lc","c",$ret);  // [lccc=ccc lcc = cc] lc = c
          */
         $ret=$code;
         $ret = str_replace("cs","c",$ret); //childres silbing = children
         $ret = str_replace("cp","",$ret); //childres parents
         $ret = str_replace("sp","p",$ret); //silbling parents are the parents
-        $ret = str_replace("sss","s",$ret);
-        $ret = str_replace("ss","s",$ret);
-        /*
-        $ret = str_replace("pl","p",$code);
-        $ret = str_replace("lc","c",$ret);
-        $ret = str_replace("sss","s",$ret);
-        $ret = str_replace("ss","s",$ret);
+        $ret = str_replace("sss","s",$ret); //silbling silbling = silbling
+        $ret = str_replace("ss","s",$ret); //silbling silbling = silbling
 
-        $ret = str_replace("ps","s",$ret);*/
 	    return $ret;
     }
 	

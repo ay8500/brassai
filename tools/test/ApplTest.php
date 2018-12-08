@@ -56,21 +56,6 @@ class ApplTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \maierlabs\lpfw\Appl::addCss
-     * @covers \maierlabs\lpfw\Appl::addCssStyle
-     * @covers \maierlabs\lpfw\Appl::includeCss
-     */
-    public function testCssFile() {
-        $exception=0;
-        try {
-            Appl::addCss("css.file");
-        } catch (Exception $e) {
-            $exception=1;
-        }
-        $this->assertTrue($exception==1);
-    }
-
-    /**
      * @covers \maierlabs\lpfw\Appl::addCssStyle
      * @covers \maierlabs\lpfw\Appl::includeCss
      */
@@ -104,17 +89,6 @@ class ApplTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(strpos($echo,"var loggedInUser=null")!==false);
     }
 
-    /**
-     * @covers \maierlabs\lpfw\Appl::setMessage
-     */
-    public function testMessage() {
-        Appl::setMessage("Hola","danger");
-        ob_start();
-        Appl::includeJs();
-        $echo = ob_get_contents();
-        ob_end_clean();
-        $this->assertTrue(strpos($echo,"showDbMessage('Hola','danger');")!==false);
-    }
 
     /**
      * @covers \maierlabs\lpfw\Appl::dateTimeAsStr
