@@ -155,6 +155,7 @@ function displayPictureOpinion($db,$id){
     }
 
     function saveOpinion(id,type,stype,uid) {
+        showWaitMessage();
         closeOpinionList(id,type);
         var text='';
         if (stype=='text')
@@ -163,19 +164,21 @@ function displayPictureOpinion($db,$id){
             url:'ajax/setOpinion.php?id='+id+'&type='+type+'&count='+stype+'&text='+text,
             type:'GET',
             success:function(data){
-                if (data.result=='ok') {
-                    showOpinionLogo(id,type,stype,data.count);
-                } else if (data.result=='empty') {
-                    showModalMessage('Vélemény','Sajnos a vélemény mező szövege üres. Kérjük ismételd meg véleményed. Köszönjük szépen.');
-                } else if (data.result=='exists') {
-                    showModalMessage('Vélemény','Ezt a tipusú véleményt már megadtad.');
-                } else if (data.result=='count') {
-                    showModalMessage('Anonim felhasználó véleménye','Sajnos véleményt mint anonim felhasználó csak bizonyos mértékben adhatsz. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.');
-                } else if (data.result=='login') {
-                    showModalMessage('Anonim felhasználó véleménye','Sajnos ezt a véleményt csak bejelentkezett felhasználók adhatják meg. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.');
-                }
+                    if (data.result=='ok') {
+                        clearModalMessage();
+                        showOpinionLogo(id,type,stype,data.count);
+                    } else if (data.result=='empty') {
+                        showModalMessage('Vélemény','Sajnos a vélemény mező szövege üres. Kérjük ismételd meg véleményed. Köszönjük szépen.');
+                    } else if (data.result=='exists') {
+                        showModalMessage('Vélemény','Ezt a tipusú véleményt már megadtad.');
+                    } else if (data.result=='count') {
+                        showModalMessage('Anonim felhasználó véleménye','Sajnos véleményt mint anonim felhasználó csak bizonyos mértékben adhatsz. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.');
+                    } else if (data.result=='login') {
+                        showModalMessage('Anonim felhasználó véleménye','Sajnos ezt a véleményt csak bejelentkezett felhasználók adhatják meg. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.');
+                    }
             },
             error:function(error) {
+                clearModalMessage();
                 $('#o-'+type+'-'+id).html('error');
                 $('#o-'+type+'-'+id).show('fast');
             }
@@ -240,10 +243,12 @@ function displayPictureOpinion($db,$id){
     }
     
     function deleteOpinion(id) {
+        showWaitMessage();
         $.ajax({
             url:'ajax/deleteOpinion.php?id='+id,
             type:'GET',
             success:function(data){
+                closeModalMessage();
                 if (data.count>=0) {
                     showOpinions(data.id,'',data.table,data.type);
                     showOpinionLogo(data.id,data.table,data.type,data.count);

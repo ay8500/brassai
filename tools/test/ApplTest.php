@@ -8,13 +8,8 @@ use maierlabs\lpfw\Appl;
 
 class ApplTest extends PHPUnit_Framework_TestCase
 {
-    public static $start = false;
     public function setup() {
-        if (self::$start==false) {
-            echo("Appl Framework\n");
-            \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
-        }
-        self::$start=true;
+        \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
     }
 
     /**

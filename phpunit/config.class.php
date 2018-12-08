@@ -13,7 +13,7 @@ class config {
     /**
      * @var string Title of the php unit test page
      */
-    public static $SiteTitle = "PHP Unit Webinterface for: \"A kolozsvári Brassai Sámuel líceum véndiakjai.\" ";
+    public static $SiteTitle = '"A kolozsvári Brassai Sámuel líceum véndiakjai."';
 
     /**
      * @var string start directory for *Test.php test files
@@ -22,7 +22,13 @@ class config {
 
     /**
      * @var array exclude file list
+     * could be inportant to use it, if the test subject has a lot of images or other non php files
      */
     public static $excludeFiles = array('images','..','.','.git');
+
+    /**
+     * @var string the version of php unit mainly used for parameter in css and js files
+     */
+    public static $version = "1.00/2018-12-08";
 
 }

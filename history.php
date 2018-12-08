@@ -226,6 +226,7 @@ function array_get($array,$field,$default='') {
 
 Appl::addJsScript('
     function deleteHistory(id,table,tid) {
+        showWaitMessage();
         document.location="history.php?table="+table+"&id="+tid+"&action=delete&did="+id;
     }
 ');

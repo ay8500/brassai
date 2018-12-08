@@ -50,7 +50,7 @@ if ($action=="saveclass") {
 		    $db->updateRecentChangesList();
 			setAktClass($classid);
 			$class=$db->getClassById($classid);
-            Appl::setMessage("Osztály sikeresen kimentve!","success");
+            Appl::setMessage("Osztály sikeresen kimentve! Köszönjük szépen.","success");
 		} else {
 			Appl::setMessage("Osztály kimentése sikertelen!","warning");
 		}
@@ -263,11 +263,13 @@ Appl::addJsScript('
 	}
 
 	function saveClass() {
-	    document.location="editclass.php?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
+	    showWaitMessage();
+	    document.location="editSchoolClass.php?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
 	}
 
 	function saveNewClass() {
-	    document.location="editclass.php?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val();
+	    showWaitMessage();
+	    document.location="editSchoolClass.php?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val();
 	}
 	
 	function getTeachers() {

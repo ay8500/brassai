@@ -7,6 +7,7 @@
  */
 
 include_once __DIR__ . "/../../dbDAO.class.php";
+include_once __DIR__ . "/../logger.class.php";
 
 class FamilyRelativeTest extends PHPUnit_Framework_TestCase
 {
@@ -17,6 +18,7 @@ class FamilyRelativeTest extends PHPUnit_Framework_TestCase
 
     public function setUp() {
         $this->db=new dbDAO();
+        \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
     }
 
     public function testBrothers()

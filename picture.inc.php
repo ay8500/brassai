@@ -152,7 +152,9 @@ if(isset($picture)) {
         $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
         $countPictures = $db->getTableCount("picture",$where);
     } else {
-        $pictures = $db->getListOfPictures($typeId, $type, 2, 2, $albumParam,$limit,$offset);
+	    if (!isset($typeId)) $typeId=getParam("typeid");
+	    if (!isset($type)) $type=getParam("type");
+        $pictures = $db->getListOfPictures($typeId, $type,  $albumParam,$limit,$offset);
         $where = $type.'='.$typeId;
         if ($albumParam!=null) {
             $where.=" and albumName='".$albumParam."'";
@@ -254,7 +256,7 @@ if (isActionParam("showmore") ) {
 			<div>Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.<span></span></div>
 			<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
 			<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
-			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" ><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
+			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" onclick="showWaitMessage();"><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
 			<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> mégsem</button></span>
 			<input type="hidden" value="upload" name="action" />
 			<?php if (isset($personid)):?>
@@ -271,7 +273,7 @@ if (isActionParam("showmore") ) {
 
 	
 	<?php if ($notDeletedPictures==0) :?>
-		<div class="alert alert-warning" >Jelenleg nincsenek képek feltöltve!</div>
+		<div class="alert alert-warning" >Jelenleg nincsenek képek feltöltve. Légy te az első aki képpet tőlt fel!</div>
 	<?php endif;?>
 	<?php if(false) {?>
         <nav aria-label="Page navigation example">
@@ -288,17 +290,18 @@ if (isActionParam("showmore") ) {
 	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view) ?>
         <span id="more"></span>
 </form>
-<?php if($countPictures>sizeof($pictures) ) {?>
-    <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
-<?php } ?>
+<button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
 
 <?php
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
+    if (sizeof($pictures)==0) {
+        \maierlabs\lpfw\Appl::addJsScript('$("#buttonmore").hide();');
+    }
     foreach ($pictures as $idx=>$pict) {
         if ( $pict["isDeleted"]==0  || userIsAdmin() ) {
             $checked= ($pict["isVisibleForAll"]==1)?"checked":"";
             ?>
-            <div class="pictureframe" >
+            <div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>>
                 <div id="list-table">
                     <?php if ($view=="table") {?>
                         <a style="display:block;vertical-align: top;min-height:300px" title="<?php echo $pict["title"] ?>" href="javascript:return false" onclick="toggleBigger(this)">
@@ -405,7 +408,11 @@ Appl::addJsScript("
 	    	type:'GET',
     		success:function(data){
 	    	    $('#more').replaceWith(data+'<span id=\"more\"></span>');
-	    	    $('#buttonmore').html(picturesButton);
+	    	    if(data.length>200) {
+	    	        $('#buttonmore').html(picturesButton);
+	    	    } else {
+	    	        $('#buttonmore').html('Több kép nincs');
+	    	    }
 		    },
 		    error:function(error) {
 		        showMessage('Több bejegyzés nincs!');
@@ -421,19 +428,25 @@ Appl::addJsScript("
 
 <script type="text/javascript">
 
+
 function savePicture(id) {
 	var t = $('#titleEdit_'+id).val();
 	var c = $('#commentEdit_'+id).val();
 	$('#titleShow_'+id).html(t);
 	$('#commentShow_'+id).html(c);
-	if (id>0) {
+    showWaitMessage();
+    if (id>0) {
 		$.ajax({
 			url:encodeURI("ajax/setPictureTitle.php?id="+id+"&title="+t+"&comment="+c),
 			type:"GET",
 			dataType: 'json',
 			success:function(data){
+			    clearModalMessage();
 				hideedit(id);
-			}
+			},
+            error:function() {
+
+            }
 		});
 	}
 }

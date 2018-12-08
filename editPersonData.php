@@ -246,6 +246,7 @@ function showChosenField($value,$fieldName,$options)
 	}
 
 	function savePerson() {
+        showWaitMessage();
         var a = $("#role").children();
         if (a != null) {
             var s = '';

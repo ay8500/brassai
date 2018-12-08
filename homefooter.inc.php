@@ -128,6 +128,14 @@
 		$(".modal-body").html(text);
 		$('#myModal').modal({show: 'false' });
 	}
+
+	function showWaitMessage() {
+        showModalMessage('Kimentés <img src="images/loading.gif" />','Köszönjük a módosítást. Az adatok feldolgozása folyamatban...');
+    }
+
+	function clearModalMessage() {
+        $('#myModal').modal('hide');
+    }
 			
 </script>
 <?php \maierlabs\lpfw\Appl::includeJs();?>

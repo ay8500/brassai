@@ -1,9 +1,7 @@
 <?php
+session_start();
 /**
- * Created by PhpStorm.
- * User: Levi
- * Date: 07.12.2018
- * Time: 10:22
+ * Run a single test as ajax
  */
 include 'config.class.php';
 include 'phpunit.class.php';
@@ -17,11 +15,11 @@ $file=$pu->getGetParam("file");
 $dir=$pu->getGetParam("dir");
 $testNr=$pu->getGetParam("testNr");
 
-if (null==$testNr || null==$file || null==$dir )
+if (null==$testNr || null==$file || null==$dir ) {
     die('Invalid parameter list!');
+}
 
 include $dir.$file;
-
 
 $testClassName=substr($file,0,strpos(strtolower($file),".php"));
 $testMethodList = $pu->getTestClassMethods($testClassName);
@@ -29,19 +27,20 @@ $testSetupMethod= $pu->getTestClassSetupMethod($testClassName);
 $testTearDownMethod= $pu->getTestClassTearDownMethod(($testClassName));
 
 $result=array();
-
-if ($testNr<sizeof($testMethodList))
+if ($testNr<sizeof($testMethodList)-1)
     $result["filestatus"]="running";
 else
     $result["filestatus"] = "done";
-
-
-
-
 $result["tests"]=$testMethodList;
 $result["testNr"]=intval($testNr);
+$result["testName"]=$testMethodList[$testNr];
 
-$theTestClass = new $testClassName();
+if ($testNr==0) {
+    $theTestClass  = new $testClassName();
+    $_SESSION["class"]= serialize($theTestClass);
+} else {
+    $theTestClass = unserialize($_SESSION["class"]);
+}
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 ob_start();

@@ -76,11 +76,12 @@ include("homemenu.inc.php");
                 <?php } ?>
             </h4>
 		</div>
-		<div class="panel-body" id="changes">
-		<?php $lastDate=showRecentChanges($db);?>
+		<div class="panel-body">
+		    <?php $lastDate=showRecentChanges($db);?>
+            <span id="more"></span>
 		</div>
         <input type="hidden" id="date" value="<?php echo $lastDate?>"/>
-        <button id="buttonmore" class="btn btn-default" style="margin:10px;" onclick="showmore()">Többet szeretnék látni</button>
+        <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="showmore()">Többet szeretnék látni</button>
 	</div>
 
 
@@ -120,13 +121,12 @@ Appl::addJsScript("
 	    	type:'GET',
     		success:function(data){
     		    var idx=data.lastIndexOf('#');
-	    	    $('#changes').html($('#changes').html()+data.substring(0,idx-1));
+    		    $('#more').replaceWith(data.substring(0,idx-1)+'<span id=\"more\"></span>');
 	    	    $('#date').val(data.substring(idx+1));
-	    	     $('#buttonmore').html('Tovább !');
+	    	     $('#buttonmore').html('Többet szeretnék látni');
 		    },
 		    error:function(error) {
 		        showMessage('Több bejegyzés nincs!');
-		        $('#buttonmore').html('Tovább !');
 		    }
         });
     }

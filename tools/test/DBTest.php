@@ -11,15 +11,9 @@ include_once __DIR__ . "/../logger.class.php";
  */
 class DBTest extends PHPUnit_Framework_TestCase
 {
-    public static $start=false;
-
     public function setUp()
     {
-        if (self::$start==false) {
-            echo("Database\n");
-            \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
-        }
-        self::$start=true;
+        \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
     }
 
     /**
