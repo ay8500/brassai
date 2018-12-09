@@ -19,7 +19,6 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        echo("PasswordText\n");
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
 
         $p = \Config::getDatabasePropertys();
@@ -33,7 +32,10 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 
     public function testDB():void
     {
-        $this->assertTrue($this->db->query("select user,passw,firstname,lastname,id from person"));
+        $ok = $this->db->queryInt("select  count(length(passw)),passw   from person having length(passw)=32");
+        $all = $this->db->queryInt("select  count(1) from person");
+        $this->assertTrue($ok==$all);
+        echo("Persons in the DB:".$all);
         /*
         while ($row = $this->db->fetchRow()) {
             $p=$row["passw"];

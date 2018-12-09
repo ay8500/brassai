@@ -25,29 +25,39 @@ class DBTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($db->isDbConnected());
     }
 
+
+    private function createData() {
+        $p = \Config::getDatabasePropertys();
+        $db = new MySqlDbAUH($p->host, $p->database, $p->user, $p->password);
+
+        ($db->isDbConnected());
+        ($db->resetCounter());
+
+        //Create test table an drop in some entrys
+        $db->query("drop table phpunit");
+        ($db->query("create table phpunit (id int auto_increment primary key,contval varchar(1024) null, changeDate timestamp default CURRENT_TIMESTAMP not null, changeUserID int, changeIP varchar(64), changeForID int  )"));
+        $data=array();
+        $data = $db->insertFieldInArray($data,"contval","9876543");
+        $data = $db->insertFieldInArray($data,"changeUserID",'10');
+        $data = $db->insertFieldInArray($data,"changeForID",'');
+        ($db->insert("phpunit",$data));
+        ($db->insert("phpunit",$data));
+        ($db->insert("phpunit",$data));
+        return $db;
+    }
+
+    private function deleteData($db) {
+        $db->query("drop table phpunit");
+        $db->disconnect();
+    }
+
     /**
      * @covers \maierlabs\lpfw\MySql
      *
      */
     public function testQuery():void
     {
-        $p = \Config::getDatabasePropertys();
-        $db = new MySqlDbAUH($p->host, $p->database, $p->user, $p->password);
-
-        self::assertTrue($db->isDbConnected());
-        self::assertTrue($db->resetCounter());
-
-        //Create test table an drop in some entrys
-        $db->query("drop table phpunit");
-        self::assertTrue($db->query("create table phpunit (id int auto_increment primary key,contval varchar(1024) null, changeDate timestamp default CURRENT_TIMESTAMP not null, changeUserID int, changeIP varchar(64), changeForID int  )"));
-        $data=array();
-        $data = $db->insertFieldInArray($data,"contval","9876543");
-        $data = $db->insertFieldInArray($data,"changeUserID",'10');
-        $data = $db->insertFieldInArray($data,"changeForID",null);
-        self::assertTrue($db->insert("phpunit",$data));
-        self::assertTrue($db->insert("phpunit",$data));
-        self::assertTrue($db->insert("phpunit",$data));
-
+        $db = $this->createData();
 
         $ret = $db->query("select * from levi");
         self::assertFalse($ret);
@@ -166,20 +176,26 @@ class DBTest extends PHPUnit_Framework_TestCase
         self::assertTrue($db->update("phpunit",$data,"id",3));
         self::assertTrue($db->tableCount("phpunit","changeIP =''")==1);
 
+        $ret = $db->query("select * from phpunit");
+        self::assertTrue($ret);
+        $data = $db->getOneColumnList("id");
+        self::assertTrue($data[0]==1);
+
         //Counter
         $ret=$db->getCounter();
         self::assertTrue(is_object($ret));
         self::assertTrue($ret->changes==16);
-        self::assertTrue($ret->querys==36);
+        self::assertTrue($ret->querys==37);
 
-
-        self::assertTrue($db->query("drop table phpunit"));
-
-        $db->disconnect();
+        $this->deleteData($db);
         self::assertFalse($db->isDbConnected());
 
-        self::assertTrue($db->rereplaceSpecialChars("Levi\'s")=="Levi's");
     }
 
+    public function testStringOperations() {
+        $db=$this->createData();
+        self::assertTrue($db->rereplaceSpecialChars("Levi\'s")=="Levi's");
+        $this->deleteData($db);
+    }
 
 }

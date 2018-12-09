@@ -27,9 +27,11 @@ function hideLightCandle(id) {
 }
 function lightCandle(id) {
 	candles[id] = ++candles[id];
+    showWaitMessage();
 	$.ajax({
 		url: "ajax/setCandleLighter.php?id="+id,
 		success:function(data) {
+			clearModalMessage();
 			showCandles(id,candles[id]);
 			$("#light-button"+id).prop("disabled",true);
 		},

@@ -89,7 +89,7 @@ $familyPersonList = $db->getPersonRelativesById($diak["id"]);
 
     <h4>Rokon megjelölése</h4>
     <div class="input-group shadowbox">
-        <span style="min-width:180px; text-align:right" class="input-group-addon" id="basic-addon1">Rokon neme</span>
+        <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokon neme</span>
         <select class="form-control" onchange="setGender()" id="relativeGender">
             <option value="">... válassz ...</option>
             <option value="f">Lány / Nö</option>
@@ -98,7 +98,7 @@ $familyPersonList = $db->getPersonRelativesById($diak["id"]);
     </div>
 
     <div class="input-group shadowbox" style="display: none" id="divRealtiveGrad">
-        <span style="min-width:180px; text-align:right" class="input-group-addon" id="basic-addon1">Rokonsági kapcsolat</span>
+        <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokonsági kapcsolat</span>
         <select class="form-control"  id="selectRelativGrad" onchange="$('#divSearchName').show('fast');">
             <option value="">... válassz ...</option>
             <?php foreach ($family as $f) {
@@ -110,7 +110,7 @@ $familyPersonList = $db->getPersonRelativesById($diak["id"]);
     </div>
 
     <div class="input-group shadowbox" style="display:none" id="divSearchName">
-        <span style="min-width:180px; text-align:right" class="input-group-addon" id="basic-addon1">Rokomom</span>
+        <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokomom</span>
         <input class ="form-control" id="searchName" placeholder="írd be család vagy keresztnavét" onkeyup="searchPerson()"/>
     </div>
     <div id="divNames" style="display: none">
@@ -173,6 +173,7 @@ if($edit) {
     Appl::addJsScript('    
     function saveRelative(id,name) {
         if (confirm("Megszeretnéd jelölni: "+name+" "+$("#selectRelativGrad option:selected").text())) {
+            showWaitMessage();
             document.location="editDiak.php?action=save&tabOpen=family&uid=' . $diak["id"] . '&sid="+id+"&code="+$("#selectRelativGrad").val()+"&gender="+$("#relativeGender").val();
         }
     }
@@ -190,6 +191,7 @@ if($edit) {
     Appl::addJsScript('
     function deleteRelative(id) {
         if (confirm("Ki szeretnéd törölni a rokonsági kapcsolatot?")) {
+            showWaitMessage();
             document.location="editDiak.php?action=delete&tabOpen=family&id="+id;
         }
     }

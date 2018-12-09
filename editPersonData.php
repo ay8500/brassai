@@ -209,9 +209,12 @@ function showRoleField($value,$fieldName) {
     $disabled='';
     array_push($options, array('role' => 'unknown', 'text' => 'Nem tudunk róla','disabled'=>$disabled));
     array_push($options, array('role' => 'jmlaureat', 'text' => "Juhász Máthé díjas",'disabled'=>$disabled));
-    if (!userIsAdmin())
+    if(!userIsAdmin() && !userIsSuperuser())
         $disabled='disabled';
     array_push($options, array('role' => 'editor', 'text' => 'Osztályfelelős','disabled'=>$disabled));
+    array_push($options, array('role' => 'guest', 'text' => 'Vendég / barát','disabled'=>$disabled));
+    if (!userIsAdmin())
+        $disabled='disabled';
     array_push($options, array('role' => 'superuser', 'text' => "Rendszerfelelős",'disabled'=>$disabled));
     array_push($options, array('role' => 'admin', 'text' => "Rendszergazda",'disabled'=>'disabled'));
     showChosenField($value,$fieldName,$options);

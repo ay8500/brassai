@@ -287,10 +287,12 @@ if (isActionParam("showmore") ) {
             </ul>
         </nav>
     <?php } ?>
-	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view) ?>
-        <span id="more"></span>
+	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view); ?>
+    <span id="more"></span>
 </form>
-<button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
+<?php if (getParam("id")==null) {?>
+    <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
+<?php }?>
 
 <?php
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
@@ -327,7 +329,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                             <?php if (userIsLoggedOn()) { ?>
                                 <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
                             <?php }?>
-                            <button class="btn btn-default"  title="Kimenti a kép módosításait" onclick="savePicture(<?php echo $pict["id"] ?>,this);return false;"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+                            <button class="btn btn-default"  title="Kimenti a kép módosításait" onclick="return savePicture(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
                             <?php if ($pict["isDeleted"]!=1) { ?>
                                 <button class="btn btn-default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
                             <?php } ?>
@@ -441,14 +443,20 @@ function savePicture(id) {
 			type:"GET",
 			dataType: 'json',
 			success:function(data){
-			    clearModalMessage();
-				hideedit(id);
+			    if (data.error==null) {
+                    clearModalMessage();
+				    hideedit(id);
+			    } else {
+                    showModalMessage("Kimentés sikertlen",data.error,"warning");
+                }
 			},
             error:function() {
-
+                clearModalMessage();
+                showDbMessage("Kimentés sikertlen","warning");
             }
 		});
 	}
+	return false;
 }
 
 function changeVisibility(id) {
@@ -497,6 +505,7 @@ function toogleListBlock() {
 	
 function deletePicture(id) {
 	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
+	    showWaitMessage();
 		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen=<?php echo(getParam("tabOpen","pictures"))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
 	}
 }
@@ -541,6 +550,7 @@ function displayedit(id) {
 <?php if (userIsAdmin()) :?>
     function unlinkPicture(id) {
         if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
+            showWaitMessage();
             window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+'&tabOpen=<?php echo(getParam("tabOpen","pictures"))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>';
         }
     }

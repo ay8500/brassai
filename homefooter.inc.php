@@ -28,7 +28,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" id="modal-close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
@@ -43,101 +43,23 @@
 
 </body>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script type="text/javascript" >
-	$( document ).ready(function() {
-    	$(window).resize(function() {
-			onResize();
-		});
-		onResize();
-		setTimeout(clearDbMessages, 10000);
-        <?php if (getParam('logoffSessionTimeout')==null) {?>
-	        checkSession();
-        <?php } ?>
-	});
-	var logoTimer;
-	var logoTop=-20;
-	var logoDirection =-1;
-	
-	function onResize(hplus) {
+<?php
+\maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
+\maierlabs\lpfw\Appl::addJs('js/bootstrap.min.js');
+\maierlabs\lpfw\Appl::addJs('js/main.js');
+if (userIsAdmin()) {
+    \maierlabs\lpfw\Appl::addJsScript('    
+        function showip(ip) {
+            $.ajax({
+                url: "ajax/getIpLocation.php?ip="+ip,
+                success:function(data) {
+                    showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+                }
+            });
+        }
+    ');
+} ?>
 
-		var h= 	removePX($(".sub_title").css("height"))+
-				removePX($(".appltitle").css("height"))+
-				removePX($("#main-menu").css("height"))+32;
-		if (null!=hplus)
-			h +=hplus;
-		var hh = removePX($("#homelogo").css("height"));
-	    
-	    $(".homeLogo").css("height",(h)+"px");
-	    clearInterval(logoTimer);
-	    logoTimer = setInterval(function() { 
-		    $("#homelogo").css("top",logoTop+"px");
-		    logoTop=logoTop+logoDirection;
-		    if (logoTop<h-hh) 	logoDirection=1;
-		    if( logoTop>=0) 	logoDirection=-1;
-		}, 50);
-	}
-
-	function removePX(p) {
-		if (null!=p)
-			return parseInt(p.substr(0,p.length-2));
-		else
-			return 0;
-	}
-
-	function clearDbMessages() {
-		if ($(".resultDBoperation").html()!="")
-			$(".resultDBoperation").slideUp("slow");
-	}
-
-	function showDbMessage(text,type) {
-		$(".resultDBoperation").html('<div class="alert alert-'+type+'">'+text+'</div>');
-		$(".resultDBoperation").slideDown("slow");
-		setTimeout(clearDbMessages, 10000);
-	}
-
-	<?php if (userIsAdmin()) {?>
-		function showip(ip) {
-		    $.ajax({
-		    	url: "ajax/getIpLocation.php?ip="+ip,
-			    success:function(data) {
-			        showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
-		    	}
-			});
-		}
-	<?php } ?>
-
-    function checkSession() {
-        var timezone_offset_minutes = new Date().getTimezoneOffset();
-        timezone_offset_minutes = timezone_offset_minutes == 0 ? 0 : -timezone_offset_minutes;
-        $.ajax({
-            url: "ajax/isSessionAlive.php?timezone="+timezone_offset_minutes,
-            type:"GET",
-            success:function(data){
-                setTimeout(checkSession,10000);
-            },
-            error:function(error) {
-                document.location.href="index.php?logoffSessionTimeout=true";
-            }
-        });
-    }
-
-	function showModalMessage(title,text) {
-	    $(".modal-title").html(title);
-		$(".modal-body").html(text);
-		$('#myModal').modal({show: 'false' });
-	}
-
-	function showWaitMessage() {
-        showModalMessage('Kimentés <img src="images/loading.gif" />','Köszönjük a módosítást. Az adatok feldolgozása folyamatban...');
-    }
-
-	function clearModalMessage() {
-        $('#myModal').modal('hide');
-    }
-			
-</script>
 <?php \maierlabs\lpfw\Appl::includeJs();?>
 <?php if (!userIsAdmin()) { ?>
 <script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>

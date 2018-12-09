@@ -3,6 +3,7 @@ include_once __DIR__ . "/../../config.class.php";
 include_once __DIR__ . "/../appl.class.php";
 include_once __DIR__ . "/../logger.class.php";
 include_once __DIR__ . "/../userManager.php";
+include_once __DIR__ . "/../../dbBL.class.php";
 
 use maierlabs\lpfw\Appl;
 
@@ -81,7 +82,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(strpos($echo,"function getLevi{return 'Levi';}")!==false);
 
-        $this->assertTrue(strpos($echo,"var loggedInUser=null")!==false);
+        $this->assertTrue(strpos($echo,"var loggedInUser=")!==false);
     }
 
 
