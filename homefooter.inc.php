@@ -42,10 +42,10 @@
 </div>
 
 </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 
 <?php
-\maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
-\maierlabs\lpfw\Appl::addJs('js/bootstrap.min.js');
 \maierlabs\lpfw\Appl::addJs('js/main.js');
 if (userIsAdmin()) {
     \maierlabs\lpfw\Appl::addJsScript('    
