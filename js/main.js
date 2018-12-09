@@ -4,6 +4,7 @@ $( document ).ready(function() {
     });
     onResize();
     setTimeout(clearDbMessages, 10000);
+    checkSession();
 });
 var logoTimer;
 var logoTop=-20;

@@ -15,11 +15,12 @@ Appl::$subTitle='Szeretettel köszöntünk a Brassaista véndiákok honlapján<b
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
 
-if (getParam('logoffSessionTimeout')!=null) {
+if (isset($_SESSION["timeout"])) {
+    unset($_SESSION["timeout"]);
     logoutUser();
     Appl::addJsScript('
         $( document ).ready(function() {
-            showModalMessage("Kedves felhasználó",\'<div class="alert alert-warning">Sajnos rég nem frissitetted ezt az óldalt, idéglenes adataid emiatt törlödtek. <br/><br/>Jelentkezz be újból!</div>\');
+            showModalMessage("Idéglenes adatok lejártak","Sajnos rég nem használtad illetve frissitetted ezt az óldalt, idéglenes adataid emiatt törlödtek. <br/><br/>Szeretnénk ha újból bejelentkeznél, vagy egyszerüen csak élvezettel maradnál tovább ezen az oldalon!","warning");
         });
     ');
 }
