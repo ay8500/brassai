@@ -1046,7 +1046,11 @@ class dbDAO {
 		} else {
 			$sql.=" and (albumName is null or albumName='')";
 		}
-		return $this->getElementList("picture",false,$sql,$limit,$offset,"orderValue desc");
+		if($type=='schoolID')
+		    $orderby ="title desc";
+		else
+		    $orderby="orderValue desc";
+		return $this->getElementList("picture",false,$sql,$limit,$offset,$orderby);
 	}
 
 
@@ -1240,7 +1244,7 @@ class dbDAO {
 		return $ret;
 	}
 
-
+/********************************[ Accelerator ]*****************************************************************
     /**
      * Union select the ids from the latest changes use accelerator for a better performace
      * @param DateTime $dateFrom
@@ -1251,28 +1255,75 @@ class dbDAO {
 	    if ($dateFrom!=null) {
             return $this->getRecentChangesListByDate($dateFrom, $limit);
 	    }
-	    $ret = $this->dataBase->querySignleRow("select * from accelerator where type=1");
-	    if ($ret!=null) {
-	        $rows=json_decode($ret["json"], true);
-	        if ($limit==sizeof($rows))
-                return $rows;
+	    $data = $this->getAcceleratorRow();
+        if ($limit==sizeof($data)) {
+             return $data;
         }
         return $this->updateRecentChangesList($dateFrom,$limit);
     }
 
-    public function updateRecentChangesList() {
-        $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=1");
-        if ($ret!=null) {
-            $rows = json_decode($ret["json"], true);
-            $limit = sizeof($rows);
-            $dateFrom = date_create();
-            $rows = $this->getRecentChangesListByDate($dateFrom, $limit);
-            $data = array();
-            $data = $this->dataBase->insertFieldInArray($data, 'type', '1');
-            $data = $this->dataBase->insertFieldInArray($data, 'json', json_encode($rows));
-            $data = $this->dataBase->insertFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
-            $this->dataBase->update('accelerator', $data, "type", "1");
+    public function deleteFromRecentChangesList($id,$type) {
+	    $accList=$this->getAcceleratorData(1);
+	    $found=$this->array3ValueSearch($accList,"id",$id,"id",$id,"type",$type);
+	    if ($found!==false) {
+            array_splice($accList,$found,1);
+            $date=$accList[sizeof($accList)-1]["changeDate"];
+            $date=DateTime::createFromFormat('Y-m-d H:i:s',$date);
+            $olderValue=$this->getRecentChangesListByDate($date, 1);
+            array_unshift($accList,$olderValue[0]);
+            $this->updateAcceleratorEntry($accList,1);
+            return true;
         }
+        return false;
+    }
+
+    public function insertToRecentChangesList($id,$changeDate,$type,$action,$changeUserID) {
+        $accList=$this->getAcceleratorData(1);
+        $accList=$this->insertToArrayRecentChangesList($accList,$id,$changeDate,$type,$action,$changeUserID);
+        $this->updateAcceleratorEntry($accList,1);
+    }
+
+    public function insertToArrayRecentChangesList($accList,$id,$changeDate,$type,$action,$changeUserID) {
+	    $newValue=array("id"=>$id,"changeDate"=>$changeDate,"type"=>$type,"action"=>$action,"changeUserID"=>$changeUserID);
+        $found = $this->array3ValueSearch($accList,"id",$id,"type",$type,"action",$action);
+	    if ($found!==false) {
+            array_splice($accList,$found,1);
+        } else {
+            array_splice($accList,sizeof($accList)-1,1);
+        }
+        array_unshift($accList,$newValue);
+        return $accList;
+    }
+
+    public function array3ValueSearch($array,$key1,$value1,$key2,$value2,$key3,$value3) {
+	       foreach ($array as $id=>$value) {
+	           if ($value[$key1]===$value1 && $value[$key2]===$value2 && $value[$key3]===$value3) {
+	               return $id;
+               }
+           }
+           return false;
+    }
+
+    public function updateRecentChangesList() {
+        $data = $this->getAcceleratorData(1);
+        $limit = sizeof($data);
+        $dateFrom = date_create();
+        if ($limit>0) {
+            $rows = $this->getRecentChangesListByDate($dateFrom, $limit);
+            $this->updateAcceleratorEntry($rows,1);
+            return $rows;
+        }
+        $rows = $this->getRecentChangesListByDate($dateFrom, 1);
+        $this->updateAcceleratorEntry($rows,1);
+        return $rows;
+    }
+
+    public function updateAcceleratorEntry($rows,$type=1) {
+        $data = array();
+        $data = $this->dataBase->insertFieldInArray($data, 'type', $type);
+        $data = $this->dataBase->insertFieldInArray($data, 'json', json_encode($rows));
+        $data = $this->dataBase->insertFieldInArray($data, "changeDate", date("Y-m-d H:i:s"));
+        $this->dataBase->update('accelerator', $data, "type", $type);
     }
 
     /**
@@ -1280,11 +1331,21 @@ class dbDAO {
      * @param $type
      * @return string
      */
-    public function getAcceleratorDate($type) {
-        $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=1");
+    public function getAcceleratorDate($type=1) {
+        $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=".$type);
         if ($ret!=null) {
             return date_create($ret["changeDate"]);
         }
+    }
+
+    public function getAcceleratorRow($type=1) {
+        $row = $this->dataBase->querySignleRow("select * from accelerator where type=".$type);
+        return $row;
+    }
+
+    public function getAcceleratorData($type=1) {
+        $data = $this->getAcceleratorRow($type);
+        return json_decode($data["json"],true);
     }
 
     public function getRecentChangesListByDate($dateFrom, $limit) {
