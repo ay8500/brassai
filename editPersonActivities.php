@@ -1,4 +1,11 @@
 <?php
+include_once 'dbDaStatistic.class.php';
+
+$dbStatistic = new dbDaStatistic($db);
+
+$activities=$dbStatistic->getPersonActivities($personid);
+
+
 \maierlabs\lpfw\Appl::addCssStyle('
 	#activities {
 		background-color: white;margin:10px;padding:10px;
@@ -7,7 +14,6 @@
 		padding: 10px; text-align: right;
 	}
 ');
-$activities=$db->getPersonActivities($personid); 
 ?>
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser() || userIsSuperuser()) { ?>
 	<div>
@@ -33,4 +39,6 @@ $activities=$db->getPersonActivities($personid);
 	</div>
 <?php } else {	?>
 	<div class="resultDBoperation" ><div class="alert alert-warning">Hozzáférésí jog hiánzik!</div></div>
-<?php }?>	
+<?php }?>
+
+

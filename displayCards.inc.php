@@ -1,4 +1,5 @@
 <?php
+include_once 'dbDaOpinion.class.php';
 include_once 'displayOpinion.inc.php';
 
 /**
@@ -15,6 +16,7 @@ include_once 'displayOpinion.inc.php';
 function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null,$changeUserID=null, $changeDate=null) {
 	if ($person==null)
 		return;
+    $dbOpinion = new dbDaOpinion($db);
 	$d=$person;
 	?>
 	<div class="element">
@@ -124,7 +126,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				<?php }?>
 	  		</div>
 		</div>
-    <?php displayPersonOpinion($db,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"])); ?>
+    <?php displayPersonOpinion($dbOpinion,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"])); ?>
 	</div>
 <?php
 }
@@ -141,6 +143,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
  * @return void
  */
 function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserID=null, $changeDate=null) {
+    $dbOpinion = new dbDaOpinion($db);
 	$p=$picture;
     if ($action!='change')
         $person=$db->getPersonByID($changeUserID);
@@ -199,7 +202,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
             <?php echo $action?> <a href="editDiak.php?uid=<?php echo $person["id"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
 			Dátum:<?php echo $changeDate?>
 		</div>
-        <?php  displayPictureOpinion($db,$picture["id"]); ?>
+        <?php  displayPictureOpinion($dbOpinion,$picture["id"]); ?>
 	</div>
 <?php }
 

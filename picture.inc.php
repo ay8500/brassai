@@ -1,10 +1,11 @@
 <?php
-include_once ('tools/sessionManager.php');
-include_once ('tools/userManager.php');
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
-include_once ('dbBL.class.php');
-include_once ('displayOpinion.inc.php');
+include_once 'dbBL.class.php';
+include_once 'dbDaOpinion.class.php';
+include_once 'displayOpinion.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 \maierlabs\lpfw\Appl::addCss('css/picture.css',true);
@@ -294,8 +295,13 @@ if (isActionParam("showmore") ) {
     <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
 <?php }?>
 
+
+
+
+
 <?php
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
+    $dbOpinion = new dbDaOpinion($db);
     if (sizeof($pictures)==0) {
         \maierlabs\lpfw\Appl::addJsScript('$("#buttonmore").hide();');
     }
@@ -368,9 +374,9 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                             <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
                             <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
                         </div>
-                        <button style="display: inline-block;margin: 0px 10px 10px 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button>
-                        <?php displayPictureOpinion($db,$pict["id"]); ?>
-                        <?php  if (userIsAdmin()){?>
+                        <button style="display: inline-block;margin: 0px 10px 10px 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button><?php
+                            displayPictureOpinion($dbOpinion,$pict["id"]);
+                        if (userIsAdmin()){?>
                             <div style="margin-top: 5px;">
                                 <button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-warning" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
                                 <a class="btn btn-default" target="_download" href="<?php echo $pict['file']?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>

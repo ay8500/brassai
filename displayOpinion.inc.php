@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Display the opinion block for a person
  * @param dbBL $db the database business layer

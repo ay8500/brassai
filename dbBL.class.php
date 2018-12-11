@@ -5,6 +5,7 @@
 
 include_once "tools/userManager.php";
 include_once 'tools/ltools.php';
+include_once 'tools/mysqldbauh.class.php';
 include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
 
@@ -152,9 +153,11 @@ class dbBL extends dbDAO
 }
 
 
+//Connect to the DB
+$dbPropertys = \Config::getDatabasePropertys();
+$dataBase = new \maierlabs\lpfw\MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password);
 
-
-$db = new dbBL;
+$db = new dbBL($dataBase);
 
 
 

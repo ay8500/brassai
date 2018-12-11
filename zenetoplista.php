@@ -1,9 +1,12 @@
 <?php
 include_once 'tools/sessionManager.php';
-include_once("tools/userManager.php");
-include_once("tools/ltools.php");
+include_once 'tools/userManager.php';
+include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
 include_once 'dbBL.class.php';
+include_once 'dbDaSongVote.class.php';
+
+$dbSongVote = new dbDaSongVote($db);
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -23,10 +26,10 @@ $edit = (userIsLoggedOn() && getRealId(getAktClass())==$db->getLoggedInUserClass
 //action  delete vote
 $delVote = intval(getGetParam("delVote", "-1"));
 if ($delVote>=0 && $edit) {
-   	if ($db->deleteVote($delVote))
-		Appl::$resultDbOperation='<div class="alert alert-success" >Zene sikeresen a szavazataidból törölve!</div>';
+   	if ($dbSongVote->deleteVote($delVote))
+		Appl::setMessage("Zene sikeresen a szavazataidból törölve","succes");
 	else 
-		Appl::$resultDbOperation='<div class="alert alert-warning" >Szavazat törlése nem sikerült.</div>';
+		Appl::setMessage("Szavazat törlése nem sikerült.","warning");
    	$psong=0;$pinterpret=0;
 }
 
@@ -38,11 +41,11 @@ if ($delVote>=0 && $edit) {
    $pinterpret = getIntParam("interpret",0);
    $pnewinterpret = html_entity_decode(getParam("newinterpret",""),ENT_QUOTES,"UTF-8");
    if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
-   		$pinterpret=$db->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
+   		$pinterpret=$dbSongVote->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
    		if ($pinterpret>=0) 
-   			Appl::$resultDbOperation='<div class="alert alert-success" >Előadó sikeresen kimentve.</div>';
+   			Appl::setMessage("Előadó sikeresen kimentve","success");
    		else
-   			Appl::$resultDbOperation='<div class="alert alert-warning" >Előadó az adatbankban már létezik! Kimentés nem volt szükséges.</div>';
+   			Appl::setMessage("Előadó az adatbankban már létezik! Kimentés nem volt szükséges.","warning");
    }
    
    //Parameter Song
@@ -52,14 +55,14 @@ if ($delVote>=0 && $edit) {
    $pnewLink = getParam("newLink");
    if (($psong=="0") && ($pnewSong<>"" && $edit )) {
    		if (getSongName($pnewVideo)!="") {
-	   		$psong=$db->saveSong([
+	   		$psong=$dbSongVote->saveSong([
 	   				'id'=>-1,
 	   				'interpretID'=>$pinterpret,
 	   				'name'=>$pnewSong,
 	   				'video'=>$pnewVideo,
 	   				'link'=>$pnewLink]);
 	   		if ($psong>=0) {
-	   			if(	$db->saveSongVote([
+	   			if(	$dbSongVote->saveSongVote([
 	   					'id'=>-1,
 	   					'personID'=>getLoggedInUserId(),
 	   					'songID'=>$psong])>=0) {
@@ -82,7 +85,7 @@ if ($delVote>=0 && $edit) {
    		$vote["id"]=-1;
    		$vote["songID"]=$psong;
    		$vote["personID"]=getLoggedInUserId();
-   		if ($db->saveSongVote($vote))
+   		if ($dbSongVote->saveSongVote($vote))
 			Appl::$resultDbOperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
 		else 
 			Appl::$resultDbOperation='<div class="alert alert-warning" >Szavazat nem sikerült.</div>';
@@ -91,9 +94,9 @@ if ($delVote>=0 && $edit) {
 	
    //Read voters List by ClassID
    	if (getAktClassId()!=-1)
-		$votersList=$db->getVotersListByClassId(getRealId(getAktClass()));
+		$votersList=$dbSongVote->getVotersListByClassId(getRealId(getAktClass()));
    	else
-		$votersList=$db->getVotersListBySchoolId(getRealId(getAktSchool()));
+		$votersList=$dbSongVote->getVotersListBySchoolId(getRealId(getAktSchool()));
    	usort($votersList, "compareAlphabetical");
 	$allVotes=0;
 	$voteCount=0;
@@ -105,7 +108,7 @@ if ($delVote>=0 && $edit) {
 	}
 	
 	//Check the maximal amout of vote
-	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=30;
+	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=50;
 	if ($edit) {
 		if ($voteCount<$maxVoteCount)  
 			$voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot adhatsz"; 
@@ -139,7 +142,7 @@ if ($delVote>=0 && $edit) {
 				<select id="interpret" name="interpret" size="0" onChange="this.form.newinterpret.value=this.options[this.selectedIndex].text" class="form-control">
 					<option value="0">...válassz!...</option>
 					<?php
-						$interpretList= $db->getInterpretList(); 
+						$interpretList= $dbSongVote->getInterpretList();
 						foreach ($interpretList as $interpret)	{
 							if ($interpret['id']==$pinterpret) $def="selected"; else $def="";
 							echo('<option value="'.$interpret['id'].'" '.$def.' >'.$interpret['name'].'</option>');
@@ -164,15 +167,15 @@ if ($delVote>=0 && $edit) {
  	 		</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="interpret" id="search_left">Előadó</label>
-	    	   	<input readonly id="interpret" class="form-control" value="<?php echo $db->getInterpretById($pinterpret)["name"]?>"/>
+	    	   	<input readonly id="interpret" class="form-control" value="<?php echo $dbSongVote->getInterpretById($pinterpret)["name"]?>"/>
 	    	</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="song" id="search_left">Az adatbázisból </label>
 				<select name="song" id="song" size="0" onChange="this.form.newSong.value='';this.form.newVideo.value='';" class="form-control"  >
 					<option value="0">...válassz!...</option>
 				  	 <?php
-				  	 	$songList= $db->getSongList($pinterpret);
-						foreach ($songList as $song) 
+				  	 	$songList= $dbSongVote->getSongList($pinterpret);
+						foreach ($songList as $song)
 						{
 							if ($song['id']==$psong) $def="selected"; else $def="";
 							echo('<option value='.$song['id'].' '.$def.' >'.$song['name'].'</option>');
@@ -196,12 +199,10 @@ if ($delVote>=0 && $edit) {
 	    	 <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />	
 			<?php } ?>
 		</div>
-		</form>
-	<?php } ?>
+		</form><?php
+	}
 
-
-<?php 
-  	 	$topList= $db->readTopList (getRealId(getAktClass()),getLoggedInUserId());
+  	 	$topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId());
 		
   	 	if (sizeof($topList)<25)
   	 		$listLength=sizeof($topList);

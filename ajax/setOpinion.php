@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . '/../tools/sessionManager.php';
 include_once __DIR__ . '/../tools/ltools.php';
+include_once __DIR__ . '/../dbDaOpinion.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbChangeType.class.php';
 include_once __DIR__ . '/../sendMail.php';
@@ -37,7 +38,9 @@ if (!$db->checkRequesterIP(changeType::opinion)) {
     die();
 }
 
-$oldOpinion = $db->getOpinion($id,$table,$type);
+$dbOpinion = new dbDaOpinion($db);
+
+$oldOpinion = $dbOpinion->getOpinion($id,$table,$type);
 if (sizeof($oldOpinion)>0 && $type!='text') {
     $ret->result='exists';
     echo(json_encode($ret));
@@ -45,7 +48,7 @@ if (sizeof($oldOpinion)>0 && $type!='text') {
 }
 
 $ret->result='ok';
-$ret->count=$db->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
+$ret->count=$dbOpinion->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
 $db->saveRequest(changeType::opinion);
 if ($type=='text') {
     sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> text:'.$text,'Vélemény: '.Config::$SiteTitle);

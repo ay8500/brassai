@@ -15,15 +15,13 @@ class dbDAO {
     /**
      * @var MySqlDbAUH|null
      */
-	private $dataBase = NULL;
+	public $dataBase = NULL;
 
     /**
      * dbDAO constructor.
      */
-    public function __construct(){
-		//Connect to the DB
-        $db = \Config::getDatabasePropertys();
-		$this->dataBase = new MySqlDbAUH($db->host,$db->database,$db->user,$db->password);
+    public function __construct($dataBase){
+        $this->dataBase=$dataBase;
     }
 
     /**
@@ -209,25 +207,7 @@ class dbDAO {
 	}
 	
 	
-	/**
-	 * Use in combination with getQueryRow if you want to make a loop over all personen 
-	 * @return NULL
-	 */
-	public function queryPersons() { 	
-		$sql="select * from person where changeForID is null";
-		$this->dataBase->query($sql);
-		return $this->dataBase->count();
-	}
-	
-	/**
-	 * Use in combination with queryPersons if you want to make a loop over all personen 
-	 * @return NULL
-	 */
-	public function getQueryRow () {
-		return $this->dataBase->fetchRow();
-	}
-	
-//************************** Person *******************************************	
+//************************** Person *******************************************
 	/**
 	 * Insert or update a person
 	 * If user is anonymous create a new entry as a change   
@@ -803,60 +783,6 @@ class dbDAO {
 	}
 	
 	/**
-	 * @deprecated
-	 */
-	public function dbUtilitySetDeceasedYear() {
-		$sql ="update  person set deceasedYear=convert(substring(firstname,instr(firstname,'†')+3) ,signed) where firstname like '%†%'";
-		$this->dataBase->query($sql);
-		$sql ="update  person set 	firstname=substring(firstname,1,instr(firstname,'†')-1) where firstname like '%†%'";
-		$this->dataBase->query($sql);
-		$sql ="update  person set 	deceasedYear=null where deceasedYear = -1";
-		$this->dataBase->query($sql);
-		return "ok";
-	}
-
-	/**
-	 * get last activity group by date
-	 * @param object $dateTime
-	 * @return array
-	 */
-	public function getActivityCalendar($dateTime) {
-		$ret=array();
-		
-		$sql ="select changeDate, count(*) as count from history where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r= $this->dataBase->getRowList();
-			foreach ($r as $v) { $ret[$v["changeDate"]]=intval($v["count"]);}
-		} 
-		
-		$sql ="select changeDate, count(*) as count from person where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r= $this->dataBase->getRowList();
-			foreach ($r as $v) {
-				if (isset($ret[$v["changeDate"]]))
-					$ret[$v["changeDate"]]+=$v["count"];
-				else
-					$ret[$v["changeDate"]]=intval($v["count"]);
-			}
-		}
-
-		$sql ="select changeDate, count(*) as count from image where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r= $this->dataBase->getRowList();
-			foreach ($r as $v) {
-				if (isset($ret[$v["changeDate"]]))
-					$ret[$v["changeDate"]]+=$v["count"];
-				else
-					$ret[$v["changeDate"]]=intval($v["count"]);
-			}
-		}
-		return $ret;	
-	}
-	
-	/**
 	 * get entry count
      * @param string $table
 	 * @param string $where
@@ -1255,7 +1181,7 @@ class dbDAO {
 	    if ($dateFrom!=null) {
             return $this->getRecentChangesListByDate($dateFrom, $limit);
 	    }
-	    $data = $this->getAcceleratorRow();
+	    $data = $this->getAcceleratorData();
         if ($limit==sizeof($data)) {
              return $data;
         }
@@ -1368,141 +1294,7 @@ class dbDAO {
         return $rows;
 	}
 
-//******************** Vote DAO *******************************************
-	
-	public function getVote($personId,$meetAfterYear) {
-		$sql="select * from vote where personID =".$personId." and meetAfterYear=".$meetAfterYear;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			return $this->dataBase->fetchRow();
-		} else {
-			$ret = array();
-			$ret["eventDay"]="";
-			$ret["isSchool"]="";
-			$ret["isCemetery"]="";
-			$ret["isDinner"]="";
-			$ret["isExcursion"]="";
-			$ret["place"]="";
-			
-			return $ret;
-		}
-	}
-	
-	public function saveVote($entry) {
-		return $this->saveEntry("vote", $entry);
-	}
 
-	
-//******************** Song  DAO *******************************************
-
-	public function deleteVote($voteId) {
-		$this->createHistoryEntry("songvote",$voteId,true);
-		return $this->dataBase->delete("songvote", "id",$voteId);
-	}
-	
-	public function saveSongVote($entry) {
-		return $this->saveEntry("songvote",$entry);
-	}
-	
-	public function saveInterpret($entry) {
-		return $this->saveEntry("interpret", $entry);
-	}
-
-	public function saveSong($entry) {
-		return $this->saveEntry("song", $entry);
-	}
-	
-	public function updateSong($id,$value,$field) {
-		$this->createHistoryEntry("song",$id);
-		return $this->dataBase->update("song", [["field"=>$field,"type"=>"s","value"=>$value]],"id",$id);
-	}
-	
-	public function updateSongFields($id,$video,$name) {
-		$this->createHistoryEntry("song",$id);
-		$data=array();
-		$data=$this->dataBase->insertFieldInArray($data, "video", $video);
-		$data=$this->dataBase->insertFieldInArray($data, "name", $name);
-		return $this->dataBase->update("song", $data,"id",$id);
-	}
-	
-	
-	public function getSongById($id) {
-		return $this->getEntryById("song", $id);
-	}
-	
-	public function getSongByName($name) {
-		return $this->getEntryByField("song","name", $name);
-	}
-	
-	public function getInterpretById($id) {
-		return $this->getEntryById("interpret", $id);
-	}
-	
-	public function getInterpretByName($name) {
-		return $this->getEntryByField("interpret", "name",$name);
-	}
-	
-	public function getSongList($interpretId=0) {
-		if ($interpretId>0) {
-			return $this->getElementList("song",false,"interpretID=".$interpretId);
-		} else {
-			return $this->getElementList("song",false);
-		}
-	}
-
-	public function getInterpretList() {
-		return $this->getElementList("interpret",false,null,null,null,"name asc");
-	}
-	
-	/*
-	 * get Voterslist by class id
-	 */
-	public function getVotersListByClassId($classId) {
-		$sql  ="select  person.id, person.lastname, person.firstname, person.picture, count(1) as count "; 
-		$sql .="from songvote join person on person.id=songvote.personID";
-		if (null!=$classId) {
-			$sql .=" where person.classID=".$classId;
-		}
-		$sql .=" group by personID";
-		$this->dataBase->query($sql);
-		return $this->dataBase->getRowList();
-	}
-
-	/*
-	 * get Voterslist by scool id
-	 */
-	public function getVotersListBySchoolId($schoolId) {
-		$sql  ="select  person.id, person.lastname, person.firstname, person.picture, count(1) as count ";
-		$sql .="from songvote join person on person.id=songvote.personID ";
-		$sql .="join class on class.id=person.classID ";
-		$sql .="where class.schoolID=".$schoolId." group by personID";
-		$this->dataBase->query($sql);
-		return $this->dataBase->getRowList();
-	}
-	
-	public function getVotersListForMusicId($musicId) {
-		$sql  ="select  person.id as personid, person.lastname, person.firstname, person.picture  ";
-		$sql .="from songvote join person on person.id=songvote.personID ";
-		$sql .="where songvote.songID=".$musicId." order by person.lastname";
-		$this->dataBase->query($sql);
-		return $this->dataBase->getRowList();
-	}
-	
-	
-	/**
-	 * read songvotelist
-	 */
-	public function readTopList($classId,$personId) {
-		$sql  ="select count(1) as count, instr(GROUP_CONCAT(person.id),'".$personId."') as voted, song.id as songID, song.link as songLink, song.video as songVideo, song.name as songName, interpret.name as interpretName, songvote.id as id  ";
-		$sql .="from songvote join person on person.id=songvote.personID ";
-		$sql .="join song on song.id=songvote.songID ";
-		$sql .="join interpret on interpret.id=song.interpretID ";
-		if (intval($classId!=0))
-			$sql .="where person.classID=".$classId;
-		$sql .=" group by song.id order by count desc";
-		$this->dataBase->query($sql);
-		return $this->dataBase->getRowList();
-	}
 //********************* Message ******************************************
 
 	/**
@@ -1667,7 +1459,7 @@ class dbDAO {
      * @param string $field
      * @return array
      */
-	private function getElementList($table,$originalId=false,$where=null, $limit=null, $offset=null, $orderby=null, $field="*", $join=null) {
+	public function getElementList($table,$originalId=false,$where=null, $limit=null, $offset=null, $orderby=null, $field="*", $join=null) {
         $ret = array();
         $jtable = null;
 		//normal entrys
@@ -1754,7 +1546,7 @@ class dbDAO {
 	 * get a db entry by a field
 	 * @return array | NULL if no entry or more then one entry found
 	 */
-	private function getEntryByField($table,$fieldName,$fieldValue) {
+	public function getEntryByField($table,$fieldName,$fieldValue) {
 		$sql="select id from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
 		$sql .=" and changeForID is null";
 		$this->dataBase->query($sql);
@@ -1788,7 +1580,7 @@ class dbDAO {
 	 * If user is anonymous create a new entry as a change   
 	 * @return integer if negativ an error occurs
 	 */
-	private function saveEntry($table,$entry) {
+	public function saveEntry($table,$entry) {
 		//Build the change data array
 		$data = array();
 		foreach ($entry as $fieldName=>$fieldValue) {
@@ -1842,207 +1634,6 @@ class dbDAO {
 	}
 	
 	
-	/**
-	 * get the list of best users including the score
-	 */
-	public function getNewPersonChangeBest() {
-	    $ret = array();
-		$sql="select count(1) as count, changeUserID as uid from history where changeUserID!=0 and `table`='person' group by changeUserID";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r1=array();
-			foreach ($r as $s) {
-				$r1[$s["uid"]]=$s["count"];
-			}
-            $ret = $this->mergeBestArray(array(),$r1,1);unset($r1);
-		} 
-
-		
-		$sql="select id, changeUserID as uid from person where changeUserID >0 and changeForID is null";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r2=array();
-			foreach ($r as $s) {
-				$uid= $this->getOldestHistoryUserId($s["id"]);
-				if ($uid==0) 
-					$uid=$s["uid"];
-				if (isset($r2[$uid]))
-					$r2[$uid]=$r2[$uid]+1;
-				else
-					$r2[$uid]=1;
-			}
-            $ret = $this->mergeBestArray(array(),$r2,3);unset($r2);
-		}
-
-		$sql="select id, changeUserID as uid from picture where changeUserID >0 and isDeleted=0";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			$r3=array();
-			foreach ($r as $s) {
-				$uid= $this->getOldestHistoryUserId($s["id"]);
-				if ($uid==0) 
-					$uid=$s["uid"];
-				if (isset($r3[$uid]))
-					$r3[$uid]=$r3[$uid]+1;
-				else
-					$r3[$uid]=1;
-			}
-            $ret = $this->mergeBestArray($ret,$r3,5);unset($r3);
-		}
-
-		$rets=array();
-		for($i=0;$i<12;$i++) {
-			$value=0;
-			foreach ($ret as $uid=>$count) {
-				if($count>$value) {
-					$value=$count;
-					$vuid=$uid;
-				}
-			}
-			if (isset($vuid)) {
-			    $rets[$vuid]=$value;
-                unset($ret[$vuid]);
-            }
-		}
-		return $rets;
-	}
-
-    /**
-     * @param int $id
-     * @return int
-     */
-	private function getOldestHistoryUserId($id) {
-		$sql="select changeUserID from history where entyID =".$id." and changeUserID>0 order by changeDate limit 1";
-		return $this->dataBase->queryInt($sql);
-	}
-
-    /**
-     * @param int $id
-     * @return array
-     */
-	public function getPersonActivities($id) {
-		$ret = array();
-		$sql="select count(1) as count from history where changeUserID=".$id." and `table`='person' ";
-		$ret["personChange"]=$this->dataBase->queryInt($sql);
-		
-		$sql="select count(1) as count from person where changeUserID=".$id;
-		$ret["newPerson"]=$this->dataBase->queryInt($sql);
-		
-		$sql="select count(1) as count from picture where changeUserID=".$id;
-		$ret["newPicture"]=$this->dataBase->queryInt($sql);
-		
-		$sql="select count(1) as count from candle where userID=".$id;
-		$ret["lightedCandles"]=$this->dataBase->queryInt($sql);
-
-		$sql="select count(1) as count from songvote where personID=".$id;
-		$ret["songVotes"]=$this->dataBase->queryInt($sql);
-		
-		$sql="select count(1) as count from song where changeUserID=".$id;
-		$ret["songs"]=$this->dataBase->queryInt($sql);
-		
-		$sql="select count(1) as count from interpret where changeUserID=".$id;
-		$ret["interprets"]=$this->dataBase->queryInt($sql);
-
-        $sql="select count(1) as count from opinion where changeUserID=".$id;
-        $ret["opinions"]=$this->dataBase->queryInt($sql);
-
-		$person = $this->getPersonByID($id);
-		$r=0;
-		if (isset($person["userLastLogin"])) {
-			$diff=date_diff(new DateTime($person["userLastLogin"]),new DateTime(),true);
-			if ($diff->days<1000)
-				$r=1000- ($diff->days);
-		}
-		$ret["lastLoginPoints"]=$r;
-		
-		
-		
-		return  $ret;
-		
-	}
-	
-	public function getPersonChangeBest($count=12) {
-		$sql="select count(1) as count, changeUserID as uid from history where changeUserID>=0 and `table`='person' group by changeUserID order by count desc limit ".$count;
-		$ret = $this->mergeBestArrays(array(),$sql,1);
-	
-		$sql="select count(1) as count, changeUserID as uid from person where changeUserID>=0 group by  changeUserID order by count desc limit  ".$count;
-		$ret = $this->mergeBestArrays($ret,$sql,3);
-	
-		$sql="select count(1) as count, changeUserID as uid from picture where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
-		$ret = $this->mergeBestArrays($ret,$sql,5);
-		
-		$sql="select userLastLogin, id as uid from person where userLastLogin is not null and changeForID is null order by userLastLogin desc limit  ".$count;
-		$this->dataBase->query($sql);
-		$r4=array();
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			foreach ($r as $s) {
-				$diff=date_diff(new DateTime($s["userLastLogin"]),new DateTime(),true);
-				if ($diff->days<1000)
-					$r4[$s["uid"]]=1000- ($diff->days);
-			}
-		}
-		$ret = $this->mergeBestArray($ret,$r4,1);
-
-		$sql="select count(1) as count, userID as uid from candle where userID is not null group by  userID order by count desc limit  ".$count;
-		$ret = $this->mergeBestArrays($ret,$sql,2);
-		
-		$sql="select count(1) as count, personID as uid from songvote where personID !=0 group by  personID order by count desc limit  ".$count;
-		$ret = $this->mergeBestArrays($ret,$sql,7);
-
-		$sql="select count(1) as count, changeUserID as uid from song where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
-		$ret = $this->mergeBestArrays($ret,$sql,7);
-
-		$sql="select count(1) as count, changeUserID as uid from interpret where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
-		$ret = $this->mergeBestArrays($ret,$sql,7);
-
-        $sql="select count(1) as count, changeUserID as uid from opinion where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
-        $ret = $this->mergeBestArrays($ret,$sql,1);
-
-		$rets=array();
-		for($i=0;$i<$count;$i++) {
-            $value = 0;
-            foreach ($ret as $uid => $counts) {
-                if ($counts > $value) {
-                    $value = $counts;
-                    $vuid = $uid;
-                }
-            }
-            if (isset($vuid)) {
-                $rets[$vuid] = $value;
-                unset($ret[$vuid]);
-            }
-		}
-		return $rets;
-	}
-	
-	
-	private function mergeBestArray($a1,$a2,$factor=1) {
-		foreach ($a2 as $idx=>$a) {
-			if(isset($a1[$idx]))
-				$a1[$idx]+=$a*$factor;
-			else
-				$a1[$idx]=$a*$factor;
-		}
-		return $a1;
-	}
-
-	private function mergeBestArrays($inputArray,$sql,$factor=1) {
-		$this->dataBase->query($sql);
-		$rr=array();
-		if ($this->dataBase->count()>0) {
-			$r = $this->dataBase->getRowList();
-			foreach ($r as $s) {
-				$rr[$s["uid"]]=$s["count"];
-			}
-		}
-		return $this->mergeBestArray($inputArray,$rr,$factor);
-	}
-
-
     /**
      * get history info
      * @param string $table
@@ -2098,119 +1689,6 @@ class dbDAO {
 		return $this->dataBase->getCounter();
 	}
 
-    /**
-     * Save opinion
-     * @param $id
-     * @param $table
-     * @param $type
-     * @param $text
-     * @return int the counter or -1 on error
-     */
-	public function setOpinion($id,$uid,$table,$type,$text=null) {
-        $data = array();
-        if ($text!=null)
-            $data=$this->dataBase->insertFieldInArray($data,'text',$text);
-        $data=$this->dataBase->insertFieldInArray($data,'entryID',$id);
-        $data=$this->dataBase->insertFieldInArray($data,'table',$table);
-        $data=$this->dataBase->insertFieldInArray($data,'opinion',$type);
-        $data=$this->dataBase->insertFieldInArray($data,'changeDate',date("Y-m-d H:i:s"));
-        $data=$this->dataBase->insertFieldInArray($data,'changeIP',$_SERVER["REMOTE_ADDR"]);
-        if ($uid!=null)
-            $data=$this->dataBase->insertFieldInArray($data,'changeUserID',$uid);
-        if  ($this->dataBase->insert('opinion',$data)) {
-            $this->updateRecentChangesList();
-            return $this->dataBase->queryInt("select count(1) from opinion where `table`='".$table."' and opinion ='".$type."' and entryID=".$id);
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * deltete an opinion by id
-     * @param $id
-     * @return stdClass information about the deleted opinion
-     */
-    public function deleteOpinion($id) {
-	    $ret = new stdClass();
-	    $opinion=$this->dataBase->querySignleRow("select * from opinion where id=".$id);
-	    if  (   $opinion!=null &&
-                (
-                    userIsAdmin() ||
-                    (userIsLoggedOn() && $opinion["changeUserID"]==getLoggedInUserId()) ||
-                    (!userIsLoggedOn() && $opinion["changeIP"])==$_SERVER["REMOTE_ADDR"]
-                )
-            )
-	    {
-	        $ret->table=$opinion["table"];
-	        $ret->type=$opinion["opinion"];
-	        $ret->id=$opinion["entryID"];
-	        $this->dataBase->delete("opinion","id",$id);
-	        $ret->count = $this->dataBase->queryInt("select count(1) from opinion where `table`='".$ret->table."' and opinion ='".$ret->type."' and entryID=".$ret->id);
-        }
-        else {
-            $ret->count = -1;
-        }
-        return $ret;
-    }
-
-    /**
-     * get only one opinion from logge in user or teh ip address
-     * @param $id
-     * @param $table
-     * @param $type
-     * @return array|null
-     */
-    public function getOpinion($id,$table,$type){
-        if (userIsLoggedOn()) {
-            $this->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeUserID=".getLoggedInUserId());
-            return $this->dataBase->getRowList();
-        }
-        $this->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id. " and changeIP='".$_SERVER["REMOTE_ADDR"]."'");
-        return $this->dataBase->getRowList();
-    }
-
-    /**
-     * get the opinions for a person
-     * @param int $id person id
-     */
-	public function getOpinions($id,$table,$type,$start=1) {
-        $this->dataBase->query("select * from opinion where `table`='".$table."' and opinion='".$type."' and entryID=".$id." order by changeDate desc");
-        $data = $this->dataBase->getRowList();
-        $ret = array();
-        for ($i=0;$i<sizeof($data);$i++) {
-                $opinion=new stdClass();
-                $opinion->id=$data[$i]["id"];
-                $opinion->text=$data[$i]["text"];
-                $opinion->person=$data[$i]["changeUserID"];
-                $opinion->date = $data[$i]["changeDate"];
-                $opinion->ip = $data[$i]["changeIP"];
-                $opinion->myopinion = (userIsAdmin() || getLoggedInUserId()==$data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"]==$_SERVER["REMOTE_ADDR"]);
-                $ret[$i]=$opinion;
-        }
-        return $ret;
-    }
-
-    /**
-     * get the opinions for a person
-     * @param int $id person id
-     * @param string $type
-     * @return stdClass
-     */
-    public function getOpinionCount($id,$type) {
-        $ret = new stdClass();
-        if ($type=='picture') {
-            $ret->opinions = $this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='text' and entryID=".$id);
-            $ret->favorite = $this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='favorite' and entryID=".$id);
-            $ret->content =$this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='content' and entryID=".$id);
-            $ret->nice = $this->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='nice' and entryID=".$id);
-        } else {
-            $ret->opinions = $this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=".$id);
-            $ret->friends= $this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=".$id);
-            $ret->sport =$this->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=".$id);
-            $ret->candles = $this->getCandlesByPersonId($id);
-        }
-        return $ret;
-    }
 
 
     public function dbUtilityEncryptPasword(){

@@ -18,11 +18,32 @@ include_once "mysql.class.php";
 
 /**
 * Database framework for php made by MaierLabs (c) 2018
-* Extension for anonymous user entrys and history features
+* Extension for Anonymous User Entrys and history features
 * @package maierlabs\lpfw
 */
 class MySqlDbAUH extends MySql
 {
+    /**
+     * update one entry returns -1 for anny error
+     * @param string $table
+     * @param array $entry
+     * @return int
+     */
+    public function updateEntry($table,$entry) {
+        //Build the change data array
+        $data = array();
+        foreach ($entry as $fieldName=>$fieldValue) {
+            if ($fieldName!="id" && $fieldName!="changeForID") {
+                $data =$this->insertFieldInArray($data,$fieldName, $fieldValue);
+            }
+        }
+        if ($this->update($table,$data,"id",$entry["id"]))
+            return 0;
+        else
+            return -1;
+    }
+
+
     /**
      * get history info
      * @param string $table
@@ -87,26 +108,6 @@ class MySqlDbAUH extends MySql
         }
         $data =$this->insertFieldInArray($data,"deleted", $delete?1:0 );
         return $this->insert("history", $data);
-    }
-
-    /**
-     * update one entry returns -1 for anny error
-     * @param string $table
-     * @param array $entry
-     * @return int
-     */
-    public function updateEntry($table,$entry) {
-        //Build the change data array
-        $data = array();
-        foreach ($entry as $fieldName=>$fieldValue) {
-            if ($fieldName!="id" && $fieldName!="changeForID") {
-                $data =$this->insertFieldInArray($data,$fieldName, $fieldValue);
-            }
-        }
-        if ($this->update($table,$data,"id",$entry["id"]))
-            return 0;
-        else
-            return -1;
     }
 
     /**

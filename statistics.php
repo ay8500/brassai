@@ -3,6 +3,9 @@ include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
 include_once 'dbBL.class.php';
+include_once 'dbDaStatistic.class.php';
+
+$dbStatistic = new dbDaStatistic($db);
 
 $classmate=$db->getTableCount("person","isTeacher='0'");
 $classmateDeceased=$db->getTableCount("person","isTeacher='0' and deceasedYear is not null");
@@ -23,7 +26,7 @@ $classCount=$db->getTableCount("class");
 $classGraduationPicture=$db->getTableCount("picture","classID is not null and title like 'Tabló%'");
 $classPicture=$db->getTableCount("picture","classID is not null");
 
-$calendar=$db->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
+$calendar=$dbStatistic->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
 
 \maierlabs\lpfw\Appl::setSiteTitle("Statisztikai adatok", "Statistikai adatok");
 \maierlabs\lpfw\Appl::addCssStyle('
@@ -35,9 +38,8 @@ include('homemenu.inc.php');?>
     <div class="panel-heading">
         <h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb tanáraink és véndiákok</h4>
     </div>
-    <div class="panel-body">
-        <?php
-        $bests=$db->getPersonChangeBest(userIsAdmin()?24:12);
+    <div class="panel-body"><?php
+        $bests=$dbStatistic->getPersonChangeBest(userIsAdmin()?24:12);
         foreach ($bests as $uid=>$count) {
             if ($count>=1) {
                 $person=$db->getPersonByID($uid);

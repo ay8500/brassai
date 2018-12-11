@@ -3,11 +3,15 @@ include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
 include_once 'dbBL.class.php';
+include_once 'dbDaSongVote.class.php';
+
+$dbSongVote = new dbDaSongVote($db);
+
 use \maierlabs\lpfw\Appl as Appl;
 
 //Save Youtube id
 if (getParam("action")=="savesong" && userIsAdmin()) {
-	$db->updateSongFields(getIntParam("id"), getParam("link"), html_entity_decode(getParam("song"),ENT_QUOTES,"UTF-8"));
+	$dbSongVote->updateSongFields(getIntParam("id"), getParam("link"), html_entity_decode(getParam("song"),ENT_QUOTES,"UTF-8"));
 }
 
 //Get playlist
@@ -23,7 +27,7 @@ if (isset( $_GET['link'])  ) {
 		$Video=$nlink[0];
 }
 else {
-	$v=$db->getSongById(getIntParam("id"));
+	$v=$dbSongVote->getSongById(getIntParam("id"));
 	if ($v!=null) {
 		$Video=$v["video"];
 	}
@@ -31,7 +35,7 @@ else {
 	
 }
 //Get the vote list for this music
-$voters =$db->getVotersListForMusicId(getIntParam("id"));
+$voters =$dbSongVote->getVotersListForMusicId(getIntParam("id"));
 
 //Check if video exists	
 $apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
@@ -76,7 +80,7 @@ include("homemenu.inc.php");
 
 
 <?php if (userIsAdmin()) {
-	$song = $db->getSongById(getIntParam("id"));
+	$song = $dbSongVote->getSongById(getIntParam("id"));
 ?>
 	<div class="panel panel-default" style="margin: 15px; padding:10px">
 	<form>
