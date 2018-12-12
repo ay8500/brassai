@@ -102,7 +102,7 @@ include("homemenu.inc.php");
 	<div class="row">&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. szeptember 12.</b>-én.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. december 12.</b>-én.
 	</div>
 </div>
 

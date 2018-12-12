@@ -18,7 +18,7 @@ class FamilyRelativeTest extends PHPUnit_Framework_TestCase
     private $db;
 
     public function setUp() {
-        $this->db=new dbDAO();
+        $this->db=new dbDAO(null);
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
     }
 

@@ -1,6 +1,5 @@
 <?php Header ("Content-type: text/txt");
-echo('
-<?xml version="1.0" encoding="UTF-8"?>
+echo('<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ');
 include_once 'config.class.php';
@@ -36,13 +35,13 @@ include_once("dbBL.class.php");
 
 	$list=$dbSongVote->getSongList();
 	foreach ($list as $element) {
-		writeSitemapLink("zenePlayer.php?id=".$element["id"]."&name=".urlencode($element["name"]),$element["changeDate"]);
+		writeSitemapLink("zenePlayer.php?id=".$element["id"],$element["changeDate"]);
 	}
 
 
 	$pictureList=$db->getPictureList();
 	foreach ($pictureList as $picture) {
-		writeSitemapLink("picture.php?id=".$picture["id"]."&name=".urlencode($picture["title"]),$element["changeDate"]);
+		writeSitemapLink("picture.php?id=".$picture["id"],$element["changeDate"]);
 	}
 
 	$classList=$db->getClassList(getRealId(getAktSchool()));

@@ -516,7 +516,10 @@ function showField($diak,$field) {
  */
 function getPersonName($person) {
 	if ($person!=null) {
-		$ret = $person["lastname"]." ".$person["firstname"];
+        $ret ="";
+		if (isset($person["title"]))
+			$ret = $person["title"].' ';
+		$ret .= $person["lastname"]." ".$person["firstname"];
 		if (isset($person["birthname"]) && trim($person["birthname"])!="")
 			$ret .= " (".trim($person["birthname"]).")";
 		return $ret;

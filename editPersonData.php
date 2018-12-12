@@ -132,6 +132,10 @@
                     }
                     if ($dataItemProp[$i]==="role") {
                             showRoleField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
+                    } elseif ($dataItemProp[$i]==="title") {
+                        showTitleField(getFieldValueNull($diak, $dataFieldNames[$i]), $dataFieldNames[$i]);
+                    } elseif ($dataItemProp[$i]==="gender") {
+                            showGenderField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
                     } else {
                         echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
                         if ($dataFieldNames[$i]=="changeUserID") {
@@ -229,6 +233,35 @@ function showChosenField($value,$fieldName,$options)
     }
     echo('</select>');
     echo('<input type="hidden" name="'.$fieldName.'"/>');
+}
+
+function showGenderField($value,$fieldName) {
+    $options = array(
+            array("value"=>"","text"=>"...válassz..."),
+            array("value"=>"f","text"=>"Hölgy"),
+            array("value"=>"m","text"=>"Úr")
+    );
+    showOptionsField($value,$fieldName,$options);
+}
+
+function showTitleField($value,$fieldName) {
+    $options = array(
+            array("value"=>"","text"=>"...válassz..."),
+            array("value"=>"Dr.","text"=>"Dr."),
+            array("value"=>"Dr.Med.","text"=>"Dr.Med."),
+            array("value"=>"Prof.","text"=>"Prof."),
+            array("value"=>"Dr.Prof.","text"=>"Dr.Prof.")
+    );
+    showOptionsField($value,$fieldName,$options);
+}
+
+function showOptionsField($value,$fieldName,$options) {
+    echo('<select class="form-control" name="'.$fieldName.'">');
+    foreach ($options as $option) {
+        $selected = (strstr($value,$option["value"])!==false)?"selected":"";
+        echo('<option value="'.$option["value"].'" '.$selected.' >' . $option["text"] . '</option>');
+    }
+    echo('</select>');
 }
 ?>
 

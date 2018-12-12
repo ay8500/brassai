@@ -91,6 +91,7 @@ include("homemenu.inc.php");
 		</div>
 		<div class="panel-body">
 			<ul>
+                <li>December 2018: Családtagokat lehet megjelölni</li>
                 <li>November 2018: Véleményeket lehet személyekhez és képekhez hozzáfűzni</li>
                 <li>Szeptember 2018: Fényképeket <a href="picture.php?type=schoolID&typeid=1&album=Iskolánk%20sportolói">albumokba</a> lehet csoportosítani</li>
                 <li>Junius 2018: GDPR:<a href="gdpr.php?id=658">Személyes adatok megvédésére alkalmas kérvényenési lehetőség.</a>
@@ -104,7 +105,6 @@ include("homemenu.inc.php");
 				<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>
 				<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>
 				<li>Julius 2010:<a href="hometable.php?classid=74&guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
-				<li>Junius 2010: Képek <a href="pictureGallery.php?gallery=SzepIdok">Régi szép idők</a></li>
 				<li>Május 2010: Zene toplista <a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
                 <li>Julius 2006: <a href="worldmap.php?classid=all">Térképen megjelenített szétszóródása a véndiákoknak.</a></li>
 			</ul>

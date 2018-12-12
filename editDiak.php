@@ -73,11 +73,11 @@ if (!userIsAdmin() && getFieldChecked($diak,"place")!="") {
 
 //preparation of the field to be edited and the itemprop characteristic
 $offset=0;
-$dataFieldNames 	=array("lastname","firstname","email","birthname","deceasedYear");
-$dataFieldCaption 	=array("Családnév","Keresztnév","E-Mail","Diákkori név","† elhunyt");
-$dataItemProp       =array("","","","","");
-$dataCheckFieldVisible	=array(false,false,true,false,false);
-$dataFieldObl			=array(true,true,"fontos mező","leánykori családnév","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");
+$dataFieldNames 	=array("gender","title","lastname","firstname","email","birthname","deceasedYear");
+$dataFieldCaption 	=array("Megszólítás","Akad.titulus","Családnév","Keresztnév","E-Mail","Diákkori név","† elhunyt");
+$dataItemProp       =array("gender","title","","","","","");
+$dataCheckFieldVisible	=array(false,false,false,false,true,false,false);
+$dataFieldObl			=array("Hölgy/Úr","Akadémia titulus pl: Dr. Dr.Prof. ",true,true,"fontos mező","leánykori családnév","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");
 if (isset($diak["deceasedYear"])){
     array_push($dataFieldNames ,"cementery","gravestone");
     array_push($dataFieldCaption,"Temető","Sírhely");
@@ -361,8 +361,9 @@ include("homemenu.inc.php");
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
 		<img src="<?php echo getPersonPicture($diak) ?>" class="diak_image_icon" />
-	<span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
-	<?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
+        <?php echo($diak["title"]);?>
+	    <span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
+	    <?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
 	</h2>
 	</div>
 <?php } else { ?>

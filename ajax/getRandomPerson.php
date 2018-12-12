@@ -15,7 +15,7 @@ while (notUnique($idArray,$p["id"]) && $i++<10)
 
 $person = Array();
 
-$person["name"]=$p["lastname"]." ".$p["firstname"];
+$person["name"]=(isset($p["title"])?$p["title"]." ":"").$p["lastname"]." ".$p["firstname"];
 $person["id"]=$p["id"];
 $person["isTeacher"]=$p["isTeacher"];
 if (isset($p["deceasedYear"]))

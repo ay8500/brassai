@@ -11,8 +11,17 @@ class DbBLTest extends PHPUnit_Framework_TestCase
      */
     private $db;
 
+    /**
+     * @var \maierlabs\lpfw\MySqlDbAUH
+     */
+    private $dataBase;
+
     public function setUp() {
-        $this->db=new dbDAO();
+        //Connect to the DB
+        $dbPropertys = \Config::getDatabasePropertys();
+        $this->dataBase = new \maierlabs\lpfw\MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password);
+
+        $this->db=new dbDAO($this->dataBase);
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
         $_SERVER["REMOTE_ADDR"]="::1";
     }

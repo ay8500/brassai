@@ -3,6 +3,9 @@ include_once __DIR__ . '/../tools/sessionManager.php';
 include_once __DIR__ . '/../tools/ltools.php';
 include_once __DIR__ . '/../tools/appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
+include_once __DIR__ . '/../dbDaOpinion.class.php';
+
+$dbOpinions = new dbDaOpinion($db);
 
 header('Content-Type: application/json');
 
@@ -13,7 +16,7 @@ $start = getIntParam("start",0);
 
 $ret = array();
 if ($count!='candle') {
-    $opinions = $db->getOpinions($id, $type, $count, $start);
+    $opinions = $dbOpinions->getOpinions($id, $type, $count, $start);
 
     foreach ($opinions as $o) {
         $op = new stdClass();
