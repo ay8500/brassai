@@ -23,7 +23,7 @@ class DbBLTest extends PHPUnit_Framework_TestCase
 
         $this->db=new dbDAO($this->dataBase);
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
-        $_SERVER["REMOTE_ADDR"]="::1";
+        $_SERVER["REMOTE_ADDR"]="192.168.255.255";
     }
 
     public function testArray2ValueSearch()

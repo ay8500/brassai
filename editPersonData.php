@@ -148,7 +148,13 @@
                     <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
                     if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
                         $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-                        echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+                        if ($dataItemProp[$i]==="title") {
+                            showTitleField(getFieldValueNull($diak, $dataFieldNames[$i]), $dataFieldNames[$i]);
+                        } elseif ($dataItemProp[$i]==="gender") {
+                            showGenderField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
+                        } else {
+                            echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
+                        }
                     } else {
                         echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
                     }

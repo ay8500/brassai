@@ -115,12 +115,12 @@ if (userIsAdmin()) { //only for admin
 	array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
 if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-    $dataFieldObl[16+$offset] = "Évszám mettől meddig pl: 1961-1987";
-    $dataFieldCaption[16+$offset] = "Mettől meddig";
-    $dataFieldObl[17+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
-    $dataFieldCaption[17+$offset] = "Tantárgy";
-    $dataFieldCaption[18+$offset] = "Osztályfönök";
-    $dataFieldObl[18+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+    $dataFieldObl[18+$offset] = "Évszám mettől meddig pl: 1961-1987";
+    $dataFieldCaption[18+$offset] = "Mettől meddig";
+    $dataFieldObl[19+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
+    $dataFieldCaption[19+$offset] = "Tantárgy";
+    $dataFieldCaption[20+$offset] = "Osztályfönök";
+    $dataFieldObl[20+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
