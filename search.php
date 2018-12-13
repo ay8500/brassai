@@ -177,15 +177,16 @@ include_once 'displayCards.inc.php';
 	}
 	?>
 </div>
-<script type="text/javascript">
+
+
+<?php
+\maierlabs\lpfw\Appl::addJsScript('
     $( document ).ready(function() {
-        if ("<?php echo getGetParam("srcText", "")?>"!="") {
+        if ("'.getGetParam("srcText", "").'"!="") {
             showSearchBox(true);
         }
     });
-</script>
-
-<?php
+');
 include("homefooter.inc.php");
 
 ?>

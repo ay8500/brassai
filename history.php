@@ -89,6 +89,7 @@ function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=
 function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayChangeData($db,$person,$item["id"]);
 	displayElement(getPersonName($person), getPersonName($personNext));
+    displayElementObj($person, $personNext,"gender","X");
 	displayElementObj($person, $personNext,"picture","Pic");
 	displayElementObj($person, $personNext,"partner","P");
 	displayElementObj($person, $personNext,"deceasedYear","†");

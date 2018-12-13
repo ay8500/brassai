@@ -25,31 +25,31 @@ function displayPersonOpinion($db,$id,$teacher,$decesed) {
     <div>
         <buton onclick="<?php
         if ($teacher)
-            echo 'showTeacherOpinion('.$id.','.getLoggedInUserId().')';
+            echo 'showTeacherOpinion('.$id.','.getLoggedInUserIdOrNull().')';
         else
-            echo 'showPersonOpinion('.$id.','.getLoggedInUserId().')';
+            echo 'showPersonOpinion('.$id.','.getLoggedInUserIdOrNull().')';
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <a id="c-person-candle-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-person-candle-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Égö gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
             <span style="margin-right: -8px;">
                 <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/><span class="countTag"><?php echo $o->candles-1?></span>
             </span>
         </a>
-        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $ooption?>>
             <span style="margin-right: -8px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
         </a>
-        <a id="c-person-friend-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'<?php echo $tt ?>','person','friend',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-person-friend-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'<?php echo $tt ?>','person','friend',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="<?php echo $ttt ?>" <?php echo $ofriends?>>
             <span style="margin-right: -8px;">
                 <img src="images/<?php echo $teacher?'favorite.png':'friendship.jpg'?>" style="width: 32px"/><span class="countTag"><?php echo $o->friends ?></span>
             </span>
         </a>
-        <a id="c-person-sport-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Aktív beálítottságú','person','sport',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-person-sport-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Aktív beálítottságú','person','sport',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Sportoló <?php echo $o->sport ?> személy véleménye alapján" <?php echo $osport?>>
             <span style="margin-right: -8px;">
                 <img src="images/runner.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->sport ?></span>
@@ -78,25 +78,25 @@ function displayPictureOpinion($db,$id){
         ?>" class="btn btn-default" >
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
-        <a id="c-picture-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','picture','text',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-picture-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','picture','text',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $oopinion?>>
             <span style="margin-right: -8px;">
                 <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
             </span>
         </a>
-        <a id="c-picture-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc képe','picture','favorite',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-picture-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc képe','picture','favorite',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik." <?php echo $ofavorite?>>
             <span style="margin-right: -8px;">
                 <img src="images/favorite.png" style="width: 32px"/><span class="countTag"><?php echo $o->favorite ?></span>
             </span>
         </a>
-        <a id="c-picture-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Képnek jó tartalma','picture','content',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-picture-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Képnek jó tartalma','picture','content',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma." <?php echo $ocontent?>>
             <span style="margin-right: -8px;">
                 <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->content ?></span>
             </span>
         </a>
-        <a id="c-picture-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice',<?php echo getLoggedInUserId() ?>)"
+        <a id="c-picture-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép a kép tartalma','picture','nice',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Ennek a képnek szép a tartalma <?php echo $o->nice ?> vélemény szerint." <?php echo $onice?>>
             <span style="margin-right: -8px;">
                 <img src="images/star.png" style="width: 32px"/><span class="countTag"><?php echo $o->nice ?></span>
@@ -105,6 +105,12 @@ function displayPictureOpinion($db,$id){
     </div>
     <div id="o-picture-<?php echo $id ?>"></div>
     <?php
+}
+
+function getLoggedInUserIdOrNull() {
+    if (getLoggedInUserId()!=null)
+        return getLoggedInUserId();
+    return "null";
 }
 
 
@@ -249,11 +255,9 @@ function displayPictureOpinion($db,$id){
             url:'ajax/deleteOpinion.php?id='+id,
             type:'GET',
             success:function(data){
-                closeModalMessage();
-                if (data.count>=0) {
-                    showOpinions(data.id,'',data.table,data.type);
-                    showOpinionLogo(data.id,data.table,data.type,data.count);
-                }
+                clearModalMessage();
+                showOpinions(data.id,'',data.table,data.type);
+                showOpinionLogo(data.id,data.table,data.type,data.count);
             },
             error:function(error) {
                 alert('error');

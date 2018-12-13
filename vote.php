@@ -2,9 +2,11 @@
 include_once 'tools/sessionManager.php';
 include_once 'tools/userManager.php';
 include_once 'tools/appl.class.php';
+include_once 'dbDaSongVote.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 include_once("dbBL.class.php");
 
+$dbVote = new dbDaSongVote($db);
 
 $sTitle="Következő érettségi találkozónk";
 $SiteDescription="A következő érettségi találkozónk szavazati listája";
@@ -30,7 +32,7 @@ $data=$db->getPersonListByClassId(Appl::getMemberId("aktClass"));
 
 
 //Save vote data 
-if (getParam("action")=="vote") {
+if (isActionParam("vote")) {
 	//Save all data for admins, superusers and editors
 	if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || (userIsLoggedOn() && getAktUserId()==getParam("personID"))) {
 		$vote=array();
@@ -44,7 +46,7 @@ if (getParam("action")=="vote") {
 		$vote["isExcursion"]=getParam("isExcursion","")=="on"?1:0;
 		$vote["place"]=getParam("place","");;
 		$vote["id"]=intval(getParam("id","-1"));
-		$ret=$db->saveVote($vote)>=0?0:1;
+		$ret=$dbVote->saveVote($vote)>=0?0:1;
 		if ($ret==0)
 			Appl::setMessage('Sikeresen kimentve. Köszönjük bejegyzésed.', 'success'); 
 		else
@@ -79,7 +81,7 @@ if (getParam("action")=="vote") {
 <?php
 	foreach ($data as $d)	
 	{ 
-		$vote=$db->getVote(getRealId($d),$classMeetingCount);
+		$vote=$dbVote->getVote(getRealId($d),$classMeetingCount);
 		?>
 		<form method="post"">
 		<tr class="votetable"> 

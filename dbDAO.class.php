@@ -1282,22 +1282,31 @@ class dbDAO {
     }
 
     public function getRecentChangesListByDate($dateFrom, $limit) {
+        $rows=array();
         $sql  = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') order by changeDate desc limit ".$limit.") ";
-        $sql .= " union ";
-        $sql .= " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
+        //$sql .= " union ";
+        $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        $sql = " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."'";
         $sql .= " and ( changeForID is null or changeIP='".$_SERVER["REMOTE_ADDR"]."') and (isDeleted=0) order by changeDate desc limit ".$limit.") ";
-        $sql .= " union ";
-        $sql .= " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
-        $sql .= " union ";
-        $sql .= " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
-        $sql .= " union ";
-        $sql .= " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
-        $sql .= " union ";
-        $sql .= " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
+        //$sql .= " union ";
+        $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
+        //$sql .= " union ";
+        $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
+        //$sql .= " union ";
+        $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        $sql = " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
+        //$sql .= " union ";
+        $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
         $sql .= " order by changeDate desc limit ".$limit;
-        $this->dataBase->query($sql);
-        $rows =$this->dataBase->getRowList();
+        $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        usort($rows,function($a,$b) {
+            return ($b["changeDate"]<=>$a["changeDate"]);
+        });
+        array_splice($rows,$limit);
         return $rows;
 	}
 
