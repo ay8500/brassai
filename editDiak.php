@@ -390,6 +390,8 @@ array_push($tabsCaption ,array("id" => "cv", "caption" => "Életrajz"));
 array_push($tabsCaption ,array("id" => "hobbys", "caption" => "Szabadidőmben"));
 if ($diak["isTeacher"]==0) {
     array_push($tabsCaption ,array("id" => "school", "caption" => "Diákkoromból"));
+} else {
+    array_push($tabsCaption ,array("id" => "classes", "caption" => "Tanítványok"));
 }
 array_push($tabsCaption ,array("id" => "geoplace", "caption" => "Térkép"));
 if(userIsLoggedOn() || userIsAdmin()) {
@@ -408,6 +410,10 @@ $tabUrl="editDiak.php";
 		if ($tabOpen=="person") {
 			include("editPersonData.php");
 		}
+        //Teachers classes
+        if ($tabOpen=="classes") {
+            include("editPersonClasses.php");
+        }
         //Candles
         if ($tabOpen=="candles") {
             include("rip.inc.php");

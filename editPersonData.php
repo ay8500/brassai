@@ -27,7 +27,8 @@
 				<div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
 				<span>Válassz egy új jpg képet max. 2MByte</span>
 				<input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />	
-				<button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" ><span class="glyphicon glyphicon-upload"></span> Feltölt</button>
+				<button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" onclick="showWaitMessage();">
+                    <span class="glyphicon glyphicon-upload"></span> Feltölt</button>
                 <?php if (isset($diak["picture"]) && $diak["picture"]!=null) {?>
                     <?php  if (userIsAdmin()){
                         $pic=$diak['picture'];
@@ -176,7 +177,13 @@
                             }
                             echo('</div>');
                         } else {
-                            echo('<div '.$itemprop.' class="form-control" style="height:auto;">'.createLink(getFieldValueNull($diak,$dataFieldNames[$i])).'</div>');
+                            if ($dataItemProp[$i]==="title") {
+                                showTitleField(getFieldValueNull($diak, $dataFieldNames[$i]), $dataFieldNames[$i],true);
+                            } elseif ($dataItemProp[$i]==="gender") {
+                                showGenderField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i],true);
+                            } else {
+                                echo('<div ' . $itemprop . ' class="form-control" style="height:auto;">' . createLink(getFieldValueNull($diak, $dataFieldNames[$i])) . '</div>');
+                            }
                         }
                      }
                 }?>
@@ -241,28 +248,28 @@ function showChosenField($value,$fieldName,$options)
     echo('<input type="hidden" name="'.$fieldName.'"/>');
 }
 
-function showGenderField($value,$fieldName) {
+function showGenderField($value,$fieldName,$readOnly=false) {
     $options = array(
-            array("value"=>"","text"=>"...válassz..."),
+            array("value"=>" ","text"=>"...válassz..."),
             array("value"=>"f","text"=>"Hölgy"),
             array("value"=>"m","text"=>"Úr")
     );
-    showOptionsField($value,$fieldName,$options);
+    showOptionsField($value,$fieldName,$options,$readOnly);
 }
 
-function showTitleField($value,$fieldName) {
+function showTitleField($value,$fieldName,$readOnly=false) {
     $options = array(
-            array("value"=>"","text"=>"...válassz..."),
+            array("value"=>" ","text"=>"...válassz..."),
             array("value"=>"Dr.","text"=>"Dr."),
             array("value"=>"Dr.Med.","text"=>"Dr.Med."),
             array("value"=>"Prof.","text"=>"Prof."),
             array("value"=>"Dr.Prof.","text"=>"Dr.Prof.")
     );
-    showOptionsField($value,$fieldName,$options);
+    showOptionsField($value,$fieldName,$options,$readOnly);
 }
 
-function showOptionsField($value,$fieldName,$options) {
-    echo('<select class="form-control" name="'.$fieldName.'">');
+function showOptionsField($value,$fieldName,$options,$readOnly=false) {
+    echo('<select class="form-control" name="'.$fieldName.'" '.($readOnly?"disabled=disabled":"").'>');
     foreach ($options as $option) {
         $selected = (strstr($value,$option["value"])!==false)?"selected":"";
         echo('<option value="'.$option["value"].'" '.$selected.' >' . $option["text"] . '</option>');

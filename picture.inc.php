@@ -177,7 +177,7 @@ if (getParam("type")=="schoolID") {
 	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>"Tablók","albumName"=>"_tablo_")));
     $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>"Kicsengetési kártyák","albumName"=>"_card_")));
 }
-$albumList = $db->getListOfAlbum(getParam("type"), getParam("typeid"), $startAlbumList);
+$albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
 
 //Check if a new album want to be created
 if (getParam("album")!=null) {

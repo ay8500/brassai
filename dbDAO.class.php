@@ -108,7 +108,14 @@ class dbDAO {
 	public function getClassById($id,$forceThisID=false) {
 		return $this->getEntryById("class", $id,$forceThisID);
 	}
-	
+
+
+	public function getClassListByTeacherID($id) {
+	    $sql="select * from class where id in  (select classID from person where teachers like '%".$id."%')";
+        $this->dataBase->query($sql);
+        return $this->dataBase->getRowList();
+    }
+
 	public function getClassByText($text) {
 		$sql="select * from class where text='".trim($text)."'";
 		$sql .=" and changeForID is null";
