@@ -62,12 +62,13 @@ $familyPersonList = $db->getPersonRelativesById($diak["id"]);
             $person = $db->getPersonByID($familyPerson["id2"]);
             ?><div class="element"><?php
                 $relative= array_search($familyPerson["coderec"],array_column($family,"code"));
-                if ($familyPerson["gender"]=="f")
+                if ($familyPerson["gender"]=="f" || $person["gender"]=="f")
                     $textGender=($family[$relative]["textf"]!='')?'='.$family[$relative]["textf"]:"";
-                elseif ($familyPerson["gender"]=="m")
+                elseif ($familyPerson["gender"]=="m" || $person["gender"]=="m")
                     $textGender=($family[$relative]["textm"]!='')?'='.$family[$relative]["textm"]:"";
-                else
-                    $textGender=($family[$relative]["textf"]!='')?'='.$family[$relative]["textf"]." / ".$family[$relative]["textm"]:"";
+                else {
+                    $textGender = ($family[$relative]["textf"] != '') ? '=' . $family[$relative]["textf"] . " / " . $family[$relative]["textm"] : "";
+                }
                 if ($family[$relative]["code"]=='x') {
                     if (strpos($familyPerson["coderec"],'lp')!==false)
                         $textGender = " anyóson vagy apóson keresztül";

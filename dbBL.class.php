@@ -217,7 +217,10 @@ function getAktSchoolName() {
 
 function getPersonPicture($person) {
 	if (null==$person || !isset($person["picture"]) || $person["picture"]=="") {
-		return "images/avatar.jpg";
+		if ($person["gender"]=="f")
+			return "images/woman.png";
+		else
+            return "images/man.png";
 	} else {
 		return "images/".$person["picture"];
 	}
