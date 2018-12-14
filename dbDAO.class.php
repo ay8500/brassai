@@ -1,6 +1,7 @@
 <?php
 /**
  * Data access layer for the classmate database
+ * Tables: picture,person, class, school, message, request
 */
 
 use maierlabs\lpfw\MySqlDbAUH ;
@@ -110,13 +111,29 @@ class dbDAO {
 	}
 
 
+    /**
+     * Select the classes where the teacher was active
+     * @param $id
+     * @return array
+     */
 	public function getClassListByTeacherID($id) {
 	    $sql="select * from class where id in  (select classID from person where teachers like '%".$id."%')";
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
     }
 
-	public function getClassByText($text) {
+    /**
+     * Select the classes where the teacher was the head teacher
+     * @param $id
+     * @return array
+     */
+    public function getClassListByHeadTeacherID($id) {
+        $sql="select * from class where headTeacherID =".$id;
+        $this->dataBase->query($sql);
+        return $this->dataBase->getRowList();
+    }
+
+    public function getClassByText($text) {
 		$sql="select * from class where text='".trim($text)."'";
 		$sql .=" and changeForID is null";
 		$sql .=" and schoolId =".getAktSchoolId();
@@ -514,281 +531,6 @@ class dbDAO {
 		return $ret;
 	}
 	
-	public function getLightedCandleList($id=null) {
-		$sql = 'select personID from candle'." where  lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-		if($id!=null) {
-            $sql .=' and userID='.$id;
-        }
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$candles= $this->dataBase->getRowList();
-		
-			$sql='id in (';
-			foreach ($candles as $idx=>$candle) {
-				if ($idx!=0) $sql .=",";
-				$sql .=$candle["personID"];
-			}
-			$sql.=')';
-			return $this->getSortedPersonList($sql);
-		}
-		return array();
-	}
-
-    public function getPersonRelativesCountById($id) {
-        $ret = $this->getPersonRelativesRecursiveCount($id,array(array("id2"=>$id)),"",1);
-        return sizeof( $ret)-1;
-    }
-
-    /**
-     * @param int $id
-     * @param array $idArray
-     * @param string $code
-     * @param int $direction
-     * @param int $deap
-     * @return array
-     */
-    private function getPersonRelativesRecursiveCount($id,$idArray,$code,$direction,$deap=0) {
-        $sql = "select id,id1,id2, code, gender from family where id1=".$id;
-        $this->dataBase->query($sql);
-        $res=$this->dataBase->getRowList();
-        foreach ($res as $e) {
-            $foundId= array_search($e["id2"],array_column($idArray,"id2"));
-            if ($foundId===false ) {
-                $e["deap"]=$deap;
-                $e["direction"]=$direction;
-                $e["coderec"]=$code.$e["code"];
-                array_push($idArray,$e);
-                if ($deap<6) {
-                    $idArray  = $this->getPersonRelativesRecursiveCount($e["id2"],$idArray,$e["coderec"], $direction*(-1), $deap + 1);
-                }
-            }
-        }
-        $idArray = $this->unique_multidim_array($idArray,"id2");
-        $sql = "select id,id2 as id1,id1 as id2, code, gender from family where id2=".$id;
-        $this->dataBase->query($sql);
-        $res=$this->dataBase->getRowList();
-        foreach ($res as $e) {
-            $foundId= array_search($e["id2"],array_column($idArray,"id2"));
-            if ($foundId===false ) {
-                $e["deap"]=$deap;
-                $e["direction"]=$direction*(-1);
-                $e["coderec"]=$code.$e["code"];
-                array_push($idArray,$e);
-                if ($deap<6) {
-                    $idArray  = $this->getPersonRelativesRecursiveCount($e["id2"],$idArray,$e["coderec"],$direction*(-1), $deap + 1);
-                }
-            }
-        }
-        return $this->unique_multidim_array($idArray,"id2");
-    }
-
-
-    private function getPersonRelativesRecursive($id,$code="",$direction,$deap,$idList) {
-        $return = array();
-        $sql = "select id,id1,id2, code, gender from family where id1=".$id;
-        $this->dataBase->query($sql);
-        $res=$this->dataBase->getRowList();
-        foreach ($res as $e) {
-            if (!in_array($e["id2"],$idList)) {
-                $e["deap"]=$deap;
-                $e["direction"]=1;
-                $e["coderec"]=$this->cleanUpRelativeCode($code.$e["code"]);
-                array_push($idList,$e["id2"]);
-                if ($deap<7) {
-                    $e["relatives"]=$this->getPersonRelativesRecursive($e["id2"],$e["coderec"], $direction*(-1), $deap + 1,$idList);
-                }
-                array_push($return,$e);
-            }
-        }
-
-        $sql = "select id,id2 as id1,id1 as id2, code, gender from family where id2=".$id;
-        $this->dataBase->query($sql);
-        $res=$this->dataBase->getRowList();
-        foreach ($res as $e) {
-            if (!in_array($e["id2"],$idList)) {
-                $e["deap"] = $deap;
-                $e["direction"] = -1;
-                $e["coderec"] = $this->cleanUpRelativeCode($code.$this->reverseRelativeCode($e["code"]));
-                array_push($idList, $e["id2"]);
-                if ($deap <7) {
-                    $e["relatives"] = $this->getPersonRelativesRecursive($e["id2"], $e["coderec"], $direction * (-1), $deap + 1, $idList);
-                }
-                array_push($return, $e);
-            }
-        }
-        return $return;
-    }
-
-
-    public function unique_multidim_array($array, $key) {
-        $temp_array = array();
-        $i = 0;
-        $key_array = array();
-
-        foreach($array as $val) {
-            if (!in_array($val[$key], $key_array)) {
-                $key_array[$i] = $val[$key];
-                $temp_array[$i] = $val;
-            }
-            $i++;
-        }
-        return $temp_array;
-    }
-
-    /**
-     * Get the family
-     * @param $id
-     * @return array
-     */
-	public function getPersonRelativesById($id) {
-        $recursiveList =$this->getPersonRelativesRecursive($id,"",1,0,array($id));
-        $ret =$this->reorganiseRecursiveRelativeList($recursiveList);
-        return $ret;
-    }
-
-    private function reorganiseRecursiveRelativeList($recusiveList) {
-	    $ret = array();
-	    foreach ($recusiveList as $r) {
-	        if ($r["direction"]==1) {
-            } else {
-	            $r["gender"]=null;
-	        }
-            array_push($ret, $r);
-            if (isset($r["relatives"]))
-                $ret = array_merge($ret, $this->reorganiseRecursiveRelativeList($r["relatives"]));
-        }
-	    return $ret;
-    }
-
-
-    /*
-     * p <=> c, l<=>l, s<=>s
-     */
-    private function reverseRelativeCode($code) {
-	    $ret="";
-	    for($i=0;$i<strlen($code);$i++) {
-	        if ($code[$i]=="p") {
-	            $r="c";
-            } elseif ($code[$i]=="c") {
-                $r="p";
-            } else {
-                $r=$code[$i];
-            }
-	        $ret = $r.$ret;
-        }
-
-	    return $ret;
-    }
-
-    /**
-     * Save relative to a person
-     * @param int $id person ID
-     * @param int $relativeId
-     * @param string $code
-     * @param string $relativeGender "f" or "m"
-     * @return bool
-     */
-    public function saveRelatives($id, $relativeId, $code, $relativeGender) {
-        $data = array();
-        $data = $this->dataBase->insertFieldInArray($data,"id1",$id);
-        $data = $this->dataBase->insertFieldInArray($data,"id2",$relativeId);
-        $data = $this->dataBase->insertFieldInArray($data,"gender",$relativeGender);
-        $data = $this->dataBase->insertFieldInArray($data,"code",$code);
-        $data = $this->dataBase->insertFieldInArray($data,"changeDate",date("Y-m-d H:i:s"));
-        $data = $this->dataBase->insertFieldInArray($data,"changeIP",$_SERVER["REMOTE_ADDR"]);
-        $data = $this->dataBase->insertFieldInArray($data,"changeUserID",getLoggedInUserId());
-        return $this->dataBase->insert("family",$data);
-    }
-
-    /**
-     * Delete relative by relative id
-     * @param int $id
-     * @return bool
-     */
-    public function deleteRelatives($id) {
-        return $this->dataBase->delete("family","id",$id);
-    }
-
-    /**
-     * @param $code
-     * @return mixed
-     */
-    private function cleanUpRelativeCode($code) {
-        if($code=="pc") return "s";
-        //if($code=="ps") return "s";Not work!
-        /* $ret = str_replace("pl","p",$code); // [pppl=ppp ppl = pp] pl = p
-           $ret = str_replace("lc","c",$ret);  // [lccc=ccc lcc = cc] lc = c
-         */
-        $ret=$code;
-        $ret = str_replace("cs","c",$ret); //childres silbing = children
-        $ret = str_replace("cp","",$ret); //childres parents
-        $ret = str_replace("sp","p",$ret); //silbling parents are the parents
-        $ret = str_replace("sss","s",$ret); //silbling silbling = silbling
-        $ret = str_replace("ss","s",$ret); //silbling silbling = silbling
-
-	    return $ret;
-    }
-	
-	/**
-	 * Count of candles by person id always +1 from the system :)
-	 * if Id = null all candles + 1 candle for each deceased person from system
-	 * @param integer $id
-     * @return integer
-	 */
-	public function getCandlesByPersonId($id=null) {
-		if (null!=$id) {
-			$sql='select count(*) from candle where personId='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-			return $this->dataBase->queryInt($sql)+1;
-		} else {
-			$sql='select count(*) from person where deceasedYear is not null';
-			$ret = $this->dataBase->queryInt($sql);
-				
-			$sql="select count(*) from candle where lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-			return $ret + $this->dataBase->queryInt($sql);
-		}
-	}
-
-	public function getCandleDetailByPersonId($id) {
-		$sql='select * from candle where personID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."' order by id desc";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) 
-			return $this->dataBase->getRowList();
-		
-		return array();
-	}
-
-    public function getCandleDetailByUserId($id) {
-        $sql='select * from candle where userID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-        $this->dataBase->query($sql);
-        if ($this->dataBase->count()>0)
-            return $this->dataBase->getRowList();
-
-        return array();
-    }
-
-	public function checkLightning($id, $userId=null) {
-		if ($userId!=null) {
-			$sql='select count(*) from candle where personId='.$id." and userID=".$userId." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-			$ret = $this->dataBase->queryInt($sql);
-			return ($ret==0);
-		}
-		$sql='select count(*) from candle where personId='.$id." and ip='".$_SERVER["REMOTE_ADDR"]."' and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-		$ret = $this->dataBase->queryInt($sql);
-		return ($ret==0);
-	}
-	
-	public function setCandleLighter($id, $userId=null) {
-		$data=array();
-		if (userIsLoggedOn()) {
-			$data=$this->dataBase->insertFieldInArray($data, "userID", $userId);
-		}
-		$data=$this->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
-		$data=$this->dataBase->insertFieldInArray($data, "lightedDate", date("Y-m-d H:i:s"));
-		$data=$this->dataBase->insertFieldInArray($data, "personID", $id);
-		$this->dataBase->insert("candle", $data);
-        $this->updateRecentChangesList();
-	}
-	
 	/**
 	 * get entry count
      * @param string $table
@@ -934,32 +676,6 @@ class dbDAO {
 		}
         $this->updateRecentChangesList();
 		return $id;
-	}
-	
-	public function savePictureField($id,$personId,$classId,$schoolId,$file,$isVisibleForAll,$title,$comment,$uploadDate,$isDeleted=0) 
-	{
-		if ($personId==null)
-			return -1;
-		$picture = array();
-		$picture["id"]=$id;
-		$picture["personID"]=$personId;
-		if ($classId!=null)
-			$picture["classID"]=$classId;
-		if ($schoolId!=null)
-			$picture["schoolID"]=$schoolId;
-		if ($file!=null)
-			$picture["file"]=$file;
-		if ($isVisibleForAll!=null)
-			$picture["isVisibleForAll"]=$isVisibleForAll;
-		if ($title!=null)
-			$picture["title"]=$title;
-		if ($comment!=null)
-			$picture["comment"]=$comment;
-		if ($isDeleted!=null)
-			$picture["isDeleted"]=$isDeleted;
-		if ($uploadDate!=null)
-			$picture["uploadDate"]=$uploadDate;
-		return $this->savePicture($picture);		
 	}
 	
 	/**
@@ -1177,109 +893,7 @@ class dbDAO {
 		return $ret;
 	}
 
-/********************************[ Accelerator ]*****************************************************************
-    /**
-     * Union select the ids from the latest changes use accelerator for a better performace
-     * @param DateTime $dateFrom
-     * @param int $limit
-     * @return array
-     */
-	public function getRecentChangeList($dateFrom,$limit=50) {
-	    if ($dateFrom!=null) {
-            return $this->getRecentChangesListByDate($dateFrom, $limit);
-	    }
-	    $data = $this->getAcceleratorData();
-        if ($limit==sizeof($data)) {
-             return $data;
-        }
-        return $this->updateRecentChangesList($dateFrom,$limit);
-    }
-
-    public function deleteFromRecentChangesList($id,$type) {
-	    $accList=$this->getAcceleratorData(1);
-	    $found=$this->array3ValueSearch($accList,"id",$id,"id",$id,"type",$type);
-	    if ($found!==false) {
-            array_splice($accList,$found,1);
-            $date=$accList[sizeof($accList)-1]["changeDate"];
-            $date=DateTime::createFromFormat('Y-m-d H:i:s',$date);
-            $olderValue=$this->getRecentChangesListByDate($date, 1);
-            array_unshift($accList,$olderValue[0]);
-            $this->updateAcceleratorEntry($accList,1);
-            return true;
-        }
-        return false;
-    }
-
-    public function insertToRecentChangesList($id,$changeDate,$type,$action,$changeUserID) {
-        $accList=$this->getAcceleratorData(1);
-        $accList=$this->insertToArrayRecentChangesList($accList,$id,$changeDate,$type,$action,$changeUserID);
-        $this->updateAcceleratorEntry($accList,1);
-    }
-
-    public function insertToArrayRecentChangesList($accList,$id,$changeDate,$type,$action,$changeUserID) {
-	    $newValue=array("id"=>$id,"changeDate"=>$changeDate,"type"=>$type,"action"=>$action,"changeUserID"=>$changeUserID);
-        $found = $this->array3ValueSearch($accList,"id",$id,"type",$type,"action",$action);
-	    if ($found!==false) {
-            array_splice($accList,$found,1);
-        } else {
-            array_splice($accList,sizeof($accList)-1,1);
-        }
-        array_unshift($accList,$newValue);
-        return $accList;
-    }
-
-    public function array3ValueSearch($array,$key1,$value1,$key2,$value2,$key3,$value3) {
-	       foreach ($array as $id=>$value) {
-	           if ($value[$key1]===$value1 && $value[$key2]===$value2 && $value[$key3]===$value3) {
-	               return $id;
-               }
-           }
-           return false;
-    }
-
-    public function updateRecentChangesList() {
-        $data = $this->getAcceleratorData(1);
-        $limit = sizeof($data);
-        $dateFrom = date_create();
-        if ($limit>0) {
-            $rows = $this->getRecentChangesListByDate($dateFrom, $limit);
-            $this->updateAcceleratorEntry($rows,1);
-            return $rows;
-        }
-        $rows = $this->getRecentChangesListByDate($dateFrom, 1);
-        $this->updateAcceleratorEntry($rows,1);
-        return $rows;
-    }
-
-    public function updateAcceleratorEntry($rows,$type=1) {
-        $data = array();
-        $data = $this->dataBase->insertFieldInArray($data, 'type', $type);
-        $data = $this->dataBase->insertFieldInArray($data, 'json', json_encode($rows));
-        $data = $this->dataBase->insertFieldInArray($data, "changeDate", date("Y-m-d H:i:s"));
-        $this->dataBase->update('accelerator', $data, "type", $type);
-    }
-
-    /**
-     * Return the date and time as string for accelerator
-     * @param $type
-     * @return string
-     */
-    public function getAcceleratorDate($type=1) {
-        $ret = $this->dataBase->querySignleRow("select * from accelerator where `type`=".$type);
-        if ($ret!=null) {
-            return date_create($ret["changeDate"]);
-        }
-    }
-
-    public function getAcceleratorRow($type=1) {
-        $row = $this->dataBase->querySignleRow("select * from accelerator where type=".$type);
-        return $row;
-    }
-
-    public function getAcceleratorData($type=1) {
-        $data = $this->getAcceleratorRow($type);
-        return json_decode($data["json"],true);
-    }
+//********************************[ Accelerator ]*****************************************************************
 
     public function getRecentChangesListByDate($dateFrom, $limit) {
         $rows=array();
@@ -1300,15 +914,34 @@ class dbDAO {
         $sql = " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
         //$sql .= " union ";
         $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
-        $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
-        $sql .= " order by changeDate desc limit ".$limit;
+        //$sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' and id in ( select max(id) from candle GROUP by userID) order by lightedDate desc limit ".$limit.") ";
+        $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by lightedDate desc limit ".$limit.") ";
+        //$sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
+        //Order list by change date
         usort($rows,function($a,$b) {
             return ($b["changeDate"]<=>$a["changeDate"]);
         });
-        array_splice($rows,$limit);
-        return $rows;
+        //Remove duplicate entrys and keep the newest
+        $keylist = array();
+        $ret = array();
+        foreach ($rows as $row) {
+            $key=$row["type"].$row["action"].$row["id"];
+            if (!in_array($key, $keylist)) {
+                array_push($keylist, $key);
+                array_push($ret,$row);
+                if (sizeof($ret)==$limit)
+                    break;
+            }
+        }
+        return $ret;
 	}
+
+    public function updateRecentChangesList()
+    {
+        return;
+    }
+
 
 
 //********************* Message ******************************************
@@ -1705,22 +1338,5 @@ class dbDAO {
 		return $this->dataBase->getCounter();
 	}
 
-
-
-    public function dbUtilityEncryptPasword(){
-        $ret=0;
-        $this->dataBase->query("select user,passw,firstname,lastname,id from person");
-        while ($row = $this->dataBase->fetchRow()) {
-            $p=$row["passw"];
-            //Change
-            if (strlen($p)!=32) {
-                $ep=encrypt_decrypt("encrypt",$p);
-                $this->dataBase->update("person", array(["field"=>"passw","type"=>"s","value"=>$ep]),"id",$row["id"]);
-                $ret++;
-            }
-        }
-        return "Elements=".$this->dataBase->count()." Encrypted=".$ret;
-
-    }
 
   }

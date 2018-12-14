@@ -28,7 +28,6 @@ class nameTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        echo("NameSyntax\n");
         \maierlabs\lpfw\Logger::setLoggerLevel(\maierlabs\lpfw\LoggerLevel::info);
 
         $p = \Config::getDatabasePropertys();
@@ -39,6 +38,19 @@ class nameTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $this->db->disconnect();
+    }
+
+
+    public function testMale() {
+        $this->assertTrue($this->checkFirstName("Péter")=="m");
+    }
+
+    public function testFemale() {
+        $this->assertTrue($this->checkFirstName("Rozália")=="f");
+    }
+
+    public function testFamilyname() {
+        $this->assertFalse($this->checkFirstName("Kovács"));
     }
 
     public function testNames() {
@@ -58,8 +70,8 @@ class nameTest extends \PHPUnit_Framework_TestCase
             }
         }
         arsort($this->firstName,SORT_NUMERIC);
-        echo('FirstName:'.sizeof($this->firstName).'- LastName'.sizeof($this->lastName));
-        echo('Set gender:'.$countSetGender);
+        echo("\n".'FirstName:'.sizeof($this->firstName).'- LastName'.sizeof($this->lastName));
+        echo(' Set gender:'.$countSetGender."\n");
         foreach ($this->firstName as $name=>$count) {
             echo($count.":".$name."\n");
         }

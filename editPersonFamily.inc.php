@@ -1,4 +1,9 @@
 <?php
+include_once 'dbDaCandle.class.php';
+include_once 'dbDaFamily.class.php';
+
+$dbFamily = new dbDaFamily($db);
+
 /* Parents, Silbling, Life parnter, Children */
 $family=array(
     array ("code"=>"x", "text"=>"Távoli rokon","textf"=>"","textm"=>""),
@@ -38,23 +43,28 @@ include_once 'displayCards.inc.php';
 $edit = userIsAdmin() || userIsSuperuser() || userIsEditor() || $diak["id"]==getLoggedInUserId();
 
 if (isActionParam("save")) {
-    if ($db->saveRelatives(getParam("uid"),getParam("sid"),getParam("code"),getParam("gender"))) {
-        $db->updateRecentChangesList();
-        Appl::setMessage("Rokonsági kapcsolat létrehozva", "success");
+    $relatives = $dbFamily->getPersonRelativesById(getParam("uid"));
+    if (array_search(getParam("sid"),array_column($relatives,"id2"))===false ) {
+        if ($dbFamily->saveRelatives(getParam("uid"), getParam("sid"), getParam("code"), getParam("gender"))) {
+            $db->updateRecentChangesList();
+            Appl::setMessage("Rokonsági kapcsolat létrehozva", "success");
+        } else {
+            Appl::setMessage("Rokonsági kapcsolat létrehozása nem lehetséges.", "danger");
+        }
     } else {
-        Appl::setMessage("Rokonsági kapcsolat létrehozása nem lehetséges, mert már létezik","warning");
+        Appl::setMessage("Rokonsági kapcsolat létrehozása nem lehetséges, mert már létezik", "warning");
     }
 }
 
 if (isActionParam("delete")) {
-    if ($db->deleteRelatives(getIntParam("id"))) {
+    if ($dbFamily->deleteRelatives(getIntParam("id"))) {
         Appl::setMessage("Rokonsági kapcsolat törölve", "success");
         $db->updateRecentChangesList();
     } else
         Appl::setMessage("Rokonsági kapcsolat törése nem sikerült","warning");
 }
 
-$familyPersonList = $db->getPersonRelativesById($diak["id"]);
+$familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
 
 ?>
     <div class="container-fluid"><?php

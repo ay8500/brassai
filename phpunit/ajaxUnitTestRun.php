@@ -1,5 +1,6 @@
 <?php
 session_start();
+$timer=microtime(true);
 /**
  * Run a single test as ajax
  */
@@ -49,13 +50,13 @@ if ($testSetupMethod!=null) {
     try {
         $theTestClass->$testSetupMethod();
     } catch (\Exception $e){
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
     catch (\Error $e){
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
     catch (\Throwable $e) {
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
 }
 
@@ -64,13 +65,13 @@ if (isset($testMethodList[$testNr])) {
         $functionName=$testMethodList[$testNr];
         $theTestClass->$functionName();
     } catch (\Exception $e){
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
     catch (\Error $e){
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
     catch (\Throwable $e) {
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
 }
 
@@ -78,13 +79,13 @@ if ($testTearDownMethod!=null) {
     try {
         $theTestClass->$testTearDownMethod();
     } catch (\Exception $e){
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
     catch (\Error $e){
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
     catch (\Throwable $e) {
-        exceptionOccured($theTestClass,$result,$e);
+        exceptionOccured($theTestClass,$result,$e,$timer);
     }
 }
 
@@ -94,12 +95,13 @@ $res = $theTestClass->assertGetUnitTestResult();
 $result["test"]=$res->testResult;
 $result["assertOk"]=$res->assertOk;
 $result["assertError"]=$res->assertError;
+$result["time"]=number_format((microtime(true)-$timer) * 1000,2);
 
 
 
 echo json_encode($result);
 
-function exceptionOccured($theTestClass,$result,$e) {
+function exceptionOccured($theTestClass,$result,$e,$timer) {
     $res = $theTestClass->assertGetUnitTestResult();
     $result["assertOk"]=$res->assertOk;
     $result["assertError"]=$res->assertError;
@@ -107,6 +109,7 @@ function exceptionOccured($theTestClass,$result,$e) {
     $result["test"]=false;
     $result["filestatus"]="error";
     $result["echo"]=ob_get_clean();
+    $result["time"]=number_format((microtime(true)-$timer) * 1000,2);
     echo json_encode($result);
     die();
 }

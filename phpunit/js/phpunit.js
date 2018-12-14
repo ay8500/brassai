@@ -45,7 +45,7 @@ function drawChart() {
     google.visualization.events.addListener(fileChart, 'click', selectFileHandler);
     fileChart.draw(fileData, fileOption);
 
-    <?php if(in_array($pu->getGetParam("action"),array("autorun","scanfiles"))) {?>
+    <?php if(in_array($pu->getGetParam("action"),array("autorun","scanfiles")) || true) {?>
         getTestFiles();
     <?php }?>
 }
@@ -117,7 +117,7 @@ function runTest(oneFileNr,oneTestNr) {
         url:'ajaxUnitTestRun.php?file='+testFile.file+"&dir="+testFile.dir+"&testNr="+aktTestNr,
         type:'GET',
         success:function(data){
-            setTextToConsole(data.testName, "green",true);
+            setTextToConsole(data.time+'ms '+data.testName, data.test?"green":"red",true);
             if (aktTestNr == 0 || oneTestNr!=null) {
                 fileOption.title = 'Test file:' + testFiles[aktFileNr].file + '\nTest name:';
                 while (fileData.getNumberOfRows() > 0)
@@ -195,7 +195,7 @@ function setTextToConsole(text,color,newline) {
         newline = "span";
     else
         newline = "div";
-    var c= $('<'+newline+' style="color:"'+color+'"></'+newline+'>');
+    var c= $('<'+newline+' style="color:'+color+'"></'+newline+'>');
     c.text(text);
     $("#console").append(c);
 }

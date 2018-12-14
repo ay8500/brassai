@@ -5,10 +5,13 @@ include_once 'tools/appl.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 include_once 'tools/ltools.php';
 include_once 'dbBL.class.php';
+include_once  'dbDaCandle.class.php';
 include_once 'rip.inc.php';
 
 $SiteDescription="Elhunyt tanáraink és diákok";
 Appl::setSiteTitle($SiteDescription);
+
+$dbCandle = new dbDaCandle($db);
 
 //Type of canlde list new, teacher, people
 if (isActionParam("teacher"))
@@ -16,7 +19,7 @@ if (isActionParam("teacher"))
 else if (isActionParam("person"))
 	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher<>1");
 else {
-	$personList = $db->getLightedCandleList(getIntParam("id",null));
+	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null));
 }
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 
@@ -25,7 +28,7 @@ include("homemenu.inc.php");
 ?>
 
 <div style="margin-top:20px;padding:10px;background-color: black; color: #ffbb66;">
-	<h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $db->getCandlesByPersonId() ?> gyertya ég</h2>
+	<h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $dbCandle->getCandlesByPersonId() ?> gyertya ég</h2>
 	<div class="well" style="margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
 		<form>
 			<b style="font-size: 20px;color: #ffbb66;">Emléküket örökké őrizzük!
@@ -40,7 +43,7 @@ include("homemenu.inc.php");
 	</div>
 	<?php 	
 	foreach ($personList as $d) {
-		displayRipPerson($db,$d,true);
+		displayRipPerson($dbCandle,$d,$db->getClassById($d["classID"]),true);
 	}
 	?>
 </div>

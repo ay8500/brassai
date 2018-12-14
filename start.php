@@ -33,29 +33,21 @@ if (isActionParam("updatecache")) {
 function showRecentChanges($db,$date=null) {
     if ($date!=null) {
         $date=new \DateTime($date);
+    } else {
+        $date=new \DateTime();
     }
-    $ids=$db->getRecentChangeList($date, getIntParam("limit",48));
-    $keylist = array();
-    $entryID=0;
+    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48));
     foreach ($ids as $id) {
         if ($id["type"] == "person") {
             $person = $db->getPersonByID($id["id"]);
-            $entryID=$person["id"];
-            if (!in_array($id["type"].$entryID,$keylist ))
                 displayPerson($db, $person, true, true,$id["action"],$id["changeUserID"],$id["changeDate"]);
         } elseif ($id["type"] == "picture") {
             $picture = $db->getPictureById($id["id"]);
-            $entryID=$picture["id"];
-            if (!in_array($id["type"].$entryID,$keylist ))
-                displayPicture($db, $picture,false,$id["action"],$id["changeUserID"],$id["changeDate"]);
+            displayPicture($db, $picture,false,$id["action"],$id["changeUserID"],$id["changeDate"]);
         } elseif ($id["type"] == "class") {
             $class= $db->getClassById($id["id"]);
-            $entryID=$class["id"];
-            if (!in_array($id["type"].$entryID,$keylist ))
-                displayClass($db, $class,true,$id["action"],$id["changeUserID"],$id["changeDate"]);
+            displayClass($db, $class,true,$id["action"],$id["changeUserID"],$id["changeDate"]);
         }
-        if (!in_array($id["type"].$entryID,$keylist ))
-            array_push($keylist , $id["type"].$entryID);
     }
     $date=strtotime($ids[sizeof($ids)-1]["changeDate"])-1;
 
@@ -70,11 +62,7 @@ include("homemenu.inc.php");
 	<div class="panel panel-default " >
 
 		<div class="panel-heading">
-			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések
-                <?php if (userIsAdmin()) { ?>
-                    <form><button name="action" value="updatecache" class="btn btn-default">Új lista <?php echo Appl::dateTimeAsStr($db->getAcceleratorDate(1)) ?></button></form>
-                <?php } ?>
-            </h4>
+			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések</h4>
 		</div>
 		<div class="panel-body">
 		    <?php $lastDate=showRecentChanges($db);?>

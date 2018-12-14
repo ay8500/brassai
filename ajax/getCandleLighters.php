@@ -4,12 +4,13 @@ include_once __DIR__ . '/../tools/userManager.php';
 include_once __DIR__ . '/../tools/ltools.php';
 include_once __DIR__ . '/../tools/appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
+include_once __DIR__ . '/../dbDaCandle.class.php';
 
-
+$dbCandle= new dbDaCandle($db);
 $id=getIntParam("id");
 
-	$candles=$db->getCandleDetailByPersonId($id);
-	$sum =$db->getCandlesByPersonId($id);
+	$candles=$dbCandle->getCandleDetailByPersonId($id);
+	$sum =$dbCandle->getCandlesByPersonId($id);
 	$html =$sum." gyertya ég, meggyújtották: <br/>";	
 	foreach ($candles as $candle) {
 		$html .='<div class="person-candle">';

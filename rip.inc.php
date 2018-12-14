@@ -10,18 +10,18 @@
  * @return int
  */
 function getActualCandles($id) {
-	global $db;
-	return $db->getCandlesByPersonId($id);
+	global $dbCandle;
+	return $dbCandle->getCandlesByPersonId($id);
 }
 
 /**
  * display person with burning candles
- * @param dbDAO $db
+ * @param dbDaCandle $db
  * @param array $person
  * @param bool $showClass
  * @param bool $showDate
  */
-function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
+function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate=false) {
 	$d=$person;
 	$disabled =$db->checkLightning($d["id"],getLoggedInUserId())?'':"disabled=disabled";
 	if ($d["id"]!=-1) {
@@ -60,7 +60,6 @@ function displayRipPerson($db,$person,$showClass=false,$showDate=false) {
 					<h5>Tanár
 					<?php if (isset($d["function"])) { echo $d["function"]; }?></h5>
 				<?php } else {
-					$diakClass = $db->getClassById($d["classID"]);
 					$classText = getClassName($diakClass);
 					if (isPersonGuest($d)==1) {
 						if ($d["classID"]!=0)

@@ -4,6 +4,8 @@
  * save,update and delete data in the opinion table
  */
 
+include_once "dbDaCandle.class.php";
+
 class dbDaOpinion
 {
     /**
@@ -12,14 +14,19 @@ class dbDaOpinion
     private $dbDAO;
 
     /**
+     * @var dbDaCandle
+     */
+    private $dbCandle;
+
+    /**
      * dbDaOpinion constructor.
      * @param dbDAO $dbDAO
      */
     public function __construct(dbDAO $dbDAO)
     {
         $this->dbDAO = $dbDAO;
+        $this->dbCandle = new dbDaCandle($this->dbDAO);
     }
-
 
     /**
      * Save opinion
@@ -131,7 +138,7 @@ class dbDaOpinion
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=".$id);
             $ret->friends= $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=".$id);
             $ret->sport =$this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=".$id);
-            $ret->candles = $this->dbDAO->getCandlesByPersonId($id);
+            $ret->candles = $this->dbCandle->getCandlesByPersonId($id);
         }
         return $ret;
     }

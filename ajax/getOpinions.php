@@ -4,8 +4,10 @@ include_once __DIR__ . '/../tools/ltools.php';
 include_once __DIR__ . '/../tools/appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbDaOpinion.class.php';
+include_once __DIR__ . '/../dbDaCandle.class.php';
 
 $dbOpinions = new dbDaOpinion($db);
+$dbCandles = new dbDaCandle($db);
 
 header('Content-Type: application/json');
 
@@ -35,7 +37,7 @@ if ($count!='candle') {
         array_push($ret, $op);
     }
 } else {
-    $candles=$db->getCandleDetailByPersonId($id);
+    $candles=$dbCandles->getCandleDetailByPersonId($id);
     foreach ($candles as $o) {
         $op = new stdClass();
         $op->ip = $o['ip'];

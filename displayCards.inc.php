@@ -1,6 +1,7 @@
 <?php
 include_once 'dbDaOpinion.class.php';
 include_once 'displayOpinion.inc.php';
+include_once 'dbDaFamily.class.php';
 
 /**
  * Display a person including person picture class, education,ocupation,address and change date and username
@@ -17,6 +18,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	if ($person==null)
 		return;
     $dbOpinion = new dbDaOpinion($db);
+    $dbFamily = new dbDaFamily($db);
 	$d=$person;
 	?>
 	<div class="element">
@@ -101,7 +103,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 							echo '<a href="editDiak.php?tabOpen=hobbys&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
 						if (isset($d["geolat"]) && $d["geolat"]!="")
 							echo '<a href="editDiak.php?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
-						$relatives=$db->getPersonRelativesCountById($d["id"]);
+						$relatives=$dbFamily->getPersonRelativesCountById($d["id"]);
 						if ($relatives>0) {
                             echo '<a href="editDiak.php?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
                         }
