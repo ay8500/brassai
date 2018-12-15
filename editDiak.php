@@ -1,9 +1,10 @@
 <?php 
-include_once("tools/sessionManager.php");
-include_once ('tools/userManager.php');
+include_once 'tools/sessionManager.php';
+include_once 'tools/userManager.php';
 include_once 'tools/ltools.php';
 include_once 'tools/appl.class.php';
-include_once("dbBL.class.php");
+include_once 'dbBL.class.php';
+include_once  'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -420,7 +421,7 @@ $tabUrl="editDiak.php";
             $personList=array();
             $personList[0]=$diak;
             \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
-            displayRipPerson($db,$diak);
+            displayRipPerson(new dbDaCandle($db),$diak);
         }
 		//Pictures
 		if ($tabOpen=="pictures") {

@@ -34,13 +34,17 @@ if ($diak["gender"]=="m") {
     if ($classes==null && $mainClasses==null) {
         \maierlabs\lpfw\Appl::setMessage("Nincsenek osztályok bejelölve.","warning");
     } else {
-        echo("<div>".$headTeacher."</div>");
-        foreach ($classes as $c) {
-            echo('<div id="tclass"><a href="hometable.php?classid='.$c["id"].'"> ' .$c["graduationYear"].' '.$c["name"] .' '.($c["eveningClass"]==1?"esti tagozat":"").'</a></div>');
+        if (sizeof($mainClasses)>0) {
+            echo("<div>".$headTeacher."</div>");
+            foreach ($mainClasses as $c) {
+                echo('<div id="tclass"><a href="hometable.php?classid='.$c["id"].'"> ' .$c["graduationYear"].' '.$c["name"] .' '.($c["eveningClass"]==1?"esti tagozat":"").'</a></div>');
+            }
         }
-        echo("<div>".$teacher."</div>");
-        foreach ($classes as $c) {
-            echo('<div id="tclass"><a href="hometable.php?classid='.$c["id"].'"> ' .$c["graduationYear"].' '.$c["name"] .' '.($c["eveningClass"]==1?"esti tagozat":"").'</a></div>');
+        if (sizeof($classes)>0) {
+            echo("<div>" . $teacher . "</div>");
+            foreach ($classes as $c) {
+                echo('<div id="tclass"><a href="hometable.php?classid=' . $c["id"] . '"> ' . $c["graduationYear"] . ' ' . $c["name"] . ' ' . ($c["eveningClass"] == 1 ? "esti tagozat" : "") . '</a></div>');
+            }
         }
     }
 

@@ -10,7 +10,8 @@
  * @return int
  */
 function getActualCandles($id) {
-	global $dbCandle;
+	global $db;
+    $dbCandle = new dbDaCandle($db);
 	return $dbCandle->getCandlesByPersonId($id);
 }
 
