@@ -224,18 +224,17 @@ class dbDaFamily
      * @param $code
      * @return mixed
      */
-    private function cleanUpRelativeCode($code) {
+    public function cleanUpRelativeCode($code) {
         if($code=="pc") return "s";
         //if($code=="ps") return "s";Not work!
-        /* $ret = str_replace("pl","p",$code); // [pppl=ppp ppl = pp] pl = p
-           $ret = str_replace("lc","c",$ret);  // [lccc=ccc lcc = cc] lc = c
-         */
         $ret=$code;
         $ret = str_replace("cs","c",$ret); //childres silbing = children
         $ret = str_replace("cp","",$ret); //childres parents
         $ret = str_replace("sp","p",$ret); //silbling parents are the parents
         $ret = str_replace("sss","s",$ret); //silbling silbling = silbling
         $ret = str_replace("ss","s",$ret); //silbling silbling = silbling
+        $ret = preg_replace("/pl\z/","p",$ret,1);
+        $ret = preg_replace("/lc\z/","c",$ret,1);
 
         return $ret;
     }

@@ -59,15 +59,15 @@ class nameTest extends \PHPUnit_Framework_TestCase
         $persons=$this->db->getRowList();
         foreach ( $persons as $row) {
             $this->firstName = $this->addName($this->firstName,$row["firstname"]);
-            //$this->lastName = $this->addName($this->lastName,$row["lastname"]);
+            $this->lastName = $this->addName($this->lastName,$row["lastname"]);
+            /*
             $gender=$this->getGenderFirstName($row["firstname"]);
             if ($gender!==false) {
                 $data=array(array("field"=>"gender","type"=>"s","value"=>$gender));
                 $countSetGender++;
                 $this->db->update("person",$data,"id",$row["id"]);
-            } else {
-                $this->firstName = $this->addName($this->firstName,$row["firstname"]);
             }
+            */
         }
         arsort($this->firstName,SORT_NUMERIC);
         echo("\n".'FirstName:'.sizeof($this->firstName).'- LastName'.sizeof($this->lastName));
