@@ -76,4 +76,4 @@
 .iledittitle {	border: none;width:100%;padding:5px;font-weight: bold;}
 .ileditcomment {border: none;width:100%;height:100px;padding:5px;}
 .pi100 {width:100%;}
-#list-table { display:inline-block;margin: 10px 10px 0px 10px;}
+#list-table { margin: 0px 10px 0px 10px;}

@@ -300,6 +300,12 @@ if (isActionParam("showmore") ) {
 
 
 <?php
+
+\maierlabs\lpfw\Appl::addCssStyle('
+    .pbtn {position: relative;bottom: -28px;right: -2000px;background-color: white;box-shadow: 0 0 14px 3px black;border-radius: 20px;outline: none;border: none;width:20px;height:20px;font-weight: bold;}
+    .pbtn:active { outline: none;border: none;}
+');
+
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
     $dbOpinion = new dbDaOpinion($db);
     if (sizeof($pictures)==0) {
@@ -312,9 +318,10 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
             <div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>>
                 <div id="list-table">
                     <?php if ($view=="table") {?>
-                        <a style="display:block;vertical-align: top;min-height:300px" title="<?php echo $pict["title"] ?>" href="javascript:return false" onclick="toggleBigger(this)">
-                            <img class="img-responsive" style="cursor: -webkit-zoom-in; cursor: -moz-zoom-in;" src="convertImg.php?width=1800&thumb=false&id=<?php echo $pict["id"] ?>" />
-                        </a>
+                        <div>
+                        <button class="pbtn" onclick="toggleBigger(this);return false;" >+</button>
+                        <img class="img-responsive" style="min-height: 100px" src="convertImg.php?width=1600&thumb=false&id=<?php echo $pict["id"] ?>" onmouseenter="showTools(this,true)" onmouseout="showTools(this,false);" />
+                        </div>
                     <?php } else {?>
                         <div style="vertical-align: top; margin:10px" >
                             <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
@@ -486,11 +493,21 @@ function toggleBigger(o) {
 	
 	if ($(o).parent().parent().css("max-width")==="none") {  //Big
 	    $(o).parent().parent().css("max-width","395px");
+	    $(o).text("+");
 	} else {
 	    $("[class*=pictureframe]").css("max-width","395px");
 	    $(o).parent().parent().css("max-width","none");
+        $(o).text("-");
 	}
 	$(window).scrollTop(tempScrollTop);
+}
+
+function showTools(o,visible) {
+    if (visible) {
+        $($(o).siblings('button')[0]).css("right","-22px");
+    }else{
+        $($(o).siblings('button')[0]).css("right","-3000px");
+    }
 }
 
 function toogleListBlock() {

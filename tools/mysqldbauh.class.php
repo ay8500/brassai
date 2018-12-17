@@ -24,6 +24,23 @@ include_once "mysql.class.php";
 class MySqlDbAUH extends MySql
 {
     /**
+     * @param array $data
+     * @return array
+     */
+    public function insertUserDateIP($data) {
+        $data =$this->changeFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
+        $data =$this->changeFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
+        if (userIsLoggedOn()) {
+            $data =$this->changeFieldInArray($data,"changeUserID", getLoggedInUserId());
+        } else {
+            $data =$this->setFieldInArrayToNull($data,"changeUserID");
+        }
+        return $data;
+    }
+
+
+
+/**
      * update one entry returns -1 for anny error
      * @param string $table
      * @param array $entry
@@ -101,11 +118,7 @@ class MySqlDbAUH extends MySql
         $data=$this->insertFieldInArray($data, "entryID", $id);
         $data=$this->insertFieldInArray($data, "table", $table);
         $data=$this->insertFieldInArray($data, "jsonData", json_encode((object)$entry,JSON_HEX_TAG+JSON_HEX_AMP+JSON_HEX_APOS+JSON_HEX_QUOT));
-        $data =$this->insertFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
-        $data =$this->insertFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
-        if (userIsLoggedOn()) {
-            $data =$this->insertFieldInArray($data,"changeUserID", getLoggedInUserId());
-        }
+        $data = $this->insertUserDateIP($data);
         $data =$this->insertFieldInArray($data,"deleted", $delete?1:0 );
         return $this->insert("history", $data);
     }

@@ -204,9 +204,7 @@ class dbDaFamily
         $data = $this->dataBase->insertFieldInArray($data,"id2",$relativeId);
         $data = $this->dataBase->insertFieldInArray($data,"gender",$relativeGender);
         $data = $this->dataBase->insertFieldInArray($data,"code",$code);
-        $data = $this->dataBase->insertFieldInArray($data,"changeDate",date("Y-m-d H:i:s"));
-        $data = $this->dataBase->insertFieldInArray($data,"changeIP",$_SERVER["REMOTE_ADDR"]);
-        $data = $this->dataBase->insertFieldInArray($data,"changeUserID",getLoggedInUserId());
+        $data = $this->dataBase->insertUserDateIP($data);
         return $this->dataBase->insert("family",$data);
     }
 
@@ -233,8 +231,8 @@ class dbDaFamily
         $ret = str_replace("sp","p",$ret); //silbling parents are the parents
         $ret = str_replace("sss","s",$ret); //silbling silbling = silbling
         $ret = str_replace("ss","s",$ret); //silbling silbling = silbling
-        $ret = preg_replace("/pl\z/","p",$ret,1);
-        $ret = preg_replace("/lc\z/","c",$ret,1);
+        $ret = preg_replace("/pl\z/","p",$ret,1); // my parent life partner is also my parent
+        $ret = preg_replace("/lc\z/","c",$ret,1); // my lifepartners child is my brother
 
         return $ret;
     }

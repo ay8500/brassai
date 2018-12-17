@@ -1237,14 +1237,7 @@ class dbDAO {
 				$data =$this->dataBase->insertFieldInArray($data,$fieldName, $fieldValue);
 			}
 		}
-		$data =$this->dataBase->changeFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
-		$data =$this->dataBase->changeFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
-		if (userIsLoggedOn()) {
-			$data =$this->dataBase->changeFieldInArray($data,"changeUserID", getLoggedInUserId());
-		} else {
-			$data =$this->dataBase->setFieldInArrayToNull($data,"changeUserID");
-		}
-		
+		$data = $this->dataBase->insertUserDateIP($data);
 		//Update
 		if ($entry["id"]>=0) {
 			//User is loggen on
