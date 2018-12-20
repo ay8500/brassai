@@ -295,6 +295,30 @@ if (isActionParam("showmore") ) {
     <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
 <?php }?>
 
+<?php \maierlabs\lpfw\Appl::addCssStyle('
+    .pdialog {width: 90%; background-color: white}
+    @media only screen and (max-width: 700px){
+        .pdialog {
+            width: 100%;
+        }
+    }
+');
+?>
+
+<!-- Modal -->
+<div class="modal fade" id="pictureModal" role="dialog">
+    <div class="modal-dialog pdialog" >
+        <div class="modal-content" style="position: relative;margin: 10px;">
+            <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px"/>
+            <div style="position: absolute; top: 5px; left:10px;">
+                <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                <button title="Személyek neve" class="pbtn"><span class="glyphicon glyphicon-user"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -302,8 +326,11 @@ if (isActionParam("showmore") ) {
 <?php
 
 \maierlabs\lpfw\Appl::addCssStyle('
-    .pbtn {position: relative;bottom: -28px;right: -2000px;background-color: white;box-shadow: 0 0 14px 3px black;border-radius: 20px;outline: none;border: none;width:20px;height:20px;font-weight: bold;}
-    .pbtn:active { outline: none;border: none;}
+    .pbtn {background-color: white;box-shadow: 0 0 14px 3px black;border-radius: 20px;outline: none;border: none;min-width:35px;height:24px;font-weight: bold;display:inline-block;vertical-align: middle;text-align: center;}
+    .pdiv {position: absolute;top: 10px;left: 10px;display:none}
+    .pbtn:active .sbtn:active{ outline: none;border: none;}
+    .pbtn:hover {background-color: lightgrey;}
+    .ibtn:hover + .pdiv, .pdiv:hover {display:inline-block};
 ');
 
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
@@ -318,23 +345,29 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
             <div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>>
                 <div id="list-table">
                     <?php if ($view=="table") {?>
-                        <div>
-                        <button class="pbtn" onclick="toggleBigger(this);return false;" >+</button>
-                        <img class="img-responsive" style="min-height: 100px" src="convertImg.php?width=1600&thumb=false&id=<?php echo $pict["id"] ?>" onmouseenter="showTools(this,true)" onmouseout="showTools(this,false);" />
+                        <img class="img-responsive ibtn" style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
+                        <div class="pdiv">
+                            <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
+                            <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon glyphicon-pencil"></span></button><?php
+                            if (userIsAdmin()){?>
+                                <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
+                                <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
+                            } ?>
                         </div>
+                        <div style="display: none">Személyek a képen:<span></span></div>
                     <?php } else {?>
                         <div style="vertical-align: top; margin:10px" >
                             <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
                         </div>
                     <?php } ?>
                     <?php  if (userIsAdmin() || userIsSuperuser()) {?>
-                        <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: relative;bottom:35px;left: 17px;display:inline-block;">
+                        <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
                             <span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?></span>
                         </a>
                     <?php }?>
                 </div>
-                <div  id="list-table" >
-                    <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;display: none" >
+                <div  id="" >
+                    <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;margin: 0 10px 0 10px;display: none" >
                         <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo $pict["title"] ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
                         <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
 <?php echo $pict["comment"] ?></textarea>
@@ -350,21 +383,21 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                                 <button class="btn btn-danger" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
                             <?php }?>
                             <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
-                                <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba">
+                                <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
                                     <?php foreach ($albumList as $alb) {?>
                                         <?php if ($alb["albumName"]!=$albumParam && $alb["albumName"]!="_tablo_" ) { ?>
                                             <option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
                                         <?php }?>
                                     <?php }?>
                                 </select>
-                                <button onclick="changePictureAlbum(<?php echo $pict["id"]?>);return false;" class="btn btn-default inline">Áthelyezz!</button>
+                                <button onclick="changePictureAlbum(<?php echo $pict["id"]?>);return false;" class="btn btn-default inline" style="margin-top: 5px;">Áthelyezz!</button>
                             <?php }?>
-                            <button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                            <button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default" style="margin-top: 5px;"><span style="color:red;" class="glyphicon glyphicon-remove-circle"></span></button>
                         </div>
                     </div>
                 </div>
-                <div  id="list-table" >
-                    <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;" >
+                <div  id="" >
+                    <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 0 10px 0 10px;cursor:default;" >
                         <?php //change Order buttons?>
                         <?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
                             <?php  if ($idx!=0) {?>
@@ -380,15 +413,8 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                         <div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 5px;width: 320px;">
                             <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
                             <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
-                        </div>
-                        <button style="display: inline-block;margin: 0px 10px 10px 10px;" class="btn btn-default" onclick="displayedit(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-pencil"></span></button><?php
-                            displayPictureOpinion($dbOpinion,$pict["id"]);
-                        if (userIsAdmin()){?>
-                            <div style="margin-top: 5px;">
-                                <button style="display: inline-block;margin: 0px 10px 0 10px;" class="btn btn-warning" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
-                                <a class="btn btn-default" target="_download" href="<?php echo $pict['file']?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
-                            </div>
-                        <?php } ?>
+                        </div><?php
+                            displayPictureOpinion($dbOpinion,$pict["id"]);?>
                     </div>
                     <?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
                         <br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
@@ -406,8 +432,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                         </div>
                     </div>
                 <?php } ?>
-            </div>
-        <?php
+            </div><?php
         }
     }
 }
@@ -438,144 +463,58 @@ Appl::addJsScript("
     }
 ");
 
-?>
 
+\maierlabs\lpfw\Appl::addJs("js/picture.js");
+\maierlabs\lpfw\Appl::addJs("js/jquery.facedetection.js");
 
-<script type="text/javascript">
-
-
-function savePicture(id) {
-	var t = $('#titleEdit_'+id).val();
-	var c = $('#commentEdit_'+id).val();
-	$('#titleShow_'+id).html(t);
-	$('#commentShow_'+id).html(c);
-    showWaitMessage();
-    if (id>0) {
-		$.ajax({
-			url:encodeURI("ajax/setPictureTitle.php?id="+id+"&title="+t+"&comment="+c),
-			type:"GET",
-			dataType: 'json',
-			success:function(data){
-			    if (data.error==null) {
-                    clearModalMessage();
-				    hideedit(id);
-			    } else {
-                    showModalMessage("Kimentés sikertlen",data.error,"warning");
-                }
-			},
-            error:function() {
-                clearModalMessage();
-                showDbMessage("Kimentés sikertlen","warning");
-            }
-		});
-	}
-	return false;
-}
-
-function changeVisibility(id) {
-	var c = $('#visibility'+id).prop('checked')?1:0;
-	$.ajax({
-		url:"ajax/setPictureVisibility.php?id="+id+"&attr="+c,
-		type:"GET",
-		success:function(data){
-			$('#ajaxStatus').html(' Kimetés sikerült. ');
-			$('#ajaxStatus').show();
-			setTimeout(function(){
-			    $('#ajaxStatus').html('');
-			    $('#ajaxStatus').hide();
-			}, 2000);
-		}
-	});
-}
-
-function toggleBigger(o) {
-    var tempScrollTop = $(window).scrollTop();
-	
-	if ($(o).parent().parent().css("max-width")==="none") {  //Big
-	    $(o).parent().parent().css("max-width","395px");
-	    $(o).text("+");
-	} else {
-	    $("[class*=pictureframe]").css("max-width","395px");
-	    $(o).parent().parent().css("max-width","none");
-        $(o).text("-");
-	}
-	$(window).scrollTop(tempScrollTop);
-}
-
-function showTools(o,visible) {
-    if (visible) {
-        $($(o).siblings('button')[0]).css("right","-22px");
-    }else{
-        $($(o).siblings('button')[0]).css("right","-3000px");
+\maierlabs\lpfw\Appl::addJsScript('
+    function toogleListBlock() {
+        var url = "'.$view.'"=="table"?"view=list":"view=table";
+        url +="'.(isset($tabOpen)?"&tabOpen=".$tabOpen:"").'";
+        url +="'.(isset($type)?"&type=".$type:"").'";
+        url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
+        url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
+        window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
     }
-}
 
-function toogleListBlock() {
-	<?php 
-		if ($view=="table") {	
-			$url="view=list";
-		} else {
-			$url="view=table";
-		} 
-		$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
-		$url .=isset($type)?"&type=".$type:"";
-		$url .=isset($typeId)?"&typeid=".$typeId:"";
-		$url .=null!=getParam("album")?"&album=".getParam("album"):"";
-		$url .=isset($id)?"&id=".$id:"";
-		?>
-		window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>";
-}
-	
-function deletePicture(id) {
-	if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-	    showWaitMessage();
-		window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=deletePicture&did="+id+"&tabOpen=<?php echo(getParam("tabOpen","pictures"))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>";
-	}
-}
-
-function changeOrder(id1,id2) {
-<?php 
-	$url =$view=="table"?"view=table":"view=list";
-	$url .=isset($tabOpen)?"&tabOpen=".$tabOpen:"";
-	$url .=isset($type)?"&type=".$type:"";
-	$url .=isset($typeId)?"&typeid=".$typeId:"";
-	$url .=isset($id)?"&id=".$id:"";
-	$url .=null!=getParam("album")?"&album=".getParam("album"):"";
-	$url .="&action=changeOrder";
-	?>
-	window.location.href="<?php echo $_SERVER["PHP_SELF"].'?',$url ?>"+"&id1="+id1+"&id2="+id2;
-}
-
-function changePictureAlbum(id) {
- 	var url = 'pictureid='+id;
- 	url +='&tabOpen=<?php echo getParam('tabOpen',0)?>';
- 	var a="<?php echo getParam('type','')?>";
- 	if (a!='') url +='&type='+a;
- 	a="<?php echo getParam('typeid','')?>";
- 	if (a!='') url +='&typeid='+a;
- 	url +='&album='+$("#changeAlbum"+id).val();
- 	url +='&action=changePictureAlbum';
-    window.location.href="<?php echo $_SERVER["PHP_SELF"].'?'?>"+url;
-}
-
-function hideedit(id) {
-	$("#edit_"+id).hide();
-	$("#show_"+id).show();
-	return false;
-}
-
-function displayedit(id) {
-    $("#show_"+id).hide();
-	$("#edit_"+id).show();
-	return false;
-}
-
-<?php if (userIsAdmin()) :?>
-    function unlinkPicture(id) {
+    function deletePicture(id) {
         if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
             showWaitMessage();
-            window.location.href="<?php echo $_SERVER["PHP_SELF"]?>?action=unlinkPicture&did="+id+'&tabOpen=<?php echo(getParam("tabOpen","pictures"))?>&type=<?php echo $type?>&typeid=<?php echo $typeId?>&album=<?php echo getParam("album")?>';
+            window.location.href="'.$_SERVER["PHP_SELF"].'?action=deletePicture&did="+id+"&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
         }
     }
-<?php endif;?>
-</script>
+
+    function changeOrder(id1,id2) {
+        var url = "'.($view=="table"?"view=table":"view=list").'";
+        url +="'.(isset($tabOpen)?"&tabOpen=".$tabOpen:"").'";
+        url +="'.(isset($type)?"&type=".$type:"").'";
+        url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
+        url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
+        url +="'.(isset($id)?"&id=".$id:"").'";
+        url +="&action=changeOrder";
+        window.location.href="'.$_SERVER["PHP_SELF"].'?"+url+"&id1="+id1+"&id2="+id2;
+    }
+    
+    function changePictureAlbum(id) {
+        var url = "pictureid="+id;
+        url +="&tabOpen='.getParam('tabOpen',0).'";
+        var a="'.getParam('type','').'";
+        if (a!="") url +="&type="+a;
+        a="'.getParam('typeid','').'";
+        if (a!="") url +="&typeid="+a;
+        url +="&album="+$("#changeAlbum"+id).val();
+        url +="&action=changePictureAlbum";
+        window.location.href="'.$_SERVER["PHP_SELF"].'"+url;
+    }
+');
+if (userIsAdmin()) {
+    \maierlabs\lpfw\Appl::addJsScript('
+        function unlinkPicture(id) {
+            if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
+                showWaitMessage();
+                window.location.href = "'.$_SERVER["PHP_SELF"].'?action=unlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
+            }
+        }
+    ');
+}
+

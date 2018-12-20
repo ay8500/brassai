@@ -13,7 +13,7 @@
  *  
  *  quality: jpeg quality default 75
  *  
- *  width,height default value 200
+ *  width,height if empty the original size
  */
 include_once 'tools/sessionManager.php';
 //are we in a session?
@@ -54,7 +54,7 @@ if ($file_name!="") {
 
 
 //Width
-if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = 200;
+if(isset($_GET['width'])) $ThumbWidth =$_GET['width']; else $ThumbWidth = null;
 
 //Thumb
 $Thumb = false; if ((isset($_GET['thumb'])) && ($_GET['thumb']=="true")) $Thumb = true;
@@ -100,12 +100,17 @@ list($width, $height) = getimagesize($file_name);
 
 $imgratio=$width/$height;
 
-if ($imgratio>1){
-	$newwidth = $ThumbWidth;
-	$newheight = $ThumbWidth/$imgratio;
-}else{
-	$newheight = $ThumbWidth;
-	$newwidth = $ThumbWidth*$imgratio;
+if ($ThumbWidth!=null) {
+    if ($imgratio > 1) {
+        $newwidth = $ThumbWidth;
+        $newheight = $ThumbWidth / $imgratio;
+    } else {
+        $newheight = $ThumbWidth;
+        $newwidth = $ThumbWidth * $imgratio;
+    }
+} else {
+    $newheight = $height;
+    $newwidth = $width;
 }
 
 //function for resize image.
@@ -136,7 +141,7 @@ else {
 }
 
 //finally, return the image
-Header ("Content-type: image/png");
+Header ("Content-type: image/jpg");
 ImageJpeg ($resized_img,null,$quality);
 
 ImageDestroy ($resized_img);
