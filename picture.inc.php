@@ -296,7 +296,7 @@ if (isActionParam("showmore") ) {
 <?php }?>
 
 <?php \maierlabs\lpfw\Appl::addCssStyle('
-    .pdialog {width: 90%; background-color: white}
+    .pdialog {width: 90%;}
     @media only screen and (max-width: 700px){
         .pdialog {
             width: 100%;
@@ -308,11 +308,11 @@ if (isActionParam("showmore") ) {
 <!-- Modal -->
 <div class="modal fade" id="pictureModal" role="dialog">
     <div class="modal-dialog pdialog" >
-        <div class="modal-content" style="position: relative;margin: 10px;">
+        <div class="modal-content" style="position: relative;padding: 5px;">
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px"/>
-            <div style="position: absolute; top: 5px; left:10px;">
+            <div style="position: absolute; top: 10px; left:10px;">
                 <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="Személyek neve" class="pbtn"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="Személyek neve" class="pbtn" onclick="showTagging()"><span class="glyphicon glyphicon-user"></span></button>
             </div>
         </div>
     </div>
@@ -330,7 +330,9 @@ if (isActionParam("showmore") ) {
     .pdiv {position: absolute;top: 10px;left: 10px;display:none}
     .pbtn:active .sbtn:active{ outline: none;border: none;}
     .pbtn:hover {background-color: lightgrey;}
-    .ibtn:hover + .pdiv, .pdiv:hover {display:inline-block};
+    .ibtn:hover + .pdiv, .pdiv:hover {display:inline-block;}
+    .face {position: absolute; border: 2px solid #ec971f;}
+    .facename {position:absolute;background-color: white;opacity: 0.7;font-size: 10px;}
 ');
 
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
@@ -345,7 +347,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
             <div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>>
                 <div id="list-table">
                     <?php if ($view=="table") {?>
-                        <img class="img-responsive ibtn" style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
+                        <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
                         <div class="pdiv">
                             <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
                             <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon glyphicon-pencil"></span></button><?php
@@ -354,7 +356,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                                 <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
                             } ?>
                         </div>
-                        <div style="display: none">Személyek a képen:<span></span></div>
+                        <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
                     <?php } else {?>
                         <div style="vertical-align: top; margin:10px" >
                             <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />

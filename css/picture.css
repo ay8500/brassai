@@ -73,8 +73,6 @@
     background-color: white;
 }
 
-.face {position: absolute; border: 2px solid #ec971f;}
-
 .iledittitle {	border: none;width:100%;padding:5px;font-weight: bold;}
 .ileditcomment {border: none;width:100%;height:100px;padding:5px;}
 .pi100 {width:100%;}

@@ -16,5 +16,6 @@ $ret = array();
 
 $ret = $dbPIP->getListOfPersonInPicture($pictureId);
 
+
 echo(json_encode($ret));
 ?>

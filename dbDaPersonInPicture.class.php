@@ -46,8 +46,7 @@ class dbDaPersonInPicture
     }
 
     public function getListOfPersonInPicture($pictureId) {
-        //$where= " where pictureID=".$pictureId;
-        $where="";
+        $where= " where pictureID=".$pictureId;
         $sql  = "select personinpicture.*,person.lastname,person.firstname,person.title,person.picture";
         $sql .= " from personinpicture join person on person.id=personinpicture.personid ".$where;
         $this->dataBase->query($sql);
