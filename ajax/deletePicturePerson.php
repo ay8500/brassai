@@ -9,12 +9,10 @@ $dbPIP = new dbDaPersonInPicture($db);
 
 header('Content-Type: application/json');
 
+$personId=getParam("personid");
 $pictureId=getParam("pictureid");
 
-$ret = array();
-
-$ret = $dbPIP->getListOfPersonInPicture($pictureId);
-
+$ret = $dbPIP->deletePersonInPicture($personId,$pictureId);
 
 echo(json_encode($ret));
 ?>

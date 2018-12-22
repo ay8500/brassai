@@ -307,14 +307,15 @@ if (isActionParam("showmore") ) {
 
 <!-- Modal -->
 <div class="modal fade" id="pictureModal" role="dialog">
-    <div class="modal-dialog pdialog" >
+    <div class="modal-dialog pdialog" style="background-color: white;border-radius: 7px;">
         <div class="modal-content" style="position: relative;padding: 5px;">
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px"/>
             <div style="position: absolute; top: 10px; left:10px;">
                 <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="Személyek neve" class="pbtn" onclick="showTagging()"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="Személyek" class="pbtn" onclick="showFaces()"><span class="glyphicon glyphicon-user"></span></button>
             </div>
         </div>
+        <div id="personlist"></div>
     </div>
 </div>
 
@@ -331,8 +332,16 @@ if (isActionParam("showmore") ) {
     .pbtn:active .sbtn:active{ outline: none;border: none;}
     .pbtn:hover {background-color: lightgrey;}
     .ibtn:hover + .pdiv, .pdiv:hover {display:inline-block;}
-    .face {position: absolute; border: 2px solid #ec971f;}
-    .facename {position:absolute;background-color: white;opacity: 0.7;font-size: 10px;}
+    .face {position: absolute; border: 2px solid #ec971f;opacity:0;}
+    .recognition {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;}
+    .face:hover , .facename:hover {display:inline-block; opacity:1;}
+    .facename {position:absolute;background-color: white;opacity: 0.7;font-size: 10px;padding:2px;border-radius:3px;color:black;opacity:0;}
+    .personlist {margin:3px;padding:3px}
+    .personlist:hover {background-color:lightgray;}
+    #personlist{padding:5px;}
+    tr:hover {background-color:floralwhite;}
+    
+    .personsearch {background-color:lightgray;width:250px;padding: 7px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;}
 ');
 
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {

@@ -124,8 +124,11 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
 				?>
                     <div class="diakCardIcons">
-                        <?php echo $action ?><a href="editDiak.php?uid=<?php echo $changePerson["id"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a><br/>
-                        Dátum:<?php echo $changeDate;?><br/>
+                        <?php echo $action ?>
+                        <?php if($changePerson!=null) {?>
+                              <a href="editDiak.php?uid=<?php echo $changePerson["id"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a>
+                        <?php } else {echo ('Anonim látogató');} ?>
+                        <br/>Dátum:<?php echo $changeDate;?><br/>
                     </div>
 				<?php }?>
 	  		</div>
@@ -155,6 +158,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
         $person = $db->getPersonByID($picture["changeUserID"]);
     if ($action=='change' || $action==null) $action="Módósította: ";
     if ($action=='opinion') $action="Vélemény: ";
+    if ($action=='marked') $action="Személyt megjelölt:";
     if ($changeDate==null)
         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($picture["changeDate"]);
     else
@@ -165,19 +169,19 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
 		$typeid=$picture[$type."ID"];
 		$school=$db->getSchoolById($typeid);
 		$typeText="<b>Iskolakép:</b><br/>".$school["name"];
-	}
-	if (isset($picture["classID"])){
+	} elseif (isset($picture["classID"])){
 		$type="class";
 		$typeid=$picture[$type."ID"];
 		$class=$db->getClassById($typeid);
 		$typeText="<b>Osztálykép:</b><br/>".$class["text"];
-	}
-	if (isset($picture["personID"])){
+	} elseif (isset($picture["personID"])){
 		$type="person";
 		$typeid=$picture[$type."ID"];
 		$picturePerson=$db->getPersonByID($typeid);
 		$typeText="<b>Személyes kép:</b><br/>".getPersonName($picturePerson);
-	}
+	} else {
+        return;
+    }
 	
 	?>
 	<div class="element">
@@ -203,8 +207,11 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
             </div>
         </div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php echo $action?> <a href="editDiak.php?uid=<?php echo $person["id"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a> <br/>
-			Dátum:<?php echo $changeDate?>
+            <?php echo $action?>
+            <?php if($person!=null) {?>
+                <a href="editDiak.php?uid=<?php echo $person["id"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a>
+            <?php } else {echo ('Anonim látogató');} ?>
+            <br/>Dátum:<?php echo $changeDate?>
 		</div>
         <?php  displayPictureOpinion($dbOpinion,$picture["id"]); ?>
 	</div>

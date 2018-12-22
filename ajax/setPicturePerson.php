@@ -9,11 +9,15 @@ $dbPIP = new dbDaPersonInPicture($db);
 
 header('Content-Type: application/json');
 
+$personId=getParam("personid");
 $pictureId=getParam("pictureid");
+$x=getParam("x");
+$y=getParam("y");
+$w=getParam("w");
 
-$ret = array();
 
-$ret = $dbPIP->getListOfPersonInPicture($pictureId);
+
+$ret = $dbPIP->savePersonInPicture($personId,$pictureId,$x,$y,$w);
 
 
 echo(json_encode($ret));

@@ -29,7 +29,7 @@ class dbDaPersonInPicture
     }
 
     public function deletePersonInPicture($personId, $pictureId) {
-        return $this->dataBase->deleteWehre("personinpicture", "personID=".$personId." and pictureID=".$pictureId);
+        return $this->dataBase->deleteWhere("personinpicture", "personID=".$personId." and pictureID=".$pictureId);
     }
 
     public function savePersonInPicture($personId, $pictureId,$xPos=0.5, $yPos=0.5, $size=0.02) {
