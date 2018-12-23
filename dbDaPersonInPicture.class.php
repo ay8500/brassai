@@ -29,7 +29,7 @@ class dbDaPersonInPicture
     }
 
     public function deletePersonInPicture($personId, $pictureId) {
-        return $this->dataBase->deleteWhere("personinpicture", "personID=".$personId." and pictureID=".$pictureId);
+        return $this->dataBase->deleteWhere("personInPicture", "personID=".$personId." and pictureID=".$pictureId);
     }
 
     public function savePersonInPicture($personId, $pictureId,$xPos=0.5, $yPos=0.5, $size=0.02) {
@@ -42,13 +42,13 @@ class dbDaPersonInPicture
         $data = $this->dataBase->insertFieldInArray($data,"yPos",$yPos);
         $data = $this->dataBase->insertFieldInArray($data,"size",$size);
 
-        return $this->dataBase->insert("personinpicture",$data);
+        return $this->dataBase->insert("personInPicture",$data);
     }
 
     public function getListOfPersonInPicture($pictureId) {
         $where= " where pictureID=".$pictureId;
-        $sql  = "select personinpicture.*,person.lastname,person.firstname,person.title,person.picture";
-        $sql .= " from personinpicture join person on person.id=personinpicture.personid ".$where;
+        $sql  = "select personInPicture.*,person.lastname,person.firstname,person.title,person.picture";
+        $sql .= " from personInPicture join person on person.id=personInPicture.personid ".$where;
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
     }

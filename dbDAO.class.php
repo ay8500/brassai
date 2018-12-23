@@ -919,7 +919,7 @@ class dbDAO {
         //$sql .= " order by changeDate desc limit ".$limit;
         $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
 
-        $sql = " (select pictureID as id, changeDate, 'picture' as type, 'marked' as action, changeUserID from personinpicture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
+        $sql = " (select pictureID as id, changeDate, 'picture' as type, 'marked' as action, changeUserID from personInPicture where changeDate<='".$dateFrom->format("Y-m-d H:i:s")."' order by changeDate desc limit ".$limit.") ";
         $this->dataBase->query($sql);$rows=array_merge($rows,$this->dataBase->getRowList());
         //Order list by change date
         usort($rows,function($a,$b) {

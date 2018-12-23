@@ -132,7 +132,7 @@ function showFaces() {
                 if (faces[i].confidence > -1.0) {
                     $('<div>', {
                         'class': 'recognition',
-                        'onclick':'showDetectionList(this,' +faces[i].x+','+faces[i].y+','+faces[i].width+','
+                        'onclick':'$(".newperson").remove();showDetectionList(this,' +faces[i].x+','+faces[i].y+','+faces[i].width+','
                                                             +faces[i].scaleX+','+img.attr("data-id")+','+
                                                             img.get(0).naturalWidth+','+img.get(0).naturalHeight+ ')',
                         'css': {
@@ -141,7 +141,7 @@ function showFaces() {
                             'width': faces[i].width * faces[i].scaleX + 'px',
                             'height': faces[i].height * faces[i].scaleY + 'px'
                         }
-                    }).insertAfter(this);
+                    }).insertAfter(img);
                 }
             }
 
@@ -212,9 +212,10 @@ function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
     $(".personsearch").remove();
     var px = x/nw;
     var py = y/nh;
-    var pw = w/nw;
 
-    html = '<input placeholder="Személy neve" id="personedit" style="width: 194px" onkeyup="searchPerson('+pictureid+','+px+','+py+','+pw+')"/>';
+    html = '<input placeholder="Személy neve" id="personedit" style="width: 154px" onkeyup="searchPerson('+pictureid+','+px+','+py+','+w/nw+')"/>';
+    //html += '<button class="btn-xs" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus"</button></span></button>';
+    //html += '<button class="btn-xs" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus"</button></span></button>';
     html += '<button class="btn-xs" onclick="$(\'.personsearch\').remove();" style="float: right"><span class="glyphicon glyphicon-remove-circle"</button></span></button>';
     html += '<div style="width: 100%;max-height: 200px;overflow-y: scroll;">';
     html += '<table id="persontable" style="width: 100%">';
@@ -236,20 +237,42 @@ function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
     searchPerson(pictureid,x,y,w);
 }
 
+function setFaceSize(bigger) {
+    var x= parseFloat($('.newperson').css("left"));
+    var y= parseFloat($('.newperson').css("top"));
+    var w= parseFloat($('.newperson').css("width"));
+    var d= (w-w/1.3)/2;
+    if (bigger) {
+        w = w * 1.3;
+        x -=  d;
+        y -=  d;
+    } else {
+        w = w / 1.3;
+        x +=  d;
+        y +=  d;
+    }
+    $('.newperson').css("width",w+'px');
+    $('.newperson').css("height",w+'px');
+    $('.newperson').css("left",x+'px');
+    $('.newperson').css("top",y+'px');
+}
+
 function searchPerson(pictureid,x,y,w) {
     $('#persontable').empty();
     $.ajax({
         url: "ajax/getPersonByName.php?name="+$("#personedit").val(),
         type:"GET",
         success:function(data){
-            data.forEach(function(row) {
-                var pclass=row.scoolYear+' '+row.scoolClass+' ';
-                var pname=(row.title!=null?row.title+' ':'')+row.lastname+' '+row.firstname;
-                var pimg=(row.picture!=null?'<img src="images/'+row.picture+'" class="diak_image_icon" />':'');
-                var html ='<tr style="vertical-align: top"><td>'+pimg+'</td><td>'+pclass+'</td><td>'+pname+'</td><td>';
-                html +='<button title="Megjelöl" class="btn-xs btn-success" onclick="savePerson('+row.id+','+pictureid+','+x+','+y+','+w+')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
-                $('#persontable').append(html);
-            });
+            if (data!=null && data.length>0) {
+                data.forEach(function (row) {
+                    var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
+                    var pname = (row.title != null ? row.title + ' ' : '') + row.lastname + ' ' + row.firstname;
+                    var pimg = (row.picture != null ? '<img src="images/' + row.picture + '" class="diak_image_icon" />' : '');
+                    var html = '<tr style="vertical-align: top"><td>' + pimg + '</td><td>' + pclass + '</td><td>' + pname + '</td><td>';
+                    html += '<button title="Megjelöl" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ',' + w + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
+                    $('#persontable').append(html);
+                });
+            }
         },
         error:function(error) {
             console.log.error;
@@ -259,6 +282,7 @@ function searchPerson(pictureid,x,y,w) {
 
 function savePerson(personid,pictureid,x,y,w) {
     $('.personsearch').remove();
+    $('.newperson').remove();
     $.ajax({
         url: "ajax/setPicturePerson.php?pictureid="+pictureid+"&personid="+personid+"&x="+x+"&y="+y+"&w="+w,
         type:"GET",
@@ -269,4 +293,24 @@ function savePerson(personid,pictureid,x,y,w) {
             console.log.error;
         }
     });
+}
+
+function newPerson(event) {
+    $('.newperson').remove();
+    var img=$("#thePicture");
+    var w= 30;
+    var s = img.width()/img.get(0).naturalWidth;
+    var pad=5;
+    var n=$('<div>', {
+        'class': 'newperson',
+        'css': {
+            'left': pad+event.offsetX-w/2+ 'px',
+            'top': pad+event.offsetY-w/2 + 'px',
+            'width': w + 'px',
+            'height': w + 'px'
+        }
+    }).insertAfter(img);
+    showDetectionList(n,(event.offsetX-w/2)/s,(event.offsetY-w/2)/s,w/s,
+        s,img.attr("data-id"),
+        img.get(0).naturalWidth,img.get(0).naturalHeight);
 }
