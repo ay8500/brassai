@@ -229,12 +229,11 @@ function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
             "z-index":"199",
             "position":"absolute",
             "top":$(o).position().top+w*s/2+30+'px',
-            "left":$(o).position().left+(px>0.5?-250+w*s/2+20:-w*s/2+20)+'px',
+            "left":$(o).position().left+(px>0.5?-290+w*s/2+20:-w*s/2+20)+'px',
             "padding":"5px"
         },
         'html':html
     }).insertAfter($(o));
-
     searchPerson(pictureid,x,y,w);
 }
 
@@ -260,15 +259,24 @@ function setFaceSize(bigger) {
 
 function searchPerson(pictureid,x,y,w) {
     $('#persontable').empty();
+    $("#personedit").focus();
     $.ajax({
         url: "ajax/getPersonByName.php?name="+$("#personedit").val(),
         type:"GET",
         success:function(data){
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
-                    var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
+                    if (row.isTeacher==="0") {
+                        var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
+                    } else {
+                        var pclass = "Tanár"+(row.gender=="f"?"nő":" úr");
+                    }
                     var pname = (row.title != null ? row.title + ' ' : '') + row.lastname + ' ' + row.firstname;
-                    var pimg = (row.picture != null ? '<img src="images/' + row.picture + '" class="diak_image_icon" />' : '');
+                    if (row.picture!=null && row.picture.length>5) {
+                        var pimg = '<img src="images/' + row.picture + '" class="diak_image_icon" />';
+                    } else {
+                        var pimg = '<img src="images/' + (row.gender==="f"?"woman.png":"man.png") + '" class="diak_image_icon" />';
+                    }
                     var html = '<tr style="vertical-align: top"><td>' + pimg + '</td><td>' + pclass + '</td><td>' + pname + '</td><td>';
                     html += '<button title="Megjelöl" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ',' + w + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
                     $('#persontable').append(html);

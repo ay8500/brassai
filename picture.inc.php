@@ -348,8 +348,9 @@ if (isActionParam("showmore") ) {
     .personlist:hover {background-color:lightgray;}
     #personlist{padding:5px;}
     tr:hover {background-color:floralwhite;}
+    td {padding:4px}
     
-    .personsearch {background-color:lightgray;width:250px;padding: 7px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;}
+    .personsearch {background-color:lightgray;width:280px;padding: 7px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;}
 ');
 
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
