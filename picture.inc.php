@@ -84,7 +84,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			
 			//JPG
 			if (strcasecmp($fileName[1],"jpg")==0) {
-				if ($_FILES['userfile']['size']<3100000) {
+				if ($_FILES['userfile']['size']<3800000) {
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 						if ($overwrite==false) {
 							$upicture = array();
@@ -113,7 +113,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 					}
 				}
 				else {
-                    Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 2 MByteot.","warning");
+                    Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 3 MByteot.","warning");
 					saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"to big",false);
 				}
 			}
@@ -148,8 +148,12 @@ if(isset($picture)) {
 	    $where="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
         $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
         $countPictures = $db->getTableCount("picture",$where);
+    } elseif ($albumParam=="_mark_") {
+	    $where = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
+        $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
+        $countPictures = $db->getTableCount("picture",$where);
     } elseif ($albumParam=="_card_") {
-	    $where = "classID is not null and (title like '%icsengetési%') ";
+        $where = "classID is not null and (title like '%icsengetési%') ";
         $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
         $countPictures = $db->getTableCount("picture",$where);
     } else {
@@ -177,6 +181,9 @@ if (getParam("type")=="schoolID") {
 	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>"Tablók","albumName"=>"_tablo_")));
     $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>"Kicsengetési kártyák","albumName"=>"_card_")));
 }
+if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>"Megjelölések","albumName"=>"_mark_")));
+}
 $albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
 
 //Check if a new album want to be created
@@ -197,8 +204,8 @@ if (isActionParam("showmore") ) {
     die();
 }
 ?>
-	<div class="well">
-		<?php foreach ($albumList as $alb) {
+	<div class="well"><?php
+        foreach ($albumList as $alb) {
 			if (isset($alb["albumName"])) {
 				$albumLink = basename($_SERVER['SCRIPT_FILENAME'], ".php").".php?type=".$type."&typeid=".$typeId."&album=".$alb["albumName"].(getParam("tabOpen")!=null?"&tabOpen=".getParam("tabOpen"):"");
 			} else { 
@@ -229,7 +236,7 @@ if (isActionParam("showmore") ) {
 				</form>
 			</div>
 		<?php } ?>
-		<?php if ($albumParam!="" && $albumParam!="_tablo_" && $albumParam!="_card_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
+		<?php if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -245,7 +252,7 @@ if (isActionParam("showmore") ) {
 	
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
-	<?php if (($notDeletedPictures<50 || userIsAdmin()) && $albumParam!="_tablo_" && $albumParam!="_card_") {?>
+	<?php if (($notDeletedPictures<50 || userIsAdmin()) && substr($albumParam,0,1)!="_" && $albumParam!="_card_") {?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
 			<?php if(isset($picture)) { ?>
@@ -255,7 +262,7 @@ if (isActionParam("showmore") ) {
 		</div>
 		<div id="download" style="margin:15px;display:none;">
 			<div>Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.<span></span></div>
-			<span style="display: inline-block;">Válassz egy jpg képet max. 2MByte</span>
+			<span style="display: inline-block;">Válassz egy jpg képet max. 3MByte</span>
 			<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
 			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" onclick="showWaitMessage();"><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
 			<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> mégsem</button></span>
@@ -397,7 +404,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                             <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
                                 <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
                                     <?php foreach ($albumList as $alb) {?>
-                                        <?php if ($alb["albumName"]!=$albumParam && $alb["albumName"]!="_tablo_" ) { ?>
+                                        <?php if ($alb["albumName"]!=$albumParam && substr($alb["albumName"],0,1)!="_" ) { ?>
                                             <option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
                                         <?php }?>
                                     <?php }?>

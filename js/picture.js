@@ -212,6 +212,7 @@ function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
     $(".personsearch").remove();
     var px = x/nw;
     var py = y/nh;
+    var pad=5;
 
     html = '<input placeholder="Személy neve" id="personedit" style="width: 154px" onkeyup="searchPerson('+pictureid+','+px+','+py+','+w/nw+')"/>';
     //html += '<button class="btn-xs" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus"</button></span></button>';
@@ -227,8 +228,8 @@ function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
         'css': {
             "z-index":"199",
             "position":"absolute",
-            "top":$(o).offset().top+w*s/2+'px',
-            "left":$(o).offset().left+(px>0.5?-250+w*s/2:-w*s/2)+'px',
+            "top":$(o).position().top+w*s/2+30+'px',
+            "left":$(o).position().left+(px>0.5?-250+w*s/2+20:-w*s/2+20)+'px',
             "padding":"5px"
         },
         'html':html

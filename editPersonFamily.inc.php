@@ -15,8 +15,8 @@ $family=array(
     array ("code"=>"l", "text"=>"Élettársam","textf"=>"Feleségem","textm"=>"Férjem"),
     array ("code"=>"lp", "text"=>"Élettársam szülei","textf"=>"Anyósom","textm"=>"Apósóm"),
     array ("code"=>"s", "text"=>"Testvérem","textf"=>"Hugom / Növérem","textm"=>"Fivérem"),
-    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sogorom","textm"=>"Sogornöm"),
-    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sogorom","textm"=>"Sogornöm"),
+    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sogornöm","textm"=>"Sogorom"),
+    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sogornöm","textm"=>"Sogorom"),
     array ("code"=>"sc", "text"=>"Testvérem gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
     array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
     array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
@@ -180,8 +180,7 @@ Appl::addJsScript('
     }
  ');
 
-if($edit) {
-    Appl::addJsScript('    
+Appl::addJsScript('    
     function saveRelative(id,name) {
         if (confirm("Megszeretnéd jelölni: "+name+" "+$("#selectRelativGrad option:selected").text())) {
             showWaitMessage();
@@ -189,17 +188,9 @@ if($edit) {
         }
     }
 ');
-} else {
-    Appl::addJsScript('    
-    function saveRelative(id,name) {
-        alert("Rokonság bejegyzése csak bejelentkezett látogatok részére lehetséges. Jelentkezz be vagy regisztráld magad mert ez az oldal nagyon jó, barátságos, ingyenes és reklámmentes!");
-    }
-');
 
-}
 
-if($edit) {
-    Appl::addJsScript('
+Appl::addJsScript('
     function deleteRelative(id) {
         if (confirm("Ki szeretnéd törölni a rokonsági kapcsolatot?")) {
             showWaitMessage();
@@ -207,7 +198,7 @@ if($edit) {
         }
     }
 ');
-}
+
 
     
 ?>
