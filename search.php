@@ -135,7 +135,7 @@ include_once 'displayCards.inc.php';
 <div class="container-fluid">
 	<?php if(sizeof($personList)>0) {?>
 		<div class="well">
-			<?php if (strlen($name)>0) {?>
+			<?php if (strlen($name)>0 || !isset($caption)) {?>
 				Talált személyek száma:<?php echo sizeof($personList)?> <?php echo 'Keresett szó:"'.$name.'"'?>
 			<?php }elseif (strlen($caption)<40) {?>
 				<nav aria-label="Page navigation example">

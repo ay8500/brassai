@@ -319,7 +319,8 @@ if (isActionParam("showmore") ) {
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px" onmousedown="newPerson(event);"/>
             <div style="position: absolute; top: 10px; left:10px;">
                 <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="Személyek" class="pbtn" onclick="showFaces()"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="Személyeket keres" class="pbtn" onclick="showFaces()"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="Jelölések" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
             </div>
         </div>
         <div id="personlist"></div>
@@ -368,7 +369,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
                         <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
                         <div class="pdiv">
                             <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
-                            <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon glyphicon-pencil"></span></button><?php
+                            <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
                             if (userIsAdmin()){?>
                                 <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
                                 <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php

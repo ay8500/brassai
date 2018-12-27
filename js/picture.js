@@ -190,6 +190,19 @@ function deletePerson(personid,pictureid) {
     }
 }
 
+function personShowAll(visible) {
+    $('*[person-id]').each(function(){
+        if ($(this).is('div')) {
+            if (visible) {
+                $(this).css("opacity", "1");
+            } else {
+                $(this).css("opacity", "0");
+            }
+        }
+    });
+}
+
+
 function personShow(id,visible) {
     $('*[person-id='+id+']').each(function(){
         if ($(this).is('div')) {

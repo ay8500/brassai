@@ -11,8 +11,6 @@ $name = getParam("name","");
 
 $personList = array();
 
-if (strlen(trim($name))>2) {
-    $persons=$db->searchForPerson($name);
-}
+$persons=$db->searchForPerson($name);
 
 echo(json_encode($persons));

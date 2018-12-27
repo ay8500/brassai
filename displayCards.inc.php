@@ -92,7 +92,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         displayIcon($d,"facebook","facebook.png","Facebook","");
                         //displayIcon($d,"twitter","twitter.png","Twitter","");
                         displayIcon($d,"homepage","www.png","Honoldal","");
-                        $pictures=$db->getNrOfPictures($d["id"], "personID",null);
+                        $pictures=$db->getNrOfPersonPictures($d["id"]);
 						if ($pictures>0)
 							echo '<a href="editDiak.php?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")

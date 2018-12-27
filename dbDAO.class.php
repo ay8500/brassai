@@ -376,9 +376,7 @@ class dbDAO {
 		$ret = array();
 		$nameItems=explode(' ', trim($name));
 		foreach ($nameItems as $nameWord) {
-			if (strlen(trim($nameWord))>2) {
 				$ret=$this->personMerge($ret,$this->searchForPersonOneString($nameWord));
-			}
 		}
 		usort($ret, "compareAlphabetical");
 		return $ret;
@@ -400,7 +398,9 @@ class dbDAO {
 		foreach ($array1 as $person1) {
 			foreach ($array2 as $person2) {
 				if ($person1["id"]==$person2["id"]) {
-					array_push($ret,$person1);
+                    if (array_search($person1["id"],array_column($ret,"id"))===false) {
+                        array_push($ret, $person1);
+                    }
 				}
 			}
 		}
@@ -414,29 +414,36 @@ class dbDAO {
 	 */
 	private function searchForPersonOneString($name) {
 		$ret = array();
-		$name=trim($name);
-		if( strlen($name)>1 && intval($name)==0) {
-            $name=$this->clearUTF($name);
-			$sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
-			$sql .=" left join  class on class.id=person.classID";  
-			$sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
-			$sql .=" and ( person.changeForID is null";
-            $sql .=" and (soundex(person.lastname) like soundex('".$name."') ";
-            $sql .=" or soundex(person.firstname) like soundex('".$name."') ";
-            if( strtolower($this->wildcardUTF($name))=="eva")
-                $sql .=" or (person.firstname) = 'Éva'";
-            $sql .=" or soundex(person.birthname) like soundex('".$name."') )";
-            $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
-            $sql.=") or (".$this->getSqlAnonymous("person").") limit 150";
-			$this->dataBase->query($sql);
+		if( strlen($name)>0 && intval($name)==0) {
 
-			while ($person=$this->dataBase->fetchRow()) {
-                    if (isset($person["changeForID"]))
-                        $person["id"]=$person["changeForID"];
-					array_push($ret, $person);
-			}
-			usort($ret, "compareAlphabetical");
-		}
+            $name=trim($name);
+            $name=$this->clearUTF($name);
+            $where ="(";
+            $where .="soundex(person.lastname) like soundex('".$name."') ";
+            $where .=" or soundex(person.firstname) like soundex('".$name."') ";
+            if( strtolower($this->wildcardUTF($name))=="eva")
+                $where .=" or person.firstname = 'Éva'";
+            $where .=" or soundex(person.birthname) like soundex('".$name."')";
+            $where .=" )";
+
+		} else {
+            $where = " class.id=".getAktClassId();
+        }
+        $sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
+        $sql .=" left join  class on class.id=person.classID";
+        $sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
+        $sql .=" and ( person.changeForID is null and ".$where;
+        $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
+        $sql.=") or (".$this->getSqlAnonymous("person")."and ".$where.") limit 150";
+
+        $this->dataBase->query($sql);
+        while ($person=$this->dataBase->fetchRow()) {
+            if (isset($person["changeForID"]))
+                $person["id"]=$person["changeForID"];
+            if (array_search($person["id"],array_column($ret,"id"))===false)
+                array_push($ret, $person);
+        }
+        usort($ret, "compareAlphabetical");
 		return $ret;
 	}
 	
@@ -733,6 +740,10 @@ class dbDAO {
             $sql.=" and albumName='".$album."'";
         }
         return $this->getTableCount("picture",$sql);
+    }
+
+    public function getNrOfPersonPictures($id) {
+        return $this->getNrOfPictures($id,'personID')+$this->dataBase->queryInt("select count(1) from personInPicture where personID=".$id);
     }
 
     /*
