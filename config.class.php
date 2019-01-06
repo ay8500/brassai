@@ -14,11 +14,11 @@ class Config {
 
     public static $siteUrl = "https://brassai.blue-l.de";
     public static $siteMail ="brassai@blue-l.de";
-    public static $timeZoneOffsetMinutes=60;
+    public static $timeZoneOffsetMinutes=60;                // Server timezone eg: London=0, Berlin=60, Moscow=120
     public static $dateTimeFormat="<b>Y.m.d</b> H:i:s";
     public static $dateFormat="<b>Y.m.d</b>";
 
-    public static $webAppVersion = "20181223c";  //Used to load the actual css und js files.
+    public static $webAppVersion = "20190106";  //Used to load the actual css und js files.
 
     private static $SupportedLang = array("hu"); //First language ist the default language.
 

@@ -55,10 +55,14 @@ function displayedit(id) {
     return false;
 }
 
+var faceSize = 30;
+var picturePadding = 5;
 
 function pictureModal(o,file,id) {
     $("#thePicture").attr("data-id",id);
     $("#thePicture").attr("src",file);
+    $("#thePicture").css("max-width",$(window).width()-80+"px");
+    $("#thePicture").css("max-height",$(window).height()-120+"px");
     $('#pictureModal').modal({show: 'false' });
     $("#thePicture").on('load',function(){
         onPictureLoad();
@@ -74,8 +78,7 @@ function onPictureLoad() {
     }
 }
 
-function showTagging() {
-    var pad=5;
+function showTagging(show) {
     var img=$("#thePicture");
 
     $.ajax({
@@ -91,10 +94,11 @@ function showTagging() {
                     'onmouseover':"personShow("+p.personID+",true)",
                     'onmouseout':"personShow("+p.personID+",false)",
                     'css': {
-                        'left': pad + p.xPos * img.width() + 'px',
-                        'top': pad + p.yPos * img.height() + 'px',
+                        'left': picturePadding + p.xPos * img.width() + 'px',
+                        'top': picturePadding + p.yPos * img.height() + 'px',
                         'width': p.size * img.width() + 'px',
-                        'height': p.size * img.width() + 'px'
+                        'height': p.size * img.width() + 'px',
+                        'opacity':(show?'1':'0')
                     }
                 }).insertAfter(img);
                 $('<div>',{
@@ -102,8 +106,8 @@ function showTagging() {
                     'class': 'facename',
                     'person-id':p.personID,
                     'css': {
-                        'left': pad + p.xPos * img.width() + 'px',
-                        'top': pad + p.yPos * img.height() + p.size * img.width()+ 'px'
+                        'left': picturePadding + p.xPos * img.width() + 'px',
+                        'top': picturePadding + p.yPos * img.height() + p.size * img.width()+ 'px'
                     }
                 }).insertAfter(img);
                 var html='<span onmouseover="personShow('+p.personID+',true)"';
@@ -123,21 +127,19 @@ function showTagging() {
 }
 
 function showFaces() {
-    var pad=5;
-    var img=$("#thePicture");
 
     $("#thePicture").faceDetection({
         complete: function (faces) {
+            var img=$("#thePicture");
             for (var i = 0; i < faces.length; i++) {
+                var w = faces[i].width * faces[i].scaleX;
                 if (faces[i].confidence > -1.0) {
                     $('<div>', {
                         'class': 'recognition',
-                        'onclick':'$(".newperson").remove();showDetectionList(this,' +faces[i].x+','+faces[i].y+','+faces[i].width+','
-                                                            +faces[i].scaleX+','+img.attr("data-id")+','+
-                                                            img.get(0).naturalWidth+','+img.get(0).naturalHeight+ ')',
+                        'onclick':'$(".newperson").remove();showDetectionList(this,' +(faces[i].x*faces[i].scaleX+w/2)+','+(faces[i].y*faces[i].scaleY+w/2)+','+img.attr("data-id")+','+w+ ')',
                         'css': {
-                            'left': pad + faces[i].x * faces[i].scaleX + 'px',
-                            'top': pad + faces[i].y * faces[i].scaleY + 'px',
+                            'left': picturePadding + faces[i].x * faces[i].scaleX + 'px',
+                            'top': picturePadding + faces[i].y * faces[i].scaleY + 'px',
                             'width': faces[i].width * faces[i].scaleX + 'px',
                             'height': faces[i].height * faces[i].scaleY + 'px'
                         }
@@ -150,7 +152,7 @@ function showFaces() {
             alert('Error: ' + message);
         }
     });
-
+    return false;
 }
 
 
@@ -167,7 +169,7 @@ $(function() {
                 }
             },
             error:function(error) {
-                console.log.error;
+                console.log(error);
             }
         });
     });
@@ -184,7 +186,7 @@ function deletePerson(personid,pictureid) {
                 });
             },
             error:function(error) {
-                console.log.error;
+                console.log(error);
             }
         });
     }
@@ -221,15 +223,15 @@ function personShow(id,visible) {
     });
 }
 
-function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
+function showDetectionList(o,x,y,pictureid,w) {
     $(".personsearch").remove();
-    var px = x/nw;
-    var py = y/nh;
-    var pad=5;
+    if (w!=null) faceSize=w;
 
-    html = '<input placeholder="Személy neve" id="personedit" style="width: 154px" onkeyup="searchPerson('+pictureid+','+px+','+py+','+w/nw+')"/>';
-    //html += '<button class="btn-xs" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus"</button></span></button>';
-    //html += '<button class="btn-xs" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus"</button></span></button>';
+    html = '<input placeholder="Személy neve" id="personedit" style="width: 154px" onkeyup="searchPerson('+pictureid+','+x+','+y+')"/>';
+    if (w == null) {
+        html += '<button class="btn-xs" title="nagyobb" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus"</button></span></button>';
+        html += '<button class="btn-xs" title="kissebb" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus"</button></span></button>';
+    }
     html += '<button class="btn-xs" onclick="$(\'.personsearch\').remove();" style="float: right"><span class="glyphicon glyphicon-remove-circle"</button></span></button>';
     html += '<div style="width: 100%;max-height: 200px;overflow-y: scroll;">';
     html += '<table id="persontable" style="width: 100%">';
@@ -241,36 +243,35 @@ function showDetectionList(o,x,y,w,s,pictureid,nw,nh) {
         'css': {
             "z-index":"199",
             "position":"absolute",
-            "top":$(o).position().top+w*s/2+30+'px',
-            "left":$(o).position().left+(px>0.5?-290+w*s/2+20:-w*s/2+20)+'px',
+            "top":$(o).position().top+faceSize+'px',
+            "left":$(o).position().left+(x>350?-290+faceSize/2+20:-faceSize/2+20)+'px',
             "padding":"5px"
         },
         'html':html
     }).insertAfter($(o));
-    searchPerson(pictureid,x,y,w);
+    searchPerson(pictureid,x,y);
 }
 
 function setFaceSize(bigger) {
     var x= parseFloat($('.newperson').css("left"));
     var y= parseFloat($('.newperson').css("top"));
-    var w= parseFloat($('.newperson').css("width"));
-    var d= (w-w/1.3)/2;
+    x +=  faceSize/2;
+    y +=  faceSize/2;
     if (bigger) {
-        w = w * 1.3;
-        x -=  d;
-        y -=  d;
+        faceSize = faceSize * 1.3;
     } else {
-        w = w / 1.3;
-        x +=  d;
-        y +=  d;
+        faceSize = faceSize / 1.3;
     }
-    $('.newperson').css("width",w+'px');
-    $('.newperson').css("height",w+'px');
+    x -=  faceSize/2;
+    y -=  faceSize/2;
+    $('.newperson').css("width",faceSize+'px');
+    $('.newperson').css("height",faceSize+'px');
     $('.newperson').css("left",x+'px');
     $('.newperson').css("top",y+'px');
+    $('.personsearch').css("top",y+faceSize+'px');
 }
 
-function searchPerson(pictureid,x,y,w) {
+function searchPerson(pictureid,x,y) {
     $('#persontable').empty();
     $("#personedit").focus();
     $.ajax({
@@ -291,28 +292,29 @@ function searchPerson(pictureid,x,y,w) {
                         var pimg = '<img src="images/' + (row.gender==="f"?"woman.png":"man.png") + '" class="diak_image_icon" />';
                     }
                     var html = '<tr style="vertical-align: top"><td>' + pimg + '</td><td>' + pclass + '</td><td>' + pname + '</td><td>';
-                    html += '<button title="Megjelöl" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ',' + w + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
+                    html += '<button title="Megjelöl" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
                     $('#persontable').append(html);
                 });
             }
         },
         error:function(error) {
-            console.log.error;
+            console.log(error);
         }
     });
 }
 
-function savePerson(personid,pictureid,x,y,w) {
+function savePerson(personid,pictureid,x,y) {
     $('.personsearch').remove();
     $('.newperson').remove();
+    var img=$("#thePicture");
     $.ajax({
-        url: "ajax/setPicturePerson.php?pictureid="+pictureid+"&personid="+personid+"&x="+x+"&y="+y+"&w="+w,
+        url: "ajax/setPicturePerson.php?pictureid="+pictureid+"&personid="+personid+"&x="+(x-faceSize/2)/img.width()+"&y="+(y-faceSize/2)/img.height()+"&w="+faceSize/img.width(),
         type:"GET",
         success:function(data){
-            showTagging();
+            showTagging(true);
         },
         error:function(error) {
-            console.log.error;
+            console.log(error);
         }
     });
 }
@@ -320,19 +322,15 @@ function savePerson(personid,pictureid,x,y,w) {
 function newPerson(event) {
     $('.newperson').remove();
     var img=$("#thePicture");
-    var w= 30;
     var s = img.width()/img.get(0).naturalWidth;
-    var pad=5;
     var n=$('<div>', {
         'class': 'newperson',
         'css': {
-            'left': pad+event.offsetX-w/2+ 'px',
-            'top': pad+event.offsetY-w/2 + 'px',
-            'width': w + 'px',
-            'height': w + 'px'
+            'left': picturePadding+event.offsetX-faceSize/2+ 'px',
+            'top': picturePadding+event.offsetY-faceSize/2 + 'px',
+            'width': faceSize + 'px',
+            'height': faceSize + 'px'
         }
     }).insertAfter(img);
-    showDetectionList(n,(event.offsetX-w/2)/s,(event.offsetY-w/2)/s,w/s,
-        s,img.attr("data-id"),
-        img.get(0).naturalWidth,img.get(0).naturalHeight);
+    showDetectionList(n,event.offsetX,event.offsetY,img.attr("data-id"),null);
 }

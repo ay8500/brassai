@@ -319,7 +319,7 @@ if (isActionParam("showmore") ) {
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px" onmousedown="newPerson(event);"/>
             <div style="position: absolute; top: 10px; left:10px;">
                 <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="Személyeket keres" class="pbtn" onclick="showFaces()"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="Személyeket keres" class="pbtn" onclick="return showFaces();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="Jelölések" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
             </div>
         </div>
