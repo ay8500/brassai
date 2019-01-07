@@ -15,12 +15,12 @@
  *  
  *  width,height if empty the original size
  */
-include_once 'tools/sessionManager.php';
+
 //are we in a session?
+include_once 'tools/sessionManager.php';
 if ( !isset($_SESSION['lastReq']) ) {
 	http_response_code(401);
-	echo("Access not allowed!");
-	exit;
+	die('Unauthorized');
 }
 include_once 'dbBL.class.php';
 include_once 'tools/ltools.php';
@@ -126,18 +126,13 @@ if ($Thumb) {
 else
 	$resized_img = imagecreatetruecolor($newwidth,$newheight);
 
-//visibility
-if (isset($picture["isDeleted"]) && ($picture["isDeleted"]==0 || userIsAdmin())) {
-	//resizing the image
-	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
-	if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
-		imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 16,true);
-		imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
-	}
-}
-else {
-	imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
+//resizing the image
+imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
 
+//visibility
+if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
+    imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 16,true);
+    imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
 }
 
 //finally, return the image

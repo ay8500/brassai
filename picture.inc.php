@@ -355,107 +355,119 @@ if (isActionParam("showmore") ) {
 ');
 
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
-    $dbOpinion = new dbDaOpinion($db);
     if (sizeof($pictures)==0) {
         \maierlabs\lpfw\Appl::addJsScript('$("#buttonmore").hide();');
     }
     foreach ($pictures as $idx=>$pict) {
         if ( $pict["isDeleted"]==0  || userIsAdmin() ) {
-            $checked= ($pict["isVisibleForAll"]==1)?"checked":"";
-            ?>
-            <div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>>
-                <div id="list-table">
-                    <?php if ($view=="table") {?>
-                        <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
-                        <div class="pdiv">
-                            <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
-                            <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
-                            if (userIsAdmin()){?>
-                                <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
-                                <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
-                            } ?>
-                        </div>
-                        <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
-                    <?php } else {?>
-                        <div style="vertical-align: top; margin:10px" >
-                            <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
-                        </div>
-                    <?php } ?>
-                    <?php  if (userIsAdmin() || userIsSuperuser()) {?>
-                        <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
-                            <span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?></span>
-                        </a>
-                    <?php }?>
-                </div>
-                <div  id="" >
-                    <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;margin: 0 10px 0 10px;display: none" >
-                        <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo $pict["title"] ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
-                        <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
-<?php echo $pict["comment"] ?></textarea>
-                        <div >
-                            <?php if (userIsLoggedOn()) { ?>
-                                <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
-                            <?php }?>
-                            <button class="btn btn-default"  title="Kimenti a kép módosításait" onclick="return savePicture(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
-                            <?php if ($pict["isDeleted"]!=1) { ?>
-                                <button class="btn btn-default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
-                            <?php } ?>
-                            <?php if (userIsAdmin()) { ?>
-                                <button class="btn btn-danger" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
-                            <?php }?>
-                            <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
-                                <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
-                                    <?php foreach ($albumList as $alb) {?>
-                                        <?php if ($alb["albumName"]!=$albumParam && substr($alb["albumName"],0,1)!="_" ) { ?>
-                                            <option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
-                                        <?php }?>
-                                    <?php }?>
-                                </select>
-                                <button onclick="changePictureAlbum(<?php echo $pict["id"]?>);return false;" class="btn btn-default inline" style="margin-top: 5px;">Áthelyezz!</button>
-                            <?php }?>
-                            <button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default" style="margin-top: 5px;"><span style="color:red;" class="glyphicon glyphicon-remove-circle"></span></button>
-                        </div>
-                    </div>
-                </div>
-                <div  id="" >
-                    <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 0 10px 0 10px;cursor:default;" >
-                        <?php //change Order buttons?>
-                        <?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
-                            <?php  if ($idx!=0) {?>
-                                <button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);return false;" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
-                            <?php } else {?>
-                                <span style="margin: 0px 40px 0 10px;" >&nbsp;</span>
-                            <?php } if ($idx+1<sizeof($pictures)) {?>
-                                <button id="picsort" style="margin: 0px 10px 0 5px;" class="btn btn-default" onclick="changeOrder(<?php echo $pictures[$idx+1]["id"] ?>,<?php echo $pictures[$idx]["id"] ?>);return false;" title="eggyel hátrébb"><span class="glyphicon glyphicon-arrow-down"></span></button>
-                            <?php } else {?>
-                                <span style="margin: 0px 5px 0 40px;" >&nbsp;</span>
-                            <?php } ?>
-                        <?php endif;?>
-                        <div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 5px;width: 320px;">
-                            <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
-                            <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
-                        </div><?php
-                            displayPictureOpinion($dbOpinion,$pict["id"]);?>
-                    </div>
-                    <?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
-                        <br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
-                    <?php } ?>
-                </div>
-                <?php if ($view!="table" && userIsAdmin()) {?>
-                    <div  id="list-table" >
-                        <div style="margin:10px;">
-                            id=<?php echo $pict["id"]?>
-                            orderValue=<?php echo $pict["orderValue"]?><br/>
-                            filename=<?php echo $pict["file"]?><br/>
-                            uploaded=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["uploadDate"]);?><br/>
-                            changed=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["changeDate"]);?><br/>
-                            user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
-                        </div>
-                    </div>
-                <?php } ?>
-            </div><?php
+            ?><div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>><?php
+            displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view);
+
+            if ( $albumParam=="_mark_") {
+                ?>
+                <div style="position: relative; bottom:95px;right:-295px;z-index: 10;height: 0px;">
+                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:60px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=90&padding=50"/>
+                </div><?php
+            }
+            ?></div><?php
         }
     }
+}
+
+function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
+    $pict=$pictures[$idx];
+    $checked= ($pict["isVisibleForAll"]==1)?"checked":"";
+    $dbOpinion = new dbDaOpinion($db); ?>
+
+    <div id="list-table">
+        <?php if ($view=="table") {?>
+            <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
+            <div class="pdiv">
+                <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
+                <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
+                if (userIsAdmin()){?>
+                    <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
+                <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
+                } ?>
+            </div>
+            <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
+        <?php } else {?>
+            <div style="vertical-align: top; margin:10px" >
+                <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
+            </div>
+        <?php } ?>
+        <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+            <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
+                <span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?></span>
+            </a>
+        <?php }?>
+    </div>
+    <div  id="" >
+        <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;margin: 0 10px 0 10px;display: none" >
+            <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo $pict["title"] ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
+            <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
+<?php echo $pict["comment"] ?></textarea>
+            <div >
+                <?php if (userIsLoggedOn()) { ?>
+                    <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
+                <?php }?>
+                <button class="btn btn-default"  title="Kimenti a kép módosításait" onclick="return savePicture(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+                <?php if ($pict["isDeleted"]!=1) { ?>
+                    <button class="btn btn-default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
+                <?php } ?>
+                <?php if (userIsAdmin()) { ?>
+                    <button class="btn btn-danger" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
+                <?php }?>
+                <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
+                    <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
+                        <?php foreach ($albumList as $alb) {?>
+                            <?php if ($alb["albumName"]!=$albumParam && substr($alb["albumName"],0,1)!="_" ) { ?>
+                                <option value="<?php echo $alb["albumName"]?>"><?php echo $alb["albumText"]?></option>
+                            <?php }?>
+                        <?php }?>
+                    </select>
+                    <button onclick="changePictureAlbum(<?php echo $pict["id"]?>);return false;" class="btn btn-default inline" style="margin-top: 5px;">Áthelyezz!</button>
+                <?php }?>
+                <button onclick="hideedit(<?php echo $pict["id"] ?>);return false;" class="btn btn-default" style="margin-top: 5px;"><span style="color:red;" class="glyphicon glyphicon-remove-circle"></span></button>
+            </div>
+        </div>
+    </div>
+    <div  id="" >
+        <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 0 10px 0 10px;cursor:default;" >
+            <?php //change Order buttons?>
+            <?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
+                <?php  if ($idx!=0) {?>
+                    <button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);return false;" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                <?php } else {?>
+                    <span style="margin: 0px 40px 0 10px;" >&nbsp;</span>
+                <?php } if ($idx+1<sizeof($pictures)) {?>
+                    <button id="picsort" style="margin: 0px 10px 0 5px;" class="btn btn-default" onclick="changeOrder(<?php echo $pictures[$idx+1]["id"] ?>,<?php echo $pictures[$idx]["id"] ?>);return false;" title="eggyel hátrébb"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                <?php } else {?>
+                    <span style="margin: 0px 5px 0 40px;" >&nbsp;</span>
+                <?php } ?>
+            <?php endif;?>
+            <div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 5px;width: 320px;">
+                <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
+                <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
+            </div><?php
+            displayPictureOpinion($dbOpinion,$pict["id"]);?>
+        </div>
+        <?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
+            <br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
+        <?php } ?>
+    </div>
+<?php if ($view!="table" && userIsAdmin()) {?>
+    <div  id="list-table" >
+        <div style="margin:10px;">
+            id=<?php echo $pict["id"]?>
+            orderValue=<?php echo $pict["orderValue"]?><br/>
+            filename=<?php echo $pict["file"]?><br/>
+            uploaded=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["uploadDate"]);?><br/>
+            changed=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["changeDate"]);?><br/>
+            user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
+        </div>
+    </div>
+<?php }
 }
 
 Appl::addJsScript("

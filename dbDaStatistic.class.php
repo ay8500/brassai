@@ -82,6 +82,10 @@ class dbDaStatistic
         $ret = $this->selectDataForActivityCalendar($ret,$sql);
         $sql ="select lightedDate as changeDate, count(*) as count from candle where lightedDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(lightedDate) order by lightedDate";
         $ret = $this->selectDataForActivityCalendar($ret,$sql);
+        $sql ="select changeDate, count(*) as count from family where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
+        $ret = $this->selectDataForActivityCalendar($ret,$sql);
+        $sql ="select changeDate, count(*) as count from personInPicture where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
+        $ret = $this->selectDataForActivityCalendar($ret,$sql);
         return $ret;
     }
 

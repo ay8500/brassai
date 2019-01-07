@@ -742,6 +742,11 @@ class dbDAO {
         return $this->getTableCount("picture",$sql);
     }
 
+    /**
+     * Get the number of pictures that belongs to the person and the tagged pictures
+     * @param int $id
+     * @return int
+     */
     public function getNrOfPersonPictures($id) {
         return $this->getNrOfPictures($id,'personID')+$this->dataBase->queryInt("select count(1) from personInPicture where personID=".$id);
     }
