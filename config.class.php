@@ -18,7 +18,7 @@ class Config {
     public static $dateTimeFormat="<b>Y.m.d</b> H:i:s";
     public static $dateFormat="<b>Y.m.d</b>";
 
-    public static $webAppVersion = "20190106";  //Used to load the actual css und js files.
+    public static $webAppVersion = "20190109";  //Used to load the actual css und js files.
 
     private static $SupportedLang = array("hu"); //First language ist the default language.
 

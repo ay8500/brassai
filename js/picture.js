@@ -176,6 +176,7 @@ function getButtonHtml() {
     html += '<button class="btn-xs" title="jobbra" onclick="setPos(true,null);" ><span class="glyphicon glyphicon-arrow-right"></span></button>';
     return html;
 }
+
 function showFaceRecognition() {
     if ($("[class*=recognition]").length!=0) {
         $("[class*=recognition]").remove();
@@ -210,6 +211,9 @@ function showFaceRecognition() {
 }
 
 $(function() {
+    $("[class*=recognition]").remove();
+    closeNewModify();
+
     $("[class*=ibtn]").each(function(){
         $.ajax({
             url: "ajax/getPicturePersons.php?pictureid="+$(this).attr("data-id"),
