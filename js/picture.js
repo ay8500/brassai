@@ -85,7 +85,6 @@ function showTagging(show) {
         url: "ajax/getPicturePersons.php?pictureid="+img.attr("data-id"),
         type:"GET",
         success:function(data){
-            $("[class*=recognition]").remove();
             $('[person-id]').remove();
             data.forEach(function(p){
                 $('<div>', {
@@ -93,6 +92,7 @@ function showTagging(show) {
                     'person-id':p.personID,
                     'onmouseover':"personShow("+p.personID+",true)",
                     'onmouseout':"personShow("+p.personID+",false)",
+                    'onclick':"personModify(this,"+p.personID+","+p.pictureID+")",
                     'css': {
                         'left': picturePadding + p.xPos * img.width() + 'px',
                         'top': picturePadding + p.yPos * img.height() + 'px',
@@ -122,11 +122,65 @@ function showTagging(show) {
             console.log.error;
         }
     });
-
-
 }
 
-function showFaces() {
+function personModify(o,personid,pictureid) {
+    closeNewModify();
+    o = $(o);
+    faceSize=parseInt(o.css("width"));
+    x=o.position().left+faceSize;
+    var img=$("#thePicture");
+    var s = img.width()/img.get(0).naturalWidth;
+
+    var html = '<h4>Jelölés modosítása</h4>Plus, minus illetve nyílgombokat lehet is használni.';
+    html += '<button class="btn-xs" onclick="closeNewModify();" style="float: right"><span class="glyphicon glyphicon-remove-circle"></span></button>';
+    html += '<hr/><div>';
+    html += getButtonHtml();
+    html += '</div>';
+    html += '<hr/><div>';
+    html += '<button class="btn btn-success" onclick="deletePerson('+personid+','+pictureid+',false,true);" ><span class="glyphicon glyphicon-save"</button></span> Kiment</button>';
+    html += ' <button class="btn btn-warning" onclick="closeNewModify()" ><span class="glyphicon glyphicon-remove-circle"></span> Mégse</button>';
+    html += '</div>';
+
+    var n=$('<div>', {
+        'class': 'newperson',
+        'css': {
+            'left': o.position().left+ 'px',
+            'top':  o.position().top+ 'px',
+            'width': faceSize + 'px',
+            'height': faceSize + 'px',
+            'html':html
+        }
+    }).insertAfter(img);
+
+    $('<div>', {
+        'class': 'personsearch',
+        'css': {
+            "z-index":"199",
+            "position":"absolute",
+            "top":o.position().top+faceSize+'px',
+            "left":o.position().left+(x>350?-290+faceSize/2+20:-faceSize/2+20)+'px',
+            "padding":"5px"
+        },
+        'html':html
+    }).insertAfter(o);
+}
+
+function getButtonHtml() {
+    var html = '<button class="btn-xs" title="kissebb" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus-sign"></span></button>';
+    html += '<button class="btn-xs" title="nagyobb" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus-sign"></span></button>';
+    html += '&nbsp;&nbsp;';
+    html += '<button class="btn-xs" title="balra" onclick="setPos(false,null);" ><span class="glyphicon glyphicon-arrow-left"></span></button>';
+    html += '<button class="btn-xs" title="fejjebb" onclick="setPos(null,true);" ><span class="glyphicon glyphicon-arrow-up"></span></button>';
+    html += '<button class="btn-xs" title="lejjebb" onclick="setPos(null,false);" ><span class="glyphicon glyphicon-arrow-down"></span></button>';
+    html += '<button class="btn-xs" title="jobbra" onclick="setPos(true,null);" ><span class="glyphicon glyphicon-arrow-right"></span></button>';
+    return html;
+}
+function showFaceRecognition() {
+    if ($("[class*=recognition]").length!=0) {
+        $("[class*=recognition]").remove();
+        return;
+    }
 
     $("#thePicture").faceDetection({
         complete: function (faces) {
@@ -149,13 +203,11 @@ function showFaces() {
 
         },
         error: function (code, message) {
-            alert('Error: ' + message);
+            console.log(message);
         }
     });
     return false;
 }
-
-
 
 $(function() {
     $("[class*=ibtn]").each(function(){
@@ -173,10 +225,23 @@ $(function() {
             }
         });
     });
+
+    $(document).keydown(function(e){
+        var event = window.event ? window.event : e;
+        var key = e.which ? e.which : e.keyCode;
+        if (key ==107)   setFaceSize(true);
+        if (key == 109)  setFaceSize(false);
+        if (key ==37)    setPos(false,null);//left
+        if (key ==38)    setPos(null,true); //up
+        if (key ==39)    setPos(true,null); //right
+        if (key ==40)    setPos(null,false);//down
+    });
 });
 
-function deletePerson(personid,pictureid) {
-    if (confirm("Személy megjelölést törölni szeretnéd?")) {
+function deletePerson(personid,pictureid,verbose,savenewposition) {
+    if (verbose==null) verbose = true;
+    if (savenewposition==null) savenewposition= false;
+    if (!verbose || confirm("Személy megjelölést törölni szeretnéd?")) {
         $.ajax({
             url: "ajax/deletePicturePerson.php?pictureid="+pictureid+"&personid="+personid,
             type:"GET",
@@ -184,6 +249,11 @@ function deletePerson(personid,pictureid) {
                 $('*[person-id='+personid+']').each(function(){
                     $(this).remove();
                 });
+                if (!verbose)
+                    clearModalMessage();
+                if (savenewposition) {
+                    savePerson(personid, pictureid);
+                }
             },
             error:function(error) {
                 console.log(error);
@@ -203,7 +273,6 @@ function personShowAll(visible) {
         }
     });
 }
-
 
 function personShow(id,visible) {
     $('*[person-id='+id+']').each(function(){
@@ -227,12 +296,11 @@ function showDetectionList(o,x,y,pictureid,w) {
     $(".personsearch").remove();
     if (w!=null) faceSize=w;
 
-    html = '<input placeholder="Személy neve" id="personedit" style="width: 154px" onkeyup="searchPerson('+pictureid+','+x+','+y+')"/>';
+    html = '<input placeholder="Személy neve" id="personedit" style="width: 100%" onkeyup="searchPerson('+pictureid+','+x+','+y+')"/>';
     if (w == null) {
-        html += '<button class="btn-xs" title="nagyobb" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus"</button></span></button>';
-        html += '<button class="btn-xs" title="kissebb" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus"</button></span></button>';
+        html += '<br/>'+getButtonHtml();
     }
-    html += '<button class="btn-xs" onclick="$(\'.personsearch\').remove();" style="float: right"><span class="glyphicon glyphicon-remove-circle"</button></span></button>';
+    html += '<button class="btn-xs" onclick="closeNewModify();" style="float: right"><span class="glyphicon glyphicon-remove-circle"</button></span></button>';
     html += '<div style="width: 100%;max-height: 200px;overflow-y: scroll;">';
     html += '<table id="persontable" style="width: 100%">';
     html += '</table>';
@@ -271,6 +339,18 @@ function setFaceSize(bigger) {
     $('.personsearch').css("top",y+faceSize+'px');
 }
 
+function setPos(hor,vert) {
+    var x= parseFloat($('.newperson').css("left"));
+    var y= parseFloat($('.newperson').css("top"));
+    if (hor!=null && hor) x++;
+    if (hor!=null && !hor) x--;
+    if (vert!=null && vert) y--;
+    if (vert!=null && !vert) y++;
+    $('.newperson').css("left",x+'px');
+    $('.newperson').css("top",y+'px');
+    $('.personsearch').css("top",y+faceSize+'px');
+}
+
 function searchPerson(pictureid,x,y) {
     $('#persontable').empty();
     $("#personedit").focus();
@@ -304,19 +384,38 @@ function searchPerson(pictureid,x,y) {
 }
 
 function savePerson(personid,pictureid,x,y) {
-    $('.personsearch').remove();
-    $('.newperson').remove();
+    if (y == null) {
+        x=$('.newperson').position().left+faceSize/2-picturePadding;
+        y=$('.newperson').position().top+faceSize/2-picturePadding;
+    }
+    closeNewModify();
     var img=$("#thePicture");
     $.ajax({
         url: "ajax/setPicturePerson.php?pictureid="+pictureid+"&personid="+personid+"&x="+(x-faceSize/2)/img.width()+"&y="+(y-faceSize/2)/img.height()+"&w="+faceSize/img.width(),
         type:"GET",
         success:function(data){
             showTagging(true);
+            showConfirmMessage(
+                "Személy megjelölése sikerült",
+                "Akkor perfekt e személy megjelölése:<ul><li>ha a képen a személy szemei, orra és szája látszik</li><li>a személy naka és teljes frizurája nem fontos a jelöléshez</li><li>ha más személyek teljes arca nincs a megjelölt mezőben</li></ul>Ha nem sikerült, akkor kérünk törölj, és probáld meg újból.<br/>Köszönjük szépen.",
+                "imageTaggedPerson.php?pictureid="+pictureid+"&personid="+personid+"&size=100&padding=20",
+                pictureid,personid
+            )
         },
         error:function(error) {
             console.log(error);
         }
     });
+}
+
+function showConfirmMessage(title,text,picture,pictureid,personid) {
+    $(".modal-title").html(title);
+    $(".modal-body").html('<div>'+text+'<div style="margin-top:15px;width: 100%;text-align: center"><img style="border-radius: 80px;box-shadow: 3px 2px 20px 4px black;" src="'+picture+'" /></div></div>' );
+    $(".modal-footer").html(
+        '<button class="btn btn-danger" onclick="deletePerson('+personid+','+pictureid+',false);">Kitörlöm</button>' +
+        '<button class="btn btn-success" onclick="clearModalMessage();">Rendben meghagyom</button>'
+    );
+    $('#myModal').modal({ show: 'true'});
 }
 
 function newPerson(event) {
@@ -332,5 +431,10 @@ function newPerson(event) {
             'height': faceSize + 'px'
         }
     }).insertAfter(img);
-    showDetectionList(n,event.offsetX,event.offsetY,img.attr("data-id"),null);
+    showDetectionList(n,event.offsetX,null,img.attr("data-id"),null);
+}
+
+function closeNewModify() {
+    $('.newperson').remove();
+    $('.personsearch').remove();
 }

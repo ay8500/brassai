@@ -319,7 +319,7 @@ if (isActionParam("showmore") ) {
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px" onmousedown="newPerson(event);"/>
             <div style="position: absolute; top: 10px; left:10px;">
                 <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="Személyeket keres" class="pbtn" onclick="return showFaces();"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="Személyeket keres" class="pbtn" onclick="return showFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="Jelölések" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
             </div>
         </div>
@@ -340,9 +340,9 @@ if (isActionParam("showmore") ) {
     .pbtn:active .sbtn:active{ outline: none;border: none;}
     .pbtn:hover {background-color: lightgrey;}
     .ibtn:hover + .pdiv, .pdiv:hover {display:inline-block;}
-    .face {position: absolute; border: 2px solid #ec971f;opacity:0;}
-    .recognition {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;}
-    .newperson {position: absolute; border: 2px solid #ff2020;border-radius:10px;box-shadow: 1px 1px 1px 0px black;}
+    .face                       {position: absolute; border: 2px solid #ec971f;box-shadow: 1px 1px 1px 0px black; opacity:0;}
+    .recognition                {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;}
+    .newperson, .personmodify   {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;border-radius:10px;}
     .face:hover , .facename:hover {display:inline-block; opacity:1;}
     .facename {position:absolute;background-color: white;opacity: 0.7;font-size: 10px;padding:2px;border-radius:3px;color:black;opacity:0;}
     .personlist {margin:3px;padding:3px}
