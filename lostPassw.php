@@ -26,7 +26,7 @@ if (isActionParam('newPassword')) {
 	   Appl::setMessage('Mail cím nem helyes, vagy a mező üres.!', 'danger');
 }
 
-Appl::$subTitle='Bejelentkezni szeretnék!';
+Appl::setSiteSubTitle('Bejelentkezni szeretnék!');
 include 'homemenu.inc.php';
 ?>
 <div class="container-fluid">

@@ -27,7 +27,7 @@ if ($class!=null)
     setAktClass($class["id"]);
 
 
-Appl::$subTitle='Osztálytárs körlevek '.getAktClassName();
+Appl::setSiteSubTitle('Osztálytárs körlevek '.getAktClassName());
 include("homemenu.inc.php");
 include_once 'chat.inc.php';
 

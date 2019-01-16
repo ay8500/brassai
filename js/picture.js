@@ -75,6 +75,7 @@ function onPictureLoad() {
         setTimeout(onPictureLoad,100);
     } else {
         showTagging();
+        showFaceRecognition();
     }
 }
 
@@ -156,11 +157,8 @@ function personModify(o,personid,pictureid) {
     $('<div>', {
         'class': 'personsearch',
         'css': {
-            "z-index":"199",
-            "position":"absolute",
             "top":o.position().top+faceSize+'px',
             "left":o.position().left+(x>350?-290+faceSize/2+20:-faceSize/2+20)+'px',
-            "padding":"5px"
         },
         'html':html
     }).insertAfter(o);

@@ -18,7 +18,14 @@
 	if (isset($_GET['key'])) {
 	    Appl::setMessage(directLogin($db,$_GET['key']),"");
 	}
-	
+
+	function textTranslate($text) {
+	    return '{'.$text.'}';
+    }
+	if (userIsAdmin()) {
+        Appl::$translator = "textTranslate";
+    }
+
 	function directLogin($db,$key){
 	    $keyStr = encrypt_decrypt("decrypt", $key);
 	    \maierlabs\lpfw\Logger::_("Decripted text:".$keyStr);

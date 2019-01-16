@@ -96,7 +96,7 @@ if (isActionParam("setPersonID") && userIsAdmin()) {
 	}
 }
 
-Appl::$subTitle='Üzenőfal';
+Appl::setSiteSubTitle('Üzenőfal');
 include("homemenu.inc.php");
 ?>
 

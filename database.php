@@ -32,7 +32,7 @@ if (getParam("action")=="encrypt") {
 }
 
 
-\maierlabs\lpfw\Appl::$subTitle="Adatbank eszközök";
+\maierlabs\lpfw\Appl::setSiteSubTitle("Adatbank eszközök");
 include('homemenu.inc.php');
 
 

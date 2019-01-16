@@ -56,7 +56,7 @@ if ($album=="_tablo_" || $type=='tablo') {
     $subtitle="Kicsengetési kártyák";
 }
 \maierlabs\lpfw\Appl::setSiteTitle($subtitle);
-\maierlabs\lpfw\Appl::$subTitle= $type=="personID"?$link:$subtitle;
+\maierlabs\lpfw\Appl::setSiteSubTitle($type=="personID"?$link:$subtitle);
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">

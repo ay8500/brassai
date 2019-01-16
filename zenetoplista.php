@@ -13,9 +13,9 @@ use \maierlabs\lpfw\Appl as Appl;
 Appl::setSiteTitle("A véndiákok ezt hallgatják szívesen");
 if (getParam("classid")==-1) unsetAktClass();
 if (getAktClassId()==-1) {
-    Appl::$subTitle='Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.';
+    Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.');
 } else {
-    Appl::$subTitle='A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.';
+    Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.');
 } 
 
 

@@ -39,7 +39,7 @@ if (isActionParam("sendMail")) {
 	}
 }
 
-Appl::$subTitle='Adminisztráció';
+Appl::setSiteSubTitle('Adminisztráció');
 include("homemenu.inc.php");
 
 ?>

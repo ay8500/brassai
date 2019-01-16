@@ -96,7 +96,7 @@ if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 		}
 	}
 }
-Appl::$subTitle='Bejelentkezés';
+Appl::setSiteSubTitle('Bejelentkezés');
 Appl::addCssStyle('
 	.fb-radio{width: 25px;height: 25px;position: relative;top: -6px;}
 ');

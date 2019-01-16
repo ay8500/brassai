@@ -15,6 +15,7 @@ class Appl {
 	public static $subTitle = "";
 	public static $description = "";
 	public static $resultDbOperation = "";
+	public static $translator = null;
 	
 	private static $renderingStarted=false;
 	
@@ -26,34 +27,34 @@ class Appl {
 	private static $members = array();
 
     /**
-     * Set title, subtitle and desription also used in the metatags.
+     * Set translated title, subtitle and desription also used in the metatags.
      * @param string $title
      * @param string $subtitle
      * @param string $description
      * @return void
      */
 	public static function setSiteTitle($title,$subtitle=null,$description=null) {
-		self::$title=$title;
-		if (null!=$description) self::$description=$description;
-		if( null!=$subtitle) self::$subTitle=$subtitle;
+		self::$title=self::__($title);
+		if (null!=$description) self::$description=self::__($description);
+		if( null!=$subtitle) self::$subTitle=self::__($subtitle);
 	}
 
     /**
-     * Set subtitle also used in the metatags.
+     * Set translated subtitle also used in the metatags.
      * @param string $subtitle
      * @return void
      */
 	public static function setSiteSubTitle($subtitle) {
-		self::$subTitle=$subtitle;
+		self::$subTitle=self::__($subtitle);
 	}
 
     /**
-     * Set description also used in the metatags.
+     * Set translated description also used in the metatags.
      * @param string $description
      * @return void
      */
 	public static function setSiteDesctiption($description) {
-		self::$description=$description;
+		self::$description=self::__($description);
 	}
 
     /**
@@ -187,16 +188,16 @@ class Appl {
 	}
 	
 	/**
-	 * set message after loading the page type: info, success, danger, warning
+	 * set translated message after loading the page type: info, success, danger, warning
      * @param string $text
      * @param string $type
      * @return void
 	 */
 	public static function setMessage($text,$type) {
 		if (self::$renderingStarted==false) {
-			self::$resultDbOperation.='<div class="alert alert-'.$type.'">'.$text.'</div>';
+			self::$resultDbOperation.='<div class="alert alert-'.$type.'">'.self::__($text).'</div>';
 		} else {
-			self::addJsScript("showDbMessage('".$text."','".$type."');");
+			self::addJsScript("showDbMessage('".self::__($text)."','".$type."');");
 		}
 	}
 
@@ -235,5 +236,22 @@ class Appl {
     {
         $m =self::getMember($name);
         return ($m!=null && isset($m["id"]))?$m["id"]:null;
+    }
+
+    /**
+     * translate text in the actual language by using the function stored in self::$translator
+     * @param $text
+     * @return mixed
+     */
+    public static function __($text) {
+        if (self::$translator==null) {
+            return $text;
+        } else {
+            return call_user_func(self::$translator,$text);
+        }
+    }
+
+    public static function _($text) {
+        echo(self::__($text));
     }
 }

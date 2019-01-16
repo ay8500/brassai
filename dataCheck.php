@@ -5,7 +5,7 @@ include_once 'tools/appl.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-Appl::$subTitle='Adatok vizsgálása és jóváhagyása';
+Appl::setSiteSubTitle('Adatok vizsgálása és jóváhagyása');
 include('homemenu.inc.php');
 
 $id=getIntParam("id");

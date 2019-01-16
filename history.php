@@ -5,7 +5,7 @@ include_once 'tools/appl.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-Appl::$subTitle="Adatmódosítások";
+Appl::setSiteSubTitle("Adatmódosítások");
 Appl::addCssStyle('
 	.history {margin:10px;}
 	.history tr td {vertical-align: top;padding:5px;}

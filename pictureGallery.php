@@ -10,7 +10,7 @@ else
 	$gallery="BALLAGAS";
 
 Appl::setSiteTitle("Képtár: ".$gallery);
-Appl::$subTitle='Emlékeik képekben';
+Appl::setSiteSubTitle('Emlékeik képekben');
 Appl::addCss("ig/ig.css");
 
 include("homemenu.inc.php");

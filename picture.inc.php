@@ -130,13 +130,18 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 //View 
 $albumParam = getParam("album","");
 $view=getParam("view","table");
+$sort=getParam("sort","order");
+$sortOrder=(strpos($sort,"order")!==false?"secundary":"default");
+$sortAlphabet=(strpos($sort,"alphabet")!==false?"secundary":"default");
+$sortDate=(strpos($sort,"date")!==false?"secundary":"default");
+$alt=(strpos($sort,"desc")!==false?"-alt":"");
 $limit=24;
 $offset=getIntParam("start",0)*$limit;
-$link="picture.inc.php?action=showmore&type=".getParam("type")."&typeid=".getParam("typeid")."&album=".getParam("album")."&start=";
+$link="picture.inc.php?action=showmore&view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort."&start=";
 if ($view=="table") {
-    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
+    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin: 0 10px 10px 0;}');
 } else {
-    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin-bottom: 10px;}');
+    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-flex;vertical-align: top; margin-bottom: 10px;}');
 }
 //The list of pictures
 $notDeletedPictures=0;
@@ -176,13 +181,13 @@ if(isset($picture)) {
 }
 
 //Albumlist
-$startAlbumList=array(array("albumName"=>"","albumText"=>"Főalbum"));
+$startAlbumList=array(array("albumName"=>"","albumText"=>Appl::__("Főalbum")));
 if (getParam("type")=="schoolID") {
-	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>"Tablók","albumName"=>"_tablo_")));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>"Kicsengetési kártyák","albumName"=>"_card_")));
+	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_")));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_")));
 }
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>"Megjelölések","albumName"=>"_mark_")));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_")));
 }
 $albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
 
@@ -231,8 +236,8 @@ if (isActionParam("showmore") ) {
 					<?php if (getParam("typeid")!=null) {?>
 						<input name="typeid" type="hidden" value="<?php echo getParam('typeid')?>" /> 
 					<?php } ?>
-					<input name="album" class="form-control" placeholder="Album címe"/><br/>
-					<button class="btn btn-default" style="margin-top: -15px;">Új albumot létrehoz</button>
+					<input name="album" class="form-control" placeholder=<?php Appl::__("Album címe")?>/><br/>
+					<button class="btn btn-default" style="margin-top: -15px;"><?php Appl::_("Új albumot létrehoz")?></button>
 				</form>
 			</div>
 		<?php } ?>
@@ -244,7 +249,7 @@ if (isActionParam("showmore") ) {
 					<?php } ?>
 					<input name="oldAlbum" type="hidden" value="<?php echo getParam('album')?>" />
 					<input name="album" class="form-control" value="<?php echo getParam('album')?>"/><br/>
-					<button name="action" value="renameAlbum" class="btn btn-default" style="margin-top: -15px;">Albumot átnevez</button>
+					<button name="action" value="renameAlbum" class="btn btn-default" style="margin-top: -15px;"><?php Appl::_("Albumot átnevez")?></button>
 				</form>
 			</div>
 		<?php }?>
@@ -254,18 +259,22 @@ if (isActionParam("showmore") ) {
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
 	<?php if (($notDeletedPictures<50 || userIsAdmin()) && substr($albumParam,0,1)!="_" && $albumParam!="_card_") {?>
 		<div style="margin-bottom:15px;">
-			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> Kép feltöltése</button>
+			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
+            <button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
 			<?php if(isset($picture)) { ?>
-				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> Mutasd a többi képet</button>
-			<?php  }?>
-			<button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> Lista/Album</button>
-		</div>
+				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> <?php Appl::_("Mutasd a többi képet")?></button>
+			<?php  } elseif (userIsAdmin() || userIsSuperuser()) { ?>
+                <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
+                <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet')" title="<?php Appl::_("ABC sorrend")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
+                <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date')" title="<?php Appl::_("Dátum sorrend")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
+            <?php  } ?>
+        </div>
 		<div id="download" style="margin:15px;display:none;">
-			<div>Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.<span></span></div>
-			<span style="display: inline-block;">Válassz egy jpg képet max. 3MByte</span>
+			<div><?php Appl::_("Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.")?><span></span></div>
+			<span style="display: inline-block;"><?php Appl::_("Válassz egy jpg képet max. 3MByte")?></span>
 			<span style="display: inline-block;"><input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" /></span>	
-			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" onclick="showWaitMessage();"><span class="glyphicon glyphicon-upload"> </span> feltölt</button></span>
-			<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> mégsem</button></span>
+			<span style="display: inline-block;"><button class="btn btn-default"  type="submit" onclick="showWaitMessage();"><span class="glyphicon glyphicon-upload"> </span> <?php Appl::_("feltölt")?></button></span>
+			<span style="display: inline-block;"><button class="btn btn-default"  onclick="$('#download').slideUp();return false;" ><span class="glyphicon glyphicon-remove-circle"> </span> <?php Appl::_("mégsem")?></button></span>
 			<input type="hidden" value="upload" name="action" />
 			<?php if (isset($personid)):?>
 				<input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
@@ -281,7 +290,7 @@ if (isActionParam("showmore") ) {
 
 	
 	<?php if ($notDeletedPictures==0) :?>
-		<div class="alert alert-warning" >Jelenleg nincsenek képek feltöltve. Légy te az első aki képpet tőlt fel!</div>
+		<div class="alert alert-warning" ><?php Appl::_("Jelenleg nincsenek képek feltöltve. Légy te az első aki képpet tőlt fel!")?></div>
 	<?php endif;?>
 	<?php if(false) {?>
         <nav aria-label="Page navigation example">
@@ -299,7 +308,7 @@ if (isActionParam("showmore") ) {
     <span id="more"></span>
 </form>
 <?php if (getParam("id")==null) {?>
-    <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()">Többet szeretnék látni</button>
+    <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()"><?php Appl::_("Többet szeretnék látni")?></button>
 <?php }?>
 
 <?php \maierlabs\lpfw\Appl::addCssStyle('
@@ -318,9 +327,9 @@ if (isActionParam("showmore") ) {
         <div class="modal-content" style="position: relative;padding: 5px;">
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px" onmousedown="newPerson(event);"/>
             <div style="position: absolute; top: 10px; left:10px;">
-                <button title="Bezár" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="Személyeket keres" class="pbtn" onclick="return showFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
-                <button title="Jelölések" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
+                <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" onclick="return showFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
             </div>
         </div>
         <div id="personlist"></div>
@@ -340,8 +349,8 @@ if (isActionParam("showmore") ) {
     .pbtn:active .sbtn:active{ outline: none;border: none;}
     .pbtn:hover {background-color: lightgrey;}
     .ibtn:hover + .pdiv, .pdiv:hover {display:inline-block;}
-    .face                       {position: absolute; border: 2px solid #ec971f;box-shadow: 1px 1px 1px 0px black; opacity:0;}
-    .recognition                {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;}
+    .face                       {position: absolute; border: 2px solid #ec971f;box-shadow: 1px 1px 1px 0px black; opacity:0;z-index:300;}
+    .recognition                {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;z-index:200;}
     .newperson, .personmodify   {position: absolute; border: 2px solid #ff2020;box-shadow: 1px 1px 1px 0px black;border-radius:10px;}
     .face:hover , .facename:hover {display:inline-block; opacity:1;}
     .facename {position:absolute;background-color: white;opacity: 0.7;font-size: 10px;padding:2px;border-radius:3px;color:black;opacity:0;}
@@ -351,7 +360,7 @@ if (isActionParam("showmore") ) {
     tr:hover {background-color:floralwhite;}
     td {padding:4px}
     
-    .personsearch {background-color:lightgray;width:280px;padding: 7px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;}
+    .personsearch {position:absolute; background-color:lightgray;width:280px;padding:5px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;z-index:500;}
 ');
 
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
@@ -380,6 +389,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     $dbOpinion = new dbDaOpinion($db); ?>
 
     <div id="list-table">
+
         <?php if ($view=="table") {?>
             <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
             <div class="pdiv">
@@ -396,12 +406,14 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                 <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
             </div>
         <?php } ?>
+
         <?php  if (userIsAdmin() || userIsSuperuser()) {?>
             <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
                 <span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?></span>
             </a>
         <?php }?>
     </div>
+
     <div  id="" >
         <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;margin: 0 10px 0 10px;display: none" >
             <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo $pict["title"] ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
@@ -432,8 +444,9 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             </div>
         </div>
     </div>
+
     <div  id="" >
-        <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 0 10px 0 10px;cursor:default;" >
+        <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 10px 10px 0 10px;cursor:default;" >
             <?php //change Order buttons?>
             <?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
                 <?php  if ($idx!=0) {?>
@@ -453,21 +466,21 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             displayPictureOpinion($dbOpinion,$pict["id"]);?>
         </div>
         <?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
-            <br/><span  class="iluser" title="Csak bejelnkezett felhasználok látják ezt a képet élesen.">Ez a kép védve van!</span >
+            <br/><span  class="iluser" title="<?php Appl::_("Csak bejelnkezett felhasználok látják ezt a képet élesen.")?>"><?php Appl::_("Ez a kép védve van!")?></span >
         <?php } ?>
     </div>
-<?php if ($view!="table" && userIsAdmin()) {?>
-    <div  id="list-table" >
-        <div style="margin:10px;">
-            id=<?php echo $pict["id"]?>
-            orderValue=<?php echo $pict["orderValue"]?><br/>
-            filename=<?php echo $pict["file"]?><br/>
-            uploaded=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["uploadDate"]);?><br/>
-            changed=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["changeDate"]);?><br/>
-            user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
+    <?php if ($view!="table" && userIsAdmin()) {?>
+        <div  id="list-table" >
+            <div style="margin:10px;">
+                id=<?php echo $pict["id"]?>
+                orderValue=<?php echo $pict["orderValue"]?><br/>
+                filename=<?php echo $pict["file"]?><br/>
+                uploaded=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["uploadDate"]);?><br/>
+                changed=<?php echo \maierlabs\lpfw\Appl::dateTimeAsStr($pict["changeDate"]);?><br/>
+                user=<?php echo '('.$pict["changeUserID"].') '.getPersonName($db->getPersonByID($pict["changeUserID"]))?>
+            </div>
         </div>
-    </div>
-<?php }
+    <?php }
 }
 
 Appl::addJsScript("
@@ -484,11 +497,11 @@ Appl::addJsScript("
 	    	    if(data.length>200) {
 	    	        $('#buttonmore').html(picturesButton);
 	    	    } else {
-	    	        $('#buttonmore').html('Több kép nincs');
+	    	        $('#buttonmore').html('".Appl::__("Több kép nincs!")."');
 	    	    }
 		    },
 		    error:function(error) {
-		        showMessage('Több bejegyzés nincs!');
+		        showMessage('".Appl::__("Több kép nincs!")."');
 		        $('#buttonmore').html(picturesButton);
 		    }
         });
@@ -506,16 +519,23 @@ Appl::addJsScript("
         url +="'.(isset($tabOpen)?"&tabOpen=".$tabOpen:"").'";
         url +="'.(isset($type)?"&type=".$type:"").'";
         url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
+        url +="&sort='.$sort.'";
         url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
         window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
     }
 
-    function deletePicture(id) {
-        if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
-            showWaitMessage();
-            window.location.href="'.$_SERVER["PHP_SELF"].'?action=deletePicture&did="+id+"&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
-        }
+    function sortPictures(sort) {
+        var url = "view='.$view.'";
+        url +="'.(isset($tabOpen)?"&tabOpen=".$tabOpen:"").'";
+        url +="'.(isset($type)?"&type=".$type:"").'";
+        url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
+        url +="&sort="+sort;
+        url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
+        confirm("Figyelem\nKedves Laci a szortirozás még nem müködik, csak a gombokat jelentettem meg.");
+        window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
+        return false;
     }
+
 
     function changeOrder(id1,id2) {
         var url = "'.($view=="table"?"view=table":"view=list").'";
@@ -539,11 +559,18 @@ Appl::addJsScript("
         url +="&action=changePictureAlbum";
         window.location.href="'.$_SERVER["PHP_SELF"].'"+url;
     }
+
+    function deletePicture(id) {
+        if (confirm("'.Appl::__("Fénykép végleges törölését kérem konfirmálni!").'")) {
+            showWaitMessage();
+            window.location.href="'.$_SERVER["PHP_SELF"].'?action=deletePicture&did="+id+"&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
+        }
+    }
 ');
 if (userIsAdmin()) {
     \maierlabs\lpfw\Appl::addJsScript('
         function unlinkPicture(id) {
-            if (confirm("Fénykép végleges törölését kérem konfirmálni!")) {
+            if (confirm("'.Appl::__("Fénykép törölését kérem konfirmálni!").'")) {
                 showWaitMessage();
                 window.location.href = "'.$_SERVER["PHP_SELF"].'?action=unlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
             }
