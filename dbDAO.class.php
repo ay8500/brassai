@@ -691,7 +691,7 @@ class dbDAO {
 	 * @param string $type the type of picture personID, classID, schoolID
 	 * @return array of pictures  
 	 */
-	 public function getListOfPictures($id,$type,$album=null,$limit=null,$offset=null) {
+	 public function getListOfPictures($id,$type,$album=null,$orderby=null,$limit=null,$offset=null) {
 		$sql="";
 		if($id!=null)
 			$sql.=$type."=".$id;
@@ -702,10 +702,6 @@ class dbDAO {
 		} else {
 			$sql.=" and (albumName is null or albumName='')";
 		}
-		if($type=='schoolID')
-		    $orderby ="title desc";
-		else
-		    $orderby="orderValue desc";
 		return $this->getElementList("picture",false,$sql,$limit,$offset,$orderby);
 	}
 
@@ -715,12 +711,12 @@ class dbDAO {
      * @param string where
      * @return array of pictures
      */
-    public function getListOfPicturesWhere($where="",$limit=null,$offset=null) {
+    public function getListOfPicturesWhere($where="",$orderby=null,$limit=null,$offset=null) {
         $sql="";
         $sql.="isDeleted=0 ";
         if ($where!="")
             $sql.=" and ".$where;
-        return $this->getElementList("picture",false, $sql,$limit,$offset,"title desc");
+        return $this->getElementList("picture",false, $sql,$limit,$offset,$orderby);
     }
 
     /**

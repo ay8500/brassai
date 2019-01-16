@@ -15,12 +15,12 @@ function savePicture(id) {
                     clearModalMessage();
                     hideedit(id);
                 } else {
-                    showModalMessage("Kimentés sikertlen",data.error,"warning");
+                    showModalMessage('<?php maierlabs\lpfw\Appl::_("Kimentés sikertlen")?>',"warning");
                 }
             },
             error:function() {
                 clearModalMessage();
-                showDbMessage("Kimentés sikertlen","warning");
+                showDbMessage('<?php maierlabs\lpfw\Appl::_("Kimentés sikertlen")?>',"warning");
             }
         });
     }
@@ -33,13 +33,12 @@ function changeVisibility(id) {
         url:"ajax/setPictureVisibility.php?id="+id+"&attr="+c,
         type:"GET",
         success:function(data){
-            $('#ajaxStatus').html(' Kimetés sikerült. ');
-            $('#ajaxStatus').show();
-            setTimeout(function(){
-                $('#ajaxStatus').html('');
-                $('#ajaxStatus').hide();
-            }, 2000);
+            showDbMessage('<?php maierlabs\lpfw\Appl::_("Kép láthatósága sikeresen kimentve")?>',"success");
+        },
+        error:function(data){
+            showDbMessage('<?php maierlabs\lpfw\Appl::_("Kimentés sikertlen")?>',"waring");
         }
+
     });
 }
 
@@ -74,8 +73,8 @@ function onPictureLoad() {
     if ($("#thePicture").width()==0) {
         setTimeout(onPictureLoad,100);
     } else {
+        setTimeout(showFaceRecognition(),500);
         showTagging();
-        showFaceRecognition();
     }
 }
 
@@ -165,13 +164,14 @@ function personModify(o,personid,pictureid) {
 }
 
 function getButtonHtml() {
-    var html = '<button class="btn-xs" title="kissebb" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus-sign"></span></button>';
-    html += '<button class="btn-xs" title="nagyobb" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus-sign"></span></button>';
+    var text = ('<?php maierlabs\lpfw\Appl::_("kissebb,nagyobb,balra,feljebb,lejjebb,jobbra")?>').split(',');
+    var html = '<button class="btn-xs" title="'+text[0]+'" onclick="setFaceSize(false);" ><span class="glyphicon glyphicon-minus-sign"></span></button>';
+    html += '<button class="btn-xs" title="'+text[1]+'" onclick="setFaceSize(true);" ><span class="glyphicon glyphicon-plus-sign"></span></button>';
     html += '&nbsp;&nbsp;';
-    html += '<button class="btn-xs" title="balra" onclick="setPos(false,null);" ><span class="glyphicon glyphicon-arrow-left"></span></button>';
-    html += '<button class="btn-xs" title="fejjebb" onclick="setPos(null,true);" ><span class="glyphicon glyphicon-arrow-up"></span></button>';
-    html += '<button class="btn-xs" title="lejjebb" onclick="setPos(null,false);" ><span class="glyphicon glyphicon-arrow-down"></span></button>';
-    html += '<button class="btn-xs" title="jobbra" onclick="setPos(true,null);" ><span class="glyphicon glyphicon-arrow-right"></span></button>';
+    html += '<button class="btn-xs" title="'+text[2]+'" onclick="setPos(false,null);" ><span class="glyphicon glyphicon-arrow-left"></span></button>';
+    html += '<button class="btn-xs" title="'+text[3]+'" onclick="setPos(null,true);" ><span class="glyphicon glyphicon-arrow-up"></span></button>';
+    html += '<button class="btn-xs" title="'+text[4]+'" onclick="setPos(null,false);" ><span class="glyphicon glyphicon-arrow-down"></span></button>';
+    html += '<button class="btn-xs" title="'+text[5]+'" onclick="setPos(true,null);" ><span class="glyphicon glyphicon-arrow-right"></span></button>';
     return html;
 }
 
@@ -243,7 +243,7 @@ $(function() {
 function deletePerson(personid,pictureid,verbose,savenewposition) {
     if (verbose==null) verbose = true;
     if (savenewposition==null) savenewposition= false;
-    if (!verbose || confirm("Személy megjelölést törölni szeretnéd?")) {
+    if (!verbose || confirm('<?php maierlabs\lpfw\Appl::_("Személy megjelölést törölni szeretnéd?")?>')) {
         $.ajax({
             url: "ajax/deletePicturePerson.php?pictureid="+pictureid+"&personid="+personid,
             type:"GET",
@@ -298,7 +298,7 @@ function showDetectionList(o,x,y,pictureid,w) {
     $(".personsearch").remove();
     if (w!=null) faceSize=w;
 
-    html = '<input placeholder="Személy neve" id="personedit" style="width: 100%" onkeyup="searchPerson('+pictureid+','+x+','+y+')"/>';
+    html = '<input placeholder="<?php maierlabs\lpfw\Appl::_("Személy neve")?>" id="personedit" style="width: 100%" onkeyup="searchPerson('+pictureid+','+x+','+y+')"/>';
     if (w == null) {
         html += '<br/>'+getButtonHtml();
     }
@@ -311,7 +311,7 @@ function showDetectionList(o,x,y,pictureid,w) {
     $('<div>', {
         'class': 'personsearch',
         'css': {
-            "z-index":"199",
+            "z-index":"600",
             "position":"absolute",
             "top":$(o).position().top+faceSize+'px',
             "left":$(o).position().left+(x>350?-290+faceSize/2+20:-faceSize/2+20)+'px',
@@ -365,7 +365,11 @@ function searchPerson(pictureid,x,y) {
                     if (row.isTeacher==="0") {
                         var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
                     } else {
-                        var pclass = "Tanár"+(row.gender=="f"?"nő":" úr");
+                        if (row.gender=="f") {
+                            var pclass = "<?php maierlabs\lpfw\Appl::_('Tanárnő')?>";
+                        } else {
+                            var pclass = "<?php maierlabs\lpfw\Appl::_('Tanár úr')?>";
+                        }
                     }
                     var pname = (row.title != null ? row.title + ' ' : '') + row.lastname + ' ' + row.firstname;
                     if (row.picture!=null && row.picture.length>5) {
@@ -374,7 +378,7 @@ function searchPerson(pictureid,x,y) {
                         var pimg = '<img src="images/' + (row.gender==="f"?"woman.png":"man.png") + '" class="diak_image_icon" />';
                     }
                     var html = '<tr style="vertical-align: top"><td>' + pimg + '</td><td>' + pclass + '</td><td>' + pname + '</td><td>';
-                    html += '<button title="Megjelöl" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
+                    html += '<button title="<?php maierlabs\lpfw\Appl::_('Megjelöl')?>" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
                     $('#persontable').append(html);
                 });
             }
@@ -398,8 +402,8 @@ function savePerson(personid,pictureid,x,y) {
         success:function(data){
             showTagging(true);
             showConfirmMessage(
-                "Személy megjelölése sikerült",
-                "Akkor perfekt e személy megjelölése:<ul><li>ha a képen a személy szemei, orra és szája látszik</li><li>a személy naka és teljes frizurája nem fontos a jelöléshez</li><li>ha más személyek teljes arca nincs a megjelölt mezőben</li></ul>Ha nem sikerült, akkor kérünk törölj, és probáld meg újból.<br/>Köszönjük szépen.",
+                "<?php maierlabs\lpfw\Appl::_('Személy megjelölése sikerült')?>",
+                "<?php maierlabs\lpfw\Appl::_('Akkor perfekt e személy megjelölése:<ul><li>ha a képen a személy szemei, orra és szája látszik</li><li>a személy naka és teljes frizurája nem fontos a jelöléshez</li><li>ha más személyek teljes arca nincs a megjelölt mezőben</li></ul>Ha nem sikerült, akkor kérünk törölj, és probáld meg újból.<br/>Köszönjük szépen.')?>",
                 "imageTaggedPerson.php?pictureid="+pictureid+"&personid="+personid+"&size=100&padding=20",
                 pictureid,personid
             )

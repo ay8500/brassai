@@ -130,11 +130,12 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 //View 
 $albumParam = getParam("album","");
 $view=getParam("view","table");
-$sort=getParam("sort","order");
+$sort=getParam("sort",(getParam("type")=='schoolID'?"alphabet-desc":"order-desc"));
 $sortOrder=(strpos($sort,"order")!==false?"secundary":"default");
 $sortAlphabet=(strpos($sort,"alphabet")!==false?"secundary":"default");
 $sortDate=(strpos($sort,"date")!==false?"secundary":"default");
 $alt=(strpos($sort,"desc")!==false?"-alt":"");
+$desc=(strpos($sort,"desc")!==false?"":"-desc");
 $limit=24;
 $offset=getIntParam("start",0)*$limit;
 $link="picture.inc.php?action=showmore&view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort."&start=";
@@ -149,22 +150,26 @@ if(isset($picture)) {
 	$pictures = array($picture);	//Only one picture => convert to array
 	$notDeletedPictures=1;
 } else {
+    if (strpos($sort,"order")!==false)  $sortSql="orderValue";
+    if (strpos($sort,"alphabet")!==false)  $sortSql="title";
+    if (strpos($sort,"date")!==false)  $sortSql="uploadDate";
+    if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 	if ($albumParam=="_tablo_") {
 	    $where="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
-        $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
+        $pictures = $db->getListOfPicturesWhere($where,$sortSql, $limit, $offset );
         $countPictures = $db->getTableCount("picture",$where);
     } elseif ($albumParam=="_mark_") {
 	    $where = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
-        $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
+        $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
         $countPictures = $db->getTableCount("picture",$where);
     } elseif ($albumParam=="_card_") {
         $where = "classID is not null and (title like '%icsengetési%') ";
-        $pictures = $db->getListOfPicturesWhere($where, $limit, $offset);
+        $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
         $countPictures = $db->getTableCount("picture",$where);
     } else {
 	    if (!isset($typeId)) $typeId=getParam("typeid");
 	    if (!isset($type)) $type=getParam("type");
-        $pictures = $db->getListOfPictures($typeId, $type,  $albumParam,$limit,$offset);
+        $pictures = $db->getListOfPictures($typeId, $type,  $albumParam, $sortSql, $limit,$offset);
         $where = $type.'='.$typeId;
         if ($albumParam!=null) {
             $where.=" and albumName='".$albumParam."'";
@@ -260,13 +265,13 @@ if (isActionParam("showmore") ) {
 	<?php if (($notDeletedPictures<50 || userIsAdmin()) && substr($albumParam,0,1)!="_" && $albumParam!="_card_") {?>
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
-            <button class="btn btn-default" onclick="toogleListBlock();return false;"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
+            <button class="btn btn-default" onclick="return toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
 			<?php if(isset($picture)) { ?>
-				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> <?php Appl::_("Mutasd a többi képet")?></button>
-			<?php  } elseif (userIsAdmin() || userIsSuperuser()) { ?>
-                <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
-                <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet')" title="<?php Appl::_("ABC sorrend")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
-                <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date')" title="<?php Appl::_("Dátum sorrend")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
+				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?sort='.$sort.'&type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> <?php Appl::_("Mutasd a többi képet")?></button>
+			<?php  } else { ?>
+                <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
+                <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
+                <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
             <?php  } ?>
         </div>
 		<div id="download" style="margin:15px;display:none;">
@@ -510,7 +515,7 @@ Appl::addJsScript("
 ");
 
 
-\maierlabs\lpfw\Appl::addJs("js/picture.js");
+\maierlabs\lpfw\Appl::addJs("js/picture.js",true);
 \maierlabs\lpfw\Appl::addJs("js/jquery.facedetection.js");
 
 \maierlabs\lpfw\Appl::addJsScript('
@@ -522,6 +527,7 @@ Appl::addJsScript("
         url +="&sort='.$sort.'";
         url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
         window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
+        return false;
     }
 
     function sortPictures(sort) {
@@ -531,7 +537,6 @@ Appl::addJsScript("
         url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
         url +="&sort="+sort;
         url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
-        confirm("Figyelem\nKedves Laci a szortirozás még nem müködik, csak a gombokat jelentettem meg.");
         window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
         return false;
     }
