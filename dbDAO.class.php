@@ -6,9 +6,9 @@
 
 use maierlabs\lpfw\MySqlDbAUH ;
 
-include_once 'tools/mysqldbauh.class.php';
-include_once 'tools/logger.class.php';
-include_once 'tools/ltools.php';
+include_once 'lpfw/mysqldbauh.class.php';
+include_once 'lpfw/logger.class.php';
+include_once 'lpfw/ltools.php';
 include_once 'config.class.php';
 
 
@@ -414,7 +414,7 @@ class dbDAO {
 	 */
 	private function searchForPersonOneString($name) {
 		$ret = array();
-		if( strlen($name)>0 && intval($name)==0) {
+		if( strlen($name)>0 ) {
 
             $name=trim($name);
             $name=$this->clearUTF($name);

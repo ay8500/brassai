@@ -160,8 +160,8 @@
 
 
 
-/**
-	 * Check login data in each client 
+     /**
+	 * Check login data
 	 */
 	function checkUserLogin($user,$passw) {
 		global $db;

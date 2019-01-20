@@ -1,6 +1,6 @@
 <?php
-include_once __DIR__ . '/../tools/sessionManager.php';
-include_once __DIR__ . '/../tools/ltools.php';
+include_once __DIR__ . '/../lpfw/sessionManager.php';
+include_once __DIR__ . '/../lpfw/ltools.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbDaOpinion.class.php';
 

@@ -1,5 +1,5 @@
 <?PHP
-	include_once("tools/ltools.php");
+	include_once("lpfw/ltools.php");
 	$maxFileSize=1024*1024;
 	$action = getParam("action","");
 	$new =($action=="newGallery");

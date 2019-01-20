@@ -2,9 +2,9 @@
 /*
  * Send a request mail to the actual user, to extend his user storys.
  */
-include_once __DIR__ . '/../tools/sessionManager.php';
-include_once __DIR__ . '/../tools/ltools.php';
-include_once __DIR__ . '/../tools/userManager.php';
+include_once __DIR__ . '/../lpfw/sessionManager.php';
+include_once __DIR__ . '/../lpfw/ltools.php';
+include_once __DIR__ . '/../lpfw/userManager.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../config.class.php';
 include_once __DIR__ . '/../sendMail.php';
@@ -42,7 +42,7 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$text .='<a href="'.Config::$siteUrl.'/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />';
 	$text .='Üdvözlettel '.$name;
 
-	if (!sendHtmlMail(getFieldValue($diak["email"]),$text,"Brassai Sámuel líceum véndiákjai. Kérés kiegészítésre.")) {
+	if (!\maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,"Kérés kiegészítésre.")) {
 		http_response_code(400);
 		echo ("Üzenet küldése sajnos nem sikerült. Probákozz késöbb újból.");
 		return;

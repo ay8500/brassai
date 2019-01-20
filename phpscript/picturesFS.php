@@ -20,9 +20,9 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd,$dbname) or die(mysqli_error());
 	
 	$packageSize=3000;$packageArray = array();
-	$it = new RecursiveDirectoryIterator(dirname(__DIR__)."/images",FilesystemIterator::SKIP_DOTS);
+	$it = new RecursiveDirectoryIterator(dirname(__DIR__) . "/images",FilesystemIterator::SKIP_DOTS);
 	foreach(new RecursiveIteratorIterator($it) as $file) {
-		if (dirname($file)!=dirname(__DIR__)."/images") {
+		if (dirname($file)!= dirname(__DIR__) . "/images") {
 			$packageArray[sizeof($packageArray)]= $file;
 			if(sizeof($packageArray)>=$packageSize) {
 				$statistic=checkFilesInPackage($conn,$packageArray,$statistic);
@@ -90,7 +90,7 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
 		else
 			$notFoundImg = $notFound;
 		echo('Not in the DB:'.$notFound.' <a href="'.$notFound.'" target="not_found"><img style="height:50px" src="'.$notFoundImg.'"/></a>');
-        echo(date ("Y.m.d H:i:s.",filemtime(dirname(__DIR__)."/images/".$notFound)));
+        echo(date ("Y.m.d H:i:s.",filemtime(dirname(__DIR__) . "/images/" .$notFound)));
 		$fa= explode("-",basename($notFound),2);
 		if (sizeof($fa)==2 && substr($fa[0],0,1)=="d") {
 			$sql="select * from person where id =".substr($fa[0], 1);
@@ -101,7 +101,7 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
 		}
 		echo("<br/>");
 		if (isset($_GET["action"]) && $_GET["action"]=="delete") {
-			unlink(dirname(__DIR__)."/".$notFoundImg);
+			unlink(dirname(__DIR__) . "picturesFS.php/" .$notFoundImg);
 		}
 		
 	}

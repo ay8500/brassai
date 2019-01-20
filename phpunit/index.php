@@ -8,7 +8,7 @@
 include_once 'config.class.php';
 include_once 'phpunit.class.php';
 
-$pu = new \phpunit\phpunit();
+$pu = new \maierlabs\phpunit\phpunit();
 
 ?>
 <html>
@@ -22,8 +22,8 @@ $pu = new \phpunit\phpunit();
     </header>
     <body>
         <div class="container-fluid well">
-            <h3>PhpUnit webinterface for: <?php echo(\phpunit\config::$SiteTitle)?></h3>
-            <div style="position: relative;top:-13px;">&copy; MaierLabs version:<?php echo (\phpunit\config::$version)?></div>
+            <h3>PhpUnit webinterface for: <?php echo(\maierlabs\phpunit\config::$SiteTitle)?></h3>
+            <div style="position: relative;top:-13px;">&copy; MaierLabs version:<?php echo (\maierlabs\phpunit\config::$version)?></div>
             <div class="panel-body">
                 <div><button class="btn btn-success" onclick="getTestFiles()">Check site for tests</button>
                 <button class="btn btn-success" onclick="runAlltests()">Run all unit tests</button></div>

@@ -1,11 +1,11 @@
-<?PHP
-	include_once 'tools/sessionManager.php';
-	include_once("tools/userManager.php");
-	include_once 'tools/appl.class.php';
-	include_once 'tools/ltools.php';
-	include_once 'sendMail.php';
-	include_once 'config.class.php';
+<?php
+	include_once 'sessionManager.php';
+	include_once 'userManager.php';
+	include_once 'appl.class.php';
+	include_once 'ltools.php';
+    include_once __DIR__.'/../dbBL.class.php';
 
+    use \maierlabs\lpfw\Appl as Appl;
 	$logOnMessage="";
 	
 	//Logon action
@@ -15,28 +15,28 @@
 		if ((null==$paramName) || (null==$paramPassw)) { 
 			logoutUser();
 			http_response_code(400);
-			$logOnMessage =Config::_text("LogInError")."<br />".Config::_text("LogInUserPassw");
+			$logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("User name and password are empty.");
 		} else {
 			if (!$db->checkRequesterIP(changeType::login)) {
 				logoutUser();
 				http_response_code(400);
-				$logOnMessage = Config::_text("LogInError")."<br />".Config::_text("LogInToManyErrors");
+                $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("To many login errors, please try again later.");
 			} else {
 				if (!checkUserLogin($paramName,$paramPassw)) {
 					logoutUser();
 					http_response_code(400);
-					$logOnMessage = Config::_text("LogInError")."<br />".Config::_text("LogInUserPasErr");
+                    $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("Wrong user name or password.");
 					$db->saveRequest(changeType::login);
 					saveLogInInfo("Login","",$paramName,strlen($paramPassw),"false");
 				} else {
 					saveLogInInfo("Login",getLoggedInUserId(),$paramName,strlen($paramPassw),"true");
-					$logOnMessage = "Ok";
+					$logOnMessage = "";
 				}
 			}
 		}
 		if (! userIsAdmin()) {
-			sendHtmlMail(null,
-				"<h2>Login</h2>".
+            \maierlabs\lpfw\Appl::sendHtmlMail(null,
+				"<h4>Login</h4>".
 				"Parameter:".$paramName." : ".strlen($paramPassw)."<br/>".
 				"Login result:".$logOnMessage," Login");
 		}
@@ -48,21 +48,21 @@
 	}
 	
 	if (isActionParam("logoffok")) {
-        \maierlabs\lpfw\Appl::setMessage("Kijelentkezés megtörtént, köszünjük a látogatást, tövábbi szép időtöltést kivánunk.", "success");
+        \maierlabs\lpfw\Appl::setMessage(Appl::__("Successfully logged out, thank you for visiting this site. See you soon."), "success");
 	}
 	
 	if (isActionParam("loginok")) {
-        \maierlabs\lpfw\Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
+        \maierlabs\lpfw\Appl::setMessage(Appl::__("Welcome dear ").getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
 	}
 	
 	//Facebook login
 	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
-			$logOnMessage=Config::_text("LogInError");
+			$logOnMessage=Appl::__("Login failed!");
 		}
 		if (! userIsAdmin()) {
 			saveLogInInfo("Facebook",getLoggedInUserId(),$_SESSION['FacebookId'],"","true");
-			sendHtmlMail(null,
+            \maierlabs\lpfw\Appl::sendHtmlMail(null,
 				"<h2>Facebooklogin</h2>".
 				"FacebookId:".$_SESSION['FacebookId']."<br/>".
 				"FacebookName:".$_SESSION['FacebookName']."<br/>".
@@ -78,21 +78,21 @@ function writeLogonDiv() {
 		?>
 <div class="panel panel-default" style="display:none;margin:auto;width:220px;" id="uLogon" >
 	<div class="panel-heading" >
-		<b>Bejelentkezés</b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeLogin();"></span>
+		<b><?php Appl::_("Login ")?></b><span class="glyphicon glyphicon-remove-circle" style="float: right;cursor: pointer;" onclick="closeLogin();"></span>
 	</div>
 	<form action="" method="get">
 		<input type="hidden" value="logon" name="action"/>
 		<div class="input-group input-group" style="margin: 3px;">
-    		<span class="input-group-addon" style="width:30px" title="Felhasználó név vagy e-mail cím"><span class="glyphicon glyphicon-user"></span></span>
-    		<input name="paramName" type="text" class="form-control" id="loUser" placeholder="<?php echo Config::_text("LogInUser"); ?>">
+    		<span class="input-group-addon" style="width:30px" title="<?php Appl::__("User name or e-mail")?>"><span class="glyphicon glyphicon-user"></span></span>
+    		<input name="paramName" type="text" class="form-control" id="loUser" placeholder="<?php Appl::_("User name")?>">
 		</div>
 		<div class="input-group input-group" style="margin: 3px;">
-    		<span class="input-group-addon" style="width:30px" title="Jelszó" ><span class="glyphicon glyphicon-lock"></span></span>
-    		<input name="paramPassw" type="password" class="form-control" id="loPassw" placeholder=<?php echo Config::_text("LogInPassw"); ?>  >
+    		<span class="input-group-addon" style="width:30px" title="<?php Appl::_("Password")?>" ><span class="glyphicon glyphicon-lock"></span></span>
+    		<input name="paramPassw" type="password" class="form-control" id="loPassw" placeholder="<?php Appl::_("Password")?>"  >
 		</div>
 		<div style="text-align:center; margin: 3px">
-			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php echo Config::_text("LogIn"); ?></button>
-		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="Szeretnék bejelentkezési adatokat, elfelejtettem adataimat" ><span class="glyphicon glyphicon-unchecked"></span> <?php echo Config::_text("LogInLostData"); ?></button>
+			<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="logon();"><span class="glyphicon glyphicon-log-in"></span> <?php Appl::_("Login")?></button>
+		 	<button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;" onclick="lostlogon();" title="<?php Appl::_("Sign in or the login user and password have been forgotten")?>" ><span class="glyphicon glyphicon-unchecked"></span> <?php Appl::_("Sign in / forgotten"); ?></button>
 		</div>
 	</form>
 	<div style="text-align:center; margin: 3px">
@@ -108,7 +108,7 @@ function writeLogonDiv() {
 \maierlabs\lpfw\Appl::addJsScript('
     window.fbAsyncInit = function() {
         FB.init({
-          appId      : "1606012466308740",
+          appId      : '.Config::$facebookApplId.',
           cookie     : true,
           xfbml      : true,
           version    : "v3.0"
@@ -143,7 +143,7 @@ function writeLogonDiv() {
     
 	function logon() {
 		$.ajax({
-			url:"logon.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
+			url:"lpfw/logon.inc.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
 				var url=location.href;
 				url=location.href.replace("action","loginok");
@@ -176,7 +176,7 @@ function writeLogonDiv() {
 	
 	function handleLogoff() {
 		$.ajax({
-			url:"logon.php?action=logoff",
+			url:"lpfw/logon.inc.php?action=logoff",
 			success:function(data){
 				var url=location.href;
 				url=location.href.replace("action","logoffok");

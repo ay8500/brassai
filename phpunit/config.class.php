@@ -6,7 +6,7 @@
  * Time: 00:06
  */
 
-namespace phpunit;
+namespace maierlabs\phpunit;
 
 class config {
 

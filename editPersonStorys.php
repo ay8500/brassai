@@ -1,5 +1,5 @@
 <?php
-include_once 'tools/ltools.php';
+include_once 'lpfw/ltools.php';
 include_once 'dbBL.class.php';
 	
 	$person=$db->getPersonByID($personid);
@@ -37,7 +37,7 @@ include_once 'dbBL.class.php';
 			</div> 
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >
-					<input type="submit" class="btn btn-default" value="<?php echo Config::_text("Save");?>" />
+					<input type="submit" class="btn btn-default" value="<?php \maierlabs\lpfw\Appl::_("Save");?>" />
 				</div>
 			</div>
 		</form>

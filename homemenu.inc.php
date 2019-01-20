@@ -1,10 +1,10 @@
 <?php
     ob_start("ob_gzhandler");
-    include_once("tools/sessionManager.php");
-    include_once 'tools/appl.class.php';
-	include_once("config.class.php");
-	include_once("logon.php");
-	include_once("dbBL.class.php");
+    include_once 'lpfw/sessionManager.php';
+    include_once 'lpfw/appl.class.php';
+    include_once 'lpfw/logon.inc.php';
+	include_once 'config.class.php';
+    include_once 'dbBL.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
 		
@@ -18,13 +18,6 @@
 	if (isset($_GET['key'])) {
 	    Appl::setMessage(directLogin($db,$_GET['key']),"");
 	}
-
-	function textTranslate($text) {
-	    return '{'.$text.'}';
-    }
-	if (userIsAdmin()) {
-        Appl::$translator = "textTranslate";
-    }
 
 	function directLogin($db,$key){
 	    $keyStr = encrypt_decrypt("decrypt", $key);
@@ -41,9 +34,9 @@
 	        Appl::setMember("aktClass",$class);
 	        setAktClass($class["id"]);
 	        setAktSchool($class["schoolID"]);
-	        if (!userIsAdmin()) {
+	        if (!userIsAdmin() && !userIsSuperuser()) {
 	            saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
-	            sendHtmlMail(null,
+                \maierlabs\lpfw\Appl::sendHtmlMail(null,
 	                "<h2>Login</h2>".
 	                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
 	        }
@@ -209,7 +202,7 @@
 							<?php writePersonLinkAndPicture($person); ?>
 						</span>
                         <button type="button" id="uLogoffMenu" class="btn btn-default " onclick="handleLogoff();"><span
-                                    class="glyphicon glyphicon-log-out"></span> Kijelentkezés
+                                    class="glyphicon glyphicon-log-out"></span> <?php Appl::_("Logout")?>
                         </button>
                     </div>
                 </form>
@@ -217,7 +210,7 @@
                 <form class="navbar-form navbar-right" role="search" action="">
                     <div class="input-group input-group" style="margin: 3px;">
                         <button type="button" id="uLogonMenu" class="btn btn-default " onclick="handleLogon();"><span
-                                    class="glyphicon glyphicon-log-in"></span> Bejelentkezés
+                                    class="glyphicon glyphicon-log-in"></span> <?php Appl::_("Login")?>
                         </button>
                     </div>
                 </form>

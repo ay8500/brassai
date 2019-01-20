@@ -1,8 +1,8 @@
 <?php
-include_once 'tools/sessionManager.php';
-include_once 'tools/userManager.php';
-include_once 'tools/appl.class.php';
-include_once 'tools/appl.class.php';
+include_once 'lpfw/sessionManager.php';
+include_once 'lpfw/userManager.php';
+include_once 'lpfw/appl.class.php';
+include_once 'lpfw/appl.class.php';
 include_once 'dbBL.class.php';
 
 use maierlabs\lpfw\Appl as Appl;

@@ -25,7 +25,7 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 	while ($picture = mysqli_fetch_array($pictures))
 	{
 		$allPictures++;
-		$file=dirname(__DIR__)."/".$picture["file"];
+		$file= dirname(__DIR__) . "picturesDB.php/" .$picture["file"];
 		if(file_exists($file)) {
 			$okPictures++;
 		} else {
@@ -41,7 +41,7 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 	{
 		if($picture["picture"]!=null) {
 			$allPictures++;
-			$file=dirname(__DIR__)."/images/".$picture["picture"];
+			$file= dirname(__DIR__) . "/images/" .$picture["picture"];
 			if(file_exists($file)) {
 				$okPictures++;
 			} else {

@@ -1,5 +1,5 @@
 <?php
-namespace phpunit;
+namespace maierlabs\phpunit;
 
 include_once 'config.class.php';
 
@@ -31,9 +31,35 @@ class phpunit {
     function getTestClassMethods($className) {
         $ret = array();
         $methods=get_class_methods($className);
-        foreach ($methods as $method) {
-            if (!in_array(strtolower($method),array("setup","teardown")) && strpos($method,"assert")!==0) {
-                $ret[]=$method;
+        if ($methods!=null) {
+            foreach ($methods as $method) {
+                if (!in_array(strtolower($method), array("setup", "teardown")) && strpos($method, "assert") !== 0) {
+                    $ret[] = $method;
+                }
+            }
+        }
+        return $ret;
+    }
+
+    function getTestClassMethodsFromFile($fileName) {
+        $ret = array();
+        $methods = array();
+        $lines = explode("\n",file_get_contents($fileName));
+        foreach ($lines as $line) {
+            $p1 = strpos($line,"public function test");
+            if ($p1!==false) {
+                $p2 = strpos($line,"()",$p1);
+                if ($p2!==false) {
+                    $p1 +=strlen("public function ");
+                    $methods[]=substr($line,$p1,$p2-$p1);
+                }
+            }
+        }
+        if ($methods!=null) {
+            foreach ($methods as $method) {
+                if (!in_array(strtolower($method), array("setup", "teardown")) && strpos($method, "assert") !== 0) {
+                    $ret[] = $method;
+                }
             }
         }
         return $ret;

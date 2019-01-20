@@ -1,7 +1,7 @@
 <?php
-include_once 'tools/sessionManager.php';
-include_once 'tools/userManager.php';
-include_once 'tools/appl.class.php';
+include_once 'lpfw/sessionManager.php';
+include_once 'lpfw/userManager.php';
+include_once 'lpfw/appl.class.php';
 include_once 'dbBL.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -18,7 +18,7 @@ $sort="lastName, firstName";
 
 if (null==getParam("type")) {
 	$name=trim(html_entity_decode(getGetParam("srcText", "")));
-	$personList=$db->searchForPerson($name);
+	$personList=$db->searchForPerson((intval($name)>0)?'abcdefg':$name);
 	$classList=$db->searchForClass($name);
 	$pictureList=$db->searchForPicture($name);
 } elseif ('jmlaureat'==getParam("type")) {

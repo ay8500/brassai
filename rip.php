@@ -1,9 +1,9 @@
 <?php
-include_once 'tools/sessionManager.php';
-include_once 'tools/userManager.php';
-include_once 'tools/appl.class.php';
+include_once 'lpfw/sessionManager.php';
+include_once 'lpfw/userManager.php';
+include_once 'lpfw/appl.class.php';
 use \maierlabs\lpfw\Appl as Appl;
-include_once 'tools/ltools.php';
+include_once 'lpfw/ltools.php';
 include_once 'dbBL.class.php';
 include_once  'dbDaCandle.class.php';
 include_once 'rip.inc.php';

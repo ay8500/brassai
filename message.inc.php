@@ -126,7 +126,7 @@ function writeMessage($text,$privacy,$name) {
 		$message["privacy"]="world";
 	}
 	if (!userIsAdmin())
-		sendHtmlMail(null, $text, " Message");
+        \maierlabs\lpfw\Appl::sendHtmlMail(null, $text, " Message");
 	$db->saveRequest(changeType::message);
 	return $db->saveNewMessage($message); 
 }

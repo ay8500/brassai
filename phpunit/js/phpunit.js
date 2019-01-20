@@ -61,7 +61,7 @@ function getTestFiles() {
             var i=0;
             data.forEach(function(testFile) {
                 filesOption.colors[i++]='blue';
-                filesData.addRow([testFile.file,1]);
+                filesData.addRow([testFile.file,testFile.tests]);
             });
             filesOption.title ='Unit test files found:'+filesData.getNumberOfRows();
             filesChart.draw(filesData, filesOption );

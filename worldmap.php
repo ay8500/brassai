@@ -1,6 +1,6 @@
 <?PHP 	
-include_once("tools/sessionManager.php"); 
-include_once 'tools/appl.class.php';
+include_once("lpfw/sessionManager.php");
+include_once 'lpfw/appl.class.php';
 
 $sTitle = "A diakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";

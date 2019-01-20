@@ -1,9 +1,9 @@
 <?php
 
-include_once __DIR__ . "/../../config.class.php";
-include_once __DIR__ . "/../mysqldbauh.class.php";
-include_once __DIR__ . "/../userManager.php";
-include_once __DIR__ . "/../logger.class.php";
+include_once __DIR__ . "/../config.class.php";
+include_once __DIR__ . "/../lpfw/mysqldbauh.class.php";
+include_once __DIR__ . "/../lpfw/userManager.php";
+include_once __DIR__ . "/../lpfw/logger.class.php";
 
 use \maierlabs\lpfw\MySqlDbAUH as MySqlDbAUH;
 
@@ -30,12 +30,11 @@ class PasswordTest extends PHPUnit_Framework_TestCase
         $this->db->disconnect();
     }
 
-    public function testDB():void
+    public function testDB()
     {
         $ok = $this->db->queryInt("select  count(length(passw)),passw   from person having length(passw)=32");
         $all = $this->db->queryInt("select  count(1) from person");
         $this->assertTrue($ok==$all);
-        echo("Persons in the DB:".$all);
         /*
         while ($row = $this->db->fetchRow()) {
             $p=$row["passw"];

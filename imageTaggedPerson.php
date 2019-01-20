@@ -8,14 +8,14 @@
  */
 
 //are we in a session?
-include_once 'tools/sessionManager.php';
+include_once 'lpfw/sessionManager.php';
 if ( !isset($_SESSION['lastReq']) ) {
     http_response_code(401);
     die('Unauthorized');
 }
 include_once 'dbBL.class.php';
 include_once 'dbDaPersonInPicture.class.php';
-include_once 'tools/ltools.php';
+include_once 'lpfw/ltools.php';
 
 
 //file Name without extensions

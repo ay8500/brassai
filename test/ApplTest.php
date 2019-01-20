@@ -1,9 +1,9 @@
 <?php
-include_once __DIR__ . "/../../config.class.php";
-include_once __DIR__ . "/../appl.class.php";
-include_once __DIR__ . "/../logger.class.php";
-include_once __DIR__ . "/../userManager.php";
-include_once __DIR__ . "/../../dbBL.class.php";
+include_once __DIR__ . "/../phpunit/config.class.php";
+include_once __DIR__ . "/../lpfw/appl.class.php";
+include_once __DIR__ . "/../lpfw/logger.class.php";
+include_once __DIR__ . "/../lpfw/userManager.php";
+include_once __DIR__ . "/../dbBL.class.php";
 
 use maierlabs\lpfw\Appl;
 

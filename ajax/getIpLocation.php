@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../tools/ltools.php';
+include_once __DIR__ . '/../lpfw/ltools.php';
 
 header('Content-Type: application/json');
 

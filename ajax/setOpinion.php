@@ -1,6 +1,6 @@
 <?php
-include_once __DIR__ . '/../tools/sessionManager.php';
-include_once __DIR__ . '/../tools/ltools.php';
+include_once __DIR__ . '/../lpfw/sessionManager.php';
+include_once __DIR__ . '/../lpfw/ltools.php';
 include_once __DIR__ . '/../dbDaOpinion.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbChangeType.class.php';
@@ -51,7 +51,7 @@ $ret->result='ok';
 $ret->count=$dbOpinion->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
 $db->saveRequest(changeType::opinion);
 if ($type=='text') {
-    sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> text:'.$text,'Vélemény: '.Config::$SiteTitle);
+    \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> text:'.$text,'Vélemény: '.Config::$SiteTitle);
 }
 
 echo(json_encode($ret));

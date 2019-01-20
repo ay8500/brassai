@@ -6,10 +6,10 @@
  * Time: 01:16
  */
 
-include_once __DIR__ . "/../../config.class.php";
-include_once __DIR__ . "/../../dbDAO.class.php";
-include_once __DIR__ . "/../logger.class.php";
-include_once __DIR__ . "/../../dbDaFamily.class.php";
+include_once __DIR__ . "/../config.class.php";
+include_once __DIR__ . "/../lpfw/logger.class.php";
+include_once __DIR__ . "/../dbDAO.class.php";
+include_once __DIR__ . "/../dbDaFamily.class.php";
 
 
 class FamilyRelativeTest extends PHPUnit_Framework_TestCase

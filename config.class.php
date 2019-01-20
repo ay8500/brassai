@@ -1,12 +1,11 @@
 <?php
-include_once 'tools/logger.class.php';
-include_once 'tools/ltools.php';
+include_once 'lpfw/logger.class.php';
+include_once 'lpfw/ltools.php';
 
 use maierlabs\lpfw\Logger as Logger;
 
 //set logger output to file
 Logger::setLoggerType(  \maierlabs\lpfw\LoggerType::file);
-Config::init();
 
 class Config {
 
@@ -14,50 +13,16 @@ class Config {
 
     public static $siteUrl = "https://brassai.blue-l.de";
     public static $siteMail ="brassai@blue-l.de";
+    public static $facebookApplId="1606012466308740";
     public static $timeZoneOffsetMinutes=60;                // Server timezone eg: London=0, Berlin=60, Moscow=120
     public static $dateTimeFormat="<b>Y.m.d</b> H:i:s";
     public static $dateFormat="<b>Y.m.d</b>";
 
-    public static $webAppVersion = "20190115";  //Used to load the actual css und js files.
+    public static $webAppVersion = "20190116";  //Used to load the actual css und js files.
 
-    private static $SupportedLang = array("hu"); //First language ist the default language.
-
-    private static $textResource;
-
-    /**
-     * initialise
-     * @return void
-     */
-    public static function init(){
-        // Set languge include file
-        if (!isset($_SESSION['LANG'])) $_SESSION['LANG'] = self::$SupportedLang[0];
-        // Change language
-        if (null!=getGetParam("language"))
-        {
-            $_SESSION['LANG'] = getGetParam("language");
-        }
-
-        $LangFile = "Lang_" . $_SESSION['LANG'] . ".php";
-        if (file_exists($LangFile))
-            self::$textResource=include $LangFile;
-        else
-            self::$textResource=include "Lang_" . self::$SupportedLang[0] . ".php";
-    }
+    public static $SupportedLang = array("hu"); //First language ist the default language.
 
 
-    /**
-     * Get internationalized  text resource
-     * @param string $index ressource index
-     * @return string
-     */
-    public static function _text($index)
-    {
-        if (isset(self::$textResource[$index]))
-            return self::$textResource[$index];
-        else {
-            return "#" . $index . "#";
-        }
-    }
 
     /**
      * Get Database propertys host, database, user, password

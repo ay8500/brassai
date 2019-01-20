@@ -3,9 +3,9 @@
  * Business layer for the classmate database 
  */
 
-include_once "tools/userManager.php";
-include_once 'tools/ltools.php';
-include_once 'tools/mysqldbauh.class.php';
+include_once "lpfw/userManager.php";
+include_once 'lpfw/ltools.php';
+include_once 'lpfw/mysqldbauh.class.php';
 include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
 

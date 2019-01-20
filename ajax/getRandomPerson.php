@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
-include_once __DIR__ . '/../tools/userManager.php';
-include_once __DIR__ . '/../tools/ltools.php';
+include_once __DIR__ . '/../lpfw/userManager.php';
+include_once __DIR__ . '/../lpfw/ltools.php';
 include_once __DIR__ . '/../dbBL.class.php';
 
 $idList= getGetParam("ids", "");

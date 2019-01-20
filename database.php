@@ -1,14 +1,14 @@
 <?php
-include_once("tools/sessionManager.php");
+include_once("lpfw/sessionManager.php");
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
     die("Only for admins");
 
-include_once('tools/ltools.php');
-include_once 'tools/appl.class.php';
+include_once('lpfw/ltools.php');
+include_once 'lpfw/appl.class.php';
 
 if (getParam("action")=="todosomething") {
 	include_once("config.class.php");
-	include_once("logon.php");
+	include_once("lpfw/logon.inc.php");
 	include_once("dbBL.class.php");
 
 	$db = new dbDAO;
@@ -19,14 +19,14 @@ if (getParam("action")=="todosomething") {
 }
 
 if (getParam("action")=="decrypt") {
-    include_once("tools/ltools.php");
-    include_once("tools/userManager.php");
+    include_once("lpfw/ltools.php");
+    include_once("lpfw/userManager.php");
     echo (encrypt_decrypt("decrypt",getParam("param")));
     die();
 }
 if (getParam("action")=="encrypt") {
-    include_once("tools/ltools.php");
-    include_once("tools/userManager.php");
+    include_once("lpfw/ltools.php");
+    include_once("lpfw/userManager.php");
     echo (encrypt_decrypt("encrypt",getParam("param")));
     die();
 }
@@ -50,7 +50,7 @@ if (userIsAdmin()) {?>
   	  		</div>
   	  		<p></p>
   			<div class="input-group input-group-sm">
-  	  			<a class="btn btn-success" href="tools/backup.sql" >Download</a>
+  	  			<a class="btn btn-success" href="lpfw/backup.sql" >Download</a>
   	  			&nbsp;
   	  			<button class="btn btn-warning" onclick="backup();" >Backup</button>
   	  			&nbsp;
@@ -128,7 +128,7 @@ if (userIsAdmin()) {?>
 function backup() {
     $('#dbResult').html('backup....');
     $.ajax({
-		url:"tools/dbbackup.php?password="+$('#dbPassword').val(),
+		url:"lpfw/dbbackup.php?password="+$('#dbPassword').val(),
 		type:"GET",
 		success:function(data){
 		    $('#dbResult').html(data);
@@ -142,7 +142,7 @@ function backup() {
 function restore() {
     $('#dbResult').html('restore....');
     $.ajax({
-		url:"tools/dbrestore.php?password="+$('#dbPassword').val(),
+		url:"lpfw/dbrestore.php?password="+$('#dbPassword').val(),
 		type:"GET",
 		success:function(data){
 		    $('#dbResult').html(data);
@@ -156,13 +156,13 @@ function restore() {
 function picturesDB() {
     $('#pictureResult').html('searching....');
     $.ajax({
-		url:"tools/picturesDB.php",
+		url:"phpscript/picturesDB.php",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
 		},
 		error:function(error) {
-		    $('#pictureResult').html("Error:"+data);
+		    $('#pictureResult').html("Error:"+error);
 		}
     });
 }
@@ -170,13 +170,13 @@ function picturesDB() {
 function picturesFS() {
     $('#pictureResult').html('searching....');
     $.ajax({
-		url:"tools/picturesFS.php",
+		url:"phpscript/picturesFS.php",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
 		},
 		error:function(error) {
-		    $('#pictureResult').html("Error:"+data);
+		    $('#pictureResult').html("Error:"+error);
 		}
     });
 }
@@ -185,13 +185,13 @@ function picturesDelete() {
     if (confirm("Are you sure, that you want to delete all unreferenced pictures?")) {
 	    $('#pictureResult').html('searching....');
 	    $.ajax({
-			url:"tools/picturesFS.php?action=delete",
+			url:"phpscript/picturesFS.php?action=delete",
 			type:"GET",
 			success:function(data){
 			    $('#pictureResult').html(data);
 			},
 			error:function(error) {
-			    $('#pictureResult').html("Error:"+data);
+			    $('#pictureResult').html("Error:"+error);
 			}
 	    });
     }
@@ -200,13 +200,13 @@ function picturesDelete() {
 function createZipFile() {
     $('#pictureResult').html('creating zip file....');
     $.ajax({
-		url:"tools/zipPictures.php",
+		url:"phpscript/zipPictures.php",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
 		},
 		error:function(error) {
-		    $('#pictureResult').html("Error:"+data);
+		    $('#pictureResult').html("Error:"+error);
 		}
     });
 }
@@ -220,7 +220,7 @@ function doSomething(action) {
 		    $('#databaseResult').html(data);
 		},
 		error:function(error) {
-		    $('#databaseResult').html("Error:"+data);
+		    $('#databaseResult').html("Error:"+error);
 		}
     });
 }

@@ -1,7 +1,7 @@
 <?php 
-include_once("tools/userManager.php");
-include_once 'tools/ltools.php';
-include_once 'tools/appl.class.php';
+include_once("lpfw/userManager.php");
+include_once 'lpfw/ltools.php';
+include_once 'lpfw/appl.class.php';
 include_once("sendMail.php");
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -11,7 +11,7 @@ $mail='';$myname="";$resultText='';$rights="";
 //change the password
 if (isActionParam('newPassword')) {
 	if (isset($_GET['mail'])) $mail=$_GET['mail'];
-	if (checkEmail($mail)) {
+	if (Appl::checkEmail($mail)) {
 		$ret=resetUserPasswort($mail, createPassword(8) );
 		if ($ret>0) { 
 			SendNewPassword($db->getPersonByID($ret));

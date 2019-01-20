@@ -58,14 +58,16 @@ var faceSize = 30;
 var picturePadding = 5;
 
 function pictureModal(o,file,id) {
+    $("[class*=recognition]").remove();
+    $("#thePicture").attr("src","images/loading.gif");
     $("#thePicture").attr("data-id",id);
-    $("#thePicture").attr("src",file);
     $("#thePicture").css("max-width",$(window).width()-80+"px");
     $("#thePicture").css("max-height",$(window).height()-120+"px");
-    $('#pictureModal').modal({show: 'false' });
     $("#thePicture").on('load',function(){
         onPictureLoad();
     });
+    $("#thePicture").attr("src",file);
+    $('#pictureModal').modal();
     return false;
 }
 
@@ -73,7 +75,7 @@ function onPictureLoad() {
     if ($("#thePicture").width()==0) {
         setTimeout(onPictureLoad,100);
     } else {
-        setTimeout(showFaceRecognition(),500);
+        showFaceRecognition(true);
         showTagging();
     }
 }
@@ -175,8 +177,8 @@ function getButtonHtml() {
     return html;
 }
 
-function showFaceRecognition() {
-    if ($("[class*=recognition]").length!=0) {
+function showFaceRecognition(force) {
+    if ($("[class*=recognition]").length!=0 && force!==true) {
         $("[class*=recognition]").remove();
         return;
     }
@@ -378,7 +380,7 @@ function searchPerson(pictureid,x,y) {
                         var pimg = '<img src="images/' + (row.gender==="f"?"woman.png":"man.png") + '" class="diak_image_icon" />';
                     }
                     var html = '<tr style="vertical-align: top"><td>' + pimg + '</td><td>' + pclass + '</td><td>' + pname + '</td><td>';
-                    html += '<button title="<?php maierlabs\lpfw\Appl::_('Megjelöl')?>" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
+                    html += '<button title="<?php maierlabs\lpfw\Appl::_("Megjelöl")?>" class="btn-xs btn-success" onclick="savePerson(' + row.id + ',' + pictureid + ',' + x + ',' + y + ')"><span class="glyphicon glyphicon-save"></span></button></td></tr>';
                     $('#persontable').append(html);
                 });
             }

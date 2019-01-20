@@ -1,6 +1,6 @@
 <?php
-    include_once 'tools/sessionManager.php';
-    include_once 'tools/userManager.php';
+    include_once 'lpfw/sessionManager.php';
+    include_once 'lpfw/userManager.php';
 	include('homemenu.inc.php');
 ?>
 <div class="sub_title">Loging</div>

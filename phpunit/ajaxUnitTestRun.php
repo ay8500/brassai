@@ -10,7 +10,7 @@ include_once 'PHPUnit_Framework_TestCase.php';
 
 header('Content-Type: application/json');
 
-$pu = new \phpunit\phpunit();
+$pu = new \maierlabs\phpunit\phpunit();
 
 $file=$pu->getGetParam("file");
 $dir=$pu->getGetParam("dir");

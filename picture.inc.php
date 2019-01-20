@@ -1,8 +1,8 @@
 <?php
-include_once 'tools/sessionManager.php';
-include_once 'tools/userManager.php';
-include_once 'tools/ltools.php';
-include_once 'tools/appl.class.php';
+include_once 'lpfw/sessionManager.php';
+include_once 'lpfw/userManager.php';
+include_once 'lpfw/ltools.php';
+include_once 'lpfw/appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaOpinion.class.php';
 include_once 'displayOpinion.inc.php';
@@ -327,8 +327,8 @@ if (isActionParam("showmore") ) {
 ?>
 
 <!-- Modal -->
-<div class="modal fade" id="pictureModal" role="dialog">
-    <div class="modal-dialog pdialog" style="background-color: white;border-radius: 7px;">
+<div class="modal" id="pictureModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered pdialog" style="background-color: white;border-radius: 7px;">
         <div class="modal-content" style="position: relative;padding: 5px;">
             <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px" onmousedown="newPerson(event);"/>
             <div style="position: absolute; top: 10px; left:10px;">

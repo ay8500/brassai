@@ -1,6 +1,6 @@
 <?PHP
 include_once("dbBL.class.php");
-include_once 'tools/appl.class.php';
+include_once 'lpfw/appl.class.php';
 
 /**
  * Send new password
@@ -18,8 +18,8 @@ function SendNewPassword($diak) {
 	$text.='<a href='.Config::$siteUrl.'/index.php?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
-	sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
-	sendHtmlMail(Config::$siteMail,$text," new password request");
+	\maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
+    \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail,$text," new password request");
 }
 
 /**
@@ -49,7 +49,7 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 	$text.='<a href='.Config::$siteUrl.'/index.php?classid='.$year.' '.$class.'>A véndiakok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel az adminsztátor.</p>";
-	sendHtmlMail($mail,$text," új bejelenkezés");
+    \maierlabs\lpfw\Appl::sendHtmlMail($mail,$text," új bejelenkezés");
 }
 
 function sendChatMail($senderPerson,$toPerson,$text) {
@@ -68,61 +68,9 @@ function SendMail($uid,$text,$userData) {
 		if ($userData) {
 			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
-		sendHtmlMail(getFieldValue($diak["email"]),$text);
+        \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,Config::$siteMail,Config::$SiteTitle);
 }
 
 
-/**
- * send text to recipient
- */
-function sendHtmlMail($recipient,$text,$subject="") {
-	/* sender */
-	$absender = '<'.Config::$siteMail.'>';
-
-	/* reply */
-	$reply = '';
-
-	/* subject */
-	$subject = Config::$SiteTitle.' '.$subject;
-
-	/* Nachricht */
-	$message = '<html>
-	    <head>
-			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	        <title>'.Config::$SiteTitle.'</title>
-	    </head>
-	    <body>'.$text.'
-	    </body>
-	</html>
-	';
-
-	// build mail header 
-	$headers = 'From:' . $absender . "\r\n";
-	$headers .= 'Reply-To:' . $reply . "\r\n"; 
-	$headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n"; 
-	$headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n"; 
-	$headers .= "Content-Type: text/html;charset=utf-8\r\n";
-
-	if (!isLocalhost()) {
-		mail(Config::$siteMail, $subject, $message, $headers);
-		if (isset($recipient)) {
-			return mail($recipient, $subject, $message, $headers);
-		} 
-	} else {
-	    \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
-	}
-     return true;
-}
-
-/**
- * Validate mail adrress
- */
-function checkEmail($email) {
-  if(preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",$email)){
-    list($username,$domain)=explode('@',$email);
-    return true;
-  }
-  return false;
-}
 
 ?>

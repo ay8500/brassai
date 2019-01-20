@@ -1,10 +1,10 @@
 <?php
 
-include_once __DIR__ . "/../../config.class.php";
-include_once __DIR__ . "/../mysqldbauh.class.php";
-include_once __DIR__ . "/../logger.class.php";
-include_once __DIR__ . "/../userManager.php";
-include_once __DIR__ . "/../../dbDAO.class.php";
+include_once __DIR__ . "/../config.class.php";
+include_once __DIR__ . "/../lpfw/mysqldbauh.class.php";
+include_once __DIR__ . "/../lpfw/logger.class.php";
+include_once __DIR__ . "/../lpfw/userManager.php";
+include_once __DIR__ . "/../dbDAO.class.php";
 
 use \maierlabs\lpfw\MySqlDbAUH as MySqlDbAUH;
 
@@ -59,18 +59,16 @@ class nameTest extends \PHPUnit_Framework_TestCase
         $persons=$this->db->getRowList();
         foreach ( $persons as $row) {
             $this->firstName = $this->addName($this->firstName,$row["firstname"]);
-            $this->lastName = $this->addName($this->lastName,$row["lastname"]);
-            /*
+
             $gender=$this->getGenderFirstName($row["firstname"]);
             if ($gender!==false) {
                 $data=array(array("field"=>"gender","type"=>"s","value"=>$gender));
                 $countSetGender++;
                 $this->db->update("person",$data,"id",$row["id"]);
             }
-            */
         }
         arsort($this->firstName,SORT_NUMERIC);
-        echo("\n".'FirstName:'.sizeof($this->firstName).'- LastName'.sizeof($this->lastName));
+        echo("\n".'First name without gender:'.sizeof($this->firstName));
         echo(' Set gender:'.$countSetGender."\n");
         foreach ($this->firstName as $name=>$count) {
             echo($count.":".$name."\n");

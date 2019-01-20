@@ -11,8 +11,13 @@ include 'phpunit.class.php';
 
 header('Content-Type: application/json');
 
-$pu = new \phpunit\phpunit();
+$pu = new \maierlabs\phpunit\phpunit();
 
-$testFiles=$pu->getDirContents(\phpunit\config::$startDir,\phpunit\config::$excludeFiles );
+$testFiles=$pu->getDirContents(\maierlabs\phpunit\config::$startDir,\maierlabs\phpunit\config::$excludeFiles );
+
+foreach ($testFiles as $idx => $testFile) {
+    $tests = $pu->getTestClassMethodsFromFile($testFile["dir"].$testFile["file"]);
+    $testFiles[$idx]["tests"]=sizeof($tests);
+}
 
 echo json_encode($testFiles);
