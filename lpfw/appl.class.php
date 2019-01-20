@@ -329,7 +329,7 @@ class Appl {
         $headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
         if (!isLocalhost()) {
-            mail(Config::$siteMail, $subject, $message, $headers);
+            mail(\Config::$siteMail, $subject, $message, $headers);
             if (isset($recipient)) {
                 return mail($recipient, $subject, $message, $headers);
             }

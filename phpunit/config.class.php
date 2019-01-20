@@ -13,7 +13,13 @@ class config {
     /**
      * @var string Title of the php unit test page
      */
-    public static $SiteTitle = '"A kolozsvári Brassai Sámuel líceum véndiakjai."';
+    public static $SiteTitle = 'PhpUnit webinterface';
+
+
+    /**
+     * @var string sender and reply e-mail address
+     */
+    public static $senderMail = 'code@blue-l.de';
 
     /**
      * @var string start directory for *Test.php test files

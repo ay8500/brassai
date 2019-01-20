@@ -3,6 +3,7 @@
  * Business layer for the classmate database 
  */
 
+include_once 'config.class.php';
 include_once "lpfw/userManager.php";
 include_once 'lpfw/ltools.php';
 include_once 'lpfw/mysqldbauh.class.php';

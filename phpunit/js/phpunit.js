@@ -59,11 +59,13 @@ function getTestFiles() {
             while (filesData.getNumberOfRows()>0)
                 filesData.removeRow(0);
             var i=0;
+            var tests=0;
             data.forEach(function(testFile) {
                 filesOption.colors[i++]='blue';
                 filesData.addRow([testFile.file,testFile.tests]);
+                tests+=testFile.tests;
             });
-            filesOption.title ='Unit test files found:'+filesData.getNumberOfRows();
+            filesOption.title ='PhpUnit files:'+filesData.getNumberOfRows()+' Test:'+tests;
             filesChart.draw(filesData, filesOption );
         <?php if($pu->getGetParam("action")=="autorun") {?>
             runAlltests();
@@ -117,55 +119,67 @@ function runTest(oneFileNr,oneTestNr) {
         url:'ajaxUnitTestRun.php?file='+testFile.file+"&dir="+testFile.dir+"&testNr="+aktTestNr,
         type:'GET',
         success:function(data){
-            setTextToConsole(data.time+'ms '+data.testName, data.test?"green":"red",true);
-            if (aktTestNr == 0 || oneTestNr!=null) {
-                fileOption.title = 'Test file:' + testFiles[aktFileNr].file + '\nTest name:';
-                while (fileData.getNumberOfRows() > 0)
-                    fileData.removeRow(0);
-                for (var i = 0; i < data.tests.length; i++) {
-                    fileData.addRow([data.tests[i], 1]);
-                    fileOption.colors[i] = "blue";
+            if (typeof(data.filestatus)==null || data.filestatus == "error") {
+                setTextToConsole(data.errorMessage, 'red', true);
+                filesOption.colors[aktFileNr] = 'red';
+                aktTestNr = 0;
+                aktFileNr++;
+                fileError++;
+                if (aktFileNr < filesData.getNumberOfRows() && oneFileNr == null) {
+                    runTest(oneFileNr, oneTestNr);
                 }
-            }
-            setTestResults(data);
-
-            if (data.filestatus=="done") {
-                if (!aktFileError) {
-                    filesOption.colors[aktFileNr] = 'green';
-                    fileOk++;
-                } else {
-                    filesOption.colors[aktFileNr] = 'red';
-                    fileError++;
-                }
-                aktTestNr=0;
-                if (oneTestNr==null && oneFileNr==null) {
-                    aktFileNr++;
-                    if (aktFileNr < filesData.getNumberOfRows() ) {
-                        runTest(oneFileNr,oneTestNr);
+            } else {
+                setTextToConsole(data.time + 'ms ' + data.testName, data.test ? "green" : "red", true);
+                if (aktTestNr == 0 || oneTestNr != null) {
+                    fileOption.title = 'Test file:' + testFiles[aktFileNr].file + '\nTest name:';
+                    while (fileData.getNumberOfRows() > 0)
+                        fileData.removeRow(0);
+                    for (var i = 0; i < data.tests.length; i++) {
+                        fileData.addRow([data.tests[i], 1]);
+                        fileOption.colors[i] = "blue";
                     }
                 }
 
-            }
-            if (data.filestatus=="running") {
+                if (data.filestatus == "done") {
+                    if (!aktFileError) {
+                        filesOption.colors[aktFileNr] = 'green';
+                        fileOk++;
+                    } else {
+                        filesOption.colors[aktFileNr] = 'red';
+                        fileError++;
+                    }
+                    aktTestNr = 0;
+                    if (oneTestNr == null && oneFileNr == null) {
+                        if (aktFileNr+1 < filesData.getNumberOfRows()) {
+                            aktFileNr++;
+                            runTest(oneFileNr, oneTestNr);
+                        }
+                    }
 
-                filesOption.colors[aktFileNr] = 'yellow';
-                aktTestNr++;
-                if (oneTestNr==null)
-                    runTest(oneFileNr,oneTestNr);
-            }
-            if (data.filestatus=="error") {
-                setTextToConsole(data.errorMessage,'red',true);
-                filesOption.colors[aktFileNr] = 'red';
-                aktTestNr=0;aktFileNr++;fileError++;
-                if (aktFileNr < filesData.getNumberOfRows() && oneFileNr==null) {
-                    runTest(oneFileNr,oneTestNr);
                 }
-            };
+                if (data.filestatus == "running") {
+
+                    filesOption.colors[aktFileNr] = 'yellow';
+                    aktTestNr++;
+                    if (oneTestNr == null)
+                        runTest(oneFileNr, oneTestNr);
+                }
+            }
+            setTestResults(data);
             filesChart.draw(filesData, filesOption);
             showResultCounters();
         },
         error:function(error) {
-            result.ok = false;
+            setTextToConsole(error, 'red', true);
+            filesOption.colors[aktFileNr] = 'red';
+            aktTestNr = 0;
+            aktFileNr++;
+            fileError++;
+            if (aktFileNr < filesData.getNumberOfRows() && oneFileNr == null) {
+                runTest(oneFileNr, oneTestNr);
+            }
+            filesChart.draw(filesData, filesOption);
+            showResultCounters();
         }
     });
 }
