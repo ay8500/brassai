@@ -19,10 +19,10 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 	$statistic->allPictures=0;$statistic->okPictures=0;$statistic->errorPictures=0;$statistic->package=0;
 	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd,$dbname) or die(mysqli_error());
 	
-	$packageSize=3000;$packageArray = array();
-	$it = new RecursiveDirectoryIterator(dirname(__DIR__) . "/images",FilesystemIterator::SKIP_DOTS);
+	$packageSize=5000;$packageArray = array();
+	$it = new RecursiveDirectoryIterator(dirname(__DIR__) .DIRECTORY_SEPARATOR. "images",FilesystemIterator::SKIP_DOTS);
 	foreach(new RecursiveIteratorIterator($it) as $file) {
-		if (dirname($file)!= dirname(__DIR__) . "/images") {
+		if (dirname($file)!= dirname(__DIR__) .DIRECTORY_SEPARATOR. "images") {
 			$packageArray[sizeof($packageArray)]= $file;
 			if(sizeof($packageArray)>=$packageSize) {
 				$statistic=checkFilesInPackage($conn,$packageArray,$statistic);
@@ -101,7 +101,7 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
 		}
 		echo("<br/>");
 		if (isset($_GET["action"]) && $_GET["action"]=="delete") {
-			unlink(dirname(__DIR__) . "picturesFS.php/" .$notFoundImg);
+			unlink(dirname(__DIR__) .DIRECTORY_SEPARATOR. $notFoundImg);
 		}
 		
 	}
