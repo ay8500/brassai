@@ -373,32 +373,32 @@ include("homemenu.inc.php");
 
 //initialize tabs
 if ($action=="newperson") {
-    $tabsCaption = array(array("id" => "person", "caption" => "Új diák adatai"));
+    $tabsCaption = array(array("id" => "person", "caption" => "Új diák adatai", "glyphicon" => "user"));
 } else if ($action=="newguest") {
-    $tabsCaption = array(array("id" => "person", "caption" => "Új barát vagy vendég adatai"));
+    $tabsCaption = array(array("id" => "person", "caption" => "Új barát vagy vendég adatai", "glyphicon" => "user"));
 } else if ($action=="newteacher") {
-    $tabsCaption = array(array("id" => "person", "caption" => "Új tanárnő vagy tanár adatai"));
+    $tabsCaption = array(array("id" => "person", "caption" => "Új tanárnő vagy tanár adatai", "glyphicon" => "user"));
 } else {
-    $tabsCaption = array(array("id" => "person", "caption" => "Személyes&nbsp;adatok"));
+    $tabsCaption = array(array("id" => "person", "caption" => "Személyes&nbsp;adatok", "glyphicon" => "user"));
 }
 if (isset($diak["deceasedYear"])) {
-    array_push($tabsCaption ,array("id" => "candles", "caption" => "Gyertyák"));
+    array_push($tabsCaption ,array("id" => "candles", "caption" => "Gyertyák", "glyphicon" => ""));
 }
-array_push($tabsCaption ,array("id" => "pictures", "caption" => "Képek"));
-array_push($tabsCaption ,array("id" => "family", "caption" => "Családtagok"));
+array_push($tabsCaption ,array("id" => "pictures", "caption" => "Képek", "glyphicon" => "picture"));
+array_push($tabsCaption ,array("id" => "family", "caption" => "Családtagok", "glyphicon" => "heart"));
 
-array_push($tabsCaption ,array("id" => "cv", "caption" => "Életrajz"));
-array_push($tabsCaption ,array("id" => "hobbys", "caption" => "Szabadidőmben"));
+array_push($tabsCaption ,array("id" => "cv", "caption" => "Életrajz", "glyphicon" => "calendar"));
+array_push($tabsCaption ,array("id" => "hobbys", "caption" => "Szabadidőmben", "glyphicon" => "dashboard"));
 if ($diak["isTeacher"]==0) {
-    array_push($tabsCaption ,array("id" => "school", "caption" => "Diákkoromból"));
+    array_push($tabsCaption ,array("id" => "school", "caption" => "Diákkoromból", "glyphicon" => "education"));
 } else {
-    array_push($tabsCaption ,array("id" => "classes", "caption" => "Tanítványok"));
+    array_push($tabsCaption ,array("id" => "classes", "caption" => "Tanítványok", "glyphicon" => "education"));
 }
-array_push($tabsCaption ,array("id" => "geoplace", "caption" => "Térkép"));
+array_push($tabsCaption ,array("id" => "geoplace", "caption" => "Térkép", "glyphicon" => "globe"));
 if(userIsLoggedOn() || userIsAdmin()) {
     if (getLoggedInUserId()==$diak["id"] || userIsAdmin())
-        array_push($tabsCaption ,array("id" => "user", "caption" => "Bejelentkezési&nbsp;adatok"));
-    array_push($tabsCaption ,array("id" => "info", "caption" => "Infók"));
+        array_push($tabsCaption ,array("id" => "user", "caption" => "Bejelentkezési&nbsp;adatok", "glyphicon" => "envelope"));
+    array_push($tabsCaption ,array("id" => "info", "caption" => "Infók", "glyphicon" => "info-sign"));
 }
 
 $tabUrl="editDiak.php";

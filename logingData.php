@@ -6,14 +6,22 @@
 <div class="sub_title">Loging</div>
 <?PHP
 if (userIsAdmin()) {  
-	$year="2018";
+	$year="2019";
 
 	//initialise tabs
-	$tabsCaption=Array("Bejelentkezés","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");
-	include("tabs.inc.php");
+	$tabsCaption=Array("","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");
+    //initialise tabs
+    $tabsCaption = array();
+    array_push($tabsCaption ,array("id" => "ok", "caption" => 'Bejelentkezés', "glyphicon" => "user"));
+    array_push($tabsCaption ,array("id" => "error", "caption" => 'Sikertelen&nbsp;bejelentkezés', "glyphicon" => "user"));
+    array_push($tabsCaption ,array("id" => "change", "caption" => 'Adatmódosítás', "glyphicon" => "user"));
+    array_push($tabsCaption ,array("id" => "userdata", "caption" => 'Bejelentkezési adatok', "glyphicon" => "user"));
+    array_push($tabsCaption ,array("id" => "facebook", "caption" => 'Facebook', "glyphicon" => "tower"));
+
+    include("tabs.inc.php");
 	?>
 	
-	<?PHP if ($tabOpen==0) { ?>
+	<?PHP if ($tabOpen=='ok') { ?>
 	<p align="center">
 	   Sikeres bejelentkezések:<br/>	
 	  <table align="center" border="1">
@@ -28,7 +36,7 @@ if (userIsAdmin()) {
 	 </table>  
 	</p>
 	<?PHP }?>
-	<?PHP if ($tabOpen==1) { ?>
+	<?PHP if ($tabOpen=='error') { ?>
 	<p align="center">
 	   Sikertelen Bejelentkezés:<br/>	
 	  <table align="center" border="1">
@@ -43,7 +51,7 @@ if (userIsAdmin()) {
 	  	 </table>  
 	</p>
 	<?PHP }?>
-	<?PHP if ($tabOpen==2) { ?>
+	<?PHP if ($tabOpen=='change') { ?>
 	<p align="center">
 	   Adatok módosítva:<br/>	
 	  <table align="center" border="1">
@@ -57,7 +65,7 @@ if (userIsAdmin()) {
 	  	 </table>  
 	</p>
 	<?PHP }?>
-	<?PHP if ($tabOpen==3) { ?>
+	<?PHP if ($tabOpen=='userdata') { ?>
 	<p align="center">
 	   Bejelenkezési adatok módosítása:<br/>	
 	  <table align="center" border="1">
@@ -72,7 +80,7 @@ if (userIsAdmin()) {
 	   	 </table>  
 	</p>
 	<?PHP }?>
-	<?PHP if ($tabOpen==4) { ?>
+	<?PHP if ($tabOpen=='facebook') { ?>
 	<p align="center">
 	   Facebook:<br/>	
 	  <table align="center" border="1">

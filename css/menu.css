@@ -157,6 +157,15 @@
     border-radius: 6px 0 6px 6px;
 }
 
+.nav-justified > li {
+	display: table-cell;
+}
+
+@media (max-width: 767px) {
+	.nav-justified > li > a > span:nth-child(2)  {
+		display: none;
+	}
+}
 /***********************************************************************************/
 
 .resultDBoperation{

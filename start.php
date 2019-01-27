@@ -10,6 +10,7 @@ $userId=getIntParam("userId",-1);
 if ($userId>=0) {
 	$db->savePersonFacebookId($userId,$_SESSION["FacebookId"]);
 }
+
 unsetAktClass();
 
 include_once 'displayCards.inc.php';
@@ -36,7 +37,8 @@ function showRecentChanges($db,$date=null) {
     } else {
         $date=new \DateTime();
     }
-    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48));
+    $filter=getParam("tabOpen","all");
+    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48),$filter);
     foreach ($ids as $id) {
         if ($id["type"] == "person") {
             $person = $db->getPersonByID($id["id"]);
@@ -59,11 +61,20 @@ include("homemenu.inc.php");
 
 ?>
 <div class="container-fluid">
-	<div class="panel panel-default " >
+	<div class="panel panel-default " ><?php
 
-		<div class="panel-heading">
-			<h4><span class="glyphicon glyphicon-user"></span> Új személyek, fényképek, frissitések</h4>
-		</div>
+        //initialise tabs
+        $tabsCaption = array();
+        array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
+        array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "education"));
+        array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
+        array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));
+        array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "picture"));
+        array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "picture"));
+        array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "heart"));
+        array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "thumbs-up"));
+
+        include("tabs.inc.php");?>
 		<div class="panel-body">
 		    <?php $lastDate=showRecentChanges($db);?>
             <span id="more"></span>
@@ -105,7 +116,7 @@ Appl::addJsScript("
     function showmore(date) {
         $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
-    		url:'start.php?action=showmore&date='+$('#date').val(),
+    		url:'start.php?action=showmore&date='+$('#date').val()+'&tabOpen=".getParam('tabOpen','all')."',
 	    	type:'GET',
     		success:function(data){
     		    var idx=data.lastIndexOf('#');

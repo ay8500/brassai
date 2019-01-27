@@ -5,7 +5,8 @@
 // include("tabs.php");
 // if ($tabOpen==0) {......}
 
-$tabOpen=getParam("tabOpen","person");
+
+$tabOpen=getParam("tabOpen",$tabsCaption[0]["id"]);
 if (!isset($tabUrl))
 	$tabUrl=getenv("SCRIPT_NAME");
 ?>
@@ -35,10 +36,13 @@ if (!isset($tabUrl))
 <ul class="nav nav-pills nav-justified" role="tablist">
 <?php 
 	foreach($tabsCaption as $tab ) {
+	    if (!isset($tab["glyphicon"]) || $tab["glyphicon"]=="") {
+	        $tab["glyphicon"]='link';
+        }
 		if ($tab["id"]==$tabOpen)
-	        echo '<li class="active"><a href="#">'.$tab["caption"].'</a></li>';
+	        echo '<li title="'.strip_tags($tab["caption"]).'" class="active"><a href="#"><span class="glyphicon glyphicon-'.$tab["glyphicon"].'"></span> <span>'.$tab["caption"].'</span></a></li>';
 		else
-         	echo '<li><a href="javascript:changeTab('."'".$tabUrl.'?tabOpen='.$tab["id"]."'".');" >'.$tab["caption"].'</a></li>';
+         	echo '<li title="'.strip_tags($tab["caption"]).'" ><a href="javascript:changeTab('."'".$tabUrl.'?tabOpen='.$tab["id"]."'".');" ><span class="glyphicon glyphicon-'.$tab["glyphicon"].'"></span> <span>'.$tab["caption"].'</span></a></li>';
 	}
 ?>       
 </ul>

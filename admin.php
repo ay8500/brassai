@@ -47,9 +47,15 @@ include("homemenu.inc.php");
 <div class="container-fluid">   
 
 <?php if (userIsAdmin() || userIsEditor() ) { 
-	$tabsCaption=Array("Mail&nbsp;küldés","Diákok&nbsp;táblázatai","Administrátorok");
-	include("tabs.inc.php");
-	if ($tabOpen==0) {?>
+    //initialise tabs
+    $tabsCaption = array();
+    array_push($tabsCaption ,array("id" => "mail", "caption" => 'Mail&nbsp;küldés', "glyphicon" => "envelope"));
+    array_push($tabsCaption ,array("id" => "user", "caption" => 'Diákok&nbsp;táblázatai', "glyphicon" => "user"));
+    array_push($tabsCaption ,array("id" => "admin", "caption" => 'Administrátorok', "glyphicon" => "tower"));
+
+    include("tabs.inc.php");
+
+	if ($tabOpen=="mail") {?>
 	<form method="get" name="mail">
 		<textarea id="story" name="T" style="width:95%;height:300px" wrap="off" onchange="fieldChanged();">
 <b>Kedves %%name%%</b><br/>
@@ -86,7 +92,7 @@ Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('class
 	<?PHP } ?>
 	
 	
-	<?php if ($tabOpen==1) { ?>
+	<?php if ($tabOpen=="user") { ?>
 		<p style="text-align:center">
 			<!---a href="getExcelData.php?data=Kontakt" target="excel">Kontaklista letöltése Excel formátumban</a>
 			&nbsp;|&nbsp;-->
@@ -139,7 +145,7 @@ Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('class
 	<?PHP } ?>
 	
 	
-	<?PHP if ($tabOpen==2) {?>
+	<?PHP if ($tabOpen=="admin") {?>
 		<table class="table-sp"  >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td><td  id="o1024">IP</td><td  id="o1024">Datum</td></tr>
 		<?PHP

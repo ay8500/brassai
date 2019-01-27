@@ -33,10 +33,10 @@ if (userIsAdmin()) {
 
 	//initialise tabs
     $tabsCaption = array();
-    array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>'));
-    array_push($tabsCaption ,array("id" => "person", "caption" => 'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>'));
-    array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>'));
-    array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>'));
+    array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>', "glyphicon" => "align-justify"));
+    array_push($tabsCaption ,array("id" => "person", "caption" => 'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>', "glyphicon" => "user"));
+    array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>', "glyphicon" => "picture"));
+    array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>', "glyphicon" => "blackboard"));
     array_push($tabsCaption ,array("id" => "action", "caption" => 'Hozzáférések'));
 
 	include("tabs.inc.php");
