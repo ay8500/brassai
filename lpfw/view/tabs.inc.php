@@ -1,4 +1,5 @@
 <?php
+include_once __DIR__.'/../appl.class.php';
 //*********************** TABS ***********************************************************
 //** Usage
 // $tabsCaption=Array("Tab Caption 1","Tab Caption "");
@@ -9,29 +10,28 @@
 $tabOpen=getParam("tabOpen",$tabsCaption[0]["id"]);
 if (!isset($tabUrl))
 	$tabUrl=getenv("SCRIPT_NAME");
-?>
 
-<script language="JavaScript" type="text/javascript">
-    var changed = false;
+    \maierlabs\lpfw\Appl::addJsScript('
+    var siteValuesChanged = false;
     
     function fieldChanged() {
-    	changed = true;
+    	siteValuesChanged = true;
     }
 
     function fieldSaved() {
-    	changed = false;
+    	siteValuesChanged = false;
     }
     
     function changeTab(link) {
-    	if ( changed ) { 
-    		if (confirm("Adatok még nincsenek kimentve! Ha oldalt változtatsz elveszíted módosításaid. Folytatni akarod?" )) {
+    	if ( siteValuesChanged ) { 
+    		if (confirm("'.\maierlabs\lpfw\Appl::__("If you leave before saving, your changes will be lost. Continue?").'" )) {
     			 	window.location=link;
     		}    	
     	}
     	else window.location=link;
     }
-</script> 
-
+    ');
+?>
 
 <ul class="nav nav-pills nav-justified" role="tablist">
 <?php 

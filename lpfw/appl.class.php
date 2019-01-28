@@ -294,6 +294,10 @@ class Appl {
         }
     }
 
+    /**
+     * echo translated text
+     * @param $text
+     */
     public static function _($text) {
         echo(self::__($text));
     }

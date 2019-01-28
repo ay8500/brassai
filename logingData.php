@@ -18,7 +18,7 @@ if (userIsAdmin()) {
     array_push($tabsCaption ,array("id" => "userdata", "caption" => 'Bejelentkezési adatok', "glyphicon" => "user"));
     array_push($tabsCaption ,array("id" => "facebook", "caption" => 'Facebook', "glyphicon" => "tower"));
 
-    include("tabs.inc.php");
+    include 'lpfw/view/tabs.inc.php';
 	?>
 	
 	<?PHP if ($tabOpen=='ok') { ?>

@@ -47,85 +47,7 @@
 			return null;
 	}
 
-	/**
-	 * Set aktual person class id
-	 * @param int $classId
-	 */
-	function setAktClass($classId) {
-		$_SESSION['aktClass']=$classId;
-	}
-	
-	function unsetAktClass() {
-		unset($_SESSION['aktClass']);
-	}
 
-	/**
-	 * Set aktual person class id
-	 * @param unknown $classId
-	 */
-	function setAktSchool($schoolId) {
-		$_SESSION['aktSchool']=$schoolId;
-	}
-	
-	function unsetAktSchool() {
-		unset($_SESSION['aktSchool']);
-	}
-	
-	
-	/**
-	* The aktual person class id
-	* @return integer or -1
-	*/
-	function getAktClassId() {
-		if (isset($_SESSION['aktClass'])) {
-			return intval($_SESSION['aktClass']);
-		} else {
-			return -1;
-		}
-	}
-	
-	/**
-	 * The aktual person class id
-	 * @return array|NULL
-	 */
-	function getAktClass() {
-		global $db;
-		if (isset($_SESSION['aktClass'])) {
-			return $db->getClassById(intval($_SESSION['aktClass']));
-		}
-		return null;
-	}
-	
-	/**
-	 * The aktual school id
-	 * @return array|NULL
-	 */
-	function getAktSchool() {
-		global $db;
-		return $db->getSchoolById(getAktSchoolId());
-	}
-	
-	/**
-	 * The aktual school staf class id
-	 * @return boolean
-	 */
-	function isAktClassStaf() {
-		global $db;
-		return $db->getStafClassIdBySchoolId(getAktSchoolId())==getAktClassId();
-	}
-	
-	/**
-	 * The aktual person school id
-	 * @return number|-1
-	 */
-	function getAktSchoolId() {
-		if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)
-			return intval($_SESSION['aktSchool']);
-		else 
-			return 1;
-	}
-	
-	
 	/**
 	 * are the logged in user and aktual viewed user the same?
 	 * @return boolean
@@ -133,8 +55,6 @@
 	function isAktUserTheLoggedInUser() {
 		return (getAktUserId()==getLoggedInUserId() );
 	}
-
-
 
     /**
      * is the person a guest
@@ -161,7 +81,10 @@
 
 
      /**
-	 * Check login data
+	 * Check login data an set role username an id in the session array
+     * @param string $user
+     * @param  string $passw
+     * @return boolean
 	 */
 	function checkUserLogin($user,$passw) {
 		global $db;
@@ -183,15 +106,6 @@
 					$usr["user"],
 					$usr["id"]);
 				$ret = true;
-			} else {
-				$usr =$db->getPersonByLastnameFirstname($user);
-				if (null != $usr && $usr["passw"]==$dpassw) {
-					setUserInSession(
-							$usr["role"],
-							$usr["user"],
-							$usr["id"]);
-					$ret = true;
-				}				
 			}
 		}
 		return $ret;
@@ -404,7 +318,7 @@
 	/**
 	 * Create a random password
 	 */
-	function createPassword($length) {
+	function createPassword($length=10) {
 		$chars = "23456789abcdefghjkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ";
 		$i = 0;
 		$password = "";

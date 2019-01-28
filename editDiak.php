@@ -382,7 +382,7 @@ if ($action=="newperson") {
     $tabsCaption = array(array("id" => "person", "caption" => "Személyes&nbsp;adatok", "glyphicon" => "user"));
 }
 if (isset($diak["deceasedYear"])) {
-    array_push($tabsCaption ,array("id" => "candles", "caption" => "Gyertyák", "glyphicon" => ""));
+    array_push($tabsCaption ,array("id" => "candles", "caption" => "Gyertyák", "glyphicon" => "plus"));
 }
 array_push($tabsCaption ,array("id" => "pictures", "caption" => "Képek", "glyphicon" => "picture"));
 array_push($tabsCaption ,array("id" => "family", "caption" => "Családtagok", "glyphicon" => "heart"));
@@ -405,7 +405,7 @@ $tabUrl="editDiak.php";
 ?>
 <?php if (null!=getAktClass()) {?>
     <div class="container-fluid"><?php
-    include('tabs.inc.php'); ?>
+    include 'lpfw/view/tabs.inc.php';?>
 	<div class="well"><?php
 		//Personal Data
 		if ($tabOpen=="person") {

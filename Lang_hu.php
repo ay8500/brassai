@@ -20,5 +20,6 @@ $TXT["Welcome dear "]="Szeretettel üdvözlünk kedves ";
 $TXT["Thank you for your changes, data now processing..."]="Köszönjük a módosítást. Az adatok feldolgozása folyamatban...";
 $TXT["Save data"]="Adatok kimentése";
 
+$TXT["If you leave before saving, your changes will be lost. Continue?"]="Adatok még nincsenek kimentve! Ha oldalt változtatsz elveszíted módosításaid. Folytatni akarod?";
 return $TXT;
 ?>

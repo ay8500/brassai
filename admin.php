@@ -53,7 +53,7 @@ include("homemenu.inc.php");
     array_push($tabsCaption ,array("id" => "user", "caption" => 'Diákok&nbsp;táblázatai', "glyphicon" => "user"));
     array_push($tabsCaption ,array("id" => "admin", "caption" => 'Administrátorok', "glyphicon" => "tower"));
 
-    include("tabs.inc.php");
+    include 'lpfw/view/tabs.inc.php';
 
 	if ($tabOpen=="mail") {?>
 	<form method="get" name="mail">

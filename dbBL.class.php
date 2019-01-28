@@ -163,6 +163,84 @@ $db = new dbBL($dataBase);
 
 
 
+/**
+ * Set aktual person class id
+ * @param int $classId
+ */
+function setAktClass($classId) {
+	$_SESSION['aktClass']=$classId;
+}
+
+function unsetAktClass() {
+	unset($_SESSION['aktClass']);
+}
+
+/**
+ * Set aktual person class id
+ * @param unknown $classId
+ */
+function setAktSchool($schoolId) {
+	$_SESSION['aktSchool']=$schoolId;
+}
+
+function unsetAktSchool() {
+	unset($_SESSION['aktSchool']);
+}
+
+
+/**
+ * The aktual person class id
+ * @return integer or -1
+ */
+function getAktClassId() {
+	if (isset($_SESSION['aktClass'])) {
+		return intval($_SESSION['aktClass']);
+	} else {
+		return -1;
+	}
+}
+
+/**
+ * The aktual person class id
+ * @return array|NULL
+ */
+function getAktClass() {
+	global $db;
+	if (isset($_SESSION['aktClass'])) {
+		return $db->getClassById(intval($_SESSION['aktClass']));
+	}
+	return null;
+}
+
+/**
+ * The aktual school id
+ * @return array|NULL
+ */
+function getAktSchool() {
+	global $db;
+	return $db->getSchoolById(getAktSchoolId());
+}
+
+/**
+ * The aktual school staf class id
+ * @return boolean
+ */
+function isAktClassStaf() {
+	global $db;
+	return $db->getStafClassIdBySchoolId(getAktSchoolId())==getAktClassId();
+}
+
+/**
+ * The aktual person school id
+ * @return number|-1
+ */
+function getAktSchoolId() {
+	if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)
+		return intval($_SESSION['aktSchool']);
+	else
+		return 1;
+}
+
 
 
 
@@ -209,11 +287,6 @@ function getAktSchoolName() {
 	} else
 		return "";
 }
-
-
-
-
-
 
 
 function getPersonPicture($person) {
@@ -588,27 +661,5 @@ function getPersonLink($lastname,$firstname) {
    return getNormalisedChars($lastname).'_'.getNormalisedChars($firstname);
 }
 
-/**
- * Translate special chars in normal chars eg. á->a
- * @param string $s
- * @return string
- */
-function getNormalisedChars($s) {
-  $trans = array (
-  	" "=>"_","-"=>"_",
-  	"â"=>"a", "ä"=>"a","â"=>"a", "á"=>"a", "à"=>"a",
-  	"é"=>"e", "è"=>"e", 
-  	"í "=>"i", "ì"=>"i", "Í"=>"I","Ì"=>"I",
-  	"ó"=>"o", "ò"=>"o", "ö"=>"o","ő"=>"o", "õ"=>"o",
-  	"ú"=>"u", "ù"=>"u", "ü"=>"u","ű"=>"u",
-  	"Á"=>"A", "À"=>"A", "Ä"=>"A","Å"=>"A",
-  	"É"=>"E", "È"=>"E",
-	"Ó"=>"O", "Ò"=>"O", "Ö"=>"O","Ő"=>"O",
-  	"ș"=>"s","Ș"=>"S","Ț"=>"T","ț"=>"t",
-	"Ú"=>"U", "Ù"=>"U", "Ü"=>"U","Ű"=>"U"
-  );
-  //return strtr($s, " âäåáàéèíîöóòõőúùüűÅÁÄÉÖŐÜŰ", "-aaaaaeeiiooooouuuuAAAEOOUU");
-  return strtr($s, $trans);
-}
 
 ?>

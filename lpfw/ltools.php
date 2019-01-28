@@ -109,3 +109,26 @@ function createLink($text,$short=false) {
     }
     return $text;
 }
+
+/**
+ * Translate special chars in normal chars eg. á->a
+ * @param string $s
+ * @return string
+ */
+function getNormalisedChars($s) {
+    $trans = array (
+        " "=>"_","-"=>"_",
+        "â"=>"a", "ä"=>"a","â"=>"a", "á"=>"a", "à"=>"a",
+        "é"=>"e", "è"=>"e",
+        "í "=>"i", "ì"=>"i", "Í"=>"I","Ì"=>"I",
+        "ó"=>"o", "ò"=>"o", "ö"=>"o","ő"=>"o", "õ"=>"o",
+        "ú"=>"u", "ù"=>"u", "ü"=>"u","ű"=>"u",
+        "Á"=>"A", "À"=>"A", "Ä"=>"A","Å"=>"A",
+        "É"=>"E", "È"=>"E",
+        "Ó"=>"O", "Ò"=>"O", "Ö"=>"O","Ő"=>"O",
+        "ș"=>"s","Ș"=>"S","Ț"=>"T","ț"=>"t",
+        "Ú"=>"U", "Ù"=>"U", "Ü"=>"U","Ű"=>"U"
+    );
+    //return strtr($s, " âäåáàéèíîöóòõőúùüűÅÁÄÉÖŐÜŰ", "-aaaaaeeiiooooouuuuAAAEOOUU");
+    return strtr($s, $trans);
+}

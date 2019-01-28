@@ -70,11 +70,11 @@ include("homemenu.inc.php");
         array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
         array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));
         array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "picture"));
-        array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "picture"));
-        array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "heart"));
-        array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "thumbs-up"));
+        array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "screenshot"));
+        array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "thumbs-up"));
+        array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "plus"));
 
-        include("tabs.inc.php");?>
+    	include 'lpfw/view/tabs.inc.php';?>
 		<div class="panel-body">
 		    <?php $lastDate=showRecentChanges($db);?>
             <span id="more"></span>

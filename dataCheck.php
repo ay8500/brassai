@@ -39,7 +39,7 @@ if (userIsAdmin()) {
     array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>', "glyphicon" => "blackboard"));
     array_push($tabsCaption ,array("id" => "action", "caption" => 'Hozzáférések'));
 
-	include("tabs.inc.php");
+	include 'lpfw/view/tabs.inc.php';
 	if ($tabOpen=="class") {
 		generateCheckHtmlTable($db,"Osztályok", "Osztály","Class","text",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
 	}
