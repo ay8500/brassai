@@ -263,7 +263,8 @@ function showTitleField($value,$fieldName,$readOnly=false) {
             array("value"=>"Dr.","text"=>"Dr."),
             array("value"=>"Dr.Med.","text"=>"Dr.Med."),
             array("value"=>"Prof.","text"=>"Prof."),
-            array("value"=>"Dr.Prof.","text"=>"Dr.Prof.")
+            array("value"=>"Dr.Prof.","text"=>"Dr.Prof."),
+            array("value"=>"Dr.Dr.","text"=>"Dr.Dr.")
     );
     showOptionsField($value,$fieldName,$options,$readOnly);
 }
