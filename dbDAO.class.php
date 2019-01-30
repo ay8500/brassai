@@ -111,6 +111,14 @@ class dbDAO {
 	}
 
 
+	public function getTeachersIdByClassId($id) {
+        $class=$this->getClassById($id);
+        $teachers = explode(',',$class["teachers"]);
+        if (isset($class["headTeacherID"]))
+            $teachers[]=$class["headTeacherID"];
+        return $teachers;
+    }
+
     /**
      * Select the classes where the teacher was active
      * @param $id
@@ -455,7 +463,7 @@ class dbDAO {
 	 * @param boolean all default false all entrys
      * @return array
 	 */
-	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false) {
+	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false, $notDied=false) {
 		if ($classId>=0) {
 			$where ="classID=".$classId;
 			if (!$all) {
@@ -467,6 +475,9 @@ class dbDAO {
 					$where.=" and (facebookid is null or length(facebookid)<5) ";
 				}
 			}
+			if ($notDied==true) {
+                $where.=" and deceasedYear is null";
+            }
 			$ret = $this->getElementList("person",false,$where);
 			usort($ret, "compareAlphabetical");
 			return $ret;

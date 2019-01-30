@@ -21,28 +21,28 @@
 
 	function directLogin($db,$key){
 	    $keyStr = encrypt_decrypt("decrypt", $key);
-	    \maierlabs\lpfw\Logger::_("Decripted text:".$keyStr);
 	    if (substr($keyStr, 0,2)=="M-") {
 	        $action="M";
 	        $keyStr=substr($keyStr,2);
 	    }
 	    $person=$db->getPersonByID($keyStr);
 	    if (null!=$person) {
-	        setAktUserId($keyStr);
+            setAktUserId($keyStr);
 	        setUserInSession($person["role"], $person["user"],$keyStr);
+            \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
 	        $class=$db->getClassById($person["classID"]);
 	        Appl::setMember("aktClass",$class);
 	        setAktClass($class["id"]);
 	        setAktSchool($class["schoolID"]);
 	        if (!userIsAdmin() && !userIsSuperuser()) {
-	            saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
                 \maierlabs\lpfw\Appl::sendHtmlMail(null,
 	                "<h2>Login</h2>".
 	                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
 	        }
 	        return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
 	    } else {
-	        return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
+            \maierlabs\lpfw\Logger::_("LoginDirect\t".$key,\maierlabs\lpfw\LoggerLevel::error);
+            return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
 	    }
 	}
 	

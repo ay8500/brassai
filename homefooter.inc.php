@@ -3,10 +3,10 @@
 	      <ul class="nav navbar-nav">
 			<?PHP if (userIsAdmin() || (userIsEditor() )) { ?>
 				<li><a href="admin.php"  >Adminsztráció</a></li>
+                <li><a href="logingData.php"  >Loging</a></li>
 			<?PHP }	?>
 			<?PHP if (userIsAdmin() ) { ?>
 				<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
-				<li><a href="logingData.php"  >Loging</a></li>
 				<li><a href="dataCheck.php"  >Vizsga</a></li>
 				<li><a href="database.php"  >Adatbank</a></li>
 			<?PHP }	?>

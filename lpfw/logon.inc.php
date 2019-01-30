@@ -16,20 +16,22 @@
 			logoutUser();
 			http_response_code(400);
 			$logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("User name and password are empty.");
+			\maierlabs\lpfw\Logger::_("Login\t",\maierlabs\lpfw\LoggerLevel::error);
 		} else {
 			if (!$db->checkRequesterIP(changeType::login)) {
 				logoutUser();
 				http_response_code(400);
                 $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("To many login errors, please try again later.");
+                \maierlabs\lpfw\Logger::_("LoginToManny\t",\maierlabs\lpfw\LoggerLevel::error);
 			} else {
 				if (!checkUserLogin($paramName,$paramPassw)) {
 					logoutUser();
 					http_response_code(400);
                     $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("Wrong user name or password.");
 					$db->saveRequest(changeType::login);
-					saveLogInInfo("Login","",$paramName,strlen($paramPassw),"false");
+                    \maierlabs\lpfw\Logger::_("Login\t".$paramName."\t".strlen($paramPassw),\maierlabs\lpfw\LoggerLevel::error);
 				} else {
-					saveLogInInfo("Login",getLoggedInUserId(),$paramName,strlen($paramPassw),"true");
+                    \maierlabs\lpfw\Logger::_("LoginOk\t".$paramName."\t".strlen($paramPassw));
 					$logOnMessage = "";
 				}
 			}
@@ -58,10 +60,11 @@
 	//Facebook login
 	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
 		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
+            \maierlabs\lpfw\Logger::_("Facebook\t",\maierlabs\lpfw\LoggerLevel::error);
 			$logOnMessage=Appl::__("Login failed!");
 		}
 		if (! userIsAdmin()) {
-			saveLogInInfo("Facebook",getLoggedInUserId(),$_SESSION['FacebookId'],"","true");
+            \maierlabs\lpfw\Logger::_("Facebook\t".getLoggedInUserId()."\t".$_SESSION['FacebookId']);
             \maierlabs\lpfw\Appl::sendHtmlMail(null,
 				"<h2>Facebooklogin</h2>".
 				"FacebookId:".$_SESSION['FacebookId']."<br/>".

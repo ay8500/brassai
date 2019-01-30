@@ -19,7 +19,7 @@ $fid=getParam("fid","");
 $personList = array();
 
 if ($class!=null) {
-	$persons=$db->getPersonListByClassId(getRealId($class),$guest,strlen($fid)>5);
+	$persons=$db->getPersonListByClassId(getRealId($class),$guest,strlen($fid)>5,false,true);
 	foreach ($persons as $p) {
 		$n=array();
 		$n["id"]=$p["id"];

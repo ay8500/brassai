@@ -242,8 +242,6 @@ function getAktSchoolId() {
 }
 
 
-
-
 /**
  * The name of the aktual school class
  * @param boolean $short short form without evening class text
@@ -291,7 +289,7 @@ function getAktSchoolName() {
 
 function getPersonPicture($person) {
 	if (null==$person || !isset($person["picture"]) || $person["picture"]=="") {
-		if ($person["gender"]=="f")
+		if (isset($person["gender"]) && $person["gender"]=="f")
 			return "images/woman.png";
 		else
             return "images/man.png";

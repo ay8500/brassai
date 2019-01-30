@@ -115,19 +115,49 @@ class Logger
 
     public static function logToFile($logText, $level)
     {
-        $file = './log';
         $text = date('Y-m-d H:i:s') . "\t";
         $text .= $level . "\t";
         if (isset($_SERVER["REMOTE_ADDR"]) ) { //Need to be tested for PHPUnit
             $text .= $_SERVER["REMOTE_ADDR"] . "\t";
-            $text .= $_SERVER["SCRIPT_NAME"] . "\t";
             $text .= $_SERVER["REQUEST_URI"] . "\t";
         }
-        if (isset($_SESSION['USER']))
-            $text .= $_SESSION['USER'] . "\t";
-        $text .= $logText . "\t";
+        if (isset($_SESSION['uName']))
+            $text .= $_SESSION['uName'] ;
+        $text .= "\t".$logText . "\t";
         $text .= "\r\n";
-        file_put_contents($file, $text, FILE_APPEND | LOCK_UN);
+        file_put_contents(self::getLogfile(), $text, FILE_APPEND | LOCK_UN);
+    }
+
+    public static function readLogData($logText,$year, $length=100) {
+        $logData = array();
+        $logDataField = array("Date","Level","IP","URI","User","Text");
+        $file=fopen(self::getLogfile(),"r");
+        while (!feof($file)) {
+            $b = explode("\t",fgets($file),6);
+            if (sizeof($b)==6) {
+                $c=explode("\t",$b[5],2);
+                if (strpos($b[0],$year)!==false && strpos($logText,$c[0])!==false) {
+                    $logEntry = array();
+                    foreach($logDataField as $idx => $field) {
+                        if (isset($b[$idx]))
+                            $logEntry[$logDataField[$idx]] = $b[$idx];
+                        else
+                            $logEntry[$logDataField[$idx]] ="";
+                    }
+                    array_unshift($logData,$logEntry);
+                }
+            }
+        }
+        return array_slice($logData,0,$length);
+    }
+
+    private static function getLogfile() {
+        if (file_exists("./log"))
+            return "./log";
+        elseif (file_exists("../log"))
+                return "../log";
+        else
+            return "../../log";
     }
 }
 

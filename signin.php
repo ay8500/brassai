@@ -223,12 +223,13 @@ include 'homemenu.inc.php';
 		$.ajax({
 			  url: url,
 			  success:function(data) {
-				personList=data;
-				$("#page2").show("slow");
-				$("#personlist").find("option:gt(1)").remove();
-				data.forEach(function(d,i) {
-					$("#personlist").append($("<option />").val(i).text(d.lastname+" "+d.firstname));
-				}
+                    personList=data;
+                    $("#page2").show("slow");
+                    $("#personlist").find("option:gt(1)").remove();
+                    data.forEach(function(d,i) {
+                        $("#personlist").append($("<option />").val(i).text(d.lastname+" "+d.firstname));
+                    });
+			  }
 			});
 	}
 

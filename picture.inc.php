@@ -17,7 +17,7 @@ if (getParam("action","")=="deletePicture" ) {
 		    $db->updateRecentChangesList();
             Appl::setMessage("Kép sikeresen törölve","success");
 			$db->saveRequest(changeType::deletepicture);
-			saveLogInInfo("PictureDelete",getAktUserId(),"",getParam("id", ""),true);
+			\maierlabs\lpfw\Logger::_("PictureDelete\t".getLoggedInUserId()."\t".getIntParam("did"));
 		} else {
             Appl::setMessage("Kép törlése sikertelen!","warning");
 		}
@@ -101,7 +101,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 								$db->saveRequest(changeType::classupload);
 								resizeImage($uploadfile,1800,1800);
                                 Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve.","success");
-								saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);
+                                \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\t".$idx);
 							} else {
                                 Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
 							}
@@ -110,16 +110,17 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 						}
 					} else {
                         Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
+                        \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: moving picture",\maierlabs\lpfw\LoggerLevel::error);
 					}
 				}
 				else {
                     Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 3 MByteot.","warning");
-					saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"to big",false);
+                    \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: too big",\maierlabs\lpfw\LoggerLevel::error);
 				}
 			}
 			else {
                 Appl::setMessage($fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.","warning");
-				saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"only jpg",false);
+                \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: only jpg",\maierlabs\lpfw\LoggerLevel::error);
 			}
 		}
 	} else {

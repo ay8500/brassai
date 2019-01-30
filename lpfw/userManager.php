@@ -123,8 +123,9 @@
 				$usr["user"],
 				$usr["id"]);
 			if (!userIsAdmin() && userIsLoggedOn())
-				saveLogInInfo("Facebook",$usr['id'],$usr['user'],$facebookId,"true");
-			return true;
+                \maierlabs\lpfw\Logger::_("Facebook\t".getLoggedInUserId()."\t".$facebookId);
+
+            return true;
 		}		
 		return false;
 	}
@@ -304,8 +305,9 @@
 						$db->savePersonField($usr["id"],"passw",encrypt_decrypt("encrypt",$newPassw));
 						$db->saveRequest(changeType::newPassword);
 						$ret = $usr["id"];
-                        saveLogInInfo("NewPassword",$usr["user"],$email,$newPassw,$ret);
-                        return $ret;
+                        \maierlabs\lpfw\Logger::_("NewPassword\t".getLoggedInUserId());
+
+                    return $ret;
 				}
 				return -1; //email not found
 			}
@@ -330,50 +332,6 @@
 		return $password;
 	}
 
-//*********************** Loging *************************************************	
-
-/**
- * Save login information for statistics and sequrity reasons
- * @param string $action SaveData,SavePassw,SaveGeo, NewPassword
- * @param string $uid
- * @param string $cuser
- * @param string $cpassw
- * @param string $result
- */
-	function saveLogInInfo($action,$uid,$cuser,$cpassw,$result) {
-		$file=fopen("login.log","a");
-		if ($result) $res="true"; else $res="false";
-		fwrite($file,$_SERVER["REMOTE_ADDR"]."\t".date('d.m.Y H:i')."\t".getAktClassName()."\t".$res."\t".$uid."\t".$action."\t".$cuser."\t".$cpassw."\r\n");
-		
-	}
-	
-
-	/**
-	 * read login log  
-	 */
-	function readLogingData($action,$year) {
-		$logData = array();
-		$logDataField = array("IP","Date","Scool","Result","ID","Action","CUser","Passw");
-		$file=fopen("login.log","r");
-		$i=0;
-		$type= explode(",",$action);
-		while (!feof($file)) {
-			$b = explode("\t",fgets($file));
-			if (sizeof($b)>=7) {
-				if (strpos($b[1],$year)>1 && ($type[0]==$b[5] || (isset($type[1]) && $type[1]==$b[5]) || (isset($type[2]) && $type[2]==$b[5]))) {
-					foreach($logDataField as $idx => $field) {
-						if (isset($b[$idx])) 
-							$logData[$i][$logDataField[$idx]] = $b[$idx]; 
-						else 
-							$logData[$i][$logDataField[$idx]] ="";
-					}
-				$i++;
-				}
-			}
-		}
-		return $logData;
-	}
-	
 	/**
 	 * Krypt or encrypt a string
 	 * @param string $action "encrypt" or "decrypt"

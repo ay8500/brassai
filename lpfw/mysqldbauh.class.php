@@ -24,6 +24,7 @@ include_once "mysql.class.php";
 class MySqlDbAUH extends MySql
 {
     /**
+     * insert in update or insert data the date in field changeDate and the remote ip in field changeIP
      * @param array $data
      * @return array
      */

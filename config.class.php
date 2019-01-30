@@ -6,6 +6,7 @@ use maierlabs\lpfw\Logger as Logger;
 
 //set logger output to file
 Logger::setLoggerType(  \maierlabs\lpfw\LoggerType::file);
+Logger::setLoggerLevel( \maierlabs\lpfw\LoggerLevel::info.\maierlabs\lpfw\LoggerLevel::error.\maierlabs\lpfw\LoggerLevel::debug);
 
 class Config {
 
