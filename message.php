@@ -29,7 +29,7 @@ $paramText=getParam("T", "");
 if (isActionParam("postMessage")) {
 	if (userIsLoggedOn()) {
 		if (checkMessageContent($paramText)) {
-			if (writeMessage($paramText, getParam("privacy"), getLoggedInUserName())>=0) {
+			if (writeMessage($paramText, getParam("privacy"), getLoggedInUserName($userDB))>=0) {
 				Appl::$resultDbOperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
 				$paramName="";
 				$paramText="";

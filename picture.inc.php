@@ -381,7 +381,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
             if ( $albumParam=="_mark_") {
                 ?>
                 <div style="position: relative; bottom:95px;right:-295px;z-index: 10;height: 0px;">
-                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:60px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=90&padding=50"/>
+                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:60px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=90&padding=90"/>
                 </div><?php
             }
             ?></div><?php
@@ -397,7 +397,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     <div id="list-table">
 
         <?php if ($view=="table") {?>
-            <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
+            <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" />
             <div class="pdiv">
                 <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
                 <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
@@ -409,7 +409,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
         <?php } else {?>
             <div style="vertical-align: top; margin:10px" >
-                <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
+                <img class="img-responsive" src="imageConvert.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
             </div>
         <?php } ?>
 

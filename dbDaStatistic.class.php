@@ -76,7 +76,7 @@ class dbDaStatistic
         $ret = $this->selectDataForActivityCalendar($ret,$sql);
         $sql ="select changeDate, count(*) as count from person where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
         $ret = $this->selectDataForActivityCalendar($ret,$sql);
-        $sql ="select changeDate, count(*) as count from image where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
+        $sql ="select changeDate, count(*) as count from picture where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
         $ret = $this->selectDataForActivityCalendar($ret,$sql);
         $sql ="select changeDate, count(*) as count from opinion where changeDate>'".$dateTime->format("Y-m-d H:i:s")."' group by date(changeDate) order by changeDate";
         $ret = $this->selectDataForActivityCalendar($ret,$sql);

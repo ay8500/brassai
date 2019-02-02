@@ -5,6 +5,7 @@
     include_once 'lpfw/logon.inc.php';
 	include_once 'config.class.php';
     include_once 'dbBL.class.php';
+    include_once 'dbDaUser.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
 		
@@ -16,21 +17,26 @@
 
 	//Login if crypted loginkey present and correct
 	if (isset($_GET['key'])) {
-	    Appl::setMessage(directLogin($db,$_GET['key']),"");
+	    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
 	}
 
+/**
+ * @param dbDaUser $db
+ * @param $key
+ * @return string
+ */
 	function directLogin($db,$key){
 	    $keyStr = encrypt_decrypt("decrypt", $key);
 	    if (substr($keyStr, 0,2)=="M-") {
 	        $action="M";
 	        $keyStr=substr($keyStr,2);
 	    }
-	    $person=$db->getPersonByID($keyStr);
+	    $person=$db->getUserByID($keyStr);
 	    if (null!=$person) {
             setAktUserId($keyStr);
-	        setUserInSession($person["role"], $person["user"],$keyStr);
+	        setUserInSession($db,$person["role"], $person["user"],$keyStr);
             \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
-	        $class=$db->getClassById($person["classID"]);
+	        $class=$db->dbDAO->getClassById($person["classID"]);
 	        Appl::setMember("aktClass",$class);
 	        setAktClass($class["id"]);
 	        setAktSchool($class["schoolID"]);

@@ -1,5 +1,6 @@
-<?php	
-	
+<?php
+    include_once 'iDbDaUser.class.php';
+
 	/**
 	 * get the user id form logged in user
 	 * @return integer or NULL if no user logged on
@@ -13,15 +14,15 @@
 
 	/**
 	 * get logged in name including first and lastname
+     * @param \maierlabs\lpfw\iDbDaUser $db;
 	 * @return string
 	 */
-	function getLoggedInUserName() {
+	function getLoggedInUserName($db) {
         if (null==getLoggedInUserId())
             return "";
-		global $db;
-		$loggedInUser=$db->getPersonByID(getLoggedInUserId());
+		$loggedInUser=$db->getUserById(getLoggedInUserId());
 		if ($loggedInUser!=null) {
-			return getPersonName($loggedInUser);
+			return $db->getPersonName($loggedInUser);
 		} 
 		else
 			return "";
@@ -82,46 +83,36 @@
 
      /**
 	 * Check login data an set role username an id in the session array
+     * @param  \maierlabs\lpfw\iDbDaUser $db
      * @param string $user
      * @param  string $passw
      * @return boolean
 	 */
-	function checkUserLogin($user,$passw) {
-		global $db;
-		$ret = false;
-		$usr = $db->getPersonByUser($user);
+	function checkUserLogin($db,$user,$passw) {
+		$usr = $db->getUserByUsename($user);
 		$dpassw= encrypt_decrypt("encrypt",$passw);
 		if (null != $usr && $usr["passw"]==$dpassw) {
-			setUserInSession(
-				$usr["role"],
-				$usr["user"],
-				$usr["id"]);
-			$ret = true;
+			setUserInSession($db, $usr["role"], $usr["user"],	$usr["id"]);
+			return true;
 		}
 		else {
-			$usr =$db->getPersonByEmail($user);
+			$usr =$db->getUserByEmail($user);
 			if (null != $usr && $usr["passw"]==$dpassw) {
-				setUserInSession(
-					$usr["role"],
-					$usr["user"],
-					$usr["id"]);
-				$ret = true;
+				setUserInSession($db, $usr["role"], $usr["user"], $usr["id"]);
+				return true;
 			}
 		}
-		return $ret;
+		return false;
 	}
 
 	/**
 	 * Check facebook login data in each client
+     * @param  \maierlabs\lpfw\iDbDaUser $db
 	 */
-	function checkFacebookUserLogin($facebookId) {
-		global $db;
-		$usr =$db->getPersonByFacobookId($facebookId);
+	function checkFacebookUserLogin($db,$facebookId) {
+		$usr =$db->getUserByFacebookId($facebookId);
 		if (null != $usr) {
-			setUserInSession(
-				$usr["role"],
-				$usr["user"],
-				$usr["id"]);
+			setUserInSession($db, $usr["role"], $usr["user"], $usr["id"]);
 			if (!userIsAdmin() && userIsLoggedOn())
                 \maierlabs\lpfw\Logger::_("Facebook\t".getLoggedInUserId()."\t".$facebookId);
 
@@ -132,17 +123,17 @@
 	
 	/**
 	 * save user informations in the session
+     * @param  \maierlabs\lpfw\iDbDaUser $db
 	 * @param User role $admin
 	 * @param User name $user
 	 * @param User id $uid
 	 */
-	function setUserInSession($role, $user, $uid )
+	function setUserInSession($db,$role, $user, $uid )
 	{
-		global $db;
 		$_SESSION['uRole']=$role;
 		$_SESSION['uName']=$user;
 		$_SESSION['uId']=$uid;
-		$db->savePersonLastLogin($_SESSION['uId']);
+		$db->setUserLastLogin($_SESSION['uId']);
 	}
 	
 	/**
@@ -190,47 +181,6 @@
 	
 	
 	/**
-	 *User is logged in and have the role of  editor
-	 */
-	function userIsEditor() {
-	    if (null==getLoggedInUserId())              //No logged in user
-	        return false;
-	    if (getLoggedInUserId()==getAktUserId())    //Logged in user views his entry
-	        return true;
-		global $db;
-		//User is editor in his own class
-		if (isset($_SESSION['uRole']) && getAktClassId()==$db->getLoggedInUserClassId()) {
-			return strstr($_SESSION['uRole'],"editor")!="";
-		} else { 
-			$p=$db->getPersonByID(getLoggedInUserId());
-			//User is teacher and editor then return editor right for all classes where the teacher is head teacher
-			if ($p["isTeacher"]==1) { 
-				if (strstr($_SESSION['uRole'],"editor")!="") {
-					if (isset($p["children"])) {
-						$c=explode(",", $p["children"]);
-						$ret = false;
-						$class = getAktClass();
-						if (null!=$class) {
-							foreach ($c as $cc) {
-								if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"]) 
-									$ret=true;
-							}
-						}
-						return $ret;
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
-
-	
-	/**
 	 *User is logged in and have the role as viewer
 	 */
 	function userIsViewer() {
@@ -258,10 +208,10 @@
 
 	/**
 	 * check if the username is unique in the database
+     * @param  \maierlabs\lpfw\iDbDaUser $db
 	 */
-	function checkUserNameExists($id,$userName) {
-		global $db;
-		$usr = $db->getPersonByUser($userName);
+	function checkUserNameExists($db,$id,$userName) {
+		$usr = $db->getUserByUsename($userName);
 		if (null != $usr) {
 			if ( $usr["id"]==$id) 
 				return false;
@@ -275,10 +225,10 @@
 	/**
 	 * Check if a email address allready exists in the db
 	 * the id is the current user id, this will be ignored if not null
+     * @param  \maierlabs\lpfw\iDbDaUser $db
 	 */
-	function checkUserEmailExists($id,$email) {
-		global $db;
-		$usr = $db->getPersonByEmail($email);
+	function checkUserEmailExists($db,$id,$email) {
+		$usr = $db->getUserByEmail($email);
 		if (null!=$usr) {
 			if ( $usr["id"]==$id )
 				return false;
@@ -290,23 +240,23 @@
 
 	/**
 	 * Set user password
+     * @param  \maierlabs\lpfw\iDbDaUser $db
+     *
 	 * return value 
 	 * >0 -> Password set the result value is the person id 
 	 * -1 -> Email not found, 
 	 * -2 -> Passw to short, 
 	 * -3 -> Sequrity violation 
 	 */
-	function resetUserPasswort($email, $newPassw) {
-	    global $db;
+	function resetUserPasswort($db,$email, $newPassw) {
 		if (strlen($newPassw)>4) {
-			if ($db->checkRequesterIP(changeType::newPassword)) {
-				$usr = $db->getPersonByEmail($email);
-				if (null != $usr) {
-						$db->savePersonField($usr["id"],"passw",encrypt_decrypt("encrypt",$newPassw));
-						$db->saveRequest(changeType::newPassword);
+			if ($db->checkRequesterIp(changeType::newPassword)) {
+				$usr = $db->getUserByEmail($email);
+                if (null != $usr) {
+						$db->setUserPassword($usr["id"],encrypt_decrypt("encrypt",$newPassw));
+						$db->setRequest(changeType::newPassword);
 						$ret = $usr["id"];
                         \maierlabs\lpfw\Logger::_("NewPassword\t".getLoggedInUserId());
-
                     return $ret;
 				}
 				return -1; //email not found

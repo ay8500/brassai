@@ -24,7 +24,7 @@
                 $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("To many login errors, please try again later.");
                 \maierlabs\lpfw\Logger::_("LoginToManny\t",\maierlabs\lpfw\LoggerLevel::error);
 			} else {
-				if (!checkUserLogin($paramName,$paramPassw)) {
+				if (!checkUserLogin($userDB,$paramName,$paramPassw)) {
 					logoutUser();
 					http_response_code(400);
                     $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("Wrong user name or password.");
@@ -59,7 +59,7 @@
 	
 	//Facebook login
 	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
-		if (!checkFacebookUserLogin($_SESSION['FacebookId'])) {
+		if (!checkFacebookUserLogin($userDB,$_SESSION['FacebookId'])) {
             \maierlabs\lpfw\Logger::_("Facebook\t",\maierlabs\lpfw\LoggerLevel::error);
 			$logOnMessage=Appl::__("Login failed!");
 		}

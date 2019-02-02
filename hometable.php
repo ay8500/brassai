@@ -49,6 +49,9 @@ if (isActionParam("delete_diak") &&  userIsLoggedOn() && ((userIsEditor() && get
 		Appl::setMessage("Véndiák törölése sikertelen! ","warning");
 	}
 }
+if ($class==null) {
+    $class=$db->getStafClassBySchoolId(getAktSchoolId());
+}
 $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 
 // Toolbar for new schoolmate or guests

@@ -9,6 +9,7 @@ include_once 'lpfw/ltools.php';
 include_once 'lpfw/mysqldbauh.class.php';
 include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
+include_once 'dbDaUser.class.php';
 
 
 class dbBL extends dbDAO
@@ -158,9 +159,15 @@ class dbBL extends dbDAO
 $dbPropertys = \Config::getDatabasePropertys();
 $dataBase = new \maierlabs\lpfw\MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password);
 
+/**
+ * @var dbBL;
+ */
 $db = new dbBL($dataBase);
 
-
+/**
+ * $var dbDaUser;
+ */
+$userDB=new dbDaUser($db);
 
 
 /**
@@ -284,6 +291,46 @@ function getAktSchoolName() {
 			return $school["name"];
 	} else
 		return "";
+}
+
+/**
+ *User is logged in and have the role of  editor
+ */
+function userIsEditor() {
+	if (null==getLoggedInUserId())              //No logged in user
+		return false;
+	if (getLoggedInUserId()==getAktUserId())    //Logged in user views his entry
+		return true;
+	global $db;
+	//User is editor in his own class
+	if (isset($_SESSION['uRole']) && getAktClassId()==$db->getLoggedInUserClassId()) {
+		return strstr($_SESSION['uRole'],"editor")!="";
+	} else {
+		$p=$db->getPersonByID(getLoggedInUserId());
+		//User is teacher and editor then return editor right for all classes where the teacher is head teacher
+		if ($p["isTeacher"]==1) {
+			if (strstr($_SESSION['uRole'],"editor")!="") {
+				if (isset($p["children"])) {
+					$c=explode(",", $p["children"]);
+					$ret = false;
+					$class = getAktClass();
+					if (null!=$class) {
+						foreach ($c as $cc) {
+							if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"])
+								$ret=true;
+						}
+					}
+					return $ret;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }
 
 
@@ -586,17 +633,17 @@ function showField($diak,$field) {
 
 /**
  * Concatenate lastname firstname and birtname
- * @param array $person
+ * @param array $user
  * @return string
  */
-function getPersonName($person) {
-	if ($person!=null) {
-        $ret ="";
-		if (isset($person["title"]))
-			$ret = $person["title"].' ';
-		$ret .= $person["lastname"]." ".$person["firstname"];
-		if (isset($person["birthname"]) && trim($person["birthname"])!="")
-			$ret .= " (".trim($person["birthname"]).")";
+function getPersonName($user) {
+	if ($user!=null) {
+		$ret ="";
+		if (isset($user["title"]))
+			$ret = $user["title"].' ';
+		$ret .= $user["lastname"]." ".$user["firstname"];
+		if (isset($user["birthname"]) && trim($user["birthname"])!="")
+			$ret .= " (".trim($user["birthname"]).")";
 		return $ret;
 	}
 	return '';

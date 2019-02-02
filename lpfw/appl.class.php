@@ -35,8 +35,6 @@ class Appl {
      * @return void
      */
     public static function init(){
-        //include standard javascript
-        self::setApplJScript();
         // Set languge include file
         if (!isset($_SESSION['LANG'])) $_SESSION['LANG'] = \Config::$SupportedLang[0];
         // Change language
@@ -50,6 +48,9 @@ class Appl {
             self::$textResource=include $LangFile;
         else
             self::$textResource=include __DIR__."/../Lang_" . self::$SupportedLang[0] . ".php";
+        //include standard javascript
+        self::setApplJScript();
+
     }
 
 

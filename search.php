@@ -12,7 +12,7 @@ $name="";
 $start=getIntParam("start",0);
 $link="search.php?type=".getParam("type")."&start=";
 Appl::setSiteSubTitle("Találatok a véndiákok adatbankjában");
-$fields = "person.*,class.text as classText";
+$fields = "person.*,concat(graduationYear,' ',name) as classText";
 $join ="class on person.classID=class.id ";
 $sort="lastName, firstName";
 
@@ -23,12 +23,12 @@ if (null==getParam("type")) {
 	$pictureList=$db->searchForPicture($name);
 } elseif ('jmlaureat'==getParam("type")) {
     Appl::setSiteSubTitle("Juhász Máthé díjasok");
-    $personList=$db->getPersonList("role like '%jmlaureat%'",null,null,"class.text desc",$fields,$join);
+    $personList=$db->getPersonList("role like '%jmlaureat%'",null,null,"classText desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%jmlaureat%'");
     $caption ='Az iskolánk legjelentősebb díját a Juhász Máté István Emlékdíjat az iskola egykori diákja, a műegyetem hallgatójaként rákban elhunyt kiváló tanuló emlékére alapította családja és ösztályfőnöke, Gáll Dénes.';
 } elseif ('unknown'==getParam("type")) {
     Appl::setSiteSubTitle("Iskolatársaink akikről sajnos nem tudunk semmit.");
-    $personList=$db->getPersonList("role like '%unknown%'",null,null,"class.text desc",$fields,$join);
+    $personList=$db->getPersonList("role like '%unknown%'",null,null,"classText desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%unknown%'");
     $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bármilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
 } else {

@@ -26,7 +26,7 @@
 			<input type="hidden" value="<?php echo $tabOpen; ?>" name="tabOpen" />
 		</form>
 
-        <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-wrench"></span> Direkt link az adataimhoz</h3> Ezzel a linkkel becenév és jelszó nélül lehet bejelentkezni.</p></td></tr>
+        <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-wrench"></span> Direkt link az adataimhoz</h3> Ezzel a linkkel becenév és jelszó nélkül lehet bejelentkezni.</p></td></tr>
         <tr><td class="caption1">Link</td><td>&nbsp;</td><td><a href="editDiak.php?key=<?php echo generateUserLoginKey(getAktUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
 
         <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
@@ -35,7 +35,7 @@
         <?php if (isset($diak["facebookid"]) && (userIsAdmin() || $diak["facebookid"]==$_SESSION['FacebookId'])) : ?>
 		<tr><td colspan="3"><hr/> </td></tr>
 		<tr><td colspan="3">
-			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és a "<?php echo isset($_SESSION["FacebookName"])?$_SESSION["FacebookName"]:"nem bejelentkezett" ?>" Facebook felhasználóval.<br />
+			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és "<?php echo isset($_SESSION["FacebookName"])?$_SESSION["FacebookName"]:"nem bejelentkezett" ?>" Facebook felhasználóval.<br />
 			<div style="border-style: solid; border-width: 1px; width: 250px;" >
 				Facebook kép: <img src="https://graph.facebook.com/<?php echo $diak['facebookid']; ?>/picture" />
 			</div> 

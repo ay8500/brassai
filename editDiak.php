@@ -144,13 +144,13 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				$diak["classID"]=getIntParam("classID");
 			}
 			//No dublicate email address is allowed
-			if (isset($diak["email"]) && checkUserEmailExists($diak["id"],$diak["email"])) {
+			if (isset($diak["email"]) && checkUserEmailExists($userDB,$diak["id"],$diak["email"])) {
 				Appl::setMessage("E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
 			} elseif ((isset($diak["classID"]) && $diak["classID"]==="-1") || !isset($diak["classID"])) {
 				Appl::setMessage("Osztály nincs kiválasztva!","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tClass not selected".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
-			} elseif (checkUserNameExists($diak["id"], $diak["user"])) {
+			} elseif (checkUserNameExists($userDB,$diak["id"], $diak["user"])) {
 				Appl::setMessage("Felhasználó név már létezik!<br/>Az adatok kimentése sikertelen.","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tUsername exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
                 //Validate the mail address if no admin logged on
@@ -215,7 +215,7 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 if ($action=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
-		if (!checkUserNameExists($personid,$user)) { 
+		if (!checkUserNameExists($userDB,$personid,$user)) {
 			$ret=$db->savePersonField(getAktUserId(),'user', $user);
 			if ($ret>=0) {
 				$_SESSION["USER"]=$user;
@@ -319,7 +319,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	}
 }
 
-if ($tabOpen=="geoplace") {
+if ($tabOpen==="geoplace") {
 	Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
 	Appl::addJs("js/diakEditGeo.js");
 }

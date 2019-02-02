@@ -40,22 +40,9 @@ class dbDAO {
 	private function getSqlAnonymous($table=null)
     {
         if ($table!=null)
-            return $table.".changeForID is not null and ".$table.".changeUserID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+            return $table."changeForID is not null and ".$table."changeUserID is null and ".$table."changeIP='".$_SERVER["REMOTE_ADDR"]."'";
         else
             return "changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-    }
-
-    /**
-     * SQL Statement to select the new anonymous entrys
-     * @param string $table table name inkl . if select is joined
-     * @return string
-     */
-    private function getSqlAnonymousNew($table=null)
-    {
-        if ($table!=null)
-            return $table."changeForID is null and ".$table."changeUserID is null and ".$table."changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-        else
-            return "changeForID is null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
     }
 
 
@@ -266,10 +253,6 @@ class dbDAO {
 		$this->dataBase->update("person", [["field"=>"geolat","type"=>"s","value"=>$lat],["field"=>"geolng","type"=>"s","value"=>$lng]],"id",$id);
 	}
 	
-	public function savePersonLastLogin($id) {
-		$this->dataBase->update("person", [["field"=>"userLastLogin","type"=>"s","value"=>date("Y-m-d H:i:s")]],"id",$id);
-	}
-	
 	/**
 	 * save changes on only one field 
 	 * @return integer -1 on error or person id if operation is succeded
@@ -441,8 +424,8 @@ class dbDAO {
         $sql .=" left join  class on class.id=person.classID";
         $sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
         $sql .=" and ( person.changeForID is null and ".$where;
-        $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
-        $sql.=") or (".$this->getSqlAnonymous("person")."and ".$where.") limit 150";
+        $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person.")." ) ";
+        $sql.=") or (".$this->getSqlAnonymous("person.")."and ".$where.") limit 150";
 
         $this->dataBase->query($sql);
         while ($person=$this->dataBase->fetchRow()) {
@@ -762,7 +745,7 @@ class dbDAO {
 	 * get the list of picture albums 
 	 */
 	public function getListOfAlbum($type,$typeId,$startList=array()) {
-		$sql = " where ".$type."=".$typeId. " and albumName <> ''";
+		$sql = " where ".$type."=".$typeId. " and albumName != ''";
 		$sql="select distinct(albumName) as albumName, albumName as albumText from picture".$sql;
 		$this->dataBase->query($sql);
 		return array_merge($startList,$this->dataBase->getRowList());
@@ -1173,7 +1156,7 @@ class dbDAO {
         }
         $sql .=" where ((".$jtable."changeForID is null and ".$jtable."changeUserID is not null)";
 		//and anonymous new entrys
-        $sql.=" or (".$this->getSqlAnonymousNew($jtable).") )";
+        $sql.=" or (".$this->getSqlAnonymous($jtable).") )";
 		if ($where!=null)		$sql.=" and ( ".$where." )";
 		if ($orderby!=null)		$sql.=" order by ".$orderby;
 		if ($limit!=null)		$sql.=" limit ".$limit;
@@ -1183,8 +1166,19 @@ class dbDAO {
             $ret = $this->dataBase->getRowList();
         }
         //anonymous entrys
-        $sql="select ".$field.",changeForID from ".$table.' where '.$this->getSqlAnonymous();
+        $sql="select ".$field.",".$jtable."changeForID ";
+        if ($join==null)
+            $sql .= " ,id ";
+        $sql .= " from ".$table;
+        if ($join!=null) {
+            $sql .= " join " . $join;
+            $jtable = $table.'.';
+        }
+        $sql .=' where '.$this->getSqlAnonymous($jtable);
         if ($where!=null)		$sql.="  and ( ".$where." )";
+        if ($orderby!=null)		$sql.=" order by ".$orderby;
+        if ($limit!=null)		$sql.=" limit ".$limit;
+        if ($offset!=null)		$sql.=" offset ".$offset;
         $this->dataBase->query($sql);
         if ($this->dataBase->count()>0) {
             //Change the entrys with the anonymous entrys

@@ -127,7 +127,7 @@
                     if ( userIsLoggedOn()) {?>
                         <span style="width:40px" id="highlight" class="input-group-addon">
                             <?php if ($dataCheckFieldVisible[$i]) {?>
-                                <input type="checkbox" name="cb_'<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?>' title="A megjelölt mezöket csak az osztálytásaid látják." />
+                                <input type="checkbox" name="cb_<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?> title="A megjelölt mezöket csak az osztálytásaid látják." />
                             <?php } else { echo '&nbsp'; }?>
                         </span><?php
                     }

@@ -26,20 +26,23 @@ Appl::addCssStyle('
 ?>
 <?php 
 function showChatEnterfields($personList) {
-    global $db;
+    /**
+     * @var dbDaUser
+     */
+    global $userDB;
 	$personWithEmail=0;
 	foreach ($personList as $d) {
 		if(isset($d["email"]) && strlen($d["email"])>6)
 			$personWithEmail++;
 	}
-	if ( userIsAdmin() || (false && $personWithEmail>0 && getAktClassId()==$db->getLoggedInUserClassId() )) {
+	if ( userIsAdmin() || (false && $personWithEmail>0 && getAktClassId()==$userDB->dbDAO->getLoggedInUserClassId() )) {
 		?>
 		<form action="chat.php" method="post" id="chatform">
 			<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>
 			<div id="message-fields"  style="display: none;">
 				<div style="display: inline-block;font-size: 125%;">Körlevél e-mail <?php echo $personWithEmail?> osztálytársnak.</div>
 				<button style="float: right;" class="btn btn-default" type="button" onclick="hideMessage();"><span class="glyphicon glyphicon-remove-sign"></span> bezár</button>
-				<textarea id="story" name="Text" onchange="textChanged();" >Kedves osztálytársak, barátok,<br/><br/><br/><br/>Üdvözlettel <?php getLoggedInUserName()?></textarea>
+				<textarea id="story" name="Text" onchange="textChanged();" >Kedves osztálytársak, barátok,<br/><br/><br/><br/>Üdvözlettel <?php getLoggedInUserName($userDB)?></textarea>
 				<button type="button" class="btn btn-default btn-t" onclick="setText(1);"><span class="glyphicon glyphicon-star-empty"></span> rövid</button>
 				<button type="button" class="btn btn-default btn-t" onclick="setText(2);"><span class="glyphicon glyphicon-star"></span> bővebb</button>
 				<button type="button" class="btn btn-default btn-t" onclick="setText(3);"><span class="glyphicon glyphicon-heart"></span> szíből</button>
