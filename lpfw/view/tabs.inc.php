@@ -8,8 +8,12 @@ include_once __DIR__.'/../appl.class.php';
 
 
 $tabOpen=getParam("tabOpen",$tabsCaption[0]["id"]);
-if (!isset($tabUrl))
-	$tabUrl=getenv("SCRIPT_NAME");
+	$tabUrl=getenv("SCRIPT_NAME")."?";
+    $params=explode("&",getenv("QUERY_STRING"));
+    foreach ($params as $param) {
+        if (strpos($param,"tabOpen")===false)
+            $tabUrl .=$param."&";
+    }
 
     \maierlabs\lpfw\Appl::addJsScript('
     var siteValuesChanged = false;
@@ -42,7 +46,7 @@ if (!isset($tabUrl))
 		if ($tab["id"]==$tabOpen)
 	        echo '<li title="'.strip_tags($tab["caption"]).'" class="active"><a href="#"><span class="glyphicon glyphicon-'.$tab["glyphicon"].'"></span> <span>'.$tab["caption"].'</span></a></li>';
 		else
-         	echo '<li title="'.strip_tags($tab["caption"]).'" ><a href="javascript:changeTab('."'".$tabUrl.'?tabOpen='.$tab["id"]."'".');" ><span class="glyphicon glyphicon-'.$tab["glyphicon"].'"></span> <span>'.$tab["caption"].'</span></a></li>';
+         	echo '<li title="'.strip_tags($tab["caption"]).'" ><a href="javascript:changeTab('."'".$tabUrl.'tabOpen='.$tab["id"]."'".');" ><span class="glyphicon glyphicon-'.$tab["glyphicon"].'"></span> <span>'.$tab["caption"].'</span></a></li>';
 	}
 ?>       
 </ul>

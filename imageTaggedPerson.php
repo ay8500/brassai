@@ -15,13 +15,19 @@ include_once 'dbBL.class.php';
 include_once 'dbDaPersonInPicture.class.php';
 include_once 'lpfw/ltools.php';
 
-
+if (getParam("random")!=null) {
+    $entrys = $db->dataBase->queryInt("select count(*) from personInPicture");
+    $row = $db->dataBase->queryFirstRow("select * from personInPicture limit ".rand(1,$entrys). ",1");
+    $pictureid = $row["pictureID"];
+    $personid =$row["personID"];
+} else {
 //file Name without extensions
-$pictureid = getParam("pictureid");
-$personid = getParam("personid");
-if ($personid==null && $pictureid==null) {
-    http_response_code(401);
-    die("Missing parameter personid and pictureid!");
+    $pictureid = getParam("pictureid");
+    $personid = getParam("personid");
+    if ($personid == null && $pictureid == null) {
+        http_response_code(401);
+        die("Missing parameter personid and pictureid!");
+    }
 }
 
 $picture = $db->getPictureById(intval($pictureid));

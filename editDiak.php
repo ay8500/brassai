@@ -8,7 +8,7 @@ include_once  'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-$tabOpen= getIntParam("tabOpen", 0);
+$tabOpen= getParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
 if($personid!=null){

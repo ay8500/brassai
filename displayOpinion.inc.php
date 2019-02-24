@@ -32,7 +32,7 @@ function displayPersonOpinion($db,$id,$teacher,$decesed) {
             <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
         </buton>
         <a id="c-person-candle-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserIdOrNull() ?>)"
-           title="Égö gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
+           title="Égő gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
             <span style="margin-right: -8px;">
                 <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/><span class="countTag"><?php echo $o->candles-1?></span>
             </span>

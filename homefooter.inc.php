@@ -1,7 +1,7 @@
 <div class="container-fluid" style="width: 100%;background: #f8f8f8">
 	<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
 	      <ul class="nav navbar-nav">
-			<?PHP if (userIsAdmin() || (userIsEditor() )) { ?>
+			<?PHP if (userIsAdmin() || userIsSuperuser() ) { ?>
 				<li><a href="admin.php"  >Adminsztráció</a></li>
                 <li><a href="logingData.php"  >Loging</a></li>
 			<?PHP }	?>

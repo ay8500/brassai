@@ -38,7 +38,7 @@ function showRecentChanges($db,$date=null) {
         $date=new \DateTime();
     }
     $filter=getParam("tabOpen","all");
-    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48),$filter);
+    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48),$filter,getParam("ip",null),getParam("userid",null));
     foreach ($ids as $id) {
         if ($id["type"] == "person") {
             $person = $db->getPersonByID($id["id"]);
@@ -51,7 +51,10 @@ function showRecentChanges($db,$date=null) {
             displayClass($db, $class,true,$id["action"],$id["changeUserID"],$id["changeDate"]);
         }
     }
-    $date=strtotime($ids[sizeof($ids)-1]["changeDate"])-1;
+    if (sizeof($ids)>0)
+        $date=strtotime($ids[sizeof($ids)-1]["changeDate"])-1;
+    else
+        $date=null;
 
     return date("Y-m-d H:i:s",$date);
 }
@@ -112,11 +115,16 @@ include("homemenu.inc.php");
 </div>
 
 <?php
+$urlParam="";
+if (getParam("ip")!=null)
+    $urlParam="&ip=".getParam("ip");
+if (getParam("userid")!=null)
+    $urlParam="&userid=".getParam("userid");
 Appl::addJsScript("
     function showmore(date) {
         $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
-    		url:'start.php?action=showmore&date='+$('#date').val()+'&tabOpen=".getParam('tabOpen','all')."',
+    		url:'start.php?action=showmore&date='+$('#date').val()+'&tabOpen=".getParam('tabOpen','all').$urlParam."',
 	    	type:'GET',
     		success:function(data){
     		    var idx=data.lastIndexOf('#');
