@@ -17,11 +17,8 @@
  */
 
 //are we in a session?
+$dieIfNoSessionActive = true;
 include_once 'lpfw/sessionManager.php';
-if ( !isset($_SESSION['lastReq']) ) {
-	http_response_code(401);
-	die('Unauthorized');
-}
 include_once 'dbBL.class.php';
 include_once 'lpfw/ltools.php';
 

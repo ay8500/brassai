@@ -80,55 +80,71 @@ if (isActionParam("vote")) {
 </tr>
 <?php
 	foreach ($data as $d)	
-	{ 
-		$vote=$dbVote->getVote(getRealId($d),$classMeetingCount);
-		?>
-		<form method="post"">
-		<tr class="votetable"> 
-		<td>
-			<img src="<?php echo getPersonPicture($d) ?>" style="height:30px; border-radius:3px; margin:2px;" />
-		</td>
-		<td class="hidden-xs hidden-sm">
-			<?php echo $d["lastname"].' '.$d["firstname"];
-			if (showField($d,"birthname")) echo(' ('.$d["birthname"].')');?>
-		</td>
-		<?php 
-		if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || $d["id"]==getLoggedInUserId() && getRealId(getAktClass())==$db->getLoggedInUserClassId()  ) {
-			$dis="";$ro="";
-		} else {
-			$dis="disabled";$ro="readonly";
-		}
-		?>
-		<td><input style="text" class="form-control" <?php echo $ro?> size="10" name="eventDay" value="<?php echo $vote["eventDay"]?>" /></td>
-		<td><input type="checkbox" size="4" <?php echo $dis?> name="isSchool" <?php echo $vote["isSchool"]==1?"checked":""?> /></td>
-		<td><input type="checkbox" size="4" <?php echo $dis?> name="isCemetery" <?php echo $vote["isCemetery"]==1?"checked":""?> /></td>
-		<td><input type="checkbox" size="4" <?php echo $dis?> name="isDinner" <?php echo $vote["isDinner"]==1?"checked":""?> /></td>
-		<td><input type="checkbox" size="4" <?php echo $dis?> name="isExcursion" <?php echo $vote["isExcursion"]==1?"checked":""?> /></td>
-		<td class="hidden-xs"><input class="form-control" <?php echo $ro?>  style="text" size="40" name="place" value="<?php echo $vote["place"]?>" /></td>
-		<td>
-			<?php if ($dis=="") :?>
-				<?php if (isset($vote["id"])) {?>
-					<button value="<?php echo $vote["id"]?>" name="id" type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-save"></span> Kiment</button>
-					<?php if (userIsAdmin() || userIsEditor() || userIsSuperuser()) {?>
-						<a title="módosítások" href="history.php?table=vote&id=<?php echo $vote["id"]?>" style="display:inline-block;">
-							<span class="badge"><?php echo sizeof($db->getHistoryInfo("vote",$vote["id"]))?></span>
-						</a>
-					<?php } else {?>
-						<span title="módosítások" class="badge"><?php echo sizeof($db->getHistoryInfo("vote",$vote["id"]))?></span>
-					<?php } ?>
-				<?php } else {?>
-					<button value="-1" name="id" type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-save"></span> Kiment</button>
-				<?php }?>
-			</a>
-			<?php endif; ?>
-		</td>
-		<input type="hidden" value="vote" name="action" />
-		<input type="hidden" value="<?php echo $d["id"]?>" name="personID" />
-		<input type="hidden" value="<?php echo getRealId(getAktClass())?>" name="classID" />
-		<input type="hidden" value="<?php echo $classMeetingCount?>" name="meetAfterYear" />
-		</tr>
-		</form>
-	<?php 
+	{
+	    if (!isset($d["deceasedYear"])) {
+            $vote = $dbVote->getVote(getRealId($d), $classMeetingCount);
+            ?>
+            <form method="post"">
+            <tr class="votetable">
+                <td>
+                    <img src="<?php echo getPersonPicture($d) ?>" style="height:30px; border-radius:3px; margin:2px;"/>
+                </td>
+                <td class="hidden-xs hidden-sm">
+                    <?php echo $d["lastname"] . ' ' . $d["firstname"];
+                    if (showField($d, "birthname")) echo(' (' . $d["birthname"] . ')'); ?>
+                </td>
+                <?php
+                if (userIsAdmin() || userIsEditor() || userIsSuperuser() || $d["id"] == getLoggedInUserId() && getRealId(getAktClass()) == $db->getLoggedInUserClassId()) {
+                    $dis = "";
+                    $ro = "";
+                } else {
+                    $dis = "disabled";
+                    $ro = "readonly";
+                }
+                ?>
+                <td><input style="text" class="form-control" <?php echo $ro ?> size="10" name="eventDay"
+                           value="<?php echo $vote["eventDay"] ?>"/></td>
+                <td><input type="checkbox" size="4" <?php echo $dis ?>
+                           name="isSchool" <?php echo $vote["isSchool"] == 1 ? "checked" : "" ?> /></td>
+                <td><input type="checkbox" size="4" <?php echo $dis ?>
+                           name="isCemetery" <?php echo $vote["isCemetery"] == 1 ? "checked" : "" ?> /></td>
+                <td><input type="checkbox" size="4" <?php echo $dis ?>
+                           name="isDinner" <?php echo $vote["isDinner"] == 1 ? "checked" : "" ?> /></td>
+                <td><input type="checkbox" size="4" <?php echo $dis ?>
+                           name="isExcursion" <?php echo $vote["isExcursion"] == 1 ? "checked" : "" ?> /></td>
+                <td class="hidden-xs"><input class="form-control" <?php echo $ro ?> style="text" size="40" name="place"
+                                             value="<?php echo $vote["place"] ?>"/></td>
+                <td>
+                    <?php if ($dis == "") : ?>
+                        <?php if (isset($vote["id"])) { ?>
+                            <button value="<?php echo $vote["id"] ?>" name="id" type="submit" class="btn btn-default">
+                                <span class="glyphicon glyphicon-save"></span> Kiment
+                            </button>
+                            <?php if (userIsAdmin() || userIsEditor() || userIsSuperuser()) { ?>
+                                <a title="módosítások" href="history.php?table=vote&id=<?php echo $vote["id"] ?>"
+                                   style="display:inline-block;">
+                                    <span class="badge"><?php echo sizeof($db->getHistoryInfo("vote", $vote["id"])) ?></span>
+                                </a>
+                            <?php } else { ?>
+                                <span title="módosítások"
+                                      class="badge"><?php echo sizeof($db->getHistoryInfo("vote", $vote["id"])) ?></span>
+                            <?php } ?>
+                        <?php } else { ?>
+                            <button value="-1" name="id" type="submit" class="btn btn-default"><span
+                                        class="glyphicon glyphicon-save"></span> Kiment
+                            </button>
+                        <?php } ?>
+                        </a>
+                    <?php endif; ?>
+                </td>
+                <input type="hidden" value="vote" name="action"/>
+                <input type="hidden" value="<?php echo $d["id"] ?>" name="personID"/>
+                <input type="hidden" value="<?php echo getRealId(getAktClass()) ?>" name="classID"/>
+                <input type="hidden" value="<?php echo $classMeetingCount ?>" name="meetAfterYear"/>
+            </tr>
+            </form>
+            <?php
+        }
 	}
 ?>
 </table>

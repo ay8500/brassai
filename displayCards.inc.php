@@ -188,7 +188,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
         <div>
             <div style="display: inline-block; ">
                 <a href="picture.php?type=<?php echo $type?>&typeid=<?php echo $typeid?>&id=<?php echo $picture["id"]?>">
-                    <image src="convertImg.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
+                    <image src="imageConvert.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
                 </a>
                 <?php  if (userIsAdmin() || userIsSuperuser()) {?>
                     <br/><a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
@@ -243,7 +243,7 @@ function displayClass($db,$class,$showDate=false) {
             if ($pictureId >0) {?>
 			<div style="display: inline-block;vertical-align: top; ">
 				<a href="picture.php?type=class&typeid=<?php  echo $class["id"]?>&id=<?php echo $pictureId?>" >
-					<image src="convertImg.php?width=300&thumb=false&id=<?php echo $pictureId?>" />
+					<image src="imageConvert.php?width=300&thumb=false&id=<?php echo $pictureId?>" />
 				</a>
 			</div>
 		<?php } ?>

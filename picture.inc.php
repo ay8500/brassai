@@ -17,7 +17,7 @@ if (getParam("action","")=="deletePicture" ) {
 		    $db->updateRecentChangesList();
             Appl::setMessage("Kép sikeresen törölve","success");
 			$db->saveRequest(changeType::deletepicture);
-			saveLogInInfo("PictureDelete",getAktUserId(),"",getParam("id", ""),true);
+			\maierlabs\lpfw\Logger::_("PictureDelete\t".getLoggedInUserId()."\t".getIntParam("did"));
 		} else {
             Appl::setMessage("Kép törlése sikertelen!","warning");
 		}
@@ -101,7 +101,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 								$db->saveRequest(changeType::classupload);
 								resizeImage($uploadfile,1800,1800);
                                 Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve.","success");
-								saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),$idx,true);
+                                \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\t".$idx);
 							} else {
                                 Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
 							}
@@ -110,16 +110,17 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 						}
 					} else {
                         Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
+                        \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: moving picture",\maierlabs\lpfw\LoggerLevel::error);
 					}
 				}
 				else {
                     Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 3 MByteot.","warning");
-					saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"to big",false);
+                    \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: too big",\maierlabs\lpfw\LoggerLevel::error);
 				}
 			}
 			else {
                 Appl::setMessage($fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.","warning");
-				saveLogInInfo("PictureUpload",getLoggedInUserId(),getAktUserId(),"only jpg",false);
+                \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: only jpg",\maierlabs\lpfw\LoggerLevel::error);
 			}
 		}
 	} else {
@@ -380,7 +381,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
             if ( $albumParam=="_mark_") {
                 ?>
                 <div style="position: relative; bottom:95px;right:-295px;z-index: 10;height: 0px;">
-                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:60px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=90&padding=50"/>
+                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:60px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=90&padding=90"/>
                 </div><?php
             }
             ?></div><?php
@@ -396,7 +397,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     <div id="list-table">
 
         <?php if ($view=="table") {?>
-            <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="convertImg.php?id=<?php echo $pict["id"] ?>" />
+            <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" />
             <div class="pdiv">
                 <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
                 <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
@@ -408,7 +409,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
         <?php } else {?>
             <div style="vertical-align: top; margin:10px" >
-                <img class="img-responsive" src="convertImg.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
+                <img class="img-responsive" src="imageConvert.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
             </div>
         <?php } ?>
 

@@ -8,8 +8,9 @@ if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 	
 		if ($db->savePersonGeolocation($diak["id"],$geolat,$geolng)>=0) {
 			if (!userIsAdmin())
-				saveLogInInfo("SaveGeo",$diak["id"],$diak["user"],"",true);
-			\maierlabs\lpfw\Appl::setMessage('Geokoordináták sikeresen módósítva!', 'success');
+                \maierlabs\lpfw\Logger::_("SaveGeo\t".getLoggedInUserId());
+
+            \maierlabs\lpfw\Appl::setMessage('Geokoordináták sikeresen módósítva!', 'success');
 			$diak["geolat"]=$geolat;
 			$diak["geolng"]=$geolng;
 		} else {

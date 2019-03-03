@@ -5,6 +5,7 @@
     include_once 'lpfw/logon.inc.php';
 	include_once 'config.class.php';
     include_once 'dbBL.class.php';
+    include_once 'dbDaUser.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
 		
@@ -16,33 +17,38 @@
 
 	//Login if crypted loginkey present and correct
 	if (isset($_GET['key'])) {
-	    Appl::setMessage(directLogin($db,$_GET['key']),"");
+	    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
 	}
 
+/**
+ * @param dbDaUser $db
+ * @param $key
+ * @return string
+ */
 	function directLogin($db,$key){
 	    $keyStr = encrypt_decrypt("decrypt", $key);
-	    \maierlabs\lpfw\Logger::_("Decripted text:".$keyStr);
 	    if (substr($keyStr, 0,2)=="M-") {
 	        $action="M";
 	        $keyStr=substr($keyStr,2);
 	    }
-	    $person=$db->getPersonByID($keyStr);
+	    $person=$db->getUserByID($keyStr);
 	    if (null!=$person) {
-	        setAktUserId($keyStr);
-	        setUserInSession($person["role"], $person["user"],$keyStr);
-	        $class=$db->getClassById($person["classID"]);
+            setAktUserId($keyStr);
+	        setUserInSession($db,$person["role"], $person["user"],$keyStr);
+            \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
+	        $class=$db->dbDAO->getClassById($person["classID"]);
 	        Appl::setMember("aktClass",$class);
 	        setAktClass($class["id"]);
 	        setAktSchool($class["schoolID"]);
 	        if (!userIsAdmin() && !userIsSuperuser()) {
-	            saveLogInInfo("Login",$_SESSION['uId'],$person["user"],"","direct");
                 \maierlabs\lpfw\Appl::sendHtmlMail(null,
 	                "<h2>Login</h2>".
 	                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
 	        }
 	        return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
 	    } else {
-	        return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
+            \maierlabs\lpfw\Logger::_("LoginDirect\t".$key,\maierlabs\lpfw\LoggerLevel::error);
+            return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
 	    }
 	}
 	
@@ -110,21 +116,24 @@
        			</ul>
       		</li>
       		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || userIsAdmin())) {
-                $classStat = $db->getClassStatistics(Appl::getMemberId("aktClass"), true);
+                $classStat = $db->getClassStatistics(Appl::getMemberId("aktClass"), false);
             ?>
             <li id="classmenu" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getClassName(Appl::getMember("aktClass"),true)); ?><b
                             class="caret"></b></a>
                 <ul class="dropdown-menu multi-level">
-                    <li><a href="hometable.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Véndiákok</a></li>
-                    <li><a href="hometable.php?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek és
-                            barátok</a></li>
-                    <?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>
-                    <li><a href="worldmap.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
+                    <li><a href="hometable.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Véndiákok
+                            <?php if ($classStat->personCount > 0) { ?><span
+                                    class="badge"><?php echo $classStat->personCount ?></span><?php } ?></a></li>
+                    </a></li>
+                    <li><a href="hometable.php?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek barátok
+                            <?php if ($classStat->guestCount > 0) { ?><span
+                                    class="badge"><?php echo $classStat->guestCount ?></span><?php } ?></a></li>
                     <li><a href="picture.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
                             <?php if ($classStat->classPictures > 0) { ?><span
-                                    class="badge"><?php echo $classStat->classPictures ?></span><?php } ?>
-                        </a></li>
+                                    class="badge"><?php echo $classStat->classPictures ?></span><?php } ?></a></li>
+                    <?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>
+                    <li><a href="worldmap.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
                     <?php if (Appl::getMemberId("aktClass") == $db->getClassIdByText("1985 12A")) { ?>
                         <li class="dropdown-submenu"><a>Régi képek</a>
                             <ul class="dropdown-menu">

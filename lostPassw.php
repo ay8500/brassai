@@ -12,7 +12,7 @@ $mail='';$myname="";$resultText='';$rights="";
 if (isActionParam('newPassword')) {
 	if (isset($_GET['mail'])) $mail=$_GET['mail'];
 	if (Appl::checkEmail($mail)) {
-		$ret=resetUserPasswort($mail, createPassword(8) );
+		$ret=resetUserPasswort($userDB,$mail, createPassword(8) );
 		if ($ret>0) { 
 			SendNewPassword($db->getPersonByID($ret));
 			Appl::setMessage('Új jelszó a következő címre elküldve : '.$mail, 'success');

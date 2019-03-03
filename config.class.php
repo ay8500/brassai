@@ -6,6 +6,7 @@ use maierlabs\lpfw\Logger as Logger;
 
 //set logger output to file
 Logger::setLoggerType(  \maierlabs\lpfw\LoggerType::file);
+Logger::setLoggerLevel( \maierlabs\lpfw\LoggerLevel::info.\maierlabs\lpfw\LoggerLevel::error.\maierlabs\lpfw\LoggerLevel::debug);
 
 class Config {
 
@@ -18,7 +19,7 @@ class Config {
     public static $dateTimeFormat="<b>Y.m.d</b> H:i:s";
     public static $dateFormat="<b>Y.m.d</b>";
 
-    public static $webAppVersion = "20190127";  //Used to load the actual css und js files.
+    public static $webAppVersion = "20190202";  //Used to load the actual css und js files.
 
     public static $SupportedLang = array("hu"); //First language ist the default language.
 

@@ -8,7 +8,7 @@ include_once  'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-$tabOpen= getIntParam("tabOpen", 0);
+$tabOpen= getParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
 if($personid!=null){
@@ -144,36 +144,45 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				$diak["classID"]=getIntParam("classID");
 			}
 			//No dublicate email address is allowed
-			if (isset($diak["email"]) && checkUserEmailExists($diak["id"],$diak["email"])) {
-				Appl::$resultDbOperation='<div class="alert alert-warning">E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.</div>';
+			if (isset($diak["email"]) && checkUserEmailExists($userDB,$diak["id"],$diak["email"])) {
+				Appl::setMessage("E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.","warning");
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
 			} elseif ((isset($diak["classID"]) && $diak["classID"]==="-1") || !isset($diak["classID"])) {
-				Appl::$resultDbOperation='<div class="alert alert-warning">Osztály nincs kiválasztva!</div>';
-			} elseif (checkUserNameExists($diak["id"], $diak["user"])) {
-				Appl::$resultDbOperation='<div class="alert alert-warning">Felhasználó név már létezik!<br/>Az adatok kimentése sikertelen.</div>';
-				//Validate the mail address if no admin logged on
+				Appl::setMessage("Osztály nincs kiválasztva!","warning");
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tClass not selected".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+			} elseif (checkUserNameExists($userDB,$diak["id"], $diak["user"])) {
+				Appl::setMessage("Felhasználó név már létezik!<br/>Az adatok kimentése sikertelen.","warning");
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tUsername exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                //Validate the mail address if no admin logged on
 			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
-				Appl::$resultDbOperation='<div class="alert alert-warning">E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.</div>';
-			} elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
-				Appl::$resultDbOperation='<div class="alert alert-warning">Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.</div>';
-			} elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
-				Appl::$resultDbOperation='<div class="alert alert-warning">Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.</div>';
-			} else {
+				Appl::setMessage("E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.","warning");
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail wrong syntax".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+            } elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
+				Appl::setMessage("Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.","warning");
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tEmpty name fields".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+            } elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
+				Appl::setMessage("Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.","warning");
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tName too short".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+            } else {
 				$personid = $db->savePerson($diak);
 				if ($personid>=0) {
 					setAktUserId($personid);		//set actual person in case of tab changes
 					setAktClass($diak["classID"]);	//set actual class in case of class changes
-					Appl::$resultDbOperation='<div class="alert alert-success" >Az adatok sikeresen módósítva!<br />Köszönük szépen a segítséged.</div>';
+                    \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId(),\maierlabs\lpfw\LoggerLevel::info);
 					$db->saveRequest(changeType::personchange);
 					header("location:hometable.php?class=".$diak["classID"]."&action=saveok");
 				} else {
-					Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1631</div>';
+					Appl::setMessage("Az adatok kimentése nem sikerült! Hibakód:1631","warning");
+                    \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError:1631",\maierlabs\lpfw\LoggerLevel::error);
 				}
 			}
 		} else {
-			Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok kimentése nem sikerült! Hibakód:1034</div>';
+			Appl::setMessage("Az adatok kimentése nem sikerült! Hibakód:1034","warning");
+            \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError:1034",\maierlabs\lpfw\LoggerLevel::error);
 		}
 	} else {
-		Appl::$resultDbOperation='<div class="alert alert-warning" >Az adatok módosítása anonim felhasználok részére korlátozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>';
+		Appl::setMessage("Az adatok módosítása anonim felhasználok részére korlátozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.","warning");
+        \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError: too many",\maierlabs\lpfw\LoggerLevel::error);
 	}
 	if ($personid==-1) {
 		if ($action=="savenewteacher") $action="newteacher";
@@ -191,7 +200,7 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 			$ret=$db->savePersonField(getAktUserId(), "passw", encrypt_decrypt("encrypt",$newpwd1));
 			if ($ret>=0) {
 				if (!userIsAdmin()) 
-					saveLogInInfo("SavePassw",$diak["id"],$diak["user"],"",true);
+                    \maierlabs\lpfw\Logger::_("SavePassw\t".getLoggedInUserId());
 					Appl::setMessage("Jelszó módosíva!", "success");
 			} else {
 				Appl::setMessage("Jelszó kimentése nem sikerült!", "warning");
@@ -206,12 +215,12 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 if ($action=="changeuser" && userIsLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
-		if (!checkUserNameExists($personid,$user)) { 
+		if (!checkUserNameExists($userDB,$personid,$user)) {
 			$ret=$db->savePersonField(getAktUserId(),'user', $user);
 			if ($ret>=0) {
 				$_SESSION["USER"]=$user;
 				if (!userIsAdmin()) 
-					saveLogInInfo("SaveUsername",$personid,$diak["user"],"",true);
+                    \maierlabs\lpfw\Logger::_("SaveDataname\t".getLoggedInUserId());
 					Appl::setMessage("Becenév módosíva!", "success");
 			} else {
 				Appl::setMessage("Becenév módosítása nem sikerült!", "warning");
@@ -231,7 +240,7 @@ if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
 	if ((!isset($diak["facebookid"]) || $diak["facebookid"]=null) && $ret>=0) {
         Appl::setMessage("Facebook kapcsolat törlése sikerült","success");
         unset($_SESSION['FacebookId']);
-        saveLogInInfo("FacebookDelete",$diak["id"],$diak["user"],"",true);
+        \maierlabs\lpfw\Logger::_("FacebookDelete\t".getLoggedInUserId());
     } else {
         Appl::setMessage("Facebook kapcsolat törlése nem sikerült","warning");
     }
@@ -279,35 +288,38 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 							if ($db->savePersonField($personid, "picture", $db->getAktClassFolder().$pFileName)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,400,400,"o");
-								Appl::$resultDbOperation='<div class="alert alert-success">'.$fileName[1]." sikeresen feltöltve.</div>";
-								saveLogInInfo("PictureUpload",$personid,$diak["user"],$idx,true);
+								Appl::setMessage($fileName[1]." Profilkép sikeresen feltöltve.","succes");
+                                \maierlabs\lpfw\Logger::_("UserPicture\t".getLoggedInUserId()."\t".$idx);
 							} else {
-								Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra.</div>";
+								Appl::setMessage($fileName[1]." Profilkép feltötése sikertelen. Probálkozz újra","warning");
+                                \maierlabs\lpfw\Logger::_("UserPicture\t".getLoggedInUserId()."\t".$idx,\maierlabs\lpfw\LoggerLevel::error);
 							}
 						} else {
 							resizeImage($uploadfile,400,400,"o");
-							Appl::$resultDbOperation='<div class="alert alert-success">Kép sikeresen kicserélve</div>';
+							Appl::setMessage("Kép sikeresen kicserélve","success");
 						}
 					} else {
-						Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091</div>";
+						Appl::setMessage($fileName[1]." feltötése sikertelen. Probálkozz újra. Hibakód:4091","warning");
+                        \maierlabs\lpfw\Logger::_("UserPicture\t".getLoggedInUserId()."Error:4091",\maierlabs\lpfw\LoggerLevel::error);
 					}
 				}
 				else {
-					Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.</div>";
-					saveLogInInfo("PictureUpload",$personid,$diak["user"],"to big",false);			
+					Appl::setMessage($fileName[1]." A kép nagysága túlhaladja 3 MByteot.<br />Probáld a képet kissebb formátumba konvertálni, és töltsd fel újra.","warning");
+                    \maierlabs\lpfw\Logger::_("UserPicture\t".getLoggedInUserId()."\tError: to big",\maierlabs\lpfw\LoggerLevel::error);
 				} 	
 			}
 			else {
-				Appl::$resultDbOperation='<div class="alert alert-warning">'.$fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.<br />Probáld a képet jpg formátumba konvertálni, és töltsd fel újra.</div>";
-				saveLogInInfo("PictureUpload",$personid,$diak["user"],"only jpg",false);
-			}
+				Appl::setMessage($fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.<br />Probáld a képet jpg formátumba konvertálni, és töltsd fel újra.","warning");
+                \maierlabs\lpfw\Logger::_("UserPicture\t".getLoggedInUserId()."\tError: only jpg",\maierlabs\lpfw\LoggerLevel::error);
+
+            }
 		} else {
-			Appl::$resultDbOperation='<div class="alert alert-warning">'."Sajnáljuk, de tul sok képet probálsz feltölteni!<br/>Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.</div>";
+			Appl::setMessage("Sajnáljuk, de tul sok képet probálsz feltölteni!<br/>Az adatok módosítása anonim felhasználok részére korlatozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.","warning");
 		}
 	}
 }
 
-if ($tabOpen=="geoplace") {
+if ($tabOpen==="geoplace") {
 	Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
 	Appl::addJs("js/diakEditGeo.js");
 }

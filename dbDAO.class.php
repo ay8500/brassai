@@ -40,22 +40,9 @@ class dbDAO {
 	private function getSqlAnonymous($table=null)
     {
         if ($table!=null)
-            return $table.".changeForID is not null and ".$table.".changeUserID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."'";
+            return $table."changeForID is not null and ".$table."changeUserID is null and ".$table."changeIP='".$_SERVER["REMOTE_ADDR"]."'";
         else
             return "changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-    }
-
-    /**
-     * SQL Statement to select the new anonymous entrys
-     * @param string $table table name inkl . if select is joined
-     * @return string
-     */
-    private function getSqlAnonymousNew($table=null)
-    {
-        if ($table!=null)
-            return $table."changeForID is null and ".$table."changeUserID is null and ".$table."changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-        else
-            return "changeForID is null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
     }
 
 
@@ -110,6 +97,14 @@ class dbDAO {
 		return $this->getEntryById("class", $id,$forceThisID);
 	}
 
+
+	public function getTeachersIdByClassId($id) {
+        $class=$this->getClassById($id);
+        $teachers = explode(',',$class["teachers"]);
+        if (isset($class["headTeacherID"]))
+            $teachers[]=$class["headTeacherID"];
+        return $teachers;
+    }
 
     /**
      * Select the classes where the teacher was active
@@ -258,10 +253,6 @@ class dbDAO {
 		$this->dataBase->update("person", [["field"=>"geolat","type"=>"s","value"=>$lat],["field"=>"geolng","type"=>"s","value"=>$lng]],"id",$id);
 	}
 	
-	public function savePersonLastLogin($id) {
-		$this->dataBase->update("person", [["field"=>"userLastLogin","type"=>"s","value"=>date("Y-m-d H:i:s")]],"id",$id);
-	}
-	
 	/**
 	 * save changes on only one field 
 	 * @return integer -1 on error or person id if operation is succeded
@@ -283,10 +274,11 @@ class dbDAO {
 	public function getClassStatistics($classId,$countPictures=true) {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
+        $ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
+        $ret->guestCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and role like '%guest%'");
 		if($countPictures) {
 			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null and picture<>''");
 			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
-			$ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
 		}
 		$t = $this->dataBase->querySignleRow("select firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
 		if ($t!=null) {
@@ -433,8 +425,8 @@ class dbDAO {
         $sql .=" left join  class on class.id=person.classID";
         $sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
         $sql .=" and ( person.changeForID is null and ".$where;
-        $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person")." ) ";
-        $sql.=") or (".$this->getSqlAnonymous("person")."and ".$where.") limit 150";
+        $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person.")." ) ";
+        $sql.=") or (".$this->getSqlAnonymous("person.")."and ".$where.") limit 150";
 
         $this->dataBase->query($sql);
         while ($person=$this->dataBase->fetchRow()) {
@@ -455,7 +447,7 @@ class dbDAO {
 	 * @param boolean all default false all entrys
      * @return array
 	 */
-	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false) {
+	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false, $notDied=false) {
 		if ($classId>=0) {
 			$where ="classID=".$classId;
 			if (!$all) {
@@ -467,6 +459,9 @@ class dbDAO {
 					$where.=" and (facebookid is null or length(facebookid)<5) ";
 				}
 			}
+			if ($notDied==true) {
+                $where.=" and deceasedYear is null";
+            }
 			$ret = $this->getElementList("person",false,$where);
 			usort($ret, "compareAlphabetical");
 			return $ret;
@@ -751,7 +746,7 @@ class dbDAO {
 	 * get the list of picture albums 
 	 */
 	public function getListOfAlbum($type,$typeId,$startList=array()) {
-		$sql = " where ".$type."=".$typeId. " and albumName <> ''";
+		$sql = " where ".$type."=".$typeId. " and albumName != ''";
 		$sql="select distinct(albumName) as albumName, albumName as albumText from picture".$sql;
 		$this->dataBase->query($sql);
 		return array_merge($startList,$this->dataBase->getRowList());
@@ -907,54 +902,63 @@ class dbDAO {
 
 //********************************[ Accelerator ]*****************************************************************
 
-    public function getRecentChangesListByDate($dateFrom, $limit,$filter='all') {
+    public function getRecentChangesListByDate($dateFrom, $limit,$filter='all',$ip=null, $userid=null) {
         $rows=array();
+        $sqlIpUser="";$sqlCandleIpUser="";
+        if ($ip!=null) {
+            $sqlIpUser .=" and changeIP='".$ip."' ";
+            $sqlCandleIpUser .=" and ip='".$ip."' ";
+        }
+        if ($userid!=null) {
+            $sqlIpUser .=" and changeUserID='".$userid."' ";
+            $sqlCandleIpUser .=" and userID='".$userid."' ";
+        }
         if (in_array($filter,array("all"))) {
             $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= " and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("teacher"))) {
             $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= " and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=1 order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=1 order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("person"))) {
             $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= " and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=0 order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=0 order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","picture"))) {
             $sql = " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= " and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and (isDeleted=0) order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and (isDeleted=0) order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","opinion"))) {
-            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "' order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","class"))) {
-            $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "' order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","family"))) {
-            $sql = " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "' order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","candle"))) {
-            $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='" . $dateFrom->format("Y-m-d H:i:s") . "' order by lightedDate desc limit " . $limit . ") ";
+            $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlCandleIpUser." order by lightedDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","tag"))) {
-            $sql = " (select pictureID as id, changeDate, 'picture' as type, 'marked' as action, changeUserID from personInPicture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "' order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select pictureID as id, changeDate, 'picture' as type, 'marked' as action, changeUserID from personInPicture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
@@ -1162,7 +1166,7 @@ class dbDAO {
         }
         $sql .=" where ((".$jtable."changeForID is null and ".$jtable."changeUserID is not null)";
 		//and anonymous new entrys
-        $sql.=" or (".$this->getSqlAnonymousNew($jtable).") )";
+        $sql.=" or (".$this->getSqlAnonymous($jtable).") )";
 		if ($where!=null)		$sql.=" and ( ".$where." )";
 		if ($orderby!=null)		$sql.=" order by ".$orderby;
 		if ($limit!=null)		$sql.=" limit ".$limit;
@@ -1172,8 +1176,19 @@ class dbDAO {
             $ret = $this->dataBase->getRowList();
         }
         //anonymous entrys
-        $sql="select ".$field.",changeForID from ".$table.' where '.$this->getSqlAnonymous();
+        $sql="select ".$field.",".$jtable."changeForID ";
+        if ($join==null)
+            $sql .= " ,id ";
+        $sql .= " from ".$table;
+        if ($join!=null) {
+            $sql .= " join " . $join;
+            $jtable = $table.'.';
+        }
+        $sql .=' where '.$this->getSqlAnonymous($jtable);
         if ($where!=null)		$sql.="  and ( ".$where." )";
+        if ($orderby!=null)		$sql.=" order by ".$orderby;
+        if ($limit!=null)		$sql.=" limit ".$limit;
+        if ($offset!=null)		$sql.=" offset ".$offset;
         $this->dataBase->query($sql);
         if ($this->dataBase->count()>0) {
             //Change the entrys with the anonymous entrys

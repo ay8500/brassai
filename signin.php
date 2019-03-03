@@ -34,11 +34,11 @@ if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 		logoutUser();
 		Appl::$resultDbOperation='<div class="alert alert-warning" >Túl sok bejelenkezést szeretnél létrehozni, kérünk probálkozz késöbb még egyszer!</div>';
 	} else {
-		if (checkUserEmailExists(getParam('id'),html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8"))) {
+		if (checkUserEmailExists($userDB,getParam('id'),html_entity_decode(getParam("email"),ENT_QUOTES,"UTF-8"))) {
 			logoutUser();
 			Appl::$resultDbOperation='<div class="alert alert-warning" >A megadott email cím már létezik, kérünk probálkozz még egyszer egy másik email címmel!</div>';
 		} else {
-			setUserInSession("", "dummy", 0); //simulate user is loged on to not create duplicate users
+			setUserInSession($userDB,"", "dummy", 0); //simulate user is loged on to not create duplicate users
 			$classtext=getParam("classtext","");
 			$class=$db->getClassByText($classtext);
 			if ($class==null) {
@@ -86,7 +86,7 @@ if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 					$person["id"]=$newUserReturnValue;
 					$db->saveRequest(changeType::newuser);
 					Appl::setMessage('Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.', 'info');
-					setUserInSession($person["role"],$person["user"],$newUserReturnValue);
+					setUserInSession($userDB,$person["role"],$person["user"],$newUserReturnValue);
 					sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"],$person["user"], "", $class["graduationYear"], $class["name"],$person["id"]);
 				} else {
 					logoutUser();
@@ -223,12 +223,13 @@ include 'homemenu.inc.php';
 		$.ajax({
 			  url: url,
 			  success:function(data) {
-				personList=data;
-				$("#page2").show("slow");
-				$("#personlist").find("option:gt(1)").remove();
-				data.forEach(function(d,i) {
-					$("#personlist").append($("<option />").val(i).text(d.lastname+" "+d.firstname));
-				}
+                    personList=data;
+                    $("#page2").show("slow");
+                    $("#personlist").find("option:gt(1)").remove();
+                    data.forEach(function(d,i) {
+                        $("#personlist").append($("<option />").val(i).text(d.lastname+" "+d.firstname));
+                    });
+			  }
 			});
 	}
 

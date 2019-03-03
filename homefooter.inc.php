@@ -1,12 +1,12 @@
 <div class="container-fluid" style="width: 100%;background: #f8f8f8">
 	<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
 	      <ul class="nav navbar-nav">
-			<?PHP if (userIsAdmin() || (userIsEditor() )) { ?>
+			<?PHP if (userIsAdmin() || userIsSuperuser() ) { ?>
 				<li><a href="admin.php"  >Adminsztráció</a></li>
+                <li><a href="logingData.php"  >Loging</a></li>
 			<?PHP }	?>
 			<?PHP if (userIsAdmin() ) { ?>
 				<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
-				<li><a href="logingData.php"  >Loging</a></li>
 				<li><a href="dataCheck.php"  >Vizsga</a></li>
 				<li><a href="database.php"  >Adatbank</a></li>
 			<?PHP }	?>

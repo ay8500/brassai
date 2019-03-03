@@ -72,7 +72,7 @@ class MySql
     public function query($query)
     {
         $timer=microtime(true);
-        $this->result = mysqli_query($this->connection, $query) or Logger::_("MySQL ERROR 1:" . $query . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
+        $this->result = mysqli_query($this->connection, $query) or Logger::_("Database\t" . $query . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
         $this->counter = NULL;
         $this->countQuerys++;
         array_push($this->sqlRequest, number_format((microtime(true)-$timer) * 1000,2)."ms ".$query);
@@ -147,6 +147,7 @@ class MySql
 
     /**
      * get result list as an array of one column
+     * @param string $column
      * @return array
      */
     public function getOneColumnList($column)
@@ -265,7 +266,7 @@ class MySql
         $sql .= ")";
         $this->countChanges++;
         array_push($this->sqlRequest, $sql);
-        $this->result = mysqli_query($this->connection, $sql) or Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);;
+        $this->result = mysqli_query($this->connection, $sql) or Logger::_("Database\t" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);;
         return $this->result !==false;
     }
 
@@ -343,7 +344,7 @@ class MySql
         }
         $this->countChanges++;
         array_push($this->sqlRequest, $sql);
-        $this->result = mysqli_query($this->connection, $sql) or Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
+        $this->result = mysqli_query($this->connection, $sql) or Logger::_("Database\t" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
         return $this->result!==false;
     }
 
@@ -374,7 +375,7 @@ class MySql
         if ($this->result = mysqli_query($this->connection, $sql)) {
             return true;
         } else {
-            Logger::_("MySQL ERROR:" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
+            Logger::_("Database\t" . $sql . " MySQL Message:" . mysqli_error($this->connection), LoggerLevel::error);
             return false;
         }
     }
@@ -502,7 +503,8 @@ class MySql
     }
 
     /**
-     * @return void
+     * reset counters for changes and query
+     * @return boolean
      */
     public function resetCounter()
     {
