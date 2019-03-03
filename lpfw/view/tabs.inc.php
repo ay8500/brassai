@@ -2,13 +2,16 @@
 include_once __DIR__.'/../appl.class.php';
 //*********************** TABS ***********************************************************
 //** Usage
-// $tabsCaption=Array("Tab Caption 1","Tab Caption "");
-// include("tabs.php");
-// if ($tabOpen==0) {......}
+// include 'lpfw/view/tabs.inc.php';
+// $tabsCaption = array(array("id" => "person", "caption" => "Person", "glyphicon" => "user"));
+// array_push($tabsCaption ,array("id" => "candles", "caption" => "Candle", "glyphicon" => "plus"));
+// if ($tabOpen=="person") {......}
 
 
 $tabOpen=getParam("tabOpen",$tabsCaption[0]["id"]);
 	$tabUrl=getenv("SCRIPT_NAME")."?";
+	if ($tabUrl=="/dc.php?")
+	    $tabUrl ="/editDiak.php?";
     $params=explode("&",getenv("QUERY_STRING"));
     foreach ($params as $param) {
         if (strpos($param,"tabOpen")===false)

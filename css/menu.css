@@ -188,13 +188,13 @@
 	max-width:138px;
 	border-radius: 5px;
 	margin-bottom:5px;
-	/*filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);*/
 }
 
 .diak_image_empty_rip {
-	filter: invert(100%);	
-	-webkit-filter:invert(100%);
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%);
+	/*filter: invert(100%);
+	-webkit-filter:invert(100%);*/
 }
 
 .diak_image_icon , .diak_image_sicon{
