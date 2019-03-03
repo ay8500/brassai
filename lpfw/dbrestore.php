@@ -2,9 +2,9 @@
 session_start();
 
 //If the db is empty just uncomment the next php line and call the link below
-//The databese defined in the config.class.php with the spezified user hast to be exisits.
+//The databese defined in the config.class.php with the spezified user and password has to be exisits.
 //$_SESSION['uRole']="admin";
-//https://localhost/brassai/tools/dbrestore.php?password=levi
+//https://localhost/brassai/lpfw/dbrestore.php?password=levi
 
 //User is logged in and have the role of admin
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
@@ -28,7 +28,7 @@ function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $areYouSure)
 	$allRows=0;
 	$okRows=0;
 	$errorRows=0;
-	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd, $dbname) or die(mysqli_error());
+	$conn = mysqli_connect($dbhost, $dbuser, $dbpwd, $dbname) or die("Database connection Error");
 	$f = fopen($dbrestore, "r");
 	echo("Restorefile:".$dbrestore."<br/>");
 	if ($f) {

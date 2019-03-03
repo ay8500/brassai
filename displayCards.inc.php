@@ -361,7 +361,7 @@ function displayPersonPicture($d)
  * @param string $appl application name mailto, phoneto
  */
 function displayIcon($d,$field,$image,$title,$appl) {
-    if (isset($d[$field]) && strlen($d[$field])>8)
+    if (isset($d[$field]) && strlen($d[$field])>6)
         if(showField($d,$field))
             echo '<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
         else
