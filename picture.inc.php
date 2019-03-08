@@ -9,6 +9,8 @@ include_once 'displayOpinion.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 \maierlabs\lpfw\Appl::addCss('css/picture.css',true);
+\maierlabs\lpfw\Appl::addCss('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css',false);
+\maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
@@ -304,7 +306,7 @@ if (isActionParam("showmore") ) {
                 <li class="page-item"><span class="page-link" >Képek száma:<?php echo ($countPictures)?></span></li>
                 <li class="page-item"><a class="page-link" href="<?php echo $link."0" ?>"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
                 <li class="page-item"><a class="page-link" href="<?php echo $offset>0?$link.(floor($offset/$limit)-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
-                    <li class="page-item"><a class="page-link" href="#"><?php echo ($offset+1).'-'.(($offset+$limit<$countPictures)?$offset+$limit:$countPictures) ?></a></li>
+                <li class="page-item"><a class="page-link" href="#"><?php echo ($offset+1).'-'.(($offset+$limit<$countPictures)?$offset+$limit:$countPictures) ?></a></li>
                 <li class="page-item"><a class="page-link" href="<?php echo (($offset+$limit)<$countPictures)?$link.(floor($offset/$limit)+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
                 <li class="page-item"><a class="page-link" href="<?php echo $link.floor($countPictures/$limit) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
             </ul>
@@ -336,6 +338,9 @@ if (isActionParam("showmore") ) {
                 <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
                 <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" onclick="return showFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
+                <?php if(userIsAdmin() || userIsSuperuser()) {?>
+                    <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
+                <?php }?>
             </div>
         </div>
         <div id="personlist"></div>

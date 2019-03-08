@@ -51,7 +51,7 @@ $ret->result='ok';
 $ret->count=$dbOpinion->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
 $db->saveRequest(changeType::opinion);
 if ($type=='text') {
-    \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> text:'.$text,'Vélemény: '.Config::$SiteTitle);
+    \maierlabs\lpfw\Appl::sendHtmlMail(null,'id:'.$id.'<br/> table:'.$table.'<br/> text:'.$text,'Vélemény: ');
 }
 
 echo(json_encode($ret));

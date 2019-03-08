@@ -1,4 +1,4 @@
-<?PHP
+<?php
 include_once 'lpfw/sessionManager.php';
 include_once 'lpfw/userManager.php';
 include_once 'lpfw/appl.class.php';
@@ -23,14 +23,15 @@ Appl::addJsScript("
 ");
 
 if (isActionParam("sendMail")) {
-	if ( userIsAdmin() ) {
+	if ( userIsAdmin() || userIsSuperuser() || userIsEditor()) {
 		include_once ("sendMail.php");
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		$mailsSent =0;
 		foreach ($persons as $person) {
 			$uid=$person["id"];
 			if (isset($_GET["D".$uid])) {
-                if (SendMail($uid, $_GET["T"], isset($_GET["U"]))) {
+			    $sender=getFieldValue($db->getPersonByID(getLoggedInUserId()),"email");
+                if (SendMail($uid, $_GET["T"], isset($_GET["U"]),$sender)) {
                     $mailsSent += 1;
                 }
 			}
@@ -66,7 +67,7 @@ Ide kell írni a szöveget....
 Üdvözlettel <?php $dd=$db->getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
 <p>
-Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
+Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?php echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
 </p>
 		</textarea>
 		<input type="checkbox" name="U"/> Bejelentkezési adatokat is elküld.<br/>
@@ -88,8 +89,8 @@ Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('class
 		<input type="hidden" value="sendMail" name="action" />
 		</form>
 		
-		<?PHP if (isset($sendMailMsg)) echo('<div style="text-align:center">'.$sendMailMsg.'</div>');?>
-	<?PHP } ?>
+		<?php if (isset($sendMailMsg)) echo('<div style="text-align:center">'.$sendMailMsg.'</div>');?>
+	<?php } ?>
 	
 	
 	<?php if ($tabOpen=="user") { ?>
@@ -108,7 +109,7 @@ Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('class
 			<td  id="o1024">Datum</td>
 		</tr>
 		
-		<?PHP
+		<?php
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $l=>$d) {
 			if (!isPersonGuest($d)) {
@@ -142,13 +143,13 @@ Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('class
 		}
 		?>
 		</table></div>
-	<?PHP } ?>
+	<?php } ?>
 	
 	
-	<?PHP if ($tabOpen=="admin") {?>
+	<?php if ($tabOpen=="admin") {?>
 		<table class="table-sp"  >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td><td  id="o1024">IP</td><td  id="o1024">Datum</td></tr>
-		<?PHP
+		<?php
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $idx=>$d) {
 			if (isPersonAdmin($d) || isPersonEditor($d))  {
@@ -164,7 +165,7 @@ Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?PHP echo('class
 		}
 		?>
 		</table>
-	<?PHP } ?>
+	<?php } ?>
 <?php } else {
     Appl::setMessage("Adat hozzáférési jog hiányzik!", "warning");
 }

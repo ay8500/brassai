@@ -30,7 +30,7 @@ if (null!=$person) {
 			$html .='<div>Remote-Addr:'.print_r($_SERVER["REMOTE_ADDR"],true).'</div>';
 			$html .='<div>Request-Time:'.date("Y.m.d H:i:s",print_r($_SERVER["REQUEST_TIME"],true)).'</div>';
 			$html .='<div>'.print_r($_REQUEST,true).'</div>';
-            \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail, $html);
+            \maierlabs\lpfw\Appl::sendHtmlMail(null, $html, "GDPR");
 		}
 	}
 }

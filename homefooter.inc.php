@@ -60,6 +60,7 @@ if (userIsAdmin()) {
     ');
 } ?>
 
+<?php \maierlabs\lpfw\Appl::setApplJScript();?>
 <?php \maierlabs\lpfw\Appl::includeJs();?>
 <?php if (!userIsAdmin()) { ?>
 <script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>

@@ -48,9 +48,13 @@ class Appl {
             self::$textResource=include $LangFile;
         else
             self::$textResource=include __DIR__."/../Lang_" . self::$SupportedLang[0] . ".php";
-        //include standard javascript
-        self::setApplJScript();
+    }
 
+    /**
+     * Page randering is started
+     */
+    public static function renderingStarted() {
+        self::$renderingStarted = true;
     }
 
 
@@ -136,16 +140,24 @@ class Appl {
      * @return void
 	 */
 	public static function addCss($cssFile,$phpInterpreter=false,$verion=true) {
-	    if (self::$renderingStarted) {
-            echo  '<style>'."\n"."/* iserted and interpreted css:".$cssFile."*/\n";
-            include $cssFile;
-            echo  "\n".'</style>'."\n";
+	    if ($phpInterpreter) {
+                echo  '<style>'."\n"."/* iserted and interpreted css:".$cssFile."*/\n";
+                include $cssFile;
+                echo  "\n".'</style>'."\n";
         } else {
-            $css = new \stdClass();
-            $css->file = $cssFile;
-            $css->interpret = json_encode($phpInterpreter);
-            $css->version = $verion;
-            array_push(self::$css, $css);
+	        if  (self::$renderingStarted) {
+                if ($verion) {
+                    echo('<link rel="stylesheet" type="text/css" href="'.$cssFile.'?v='.\Config::$webAppVersion.'"></link>'."\n");
+                } else {
+                    echo('<link rel="stylesheet" type="text/css" href="'.$cssFile.'"></link>'."\n");
+                }
+            } else {
+                $css = new \stdClass();
+                $css->file = $cssFile;
+                $css->interpret = json_encode($phpInterpreter);
+                $css->version = $verion;
+                array_push(self::$css, $css);
+            }
         }
 	}
 	
@@ -206,7 +218,6 @@ class Appl {
 		}
 		if (self::$cssStyle!='')
 			echo("<style>".self::$cssStyle."</style>\n");
-		self::$renderingStarted=true;
 	}
 	
 	/**
@@ -305,17 +316,14 @@ class Appl {
 
     /**
      * send html text to recipient
+     * @return Boolean
      */
-    function sendHtmlMail($recipient,$text,$subject="") {
-        /* sender */
-        $absender = \Config::$siteMail;
-        /* reply */
-        $reply = '';
+    function sendHtmlMail($recipient, $text, $subject="", $sender=null) {
 
-        /* subject */
+        $sender = $sender!=null?$sender:\Config::$siteMail;
+
         $subject = \Config::$SiteTitle.' '.$subject;
 
-        /* Nachricht */
         $message = '<html>
 	    <head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -323,23 +331,26 @@ class Appl {
 	    </head>
 	    <body>'.$text.'
 	    </body>
-	</html>
-	';
+	    </html>
+	    ';
 
         // build mail header
-        $headers = 'From:' . $absender . "\r\n";
-        $headers .= 'Reply-To:' . $reply . "\r\n";
+        $headers = 'From:' . $sender . "\r\n";
+        if (isset($recipient)) {
+            $headers .= 'BCC:' . \Config::$siteMail . "\r\n";
+        }
         $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n";
         $headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n";
         $headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
         if (!isLocalhost()) {
-            mail(\Config::$siteMail, $subject, $message, $headers);
             if (isset($recipient)) {
                 return mail($recipient, $subject, $message, $headers);
+            } else {
+                return mail(\Config::$siteMail, $subject, $message, $headers);
             }
         } else {
-            \maierlabs\lpfw\Appl::setMessage("Email to:".$recipient."<br/>".$message, "success");
+            \maierlabs\lpfw\Appl::setMessage("Recipient:".$recipient."<br/>"."From:".$sender."<br/>".$message, "success");
         }
         return true;
     }

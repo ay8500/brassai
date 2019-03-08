@@ -79,6 +79,7 @@
     <![endif]-->
     <?php Appl::addCss("css/menu.css");?>	 
 	<?php Appl::includeCss();?>
+    <?php Appl::renderingStarted(); ?>
  </head>
 <body>
 <div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>

@@ -426,6 +426,48 @@ function showConfirmMessage(title,text,picture,pictureid,personid) {
     $('#myModal').modal({ show: 'true'});
 }
 
+
+function imageCss() {
+    var brightness = $("#slider_brightness").slider("value");
+    var contrast = $("#slider_contrast").slider("value");
+    var rotate = $("#slider_hue_rotate").slider("value");
+    var saturate = $("#slider_saturate").slider("value")/10;
+    $("#thePicture").css("-webkit-filter",
+        "brightness(" + brightness + "%)" +
+        "hue-rotate(" + rotate + "deg)" +
+        "contrast(" + contrast + "%)"  +
+        "saturate(" + saturate + ")"
+    );
+}
+
+function resetImageCss() {
+    $("#slider_brightness").slider("option","value",100);
+    $("#slider_contrast").slider("option","value",100);
+    $("#slider_hue_rotate").slider("option","value",0);
+    $("#slider_saturate").slider("option","value",10);
+    imageCss();
+}
+
+function showImageSettings() {
+    $(".modal-title").html("Kép beállítások");
+    $(".modal-body").html('<div style="margin-top:15px;width: 100%;text-align: center">' +
+        '<span class="slider_text">Fényerő:</span> <div id="slider_brightness"></div><br/>' +
+        '<span class="slider_text">Kontraszt:</span> <div id="slider_contrast"></div><br/>' +
+        '<span class="slider_text">Szín:</span> <div id="slider_hue_rotate"></div><br/>' +
+        '<span class="slider_text">Színerő:</span> <div id="slider_saturate"></div><br/>' +
+        '</div>' );
+    $(".modal-footer").html(
+        '<button class="btn btn-danger" onclick="resetImageCss();">Visszaállít</button>' +
+        '<button class="btn btn-success" onclick="clearModalMessage();">Rendben meghagyom</button>'
+    );
+    $( "#slider_brightness" ).slider({min:40,max:300,value:100, slide:imageCss, change:imageCss });
+    $( "#slider_contrast" ).slider({min:0,max:300,value:100, slide:imageCss, change:imageCss });
+    $( "#slider_hue_rotate" ).slider({min:-30,max:30,value:0, slide:imageCss, change:imageCss });
+    $( "#slider_saturate" ).slider({min:0,max:20,value:10, slide:imageCss, change:imageCss });
+    $(".modal-content").width(350);
+    $('#myModal').modal({ show: 'true'});
+}
+
 function newPerson(event) {
     $('.newperson').remove();
     var img=$("#thePicture");

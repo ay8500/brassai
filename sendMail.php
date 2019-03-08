@@ -19,7 +19,6 @@ function SendNewPassword($diak) {
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	\maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
-    \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail,$text," new password request");
 }
 
 /**
@@ -58,7 +57,7 @@ function sendChatMail($senderPerson,$toPerson,$text) {
 /**
  *send mail  
  */
-function SendMail($uid,$text,$userData) {
+function SendMail($uid,$text,$userData,$sender) {
 		global $db;
 		$diak = $db->getPersonByID($uid);
 		
@@ -68,7 +67,7 @@ function SendMail($uid,$text,$userData) {
 		if ($userData) {
 			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
-        \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,Config::$siteMail,Config::$SiteTitle);
+        return \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,"", $sender);
 }
 
 
