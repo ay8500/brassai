@@ -67,6 +67,8 @@ function SendMail($uid,$text,$userData,$sender) {
 		if ($userData) {
 			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
+		$text .='<p>Ezt az e-mailt <a href="'.Config::$siteUrl.'/index.php?classid='.getAktClassId().'">A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.</p>';
+
         return \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,"", $sender);
 }
 

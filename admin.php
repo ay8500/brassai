@@ -66,9 +66,6 @@ Ide kell írni a szöveget....
 <p>
 Üdvözlettel <?php $dd=$db->getPersonLogedOn(); echo($dd["lastname"]." ".$dd["firstname"]); ?>
 </p>
-<p>
-Ezt az e-mailt <a href=<?php echo Config::$siteUrl?>/index.php?<?php echo('classid='.getAktClassId());?>>A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.
-</p>
 		</textarea>
 		<input type="checkbox" name="U"/> Bejelentkezési adatokat is elküld.<br/>
 		<button class="btn btn-default" type="submit" ><span class="glyphicon glyphicon-envelope"></span> E-Mail küldés!</button>

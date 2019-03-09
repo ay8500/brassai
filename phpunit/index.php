@@ -99,13 +99,13 @@ if (isset($_GET["action"]) && $_GET["action"]="batch") {
     }
     echo("\n\nResult ok:".$allTestsOk." error:".$allTestsError." time:".number_format($allTime,2)."ms");
     if (isset($_GET["succesmail"]) && $allTestsError==0) {
-        if (sendMail($_GET["succesmail"],"Result OK",$allTestsOk,$allTestsError,$allTime))
+        if (sendTestResultsMail($_GET["succesmail"],"Result OK",$allTestsOk,$allTestsError,$allTime))
             echo("\nSuccesmail sent to ".$_GET["succesmail"]);
         else
             echo("\nError sending succesmail to ".$_GET["succesmail"]);
     }
     if (isset($_GET["errormail"]) && $allTestsError>0) {
-        if (sendMail($_GET["errorsmail"],"Result ERROR",$allTestsOk,$allTestsError,$allTime))
+        if (sendTestResultsMail($_GET["errorsmail"],"Result ERROR",$allTestsOk,$allTestsError,$allTime))
             echo("\nErrormail sent to ".$_GET["errormail"]);
         else
             echo("\nError sending errormail to ".$_GET["errormail"]);
@@ -113,7 +113,7 @@ if (isset($_GET["action"]) && $_GET["action"]="batch") {
     die();
 }
 
-function sendMail($recipient,$subject,$ok,$error,$time) {
+function sendTestResultsMail($recipient,$subject,$ok,$error,$time) {
     $subject = \maierlabs\phpunit\config::$SiteTitle.' '.$subject;
     $text = 'Reasults ok:'.$ok." error:".$error. " time:".number_format($time,2)."ms";
     $header = 'From: ' . \maierlabs\phpunit\config::$senderMail. "\r\n" .
