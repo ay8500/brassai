@@ -1,7 +1,24 @@
 <?php
 include_once 'lpfw/ltools.php';
 include_once 'dbBL.class.php';
-	
+
+\maierlabs\lpfw\Appl::addCss('editor/ui/trumbowyg.min.css');
+\maierlabs\lpfw\Appl::addJs('editor/trumbowyg.min.js');
+\maierlabs\lpfw\Appl::addJs('editor/langs/hu.min.js');
+\maierlabs\lpfw\Appl::addJsScript("
+	$( document ).ready(function() {
+		$('#story').trumbowyg({
+			fullscreenable: false,
+			closable: false,
+			lang: 'hu',
+			btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
+			removeformatPasted: true,
+			autogrow: true
+		});
+	});
+");
+
+
 	$person=$db->getPersonByID($personid);
 	
 	$tab=getParam("tabOpen", "cv");

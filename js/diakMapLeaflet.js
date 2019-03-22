@@ -39,13 +39,31 @@ function initialize() {
     }).addTo(map);
     L.control.scale().addTo(map);
     
-    	map.on('moveend', function() {
-    	    fillPoints();
-    	});
-    	map.on('zoomend', function() {
-    	    fillPoints();
-    	});
-     
+    map.on('moveend', function() {
+        fillPoints();
+    });
+    map.on('zoomend', function() {
+        fillPoints();
+    });
+
+    var geocoderoptions  = {
+        collapsed: false,
+        position: 'topright',
+        text: 'Keresés',
+        value:"ok",
+        placeholder: 'város, utca házszám',
+        callback: function (results) {
+            var bbox = results[0].boundingbox,
+                first = new L.LatLng(bbox[0], bbox[2]),
+                second = new L.LatLng(bbox[1], bbox[3]),
+                bounds = new L.LatLngBounds([first, second]);
+            this._map.fitBounds(bounds);
+        }
+    };
+
+    var osmGeocoder = new L.Control.OSMGeocoder(geocoderoptions );
+
+    map.addControl(osmGeocoder);
 }
 
     
@@ -87,5 +105,7 @@ function setMarkers(data)	{
 	}				
     }
     document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(i+1);
-} 
+}
+
+
 

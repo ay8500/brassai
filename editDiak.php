@@ -319,29 +319,6 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	}
 }
 
-if ($tabOpen==="geoplace") {
-	Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
-	Appl::addJs("js/diakEditGeo.js");
-}
-if (in_array($tabOpen,array("cv","hobbys","school"))) {
-	Appl::addCss('editor/ui/trumbowyg.min.css');
-	Appl::addJs('editor/trumbowyg.min.js');
-	Appl::addJs('editor/langs/hu.min.js');
-	Appl::addJsScript("
-	$( document ).ready(function() {
-		$('#story').trumbowyg({
-			fullscreenable: false,
-			closable: false,
-			lang: 'hu',
-			btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
-			removeformatPasted: true,
-			autogrow: true
-		});
-	});
-	");
-}
-
-
 // Title an subtitle of the page schoolmate or guests
 $guests = isPersonGuest($diak);
 if (isAktClassStaf()) {

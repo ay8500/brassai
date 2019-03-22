@@ -1,4 +1,15 @@
 <?php
+//\maierlabs\lpfw\Appl::addJs("//maps.googleapis.com/maps/api/js?key=AIzaSyCuHI1e-fFiQz3-LfVSE2rZbHo5q8aqCOY",false,false);
+//\maierlabs\lpfw\Appl::addJs("js/diakEditGeo.js");
+\maierlabs\lpfw\Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
+\maierlabs\lpfw\Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");
+
+\maierlabs\lpfw\Appl::addCss("css/Control.OSMGeocoder.css");
+\maierlabs\lpfw\Appl::addJs("js/Control.OSMGeocoder.js");
+
+\maierlabs\lpfw\Appl::addJs("js/diakEditGeoLeaflet.js");
+
+
 if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 	//Save geo data
 	if (getParam("action","")=="changegeo" && userIsLoggedOn()) {
@@ -48,7 +59,7 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUser
 	</div>
 <?php } ?>	
 	
-	<div id="map_canvas" style="width: 100%x; height: 400px;"></div>
+	<div id="map_canvas" style="width: 100%; height: 400px;"></div>
 	
 <?php if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>	
 	<div  class="panel panel-default" style="display: block;">
@@ -62,7 +73,7 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUser
 		<span style="min-width:110px; text-align:right" class="input-group-addon" >Cím</span>
 		<input type="text" id="addres" placeholder="Kolozsvár, Brassai" value="<?php echo $diak["place"].' '.$diak["address"]?>" onKeyPress="if (window.event.keyCode == 13) {doSearch();}	" class="form-control"/>
 		<div class="input-group-btn">
-			<input class="btn btn-default" type="button" value="Keres" onclick="doSearch();return true;"/><br />
+			<input class="btn btn-default" type="button" value="Keres" onclick="doSearch(this);return true;"/><br />
 		</div>
 	</div>
 	<form name="geo">

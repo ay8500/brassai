@@ -3,6 +3,7 @@ var markers=Array();
 
 $(document).ready(function() {
     application = initialize();
+
     
     $.fn.redraw = function(){
 	  $(this).each(function(){
