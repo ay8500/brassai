@@ -147,45 +147,43 @@ if ($view=="table") {
 } else {
     Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-flex;vertical-align: top; margin-bottom: 10px;}');
 }
+
+//Sortparamteter
+if (strpos($sort,"order")!==false)  $sortSql="orderValue";
+if (strpos($sort,"alphabet")!==false)  $sortSql="title";
+if (strpos($sort,"date")!==false)  $sortSql="uploadDate";
+if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
+
 //The list of pictures
-$notDeletedPictures=0;
-if(isset($picture)) {
-	$pictures = array($picture);	//Only one picture => convert to array
-	$notDeletedPictures=1;
+if ($albumParam=="_tablo_") {
+    $where="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
+    $pictures = $db->getListOfPicturesWhere($where,$sortSql, $limit, $offset );
+    $countPictures = $db->getTableCount("picture",$where);
+} elseif ($albumParam=="_mark_") {
+    $where = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
+    $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
+    $countPictures = $db->getTableCount("picture",$where);
+} elseif ($albumParam=="_card_") {
+    $where = "classID is not null and (title like '%icsengetési%') ";
+    $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
+    $countPictures = $db->getTableCount("picture",$where);
 } else {
-    if (strpos($sort,"order")!==false)  $sortSql="orderValue";
-    if (strpos($sort,"alphabet")!==false)  $sortSql="title";
-    if (strpos($sort,"date")!==false)  $sortSql="uploadDate";
-    if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
-	if ($albumParam=="_tablo_") {
-	    $where="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
-        $pictures = $db->getListOfPicturesWhere($where,$sortSql, $limit, $offset );
-        $countPictures = $db->getTableCount("picture",$where);
-    } elseif ($albumParam=="_mark_") {
-	    $where = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
-        $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
-        $countPictures = $db->getTableCount("picture",$where);
-    } elseif ($albumParam=="_card_") {
-        $where = "classID is not null and (title like '%icsengetési%') ";
-        $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
-        $countPictures = $db->getTableCount("picture",$where);
+    if (!isset($typeId)) $typeId=getParam("typeid");
+    if (!isset($type)) $type=getParam("type");
+    $where = $type.'='.$typeId;
+    if ($albumParam!=null) {
+        $where.=" and albumName='".$albumParam."'";
     } else {
-	    if (!isset($typeId)) $typeId=getParam("typeid");
-	    if (!isset($type)) $type=getParam("type");
-        $pictures = $db->getListOfPictures($typeId, $type,  $albumParam, $sortSql, $limit,$offset);
-        $where = $type.'='.$typeId;
-        if ($albumParam!=null) {
-            $where.=" and albumName='".$albumParam."'";
-        } else {
-            $where.=" and (albumName is null or albumName='')";
-        }
-        $countPictures = $db->getTableCount("picture",$where);
-	}
-	foreach ($pictures as $pict) {
-		if ( $pict["isDeleted"]==0 ) {
-			$notDeletedPictures++;
-		}
-	}
+        $where.=" and (albumName is null or albumName='')";
+    }
+    $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
+    $countPictures = $db->getTableCount("picture",$where);
+}
+$notDeletedPictures=0;
+foreach ($pictures as $pict) {
+    if ( $pict["isDeleted"]==0 ) {
+        $notDeletedPictures++;
+    }
 }
 
 //Albumlist
@@ -218,6 +216,7 @@ if (isActionParam("showmore") ) {
 }
 ?>
 	<div class="well"><?php
+        //Albumlist
         foreach ($albumList as $alb) {
 			if (isset($alb["albumName"])) {
 				$albumLink = basename($_SERVER['SCRIPT_FILENAME'], ".php").".php?type=".$type."&typeid=".$typeId."&album=".$alb["albumName"].(getParam("tabOpen")!=null?"&tabOpen=".getParam("tabOpen"):"");
@@ -231,8 +230,9 @@ if (isActionParam("showmore") ) {
 				<span class="folderdiv"><?php echo $alb["albumText"]?></span>
 			<?php } ?>
 			</a>
-		<?php }?>
-		<?php if ( (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
+		<?php }
+        //New album
+		if ( (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -248,8 +248,9 @@ if (isActionParam("showmore") ) {
 					<button class="btn btn-default" style="margin-top: -15px;"><?php Appl::_("Új albumot létrehoz")?></button>
 				</form>
 			</div>
-		<?php } ?>
-		<?php if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
+		<?php }
+		//Rename album
+		if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -269,13 +270,9 @@ if (isActionParam("showmore") ) {
 		<div style="margin-bottom:15px;">
 			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
             <button class="btn btn-default" onclick="return toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
-			<?php if(isset($picture)) { ?>
-				<button class="btn btn-default" onclick="window.location.href=<?php echo "'".$_SERVER["PHP_SELF"].'?sort='.$sort.'&type='.$type.'&typeid='.$typeId.'&album='.$picture["albumName"]."'; return false;"?>" ><span class="glyphicon glyphicon-hand-right"> </span> <?php Appl::_("Mutasd a többi képet")?></button>
-			<?php  } else { ?>
-                <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
-                <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
-                <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
-            <?php  } ?>
+            <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
+            <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
+            <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
         </div>
 		<div id="download" style="margin:15px;display:none;">
 			<div><?php Appl::_("Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.")?><span></span></div>
@@ -332,15 +329,25 @@ if (isActionParam("showmore") ) {
 <!-- Modal -->
 <div class="modal" id="pictureModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered pdialog" style="background-color: white;border-radius: 7px;">
-        <div class="modal-content" style="position: relative;padding: 5px;">
-            <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px" onmousedown="newPerson(event);"/>
+        <div class="modal-content" style="position: relative;padding: 5px;min-height: 400px; ">
+            <div id="thePictureDiv" style="overflow: hidden;">
+                <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px; display: inline-block;" onmousedown="newPerson(event);"/>
+            </div>
             <div style="position: absolute; top: 10px; left:10px;">
                 <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
                 <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" onclick="return showFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
-                <?php if(userIsAdmin() || userIsSuperuser()) {?>
+                <?php if(userIsAdmin() ) {?>
                     <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
                 <?php }?>
+            </div>
+            <div style="width:100%; padding:0 10px 0 0; position: absolute;top: 50%;">
+                <div style="display: inline-block">
+                    <button title="<?php Appl::_("elöző kép")?>" class="pbtn" onclick="return slideToNextPicture(false);"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                </div>
+                <div style="display: inline-block;float: right">
+                    <button title="<?php Appl::_("következő kép")?>" class="pbtn" onclick="return slideToNextPicture(true);"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                </div>
             </div>
         </div>
         <div id="personlist"></div>
@@ -404,7 +411,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
         <?php if ($view=="table") {?>
             <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" />
             <div class="pdiv">
-                <button title="Nagyít" class="pbtn" onclick="return pictureModal(this,'<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
+                <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
                 <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
                 if (userIsAdmin()){?>
                     <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -494,6 +501,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     <?php }
 }
 
+//Show more button
 Appl::addJsScript("
     var picturesStart=1;
     var picturesButton='';
@@ -578,6 +586,8 @@ Appl::addJsScript("
         }
     }
 ');
+
+//javascript delete picture
 if (userIsAdmin()) {
     \maierlabs\lpfw\Appl::addJsScript('
         function unlinkPicture(id) {
@@ -588,4 +598,21 @@ if (userIsAdmin()) {
         }
     ');
 }
+
+//Open picture modal if only one picure whant to be viewed
+if(isset($picture)) {
+    \maierlabs\lpfw\Appl::addJsScript('
+        $(function() {
+            pictureModal("'.$picture['file'].'",'.intval($picture['id']).');
+        });
+    ');
+}
+
+//Send the list of album pictures to javascript
+\maierlabs\lpfw\Appl::addJsScript('var pictures = Array();');
+foreach ($pictures as $idx=>$pict) {
+    if ($pict["isDeleted"] == 0) {
+        \maierlabs\lpfw\Appl::addJsScript('pictures['.$idx.']=Array(); pictures['.$idx.'].file ="'.$pict["file"].'"; pictures['.$idx.'].id='.$pict["id"].';');
+    }
+};
 

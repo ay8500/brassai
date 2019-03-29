@@ -57,11 +57,13 @@ function displayedit(id) {
 var faceSize = 30;
 var picturePadding = 5;
 
-function pictureModal(o,file,id) {
-    $("[class*=recognition]").remove();
+
+function pictureModal(file,id) {
+    $("#thePicture").hide();
     $("#thePicture").attr("src","images/loading.gif");
+    $("[class*=recognition]").remove();$("[class*=face]").remove(); $("[class*=facename]").remove();$("[class*=personlist]").remove();
     $("#thePicture").attr("data-id",id);
-    $("#thePicture").css("max-width",$(window).width()-80+"px");
+    //$("#thePicture").css("max-width",$(window).width()-80+"px");
     $("#thePicture").css("max-height",$(window).height()-120+"px");
     $("#thePicture").on('load',function(){
         onPictureLoad();
@@ -75,6 +77,8 @@ function onPictureLoad() {
     if ($("#thePicture").width()==0) {
         setTimeout(onPictureLoad,100);
     } else {
+        $("#thePictureDiv").width($("#thePicture").width());
+        $("#thePicture").show();
         showFaceRecognition(true);
         showTagging();
     }
@@ -96,8 +100,8 @@ function showTagging(show) {
                     'onmouseout':"personShow("+p.personID+",false)",
                     'onclick':"personModify(this,"+p.personID+","+p.pictureID+")",
                     'css': {
-                        'left': picturePadding + p.xPos * img.width() + 'px',
-                        'top': picturePadding + p.yPos * img.height() + 'px',
+                        'left': img.position().left+ p.xPos * img.width() + 'px',
+                        'top': img.position().top+ + p.yPos * img.height() + 'px',
                         'width': p.size * img.width() + 'px',
                         'height': p.size * img.width() + 'px',
                         'opacity':(show?'1':'0')
@@ -108,14 +112,14 @@ function showTagging(show) {
                     'class': 'facename',
                     'person-id':p.personID,
                     'css': {
-                        'left': picturePadding + p.xPos * img.width() + 'px',
-                        'top': picturePadding + p.yPos * img.height() + p.size * img.width()+ 'px'
+                        'left': img.position().left+ + p.xPos * img.width() + 'px',
+                        'top': img.position().top+ + p.yPos * img.height() + p.size * img.width()+ 'px'
                     }
                 }).insertAfter(img);
                 var html='<span onmouseover="personShow('+p.personID+',true)"';
                 html += ' onmouseout="personShow('+p.personID+',false)" class="personlist" ';
                 html += ' style="border-radius:3px" person-id="'+p.personID+'">';
-                html += (p.title!=null?p.title+' ':'')+p.lastname+' '+p.firstname;
+                html += '<a href="editDiak.php?uid='+p.personID+'">'+(p.title!=null?p.title+' ':'')+p.lastname+' '+p.firstname+"</a>";
                 html +='&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson('+p.personID+','+p.pictureID+')"></span></span>';
                 $("#personlist").append(html);
             });
@@ -193,8 +197,8 @@ function showFaceRecognition(force) {
                         'class': 'recognition',
                         'onclick':'$(".newperson").remove();showDetectionList(this,' +(faces[i].x*faces[i].scaleX+w/2)+','+(faces[i].y*faces[i].scaleY+w/2)+','+img.attr("data-id")+','+w+ ')',
                         'css': {
-                            'left': picturePadding + faces[i].x * faces[i].scaleX + 'px',
-                            'top': picturePadding + faces[i].y * faces[i].scaleY + 'px',
+                            'left': img.position().left + faces[i].x * faces[i].scaleX + 'px',
+                            'top': img.position().top + faces[i].y * faces[i].scaleY + 'px',
                             'width': faces[i].width * faces[i].scaleX + 'px',
                             'height': faces[i].height * faces[i].scaleY + 'px'
                         }
@@ -233,12 +237,17 @@ $(function() {
     $(document).keydown(function(e){
         var event = window.event ? window.event : e;
         var key = e.which ? e.which : e.keyCode;
-        if (key ==107)   setFaceSize(true);
-        if (key == 109)  setFaceSize(false);
-        if (key ==37)    setPos(false,null);//left
-        if (key ==38)    setPos(null,true); //up
-        if (key ==39)    setPos(true,null); //right
-        if (key ==40)    setPos(null,false);//down
+        if ($('.newperson').length>0 || $('.personsearch').length>0 ) {
+            if (key == 107) setFaceSize(true);
+            if (key == 109) setFaceSize(false);
+            if (key == 37) setPos(false, null);//left
+            if (key == 38) setPos(null, true); //up
+            if (key == 39) setPos(true, null); //right
+            if (key == 40) setPos(null, false);//down
+        } else {
+            if (key == 37) slideToNextPicture(false);//left
+            if (key == 39) slideToNextPicture(true); //right
+        }
     });
 });
 
@@ -416,6 +425,62 @@ function savePerson(personid,pictureid,x,y) {
     });
 }
 
+function slideToNextPicture(direction) {
+    picture = getNextPicture(direction, $("#thePicture").attr("data-id"));
+    if (picture==null)
+        return false;
+    var img =$("#thePicture");
+    var id = picture.id;
+    var file=picture.file;
+    $("#thePicture").off('load');
+    $("#thePicture").attr("data-id",id);
+    $("[class*=recognition]").remove();$("[class*=face]").remove(); $("[class*=facename]").remove();$("[class*=personlist]").remove();
+    if (direction)
+        img.animate(
+            {marginLeft: "+="+(img.width()+picturePadding)+"px"},
+            {
+                complete:  function() {
+                    $("#thePicture").on('load',function(){
+                        img.css("marginLeft",(-img.width()-picturePadding)+"px");
+                        $("#thePictureDiv").width($("#thePicture").width());
+                        img.animate(
+                            {marginLeft: "+="+(img.width()+picturePadding)+"px"},
+                            {
+                                complete: function () {
+                                    showTagging(false);
+                                }
+                            }
+                        );
+
+                    });
+                    img.attr("src",file);
+                }
+            }
+        );
+    else
+        img.animate(
+            {marginLeft: "-="+(img.width()+picturePadding)+"px"},
+            {
+                complete:  function() {
+                    $("#thePicture").on('load',function() {
+                        img.css("marginLeft", (img.width() + picturePadding) + "px");
+                        $("#thePictureDiv").width($("#thePicture").width());
+                        img.animate(
+                            {marginLeft: "-=" + (img.width() + picturePadding) + "px"},
+                            {
+                                complete: function () {
+                                    showTagging(false);
+                                }
+                            }
+                        );
+                    });
+                    img.attr("src",file);
+                }
+            }
+        );
+    return false;
+}
+
 function showConfirmMessage(title,text,picture,pictureid,personid) {
     $(".modal-title").html(title);
     $(".modal-body").html('<div>'+text+'<div style="margin-top:15px;width: 100%;text-align: center"><img style="border-radius: 80px;box-shadow: 3px 2px 20px 4px black;" src="'+picture+'" /></div></div>' );
@@ -426,6 +491,27 @@ function showConfirmMessage(title,text,picture,pictureid,personid) {
     $('#myModal').modal({ show: 'true'});
 }
 
+function getNextPicture(direction,id) {
+    var before=null;
+    var after =null;
+    var foundId=false;
+    for(var i=0;i<pictures.length;i++){
+        var picture=pictures[i];
+        if (foundId) {
+            after=picture;
+            if (direction===true) {
+                return after;
+            }
+        }
+        if (picture.id === parseInt(id)) {
+            foundId=true;
+            if (direction===false) {
+                return before;
+            }
+        }
+        before=picture;
+    }
+}
 
 function imageCss() {
     var brightness = $("#slider_brightness").slider("value");
@@ -464,7 +550,6 @@ function showImageSettings() {
     $( "#slider_contrast" ).slider({min:0,max:300,value:100, slide:imageCss, change:imageCss });
     $( "#slider_hue_rotate" ).slider({min:-30,max:30,value:0, slide:imageCss, change:imageCss });
     $( "#slider_saturate" ).slider({min:0,max:20,value:10, slide:imageCss, change:imageCss });
-    $(".modal-content").width(350);
     $('#myModal').modal({ show: 'true'});
 }
 
@@ -475,8 +560,8 @@ function newPerson(event) {
     var n=$('<div>', {
         'class': 'newperson',
         'css': {
-            'left': picturePadding+event.offsetX-faceSize/2+ 'px',
-            'top': picturePadding+event.offsetY-faceSize/2 + 'px',
+            'left': img.position().left+event.offsetX-faceSize/2+ 'px',
+            'top': img.position().top+event.offsetY-faceSize/2 + 'px',
             'width': faceSize + 'px',
             'height': faceSize + 'px'
         }
