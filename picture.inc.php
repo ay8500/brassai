@@ -323,9 +323,8 @@ if (isActionParam("showmore") ) {
 <?php \maierlabs\lpfw\Appl::addCssStyle('
     .pdialog {width: 90%;}
     @media only screen and (max-width: 700px){
-        .pdialog {
-            width: 100%;
-        }
+        .pdialog {width: 100%;}
+        .modal-dialog {margin:0px;}
     }
 ');
 ?>
@@ -560,7 +559,6 @@ Appl::addJsScript("
         return false;
     }
 
-
     function changeOrder(id1,id2) {
         var url = "'.($view=="table"?"view=table":"view=list").'";
         url +="'.(isset($tabOpen)?"&tabOpen=".$tabOpen:"").'";
@@ -585,7 +583,7 @@ Appl::addJsScript("
     }
 
     function deletePicture(id) {
-        if (confirm("'.Appl::__("Fénykép végleges törölését kérem konfirmálni!").'")) {
+        if (confirm("'.Appl::__("Fénykép törölését kérem konfirmálni!").'")) {
             showWaitMessage();
             window.location.href="'.$_SERVER["PHP_SELF"].'?action=deletePicture&did="+id+"&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
         }

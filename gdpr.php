@@ -21,7 +21,7 @@ if (null!=$person) {
 			Appl::setMessage("Biztonságí kód nem helyes. Probáld még egyszer!","warning");
 		} 
 
-		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')!=$_SESSION['SECURITY_CODE'])) {
+		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')==$_SESSION['SECURITY_CODE'])) {
 			Appl::setMessage("Személyes adatok védelme kérvényezve. Hamarosan visszajelzük mailben vagy telefonon.","info");
 			include_once 'sendMail.php';
 			$html="";
@@ -42,54 +42,70 @@ include 'homemenu.inc.php';
 	<div id="page1">
 		<h4 class="margin-hor">Válassz ki egy maradandó végleges törlési opciót</h4>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="deletesocialnetwork" onclick="checkgdpr();"/> 
-			<div class="margin-hor1"> E-Mail, Twitter, Facebook címem törlését szeretném.</div></div>
+			<input class="left fb-radio" type="radio" name="action" value="deletesocialnetwork" onclick="checkgdpr();"
+                  <?php echo getParam("action","")=="deletesocialnetwork"?"checked=checked":"" ?>
+            />
+			<div class="margin-hor1"> E-Mail, Facebook címem törlését szeretném.</div></div>
 		<div style="clear:both;"></div>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="deleteaddresses" onclick="checkgdpr();"/> 
-			<div class="margin-hor1">Lakcímem, E-Mail, Twitter, Facebook címem törlését szeretném.</div></div>
+			<input class="left fb-radio" type="radio" name="action" value="deleteaddresses" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="deleteaddresses"?"checked=checked":"" ?>
+            />
+			<div class="margin-hor1">Lakcímem, E-Mail, Facebook címem törlését szeretném.</div></div>
 		<div style="clear:both;"></div>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="deletebutname" onclick="checkgdpr();"/> 
+			<input class="left fb-radio" type="radio" name="action" value="deletebutname" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="deletebutname"?"checked=checked":"" ?>
+            />
 			<div class="margin-hor1"> Nevemen kívül minden személyes adatnak a törlését szeretném.</div></div>
 		<div style="clear:both;"></div>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="deletepictures" onclick="checkgdpr();"/> 
+			<input class="left fb-radio" type="radio" name="action" value="deletepictures" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="deletepictures"?"checked=checked":"" ?>
+            />
 			<div class="margin-hor1"> Profilképen és személyes képeim  törlését szeretném.</div></div>
 		<div style="clear:both;"></div>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="deleteall" onclick="checkgdpr();"/> 
+			<input class="left fb-radio" type="radio" name="action" value="deleteall" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="deleteall"?"checked=checked":"" ?>
+            />
 			<div class="margin-hor1"> Teljes és végleges törlést szeretnék, ebben az osztályban az én nevem alatt soha ne legyen bejegyzés!</div></div>
 		<div style="clear:both;"></div>
 		<h4 class="margin-hor">Válassz ki egy adat láthatósági opciót</h4>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="onlyschoolmates" onclick="checkgdpr();"/> 
+			<input class="left fb-radio" type="radio" name="action" value="onlyschoolmates" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="onlyschoolmates"?"checked=checked":"" ?>
+            />
 			<div class="margin-hor1"> Csak nevem és lakhelyem városa legyen látható mindenki számára, a többi adatokat csak iskolatársak latják.</div></div>
 		<div style="clear:both;"></div>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="onlyclassmates" onclick="checkgdpr();"/> 
+			<input class="left fb-radio" type="radio" name="action" value="onlyclassmates" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="onlyclassmates"?"checked=checked":"" ?>
+            />
 			<div class="margin-hor1"> Csak nevem és lakhelyem városa legyen látható mindenki számára, a többi adatokat csak osztálytársak latják.</div></div>
 		<div style="clear:both;"></div>
 		<h4 class="margin-hor">Mit tud rólam ez az oldal?</h4>
 		<div class="margin-def">
-			<input class="left fb-radio" type="radio" name="action" value="alldatamail" onclick="checkgdpr();"/> 
+			<input class="left fb-radio" type="radio" name="action" value="alldatamail" onclick="checkgdpr();"
+                <?php echo getParam("action","")=="alldatamail"?"checked=checked":"" ?>
+            />
 			<div class="margin-hor1"> Szeretnék egy e-mail-t az összes személyes adataimról.</div></div>
 		<div style="clear:both;"></div>
 	</div>
 	
 	<div class="input-group" style="margin: 20px 0px 20px 0px;">
 		<span style="min-width:120px; text-align:right" class="input-group-addon">E-Mail</span>
-		<input type="text" class="form-control" value="<?php echo getFieldValue($person,"email")?>" name="email" id="email-gdpr" placeholder="info@email.ro" onkeyup="checkgdpr();"/>
+		<input type="text" class="form-control" value="<?php echo getParam("email")==null?getFieldValue($person,"email"):getParam("email")?>" name="email" id="email-gdpr" placeholder="info@email.ro" onkeyup="checkgdpr();"/>
 	</div>
 
 	<div class="input-group" style="margin: 20px 0px 20px 0px;">
 		<span style="min-width:120px; text-align:right" class="input-group-addon">Telefon</span>
-		<input type="text" class="form-control" value="<?php echo getFieldValue($person,"phone")?>" name="phone" placeholder="+40 264 123456"/>
+		<input type="text" class="form-control" value="<?php echo getParam("phone")==null?getFieldValue($person,"phone"):getParam("phone")?>" name="phone" placeholder="+40 264 123456"/>
 	</div>
 	
 	<div class="input-group" style="margin: 20px 0px 20px 0px;">
 		<span style="min-width:120px; text-align:right" class="input-group-addon">Megjegyzés</span>
-		<input type="text" class="form-control" value="" name="text" />
+		<input type="text" class="form-control" value="<?php echo getParam("text","")?>" name="text" />
 	</div>
 	
 	<?php if (!userIsLoggedOn()) {?>
@@ -109,7 +125,7 @@ include 'homemenu.inc.php';
 		<b>Fontos:</b> Kérjük a megadott e-mail címre küldött levélben a linket megkattintani, a kérvényezett folyamat csak ezután lessz végrehajtva. A link csak 2 napig érvényes. Örvendünk mert tudtunk segíteni a személyes adatok védelméért.      
 	</div>
 </div>
-<input type="hidden" name="id" value="<?php echo $person["id"]?>" />
+<input type="hidden" name="id" value="<?php echo getAktUserId()?>" />
 </form>
 <?php 
 Appl::addJsScript("

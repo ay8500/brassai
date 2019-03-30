@@ -12,7 +12,7 @@ class SecurityImage
 		$text = "",
 		$num_dots,	// Num of noise dots to add
 		$chars = array("a","A","b","B","C","d","D","e","E","f","F","g","G","h","H","J",
-			   "K","L","m","M","n","N","P","Q","r","R","t","T",
+			   "K","L","m","M","n","N","P","Q","r","R","t","T","?","%","§",
 			   "U","W","X","Y","Z","1","2","3","4","5","6","7","8","9");
 	
 		/**
@@ -108,7 +108,7 @@ class SecurityImage
 	 */
 	function selectFont()
 	{
-		$this->font = "ARIAL.TTF";
+		$this->font = __DIR__."/ARIAL.TTF";
 		//switch (mt_rand(1,2))
 		//{
 		//	case 1 : $this->font = "FELIXTI.TTF"; break;

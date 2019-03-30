@@ -1,11 +1,5 @@
-	<span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék.
-	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">"1 und 1"</a> cég szamitógépközpontjában. 
-	Biztonsági másolatok a személyes adatokról csak a internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az adatok maximum 6 hónapig vannak tárolva. 
-	A személyes adatok megjelennek külömbőző internet kereső oldalok találati listáján. 
-	A védett mezők tartalma anonim felhasználok ellen védve vannak. </span><br/>
-	
 	<?php //Person picture?>
-	<div class="diak_picture" style="display: inline-block;">
+	<div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
 		<img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
 		<?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
 		<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
@@ -113,7 +107,7 @@
         <?php } ?>
 
 
-        <div itemtype="http://schema.org/PostalAddress" itemprop="address" itemscope >
+        <div itemtype="http://schema.org/PostalAddress" itemprop="address" itemscope style="overflow-x: hidden;" >
         <?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
             <div class="input-group"><?php
                 //Placeholder
@@ -219,8 +213,15 @@
         Utolsó diákéveit a <?php echo getAktClass()["name"] ?>-ban járta.
         <?php if (isset($person["birthname"])) { ?> Osztálytársai <?php echo $person["birthname"] ?> diákkori nevén ismerik. <?php } ?>
     </div>
-<?php }
+<?php } ?>
+    <span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A személyek személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék.
+	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">"1 und 1"</a> cég szamitógépközpontjában.
+	Biztonsági másolatok a személyes adatokról csak a internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az adatok maximum 6 hónapig vannak tárolva.
+	A személyes adatok megjelennek külömbőző internet kereső oldalok találati listáján.
+	A védett mezők tartalma anonim felhasználok ellen védve vannak. </span><br/>
 
+
+<?php
 function showRoleField($value,$fieldName) {
     $options = array();
     $disabled='';
