@@ -174,7 +174,11 @@ if ($albumParam=="_tablo_") {
     if ($albumParam!=null) {
         $where.=" and albumName='".$albumParam."'";
     } else {
-        $where.=" and (albumName is null or albumName='')";
+        if (isset($picture) &&  isset($picture["albumName"])) {
+            $where.=" and albumName='".$picture["albumName"]."'";
+        } else {
+            $where.=" and (albumName is null or albumName='')";
+        }
     }
     $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
     $countPictures = $db->getTableCount("picture",$where);
@@ -332,10 +336,11 @@ if (isActionParam("showmore") ) {
         <div class="modal-content" style="position: relative;padding: 5px;min-height: 400px; ">
             <div id="thePictureDiv" style="overflow: hidden;">
                 <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px; display: inline-block;" onmousedown="newPerson(event);"/>
+                <img id="thePictureFaceRecognition" style="display: none" />
             </div>
             <div style="position: absolute; top: 10px; left:10px;">
                 <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" onclick="return showFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
+                <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" id="facebutton" onclick="return toggleFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
                 <?php if(userIsAdmin() ) {?>
                     <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
@@ -343,10 +348,10 @@ if (isActionParam("showmore") ) {
             </div>
             <div style="width:100%; padding:0 10px 0 0; position: absolute;top: 50%;">
                 <div style="display: inline-block">
-                    <button title="<?php Appl::_("elöző kép")?>" class="pbtn" onclick="return slideToNextPicture(false);"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                    <button title="<?php Appl::_("elöző kép")?>" id="prevpicture" class="pbtn" onclick="return slideToNextPicture(false);"><span class="glyphicon glyphicon-arrow-left"></span></button>
                 </div>
                 <div style="display: inline-block;float: right">
-                    <button title="<?php Appl::_("következő kép")?>" class="pbtn" onclick="return slideToNextPicture(true);"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                    <button title="<?php Appl::_("következő kép")?>" id="nextpicture" class="pbtn" onclick="return slideToNextPicture(true);"><span class="glyphicon glyphicon-arrow-right"></span></button>
                 </div>
             </div>
         </div>

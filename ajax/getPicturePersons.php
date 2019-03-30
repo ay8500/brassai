@@ -13,8 +13,10 @@ $pictureId=getParam("pictureid");
 
 $ret = array();
 
-$ret = $dbPIP->getListOfPersonInPicture($pictureId);
+$ret["face"] = $dbPIP->getListOfPersonInPicture($pictureId);
 
+$picture = $db->getPictureById($pictureId);
+$ret["title"]=$picture["title"];
 
 echo(json_encode($ret));
 ?>

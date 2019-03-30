@@ -56,19 +56,27 @@ function displayedit(id) {
 
 var faceSize = 30;
 var picturePadding = 5;
-
+var pictureFile;
+var isShowFaceRecognition=true;
 
 function pictureModal(file,id) {
+    pictureFile=file;
+    getNextPicture(false, id)!=null?$("#prevpicture").show():$("#prevpicture").hide();
+    getNextPicture(true, id)!=null?$("#nextpicture").show():$("#nextpicture").hide();
     $("#thePicture").hide();
     $("#thePicture").attr("src","images/loading.gif");
-    $("[class*=recognition]").remove();$("[class*=face]").remove(); $("[class*=facename]").remove();$("[class*=personlist]").remove();
+    $("[class*=recognition]").remove();$("[class*=face]").remove(); $("[class*=facename]").remove();
+    $("[class*=personlist]").remove();$("[id*=personlist]").empty();
     $("#thePicture").attr("data-id",id);
     //$("#thePicture").css("max-width",$(window).width()-80+"px");
     $("#thePicture").css("max-height",$(window).height()-120+"px");
     $("#thePicture").on('load',function(){
         onPictureLoad();
     });
-    $("#thePicture").attr("src",file);
+    $("#thePictureFaceRecognition").on('load',function(){
+        onPictureFaceRecognitionLoad();
+    });
+    $("#thePicture").attr("src","imageConvert.php?width=1900&id="+id);
     $('#pictureModal').modal();
     return false;
 }
@@ -77,10 +85,18 @@ function onPictureLoad() {
     if ($("#thePicture").width()==0) {
         setTimeout(onPictureLoad,100);
     } else {
-        $("#thePictureDiv").width($("#thePicture").width());
+        //$("#thePictureDiv").width($("#thePicture").width());
         $("#thePicture").show();
-        showFaceRecognition(true);
-        showTagging();
+        showTagging(false);
+        $("#thePictureFaceRecognition").attr("src",pictureFile);
+    }
+}
+
+function onPictureFaceRecognitionLoad() {
+    if ($("#thePictureFaceRecognition").width()==0) {
+        setTimeout(onPictureLoad,100);
+    } else {
+        showFaceRecognition(isShowFaceRecognition);
     }
 }
 
@@ -91,8 +107,10 @@ function showTagging(show) {
         url: "ajax/getPicturePersons.php?pictureid="+img.attr("data-id"),
         type:"GET",
         success:function(data){
-            $('[person-id]').remove();
-            data.forEach(function(p){
+            $('[person-id]').remove();$("[id*=personlist]").empty();
+            if (data.title!=null)
+                $("#personlist").append('<div><b>'+data.title+'</b></div>');
+            data.face.forEach(function(p){
                 $('<div>', {
                     'class': 'face',
                     'person-id':p.personID,
@@ -116,11 +134,13 @@ function showTagging(show) {
                         'top': img.position().top+ + p.yPos * img.height() + p.size * img.width()+ 'px'
                     }
                 }).insertAfter(img);
-                var html='<span onmouseover="personShow('+p.personID+',true)"';
+                var html='';
+                html +=     '<span onmouseover="personShow('+p.personID+',true)"';
                 html += ' onmouseout="personShow('+p.personID+',false)" class="personlist" ';
                 html += ' style="border-radius:3px" person-id="'+p.personID+'">';
                 html += '<a href="editDiak.php?uid='+p.personID+'">'+(p.title!=null?p.title+' ':'')+p.lastname+' '+p.firstname+"</a>";
-                html +='&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson('+p.personID+','+p.pictureID+')"></span></span>';
+                html +='&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson('+p.personID+','+p.pictureID+')"></span>';
+                html +='</span>';
                 $("#personlist").append(html);
             });
         },
@@ -181,26 +201,40 @@ function getButtonHtml() {
     return html;
 }
 
+function toggleFaceRecognition(recognition) {
+    if (recognition==null)
+        isShowFaceRecognition=!isShowFaceRecognition;
+    else
+        isShowFaceRecognition=recognition;
+    if (isShowFaceRecognition)
+        $("#facebutton").css("background-color","white");
+    else
+        $("#facebutton").css("background-color","darkgray");
+    showFaceRecognition();
+}
+
 function showFaceRecognition(force) {
-    if ($("[class*=recognition]").length!=0 && force!==true) {
+
+    if (isShowFaceRecognition!==true) {
         $("[class*=recognition]").remove();
         return;
     }
 
-    $("#thePicture").faceDetection({
+    $("#thePictureFaceRecognition").faceDetection({
         complete: function (faces) {
             var img=$("#thePicture");
+            var screenScale=$("#thePicture").width()/$("#thePictureFaceRecognition").width();
             for (var i = 0; i < faces.length; i++) {
-                var w = faces[i].width * faces[i].scaleX;
+                var w = faces[i].width * faces[i].scaleX * screenScale ;
                 if (faces[i].confidence > -1.0) {
                     $('<div>', {
                         'class': 'recognition',
-                        'onclick':'$(".newperson").remove();showDetectionList(this,' +(faces[i].x*faces[i].scaleX+w/2)+','+(faces[i].y*faces[i].scaleY+w/2)+','+img.attr("data-id")+','+w+ ')',
+                        'onclick':'$(".newperson").remove();showDetectionList(this,' +(faces[i].x*faces[i].scaleX*screenScale +w/2)+','+(faces[i].y*faces[i].scaleY*screenScale +w/2)+','+img.attr("data-id")+','+w+ ')',
                         'css': {
-                            'left': img.position().left + faces[i].x * faces[i].scaleX + 'px',
-                            'top': img.position().top + faces[i].y * faces[i].scaleY + 'px',
-                            'width': faces[i].width * faces[i].scaleX + 'px',
-                            'height': faces[i].height * faces[i].scaleY + 'px'
+                            'left': img.position().left + faces[i].x * faces[i].scaleX * screenScale + 'px',
+                            'top': img.position().top + faces[i].y * faces[i].scaleY * screenScale + 'px',
+                            'width': faces[i].width * faces[i].scaleX * screenScale + 'px',
+                            'height': faces[i].height * faces[i].scaleY * screenScale + 'px'
                         }
                     }).insertAfter(img);
                 }
@@ -426,34 +460,43 @@ function savePerson(personid,pictureid,x,y) {
 }
 
 function slideToNextPicture(direction) {
+    toggleFaceRecognition(false);
     picture = getNextPicture(direction, $("#thePicture").attr("data-id"));
     if (picture==null)
         return false;
     var img =$("#thePicture");
     var id = picture.id;
     var file=picture.file;
+    $("#prevpicture").hide();
+    $("#nextpicture").hide();
+
     $("#thePicture").off('load');
     $("#thePicture").attr("data-id",id);
-    $("[class*=recognition]").remove();$("[class*=face]").remove(); $("[class*=facename]").remove();$("[class*=personlist]").remove();
+    $("[class*=recognition]").remove();$("[class*=face]").remove(); $("[class*=facename]").remove();
+    $("[class*=personlist]").remove();$("[id*=personlist]").empty();
+
     if (direction)
         img.animate(
-            {marginLeft: "+="+(img.width()+picturePadding)+"px"},
+            {marginLeft: "+="+($(".modal-content").width()+picturePadding)+"px"},
             {
                 complete:  function() {
                     $("#thePicture").on('load',function(){
                         img.css("marginLeft",(-img.width()-picturePadding)+"px");
-                        $("#thePictureDiv").width($("#thePicture").width());
+                        //$("#thePictureDiv").width($("#thePicture").width());
                         img.animate(
                             {marginLeft: "+="+(img.width()+picturePadding)+"px"},
                             {
                                 complete: function () {
+                                    getNextPicture(false, id)!=null?$("#prevpicture").show():$("#prevpicture").hide();
+                                    getNextPicture(true, id)!=null?$("#nextpicture").show():$("#nextpicture").hide();
                                     showTagging(false);
+                                    $("#thePictureFaceRecognition").attr("src",file);
                                 }
                             }
                         );
 
                     });
-                    img.attr("src",file);
+                    img.attr("src","imageConvert.php?width=1200&id="+id);
                 }
             }
         );
@@ -463,18 +506,21 @@ function slideToNextPicture(direction) {
             {
                 complete:  function() {
                     $("#thePicture").on('load',function() {
-                        img.css("marginLeft", (img.width() + picturePadding) + "px");
-                        $("#thePictureDiv").width($("#thePicture").width());
+                        img.css("marginLeft", ($(".modal-content").width() + picturePadding) + "px");
+                        //$("#thePictureDiv").width($("#thePicture").width());
                         img.animate(
-                            {marginLeft: "-=" + (img.width() + picturePadding) + "px"},
+                            {marginLeft: "-=" + ($(".modal-content").width() + picturePadding) + "px"},
                             {
                                 complete: function () {
+                                    getNextPicture(false, id)!=null?$("#prevpicture").show():$("#prevpicture").hide();
+                                    getNextPicture(true, id)!=null?$("#nextpicture").show():$("#nextpicture").hide();
                                     showTagging(false);
+                                    $("#thePictureFaceRecognition").attr("src",file);
                                 }
                             }
                         );
                     });
-                    img.attr("src",file);
+                    img.attr("src","imageConvert.php?width=1200&id="+id);
                 }
             }
         );
