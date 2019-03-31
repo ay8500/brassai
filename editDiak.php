@@ -351,9 +351,10 @@ include("homemenu.inc.php");
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
 		<img src="<?php echo getPersonPicture($diak) ?>" class="diak_image_icon" />
-        <?php echo($diak["title"]);?>
-	    <span itemprop="name"><?php  echo $diak["lastname"] ?>  <?php echo $diak["firstname"] ?></span>
-	    <?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
+        <span style="font-size: 22px">
+	        <span itemprop="name"><?php echo($diak["title"])." ".$diak["lastname"]." ".$diak["firstname"] ?></span>
+	        <?php if (showField($diak,"birthname")) echo('('.$diak["birthname"].')');?>
+        </span>
 	</h2>
 	</div>
 <?php } else { ?>

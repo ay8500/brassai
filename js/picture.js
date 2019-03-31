@@ -257,9 +257,9 @@ $(function() {
             url: "ajax/getPicturePersons.php?pictureid="+$(this).attr("data-id"),
             type:"GET",
             success:function(data){
-                if (data.length>0) {
-                    $('#imgspan' + data[0].pictureID).text("Megjelölt személyek a képen:" + data.length);
-                    $('#imgspan' + data[0].pictureID).show();
+                if (data.face.length>0) {
+                    $('#imgspan' + data.face[0].pictureID).text("Megjelölt személyek a képen:" + data.face.length);
+                    $('#imgspan' + data.face[0].pictureID).show();
                 }
             },
             error:function(error) {
