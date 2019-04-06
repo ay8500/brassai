@@ -283,6 +283,14 @@ $(function() {
             if (key == 39) slideToNextPicture(true); //right
         }
     });
+
+    $( window ).resize(function() {
+        toggleFaceRecognition(false);
+        showTagging();
+    });
+
+    toggleFaceRecognition(null===getUrlVar("id"));
+
 });
 
 function deletePerson(personid,pictureid,verbose,savenewposition) {
@@ -618,4 +626,17 @@ function newPerson(event) {
 function closeNewModify() {
     $('.newperson').remove();
     $('.personsearch').remove();
+}
+
+function getUrlVar(varName) {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        if (hash[0]===varName && hash.length==2 && null!==hash[1])
+            return hash[1];
+
+    }
+    return null;
 }

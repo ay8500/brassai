@@ -12,6 +12,7 @@ if ($id>=0) {
 		if (isset($picture["personID"])) $type="personID";
 		if (isset($picture["schoolID"])) $type="schoolID";
 		if (isset($picture["classID"]))  $type="classID";
+		$_GET["type"]=$type;
 		$typeId=$picture[$type];
 	}
 }
@@ -57,6 +58,9 @@ if ($album=="_tablo_" || $type=='tablo') {
 }
 \maierlabs\lpfw\Appl::setSiteTitle($subtitle);
 \maierlabs\lpfw\Appl::setSiteSubTitle($type=="personID"?$link:$subtitle);
+if (isset($picture)) {
+    \maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
+}
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">

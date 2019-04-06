@@ -82,6 +82,9 @@
     <?php Appl::renderingStarted(); ?>
  </head>
 <body>
+<?php if (\maierlabs\lpfw\Appl::getMember("firstPicture")!==null) {
+    echo('<img id="firstPicture" style="display:none" src="'.\maierlabs\lpfw\Appl::getMember("firstPicture")["file"].'" />');
+}?>
 <div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00;" role="navigation">

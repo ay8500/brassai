@@ -141,7 +141,8 @@ $alt=(strpos($sort,"desc")!==false?"-alt":"");
 $desc=(strpos($sort,"desc")!==false?"":"-desc");
 $limit=24;
 $offset=getIntParam("start",0)*$limit;
-$link="picture.inc.php?action=showmore&view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort."&start=";
+$link="picture.inc.php?view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort;
+$url = "http".(!empty($_SERVER['HTTPS'])?"s":"")."://".$_SERVER['SERVER_NAME'];
 if ($view=="table") {
     Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin: 0 10px 10px 0;}');
 } else {
@@ -199,23 +200,25 @@ if (getParam("type")=="schoolID") {
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
     $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_")));
 }
-$albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
+if (!isActionParam("showmore") ) {
 
-//Check if a new album want to be created
-if (getParam("album")!=null) {
-	$newAlbum = true;
-	foreach ($albumList as $alb) {
-		if ($alb["albumName"]==getParam("album")) {
-            $newAlbum=false;
-            break;
+    $albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
+
+    //Check if a new album want to be created
+    if (getParam("album") != null) {
+        $newAlbum = true;
+        foreach ($albumList as $alb) {
+            if ($alb["albumName"] == getParam("album")) {
+                $newAlbum = false;
+                break;
+            }
         }
-	}
-	if ($newAlbum) {
-		$albumList = array_merge($albumList,array(array("albumName"=>getParam("album"),"albumText"=>getParam("album"))));
-	}
-}
-if (isActionParam("showmore") ) {
-    displayPictureList($db,$pictures,$albumList,$albumParam,$view);
+        if ($newAlbum) {
+            $albumList = array_merge($albumList, array(array("albumName" => getParam("album"), "albumText" => getParam("album"))));
+        }
+    }
+} else {
+    displayPictureList($db,$pictures,null,null,$view);
     die();
 }
 ?>
@@ -305,11 +308,11 @@ if (isActionParam("showmore") ) {
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item"><span class="page-link" >Képek száma:<?php echo ($countPictures)?></span></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $link."0" ?>"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $offset>0?$link.(floor($offset/$limit)-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo $link."start=0" ?>"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo $offset>0?$link."&start=".(floor($offset/$limit)-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
                 <li class="page-item"><a class="page-link" href="#"><?php echo ($offset+1).'-'.(($offset+$limit<$countPictures)?$offset+$limit:$countPictures) ?></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo (($offset+$limit)<$countPictures)?$link.(floor($offset/$limit)+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $link.floor($countPictures/$limit) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo (($offset+$limit)<$countPictures)?$link."&start=".(floor($offset/$limit)+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo $link."&start=".floor($countPictures/$limit) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
             </ul>
         </nav>
     <?php } ?>
@@ -332,7 +335,7 @@ if (isActionParam("showmore") ) {
 <!-- Modal -->
 <div class="modal" id="pictureModal" role="dialog">
     <div class="modal-dialog modal-dialog-centered pdialog" style="background-color: white;border-radius: 7px;">
-        <div class="modal-content" style="position: relative;padding: 5px;min-height: 400px; ">
+        <div class="modal-content" style="position: relative;padding: 5px;min-height: 200px; ">
             <div id="thePictureDiv" style="overflow: hidden;">
                 <img class="img-responsive" id="thePicture" title="" style="position: relative; min-height: 100px;min-width: 100px; display: inline-block;" onmousedown="newPerson(event);"/>
                 <img id="thePictureFaceRecognition" style="display: none" />
@@ -341,6 +344,7 @@ if (isActionParam("showmore") ) {
                 <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
                 <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" id="facebutton" onclick="return toggleFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
+                <button title="<?php Appl::_("Kép link a clipbordba")?>" class="pbtn" onclick="showModalMessage('A kép linkje','<?php echo($url.parse_url($_SERVER['SCRIPT_NAME'])["path"]."?id=") ?>'+$('#thePicture').attr('data-id'));return false;" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-link"></span></button>
                 <?php if(userIsAdmin() ) {?>
                     <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
                 <?php }?>
@@ -513,7 +517,7 @@ Appl::addJsScript("
         picturesButton=$('#buttonmore').html();
         $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
-    		url:'".$link."'+picturesStart++,
+    		url:'".$link."'+'&action=showmore&start='+picturesStart++,
 	    	type:'GET',
     		success:function(data){
 	    	    $('#more').replaceWith(data+'<span id=\"more\"></span>');
