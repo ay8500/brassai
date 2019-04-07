@@ -108,8 +108,9 @@ function showTagging(show) {
         type:"GET",
         success:function(data){
             $('[person-id]').remove();$("[id*=personlist]").empty();
-            if (data.title!=null)
-                $("#personlist").append('<div><b>'+data.title+'</b></div>');
+            if (data.title!=null) {
+                $("#personlist").append('<div><b>' + data.title + ' </b> ' + (data.comment == "undefined" ?'': data.comment ) + '</div>');
+            }
             data.face.forEach(function(p){
                 $('<div>', {
                     'class': 'face',

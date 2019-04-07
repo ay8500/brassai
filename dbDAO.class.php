@@ -492,6 +492,25 @@ class dbDAO {
         return $r;
     }
 
+    private function searchSpecialChars($text) {
+            $trans = array (
+                " "=>"%",
+                "â"=>"%","ä"=>"%","â"=>"%","á"=>"%","à"=>"%",
+                "é"=>"%","è"=>"%",
+                "í"=>"%","ì"=>"%","Í"=>"%","Ì"=>"%",
+                "ó"=>"%","ò"=>"%","ö"=>"%","%"=>"%","õ"=>"%",
+                "ú"=>"%","ù"=>"%","ü"=>"%","ű"=>"%",
+                "Á"=>"%","À"=>"%","Ä"=>"%","Å"=>"%",
+                "É"=>"%","È"=>"%",
+                "Ó"=>"%","Ò"=>"%","Ö"=>"%","Ő"=>"%",
+                "ș"=>"%","Ș"=>"%","Ț"=>"%","ț"=>"%",
+                "Ú"=>"%","Ù"=>"%","Ü"=>"%","Ű"=>"%"
+            );
+            return strtr($text, $trans);
+    }
+
+
+
     /**
      * If you need to strip as many national characters from UTF-8 as possible and keep the rest of input unchanged
      * (i.e. convert whatever can be converted to ASCII and leave the rest)
@@ -888,8 +907,8 @@ class dbDAO {
 		if( strlen($name)>1) {
 			$sql="select p.* from picture as p";
 			//$sql .=" left join  person as cp on c.changeUserID=cp.id where";
-			$sql .=" where p.title like '%".$name."%' ";
-			$sql .=" or p.comment like '%".$name."%' ";
+            $sql .=" where p.title like '%".$this->searchSpecialChars($name)."%' ";
+            $sql .="  or p.comment like '%".$this->searchSpecialChars($name)."%' ";
 			$sql .=" limit 50";
 			$this->dataBase->query($sql);
 			while ($class=$this->dataBase->fetchRow()) {

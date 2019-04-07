@@ -17,6 +17,7 @@ $ret["face"] = $dbPIP->getListOfPersonInPicture($pictureId);
 
 $picture = $db->getPictureById($pictureId);
 $ret["title"]=$picture["title"];
+$ret["comment"]=$picture["comment"];
 
 echo(json_encode($ret));
 ?>

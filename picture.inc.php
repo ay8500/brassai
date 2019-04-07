@@ -344,7 +344,7 @@ if (!isActionParam("showmore") ) {
                 <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
                 <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" id="facebutton" onclick="return toggleFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
-                <button title="<?php Appl::_("Kép link a clipbordba")?>" class="pbtn" onclick="showModalMessage('A kép linkje','<?php echo($url.parse_url($_SERVER['SCRIPT_NAME'])["path"]."?id=") ?>'+$('#thePicture').attr('data-id'));return false;" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-link"></span></button>
+                <button title="<?php Appl::_("Kép link a clipbordba")?>" class="pbtn" onclick="showModalMessage('A kép linkje','<?php echo($url.pathinfo(parse_url($_SERVER['SCRIPT_NAME'])["path"])["dirname"]."/picture.php?id=") ?>'+$('#thePicture').attr('data-id'));return false;" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-link"></span></button>
                 <?php if(userIsAdmin() ) {?>
                     <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
                 <?php }?>

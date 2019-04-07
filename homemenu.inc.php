@@ -235,18 +235,36 @@
 
 <?php writeLogonDiv(); ?>
 
-<div class="panel panel-default" style="display:none;margin:auto;width:320px;" id="uSearch">
+<?php
+\maierlabs\lpfw\Appl::addCssStyle('
+  	#searchpersontable, #searchpicturetable{
+		width:100%; 
+	}
+	#searchpersontable td{ 
+		padding:1px; 
+		vertical-align:middle;
+	}
+	#searchpersontable tr{
+		background: white;
+		vertical-align: top;
+	}
+    #searchpersontable tr:hover {
+          background-color: #efefef;
+    }
+');
+?>
+<div class="panel panel-default" style="display:none;margin:auto;width:100%;text-align: center;opacity: 0.8;" id="uSearch">
     <div class="panel-heading">
         <b>Keresgélés: név, évfolyam, kép</b>
         <span class="glyphicon glyphicon-remove-circle"  style="float: right;cursor: pointer;" onclick="closeSearch();"></span>
     </div>
     <form action="search.php" method="get">
         <input type="hidden" value="search" name="action"/>
-        <div class="input-group" style="width:300px;margin: 3px;">
+        <div class="input-group" style="width:300px;margin: 3px;display: inline-table;">
             <span class="input-group-addon" style="width:30px" title="Véndiak neve"><span
                         class="glyphicon glyphicon-search"></span></span>
             <input type="text" class="form-control" placeholder="család- keresztnév, éretségi év, szöveg" id="srcText"
-                   name="srcText" value="<?php echo getGetParam("srcText", "") ?>">
+                   name="srcText" value="<?php echo getGetParam("srcText", "") ?>" onkeyup="searchPersonAndPicture();" />
         </div>
         <div style="text-align:center; margin: 3px">
             <button type="button" class="btn btn-default" style="margin: 3px;width: 167px;text-align: left;"
@@ -254,6 +272,21 @@
             </button>
         </div>
     </form>
+
+    <div style="width: 400px;display: inline-block;margin:5px;padding: 5px; border: solid 1px gray;border-radius:5px; vertical-align: top;">
+        <div style="height:30px;padding:5px;width:100%;font-weight:bold;background-color: lightgray;"><span class="glyphicon glyphicon-user"></span> Tanárok, diákok <span id="searchpersonbadge"  class="badge">0</span></div>
+        <div style="max-height: 200px;overflow-y: scroll;">
+        <table id="searchpersontable" >
+        </table>
+        </div>
+    </div>
+    <div style="width: 400px;display: inline-block;margin:5px;padding: 5px; border: solid 1px gray;border-radius:5px; vertical-align: top;">
+        <div style="height:30px;padding:5px;width:100%;font-weight:bold;background-color: lightgray;"><span class="glyphicon glyphicon-picture"></span> Képek <span id="searchpicturebadge" class="badge">0</span></div>
+        <div style="max-height: 200px;overflow-y: scroll;">
+            <table id="searchpicturetable">
+            </table>
+        </div>
+    </div>
 </div>
 
 <div id="topLine">
@@ -267,25 +300,6 @@
 <div class="resultDBoperation"><?php echo Appl::$resultDbOperation ?></div>
 
 <?php
-Appl::addJsScript('
-	function showSearchBox(noAnimation) {
-	    closeLogin();
-		if (noAnimation==null || noAnimation==false)
-			$("#uSearch").slideDown("slow");
-		else
-		    $("#uSearch").show();
-		$("#srcText").focus();
-		onResize(135);
-	}
-	
-	function closeSearch() {
-		$("#uSearch").slideUp("slow");
-		onResize(0);
-	}
-
-	function search() {
-		document.location.href="search.php?srcText="+$("#srcText").val();
-	}
-');
+Appl::addJs('js/search.js',true);
 ?>
 

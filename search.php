@@ -184,6 +184,7 @@ include_once 'displayCards.inc.php';
     $( document ).ready(function() {
         if ("'.getGetParam("srcText", "").'"!="") {
             showSearchBox(true);
+            searchPersonAndPicture();
         }
     });
 ');
