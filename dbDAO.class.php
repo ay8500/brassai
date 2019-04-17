@@ -409,13 +409,11 @@ class dbDAO {
 		if( strlen($name)>0 ) {
 
             $name=trim($name);
-            $name=$this->clearUTF($name);
             $where ="(";
-            $where .="soundex(person.lastname) like soundex('".$name."') ";
-            $where .=" or soundex(person.firstname) like soundex('".$name."') ";
-            if( strtolower($this->wildcardUTF($name))=="eva")
-                $where .=" or person.firstname = 'Éva'";
-            $where .=" or soundex(person.birthname) like soundex('".$name."')";
+            $name = searchSpecialChars($name);
+            $where .=" person.lastname rlike '".$name."' ";
+            $where .="  or person.firstname rlike '".$name."' ";
+            $where .="  or person.birthname rlike '".$name."' ";
             $where .=" )";
 
 		} else {
@@ -491,25 +489,6 @@ class dbDAO {
         }
         return $r;
     }
-
-    private function searchSpecialChars($text) {
-            $trans = array (
-                " "=>"%",
-                "â"=>"%","ä"=>"%","â"=>"%","á"=>"%","à"=>"%",
-                "é"=>"%","è"=>"%",
-                "í"=>"%","ì"=>"%","Í"=>"%","Ì"=>"%",
-                "ó"=>"%","ò"=>"%","ö"=>"%","%"=>"%","õ"=>"%",
-                "ú"=>"%","ù"=>"%","ü"=>"%","ű"=>"%",
-                "Á"=>"%","À"=>"%","Ä"=>"%","Å"=>"%",
-                "É"=>"%","È"=>"%",
-                "Ó"=>"%","Ò"=>"%","Ö"=>"%","Ő"=>"%",
-                "ș"=>"%","Ș"=>"%","Ț"=>"%","ț"=>"%",
-                "Ú"=>"%","Ù"=>"%","Ü"=>"%","Ű"=>"%"
-            );
-            return strtr($text, $trans);
-    }
-
-
 
     /**
      * If you need to strip as many national characters from UTF-8 as possible and keep the rest of input unchanged
@@ -886,16 +865,36 @@ class dbDAO {
 	}
 	
 	public function searchForPicture($name) {
-		$ret = array();
+		$retintersect = array();
+        $retmerge = array();
 		$nameItems=explode(' ', trim($name));
-		foreach ($nameItems as $nameWord) {
+		foreach ($nameItems as $idx=>$nameWord) {
 			if (strlen(trim($nameWord))>2) {
-				$ret=array_merge($ret,$this->searchForPictureOneString($nameWord));
+			    $search=$this->searchForPictureOneString($nameWord);
+			    if ($idx==0)
+                    $retintersect = $search;
+			    else
+			        $retintersect=$this->array_array_intersect($retintersect,$search);
+                $retmerge = array_merge($retmerge,$search);
 			}
 		}
-		return $ret;
+		if (sizeof($retintersect)>0)
+		    return $retintersect;
+		else
+		    return $retmerge;
 	}
-	
+
+	public function array_array_intersect($a1,$a2) {
+	    $ret=array();
+	    foreach ($a2 as $a) {
+	        $keys = array_column($a1,"id");
+	        $key= array_search($a["id"],$keys);
+	        if ($key!==false) {
+	            array_push($ret,$a);
+            }
+        }
+	    return $ret;
+    }
 	/**
 	 * Search for class by year name
 	 * @param string $name
@@ -905,10 +904,11 @@ class dbDAO {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
+		    $name = searchSpecialChars($name);
 			$sql="select p.* from picture as p";
 			//$sql .=" left join  person as cp on c.changeUserID=cp.id where";
-            $sql .=" where p.title like '%".$this->searchSpecialChars($name)."%' ";
-            $sql .="  or p.comment like '%".$this->searchSpecialChars($name)."%' ";
+            $sql .=" where p.title rlike '".$name."' ";
+            $sql .="  or p.comment rlike '".$name."' ";
 			$sql .=" limit 50";
 			$this->dataBase->query($sql);
 			while ($class=$this->dataBase->fetchRow()) {

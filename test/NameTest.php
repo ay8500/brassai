@@ -42,11 +42,11 @@ class nameTest extends \PHPUnit_Framework_TestCase
 
 
     public function testMale() {
-        $this->assertTrue($this->checkFirstName("Péter")=="m");
+        $this->assertSame("m",$this->checkFirstName("Levente"));
     }
 
     public function testFemale() {
-        $this->assertTrue($this->checkFirstName("Rozália")=="f");
+        $this->assertSame("f",$this->checkFirstName("Emese"));
     }
 
     public function testFamilyname() {

@@ -3,6 +3,7 @@ include_once __DIR__ . "/../phpunit/config.class.php";
 include_once __DIR__ . "/../lpfw/appl.class.php";
 include_once __DIR__ . "/../lpfw/logger.class.php";
 include_once __DIR__ . "/../lpfw/userManager.php";
+include_once __DIR__ . "/../lpfw/ltools.php";
 include_once __DIR__ . "/../dbBL.class.php";
 
 use maierlabs\lpfw\Appl;
@@ -134,6 +135,20 @@ class ApplTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Appl::$subTitle=="S");
         Appl::setSiteDesctiption("D");
         $this->assertTrue(Appl::$description=="D");
+    }
+
+    public  function testLTools() {
+        $this->assertTrue('<a target="_blank" href="https://www.site.com">Link</a>'==createLink("https://www.site.com",true));
+        $this->assertTrue('<a target="_blank" href="http://site.de">http://site.de</a>'==createLink("http://site.de",false));
+        $this->assertTrue('Adress: <a href="mailto:mail@site.com">E-Mail</a>'==createLink("Adress: mail@site.com",true));
+        $this->assertTrue('Send mail to: <a href="mailto:mail@site.de">mail@site.de</a>'==createLink("Send mail to: mail@site.de",false));
+
+        $this->assertTrue("Anstrom"==getNormalisedChars("Ânström"));
+        $this->assertTrue("Kalmar"==getNormalisedChars("Kalmár"));
+
+        $this->assertSame("L.{1,2}v.{1,2}nt.{1,2}",searchSpecialChars("Levente"));
+        $this->assertSame("k.{1,2}lm.{1,2}r",searchSpecialChars("kalmár"));
+        $this->assertSame("M.{1,2}.{1,2}.{1,2}r",searchSpecialChars("Maier"));
     }
 
 }

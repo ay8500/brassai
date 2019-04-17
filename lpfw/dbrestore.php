@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 session_start();
 
 //If the db is empty just uncomment the next php line and call the link below
-//The databese defined in the config.class.php with the spezified user and password has to be exisits.
+//The database defined in the config.class.php with the specified user and password must exist.
 //$_SESSION['uRole']="admin";
 //https://localhost/brassai/lpfw/dbrestore.php?password=levi
 
@@ -22,7 +22,7 @@ $db = \Config::getDatabasePropertys();
 db_restore($db->host,$db->user,$db->password,$db->database, __DIR__."/backup.sql",$areYouSure) ;
 
 
-// ab hier nichts mehr ändern
+// ab hier nichts mehr Ändern
 function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $areYouSure)
 {
 	$allRows=0;
@@ -34,7 +34,7 @@ function db_restore($dbhost, $dbuser, $dbpwd, $dbname, $dbrestore, $areYouSure)
 	if ($f) {
 		while (($line = fgets($f)) !== false) {
 			if ($areYouSure) {
-				$res = mysqli_query($conn,trim($line,";"));
+				$res = mysqli_query($conn,(trim($line,";")));
 				if ($res) {
 					//echo("OK:".substr($line,0,150)."<br/>");
 					$okRows++;

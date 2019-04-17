@@ -5,6 +5,14 @@ class PHPUnit_Framework_TestCase {
     private $assertOk=0;
     private $assertError=0;
 
+    public function assertSame($o1,$o2) {
+        if ($o1==$o2) {
+            $this->assertOk++;
+        } else {
+            $this->assertError++;
+        }
+    }
+
     public function assertTrue($boolean) {
         if ($boolean) {
             $this->assertOk++;

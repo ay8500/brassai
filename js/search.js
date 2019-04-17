@@ -40,6 +40,7 @@ function searchPersonAndPicture() {
                         }
                     }
                     var pname = (row.title != null ? row.title + ' ' : '') + row.lastname + ' ' + row.firstname;
+                    pname += ((row.birthname !== null && row.birthname !=='') ? ' ('+row.birthname+')':'');
                     if (row.picture!=null && row.picture.length>5) {
                         var pimg = '<img src="images/' + row.picture + '" class="diak_image_icon" />';
                     } else {
@@ -47,7 +48,7 @@ function searchPersonAndPicture() {
                     }
                     var html = '<tr>';
                     html += '<td style="text-align: center">' + pimg + '</td>';
-                    html += '<td><a href="editdiak.php?uid='+row.id+'">' + pname + '</a></td>';
+                    html += '<td><a href="editDiak.php?uid='+row.id+'">' + pname + '</a></td>';
                     html += '<td>' + pclass + '</td>';
                     html += '</tr>';
                     console.log(html);
