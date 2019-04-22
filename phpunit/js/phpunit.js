@@ -99,16 +99,23 @@ function runAlltests() {
     runTest();
 }
 
+/**
+ * Run Ajax Text
+ * @param oneFileNr if set then only one file is to be tested
+ * @param oneTestNr if set then only one test ist to be tested
+ */
 function runTest(oneFileNr,oneTestNr) {
-    if (oneFileNr!=null) {
-        aktFileNr=oneFileNr;
-    }
-    if(oneTestNr!=null) aktTestNr=oneTestNr;
+    if (oneFileNr!=null) aktFileNr=oneFileNr;
+    if (oneTestNr!=null) aktTestNr=oneTestNr;
+    console.log("FileNr:"+aktFileNr+" TestNR:"+aktTestNr);
+
     var testFile=testFiles[aktFileNr];
     var result = Array;
     if (aktTestNr==0) {
         aktFileError=false;
+        //Display testfile name
         fileOption.title ='Test file:'+testFiles[aktFileNr].file;
+        //Delete file tests from pie diagram and add only one blue element
         while (fileData.getNumberOfRows()>0)
             fileData.removeRow(0);
         fileData.addRow(["",1]);
@@ -129,9 +136,9 @@ function runTest(oneFileNr,oneTestNr) {
                     runTest(oneFileNr, oneTestNr);
                 }
             } else {
-                setTextToConsole(data.time + 'ms ' + data.testName, data.test ? "green" : "red", true);
                 if (aktTestNr == 0 || oneTestNr != null) {
                     fileOption.title = 'Test file:' + testFiles[aktFileNr].file + '\nTest name:';
+                    //Initialise the tests pie with blue elements
                     while (fileData.getNumberOfRows() > 0)
                         fileData.removeRow(0);
                     for (var i = 0; i < data.tests.length; i++) {
@@ -141,6 +148,7 @@ function runTest(oneFileNr,oneTestNr) {
                 }
 
                 if (data.filestatus == "done") {
+                    setTestResults(data);
                     if (!aktFileError) {
                         filesOption.colors[aktFileNr] = 'green';
                         fileOk++;
@@ -148,6 +156,7 @@ function runTest(oneFileNr,oneTestNr) {
                         filesOption.colors[aktFileNr] = 'red';
                         fileError++;
                     }
+                    filesChart.draw(filesData, filesOption );
                     aktTestNr = 0;
                     if (oneTestNr == null && oneFileNr == null) {
                         if (aktFileNr+1 < filesData.getNumberOfRows()) {
@@ -160,26 +169,24 @@ function runTest(oneFileNr,oneTestNr) {
                 if (data.filestatus == "running") {
 
                     filesOption.colors[aktFileNr] = 'yellow';
+                    filesChart.draw(filesData, filesOption );
+                    setTestResults(data);
                     aktTestNr++;
                     if (oneTestNr == null)
                         runTest(oneFileNr, oneTestNr);
                 }
             }
-            setTestResults(data);
-            filesChart.draw(filesData, filesOption);
-            showResultCounters();
         },
         error:function(error) {
             setTextToConsole(error, 'red', true);
             filesOption.colors[aktFileNr] = 'red';
-            aktTestNr = 0;
-            aktFileNr++;
             fileError++;
             if (aktFileNr < filesData.getNumberOfRows() && oneFileNr == null) {
                 runTest(oneFileNr, oneTestNr);
             }
-            filesChart.draw(filesData, filesOption);
-            showResultCounters();
+            setTestResults(data);
+            aktTestNr = 0;
+            aktFileNr++;
         }
     });
 }
@@ -187,20 +194,32 @@ function runTest(oneFileNr,oneTestNr) {
 function setTestResults(data) {
     fileOption.title = 'Test file:' + testFiles[aktFileNr].file;//+'\nTest name:'+data.tests[aktTestNr].name;
     if (data.test == true) {
-        fileOption.colors[aktTestNr] = 'green';
+        if (data.assertOk>0) {
+            $color = 'green';
+        } else {
+            $color = 'orange';
+        }
         testOk++;
         assertOk += data.assertOk;
     } else {
-        fileOption.colors[aktTestNr] = 'red';
+        $color = 'red';
         testError++;
         aktFileError=true;
         assertOk += data.assertOk;
         assertError += data.assertError;
     }
+    fileOption.colors[aktTestNr] = $color;
     fileChart.draw(fileData, fileOption);
+
+    setTextToConsole(data.time + 'ms ' + data.testName, $color, true);
+
     if (data.echo.length>0) {
-        setTextToConsole(data.echo);
+        setTextToConsole(data.echo,$color);
     }
+    if (data.errorMessage!==null) {
+        setTextToConsole(data.errorMessage,"red",true);
+    }
+    showResultCounters();
 }
 
 function setTextToConsole(text,color,newline) {

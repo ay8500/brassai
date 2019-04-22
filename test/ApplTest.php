@@ -146,9 +146,9 @@ class ApplTest extends PHPUnit_Framework_TestCase
         $this->assertTrue("Anstrom"==getNormalisedChars("Ânström"));
         $this->assertTrue("Kalmar"==getNormalisedChars("Kalmár"));
 
-        $this->assertSame("L.{1,2}v.{1,2}nt.{1,2}",searchSpecialChars("Levente"));
-        $this->assertSame("k.{1,2}lm.{1,2}r",searchSpecialChars("kalmár"));
-        $this->assertSame("M.{1,2}.{1,2}.{1,2}r",searchSpecialChars("Maier"));
+        $this->assertSame("L.{1,4}v.{1,4}nt.{1,4}",searchSpecialChars("Levente"));
+        $this->assertSame("k.{1,4}lm.{1,4}r",searchSpecialChars("kalmár"));
+        $this->assertSame("M.{1,4}.{1,4}.{1,4}r",searchSpecialChars("Maier"));
     }
 
 }

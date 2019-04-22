@@ -4,12 +4,18 @@ class PHPUnit_Framework_TestCase {
 
     private $assertOk=0;
     private $assertError=0;
+    private $errorText="";
 
     public function assertSame($o1,$o2) {
-        if ($o1==$o2) {
+        if ($o1===$o2) {
             $this->assertOk++;
         } else {
             $this->assertError++;
+            if (get_class($o1)===get_class($o2)) {
+                $this->errorText .= ' Expected:' . $o1 . ' Actual:' . $o2;
+            } else {
+                $this->errorText .= ' Object not mach: Expected:' . get_class($o1) . ' Actual:' . get_class($o2);
+            }
         }
     }
 
@@ -47,6 +53,7 @@ class PHPUnit_Framework_TestCase {
         $ret->testResult = $this->assertError==0;
         $ret->assertError = $this->assertError;
         $ret->assertOk = $this->assertOk;
+        $ret->errorText = $this->errorText;
         return $ret;
     }
 

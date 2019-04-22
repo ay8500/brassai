@@ -30,11 +30,11 @@ class PasswordTest extends PHPUnit_Framework_TestCase
         $this->db->disconnect();
     }
 
-    public function testDB()
+    public function testDatabaseEncryption()
     {
         $ok = $this->db->queryInt("select  count(length(passw)),passw   from person having length(passw)=32");
         $all = $this->db->queryInt("select  count(1) from person");
-        $this->assertTrue($ok==$all);
+        $this->assertSame($all,$ok);
         /*
         while ($row = $this->db->fetchRow()) {
             $p=$row["passw"];
@@ -44,5 +44,12 @@ class PasswordTest extends PHPUnit_Framework_TestCase
         }
         */
     }
+
+    public function testEncription() {
+        $this->assertSame("QXAxeXBKY0NoUTBDd0hpZkYyaXc1QT09",encrypt_decrypt("encrypt","MaierLabs"));
+        $this->assertSame("MaierLabs",encrypt_decrypt("decrypt","QXAxeXBKY0NoUTBDd0hpZkYyaXc1QT09"));
+        $this->assertSame("QXAxeXBKY0NoUTBDd0hpZkYyaXc1QT09",encrypt_decrypt("encrypt","QXAxeXBKY0NoUTBDd0hpZkYyaXc1QT09"));
+    }
+
 
 }

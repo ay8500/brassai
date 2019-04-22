@@ -92,6 +92,8 @@ if ($testTearDownMethod!=null) {
 
 $result["echo"]=ob_get_clean();
 $res = $theTestClass->assertGetUnitTestResult();
+if ($res->errorText!="")
+    $result["errorMessage"]=$res->errorText;
 $result["test"]=$res->testResult;
 $result["assertOk"]=$res->assertOk;
 $result["assertError"]=$res->assertError;

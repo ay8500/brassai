@@ -29,12 +29,13 @@ class config {
     /**
      * @var array exclude file list
      * could be inportant to use it, if the test subject has a lot of images or other non php files
+     * example: ('images','..','.','.git')
      */
     public static $excludeFiles = array('images','..','.','.git');
 
     /**
      * @var string the version of php unit mainly used for parameter in css and js files
      */
-    public static $version = "1.00/2018-12-08";
+    public static $version = "1.01/28-04-2019";
 
 }

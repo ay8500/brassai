@@ -42,15 +42,18 @@ class nameTest extends \PHPUnit_Framework_TestCase
 
 
     public function testMale() {
-        $this->assertSame("m",$this->checkFirstName("Levente"));
+        if ($gender = $this->checkFirstName("Levente") !==false)
+            $this->assertSame("m",$gender);
     }
 
     public function testFemale() {
-        $this->assertSame("f",$this->checkFirstName("Emese"));
+        if ($gender = $this->checkFirstName("Emese") !==false)
+            $this->assertSame("f",$gender);
     }
 
     public function testFamilyname() {
-        $this->assertFalse($this->checkFirstName("Kovács"));
+        if ($gender = $this->checkFirstName("Kovács") !==false)
+            $this->assertSame("n",$gender);
     }
 
     public function testNames() {
@@ -73,9 +76,19 @@ class nameTest extends \PHPUnit_Framework_TestCase
         foreach ($this->firstName as $name=>$count) {
             echo($count.":".$name."\n");
         }
-
     }
 
+    private function getNameServerData($url) {
+        $handle = curl_init($url);
+        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+
+        $response = curl_exec($handle);
+
+        $ret=json_decode($response);
+
+        curl_close($handle);
+        return $ret;
+    }
 
     /**
      * check the gender of firstname
@@ -84,21 +97,12 @@ class nameTest extends \PHPUnit_Framework_TestCase
      */
     private function checkFirstName($name) {
         $url="https://addressok.blue-l.de/ajax/jsonCheckName.php?name=".$name;
-        $handle = curl_init($url);
-        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-
-        $response = curl_exec($handle);
-
-
-        $ret=json_decode($response);
-
-        curl_close($handle);
-
-        $genderM=0;
-        $genderF=0;
-        $genderN=0;
+        $ret =$this->getNameServerData($url);
 
         if ($ret->countAll>0) {
+            $genderM=0;
+            $genderF=0;
+            $genderN=0;
             foreach ($ret as $r) {
                 if (is_object($r)) {
                     if ($r->gender=='m') $genderM++;
@@ -110,8 +114,11 @@ class nameTest extends \PHPUnit_Framework_TestCase
             return false;
         }
 
-        if ($genderM==0 && $genderF==0)
+        if ($genderM==0 && $genderF==0 && $genderN==0)
             return false;
+
+        if ($genderM==0 && $genderF==0 && $genderN>0)
+            return 'n';
 
         return $genderM>$genderF?'m':'f';
 

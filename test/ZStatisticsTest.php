@@ -34,7 +34,8 @@ class ZStatisticsTest extends PHPUnit_Framework_TestCase
     {
         $all = $this->db->queryInt("select  count(1) from person");
         $this->assertTrue($all>0);
-        echo(" Persons:".$all);
+        $todo = $this->db->queryInt("select  count(1) from person where deceasedYear is not null and user is not null");
+        echo(" Persons:".$all." todo:".$todo);
         //TODO remove person login data if the person is died
     }
 
