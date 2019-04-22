@@ -48,9 +48,6 @@ function db_backup($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$areYouSure,$bac
                     $create = mysqli_fetch_array($res);
                     $create[1] .= ";";
                     $line = str_replace("\n", "", $create[1]);
-                    //$line = str_replace("COLLATE utf8_unicode_ci", "COLLATE utf8_bin", $line);
-                    //$line = str_replace("COLLATE=utf8_unicode_ci", "COLLATE=utf8_bin", $line);
-                    //$line = str_replace("DEFAULT CHARSET=utf8", "CHARSET=utf8", $line);
                     if ($areYouSure)
                         fwrite($f, $line."\n");
 
@@ -73,7 +70,8 @@ function db_backup($dbhost, $dbuser, $dbpwd, $dbname, $dbbackup,$areYouSure,$bac
                                 $line = "INSERT INTO `" . $table . "` VALUES(";
                                 for ($i = 1; $i <= $num; $i++) {
                                     if (isset($row[$i - 1])) {
-                                        $line .= "'" . mysqli_real_escape_string($conn, Utf8_ansi($row[$i - 1])) . "', ";
+                                        $field = htmlspecialchars($row[$i - 1], ENT_QUOTES | ENT_HTML401, 'UTF-8',);
+                                        $line .= "'" . mysqli_real_escape_string($conn, Utf8_ansi($field)) . "', ";
                                     } else {
                                         $line .= "null, ";
                                     }

@@ -7,7 +7,7 @@ session_start();
 //https://localhost/brassai/lpfw/dbrestore.php?password=levi
 
 //User is logged in and have the role of admin
-if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
+if (!isset($_SESSION['uRole']) || strpos($_SESSION['uRole'],"admin")===false)
     die("Only for admins");
 
 include_once __DIR__ . "/../config.class.php";

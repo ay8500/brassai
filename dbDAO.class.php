@@ -406,9 +406,11 @@ class dbDAO {
 	 */
 	private function searchForPersonOneString($name) {
 		$ret = array();
-		if( strlen($name)>0 ) {
+        $name=trim($name);
+        if( intval($name)>1930 && intval($name)<2100 ) {
+            $where =  "graduationYear=".$name;
+        } elseif( strlen($name)>0 ) {
 
-            $name=trim($name);
             $where ="(";
             $name = searchSpecialChars($name);
             $where .=" person.lastname rlike '".$name."' ";
@@ -417,7 +419,7 @@ class dbDAO {
             $where .=" )";
 
 		} else {
-            $where = " class.id=".getAktClassId();
+                $where = " class.id=".getAktClassId();
         }
         $sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
         $sql .=" left join  class on class.id=person.classID";

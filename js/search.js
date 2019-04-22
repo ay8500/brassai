@@ -71,7 +71,8 @@ function searchPersonAndPicture() {
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
                     var pclass = "<?php maierlabs\lpfw\Appl::_('Kép')?>";
-                    var pname = '<b>'+row.title.substring(0,20)+'</b> '+row.comment.substring(0,25);
+                    var pname = '<b>'+$("<div>").html(row.title.substring(0,20)).text()+'</b> ';
+                    pname +=$("<div>").html(row.comment.substring(0,25)).text();
                     var html = '<tr>';
                     html += '<td><a href="picture.php?id='+row.id+'">' + pname + '</a></td>';
                     //html += '<td>' + pclass + '</td>';
