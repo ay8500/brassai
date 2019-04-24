@@ -627,7 +627,7 @@ class dbDAO {
 					$p["id"]=$objID; 			//the object entry
 					$p["changeUserID"]=-1;  	//anonym user
 					unset($p["changeForID"]);   //remove flag changes for id
-					return $this->updateEntry($table, $p)>=0;
+					return $this->dataBase->updateEntry($table, $p);
 				} else { 
 					return false;
 				}
@@ -636,7 +636,7 @@ class dbDAO {
 			{
 				$this->createHistoryEntry($table,$p["id"]);
 				$p["changeUserID"]=-1;
-				return $this->updateEntry($table, $p)>=0;
+				return $this->dataBase->updateEntry($table, $p);
 			}
 		} else {
 			return false;			
@@ -1037,7 +1037,7 @@ class dbDAO {
 		$entry["id"]=$id;
 		$entry["isDeleted"]=1;
 		$this->createHistoryEntry("message",$id);
-		return $this->updateEntry("message", $entry);
+		return $this->dataBase->updateEntry("message", $entry);
 	}
 	
 	public function saveMessage($entry) {
@@ -1080,16 +1080,16 @@ class dbDAO {
 	
 	/**
 	 * Accept the anonymous message entrys 
-	 * @return integer, negativ value in case of on error 
+	 * @return boolean
 	 */
 	public function acceptChangeForMessage($id) {
 		$p=$this->dataBase->querySignleRow("select * from message where id=".$id);
 		if ($p!=null) {
 		    $p["changeUserID"]=-1;
 		    $this->createHistoryEntry("message",$id);
-		    return $this->updateEntry("message", $p);
+		    return $this->dataBase->updateEntry("message", $p);
 		}
-		return -1;
+		return false;
 	}
 
 //********************* Request ******************************************
@@ -1391,17 +1391,6 @@ class dbDAO {
     public function createHistoryEntry($table,$id,$delete=false)  {
         return $this->dataBase->createHistoryEntry($table,$id,$delete);
     }
-
-    /**
-     * update one entry returns -1 for anny error
-     * @param string $table
-     * @param array $entry
-     * @return int
-     */
-    public function updateEntry($table,$entry) {
-        return $this->dataBase->updateEntry($table,$entry);
-    }
-
 
     public function getRequestCounter() {
 		return $this->dataBase->getCounter();

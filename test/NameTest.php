@@ -42,17 +42,17 @@ class nameTest extends \PHPUnit_Framework_TestCase
 
 
     public function testMale() {
-        if ($gender = $this->checkFirstName("Levente") !==false)
+        if ( ($gender = $this->checkFirstName("Levente")) !==false)
             $this->assertSame("m",$gender);
     }
 
     public function testFemale() {
-        if ($gender = $this->checkFirstName("Emese") !==false)
+        if (($gender = $this->checkFirstName("Emese")) !==false)
             $this->assertSame("f",$gender);
     }
 
     public function testFamilyname() {
-        if ($gender = $this->checkFirstName("Kovács") !==false)
+        if (($gender = $this->checkFirstName("Kovács")) !==false)
             $this->assertSame("n",$gender);
     }
 
@@ -99,7 +99,7 @@ class nameTest extends \PHPUnit_Framework_TestCase
         $url="https://addressok.blue-l.de/ajax/jsonCheckName.php?name=".$name;
         $ret =$this->getNameServerData($url);
 
-        if ($ret->countAll>0) {
+        if (isset($ret->countAll) && $ret->countAll>0) {
             $genderM=0;
             $genderF=0;
             $genderN=0;

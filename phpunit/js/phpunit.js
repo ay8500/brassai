@@ -181,12 +181,12 @@ function runTest(oneFileNr,oneTestNr) {
             setTextToConsole(error, 'red', true);
             filesOption.colors[aktFileNr] = 'red';
             fileError++;
+            filesChart.draw(filesData, filesOption );
+            aktTestNr = 0;
+            aktFileNr++;
             if (aktFileNr < filesData.getNumberOfRows() && oneFileNr == null) {
                 runTest(oneFileNr, oneTestNr);
             }
-            setTestResults(data);
-            aktTestNr = 0;
-            aktFileNr++;
         }
     });
 }

@@ -73,7 +73,7 @@ if (isActionParam("checkMessage")) {
 if (isActionParam("deleteMessage")) {
 	$id=getIntParam("id",-1);
 	if ($id!=-1) {
-		if (deleteMessage($id)>=0)
+		if (deleteMessage($id))
             Appl::setMessage("Az üzenet ki lett törölve!","success");
 		else
             Appl::setMessage("Az üzenet törlése nem sikerült!","warning");

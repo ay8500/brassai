@@ -90,21 +90,22 @@ function displayMessage($message, $person) {
 <?php }
 
 /**
- * Delete one message from the message json file
- * @param unknown $id
+ * Delete one message
+ * @param integer $id
+ * @return boolean
  */
 function deleteMessage($id) {
 	global $db;
 	$message = $db->getMessage($id);
 	if ($message==null)
-		return -1;
+		return false;
 	if (userIsAdmin() || 
 		(userIsLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
 		$message["changeIP"]==$_SERVER["REMOTE_ADDR"] ) {
 			
 		return $db->setMessageAsDeleted($id);
 	}
-	return -1;
+	return false;
 	
 }
 

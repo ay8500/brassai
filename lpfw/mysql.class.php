@@ -252,11 +252,7 @@ class MySql
                 if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
                 } else {
-                    if ($d["value"]==='') {
-                        $sql .= 'null';
-                    } else {
-                        $sql .= $d["value"];
-                    }
+                    $sql .= $d["value"];
                 }
                 if ($d["type"] != "n") $sql .= "'";
             } else {
@@ -328,11 +324,7 @@ class MySql
                 if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
                 } else {
-                    if ($d["value"]=='') {
-                        $sql .= 'null';
-                    } else {
-                        $sql .= $d["value"];
-                    }
+                    $sql .= $d["value"];
                 }
                 if ($d["type"] != "n") $sql .= "'";
             } else {
@@ -398,6 +390,8 @@ class MySql
      */
     public function replaceSpecialChars($s)
     {
+        if (null==$s)
+            return null;
         return str_replace("'", "\'", $s);
     }
 
@@ -450,7 +444,9 @@ class MySql
             $ret = array();
             $ret["field"] = $fieldName;
             $ret["type"] = $type;
-            $ret["value"] = $fieldValue;
+            if (null!=$fieldValue) {
+                $ret["value"] = $fieldValue;
+            }
             array_push($array, $ret);
         }
         return $array;

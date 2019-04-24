@@ -17,7 +17,8 @@ if (userIsAdmin()) {
         $ret =$db->deleteMessageEntry($id);$show=true;
     }
     if (isActionParam("acceptMessageChange")) {
-        $ret =$db->acceptChangeForMessage($id)>=0;$show=true;
+        $ret =$db->acceptChangeForMessage($id);
+        $show=true;
     }
     if (isActionParam("resetChange")) {
         $ret =$db->deleteRequest(getIntParam("type"),getParam("ip"));$show=true;

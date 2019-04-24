@@ -1,9 +1,9 @@
 <?php
 
-use \maierlabs\lpfw\MySqlDbAUH as MySqlDbAUH;
+use \maierlabs\lpfw\MySql as MySql;
 
 include_once __DIR__ . "/../config.class.php";
-include_once __DIR__ . "/../lpfw/mysqldbauh.class.php";
+include_once __DIR__ . "/../lpfw/mysql.class.php";
 include_once __DIR__ . "/../lpfw/logger.class.php";
 
 /**
@@ -21,19 +21,21 @@ class DBTest extends PHPUnit_Framework_TestCase
      */
     public function testDBconnectionFailure() {
         $p = \Config::getDatabasePropertys();
-        $db = new MySqlDbAUH($p->host, $p->database, $p->user . 'x', $p->password);
+        $db = new MySql($p->host, $p->database, $p->user . 'x', $p->password);
         $this->assertFalse($db->isDbConnected());
     }
 
 
     private function createData() {
         $p = \Config::getDatabasePropertys();
-        $db = new MySqlDbAUH($p->host, $p->database, $p->user, $p->password);
+        $db = new MySql($p->host, $p->database, $p->user, $p->password);
 
         ($db->isDbConnected());
         ($db->resetCounter());
 
         //Create test table an drop in some entrys
+        // table:  phpunit
+        // fields: id, contval, changeDate, changeForID, changeUserID
         $db->query("drop table phpunit");
         ($db->query("create table phpunit (id int auto_increment primary key,contval varchar(1024) null, changeDate timestamp default CURRENT_TIMESTAMP not null, changeUserID int, changeIP varchar(64), changeForID int  )"));
         $data=array();
@@ -64,10 +66,10 @@ class DBTest extends PHPUnit_Framework_TestCase
 
         $ret = $db->query("select id from phpunit limit 2");
         self::assertTrue($ret);
-        self::assertTrue(sizeof($db->getRowList())==2);
+        self::assertSame(2,sizeof($db->getRowList()));
 
         $c = $db->count();
-        self::assertTrue(2===$c);
+        self::assertSame(2,$c);
 
         $ret = $db->queryFirstRow("select id from phpunit limit 3");
         self::assertNotNull($ret);
@@ -84,7 +86,7 @@ class DBTest extends PHPUnit_Framework_TestCase
         $ret = $db->queryInt("select count(1) from phpunit ");
         self::assertTrue($ret>0);
         $ret = $db->queryInt("select count(1) from phpunit  limitare 5");
-        self::assertTrue($ret==-1);
+        self::assertSame(-1,$ret);
 
         $db->query("select * from phpunit  wwhere id is not null");
         self::assertNull($db->fetchRow());
@@ -93,6 +95,9 @@ class DBTest extends PHPUnit_Framework_TestCase
 
         $ret = $db->createFieldArray("s","Levi","OK");
         self::assertTrue($ret["field"]=="Levi" && $ret["type"]=="s" && $ret["value"]=="OK");
+
+        $ret = $db->createFieldArray("s","Levi",null);
+        self::assertTrue($ret["field"]=="Levi" && $ret["type"]=="s" && $ret["value"]==null);
 
         $data=array();
         $data = $db->insertFieldInArray($data,"Levi","Jeans");
@@ -124,11 +129,20 @@ class DBTest extends PHPUnit_Framework_TestCase
         $id = $db->getInsertedId();
         $ret=$db->queryFirstRow("select * from phpunit where changeUserID=11");
         self::assertNotNull($ret);
-        self::assertTrue($id==$ret["id"]);
+        self::assertSame($id,intval($ret["id"]));
         self::assertFalse($db->insert("phpunit",array($db->createFieldArray("s","error","error"))));
         $ret=$db->getErrorMessage();
         self::assertTrue(strlen($ret)>6);
-        self::assertTrue($db->getNextAutoIncrement("phpunit")==5);
+        self::assertSame(5,$db->getNextAutoIncrement("phpunit"));
+
+        //Insert Null value
+        $data=array();
+        $data = $db->insertFieldInArray($data,"contval",null);
+        $data = $db->insertFieldInArray($data,"changeUserID",'121');
+        self::assertTrue($db->insert("phpunit",$data));
+        $ret=$db->queryFirstRow("select * from phpunit where changeUserID=121");
+        self::assertNotNull($ret);
+        self::assertSame(null,$ret["contval"]);
 
 
         //Delete
@@ -142,50 +156,50 @@ class DBTest extends PHPUnit_Framework_TestCase
 
         //Table count sum and multiple field
         self::assertTrue($db->commit());
-        self::assertTrue($db->tableCount("phpunit")==4);
-        self::assertTrue($db->tableCount("phpunit","changeUserID=10")==3);
+        self::assertSame(5,$db->tableCount("phpunit"));
+        self::assertSame(3,$db->tableCount("phpunit","changeUserID=10"));
 
-        self::assertTrue($db->tableSumField("phpunit","id")==10);
-        self::assertTrue($db->tableSumField("phpunit","id","changeUserID<>11")==6);
+        self::assertSame(15,$db->tableSumField("phpunit","id"));
+        self::assertSame(11,$db->tableSumField("phpunit","id","changeUserID<>11"));
 
-        self::assertTrue($db->tableSumMultField("phpunit","id","changeUserID")==104);
-        self::assertTrue($db->tableSumMultField("phpunit","id","changeUserID","changeUserID=10")==60);
+        self::assertSame(709,$db->tableSumMultField("phpunit","id","changeUserID"));
+        self::assertSame(60,$db->tableSumMultField("phpunit","id","changeUserID","changeUserID=10"));
 
         //Update
         $data = array();
         $data = $db->insertFieldInArray($data,"changeUserID",12);
         $data = $db->insertFieldInArray($data,"contval","Levi");
         self::assertTrue($db->update("phpunit",$data,"id","2"));
-        self::assertTrue($db->queryInt("select changeUserID from phpunit where id=2")==12);
+        self::assertSame(12,$db->queryInt("select changeUserID from phpunit where id=2"));
         self::assertFalse($db->update("phpunit",$data,"error","2"));
         $data = array();
         $data = $db->insertFieldInArray($data,"changeUserID",'');
         self::assertTrue($db->update("phpunit",$data,"id","2"));
-        self::assertTrue($db->queryInt("select count(1) from phpunit where changeUserID is null")==1);
+        self::assertSame(1,$db->queryInt("select count(1) from phpunit where changeUserID is null"));
 
         $data = array();
         $data = $db->insertFieldInArray($data,"changeIP","127.0.0.1");
         self::assertTrue($db->update("phpunit",$data));
-        self::assertTrue($db->tableCount("phpunit","changeIP='127.0.0.1'")==4);
+        self::assertSame(5,$db->tableCount("phpunit","changeIP='127.0.0.1'"));
 
         $data = $db->changeFieldInArray($data,"changeIP",null);
         self::assertTrue($db->update("phpunit",$data,"id",3));
-        self::assertTrue($db->tableCount("phpunit","changeIP is null")==1);
+        self::assertSame(1,$db->tableCount("phpunit","changeIP is null"));
 
         $data = $db->changeFieldInArray($data,"changeIP",'');
         self::assertTrue($db->update("phpunit",$data,"id",3));
-        self::assertTrue($db->tableCount("phpunit","changeIP =''")==1);
+        self::assertSame(1,$db->tableCount("phpunit","changeIP =''"));
 
         $ret = $db->query("select * from phpunit");
         self::assertTrue($ret);
         $data = $db->getOneColumnList("id");
-        self::assertTrue($data[0]==1);
+        self::assertSame(1,intval($data[0]));
 
         //Counter
         $ret=$db->getCounter();
         self::assertTrue(is_object($ret));
-        self::assertTrue($ret->changes==16);
-        self::assertTrue($ret->querys==37);
+        self::assertSame(17,$ret->changes);
+        self::assertSame(38,$ret->querys);
 
         $this->deleteData($db);
         self::assertFalse($db->isDbConnected());

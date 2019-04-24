@@ -23,6 +23,21 @@ include_once "mysql.class.php";
 */
 class MySqlDbAUH extends MySql
 {
+
+    function userIsLoggedOn() {
+        return ( isset($_SESSION['uId']) && intval($_SESSION['uId'])>-1 );
+    }
+
+    /**
+     * get the user id form logged in user
+     * @return integer or NULL if no user logged on
+     */
+    function getLoggedInUserId() {
+        if (!isset($_SESSION["uId"]))
+            return null;
+        return intval($_SESSION["uId"]);
+    }
+
     /**
      * insert in update or insert data the date in field changeDate and the remote ip in field changeIP
      * @param array $data
@@ -31,23 +46,23 @@ class MySqlDbAUH extends MySql
     public function insertUserDateIP($data) {
         $data =$this->changeFieldInArray($data,"changeIP", $_SERVER["REMOTE_ADDR"]);
         $data =$this->changeFieldInArray($data,"changeDate", date("Y-m-d H:i:s"));
-        if (userIsLoggedOn()) {
-            $data =$this->changeFieldInArray($data,"changeUserID", getLoggedInUserId());
+        if ($this->userIsLoggedOn()) {
+            $data =$this->changeFieldInArray($data,"changeUserID", $this->getLoggedInUserId());
         } else {
             $data =$this->setFieldInArrayToNull($data,"changeUserID");
         }
         return $data;
     }
 
-
-
-/**
-     * update one entry returns -1 for anny error
+    /**
+     * update one entry
      * @param string $table
-     * @param array $entry
-     * @return int
+     * @param array $entry array of (field->value)
+     * @return boolean
      */
     public function updateEntry($table,$entry) {
+        if ($table==null || $entry==null || sizeof($entry)==0)
+            return false;
         //Build the change data array
         $data = array();
         foreach ($entry as $fieldName=>$fieldValue) {
@@ -55,10 +70,7 @@ class MySqlDbAUH extends MySql
                 $data =$this->insertFieldInArray($data,$fieldName, $fieldValue);
             }
         }
-        if ($this->update($table,$data,"id",$entry["id"]))
-            return 0;
-        else
-            return -1;
+        return $this->update($table,$data,"id",$entry["id"]);
     }
 
 

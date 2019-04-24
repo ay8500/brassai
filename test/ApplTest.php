@@ -62,7 +62,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
         Appl::includeCss();
         $echo = ob_get_contents();
         ob_end_clean();
-        $res = strpos($echo,"<style>\n.body { color:white}</style>");
+        $res = strpos($echo,"\n.body { color:white}</style>");
         $this->assertTrue($res!==false);
     }
 

@@ -11,7 +11,6 @@
 		return intval($_SESSION["uId"]);
 	}
 	
-
 	/**
 	 * get logged in name including first and lastname
      * @param \maierlabs\lpfw\iDbDaUser $db;
@@ -156,7 +155,6 @@
 	 */
 	function userIsLoggedOn() {
 		return ( isset($_SESSION['uId']) && intval($_SESSION['uId'])>-1 );
-			
 	}
 	
 	/**
