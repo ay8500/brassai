@@ -15,8 +15,8 @@
 	</nav>
 	<?php
 		if (getParam('showDatabaseQuery')!=null) {
-			echo "Querys:".$db->getRequestCounter()->querys." Changes:".$db->getRequestCounter()->changes."<br/>";
-			$sql=$db->getRequestCounter()->sql;
+			echo "Querys:".$db->dataBase->getCounter()->querys." Changes:".$db->dataBase->getCounter()->changes."<br/>";
+			$sql=$db->dataBase->getCounter()->sql;
 			foreach ($sql as $s) {
 				echo($s."<br/>");
 			}

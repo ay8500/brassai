@@ -28,29 +28,29 @@ class dbDaSongVote
     }
 
     public function deleteVote($voteId) {
-        $this->createHistoryEntry("songvote",$voteId,true);
+        $this->dataBase->createHistoryEntry("songvote",$voteId,true);
         return $this->dataBase->delete("songvote", "id",$voteId);
     }
 
     public function saveSongVote($entry) {
-        return $this->dbDAO->saveEntry("songvote",$entry);
+        return $this->dbDAO->dataBase->saveEntry("songvote",$entry);
     }
 
     public function saveInterpret($entry) {
-        return $this->dbDAO->saveEntry("interpret", $entry);
+        return $this->dbDAO->dataBase->saveEntry("interpret", $entry);
     }
 
     public function saveSong($entry) {
-        return $this->dbDAO->saveEntry("song", $entry);
+        return $this->dbDAO->dataBase->saveEntry("song", $entry);
     }
 
     public function updateSong($id,$value,$field) {
-        $this->dbDAO->createHistoryEntry("song",$id);
+        $this->dbDAO->dataBase->createHistoryEntry("song",$id);
         return $this->dataBase->update("song", [["field"=>$field,"type"=>"s","value"=>$value]],"id",$id);
     }
 
     public function updateSongFields($id,$video,$name) {
-        $this->dbDAO->createHistoryEntry("song",$id);
+        $this->dbDAO->dataBase->createHistoryEntry("song",$id);
         $data=array();
         $data=$this->dataBase->insertFieldInArray($data, "video", $video);
         $data=$this->dataBase->insertFieldInArray($data, "name", $name);
@@ -59,31 +59,23 @@ class dbDaSongVote
 
 
     public function getSongById($id) {
-        return $this->dbDAO->getEntryById("song", $id);
-    }
-
-    public function getSongByName($name) {
-        return $this->dbDAO->getEntryByField("song","name", $name);
+        return $this->dbDAO->dataBase->getEntryById("song", $id);
     }
 
     public function getInterpretById($id) {
-        return $this->dbDAO->getEntryById("interpret", $id);
-    }
-
-    public function getInterpretByName($name) {
-        return $this->dbDAO->getEntryByField("interpret", "name",$name);
+        return $this->dbDAO->dataBase->getEntryById("interpret", $id);
     }
 
     public function getSongList($interpretId=0) {
         if ($interpretId>0) {
-            return $this->dbDAO->getElementList("song",false,"interpretID=".$interpretId);
+            return $this->dbDAO->dataBase->getElementList("song",false,"interpretID=".$interpretId);
         } else {
-            return $this->dbDAO->getElementList("song",false);
+            return $this->dbDAO->dataBase->getElementList("song",false);
         }
     }
 
     public function getInterpretList() {
-        return $this->dbDAO->getElementList("interpret",false,null,null,null,"name asc");
+        return $this->dbDAO->dataBase->getElementList("interpret",false,null,null,null,"name asc");
     }
 
     /*
@@ -156,7 +148,7 @@ class dbDaSongVote
     }
 
     public function saveVote($entry) {
-        return $this->dbDAO->saveEntry("vote", $entry);
+        return $this->dbDAO->dataBase->saveEntry("vote", $entry);
     }
 
 }

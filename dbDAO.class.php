@@ -32,48 +32,18 @@ class dbDAO {
 		$this->dataBase->disconnect();
 	}
 
-    /**
-     * SQL Statement to select the anonymous changes
-     * @param string $table
-     * @return string
-     */
-	private function getSqlAnonymous($table=null)
-    {
-        if ($table!=null)
-            return $table."changeForID is not null and ".$table."changeUserID is null and ".$table."changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-        else
-            return "changeForID is not null and changeUserID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."'";
-    }
-
-
 //************************ School *******************************************
 
     /**
      * @param int $id
      * @param bool $forceThisID
-     * @return array
+     * @return array | null
      */
     public function getSchoolById($id, $forceThisID=false) {
-		return $this->getEntryById("school", $id,$forceThisID);
+		return $this->dataBase->getEntryById("school", $id,$forceThisID);
 	}
 
-    /**
-     * @param string $text
-     * @return array
-     */
-    public function getSchoolByText($text) {
-		return $this->getEntryByField("school", "text",$text);
-	}
 
-    /**
-     * @param string $text
-     * @return mixed
-     */
-    public function getSchoolIdByText($text) {
-		$ret=$this->getEntryByField("school", "text",$text);
-		return $ret["id"];
-	}
-	
 	
 //************************ Class ******************************************* 	
 
@@ -83,7 +53,7 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function isClassIdForStaf($classId) {
-		$ret = $this->getEntryById("class", $classId);
+		$ret = $this->dataBase->getEntryById("class", $classId);
 		return $ret["graduationYear"]==0;
 	}
 	
@@ -94,7 +64,7 @@ class dbDAO {
 	 * @return array or null
 	 */
 	public function getClassById($id,$forceThisID=false) {
-		return $this->getEntryById("class", $id,$forceThisID);
+		return $this->dataBase->getEntryById("class", $id,$forceThisID);
 	}
 
 
@@ -135,7 +105,7 @@ class dbDAO {
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
 			$entry = $this->dataBase->fetchRow();
-			return $this->getEntryById('class', $entry["id"]);
+			return $this->dataBase->getEntryById('class', $entry["id"]);
 		} else {
 			return null;
 		}
@@ -156,7 +126,7 @@ class dbDAO {
 	}
 
 	public function getStafClassBySchoolId($schoolId) {
-		$ret=$this->getEntry("class", "schoolID=".$schoolId." and graduationYear=0");
+		$ret=$this->dataBase->getEntry("class", "schoolID=".$schoolId." and graduationYear=0");
 		return $ret;
 	}
 	
@@ -167,8 +137,7 @@ class dbDAO {
 	 * @return number
 	 */
 	public function saveClass($class ) {
-		$this->createHistoryEntry("class",$class["id"]);
-		return $this->saveEntry("class", $class);
+		return $this->dataBase->saveEntry("class", $class);
 	}
 
     /**
@@ -177,7 +146,7 @@ class dbDAO {
      * @return array
      */
 	public function getClassList($schoolID=1,$originalId=false) {
-		return   $this->getElementList("class",$originalId, "schoolID=".$schoolID." and graduationYear <> 0",null,null,"text asc");
+		return   $this->dataBase->getElementList("class",$originalId, "schoolID=".$schoolID." and graduationYear <> 0",null,null,"text asc");
 	}
 	
 	/**
@@ -186,7 +155,7 @@ class dbDAO {
      * @return boolean
 	 */
 	public function deleteClass($id) {
-		$this->createHistoryEntry("class",$id,true);
+		$this->dataBase->createHistoryEntry("class",$id,true);
 		return  $this->dataBase->delete("class", "id", $id);
 	}
 	
@@ -224,8 +193,7 @@ class dbDAO {
 		}
 		return $ret;
 	}
-	
-	
+
 //************************** Person *******************************************
 	/**
 	 * Insert or update a person
@@ -236,19 +204,18 @@ class dbDAO {
 	    if (isset($person["deceasedYear"]) && $person["deceasedYear"]=='') {
             $person["deceasedYear"]=null;
         }
-	    $ret =$this->saveEntry("person", $person);
-	    $this->updateRecentChangesList();
+	    $ret =$this->dataBase->saveEntry("person", $person);
 		return $ret;
 	}
 	
 	public function savePersonFacebookId($id,$facebookId) {
-		$this->createHistoryEntry("person",$id);
+		$this->dataBase->createHistoryEntry("person",$id);
 		$this->dataBase->update("person", [["field"=>"facebookid","type"=>"s","value"=>$facebookId]],"id",$id);	
 	}
 
 	public function savePersonGeolocation($id,$lat,$lng) {
 		if (!userIsAdmin()) {
-			$this->createHistoryEntry("person",$id);
+			$this->dataBase->createHistoryEntry("person",$id);
 		}
 		$this->dataBase->update("person", [["field"=>"geolat","type"=>"s","value"=>$lat],["field"=>"geolng","type"=>"s","value"=>$lng]],"id",$id);
 	}
@@ -292,7 +259,7 @@ class dbDAO {
 	 * @return NULL is no person found 
 	 */
 	public function getPersonByUser($username) {
-		return $this->getEntryByField("person", "user", $username);
+		return $this->dataBase->getEntryByField("person", "user", $username);
 	}
 
 	/**
@@ -303,37 +270,13 @@ class dbDAO {
 	public function getPersonByEmail($email) {
 		if ($email==null || trim($email)=="")
 			return null;
-		$person = $this->getEntryByField("person", "email", $email);
+		$person = $this->dataBase->getEntryByField("person", "email", $email);
 		//the protected email
 		if ($person==null)
-			$person = $this->getEntryByField("person", "email", "~".$email);
+			$person = $this->dataBase->getEntryByField("person", "email", "~".$email);
 		return $this->getPersonByID(getRealId($person));
 	}
 
-	/**
-	 * get a person by lastname and firstname eg. Müller Peter
-	 * @param string lastname firstname
-	 * @return array person or NULL
-	 */
-	public function getPersonByLastnameFirstname($name) {
-		if ($name==null || trim($name)=="")
-			return null;
-		$n=explode(' ', trim($name));
-		if (sizeof($n)==2) {
-			$person = $this->getEntryByField("person", "lastname", $n[0]);
-			if ($person!=null) {
-				if ($person["firstname"]==$n[1])
-					return $person;
-			}
-		} else {
-			$person = $this->getEntryByField("person", "lastname", $n[0]);
-			if ($person!=null) {
-				return $person;
-			}
-		}
-		return null;
-	}
-	
 	/**
 	 * get a person by Facebook ID
 	 * @param string facebookid
@@ -355,7 +298,7 @@ class dbDAO {
 	 */
 	public function getPersonByID($personid,$forceThisID=false) {
 	    if ($personid!=null && intval($personid)>=0)
-		    return $this->getEntryById("person", $personid,$forceThisID);
+		    return $this->dataBase->getEntryById("person", $personid,$forceThisID);
 	    return null;
 	}
 	
@@ -425,8 +368,8 @@ class dbDAO {
         $sql .=" left join  class on class.id=person.classID";
         $sql .=" where (graduationYear != 0 or isTeacher = 1)";		//No administator users
         $sql .=" and ( person.changeForID is null and ".$where;
-        $sql .=" and person.id not in ( select changeForID from person where  ".$this->getSqlAnonymous("person.")." ) ";
-        $sql.=") or (".$this->getSqlAnonymous("person.")."and ".$where.") limit 150";
+        $sql .=" and person.id not in ( select changeForID from person where  ".$this->dataBase->getSqlAnonymous("person.")." ) ";
+        $sql.=") or (".$this->dataBase->getSqlAnonymous("person.")."and ".$where.") limit 150";
 
         $this->dataBase->query($sql);
         while ($person=$this->dataBase->fetchRow()) {
@@ -462,7 +405,7 @@ class dbDAO {
 			if ($notDied==true) {
                 $where.=" and deceasedYear is null";
             }
-			$ret = $this->getElementList("person",false,$where);
+			$ret = $this->dataBase->getElementList("person",false,$where);
 			usort($ret, "compareAlphabetical");
 			return $ret;
 		}
@@ -520,7 +463,7 @@ class dbDAO {
 	 * get the person list!
 	 */
 	public function getPersonList($where=null,$limit=null,$ofset=null,$order=null,$field="*",$join=null) {
-		$ret = $this->getElementList("person",false,$where,$limit,$ofset,$order,$field,$join);
+		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset,$order,$field,$join);
 		return $ret;
 	}
 
@@ -528,7 +471,7 @@ class dbDAO {
 	 * get sorted person list!
 	 */
 	public function getSortedPersonList($where=null,$limit=null,$ofset=null) {
-		$ret = $this->getElementList("person",false,$where,$limit,$ofset);
+		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset);
 		usort($ret, "compareAlphabeticalTeacher");
 		return $ret;
 	}
@@ -586,7 +529,7 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function deletePersonEntry( $id ) {
-		$this->createHistoryEntry("person",$id,true);
+		$this->dataBase->createHistoryEntry("person",$id,true);
 		$person=$this->getPersonByID($id,true);
         if(isset($person["changeForID"]))
             $pOriginal=$this->getPersonByID($person["changeForID"]);
@@ -620,7 +563,7 @@ class dbDAO {
 			if (isset($p["changeForID"])) {
 				$objID=$p["changeForID"];
 				//make history entry 
-				$this->createHistoryEntry($table,$objID);
+				$this->dataBase->createHistoryEntry($table,$objID);
 				//Delete the temporary entry
 				if ($this->dataBase->delete($table, "id", $id)) {
 					//Update the entry
@@ -634,7 +577,7 @@ class dbDAO {
 			} else
 			//Accept a new entry
 			{
-				$this->createHistoryEntry($table,$p["id"]);
+				$this->dataBase->createHistoryEntry($table,$p["id"]);
 				$p["changeUserID"]=-1;
 				return $this->dataBase->updateEntry($table, $p);
 			}
@@ -653,14 +596,14 @@ class dbDAO {
 				$sql .=" and not(role like '%guest%')";
 			if ($this->isClassIdForStaf($classId))
 				$sql .=" and isTeacher = 1";
-			return sizeof($this->getIdList("person",$sql));
+			return sizeof($this->dataBase->getIdList("person",$sql));
 		}
 		return 0;
 	}
 	
 	public function getPersonIdListWithPicture() {
 		$where="picture is not null and picture != ''";
-		return $this->getIdList("person",$where);
+		return $this->dataBase->getIdList("person",$where);
 	}
 	
 //******************** Picture DAO *******************************************
@@ -672,11 +615,10 @@ class dbDAO {
 	 */
 	public function savePicture($picture) {
 		$newEntry=$picture["id"]==-1;
-		$id = $this->saveEntry("picture", $picture);
+		$id = $this->dataBase->saveEntry("picture", $picture);
 		if ($newEntry && $id>=0) {
 			$this->dataBase->update("picture", [["field"=>"orderValue","type"=>"n","value"=>$id],["field"=>"isDeleted","type"=>"i","value"=>0]],"id",$id);
 		}
-        $this->updateRecentChangesList();
 		return $id;
 	}
 	
@@ -697,7 +639,7 @@ class dbDAO {
 		} else {
 			$sql.=" and (albumName is null or albumName='')";
 		}
-		return $this->getElementList("picture",false,$sql,$limit,$offset,$orderby);
+		return $this->dataBase->getElementList("picture",false,$sql,$limit,$offset,$orderby);
 	}
 
 
@@ -711,7 +653,7 @@ class dbDAO {
         $sql.="isDeleted=0 ";
         if ($where!="")
             $sql.=" and ".$where;
-        return $this->getElementList("picture",false, $sql,$limit,$offset,$orderby);
+        return $this->dataBase->getElementList("picture",false, $sql,$limit,$offset,$orderby);
     }
 
     /**
@@ -808,9 +750,9 @@ class dbDAO {
 	 */
 	public function getPictureList($where=null) {
 		if (null==$where) {
-			return   $this->getElementList("picture",false,"isDeleted=0");
+			return   $this->dataBase->getElementList("picture",false,"isDeleted=0");
 		} else {
-			return   $this->getElementList("picture",false,"isDeleted=0 and ".$where);
+			return   $this->dataBase->getElementList("picture",false,"isDeleted=0 and ".$where);
 		}
 	}
 	
@@ -818,7 +760,7 @@ class dbDAO {
 	 * List of recent not deleted pictures
 	 */
 	public function getRecentPictureList($limit) {
-		return   $this->getElementList("picture",false,"isDeleted=0",$limit,null,"uploadDate desc");
+		return   $this->dataBase->getElementList("picture",false,"isDeleted=0",$limit,null,"uploadDate desc");
 	}
 	
 	
@@ -861,7 +803,7 @@ class dbDAO {
 		} else {
 		    $ret1 = true;
         }
-		$this->createHistoryEntry("picture",$id,true);
+		$this->dataBase->createHistoryEntry("picture",$id,true);
 		$ret2= $this->dataBase->delete("picture", "id", $id);
 		return $ret1 && $ret2;
 	}
@@ -897,6 +839,7 @@ class dbDAO {
         }
 	    return $ret;
     }
+
 	/**
 	 * Search for class by year name
 	 * @param string $name
@@ -921,8 +864,16 @@ class dbDAO {
 		return $ret;
 	}
 
-//********************************[ Accelerator ]*****************************************************************
 
+    /**
+     * get recent changes in the database
+     * @param string $dateFrom
+     * @param int $limit
+     * @param string $filter all, teacher, person, picture, opinion, class, family, candle, tag
+     * @param string $ip
+     * @param int $userid
+     * @return array
+     */
     public function getRecentChangesListByDate($dateFrom, $limit,$filter='all',$ip=null, $userid=null) {
         $rows=array();
         $sqlIpUser="";$sqlCandleIpUser="";
@@ -1007,46 +958,43 @@ class dbDAO {
         return;
     }
 
-
-
 //********************* Message ******************************************
-
 	/**
 	 * get chat messages
 	 */
 	public function getMessages($limit=null,$offset=null) {
-		return $this->getElementList("message",false,"classID is null",$limit,$offset,"changeDate desc");
+		return $this->dataBase->getElementList("message",false,"classID is null",$limit,$offset,"changeDate desc");
 	}
 
 	/**
 	 * get class messages
 	 */
 	public function getClassMessages($classId,$limit=null,$offset=null) {
-		return $this->getElementList("message",false,"classID =".$classId,$limit,$offset,"changeDate desc");
+		return $this->dataBase->getElementList("message",false,"classID =".$classId,$limit,$offset,"changeDate desc");
 	}
 	
 	/**
 	Returns a signle entry or NULL if no entry found
 	 */
 	public function getMessage($id) {
-		return $this->getEntryById("message", $id);		
+		return $this->dataBase->getEntryById("message", $id);
 	}
 
 	public function setMessageAsDeleted($id) {
 		$entry=array();
 		$entry["id"]=$id;
 		$entry["isDeleted"]=1;
-		$this->createHistoryEntry("message",$id);
+		$this->dataBase->createHistoryEntry("message",$id);
 		return $this->dataBase->updateEntry("message", $entry);
 	}
 	
 	public function saveMessage($entry) {
-		return $this->saveEntry("message",$entry);
+		return $this->dataBase->saveEntry("message",$entry);
 	}
 	
 	public function saveNewMessage($entry) {
 		$entry["id"]=-1;
-		return $this->saveEntry("message", $entry);
+		return $this->dataBase->saveEntry("message", $entry);
 	}
 	
 	/**
@@ -1056,25 +1004,24 @@ class dbDAO {
 	 * @return boolean
 	 */
 	public function saveMessageComment($id,$comment) {
-		$this->createHistoryEntry("message",$id);
+		$this->dataBase->createHistoryEntry("message",$id);
 		return $this->dataBase->update("message", [["field"=>"comment","type"=>"s","value"=>$comment]],"id",$id);
 	}
 	
 	public function saveMessagePersonID($id,$uid) {
-		$this->createHistoryEntry("message",$id);
+		$this->dataBase->createHistoryEntry("message",$id);
 		return $this->dataBase->update("message", [
 					["field"=>"changeUserID","type"=>"n","value"=>$uid],
 					["field"=>"name","type"=>"s","value"=>""]
 				],"id",$id);
 	}
 	
-	
 	/**
 	 * Delete message from the db
 	 * @return boolean
 	 */
 	public function deleteMessageEntry( $id) {
-		$this->createHistoryEntry("message",$id,true);
+		$this->dataBase->createHistoryEntry("message",$id,true);
 		return $this->dataBase->delete("message", "id", $id);
 	}
 	
@@ -1086,14 +1033,13 @@ class dbDAO {
 		$p=$this->dataBase->querySignleRow("select * from message where id=".$id);
 		if ($p!=null) {
 		    $p["changeUserID"]=-1;
-		    $this->createHistoryEntry("message",$id);
+		    $this->dataBase->createHistoryEntry("message",$id);
 		    return $this->dataBase->updateEntry("message", $p);
 		}
 		return false;
 	}
 
 //********************* Request ******************************************
-
 	/**
 	 * reset requests for an ip an type
 	 * @param integer $type
@@ -1157,244 +1103,4 @@ class dbDAO {
 		}
 	}
 	
-	
-//********************* Private ******************************************	
-
-    /**
-     * Get an array of elements, or an empty array if no elements found.
-     * Anonymous changes from the user IP will be considered
-     * even if the anonymous copys are returned the ids will be from the original entrys if the parameter $originalId =true
-     * @param $table
-     * @param bool $originalId
-     * @param string $where
-     * @param int $limit
-     * @param int $offset
-     * @param string $orderby
-     * @param string $field
-     * @return array
-     */
-	public function getElementList($table,$originalId=false,$where=null, $limit=null, $offset=null, $orderby=null, $field="*", $join=null) {
-        $ret = array();
-        $jtable = null;
-		//normal entrys
-		$sql="select ".$field;
-        if ($join==null)
-            $sql .= " ,id ";
-        $sql .= " from ".$table;
-		if ($join!=null) {
-            $sql .= " join " . $join;
-            $jtable = $table.'.';
-        }
-        $sql .=" where ((".$jtable."changeForID is null and ".$jtable."changeUserID is not null)";
-		//and anonymous new entrys
-        $sql.=" or (".$this->getSqlAnonymous($jtable).") )";
-		if ($where!=null)		$sql.=" and ( ".$where." )";
-		if ($orderby!=null)		$sql.=" order by ".$orderby;
-		if ($limit!=null)		$sql.=" limit ".$limit;
-		if ($offset!=null)		$sql.=" offset ".$offset;
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-            $ret = $this->dataBase->getRowList();
-        }
-        //anonymous entrys
-        $sql="select ".$field.",".$jtable."changeForID ";
-        if ($join==null)
-            $sql .= " ,id ";
-        $sql .= " from ".$table;
-        if ($join!=null) {
-            $sql .= " join " . $join;
-            $jtable = $table.'.';
-        }
-        $sql .=' where '.$this->getSqlAnonymous($jtable);
-        if ($where!=null)		$sql.="  and ( ".$where." )";
-        if ($orderby!=null)		$sql.=" order by ".$orderby;
-        if ($limit!=null)		$sql.=" limit ".$limit;
-        if ($offset!=null)		$sql.=" offset ".$offset;
-        $this->dataBase->query($sql);
-        if ($this->dataBase->count()>0) {
-            //Change the entrys with the anonymous entrys
-            $anyonymous=$this->dataBase->getRowList();
-            foreach ($ret as $i=>$r) {
-                $found=array_search($r["id"],array_column($anyonymous,"changeForID"));
-                if ($found!==false) {
-                    $ret[$i]=$anyonymous[$found];
-                    //the original id
-                    if ($originalId)
-                        $ret[$i]["id"]=$r["id"];
-                }
-            }
-        }
-        return $ret;
-    }
-	
-	/**
-	 * Get an array of ids, or an empty array if no ids found
-	 * Anonymous changes from the user IP will be considered
-	 */
-	private function getIdList($table, $where=null, $limit=null, $offset=null, $orderby=null) {
-		return $this->getElementList($table,false,$where,$limit,$offset,$orderby,"id");
-	}
-	
-	
-	/**
-	 * Returns a signle entry from a table in consideration of the anonymous changes or NULL if no entry found
-	 * even if the anonymous copy is returned the id will be from the original
-     * @param string $table
-     * @param int $id
-     * @param boolean $forceThisID
-	 * @return array|null  the entry
-	 */
-	public function getEntryById($table,$id,$forceThisID=false) {
-		if ($id==null || $id=='')
-			return null;
-		//First get the forced entry by the id
-        if ($forceThisID==true) {
-			$sql="select * from ".$table.' where id='.$id;
-			return  $this->dataBase->querySignleRow($sql);
-		}
-		//First get the entry modified by the aktual ip and then the original entry, the original entry has allways a smaler id then a copy
-		$sql="select * from ".$table.' where id='.$id." or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$id.") order by id desc";
-		if ($this->dataBase->query($sql)) {
-			$ret =  $this->dataBase->getRowList();
-			/* Change the ID to the original ID
-			if (sizeof($ret)>1) {
-			    $ret[0]["id"]=$ret[0]["changeForID"];
-            }
-			*/
-            if (sizeof($ret)>0)
-                return $ret[0];
-		}
-		return null;
-	}
-	
-	/**
-	 * get a db entry by a field
-	 * @return array | NULL if no entry or more then one entry found
-	 */
-	public function getEntryByField($table,$fieldName,$fieldValue) {
-		$sql="select id from ".$table." where ".$fieldName."='".trim($fieldValue)."'";
-		$sql .=" and changeForID is null";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()==1) {
-			$entry = $this->dataBase->fetchRow();
-			return $this->getEntryById($table, $entry["id"]);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * get a db entry by a field
-	 * @return array | NULL is no entry found
-	 */
-	public function getEntry($table,$where) {
-		$sql="select id from ".$table." where ".$where;
-		$sql .=" and changeForID is null";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			$entry = $this->dataBase->fetchRow();
-			return $this->getEntryById($table, $entry["id"]);
-		} else {
-			return null;
-		}
-	}
-	
-	
-	/**
-	 * Insert or update a table entry
-	 * If user is anonymous create a new entry as a change   
-	 * @return integer if negativ an error occurs
-	 */
-	public function saveEntry($table,$entry) {
-		//Build the change data array
-		$data = array();
-		foreach ($entry as $fieldName=>$fieldValue) {
-			if ($fieldName!="id" && $fieldName!="changeForID") {
-				$data =$this->dataBase->insertFieldInArray($data,$fieldName, $fieldValue);
-			}
-		}
-		$data = $this->dataBase->insertUserDateIP($data);
-		//Update
-		if ($entry["id"]>=0) {
-			//User is loggen on
-			if (userIsLoggedOn()) {
-				$this->createHistoryEntry($table,$entry["id"]);
-				if ($this->dataBase->update($table,$data,"id",$entry["id"])) {
-					return $entry["id"];
-				} else 
-					return -5;
-			//Anonymous user
-			} else {
-				$dbentry=$this->getEntryById($table, $entry["id"]);
-				if(isset($dbentry["changeUserID"])) {
-					//Insert an anonymous copy 
-					$data =$this->dataBase->changeFieldInArray($data,"changeForID", $entry["id"]);
-					if ($this->dataBase->insert($table,$data))
-						return $this->dataBase->getInsertedId();
-					else 
-						return -4;
-				} else {
-					//Update the anonymous entry
-					if ($this->dataBase->update($table,$data,"id",$entry["id"]))							
-						return $dbentry["id"];
-					else 
-						return -7;
-				}
-			}
-		} 
-		//Insert
-		else {
-			if ($this->dataBase->insert($table,$data))
-				return $this->dataBase->getInsertedId();
-			else 
-				return -1;
-		}
-	}
-	
-	
-    /**
-     * get history info
-     * @param string $table
-     * @param  int $id
-     * @return array
-     */
-    public function getHistoryInfo($table,$id) {
-        return $this->dataBase->getHistoryInfo($table,$id);
-    }
-
-    /**
-     * get history
-     * @param string $table
-     * @param  int $id
-     * @return array
-     */
-    public function getHistory($table,$id) {
-        return $this->dataBase->getHistory($table,$id);
-    }
-
-    /**
-     * delete history entry and restore the change date from source entry
-     * @param int $id
-     * @return bool
-     */
-    public function deleteHistoryEntry($id) {
-        return $this->dataBase->deleteHistoryEntry($id);
-    }
-
-    /**
-     * Create a history entry in the history table
-     * @param string $table
-     * @param string $id
-     * @param boolean $delete
-     * @return boolean
-     */
-    public function createHistoryEntry($table,$id,$delete=false)  {
-        return $this->dataBase->createHistoryEntry($table,$id,$delete);
-    }
-
-    public function getRequestCounter() {
-		return $this->dataBase->getCounter();
-	}
-
-
-  }
+}

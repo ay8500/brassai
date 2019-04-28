@@ -116,7 +116,7 @@ class dbBL extends dbDAO
      * @return array | null  person
      */
     public function getAktSchoolAdminPerson() {
-    	return $this->getEntry('person',"role like '%admin%' and classID=".$this->getStafClassBySchoolId(getAktSchoolId())["id"]);
+    	return $this->dataBase->getEntry('person',"role like '%admin%' and classID=".$this->getStafClassBySchoolId(getAktSchoolId())["id"]);
     }
 
     /**
@@ -630,6 +630,23 @@ function showField($diak,$field) {
   return false;
 
 }
+
+/**
+ * Concatenate lastname firstname
+ * @param array $user
+ * @return string
+ */
+function getPersonShortName($user) {
+	if ($user!=null) {
+		$ret ="";
+		if (isset($user["title"]))
+			$ret = $user["title"].' ';
+		$ret .= $user["lastname"]." ".$user["firstname"];
+		return $ret;
+	}
+	return '';
+}
+
 
 /**
  * Concatenate lastname firstname and birtname

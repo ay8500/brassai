@@ -389,6 +389,15 @@ if (!isActionParam("showmore") ) {
     .personsearch {position:absolute; background-color:lightgray;width:280px;padding:5px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;z-index:500;}
 ');
 
+/**
+ * Display picture list
+ * @param dbBL $db
+ * @param array $pictures
+ * @param int $idx
+ * @param array $albumList
+ * @param string $albumParam
+ * @param string $view
+ */
 function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
     if (sizeof($pictures)==0) {
         \maierlabs\lpfw\Appl::addJsScript('$("#buttonmore").hide();');
@@ -409,6 +418,15 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
     }
 }
 
+/**
+ * Display a picture div
+ * @param dbBL $db
+ * @param array $pictures
+ * @param int $idx
+ * @param array $albumList
+ * @param string $albumParam
+ * @param string $view
+ */
 function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     $pict=$pictures[$idx];
     $checked= ($pict["isVisibleForAll"]==1)?"checked":"";
@@ -435,7 +453,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
 
         <?php  if (userIsAdmin() || userIsSuperuser()) {?>
             <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
-                <span class="badge"><?php echo sizeof($db->getHistoryInfo("picture",$pict["id"]))?></span>
+                <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("picture",$pict["id"]))?></span>
             </a>
         <?php }?>
     </div>

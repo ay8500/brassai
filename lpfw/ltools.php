@@ -69,7 +69,7 @@ function getIntParam($name,$def=0) {
  */
 function isLocalhost() {
     if (isset($_SERVER['REMOTE_ADDR'])) {
-        $whitelist = array('127.0.0.1', '::1', '192.168.201.40','192.168.201.41');
+        $whitelist = array('127.0.0.1', '::1', '192.168.201.40','192.168.201.42','192.168.201.44');
         return in_array($_SERVER['REMOTE_ADDR'], $whitelist);
     }
     return true;

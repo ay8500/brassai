@@ -16,10 +16,10 @@ include('homemenu.inc.php');
 
 <?php if (userIsAdmin() || userIsSuperuser()) {
     if (isActionParam("delete")) {
-        if ($db->deleteHistoryEntry(getParam("did")))
+        if ($db->dataBase->deleteHistoryEntry(getParam("did")))
             $db->updateRecentChangesList();
     }
-	$history=$db->getHistory(getParam("table"), getParam("id"));
+	$history=$db->dataBase->getHistory(getParam("table"), getParam("id"));
 ?>
 
 <div class="panel panel-default">
@@ -57,28 +57,28 @@ function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=
 	switch ($item["table"]) {
 		case "person" :
 			if ($original) 
-				$person=$db->getEntryById($item["table"],$item["entryID"],true);
+				$person=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$person=json_decode_utf8($item["jsonData"]);
 			displayPerson($db, $item,$person,json_decode_utf8($itemNext["jsonData"]),$original,$lastElement);
 			break;
 		case "picture" :
 			if ($original) 
-				$picture=$db->getEntryById($item["table"],$item["entryID"],true);
+				$picture=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$picture=json_decode_utf8($item["jsonData"]);
 			displayPicture($db, $item, $picture,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "vote" :
 			if ($original) 
-				$vote=$db->getEntryById($item["table"],$item["entryID"],true);
+				$vote=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$vote=json_decode_utf8($item["jsonData"]);
 			displayVote($db, $item, $vote,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "class" :
 			if ($original) 
-				$class=$db->getEntryById($item["table"],$item["entryID"],true);
+				$class=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
 			else
 				$class=json_decode_utf8($item["jsonData"]);
 			displayClass($db, $item,$class,json_decode_utf8($itemNext["jsonData"]));
@@ -113,16 +113,16 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayElementObj($person, $personNext,"employer","E");
 	displayElementObj($person, $personNext,"function","F");
 	displayElementObj($person, $personNext,"children","K");
-	displayElement(hash("sha256",$person["cv"]), hash("sha256",$personNext["cv"]),"CV","CV");
-	displayElement(hash("sha256",$person["story"]), hash("sha256",$personNext["story"]),"T","Történet");
-	displayElement(hash("sha256",$person["aboutMe"]), hash("sha256",$personNext["aboutMe"]),"R","Magamról");
-	
+	displayElement(hash("sha256",isset($person["cv"])?$person["cv"]:''), hash("sha256",isset($personNext["cv"])?$personNext["cv"]:''),"CV","CV");
+    displayElement(hash("sha256",isset($person["story"])?$person["story"]:''), hash("sha256",isset($personNext["story"])?$personNext["story"]:''),"T","Történet");
+    displayElement(hash("sha256",isset($person["aboutMe"])?$person["aboutMe"]:''), hash("sha256",isset($personNext["aboutMe"])?$personNext["aboutMe"]:''),"M","Magamról");
+
 	displayElementObj($person, $personNext,"user","U");
 	displayElementObj($person, $personNext,"passw","P");
 	displayElementObj($person, $personNext,"classID","C");
 	displayElementObj($person, $personNext,"isTeacher","T");
     displayElementObj($person, $personNext,"role","R");
-	if ($item["changeUserID"]!=$person["changeUserID"] && !$lastElement && userIsAdmin())
+	if ( (isset($item["changeUserID"])?$item["changeUserID"]:0) != (isset($person["changeUserID"])?$person["changeUserID"]:0) && !$lastElement && userIsAdmin())
 		displayChangeData($db,$item,0);
 }
 

@@ -174,7 +174,7 @@ include("homemenu.inc.php");
 	<div class="well">
 		<?php  if ((userIsAdmin() || userIsSuperuser()) && isset($class)) {?>
 			<a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
-				<span class="badge"><?php echo sizeof($db->getHistoryInfo("class",$class["id"]))?></span>
+				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
 			</a>
 		<?php }?>
 		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>

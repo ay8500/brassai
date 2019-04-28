@@ -18,6 +18,7 @@ $activities=$dbStatistic->getPersonActivities($personid);
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser() || userIsSuperuser()) { ?>
 	<div>
 		<h4>Aktívitási pontszámok</h4>
+        <a href="start.php?&tabOpen=user&userid=<?php echo getAktUserId()?>" class="btn btn-default">Mutasd áz aktivításokat</a>
 		<table id="activities">
 		<tr style="background-color: lightgray"><td>Akció					</td><td> Végrehajtások		</td><td> Szorzó </td><td> Összesen</td></tr>
 		<tr><td>Személy módosítások		</td><td> <?php echo $activities["personChange"]?>		</td><td> 1 </td><td><?php echo $activities["personChange"]?> </td></tr>

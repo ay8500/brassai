@@ -38,6 +38,15 @@ function showRecentChanges($db,$date=null) {
         $date=new \DateTime();
     }
     $filter=getParam("tabOpen","all");
+    if ($filter=='user') {
+        $filter='all';
+        if (userIsLoggedOn() || getParam("userid")!=null) {
+            if (getParam("userid") == null)
+                $_GET["userid"] = getLoggedInUserId();
+        } else {
+            $_GET["ip"] = $_SERVER["REMOTE_ADDR"];
+        }
+    }
     $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48),$filter,getParam("ip",null),getParam("userid",null));
     foreach ($ids as $id) {
         if ($id["type"] == "person") {
@@ -76,6 +85,16 @@ include("homemenu.inc.php");
         array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "screenshot"));
         array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "thumbs-up"));
         array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "plus"));
+        if (userIsLoggedOn() || getParam("userid")!=null) {
+            if (getParam("userid")!=null) {
+                $pers = getPersonShortName($db->getPersonByID(getParam("userid")));
+            } else {
+                $pers = getPersonShortName($db->getPersonByID(getLoggedInUserId()));
+            }
+            array_push($tabsCaption, array("id" => "user", "caption" => $pers, "glyphicon" => "user"));
+        } else {
+            array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "user"));
+        }
 
     	include 'lpfw/view/tabs.inc.php';?>
 		<div class="panel-body">

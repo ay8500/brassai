@@ -25,7 +25,7 @@ class DbBLTest extends PHPUnit_Framework_TestCase
         $_SERVER["REMOTE_ADDR"]="192.168.255.255";
     }
 
-    public function testBusinssLayer()
+    public function testBusinessLayer()
     {
         $this->assertNotNull($this->db);
     }

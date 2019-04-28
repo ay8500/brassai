@@ -32,23 +32,23 @@ class ZStatisticsTest extends PHPUnit_Framework_TestCase
 
     public function testPerson()
     {
-        $all = $this->db->queryInt("select  count(1) from person");
+        $all = $this->db->queryInt("select  count(*) from person");
         $this->assertTrue($all>0);
-        $todo = $this->db->queryInt("select  count(1) from person where deceasedYear is not null and user is not null");
+        $todo = $this->db->queryInt("select  count(*) from person where deceasedYear is not null and user is not null");
         echo(" Persons:".$all." todo:".$todo);
         //TODO remove person login data if the person is died
     }
 
     public function testPicture()
     {
-        $all = $this->db->queryInt("select  count(1) from picture");
+        $all = $this->db->queryInt("select  count(*) from picture");
         $this->assertTrue($all>0);
         echo(" Pictures:".$all);
     }
 
     public function testHistory()
     {
-        $all = $this->db->queryInt("select  count(1) from history");
+        $all = $this->db->queryInt("select  count(*) from history");
         $this->assertTrue($all>0);
         echo(" History:".$all);
         //TODO remove entry whithout refereced data
@@ -56,7 +56,7 @@ class ZStatisticsTest extends PHPUnit_Framework_TestCase
 
     public function testPersonInPicture()
     {
-        $all = $this->db->queryInt("select  count(1) from personInPicture");
+        $all = $this->db->queryInt("select  count(*) from personInPicture");
         $this->assertTrue($all>0);
         echo(" PersonInPicture:".$all);
         //TODO remove entry whithout refereced data
@@ -64,7 +64,7 @@ class ZStatisticsTest extends PHPUnit_Framework_TestCase
 
     public function testOpinion()
     {
-        $all = $this->db->queryInt("select  count(1) from opinion");
+        $all = $this->db->queryInt("select  count(*) from opinion");
         $this->assertTrue($all>0);
         echo(" Opinion:".$all);
         //TODO remove entry whithout refereced data

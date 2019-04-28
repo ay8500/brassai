@@ -90,7 +90,7 @@ class MySql
             $r = mysqli_fetch_row($this->result);
             return intval($r[0]);
         }
-        return -1;
+        return false;
     }
 
     /**
@@ -108,7 +108,7 @@ class MySql
     /**
      * Execute a query that return the first row
      * @param $query
-     * @return array
+     * @return array | null
      */
     public function queryFirstRow($query)
     {
@@ -186,9 +186,9 @@ class MySql
     {
         $this->countQuerys++;
         if ($where == "")
-            $sql = "select count(1) from " . $table;
+            $sql = "select count(*) from " . $table;
         else
-            $sql = "select count(1) from " . $table . " where " . $where;
+            $sql = "select count(*) from " . $table . " where " . $where;
         return $this->queryInt($sql);
     }
 
@@ -252,7 +252,10 @@ class MySql
                 if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
                 } else {
-                    $sql .= $d["value"];
+                    if ($d["type"]=='n' && ($d["value"]===null || $d["value"]===''))
+                        $sql .= "null";
+                    else
+                        $sql .= $d["value"];
                 }
                 if ($d["type"] != "n") $sql .= "'";
             } else {
@@ -324,7 +327,10 @@ class MySql
                 if ($d["type"] != "n") {
                     $sql .= $this->replaceSpecialChars($d["value"]);
                 } else {
-                    $sql .= $d["value"];
+                    if ($d["value"]==='')
+                        $sql .='0';
+                    else
+                        $sql .= $d["value"];
                 }
                 if ($d["type"] != "n") $sql .= "'";
             } else {
@@ -349,7 +355,6 @@ class MySql
      **/
     public function delete($table, $whereField, $whereValue)
     {
-        $this->countChanges++;
         $where = $whereField . "=" . $whereValue;
         return $this->deleteWhere($table, $where);
     }
@@ -390,7 +395,7 @@ class MySql
      */
     public function replaceSpecialChars($s)
     {
-        if (null==$s)
+        if (null===$s)
             return null;
         return str_replace("'", "\'", $s);
     }
@@ -440,15 +445,14 @@ class MySql
             $type = "s";
             $fieldValue = $this->replaceSpecialChars($fieldValue);
         }
-        if ($type != null) {
-            $ret = array();
-            $ret["field"] = $fieldName;
-            $ret["type"] = $type;
-            if (null!=$fieldValue) {
-                $ret["value"] = $fieldValue;
-            }
-            array_push($array, $ret);
+
+        $ret = array();
+        $ret["field"] = $fieldName;
+        $ret["type"] = $type;
+        if (null!==$fieldValue) {
+            $ret["value"] = $fieldValue;
         }
+        array_push($array, $ret);
         return $array;
     }
 

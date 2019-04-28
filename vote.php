@@ -123,11 +123,11 @@ if (isActionParam("vote")) {
                             <?php if (userIsAdmin() || userIsEditor() || userIsSuperuser()) { ?>
                                 <a title="módosítások" href="history.php?table=vote&id=<?php echo $vote["id"] ?>"
                                    style="display:inline-block;">
-                                    <span class="badge"><?php echo sizeof($db->getHistoryInfo("vote", $vote["id"])) ?></span>
+                                    <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("vote", $vote["id"])) ?></span>
                                 </a>
                             <?php } else { ?>
                                 <span title="módosítások"
-                                      class="badge"><?php echo sizeof($db->getHistoryInfo("vote", $vote["id"])) ?></span>
+                                      class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("vote", $vote["id"])) ?></span>
                             <?php } ?>
                         <?php } else { ?>
                             <button value="-1" name="id" type="submit" class="btn btn-default"><span

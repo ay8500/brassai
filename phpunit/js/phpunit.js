@@ -229,7 +229,7 @@ function setTextToConsole(text,color,newline) {
     else
         newline = "div";
     var c= $('<'+newline+' style="color:'+color+'"></'+newline+'>');
-    c.text(text);
+    c.html(text);
     $("#console").append(c);
 }
 

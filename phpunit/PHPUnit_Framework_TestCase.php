@@ -6,47 +6,148 @@ class PHPUnit_Framework_TestCase {
     private $assertError=0;
     private $errorText="";
 
-    public function assertSame($o1,$o2) {
-        if ($o1===$o2) {
+    public function assertSame($expected,$actual,$message='') {
+        if ($expected===$actual) {
             $this->assertOk++;
         } else {
             $this->assertError++;
-            if (get_class($o1)===get_class($o2)) {
-                $this->errorText .= ' Expected:' . $o1 . ' Actual:' . $o2;
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that ' . $actual. ' is identical to '.$expected."<br />";
             } else {
-                $this->errorText .= ' Object not mach: Expected:' . get_class($o1) . ' Actual:' . get_class($o2);
+                $this->errorText .= $message."<br />";
             }
         }
     }
 
-    public function assertTrue($boolean) {
-        if ($boolean) {
+    public function assertNotSame($expected,$actual,$message='') {
+        if ($expected!==$actual) {
             $this->assertOk++;
         } else {
+            $this->assertError++;
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that ' . $actual. ' is different to '.$expected."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+        }
+    }
+
+    public function assertTrue($condition,$message='') {
+        if ($condition===true) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that false is true'."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
             $this->assertError++;
         }
     }
 
-    public function assertFalse($boolean) {
-        $this->assertTrue(!$boolean);
+    public function assertFalse($condition,$message='') {
+        if ($condition===false) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that true is false'."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+            $this->assertError++;
+        }
     }
 
-    public function assertNotNull($object) {
+    public function assertNotNull($object,$message='') {
         if (null!==$object) {
             $this->assertOk++;
         } else {
+            if ($message=='') {
+                $this->errorText .= "Failed asserting that '".$object."' is not null"."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
             $this->assertError++;
         }
     }
 
-    public function assertNull($object) {
+    public function assertNull($object,$message='') {
         if (null===$object) {
             $this->assertOk++;
         } else {
+            if ($message=='') {
+                $this->errorText .= "Failed asserting that '".$object."' is null"."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
             $this->assertError++;
         }
     }
 
+    public function assertGreaterThan($expected, $actual, string $message = '') {
+        if ($actual > $expected) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that '.$actual.'  is greater then '.$expected."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+            $this->assertError++;
+        }
+    }
+
+    public function assertGreaterThanOrEqual($expected, $actual, string $message = '') {
+        if ($actual >= $expected) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that '.$actual.'  is greater then or equal '.$expected."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+            $this->assertError++;
+        }
+    }
+
+    public function assertLessThan($expected, $actual, string $message = '') {
+        if ($actual < $expected) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that '.$actual.'  is less then '.$expected."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+            $this->assertError++;
+        }
+    }
+
+    public function assertLessThanOrEqual($expected, $actual, string $message = '') {
+        if ($actual <= $expected) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that '.$actual.'  is less then or equal '.$expected."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+            $this->assertError++;
+        }
+    }
+
+    public function assertCount($expectedCount, $haystack, string $message = '') {
+        if ($expectedCount == sizeof($haystack)) {
+            $this->assertOk++;
+        } else {
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that actual size '.sizeof($haystack).'  matches expected size '.$expectedCount."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+            $this->assertError++;
+        }
+    }
 
     public function assertGetUnitTestResult() {
         $ret = new stdClass();
