@@ -316,10 +316,16 @@ class Appl {
 
     /**
      * send html text to recipient
+     * @param string $recipient
+     * @param string $body
+     * @param string $subject
+     * @param string $sender
      * @return Boolean
      */
-    function sendHtmlMail($recipient, $text, $subject="", $sender=null) {
-
+    function sendHtmlMail($recipient, $body, $subject="", $sender=null) {
+        if (!self::checkEmail($recipient)) {
+            return false;
+        }
         $sender = $sender!=null?$sender:\Config::$siteMail;
 
         $subject = \Config::$SiteTitle.' '.$subject;
@@ -329,26 +335,21 @@ class Appl {
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	        <title>'.\Config::$SiteTitle.'</title>
 	    </head>
-	    <body>'.$text.'
+	    <body>'.$body.'
 	    </body>
 	    </html>
 	    ';
 
         // build mail header
         $headers = 'From:' . $sender . "\r\n";
-        if (isset($recipient)) {
+        if (self::checkEmail(\Config::$siteMail))
             $headers .= 'BCC:' . \Config::$siteMail . "\r\n";
-        }
         $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n";
         $headers .= 'X-Sender-IP: ' . $_SERVER["REMOTE_ADDR"] . "\r\n";
         $headers .= "Content-Type: text/html;charset=utf-8\r\n";
 
         if (!isLocalhost()) {
-            if (isset($recipient)) {
-                return mail($recipient, $subject, $message, $headers);
-            } else {
-                return mail(\Config::$siteMail, $subject, $message, $headers);
-            }
+            return mail($recipient, $subject, $message, $headers);
         } else {
             \maierlabs\lpfw\Appl::setMessage("Recipient:".$recipient."<br/>"."From:".$sender."<br/>".$message, "success");
         }
@@ -359,6 +360,8 @@ class Appl {
      * Validate mail adrress
      */
     function checkEmail($email) {
+        if (null==$email)
+            return false;
         if(preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",$email)){
             list($username,$domain)=explode('@',$email);
             return true;

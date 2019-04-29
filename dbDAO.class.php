@@ -397,7 +397,7 @@ class dbDAO {
 				if($guest)
 					$where.=" and role like '%guest%'";
 				else
-					$where.=" and role not like '%guest%'";
+					$where.=" and  (role not like '%guest%' or role is null)";
 				if ($withoutFacebookId) {
 					$where.=" and (facebookid is null or length(facebookid)<5) ";
 				}
@@ -549,51 +549,13 @@ class dbDAO {
 		return $ret1 && $ret2;
 	}
 
-	
-	/**
-	 * Accept the anonymous changes for a table entry
-	 * @param string $table the table name
-	 * @param int $id the id of the entry that contains the changes
-	 * @return boolean
-	 */
-	public function acceptChangeForEntry($table,$id) {
-		$p=$this->dataBase->querySignleRow("select * from ".$table." where id=".$id);
-		if ($p!=null) {
-			//Accept a change
-			if (isset($p["changeForID"])) {
-				$objID=$p["changeForID"];
-				//make history entry 
-				$this->dataBase->createHistoryEntry($table,$objID);
-				//Delete the temporary entry
-				if ($this->dataBase->delete($table, "id", $id)) {
-					//Update the entry
-					$p["id"]=$objID; 			//the object entry
-					$p["changeUserID"]=-1;  	//anonym user
-					unset($p["changeForID"]);   //remove flag changes for id
-					return $this->dataBase->updateEntry($table, $p);
-				} else { 
-					return false;
-				}
-			} else
-			//Accept a new entry
-			{
-				$this->dataBase->createHistoryEntry($table,$p["id"]);
-				$p["changeUserID"]=-1;
-				return $this->dataBase->updateEntry($table, $p);
-			}
-		} else {
-			return false;			
-		}
-	}
-	
-	
 	public function getCountOfPersons($classId,$guests) {
 		if(null!=$classId) {
 			$sql =" classID = ".$classId;
 			if ($guests)
 				$sql .=" and role like '%guest%'";
 			else
-				$sql .=" and not(role like '%guest%')";
+				$sql .=" and (role not like '%guest%' or role is null)";
 			if ($this->isClassIdForStaf($classId))
 				$sql .=" and isTeacher = 1";
 			return sizeof($this->dataBase->getIdList("person",$sql));

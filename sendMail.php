@@ -55,21 +55,26 @@ function sendChatMail($senderPerson,$toPerson,$text) {
     return true;
 }
 /**
- *send mail  
+ *send html mail to a person
+ *@param  string $uid of the recipient person
+ *@param  string $body html body
+ *@param boolean $userData send username and login
+ *@param  string $sender
+ *@return boolean
  */
-function SendMail($uid,$text,$userData,$sender) {
+function sendMailToPerson($uid,$body,$userData,$sender) {
 		global $db;
 		$diak = $db->getPersonByID($uid);
 		
-		$text=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$text);
-		$text=str_replace("\"","&quot;",$text);
-		$text.='<hr/><p>Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
+		$body=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$body);
+		$body=str_replace("\"","&quot;",$body);
+		$body.='<hr/><p>Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak.php?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
 		if ($userData) {
-			$text.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
+			$body.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
-		$text .='<p>Ezt az e-mailt <a href="'.Config::$siteUrl.'/index.php?classid='.getAktClassId().'">A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.</p>';
+		$body .='<p>Ezt az e-mailt <a href="'.Config::$siteUrl.'/index.php?classid='.getAktClassId().'">A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.</p>';
 
-        return \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,"", $sender);
+        return \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$body,"", $sender);
 }
 
 

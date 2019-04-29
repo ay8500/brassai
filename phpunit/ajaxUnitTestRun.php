@@ -107,11 +107,25 @@ function exceptionOccured($theTestClass,$result,$e,$timer) {
     $res = $theTestClass->assertGetUnitTestResult();
     $result["assertOk"]=$res->assertOk;
     $result["assertError"]=$res->assertError;
-    $result["errorMessage"]=$e->getMessage();
+    $result["errorMessage"]=$e->getMessage()." in file:".$e->getFile()." line:".$e->getLine();
+    $text=getCallStackJson($e->getTrace());
+    $result["errorMessage"].=' <div class="btn btn-default" onclick="showCallStack('.$text.');" > show call stack </div>';
     $result["test"]=false;
     $result["filestatus"]="error";
     $result["echo"]=ob_get_clean();
     $result["time"]=number_format((microtime(true)-$timer) * 1000,2);
     echo json_encode($result);
     die();
+}
+
+function getCallStackJson($callStack) {
+    $html='';
+    foreach ($callStack as $e) {
+        $html .="file:".$e["file"]."<br/>";
+        $html .=" line:".$e["line"]."<br/>";
+        $html .=" function:".$e["function"]."<br/>";
+        $html .="<br/>";
+    }
+    $html = str_replace('\\','/',$html);
+    return "'".$html."'";
 }

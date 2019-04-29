@@ -173,13 +173,14 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
  		$ret =call_user_func_array(array($db,$functionDelete),array($id,false));$show=true;
   	}
   	if (isActionParam("accept".$fieldDb."Change")) {
- 		$ret =$db->acceptChangeForEntry(strtolower($fieldDb),$id);$show=true;
+ 		$ret =$db->dataBase->acceptChangeForEntry(strtolower($fieldDb),$id);$show=true;
   	}
   	if ($show) {
   		if ($ret===true) {
-  			Appl::$resultDbOperation='<div class="alert alert-success" > Rendben, a müvelet sikerült</div>';}
-  		else {
-  			Appl::$resultDbOperation='<div class="alert alert-danger" > Sajnos nem sikerült a müvelet!</div>';}
+            Appl::setMessage("Rendben, a müvelet sikerült", "success");
+        } else {
+            Appl::setMessage("Sajnos nem sikerült a müvelet!","danger");
+  		}
   	}
 	$list = $db->getListToBeChecked(strtolower($fieldDb));
 

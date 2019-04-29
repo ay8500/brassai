@@ -1,0 +1,1 @@
+var text='<?php echo 'this is interpreted javascript'; ?>';

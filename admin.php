@@ -23,20 +23,25 @@ Appl::addJsScript("
 ");
 
 if (isActionParam("sendMail")) {
-	if ( userIsAdmin() || userIsSuperuser() || userIsEditor()) {
+	if (userIsAdmin() || userIsSuperuser() || userIsEditor()) {
 		include_once ("sendMail.php");
 		$persons = $db->getPersonListByClassId(getAktClassId());
-		$mailsSent =0;
+		$mailsSent =0;$mailsError =0;
 		foreach ($persons as $person) {
 			$uid=$person["id"];
 			if (isset($_GET["D".$uid])) {
 			    $sender=getFieldValue($db->getPersonByID(getLoggedInUserId()),"email");
-                if (SendMail($uid, $_GET["T"], isset($_GET["U"]),$sender)) {
-                    $mailsSent += 1;
+                if (sendMailToPerson($uid, $_GET["T"], isset($_GET["U"]),$sender)) {
+                    $mailsSent ++;
+                } else {
+                    $mailsError++;
                 }
 			}
 		}
-		Appl::setMessage("Elküldött e-mailek száma:".$mailsSent,$mailsSent>0?"success":"warning");
+		if ($mailsSent>0)
+		    Appl::setMessage("Elküldött e-mailek száma:".$mailsSent,"success");
+        if ($mailsError>0)
+            Appl::setMessage("Hibás e-mailek küldések száma:".$mailsError,"warning");
 	}
 }
 
@@ -47,7 +52,7 @@ include("homemenu.inc.php");
 
 <div class="container-fluid">   
 
-<?php if (userIsAdmin() || userIsEditor() ) { 
+<?php if (userIsAdmin() || userIsSuperuser() || userIsEditor() ) {
     //initialise tabs
     $tabsCaption = array();
     array_push($tabsCaption ,array("id" => "mail", "caption" => 'Mail&nbsp;küldés', "glyphicon" => "envelope"));

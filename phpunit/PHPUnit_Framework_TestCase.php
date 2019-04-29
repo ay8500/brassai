@@ -137,13 +137,22 @@ class PHPUnit_Framework_TestCase {
     }
 
     public function assertCount($expectedCount, $haystack, string $message = '') {
-        if ($expectedCount == sizeof($haystack)) {
-            $this->assertOk++;
-        } else {
-            if ($message=='') {
-                $this->errorText .= 'Failed asserting that actual size '.sizeof($haystack).'  matches expected size '.$expectedCount."<br />";
+        if (is_countable($haystack)) {
+            if ($expectedCount == sizeof($haystack)) {
+                $this->assertOk++;
             } else {
-                $this->errorText .= $message."<br />";
+                if ($message == '') {
+                    $this->errorText .= 'Failed asserting that actual size ' . sizeof($haystack) . '  matches expected size ' . $expectedCount . "<br />";
+                } else {
+                    $this->errorText .= $message . "<br />";
+                }
+                $this->assertError++;
+            }
+        } else {
+            if ($message == '') {
+                $this->errorText .= "Failed asserting that object is countable"."<br />";
+            } else {
+                $this->errorText .= $message . "<br />";
             }
             $this->assertError++;
         }

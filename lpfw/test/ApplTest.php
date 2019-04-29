@@ -42,7 +42,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
         Appl::addCssStyle(".td{ color:white}");
         Appl::addCss("css.file");
         Appl::setMessage("OK","success");
-        ob_start();
+        ob_start(1,2,2,2,2);
         Appl::includeCss();
         $echo = ob_get_contents();
         ob_end_clean();
@@ -72,7 +72,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
      */
     public function testJsFile() {
         Appl::addJs("js.file");
-        Appl::addJs("__DIR__ . \"/../../js/chat.js",true);
+        Appl::addJs(__DIR__ . "/test.js.php",true);
         Appl::addJsScript("function getLevi{return 'Levi';}");
         ob_start();
         Appl::includeJs();
@@ -82,7 +82,7 @@ class ApplTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(strpos($echo,"function getLevi{return 'Levi';}")!==false);
 
-        $this->assertTrue(strpos($echo,"var loggedInUser=")!==false);
+        $this->assertTrue(strpos($echo,"this is interpreted javascript")!==false);
     }
 
 

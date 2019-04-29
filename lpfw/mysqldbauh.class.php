@@ -284,6 +284,38 @@ class MySqlDbAUH extends MySql
     }
 
     /**
+     * Accept the anonymous changes for a table entry
+     * @param string $table the table name
+     * @param int $id the id of the entry that contains the changes
+     * @return boolean
+     */
+    public function acceptChangeForEntry($table,$id) {
+        $p=$this->querySignleRow("select * from ".$table." where id=".$id." and changeUserID is null");
+        if ($p!=null) {
+            if (isset($p["changeForID"])) {
+            //Accept a change
+                $objID=$p["changeForID"];
+                //make history entry
+                $this->createHistoryEntry($table,$objID);
+                //Delete the temporary entry
+                if ($this->delete($table, "id", $id)) {
+                    //Update the entry
+                    $p["id"]=$objID; 			//the object entry
+                    $p["changeUserID"]=-1;  	//anonym user
+                    unset($p["changeForID"]);   //remove flag changes for id
+                    return $this->updateEntry($table, $p);
+                }
+            } else {
+            //Accept a new entry
+                $this->createHistoryEntry($table,$p["id"]);
+                $p["changeUserID"]=-1;
+                return $this->updateEntry($table, $p);
+            }
+        }
+        return false;
+    }
+
+    /**
      * get history info used to find out how many history entrys exists
      * @param string $table
      * @param  int $id

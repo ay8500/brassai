@@ -165,7 +165,7 @@ class DbAuhTest extends PHPUnit_Framework_TestCase
         return $db->queryInt("select count(*) from ".self::TEST_TABLE);
     }
 
-    public function testSaveEntry() {
+    public function testMain() {
         $db = $this->createData();
         $this->assertNotNull($db);
         $_SERVER["REMOTE_ADDR"]=self::SERVER_REMOTE_ADDR;
@@ -184,7 +184,9 @@ class DbAuhTest extends PHPUnit_Framework_TestCase
         $this->assertSame(null,$ret["changeForID"]);
         $this->assertSame($entrysInTheTable+1,$this->getEntrysInTheTable($db));
 
-        //Update the entry the entry will be updated
+        //Update the entry the entry will be updated and a history entry created
+        $this->assertSame(0,$db->queryInt("select count(*) from history where `table`='".self::TEST_TABLE."'"));
+
         $entry=array("id"=>$originalId,"contval"=>self::SOME_TEXT." change1 ");
         $this->assertLessThan( 0,$db->saveEntry(self::NO_SUCH_TABLE,$entry));
         $sameId = $db->saveEntry(self::TEST_TABLE,$entry);
@@ -196,7 +198,9 @@ class DbAuhTest extends PHPUnit_Framework_TestCase
         $this->assertSame(self::SOME_TEXT." change1 ",$ret["contval"]);
         $this->assertSame($entrysInTheTable+1,$this->getEntrysInTheTable($db));
 
-        //TODO check history entry
+        $this->assertCount(1,$ret=$db->getHistory(self::TEST_TABLE));
+        $this->assertSame(2,intval($ret[0]["entryID"]));
+        $this->assertSame(self::USER_ID,intval($ret[0]["changeUserID"]));
 
         //Make an anonymous change => a new anonymous entry will be created
         unset($_SESSION['uId']);
@@ -296,6 +300,41 @@ class DbAuhTest extends PHPUnit_Framework_TestCase
         //Not a good join test because the table doesn't exists :(
         $this->assertNotNull($ret = $db->getElementList(self::TEST_TABLE,true,null,null,null,null,"id","no_table."));
 
+        //acceptChangeForEntry the entry will be updated, the anonymous entry will be deleted, a new histrory entry will be created
+        $_SESSION['uId'] = self::USER_ID;
+        $this->assertTrue($db->acceptChangeForEntry(self::TEST_TABLE,$anonymousId));
+        $this->assertSame($entrysInTheTable+1,$this->getEntrysInTheTable($db));
+        $this->assertCount(2,$db->getHistory(self::TEST_TABLE));
+
+
+        //acceptChangeForEntry  no entry found
+        $this->assertFalse($db->acceptChangeForEntry(self::TEST_TABLE,123456));
+
+        $this->deleteData($db);
+    }
+
+    public function testAcceptChangeForNewEntry() {
+        $db = $this->createData();
+        $this->assertNotNull($db);
+        $_SERVER["REMOTE_ADDR"] = self::SERVER_REMOTE_ADDR;
+        $entrysInTheTable = $this->getEntrysInTheTable($db);
+
+        //Save an entry as anonymous user, a new entry will be created
+        unset($_SESSION['uId']);
+        $entry = array("id" => -1, "contval" => self::SOME_TEXT);
+        $this->assertTrue(($anonymousId = $db->saveEntry(self::TEST_TABLE, $entry)) >= 0);
+        $ret = $db->querySignleRow("select * from " . self::TEST_TABLE . " where id=" . $anonymousId);
+        $this->assertTrue($ret["id"] == $anonymousId && isset($ret["changeDate"]));
+        $this->assertNull($ret["changeUserID"]);
+        $this->assertSame(self::SERVER_REMOTE_ADDR, $ret["changeIP"]);
+        $this->assertSame(self::SOME_TEXT, $ret["contval"]);
+        $this->assertNull($ret["changeForID"]);
+        $this->assertSame($entrysInTheTable + 1, $this->getEntrysInTheTable($db));
+
+        $_SESSION['uId'] = self::USER_ID;
+        $this->assertTrue($db->acceptChangeForEntry(self::TEST_TABLE,$anonymousId));
+        $this->assertSame($entrysInTheTable+1,$this->getEntrysInTheTable($db));
+        $this->assertCount(1,$db->getHistory(self::TEST_TABLE));
 
         $this->deleteData($db);
     }

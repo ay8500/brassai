@@ -238,3 +238,8 @@ function showResultCounters() {
     $('#tok').text(testOk);   $('#terror').text(testError);
     $('#aok').text(assertOk); $('#aerror').text(assertError);
 }
+
+function showCallStack(text) {
+    text = text.replace(/<br\s*\/?>/mg,"\n");
+    alert(text);
+}
