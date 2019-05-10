@@ -25,6 +25,7 @@ if (getParam("FacebookId")) {
 }
 
 include_once 'lpfw/logon.inc.php';
+handleLogInOff(new dbDaUser($db));
 if (userIsLoggedOn()) {
 	header('Location: index.php?loginok=true');
 }

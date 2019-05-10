@@ -8,6 +8,7 @@
     include_once 'dbDaUser.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
+    Appl::init();
 		
 	//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
@@ -51,6 +52,7 @@
             return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
 	    }
 	}
+    handleLogInOff(new dbDaUser($db));
 	
 	?>
 <!DOCTYPE html>

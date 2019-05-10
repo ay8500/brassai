@@ -8,26 +8,26 @@ include_once __DIR__ . "/../config.class.php";
 
 
 /**
- * /**
  * LeviPhpFrameWork The best framework for php made by MaierLabs (c) 2018
  * @author Maier Levente
  * @package maierlabs\lpfw
+ * @version 2019.05.10
  */
 class Appl {
-	public static $title = "";
-	public static $subTitle = "";
-	public static $description = "";
-	public static $resultDbOperation = "";
-	public static $translator = "\maierlabs\lpfw\Appl::_text";
-	
-	private static $renderingStarted=false;
-	
-	private static $js = array();
-	private static $css = array();
-	private static $cssStyle ="";
-	private static $jsScript = "";
-	
-	private static $members = array();
+    public static $title = "";
+    public static $subTitle = "";
+    public static $description = "";
+    public static $resultDbOperation = "";
+    public static $translator = "\maierlabs\lpfw\Appl::_text";
+
+    private static $renderingStarted=false;
+
+    private static $js = array();
+    private static $css = array();
+    private static $cssStyle ="";
+    private static $jsScript = "";
+
+    private static $members = array();
     public static $textResource;
 
     /**
@@ -36,22 +36,22 @@ class Appl {
      */
     public static function init(){
         // Set languge include file
-        if (!isset($_SESSION['LANG'])) $_SESSION['LANG'] = \Config::$SupportedLang[0];
+        if (!isset($_SESSION['LANG']))
+            $_SESSION['LANG'] = \Config::$SupportedLang[0];
         // Change language
         if (null!=getGetParam("language"))
         {
             $_SESSION['LANG'] = getGetParam("language");
         }
-
+        //Load language file
         $LangFile = __DIR__."/../Lang_" . $_SESSION['LANG'] . ".php";
         if (file_exists($LangFile))
             self::$textResource=include $LangFile;
-        else
-            self::$textResource=include __DIR__."/../Lang_" . self::$SupportedLang[0] . ".php";
+
     }
 
     /**
-     * Page randering is started
+     * Page rendering is started
      */
     public static function renderingStarted() {
         self::$renderingStarted = true;
@@ -83,38 +83,38 @@ class Appl {
      * @param string $description
      * @return void
      */
-	public static function setSiteTitle($title,$subtitle=null,$description=null) {
-		self::$title=self::__($title);
-		if (null!=$description) self::$description=self::__($description);
-		if( null!=$subtitle) self::$subTitle=self::__($subtitle);
-	}
+    public static function setSiteTitle($title,$subtitle=null,$description=null) {
+        self::$title=self::__($title);
+        if (null!=$description) self::$description=self::__($description);
+        if( null!=$subtitle) self::$subTitle=self::__($subtitle);
+    }
 
     /**
      * Set translated subtitle also used in the metatags.
      * @param string $subtitle
      * @return void
      */
-	public static function setSiteSubTitle($subtitle) {
-		self::$subTitle=self::__($subtitle);
-	}
+    public static function setSiteSubTitle($subtitle) {
+        self::$subTitle=self::__($subtitle);
+    }
 
     /**
      * Set translated description also used in the metatags.
      * @param string $description
      * @return void
      */
-	public static function setSiteDesctiption($description) {
-		self::$description=self::__($description);
-	}
+    public static function setSiteDesctiption($description) {
+        self::$description=self::__($description);
+    }
 
     /**
      * datetime as string
      * @param string|datetime $dateTime
      * @return string
      */
-	public static function dateTimeAsStr($dateTime,$format=null) {
-	    if (!is_object($dateTime)) {
-	        $dateTime = new \DateTime($dateTime);
+    public static function dateTimeAsStr($dateTime,$format=null) {
+        if (!is_object($dateTime)) {
+            $dateTime = new \DateTime($dateTime);
         }
         if (isset($_SESSION["timezone"])) {
             $dateTime->modify(($_SESSION["timezone"]-\Config::$timeZoneOffsetMinutes).'minute');
@@ -135,17 +135,17 @@ class Appl {
     }
 
     /**
-	 * add a css file
+     * add a css file
      * @param string $cssFile
      * @return void
-	 */
-	public static function addCss($cssFile,$phpInterpreter=false,$verion=true) {
-	    if ($phpInterpreter) {
-                echo  '<style>'."\n"."/* iserted and interpreted css:".$cssFile."*/\n";
-                include $cssFile;
-                echo  "\n".'</style>'."\n";
+     */
+    public static function addCss($cssFile,$phpInterpreter=false,$verion=true) {
+        if ($phpInterpreter) {
+            echo  '<style>'."\n"."/* iserted and interpreted css:".$cssFile."*/\n";
+            include $cssFile;
+            echo  "\n".'</style>'."\n";
         } else {
-	        if  (self::$renderingStarted) {
+            if  (self::$renderingStarted) {
                 if ($verion) {
                     echo('<link rel="stylesheet" type="text/css" href="'.$cssFile.'?v='.\Config::$webAppVersion.'"></link>'."\n");
                 } else {
@@ -159,51 +159,51 @@ class Appl {
                 array_push(self::$css, $css);
             }
         }
-	}
-	
-	/**
-	 * add css style
+    }
+
+    /**
+     * add css style
      * @param string $style
      * @return void
-	 */
-	public static function addCssStyle($style) {
-		if (!self::$renderingStarted) {
-			self::$cssStyle .="\n".$style;
-		} else {
-			echo("<style>\n".$style."</style>\n");
-		}
-	}
-	
-	/**
-	 * add a javascript file
+     */
+    public static function addCssStyle($style) {
+        if (!self::$renderingStarted) {
+            self::$cssStyle .="\n".$style;
+        } else {
+            echo("<style>\n".$style."</style>\n");
+        }
+    }
+
+    /**
+     * add a javascript file
      * @param string $javascriptFile
      * @param boolean $phpInterpreter if the javascript file contains php code
      * @param boolean $verion insert a version parameter
      * @return void
-	 */
-	public static function addJs($javascriptFile,$phpInterpreter=false,$verion=true) {
-		$j = new \stdClass();
-		$j->file=$javascriptFile;
-		$j->interpret=json_encode($phpInterpreter);
-		$j->version=$verion;
-		array_push(self::$js, $j);
-	}
+     */
+    public static function addJs($javascriptFile,$phpInterpreter=false,$verion=true) {
+        $j = new \stdClass();
+        $j->file=$javascriptFile;
+        $j->interpret=json_encode($phpInterpreter);
+        $j->version=$verion;
+        array_push(self::$js, $j);
+    }
 
-	/**
-	 * add javascript
+    /**
+     * add javascript
      * @param string $script
      * @return void
-	 */
-	public static function addJsScript($script) {
-		self::$jsScript .="\n".$script;
-	}
+     */
+    public static function addJsScript($script) {
+        self::$jsScript .="\n".$script;
+    }
 
-	/**
-	 * include the collected css in html
+    /**
+     * include the collected css in html
      * @return void
-	 */
-	public static function includeCss() {
-		foreach (self::$css as $cssfile) {
+     */
+    public static function includeCss() {
+        foreach (self::$css as $cssfile) {
             if ($cssfile->interpret==='true') {
                 echo  '<style>'."\n"."/* Interpreted css:*/".$cssfile->file."\n";
                 include $cssfile->file;
@@ -215,46 +215,46 @@ class Appl {
                     echo('<link rel="stylesheet" type="text/css" href="'.$cssfile->file.'"></link>'."\n");
                 }
             }
-		}
-		if (self::$cssStyle!='')
-			echo("<style>".self::$cssStyle."</style>\n");
-	}
-	
-	/**
-	 * include the collected javascript in html
+        }
+        if (self::$cssStyle!='')
+            echo("<style>".self::$cssStyle."</style>\n");
+    }
+
+    /**
+     * include the collected javascript in html
      * @return void
-	 */
-	public static function includeJs() {
-		foreach (self::$js as $j) {
-			if ($j->interpret==='true') {
-				echo  '<script type="text/javascript">'."\n"."// Interpreted js:".$j->file."\n";
-				include $j->file;
-				echo  "\n".'</script>'."\n";
-			} else {
-				if ($j->version) {
-					echo('<script type="text/javascript" src="'.$j->file.'?v='.\Config::$webAppVersion.'"></script>'."\n");
-				} else {
-					echo('<script type="text/javascript" src="'.$j->file.'"></script>'."\n");
-				}
-			}
-		}
-		if (self::$jsScript!='')
-		    echo('<script type="text/javascript">'."\n// Included js".self::$jsScript.'</script>');
-	}
-	
-	/**
-	 * set translated message after loading the page type: info, success, danger, warning
+     */
+    public static function includeJs() {
+        foreach (self::$js as $j) {
+            if ($j->interpret==='true') {
+                echo  '<script type="text/javascript">'."\n"."// Interpreted js:".$j->file."\n";
+                include $j->file;
+                echo  "\n".'</script>'."\n";
+            } else {
+                if ($j->version) {
+                    echo('<script type="text/javascript" src="'.$j->file.'?v='.\Config::$webAppVersion.'"></script>'."\n");
+                } else {
+                    echo('<script type="text/javascript" src="'.$j->file.'"></script>'."\n");
+                }
+            }
+        }
+        if (self::$jsScript!='')
+            echo('<script type="text/javascript">'."\n// Included js".self::$jsScript.'</script>');
+    }
+
+    /**
+     * set translated message after loading the page type: info, success, danger, warning
      * @param string $text
      * @param string $type
      * @return void
-	 */
-	public static function setMessage($text,$type) {
-		if (self::$renderingStarted==false) {
-			self::$resultDbOperation.='<div class="alert alert-'.$type.'">'.self::__($text).'</div>';
-		} else {
-			self::addJsScript("showDbMessage('".self::__($text)."','".$type."');");
-		}
-	}
+     */
+    public static function setMessage($text,$type) {
+        if (self::$renderingStarted==false) {
+            self::$resultDbOperation.='<div class="alert alert-'.$type.'">'.self::__($text).'</div>';
+        } else {
+            self::addJsScript("showDbMessage('".self::__($text)."','".$type."');");
+        }
+    }
 
     /**
      * set application member object
@@ -262,8 +262,8 @@ class Appl {
      * @param object $object
      * @return void
      */
-	public static function setMember($name,$object) {
-	    self::$members[$name]=$object;
+    public static function setMember($name,$object) {
+        self::$members[$name]=$object;
     }
 
     /**
@@ -273,11 +273,11 @@ class Appl {
      * @return object
      */
     public static function getMember($name, $default=null) {
-	    if (isset(self::$members[$name])) {
-	        return self::$members[$name];
+        if (isset(self::$members[$name])) {
+            return self::$members[$name];
         } else {
-	        if ($default!=null)
-	            return $default;
+            if ($default!=null)
+                return $default;
         }
         return null;
     }

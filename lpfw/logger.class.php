@@ -6,6 +6,11 @@ include_once "loggerType.class.php";
 include_once  "loggerLevel.class.php";
 
 
+/**
+ * Class Logger
+ * @package maierlabs\lpfw
+ * @version 2019.05.10
+ */
 class Logger
 {
     private static $loggerLevel=LoggerLevel::error;
@@ -44,11 +49,11 @@ class Logger
     //Condition wird unverändert zurück gegeben
     public static function loggerConditioned($condition, $text, $level = LoggerLevel::debug)
     {
-        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
-            if ($_SESSION['loggerType'] == LoggerType::html) {
+        if (strrpos(self::$loggerLevel, $level) > -1) {
+            if (self::$loggerType == LoggerType::html) {
                 echo('<span style="color:black;background-color:white;">' . $text . "</span><br/>");
             }
-            if ($_SESSION['loggerType'] == LoggerType::file) {
+            if (self::$loggerType == LoggerType::file) {
                 if ($condition)
                     Logger::logToFile($text, $level);
                 else
@@ -61,8 +66,8 @@ class Logger
     //Array loggen
     public static function loggerArray($arr, $level = LoggerLevel::info)
     {
-        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
-            if ($_SESSION['loggerType'] == LoggerType::html) {
+        if (strrpos(self::$loggerLevel, $level) > -1) {
+            if (self::$loggerType == LoggerType::html) {
                 echo("<table>");
                 foreach ($arr as $key => $value) {
                     echo("<tr>");
@@ -71,7 +76,7 @@ class Logger
                 }
                 echo("</table>");
             }
-            if ($_SESSION['loggerType'] == LoggerType::file) {
+            if (self::$loggerType == LoggerType::file) {
                 Logger::logToFile("Array: " . var_export($arr, true), $level);
             }
         }
@@ -80,8 +85,8 @@ class Logger
     //Tabelle logen
     public static function loggerTable($table, $level = LoggerLevel::info)
     {
-        if (strrpos($_SESSION['loggerLevel'], $level) > -1) {
-            if ($_SESSION['loggerType'] == LoggerType::html) {
+        if (strrpos(self::$loggerLevel, $level) > -1) {
+            if (self::$loggerType == LoggerType::html) {
                 if (count($table) > 0) {
                     echo("<table>");
                     echo("<tr>");
@@ -99,7 +104,7 @@ class Logger
                     echo("</table>");
                 }
             }
-            if ($_SESSION['loggerType'] == LoggerType::file) {
+            if (self::$loggerType == LoggerType::file) {
                 if (count($table) > 0) {
                     foreach ($table as $qkey => $arr) {
                         $line = "Line:" . $qkey . ";";
@@ -155,10 +160,8 @@ class Logger
         if (file_exists("./log"))
             return "./log";
         elseif (file_exists("../log"))
-                return "../log";
+            return "../log";
         else
             return "../../log";
     }
 }
-
-

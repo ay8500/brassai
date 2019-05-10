@@ -288,7 +288,7 @@ function getAktSchoolName() {
 		if ($school["id"]==0)
 			return "";
 		else
-			return $school["name"];
+			return html_entity_decode(html_entity_decode($school["name"]));
 	} else
 		return "";
 }

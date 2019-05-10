@@ -3,76 +3,83 @@
 	include_once 'userManager.php';
 	include_once 'appl.class.php';
 	include_once 'ltools.php';
-    include_once __DIR__.'/../dbBL.class.php';
+    include_once 'iDbDaUser.class.php';
 
     use \maierlabs\lpfw\Appl as Appl;
-	$logOnMessage="";
-	
-	//Logon action
-	if (isActionParam("logon")) {
-		$paramName=getParam("paramName");
-		$paramPassw=getParam("paramPassw");
-		if ((null==$paramName) || (null==$paramPassw)) { 
-			logoutUser();
-			http_response_code(400);
-			$logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("User name and password are empty.");
-			\maierlabs\lpfw\Logger::_("Login\t",\maierlabs\lpfw\LoggerLevel::error);
-		} else {
-			if (!$db->checkRequesterIP(changeType::login)) {
-				logoutUser();
-				http_response_code(400);
-                $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("To many login errors, please try again later.");
-                \maierlabs\lpfw\Logger::_("LoginToManny\t",\maierlabs\lpfw\LoggerLevel::error);
-			} else {
-				if (!checkUserLogin($userDB,$paramName,$paramPassw)) {
-					logoutUser();
-					http_response_code(400);
-                    $logOnMessage =Appl::__("Login failed!")." <br />".Appl::__("Wrong user name or password.");
-					$db->saveRequest(changeType::login);
-                    \maierlabs\lpfw\Logger::_("Login\t".$paramName."\t".strlen($paramPassw),\maierlabs\lpfw\LoggerLevel::error);
-				} else {
-                    \maierlabs\lpfw\Logger::_("LoginOk\t".$paramName."\t".strlen($paramPassw));
-					$logOnMessage = "";
-				}
-			}
-		}
-		if (! userIsAdmin()) {
-            \maierlabs\lpfw\Appl::sendHtmlMail(null,
-				"<h4>Login</h4>".
-				"Parameter:".$paramName." : ".strlen($paramPassw)."<br/>".
-				"Login result:".$logOnMessage," Login");
-		}
-		echo($logOnMessage);
-	}
-	//Logoff action
-	if (isActionParam("logoff")) {
-		logoutUser();
-	}
-	
-	if (isActionParam("logoffok")) {
-        \maierlabs\lpfw\Appl::setMessage(Appl::__("Successfully logged out, thank you for visiting this site. See you soon."), "success");
-	}
-	
-	if (isActionParam("loginok")) {
-        \maierlabs\lpfw\Appl::setMessage(Appl::__("Welcome dear ").getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
-	}
-	
-	//Facebook login
-	if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
-		if (!checkFacebookUserLogin($userDB,$_SESSION['FacebookId'])) {
-            \maierlabs\lpfw\Logger::_("Facebook\t",\maierlabs\lpfw\LoggerLevel::error);
-			$logOnMessage=Appl::__("Login failed!");
-		}
-		if (! userIsAdmin()) {
-            \maierlabs\lpfw\Logger::_("Facebook\t".getLoggedInUserId()."\t".$_SESSION['FacebookId']);
-            \maierlabs\lpfw\Appl::sendHtmlMail(null,
-				"<h2>Facebooklogin</h2>".
-				"FacebookId:".$_SESSION['FacebookId']."<br/>".
-				"FacebookName:".$_SESSION['FacebookName']."<br/>".
-                "E-Mail:".$_SESSION['FacebookEmail']."<br/>".
-				"Login result:".$logOnMessage,"Login");
-		}
-	} 
+
+    /**
+    * @param \maierlabs\lpfw\iDbDaUser $db
+    */
+    function handleLogInOff($db)
+    {
+        $logOnMessage = "";
+
+        //Logon action
+        if (isActionParam("logon")) {
+            $paramName = getParam("paramName");
+            $paramPassw = getParam("paramPassw");
+            if ((null == $paramName) || (null == $paramPassw)) {
+                logoutUser();
+                http_response_code(400);
+                $logOnMessage = Appl::__("Login failed!") . " <br />" . Appl::__("User name and password are empty.");
+                \maierlabs\lpfw\Logger::_("Login\t", \maierlabs\lpfw\LoggerLevel::error);
+            } else {
+                if (!$db->checkRequesterIp(changeType::login)) {
+                    logoutUser();
+                    http_response_code(400);
+                    $logOnMessage = Appl::__("Login failed!") . " <br />" . Appl::__("To many login errors, please try again later.");
+                    \maierlabs\lpfw\Logger::_("LoginToManny\t", \maierlabs\lpfw\LoggerLevel::error);
+                } else {
+                    if (!checkUserLogin($db, $paramName, $paramPassw)) {
+                        logoutUser();
+                        http_response_code(400);
+                        $logOnMessage = Appl::__("Login failed!") . " <br />" . Appl::__("Wrong user name or password.");
+                        $db->setRequest(changeType::login);
+                        \maierlabs\lpfw\Logger::_("Login\t" . $paramName . "\t" . strlen($paramPassw), \maierlabs\lpfw\LoggerLevel::error);
+                    } else {
+                        \maierlabs\lpfw\Logger::_("LoginOk\t" . $paramName . "\t" . strlen($paramPassw));
+                        $logOnMessage = "";
+                    }
+                }
+            }
+            if (!userIsAdmin()) {
+                \maierlabs\lpfw\Appl::sendHtmlMail(null,
+                    "<h4>Login</h4>" .
+                    "Parameter:" . $paramName . " : " . strlen($paramPassw) . "<br/>" .
+                    "Login result:" . $logOnMessage, " Login");
+            }
+            echo($logOnMessage);
+        }
+        //Logoff action
+        if (isActionParam("logoff")) {
+            logoutUser();
+        }
+
+        if (isActionParam("logoffok")) {
+            \maierlabs\lpfw\Appl::setMessage(Appl::__("Successfully logged out, thank you for visiting this site. See you soon."), "success");
+        }
+
+        if (isActionParam("loginok")) {
+            \maierlabs\lpfw\Appl::setMessage(Appl::__("Welcome dear ") . $db->getPersonName($db->getUserById(getLoggedInUserId())), "success");
+        }
+
+        //Facebook login
+        if (isActionParam("facebooklogin") && isset($_SESSION['FacebookId'])) {
+            if (!checkFacebookUserLogin($db, $_SESSION['FacebookId'])) {
+                \maierlabs\lpfw\Logger::_("Facebook\t", \maierlabs\lpfw\LoggerLevel::error);
+                $logOnMessage = Appl::__("Login failed!");
+            }
+            if (!userIsAdmin()) {
+                \maierlabs\lpfw\Logger::_("Facebook\t" . getLoggedInUserId() . "\t" . $_SESSION['FacebookId']);
+                \maierlabs\lpfw\Appl::sendHtmlMail(null,
+                    "<h2>Facebooklogin</h2>" .
+                    "FacebookId:" . $_SESSION['FacebookId'] . "<br/>" .
+                    "FacebookName:" . $_SESSION['FacebookName'] . "<br/>" .
+                    "E-Mail:" . $_SESSION['FacebookEmail'] . "<br/>" .
+                    "Login result:" . $logOnMessage, "Login");
+            }
+        }
+    }
 	
 
 
@@ -146,7 +153,7 @@ function writeLogonDiv() {
     
 	function logon() {
 		$.ajax({
-			url:"lpfw/logon.inc.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
+			url:"logon.action.php?action=logon&paramName="+$("#loUser").val()+"&paramPassw="+$("#loPassw").val(),
 			success:function(data){
 				var url=location.href;
 				url=location.href.replace("action","loginok");
@@ -179,7 +186,7 @@ function writeLogonDiv() {
 	
 	function handleLogoff() {
 		$.ajax({
-			url:"lpfw/logon.inc.php?action=logoff",
+			url:"logon.action.php?action=logoff",
 			success:function(data){
 				var url=location.href;
 				url=location.href.replace("action","logoffok");
