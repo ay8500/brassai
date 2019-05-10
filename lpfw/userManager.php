@@ -1,5 +1,9 @@
 <?php
-    include_once 'iDbDaUser.class.php';
+/**
+ * @version 2019.05.10
+ */
+include_once __DIR__ . "/../config.class.php";
+include_once 'iDbDaUser.class.php';
 
 	/**
 	 * get the user id form logged in user
@@ -82,19 +86,24 @@
 
      /**
 	 * Check login data an set role username an id in the session array
-     * @param  \maierlabs\lpfw\iDbDaUser $db
+     * @param \maierlabs\lpfw\iDbDaUser $db
      * @param string $user
-     * @param  string $passw
+     * @param string $passw
+      *@param boolean $ismd5 is the password md5 encoded
      * @return boolean
 	 */
 	function checkUserLogin($db,$user,$passw) {
+		if (\Config::$secret_key==null) {
+		    $dpassw = md5($passw);
+		} else {
+		    $dpassw= encrypt_decrypt("encrypt",$passw);
+		}
+
 		$usr = $db->getUserByUsename($user);
-		$dpassw= encrypt_decrypt("encrypt",$passw);
 		if (null != $usr && $usr["passw"]==$dpassw) {
 			setUserInSession($db, $usr["role"], $usr["user"],	$usr["id"]);
 			return true;
-		}
-		else {
+		} else {
 			$usr =$db->getUserByEmail($user);
 			if (null != $usr && $usr["passw"]==$dpassw) {
 				setUserInSession($db, $usr["role"], $usr["user"], $usr["id"]);
@@ -147,7 +156,6 @@
 		unset($_SESSION['FacebookEmail']);
 		unset($_SESSION["FacebookFirstName"]);
 		unset($_SESSION["FacebookLastName"]);
-		unsetAktClass();
 	}
 	
 	/**
@@ -290,14 +298,12 @@
 		$output = false;
 	
 		$encrypt_method = "AES-256-CBC";
-		$secret_key = 'iskola';
-		$secret_iv = 'brassai';
-	
+
 		// hash
-		$key = hash('sha256', $secret_key);
+		$key = hash('sha256', \Config::$secret_key);
 	
 		// iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-		$iv = substr(hash('sha256', $secret_iv), 0, 16);
+		$iv = substr(hash('sha256', \Config::$secret_iv), 0, 16);
 	
 		if( $action == 'encrypt' ) {
             if (strlen($string)!=32 && strlen($string)!=60 && strlen($string)!=88 ) {

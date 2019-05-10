@@ -24,7 +24,7 @@
                 $logOnMessage = Appl::__("Login failed!") . " <br />" . Appl::__("User name and password are empty.");
                 \maierlabs\lpfw\Logger::_("Login\t", \maierlabs\lpfw\LoggerLevel::error);
             } else {
-                if (!$db->checkRequesterIp(changeType::login)) {
+                if (class_exists("changeType") && !$db->checkRequesterIp(changeType::login)) {
                     logoutUser();
                     http_response_code(400);
                     $logOnMessage = Appl::__("Login failed!") . " <br />" . Appl::__("To many login errors, please try again later.");
@@ -34,7 +34,8 @@
                         logoutUser();
                         http_response_code(400);
                         $logOnMessage = Appl::__("Login failed!") . " <br />" . Appl::__("Wrong user name or password.");
-                        $db->setRequest(changeType::login);
+                        if (class_exists("changeType"))
+                            $db->setRequest(changeType::login);
                         \maierlabs\lpfw\Logger::_("Login\t" . $paramName . "\t" . strlen($paramPassw), \maierlabs\lpfw\LoggerLevel::error);
                     } else {
                         \maierlabs\lpfw\Logger::_("LoginOk\t" . $paramName . "\t" . strlen($paramPassw));

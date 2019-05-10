@@ -97,7 +97,6 @@ class dbDaCandle
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "lightedDate", date("Y-m-d H:i:s"));
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "personID", $id);
         $this->dbDAO->dataBase->insert("candle", $data);
-        $this->updateRecentChangesList();
     }
 
 }

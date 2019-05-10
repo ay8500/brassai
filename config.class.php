@@ -23,6 +23,9 @@ class Config {
 
     public static $SupportedLang = array("hu"); //First language ist the default language.
 
+    public static $secret_key = 'iskola';
+    public static $secret_iv = 'brassai';
+
 
 
     /**

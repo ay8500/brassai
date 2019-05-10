@@ -322,7 +322,7 @@ class Appl {
      * @param string $sender
      * @return Boolean
      */
-    function sendHtmlMail($recipient, $body, $subject="", $sender=null) {
+    public static function sendHtmlMail($recipient, $body, $subject="", $sender=null) {
         if (!self::checkEmail($recipient)) {
             return false;
         }
@@ -359,7 +359,7 @@ class Appl {
     /**
      * Validate mail adrress
      */
-    function checkEmail($email) {
+    public static function checkEmail($email) {
         if (null==$email)
             return false;
         if(preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",$email)){
@@ -369,7 +369,7 @@ class Appl {
         return false;
     }
 
-    function setApplJScript() {
+    public static function setApplJScript() {
         self::addJsScript('
 function clearDbMessages() {
     if ($(".resultDBoperation").html()!="")
