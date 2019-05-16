@@ -8,9 +8,12 @@
     use \maierlabs\lpfw\Appl as Appl;
 
     /**
-    * @param \maierlabs\lpfw\iDbDaUser $db
+     * Interpret the logon or logoff action parameter
+     * @param \maierlabs\lpfw\iDbDaUser $db
+     * @param boolean $echoResult
+     * @return string result
     */
-    function handleLogInOff($db)
+    function handleLogInOff($db,$echoResult=true)
     {
         $logOnMessage = "";
 
@@ -49,7 +52,8 @@
                     "Parameter:" . $paramName . " : " . strlen($paramPassw) . "<br/>" .
                     "Login result:" . $logOnMessage, " Login");
             }
-            echo($logOnMessage);
+            if ($echoResult)
+                echo($logOnMessage);
         }
         //Logoff action
         if (isActionParam("logoff")) {
@@ -80,6 +84,7 @@
                     "Login result:" . $logOnMessage, "Login");
             }
         }
+        return $logOnMessage;
     }
 	
 

@@ -248,7 +248,13 @@ class Appl {
      * @param string $type
      * @return void
      */
-    public static function setMessage($text,$type) {
+    public static function setMessage($text,$type="success") {
+        if ($text==null || strlen($text)==0)
+            return;
+        if ($type=="warning" || $type=="alert")
+            $text = '<span class="glyphicon glyphicon-exclamation-sign"></span> '.$text;
+        if ($type=="info" || $type=="success" || $type==null)
+            $text = '<span class="glyphicon glyphicon-info-sign"></span> '.$text;
         if (self::$renderingStarted==false) {
             self::$resultDbOperation.='<div class="alert alert-'.$type.'">'.self::__($text).'</div>';
         } else {
@@ -371,6 +377,10 @@ class Appl {
 
     public static function setApplJScript() {
         self::addJsScript('
+$(function() {
+    setTimeout(clearDbMessages, 10000);
+});
+
 function clearDbMessages() {
     if ($(".resultDBoperation").html()!="")
         $(".resultDBoperation").slideUp("slow");

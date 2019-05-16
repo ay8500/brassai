@@ -6,6 +6,33 @@ class PHPUnit_Framework_TestCase {
     private $assertError=0;
     private $errorText="";
 
+    public function assertStringStartsWith($prefix,$actual,$message='') {
+        if ($prefix===substr($actual,0,strlen($prefix))) {
+            $this->assertOk++;
+        } else {
+            $this->assertError++;
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that ' . $actual. '  starts with '.$prefix."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+        }
+    }
+
+
+    public function assertStringEndsWith($suffix,$actual,$message='') {
+        if ($suffix===substr($actual,strlen($actual)-strlen($suffix))) {
+            $this->assertOk++;
+        } else {
+            $this->assertError++;
+            if ($message=='') {
+                $this->errorText .= 'Failed asserting that ' . $actual. '  ends with '.$suffix."<br />";
+            } else {
+                $this->errorText .= $message."<br />";
+            }
+        }
+    }
+
     public function assertSame($expected,$actual,$message='') {
         if ($expected===$actual) {
             $this->assertOk++;

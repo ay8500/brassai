@@ -42,7 +42,7 @@ include_once 'dbBL.class.php';
 		<form id="stroryForm" onsubmit="saveStory(); return false;">
 		<fieldset onkeyup="fieldChanged();" >
 			<textarea id="story" style="visibility:hidden; height:400px;" >
-<?php echo getFieldValue($text); ?>
+<?php echo htmlspecialchars_decode(getFieldValue($text)); ?>
 			</textarea>
 		</fieldset>
 		<br/>
@@ -59,7 +59,7 @@ include_once 'dbBL.class.php';
 			</div>
 		</form>
 	<?php } else {
-		$okText=getFieldAccessValue($text);
+		$okText=getFieldAccessValue(htmlspecialchars_decode(htmlspecialchars_decode($text)));
 		if ($okText!=null) {
 			$okText = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "<a target=\"_blank\" href=\"\\0\">\\0</a>",	$okText);
 			$okText = preg_replace('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/', '<a href="mailto:$1">$1</a>', $okText);

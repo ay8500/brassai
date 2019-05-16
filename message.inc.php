@@ -50,9 +50,9 @@ function displayMessage($message, $person) {
     }?>
     </div>
     <div style="margin:10px 0px 10px 0px">
-        <div class="message_text"><?php echo html_entity_decode($message["text"])?></div>
+        <div class="message_text"><?php echo htmlspecialchars_decode(htmlspecialchars_decode(htmlspecialchars_decode($message["text"])))?></div>
         <?php if (isset($message["comment"])) {?>
-            <br /><b>Kommentár: </b><?php echo html_entity_decode($message["comment"]); ?>
+            <br /><b>Kommentár: </b><?php echo htmlspecialchars_decode(htmlspecialchars_decode($message["comment"])); ?>
         <?php } ?>
         <div style="margin-bottom:-5px; ">
             <?php echo  'Datum:'.\maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"])." "; ?>
