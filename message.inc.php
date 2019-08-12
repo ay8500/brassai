@@ -2,7 +2,7 @@
 include_once 'sendMail.php';
 
 /**
- * display the messag list
+ * display the message list
  * @param integer $elements
  * @return string
  */

@@ -7,11 +7,11 @@ include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
 
 $dbSongVote = new dbDaSongVote($db);
+$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
 use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("A véndiákok ezt hallgatják szívesen");
-if (getParam("classid")==-1) unsetAktClass();
 if (getAktClassId()==-1) {
     Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.');
 } else {
@@ -66,17 +66,17 @@ if ($delVote>=0 && $edit) {
 	   					'id'=>-1,
 	   					'personID'=>getLoggedInUserId(),
 	   					'songID'=>$psong])>=0) {
-	   				Appl::$resultDbOperation='<div class="alert alert-success" >Zene és a szavazatod sikeresen kimentve.</div>';
+	   				Appl::setMessage('Zene és a szavazatod sikeresen kimentve.','success');
 	   			} else {
-	   				Appl::$resultDbOperation='<div class="alert alert-warning" >Zene kimentése sikertelen!</div>';
+                    Appl::setMessage('Zene kimentése sikertelen! Elnézést kérünl.','warning');
 	   			}
 	   			$psong=0;$pinterpret=0;
 	   		} else {
-	   			Appl::$resultDbOperation='<div class="alert alert-warning" >Zene már az adatbankban létezik, válassz újból!</div>';
+                Appl::setMessage('Zene már az adatbankban létezik, válassz újból!','warning');
 	   			$psong=0;
 	   		}
    		} else {
-   			Appl::$resultDbOperation='<div class="alert alert-warning" >Videó nem létezik a youtubeon! Írd be a youtoube linkböl a videó anzonosítót pédául:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51</div>';
+   			Appl::setMessage('Videó nem létezik a youtubeon! Írd be a youtoube linkből a videó anzonosítót pédául:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51'.'warning');
    			$psong=0;
    		}
    } 
