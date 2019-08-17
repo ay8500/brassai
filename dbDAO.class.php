@@ -849,35 +849,36 @@ class dbDAO {
         }
         if (in_array($filter,array("all"))) {
             $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("teacher"))) {
             $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=1 order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=1 order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("person"))) {
             $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=0 order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=0 order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","picture"))) {
             $sql = " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( changeForID is null or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and (isDeleted=0) order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and (isDeleted=0) order by changeDate desc limit " . $limit . ") ";
+            $this->dataBase->query($sql);
+            $rows = array_merge($rows, $this->dataBase->getRowList());
+        }
+        if (in_array($filter,array("all","class"))) {
+            $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","opinion"))) {
             $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
-            $this->dataBase->query($sql);
-            $rows = array_merge($rows, $this->dataBase->getRowList());
-        }
-        if (in_array($filter,array("all","class"))) {
-            $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
