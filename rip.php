@@ -28,8 +28,24 @@ include("homemenu.inc.php");
 ?>
 
 <div style="margin-top:20px;padding:10px;background-color: black; color: #ffbb66;">
-	<h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $dbCandle->getCandlesByPersonId() ?> gyertya ég</h2>
-	<div class="well" style="margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
+    <h2>Juhász Gyula: Consolatio</h2>
+    <div style="display: inline-block; margin: 0px 25px 25px 0px;">
+        Nem múlnak ők el, kik szívünkben élnek,<br />
+        Hiába szállnak árnyak, álmok, évek.<br />
+        Ők itt maradnak bennünk csöndesen még,<br />
+        Hiszen hazánk nekünk a végtelenség.<br />
+    </div><div style="display: inline-block; margin: 0px 25px 25px 0px;">
+        Emlékük, mint a lámpafény az estben,<br />
+        Kitündököl és ragyog egyre szebben<br />
+        És melegít, mint kandalló a télben,<br />
+        Derűs szelíden és örök fehéren.<br />
+    </div><div style="display: inline-block">
+        Szemünkben tükrözik tekintetük még<br />
+        S a boldog órák drága, tiszta üdvét<br />
+        Fölissza lelkünk, mint virág a napfényt<br />
+        És élnek ők tovább, szűz gondolatként.<br />
+    </div>
+	<div class="well" style="background-color: black; color: #ffbb66;border-color: black;">
 		<form>
 			<b style="font-size: 20px;color: #ffbb66;">Emléküket örökké őrizzük!
                 <?php if (getGetParam("id")!=null) { writePersonName($db->getPersonByID(getGetParam("id")));echo(' megemlékezései'); } ?>
@@ -40,6 +56,7 @@ include("homemenu.inc.php");
 				<button class="btn btn-warning" style="margin:10px;color:black" name="action" value="person">Iskolatársaink emlékére</button>
 			</span>
 		</form>
+        <h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $dbCandle->getCandlesByPersonId() ?> gyertya ég</h2>
 	</div>
 	<?php 	
 	foreach ($personList as $d) {

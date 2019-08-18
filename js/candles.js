@@ -66,7 +66,7 @@ function showCandles(id,candles) {
 	var candleSize = candles>30?30:candles;
 	var html="";
 		for ( var x = 1; x <= 9 && x<= candles; x++) {
-		html +='<img src="images/candle'+(Math.floor(Math.random() * 6)+1)+'.gif" style="width: '+(candleSize*2+30)+'px;">';
+		html +='<img src="images/candle'+(Math.floor(Math.random() * 10)+1)+'.gif" style="width: '+(candleSize*2+30)+'px;">';
 	}
 	$("#candles"+id).html(html);
 	$("#candles"+id).prop('title', candles+' gyertya ég. Gyújts te is gyertyát emlékére.');

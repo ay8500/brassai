@@ -21,7 +21,9 @@ class dbDaCandle
     }
 
     public function getLightedCandleList($id=null) {
-        $sql = 'select personID from candle'." where  lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+        $sql = 'select personID from candle join person on person.id=candle.personID ';
+        $sql .=" where deceasedYear is not null ";
+        $sql .=" and  lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
         if($id!=null) {
             $sql .=' and userID='.$id;
         }
