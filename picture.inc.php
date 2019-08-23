@@ -133,7 +133,13 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 //View 
 $albumParam = getParam("album","");
 $view=getParam("view","table");
-$sort=getParam("sort",(getParam("type")=='schoolID'?"alphabet-desc":"order-desc"));
+
+//Sort: default sort is the sort order by sordid in the database
+$defaulSort="order-desc";
+if (getParam("type")=='schoolID' && $albumParam!=="") {
+    $defaulSort="alphabet-desc";
+}
+$sort=getParam("sort",$defaulSort);
 $sortOrder=(strpos($sort,"order")!==false?"secundary":"default");
 $sortAlphabet=(strpos($sort,"alphabet")!==false?"secundary":"default");
 $sortDate=(strpos($sort,"date")!==false?"secundary":"default");
@@ -251,7 +257,7 @@ if (!isActionParam("showmore") ) {
 					<?php if (getParam("typeid")!=null) {?>
 						<input name="typeid" type="hidden" value="<?php echo getParam('typeid')?>" /> 
 					<?php } ?>
-					<input name="album" class="form-control" placeholder=<?php Appl::__("Album címe")?>/><br/>
+					<input name="album" class="form-control" placeholder="<?php Appl::_("Az új album címe")?>"><br/>
 					<button class="btn btn-default" style="margin-top: -15px;"><?php Appl::_("Új albumot létrehoz")?></button>
 				</form>
 			</div>
@@ -273,14 +279,18 @@ if (!isActionParam("showmore") ) {
 	
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
-	<?php if (($notDeletedPictures<50 || userIsAdmin()) && substr($albumParam,0,1)!="_" && $albumParam!="_card_") {?>
 		<div style="margin-bottom:15px;">
-			<button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
+            <?php if ($notDeletedPictures<50 || userIsAdmin()) {?>
+                <button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
+            <?php } ?>
             <button class="btn btn-default" onclick="return toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
-            <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
-            <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
-            <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
+            <?php if ((substr($albumParam,0,1)!="_" && !($type=="schoolID" && $albumParam=="")) || userIsAdmin()) {?>
+                <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
+                <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
+                <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
+            <?php } ?>
         </div>
+        <?php if ($notDeletedPictures<50 || userIsAdmin()) {?>
 		<div id="download" style="margin:15px;display:none;">
 			<div><?php Appl::_("Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.")?><span></span></div>
 			<span style="display: inline-block;"><?php Appl::_("Válassz egy jpg képet max. 3MByte")?></span>
@@ -298,7 +308,7 @@ if (!isActionParam("showmore") ) {
 			<?php }?>
 			<input type="hidden" name="typeid" value="<?php echo ($typeId)?>" />
 		</div>
-	<?php } ?>
+        <?php } ?>
 
 	
 	<?php if ($notDeletedPictures==0) :?>
@@ -460,9 +470,9 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
 
     <div  id="" >
         <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;margin: 0 10px 0 10px;display: none" >
-            <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo $pict["title"] ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
+            <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo html_entity_decode(html_entity_decode($pict["title"])) ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
             <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
-<?php echo html_entity_decode($pict["comment"]) ?></textarea>
+<?php echo html_entity_decode(html_entity_decode($pict["comment"])) ?></textarea>
             <div >
                 <?php if (userIsLoggedOn()) { ?>
                     <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
@@ -504,8 +514,8 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                 <?php } ?>
             <?php endif;?>
             <div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 5px;width: 320px;">
-                <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo $pict["title"] ?></span></b><br/>
-                <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink($pict["comment"],true) ?></span>
+                <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo html_entity_decode(html_entity_decode($pict["title"])) ?></span></b><br/>
+                <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink(html_entity_decode(html_entity_decode($pict["comment"])),true) ?></span>
             </div><?php
             displayPictureOpinion($dbOpinion,$pict["id"]);?>
         </div>
