@@ -21,15 +21,11 @@ if (isActionParam('showmore')) {
     return;
 }
 
-if (isActionParam("updatecache")) {
-    $db->updateRecentChangesList();
-}
-
 /**
- * Show recent changes
+ * Show recent changes uses the url parameters tabOpen, limit, ip an userid
  * @param dbDAO $db
  * @param string $date
- * @return string
+ * @return string date of the last entry
  */
 function showRecentChanges($db,$date=null) {
     if ($date!=null) {
@@ -37,21 +33,22 @@ function showRecentChanges($db,$date=null) {
     } else {
         $date=new \DateTime();
     }
-    $filter=getParam("tabOpen","all");
-    if ($filter=='user') {
+    $ip = getParam("ip",null);
+    $userid= getParam("userid",null);
+    if (($filter=getParam("tabOpen","all"))=='user') {
         $filter='all';
         if (userIsLoggedOn() || getParam("userid")!=null) {
             if (getParam("userid") == null)
-                $_GET["userid"] = getLoggedInUserId();
+                $userid = getLoggedInUserId();
         } else {
-            $_GET["ip"] = $_SERVER["REMOTE_ADDR"];
+            $ip = $_SERVER["REMOTE_ADDR"];
         }
     }
-    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48),$filter,getParam("ip",null),getParam("userid",null));
+    $ids=$db->getRecentChangesListByDate($date, getIntParam("limit",48),$filter,$ip,$userid);
     foreach ($ids as $id) {
         if ($id["type"] == "person") {
             $person = $db->getPersonByID($id["id"]);
-                displayPerson($db, $person, true, true,$id["action"],$id["changeUserID"],$id["changeDate"]);
+            displayPerson($db, $person, true, true,$id["action"],$id["changeUserID"],$id["changeDate"]);
         } elseif ($id["type"] == "picture") {
             $picture = $db->getPictureById($id["id"]);
             displayPicture($db, $picture,false,$id["action"],$id["changeUserID"],$id["changeDate"]);
@@ -112,6 +109,7 @@ include("homemenu.inc.php");
 		</div>
 		<div class="panel-body">
 			<ul>
+                <li>Március 2019: Személyeket lehet a fényképeken megjelölni</li>
                 <li>December 2018: Családtagokat lehet megjelölni</li>
                 <li>November 2018: Véleményeket lehet személyekhez és képekhez hozzáfűzni</li>
                 <li>Szeptember 2018: Fényképeket <a href="picture.php?type=schoolID&typeid=1&album=Iskolánk%20sportolói">albumokba</a> lehet csoportosítani</li>
@@ -149,7 +147,7 @@ Appl::addJsScript("
     		    var idx=data.lastIndexOf('#');
     		    $('#more').replaceWith(data.substring(0,idx-1)+'<span id=\"more\"></span>');
 	    	    $('#date').val(data.substring(idx+1));
-	    	     $('#buttonmore').html('Többet szeretnék látni');
+	    	    $('#buttonmore').html('Többet szeretnék látni');
 		    },
 		    error:function(error) {
 		        showMessage('Több bejegyzés nincs!');
