@@ -9,23 +9,32 @@ $( document ).ready(function() {
 var logoTimer;
 var logoTop=-20;
 var logoDirection =-1;
+var backGroundHPos = 0;
 
 function onResize(hplus) {
-    var h= 	removePX($(".sub_title").css("height"))+
-        removePX($(".appltitle").css("height"))+
-        removePX($("#main-menu").css("height"))+32;
-    if (null!=hplus)
-        h +=hplus;
-    var hh = removePX($("#homelogo").css("height"));
+    var h= 	$(".sub_title").height()+
+        $(".appltitle").height()+
+        $("#main-menu").height()+40;
+    if (null!=hplus) {
+        h += hplus;
+        backGroundHPos = hplus;
+    } else {
+        h += backGroundHPos;
+    }
+    var hh = $("#homelogo").height();
 
-    $(".homeLogo").css("height",(h)+"px");
+    $(".homeLogo").height(h);
     clearInterval(logoTimer);
-    logoTimer = setInterval(function() {
-        $("#homelogo").css("top",logoTop+"px");
-        logoTop=logoTop+logoDirection;
-        if (logoTop<h-hh) 	logoDirection=1;
-        if( logoTop>=0) 	logoDirection=-1;
-    }, 50);
+    if (hh>h) {
+        logoTimer = setInterval(function () {
+            $("#homelogo").offset({top: logoTop});
+            logoTop = logoTop + logoDirection;
+            if (logoTop < h - hh) logoDirection = 1;
+            if (logoTop >= 0) logoDirection = -1;
+        }, 60);
+    } else {
+        $("#homelogo").offset({top: 0});
+    }
 }
 
 function removePX(p) {

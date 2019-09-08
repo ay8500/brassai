@@ -219,6 +219,7 @@ function getLoggedInUserIdOrNull() {
                 var text = '';
                 data.forEach(function(e) {
                     text +='<div><div class=\"uname\">'+e.name;
+                    text +=e.ip;
                     text +='<span style=\"float:right\">'+e.date;
                     if (e.myopinion) {
                         text +=' <span title=\"kitöröl\" class=\"oglyph glyphicon glyphicon-remove\" onclick=\"deleteOpinion('+e.id+')\"></span>';

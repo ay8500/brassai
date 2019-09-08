@@ -916,6 +916,9 @@ class dbDAO {
         return $ret;
 	}
 
+    /**
+     * @deprecated
+     */
     public function updateRecentChangesList()
     {
         return;

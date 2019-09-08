@@ -51,7 +51,9 @@ class dbDaCandle
     public function getCandlesByPersonId($id=null) {
         if (null!=$id) {
             $sql='select count(*) from candle where personId='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-            return $this->dbDAO->dataBase->queryInt($sql)+1;
+            $candles=$this->dbDAO->dataBase->queryInt($sql);
+            $sql='select count(*) from person where deceasedYear is not null and id='.$id;
+            return $candles + $this->dbDAO->dataBase->queryInt($sql);
         } else {
             $sql='select count(*) from person where deceasedYear is not null';
             $ret = $this->dbDAO->dataBase->queryInt($sql);

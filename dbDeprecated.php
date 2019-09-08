@@ -7,6 +7,7 @@ class dbDeprecated
      * @param DateTime $dateFrom
      * @param int $limit
      * @return array
+     * @deprecated
      */
     public function getRecentChangeList($dateFrom, $limit = 50)
     {

@@ -106,5 +106,8 @@ include("homemenu.inc.php");
 	</div>
 </div>
 
-<?php include("homefooter.inc.php");?>
+<?php
+Appl::addJsScript("onResize(430);",true);
+include("homefooter.inc.php");
+?>
 

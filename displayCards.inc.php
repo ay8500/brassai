@@ -138,7 +138,6 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 <?php
 }
 
-
 /**
  * Display a picture including change date and username
  * @param dbDAO $db the database
@@ -168,7 +167,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
 		$type="school";
 		$typeid=$picture[$type."ID"];
 		$school=$db->getSchoolById($typeid);
-		$typeText="<b>Iskolakép:</b><br/>".$school["name"];
+		$typeText="<b>Iskolakép:</b><br/>".html_entity_decode(html_entity_decode($school["name"]));
 	} elseif (isset($picture["classID"])){
 		$type="class";
 		$typeid=$picture[$type."ID"];
@@ -216,7 +215,6 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
         <?php  displayPictureOpinion($dbOpinion,$picture["id"]); ?>
 	</div>
 <?php }
-
 
 /**
  * Display a class

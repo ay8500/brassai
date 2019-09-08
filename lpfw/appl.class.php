@@ -194,8 +194,25 @@ class Appl {
      * @param string $script
      * @return void
      */
-    public static function addJsScript($script) {
-        self::$jsScript .="\n".$script;
+    public static function addJsScript($script,$onload=false) {
+        if ($onload) {
+            self::$jsScript .="\n$( document ).ready(function() {" . $script . '});';
+        } else {
+            self::$jsScript .="\n".$script;
+        }
+    }
+
+    /**
+     * Insert a js script
+     * @param string $script
+     * @param boolean $onload
+     */
+    public static function executeJsScript($script,$onload) {
+        if ($onload) {
+            echo('<script></script>');
+        } else {
+            echo('<script>' . $script . '</script>');
+        }
     }
 
     /**

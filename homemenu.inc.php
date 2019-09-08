@@ -135,7 +135,7 @@
                     <li><a href="hometable.php?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek barátok
                             <?php if ($classStat->guestCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->guestCount ?></span><?php } ?></a></li>
-                    <li><a href="picture.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
+                    <li><a href="picture.php?type=classID&typeid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
                             <?php if ($classStat->classPictures > 0) { ?><span
                                     class="badge"><?php echo $classStat->classPictures ?></span><?php } ?></a></li>
                     <?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>

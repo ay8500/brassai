@@ -24,8 +24,11 @@ if ($count!='candle') {
         $op = new stdClass();
         if ($count == "text" || $count = "")
             $op->text = $o->text;
-        $op->ip = $o->ip;
-        $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o->date);
+        if (userIsAdmin())
+            $op->ip = ' '.$o->ip;
+        else
+            $op->ip = '';
+            $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o->date);
         $op->id = $o->id;
         $op->myopinion = $o->myopinion;
         $person = $db->getPersonByID($o->person);
