@@ -24,12 +24,12 @@ if ($count!='candle') {
         $op = new stdClass();
         if ($count == "text" || $count = "")
             $op->text = $o->text;
-        if (userIsAdmin())
-            $op->ip = ' '.$o->ip;
-        else
+        if (userIsAdmin()) {
+            $op->ip =  $o->ip;
+        }else {
             $op->ip = '';
-            $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o->date);
-        $op->id = $o->id;
+        }
+        $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o->date);
         $op->myopinion = $o->myopinion;
         $person = $db->getPersonByID($o->person);
         if ($person != null) {
@@ -43,7 +43,11 @@ if ($count!='candle') {
     $candles=$dbCandles->getCandleDetailByPersonId($id);
     foreach ($candles as $o) {
         $op = new stdClass();
-        $op->ip = $o['ip'];
+        if (userIsAdmin()) {
+            $op->ip =  $o['ip'];
+        }else {
+            $op->ip = '';
+        }
         $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o['lightedDate']);
         $op->id = $o['id'];
         $op->myopinion = false;
