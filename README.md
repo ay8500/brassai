@@ -1,7 +1,7 @@
 # brassai
 Classmates Homepage
 
-This is homepage solution for classmates. The main goal is to get the old classmates together. 
+This is a homepage solution for classmates. The main goal is to get the old classmates together. 
 Therefore the visitor of this php based web page has the possibility to create an user account and link it to the class that hi use visited as schooler.
 
 This webpage kann help to organise classmate reunion meetings.
