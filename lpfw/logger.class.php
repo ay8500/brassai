@@ -132,7 +132,7 @@ class Logger
         $text .= "\t".$logText . "\t";
         $text .= "\r\n";
         //Keep logfile above the maximum size
-        if (filesize(self::getLogfile())>self::$maxFileSize) {
+        if (file_exists(self::getLogfile()) && filesize(self::getLogfile())>self::$maxFileSize) {
             $text = self::tail(self::getLogfile()).$text;
             unlink(self::getLogfile());
         }

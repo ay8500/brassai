@@ -2,6 +2,8 @@
 \maierlabs\lpfw\Appl::addCssStyle('
 	.person-candle {margin:5px;}
 	.person-candle>a { color: #ffbb66 }
+	.rip-element {background-color: black;border-color: #ffbb66;border-width: 1px;border-style: solid;
+	               margin-right: 15px;margin-bottom: 15px;box-shadow: 3px 1px 9px 2px #ffbb66;}
 ');
 
 /**
@@ -41,7 +43,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 			$rstyle=' diak_image_empty_rip';
 		}
 		?>
-	<div class="element" style="background-color: black;border-color: #ffbb66;border-width: 1px;border-style: solid;">
+	<div class="element rip-element" >
 		<div style="display: inline-block; ">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
 				<div>
