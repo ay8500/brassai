@@ -167,6 +167,7 @@ if ($albumParam=="_tablo_") {
     $pictures = $db->getListOfPicturesWhere($where,$sortSql, $limit, $offset );
     $countPictures = $db->getTableCount("picture",$where);
 } elseif ($albumParam=="_mark_") {
+    $typeId=getParam("typeid");
     $where = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
     $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
     $countPictures = $db->getTableCount("picture",$where);
@@ -175,7 +176,6 @@ if ($albumParam=="_tablo_") {
     $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
     $countPictures = $db->getTableCount("picture",$where);
 } else {
-    if (!isset($typeId)) $typeId=getParam("typeid");
     if (!isset($type)) $type=getParam("type");
     $where = $type.'='.$typeId;
     if ($albumParam!=null) {
@@ -197,14 +197,17 @@ foreach ($pictures as $pict) {
     }
 }
 
-//Albumlist
-$startAlbumList=array(array("albumName"=>"","albumText"=>Appl::__("Főalbum")));
+//Create standard albumlist
+$startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"));
 if (getParam("type")=="schoolID") {
-	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_")));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_")));
+	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>"..")));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>"..")));
 }
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_")));
+    $countMark = $db->getPersonMarks($typeId);
+    if( $countMark>0 ) {
+        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
+    }
 }
 if (!isActionParam("showmore") ) {
 
@@ -236,12 +239,13 @@ if (!isActionParam("showmore") ) {
 			} else { 
 				$albumLink =$alb["albumLink"]; 
 			}?> 
-			<a href="<?php echo $albumLink?>">
-			<?php if ($albumParam==$alb["albumName"]) {?>
-				<span class="folderdivwhite"><?php echo $alb["albumText"]?></span>
-			<?php } else {?>
-				<span class="folderdiv"><?php echo $alb["albumText"]?></span>
-			<?php } ?>
+			<a href="<?php echo $albumLink?>" style="text-decoration:none !important;">
+                <span class="badgep"><?php echo $alb["count"] ?></span>
+                <?php if ($albumParam==$alb["albumName"]) {?>
+				    <span class="folderdivwhite"><?php echo $alb["albumText"]?></span>
+			    <?php } else {?>
+    				<span class="folderdiv"><?php echo $alb["albumText"]?></span>
+    			<?php } ?>
 			</a>
 		<?php }
         //New album

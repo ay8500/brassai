@@ -11,6 +11,9 @@ use \maierlabs\lpfw\Appl as Appl;
 $tabOpen= getParam("tabOpen", 0);
 
 $personid = getParam("uid",null);
+if (getParam("type")=="personID" && getParam("typeid")!=null) {
+    $personid=getParam("typeid");
+}
 if($personid!=null){
     $diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
@@ -407,11 +410,13 @@ $tabUrl="editDiak.php";
         }
         //Candles
         if ($tabOpen=="candles") {
-            include("rip.inc.php");
-            $personList=array();
-            $personList[0]=$diak;
-            \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
-            displayRipPerson(new dbDaCandle($db),$diak);
+            if (isset($diak["deceasedYear"]) && $diak["deceasedYear"]!=null) {
+                include("rip.inc.php");
+                $personList = array();
+                $personList[0] = $diak;
+                \maierlabs\lpfw\Appl::addJs('js/candles.js', true);
+                displayRipPerson(new dbDaCandle($db), $diak);
+            }
         }
 		//Pictures
 		if ($tabOpen=="pictures") {
