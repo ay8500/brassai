@@ -45,7 +45,10 @@ class dbDaUser implements \maierlabs\lpfw\iDbDaUser
 
     public function setUserPassword($id, $password)
     {
-        return $this->dbDAO->savePersonField($id,"passw",encrypt_decrypt("encrypt",$password));
+        if ($this->dbDAO->dataBase->update("person",[["field"=>"passw","type"=>"s","value"=>encrypt_decrypt("encrypt",$password)]],"id",$id))
+            return $id;
+        else
+            return -1;
     }
 
     public function setUserName($id, $username)

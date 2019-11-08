@@ -4,7 +4,7 @@ include_once 'lpfw/userManager.php';
 include_once 'lpfw/ltools.php';
 include_once 'lpfw/appl.class.php';
 include_once 'dbBL.class.php';
-include_once  'dbDaCandle.class.php';
+include_once 'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -200,7 +200,7 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
 		if ($newpwd1==$newpwd2) {
-			$ret=$db->savePersonField(getAktUserId(), "passw", encrypt_decrypt("encrypt",$newpwd1));
+            $ret=$userDB->setUserPassword(getAktUserId(),encrypt_decrypt("encrypt",$newpwd1));
 			if ($ret>=0) {
 				if (!userIsAdmin()) 
                     \maierlabs\lpfw\Logger::_("SavePassw\t".getLoggedInUserId());

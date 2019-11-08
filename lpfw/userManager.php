@@ -255,13 +255,12 @@ include_once 'iDbDaUser.class.php';
 	 * -3 -> Sequrity violation 
 	 */
 	function resetUserPasswort($db,$email, $newPassw) {
+	    include_once "dbDaUser.class.php";
 		if (isset($newPassw) && strlen($newPassw)>4) {
 			if ($db->checkRequesterIp(changeType::newPassword)) {
 				$usr = $db->getUserByEmail($email);
                 if (null != $usr) {
-                        $_SESSION['uId']=$usr["id"];   //fake a logged in user to not create a change as an anonymous user
 						$db->setUserPassword($usr["id"],encrypt_decrypt("encrypt",$newPassw));
-						unset($_SESSION['uId']); //remove the fake user
 						$db->setRequest(changeType::newPassword);
 						$ret = $usr["id"];
                         \maierlabs\lpfw\Logger::_("NewPassword\t".getLoggedInUserId());
