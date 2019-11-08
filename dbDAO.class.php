@@ -475,8 +475,21 @@ class dbDAO {
 		usort($ret, "compareAlphabeticalTeacher");
 		return $ret;
 	}
-	
-	/**
+
+	/**********************************[ Article ]*****************************/
+
+    /**
+     * get article by id
+     * @param integer $id
+     * @param boolean $forceThisID
+     * @return array or null
+     */
+    public function getArticleById($id,$forceThisID=false) {
+        return $this->dataBase->getEntryById("article", $id,$forceThisID);
+    }
+
+
+    /**
 	 * get entry count
      * @param string $table
 	 * @param string $where
@@ -650,13 +663,25 @@ class dbDAO {
 	 * get the list of picture albums 
 	 */
 	public function getListOfAlbum($type,$typeId,$startList=array()) {
-		$sql = " where ".$type."=".$typeId. " and albumName != ''";
-		$sql="select distinct(albumName) as albumName, albumName as albumText from picture".$sql;
+		$sql = " where ".$type."=".$typeId. " and albumName is not null and albumName!='' and isDeleted=0 group by albumName";
+		$sql="select count(albumName) as count,albumName, albumName as albumText from picture".$sql;
 		$this->dataBase->query($sql);
 		return array_merge($startList,$this->dataBase->getRowList());
 	}
-	
-	public function changePictureOrderValues($id1,$id2) {
+
+    public function getMainAlbumCount($type,$typeId,$text) {
+        $sql = " where ".$type."=".$typeId. " and isDeleted=0 and (albumName='' or `albumName` is null) ";
+        $sql="select count(*) as count, '".$text."' as albumText, '' as albumName from picture".$sql;
+        $this->dataBase->query($sql);
+        return $this->dataBase->getRowList();
+    }
+
+    public function getPersonMarks($personId) {
+        $sql="SELECT count(*) FROM `personInPicture` WHERE `personID` =".$personId;
+        return $this->dataBase->queryInt($sql);
+    }
+
+    public function changePictureOrderValues($id1,$id2) {
 		$orderValue1=$this->dataBase->queryInt("select orderValue from picture where id=".$id1);
 		$orderValue2=$this->dataBase->queryInt("select orderValue from picture where id=".$id2);
 		$data=array();
@@ -897,6 +922,13 @@ class dbDAO {
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
+        if (in_array($filter,array("all","article"))) {
+            $sql = " (select id, changeDate, 'article' as type, 'change' as action, changeUserID from article where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
+            $this->dataBase->query($sql);
+            $rows = array_merge($rows, $this->dataBase->getRowList());
+        }
+
         //Order list by change date
         usort($rows,function($a,$b) {
             return ($b["changeDate"]<=>$a["changeDate"]);

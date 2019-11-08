@@ -54,7 +54,10 @@ function showRecentChanges($db,$date=null) {
             displayPicture($db, $picture,false,$id["action"],$id["changeUserID"],$id["changeDate"]);
         } elseif ($id["type"] == "class") {
             $class= $db->getClassById($id["id"]);
-            displayClass($db, $class,true,$id["action"],$id["changeUserID"],$id["changeDate"]);
+            displayClass($db, $class,true);
+        } elseif ($id["type"] == "article") {
+            $article= $db->getArticleById($id["id"]);
+            displayArticle($db, $article,true);
         }
     }
     if (sizeof($ids)>0)
