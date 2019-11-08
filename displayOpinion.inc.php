@@ -308,7 +308,7 @@ if (!isActionParam("showmore")) {
 
 <div id="opinionpicture" style="display: none">
     <div class="optiondiv">
-        <span class="otitle">Véleményem erröl a kéröl</span>
+        <span class="otitle">Véleményem erröl a képröl</span>
         <span style="display: inline-block; float: right;">
             <button onclick="return saveOpinion({id},'picture','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
