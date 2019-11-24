@@ -412,8 +412,10 @@ function showDbMessage(text,type) {
 function checkSession() {
     var timezone_offset_minutes = new Date().getTimezoneOffset();
     timezone_offset_minutes = timezone_offset_minutes == 0 ? 0 : -timezone_offset_minutes;
+    var d = screen.width+"|"+screen.height+"|"+screen.colorDepth+"|"+screen.pixelDepth+"|";
+    d +=navigator.language+"|"+navigator.platform+"|"+navigator.productSub+"|"+navigator.hardwareConcurrency;
     $.ajax({
-        url: "ajax/isSessionAlive.php?timezone="+timezone_offset_minutes,
+        url: "ajax/isSessionAlive.php?timezone="+timezone_offset_minutes+"&d="+d,
         type:"GET",
         success:function(data){
             setTimeout(checkSession,10000);
