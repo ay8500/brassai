@@ -1,6 +1,6 @@
 <?php
-include_once 'lpfw/logger.class.php';
-include_once 'lpfw/ltools.php';
+include_once Config::$lpfw.'logger.class.php';
+include_once Config::$lpfw.'ltools.php';
 
 use maierlabs\lpfw\Logger as Logger;
 
@@ -22,6 +22,8 @@ class Config {
     public static $webAppVersion = "20191103";  //Used to load the actual css und js files.
 
     public static $SupportedLang = array("hu"); //First language ist the default language.
+
+    public static $lpfw = __DIR__. '/../lpfw/';
 
     public static $secret_key = 'iskola';
     public static $secret_iv = 'brassai';

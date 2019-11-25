@@ -1,7 +1,8 @@
 <?php
-include_once 'lpfw/sessionManager.php';
-include_once 'lpfw/ltools.php';
-include_once 'lpfw/appl.class.php';
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'userManager.php';
+include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -96,7 +97,7 @@ include("homemenu.inc.php");
             array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "user"));
         }
 
-    	include 'lpfw/view/tabs.inc.php';?>
+    	include Config::$lpfw.'view/tabs.inc.php';?>
 		<div class="panel-body">
 		    <?php $lastDate=showRecentChanges($db);?>
             <span id="more"></span>

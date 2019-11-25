@@ -4,9 +4,10 @@
  */
 
 include_once 'config.class.php';
-include_once "lpfw/userManager.php";
-include_once 'lpfw/ltools.php';
-include_once 'lpfw/mysqldbauh.class.php';
+include_once Config::$lpfw.'userManager.php';
+include_once Config::$lpfw.'ltools.php';
+include_once Config::$lpfw.'mysqldbauh.class.php';
+
 include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
 include_once 'dbDaUser.class.php';

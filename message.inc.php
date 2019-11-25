@@ -78,7 +78,7 @@ function displayMessage($message, $person) {
                     </form>
                 </span>
                 <span>
-                    <form><input type="hidden" name="id" value="'.$message['id'].'"/>
+                    <form><input type="hidden" name="id" value="<?php echo $message['id'] ?>"/>
                         Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;" value="<?php echo (isset($message["changeUserID"])?$message["changeUserID"]:'')?>"/>
                         <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>
                     </form>

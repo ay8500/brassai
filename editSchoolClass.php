@@ -1,8 +1,8 @@
 <?php
-include_once 'lpfw/sessionManager.php';
-include_once 'lpfw/appl.class.php';
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'appl.class.php';
 include_once("dbBL.class.php");
-include_once 'lpfw/ltools.php';
 
 use maierlabs\lpfw\Appl as Appl;
 

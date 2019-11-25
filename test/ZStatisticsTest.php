@@ -1,9 +1,9 @@
 <?php
 
 include_once __DIR__ . "/../config.class.php";
-include_once __DIR__ . "/../lpfw/mysqldbauh.class.php";
-include_once __DIR__ . "/../lpfw/userManager.php";
-include_once __DIR__ . "/../lpfw/logger.class.php";
+include_once __DIR__ . "/../../lpfw/mysqldbauh.class.php";
+include_once __DIR__ . "/../../lpfw/userManager.php";
+include_once __DIR__ . "/../../lpfw/logger.class.php";
 
 use \maierlabs\lpfw\MySqlDbAUH as MySqlDbAUH;
 

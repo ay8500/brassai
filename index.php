@@ -1,6 +1,8 @@
-<?PHP 
-include_once 'lpfw/sessionManager.php';
-include_once 'lpfw/appl.class.php';
+<?PHP
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'userManager.php';
+include_once Config::$lpfw.'appl.class.php';
 include_once 'config.class.php';
 include_once 'dbBL.class.php';
 

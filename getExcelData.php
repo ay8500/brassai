@@ -5,7 +5,8 @@ header("Content-Disposition: attachment; filename=diakok.xls");
 header("Pragma: no-cache");
 header("Expires: 0");
 echo "\xEF\xBB\xBF"; // UTF-8 BOM
-include_once  'lpfw/sessionManager.php';
+include_once 'config.class.php';
+include_once  Config::$lpfw.'sessionManager.php';
 include_once  'dbBL.class.php';
 ?>
 <table>

@@ -18,9 +18,10 @@
 
 //are we in a session?
 $dieIfNoSessionActive = true;
-include_once 'lpfw/sessionManager.php';
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'ltools.php';
 include_once 'dbBL.class.php';
-include_once 'lpfw/ltools.php';
 
 
 //file Name without extensions

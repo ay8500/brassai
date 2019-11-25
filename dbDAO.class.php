@@ -5,11 +5,11 @@
 */
 
 use maierlabs\lpfw\MySqlDbAUH ;
-
-include_once 'lpfw/mysqldbauh.class.php';
-include_once 'lpfw/logger.class.php';
-include_once 'lpfw/ltools.php';
 include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'userManager.php';
+include_once Config::$lpfw.'appl.class.php';
+include_once Config::$lpfw.'mysqldbauh.class.php';
 
 
 class dbDAO {

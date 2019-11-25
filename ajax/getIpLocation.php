@@ -1,5 +1,6 @@
 <?php
-include_once __DIR__ . '/../lpfw/ltools.php';
+include_once '../config.class.php';
+include_once Config::$lpfw.'ltools.php';
 
 header('Content-Type: application/json');
 

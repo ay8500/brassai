@@ -1,8 +1,8 @@
 <?php
-include_once 'lpfw/sessionManager.php';
-include_once 'lpfw/userManager.php';
-include_once 'lpfw/ltools.php';
-include_once 'lpfw/appl.class.php';
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'userManager.php';
+include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaOpinion.class.php';
 include_once 'displayOpinion.inc.php';

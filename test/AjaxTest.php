@@ -1,7 +1,7 @@
 <?php
 
 include_once __DIR__ . "/../config.class.php";
-include_once __DIR__ . "/../lpfw/logger.class.php";
+include_once __DIR__ . "/../../lpfw/logger.class.php";
 
 class AjaxTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,11 +28,13 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
             return;
         $ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
         $this->assertNotNull($ret);
-        $this->assertTrue(strpos($ret,"1 gyertya")!==false );
+        $this->assertTrue($ret=="" );
         $ret=$this->callAjaxUrl($url."ajax/setCandleLighter.php?id=".$id);
         $this->assertNotNull($ret);
         $this->assertTrue(isset($ret["id"])  );
         $this->assertSame(intval($id),intval($ret["id"]));
+        $ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
+        echo("$ret");
         //$this->assertSame(intval($uId),intval($ret["uId"]));
     }
 
@@ -60,6 +62,7 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
             return null;
         $url=$_SERVER["HTTP_REFERER"];
         $url = substr($url,0,strlen($url)-strlen("phpunit/"));
-        return $url;
+        return $url."/brassai/";
     }
+
 }

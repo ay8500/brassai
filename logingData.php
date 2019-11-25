@@ -1,8 +1,9 @@
 <?php
-    include_once 'lpfw/sessionManager.php';
-    include_once 'lpfw/userManager.php';
-    include_once 'lpfw/logger.class.php';
-	include('homemenu.inc.php');
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'userManager.php';
+include_once Config::$lpfw.'appl.class.php';
+include('homemenu.inc.php');
 ?>
 <div class="sub_title">Loging</div>
 <?PHP
@@ -19,7 +20,7 @@ if (userIsAdmin() || userIsSuperuser()) {
     array_push($tabsCaption ,array("id" => "facebook", "caption" => 'Facebook', "glyphicon" => "tower"));
     array_push($tabsCaption ,array("id" => "database", "caption" => 'Adatbázis', "glyphicon" => "cd"));
 
-    include 'lpfw/view/tabs.inc.php';
+    include Config::$lpfw.'view/tabs.inc.php';
 	?>
 	
 	<?php

@@ -1,9 +1,8 @@
 <?php
 
-include_once __DIR__ . "/../phpunit/config.class.php";
 include_once __DIR__ . "/../config.class.php";
 include_once __DIR__ . "/../dbBL.class.php";
-include_once __DIR__ . "/../lpfw/logger.class.php";
+include_once __DIR__ . "/../../lpfw/logger.class.php";
 
 class DbBLTest extends PHPUnit_Framework_TestCase
 {

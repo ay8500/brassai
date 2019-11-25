@@ -1,10 +1,9 @@
 <?php
-include_once("lpfw/sessionManager.php");
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'appl.class.php';
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
     die("Only for admins");
-
-include_once('lpfw/ltools.php');
-include_once 'lpfw/appl.class.php';
 
 if (getParam("action")=="todosomething") {
 	include_once("config.class.php");

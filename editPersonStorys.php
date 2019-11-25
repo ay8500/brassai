@@ -1,5 +1,5 @@
 <?php
-include_once 'lpfw/ltools.php';
+include_once Config::$lpfw.'ltools.php';
 include_once 'dbBL.class.php';
 
 \maierlabs\lpfw\Appl::addCss('editor/ui/trumbowyg.min.css');

@@ -10,10 +10,11 @@
 
 //are we in a session?
 $dieIfNoSessionActive = true;
-include_once 'lpfw/sessionManager.php';
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaPersonInPicture.class.php';
-include_once 'lpfw/ltools.php';
+include_once Config::$lpfw.'ltools.php';
 
 if (getParam("random")!=null) {
     $entrys = $db->dataBase->queryInt("select count(*) from personInPicture");

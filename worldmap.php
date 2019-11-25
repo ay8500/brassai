@@ -1,8 +1,9 @@
-<?PHP 	
-include_once("lpfw/sessionManager.php");
-include_once 'lpfw/appl.class.php';
+<?PHP
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'appl.class.php';
 
-$sTitle = "A diakok a vílág térképén";
+$sTitle = "A véndiakok a vílág térképén";
 $SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
 \maierlabs\lpfw\Appl::setSiteTitle($sTitle,"Merre szóródtak szét az osztálytársak",$SiteDescription);
 

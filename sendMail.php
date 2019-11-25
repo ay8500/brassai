@@ -1,6 +1,8 @@
 <?PHP
+include_once 'config.class.php';
+include_once Config::$lpfw.'appl.class.php';
+
 include_once("dbBL.class.php");
-include_once 'lpfw/appl.class.php';
 
 /**
  * Send new password
