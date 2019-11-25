@@ -329,23 +329,22 @@ if (isAktClassStaf()) {
         Appl::setSiteSubTitle("Tanári kar");
     else
         Appl::setSiteSubTitle(" Barátaink");
-    Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($diak));
+    Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
 } else {
     if ($guests) {
         Appl::setSiteSubTitle(getAktClassName()." Vendég jó barát");
-        Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($diak));
+        Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
     } else {
         if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
             $headTeacher=$db->getPersonByID($class["headTeacherID"]);
             Appl::setSiteSubTitle(getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
-            Appl::setSiteTitle(getAktClassName()." Osztályfőnök ".getPersonName($headTeacher));
         } else {
             Appl::setSiteSubTitle("Osztály ".getAktClassName());
-            Appl::setSiteTitle(Appl::$subTitle.' '.getPersonName($diak));
         }
+        Appl::$title=getPersonName($diak)." ".getAktClassName();
     }
 }
-\maierlabs\lpfw\Appl::addCss('css/chosen.css');
+Appl::addCss('css/chosen.css');
 
 include("homemenu.inc.php");
 ?>

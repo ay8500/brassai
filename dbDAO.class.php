@@ -145,8 +145,8 @@ class dbDAO {
      * @param int $schoolID
      * @return array
      */
-	public function getClassList($schoolID=1,$originalId=false) {
-		return   $this->dataBase->getElementList("class",$originalId, "schoolID=".$schoolID." and graduationYear <> 0",null,null,"text asc");
+	public function getClassList($schoolID=1,$originalId=false,$eveningClass=0) {
+		return   $this->dataBase->getElementList("class",$originalId, "schoolID=".$schoolID." and graduationYear <> 0 and eveningClass=".$eveningClass,null,null,"text asc");
 	}
 	
 	/**

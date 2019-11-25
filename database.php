@@ -127,7 +127,7 @@ if (userIsAdmin()) {?>
 function backup() {
     $('#dbResult').html('backup....');
     $.ajax({
-		url:"lpfw/dbbackup.php?password="+$('#dbPassword').val(),
+		url:"../lpfw/dbbackup.php?password="+$('#dbPassword').val()+"&url=brassai",
 		type:"GET",
 		success:function(data){
 		    $('#dbResult').html(data);
@@ -141,7 +141,7 @@ function backup() {
 function restore() {
     $('#dbResult').html('restore....');
     $.ajax({
-		url:"lpfw/dbrestore.php?password="+$('#dbPassword').val(),
+		url:"../lpfw/dbrestore.php?password="+$('#dbPassword').val()+"&url=brassai",
 		type:"GET",
 		success:function(data){
 		    $('#dbResult').html(data);

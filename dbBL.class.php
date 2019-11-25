@@ -655,16 +655,15 @@ function getPersonShortName($user) {
  * @return string
  */
 function getPersonName($user) {
-    if ($user!=null) {
-        $ret ="";
-        if (isset($user["title"]))
-            $ret = $user["title"].' ';
-        $ret .= $user["lastname"]." ".$user["firstname"];
-        if (isset($user["birthname"]) && trim($user["birthname"])!="")
-            $ret .= " (".trim($user["birthname"]).")";
-        return $ret;
-    }
-    return '';
+    if ($user==null || !isset($user["lastname"]) || !isset($user["firstname"]) )
+        return '';
+    $ret ="";
+    if (isset($user["title"]))
+        $ret = $user["title"].' ';
+    $ret .= $user["lastname"]." ".$user["firstname"];
+    if (isset($user["birthname"]) && trim($user["birthname"])!="")
+        $ret .= " (".trim($user["birthname"]).")";
+    return $ret;
 }
 
 /**

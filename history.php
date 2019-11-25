@@ -39,11 +39,11 @@ include('homemenu.inc.php');
 		  			<tr><td colspan="45"><hr/></td></tr>
 				<?php } ?>
 		  		<tr>
-					<?php displayHistoryElement($db,$item,$item,true);$aktId=$item["entryID"]; ?>		          			
+					<?php displayHistoryElement($db,null,$item);$aktId=$item["entryID"]; ?>
 		  		</tr>
 			<?php }	?>
 	  		<tr>
-	   			<?php displayHistoryElement($db,$item,$id<sizeof($history)-1?$history[$id+1]:null,false,$id==sizeof($history)-1);?>
+	   			<?php displayHistoryElement($db,$item,$id<sizeof($history)-1?$history[$id+1]:null);?>
 	  	  	</tr>
   		<?php } ?>
 	</table>
@@ -54,32 +54,33 @@ include('homemenu.inc.php');
 <?php } ?>
 
 <?php 
-function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=false) {
-	switch ($item["table"]) {
+function displayHistoryElement($db,$item,$itemNext) {
+    $table = $item!=null?$item["table"]:$itemNext["table"];
+	switch ($table) {
 		case "person" :
-			if ($original) 
-				$person=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
+			if ($item==null)
+				$person=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
 			else
 				$person=json_decode_utf8($item["jsonData"]);
-			displayPerson($db, $item,$person,json_decode_utf8($itemNext["jsonData"]),$original,$lastElement);
+			displayPerson($db, $item,$person,$itemNext);
 			break;
 		case "picture" :
-			if ($original) 
-				$picture=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
+			if ($item==null)
+				$picture=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
 			else
 				$picture=json_decode_utf8($item["jsonData"]);
 			displayPicture($db, $item, $picture,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "vote" :
-			if ($original) 
-				$vote=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
+			if ($item==null)
+				$vote=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
 			else
 				$vote=json_decode_utf8($item["jsonData"]);
 			displayVote($db, $item, $vote,json_decode_utf8($itemNext["jsonData"]));
 			break;
 		case "class" :
-			if ($original) 
-				$class=$db->dataBase->getEntryById($item["table"],$item["entryID"],true);
+			if ($item==null)
+				$class=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
 			else
 				$class=json_decode_utf8($item["jsonData"]);
 			displayClass($db, $item,$class,json_decode_utf8($itemNext["jsonData"]));
@@ -87,9 +88,13 @@ function displayHistoryElement($db,$item,$itemNext,$original=false,$lastElement=
 	}
 }
 
-function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
-	displayChangeData($db,$person,$item["id"]);
-	displayElement(getPersonName($person), getPersonName($personNext));
+function displayPerson($db,$item,$person,$itemNext) {
+    if($itemNext!=null)
+        $personNext=json_decode_utf8($itemNext["jsonData"]);
+    else
+        $personNext=null;
+	displayChangeData($db,$person,$item);
+	displayElement(getPersonName($person), getPersonName($personNext),null,"lastname,firstname");
     displayElementObj($person, $personNext,"gender","X");
 	displayElementObj($person, $personNext,"picture","Pic");
 	displayElementObj($person, $personNext,"partner","P");
@@ -123,59 +128,76 @@ function displayPerson($db,$item, $person,$personNext,$original,$lastElement) {
 	displayElementObj($person, $personNext,"classID","C");
 	displayElementObj($person, $personNext,"isTeacher","T");
     displayElementObj($person, $personNext,"role","R");
-	if ( (isset($item["changeUserID"])?$item["changeUserID"]:0) != (isset($person["changeUserID"])?$person["changeUserID"]:0) && !$lastElement && userIsAdmin())
-		displayChangeData($db,$item,0);
 }
 
 function displayClass($db,$item,$class,$classNext) {
-	displayChangeData($db,$class,$item["id"]);
+	displayChangeData($db,$class,$item);
 	displayElementObj($class, $classNext, "schoolID","S");
 	displayElementObj($class, $classNext, "name");
 	displayElementObj($class, $classNext, "graduationYear");
     displayElementObj($class, $classNext, "eveningClass","E");
     displayElementObj($class, $classNext, "text");
-    displayElementObj($class, $classNext, "teachers");
 	displayElement(getPersonName($db->getPersonByID(array_get($class,"headTeacherID",null))), getPersonName($db->getPersonByID(array_get($classNext,"headTeacherID",null))));
+    displayElementObj($class, $classNext, "teachers");
 }
 
 function displayPicture($db,$item,$picture,$pictureNext) {
-	displayChangeData($db,$picture,$item["id"]);
+	displayChangeData($db,$picture,$item);
 	displayElementObj($picture, $pictureNext, "title" );
 	displayElementObj($picture, $pictureNext, "comment");
 	displayElementObj($picture, $pictureNext, "isVisibleForAll" );
 	displayElementObj($picture, $pictureNext, "isDeleted");
+    displayElementObj($picture, $pictureNext, "orderValue");
+    displayElementObj($picture, $pictureNext, "albumName");
 }
 
+/**
+ * @param dbDAO $db
+ * @param $item
+ * @param $vote
+ * @param $voteNext
+ */
 function displayVote($db,$item,$vote,$voteNext) {
-	displayChangeData($db,$vote,$item["id"]);
-	displayElementObj($vote, $voteNext, "eventDay", "D");
-	displayElementObj($vote, $voteNext, "isSchool", "I");
-	displayElementObj($vote, $voteNext, "isCemetery", "T");
-	displayElementObj($vote, $voteNext, "isDinner", "V");
-	displayElementObj($vote, $voteNext, "isExcursion", "K");
-	displayElementObj($vote, $voteNext, "place", "H");
+	displayChangeData($db,$vote,$item);
+	if ($vote!=null) {
+        $person = $db->getPersonByID($vote["personID"]);
+        displayElement(getPersonName($person),getPersonName($person));
+    } else {
+	    displayElement("","");
+    }
+	displayElementObj($vote, $voteNext, "eventDay", );
+	displayElementObj($vote, $voteNext, "isSchool", );
+	displayElementObj($vote, $voteNext, "isCemetery", );
+	displayElementObj($vote, $voteNext, "isDinner", );
+	displayElementObj($vote, $voteNext, "isExcursion", );
+	displayElementObj($vote, $voteNext, "place", );
+    displayElementObj($vote, $voteNext, "meetAfterYear", );
 }
 
 /**
  * Display: ChangeDate, IP, Username
  */
-function displayChangeData($db,$item,$historyId) {
+function displayChangeData($db,$item,$historyItem) {
     ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
 	<?php if (userIsAdmin() || userIsSuperuser()) {?>
 		<td onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</td>
-        <td><button onclick="deleteHistory(<?php echo $historyId.",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>
+        <?php if ($historyItem!=null) {?>
+            <td><button onclick="deleteHistory(<?php echo $historyItem["id"].",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>
+        <?php } else { ?>
+            <td></td>
+        <?php } ?>
 	<?php }
-        if (isset($item["changeUserID"])) {
+	if (isset($item["changeUserID"])) {
             $changePerson=$db->getPersonByID($item["changeUserID"]);
     ?>
     	    <td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
     <?php
-        } else {
-            echo('<td></td>');
-        }
+    } else {
+        echo('<td></td>');
+    }
 }
 
-function displayElement($text,$nextText,$title=null,$field="") {
+function displayElement($text,$nextText="",$title=null,$field="") {
 	
 	if (trim($text)===trim($nextText)) {
 		if ($text==="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
@@ -189,7 +211,7 @@ function displayElement($text,$nextText,$title=null,$field="") {
 		$style='style="background-color:yellow"';
 	}
 	if (null==$title) {
-		echo('<td '.$style.'>'.$text.'</td>');
+		echo('<td title="'.$field.'"'.$style.'>'.$text.'</td>');
 	} else {
 		echo('<td title="'.$field.':'.$text.'"'.$style.'>'.$title.'</td>');
 	}

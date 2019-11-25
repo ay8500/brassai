@@ -97,6 +97,7 @@ if (isActionParam("setPersonID") && userIsAdmin()) {
 	}
 }
 
+Appl::setSiteTitle(getAktSchoolName()." véndiákok üzenőfala");
 Appl::setSiteSubTitle('Üzenőfal');
 include("homemenu.inc.php");
 ?>

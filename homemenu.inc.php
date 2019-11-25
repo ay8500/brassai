@@ -1,7 +1,6 @@
 <?php
     ob_start("ob_gzhandler");
     include_once Config::$lpfw.'sessionManager.php';
-    include_once Config::$lpfw.'appl.class.php';
     include_once Config::$lpfw.'logon.inc.php';
 	include_once 'config.class.php';
     include_once 'dbBL.class.php';
@@ -60,7 +59,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?PHP echo(Config::$SiteTitle.' '.Appl::$title) ?></title>
+    <title><?php echo(Appl::$title==""?Config::$SiteTitle:Appl::$title) ?></title>
 	<?PHP if (strstr(getenv("QUERY_STRING"),"=thumbnails")!="") { ?> 
 		<meta name="robots" content="noindex,follow" />
 	<?PHP } else { ?>
