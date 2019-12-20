@@ -65,7 +65,6 @@
 	<?PHP } else { ?>
 		<meta name="robots" content="index,follow" />
 	<?PHP } ?>
-	<meta name="google-site-verification" content="ognb1O-3TIzQ_1jjeBXEMlhCg1elZ72eda1Lzis7B8g" />
 	<meta name="geo.placename" content="Kolozsvár" />
 	<meta name="geo.position" content="46.771919;23.592248" />
 	<meta name="author" content="Levente Maier" />

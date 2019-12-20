@@ -9,7 +9,7 @@ use \maierlabs\lpfw\Appl as Appl;
 Appl::setSiteSubTitle("Adatmódosítások");
 Appl::addCssStyle('
 	.history {margin:10px;}
-	.history tr td {vertical-align: top;padding:5px;}
+	.history tr td {padding:5px;}
 	.history tr  {border-spacing: 2px};
 ');
 include('homemenu.inc.php');
@@ -17,8 +17,12 @@ include('homemenu.inc.php');
 
 <?php if (userIsAdmin() || userIsSuperuser()) {
     if (isActionParam("delete")) {
-        if ($db->dataBase->deleteHistoryEntry(getParam("did")))
+        if ($db->dataBase->deleteHistoryEntry(getParam("did"))) {
             $db->updateRecentChangesList();
+            \maierlabs\lpfw\Appl::setMessage("Adatmódosítás törlése sikerült!","succes");
+        } else {
+            \maierlabs\lpfw\Appl::setMessage("Törlés nem sikerült!","danger");
+        }
     }
 	$history=$db->dataBase->getHistory(getParam("table"), getParam("id"));
 ?>
@@ -93,7 +97,7 @@ function displayPerson($db,$item,$person,$itemNext) {
         $personNext=json_decode_utf8($itemNext["jsonData"]);
     else
         $personNext=null;
-	displayChangeData($db,$person,$item);
+	displayChangeData($db,$person,$itemNext);
 	displayElement(getPersonName($person), getPersonName($personNext),null,"lastname,firstname");
     displayElementObj($person, $personNext,"gender","X");
 	displayElementObj($person, $personNext,"picture","Pic");
@@ -175,26 +179,27 @@ function displayVote($db,$item,$vote,$voteNext) {
 }
 
 /**
- * Display: ChangeDate, IP, Username
+ * Display: ChangeDate, IP, Username, delete button
+ * @param dbDAO $db
+ * @param array $item the actual element
+ * @param array $historyItem history element
  */
 function displayChangeData($db,$item,$historyItem) {
     ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
 	<?php if (userIsAdmin() || userIsSuperuser()) {?>
-		<td onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</td>
+        <td><button onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</button></td>
         <?php if ($historyItem!=null) {?>
-            <td><button onclick="deleteHistory(<?php echo $historyItem["id"].",'".getParam("table")."',".getParam("id")?>)">Töröl</button></td>
+            <td><button onclick="deleteHistory(<?php echo $historyItem["id"].",'".getParam("table")."',".getParam("id")?>)" class="btn btn-danger btn-sm" title="<?php echo $historyItem["id"]?>">Töröl</button></td>
         <?php } else { ?>
             <td></td>
         <?php } ?>
 	<?php }
 	if (isset($item["changeUserID"])) {
-            $changePerson=$db->getPersonByID($item["changeUserID"]);
-    ?>
-    	    <td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
-    <?php
-    } else {
-        echo('<td></td>');
-    }
+	    $changePerson=$db->getPersonByID($item["changeUserID"]); ?>
+    	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
+    <?php } else { ?>
+        <td></td>
+    <?php }
 }
 
 function displayElement($text,$nextText="",$title=null,$field="") {

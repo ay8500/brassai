@@ -240,7 +240,7 @@ if (!isActionParam("showmore") ) {
 				$albumLink =$alb["albumLink"]; 
 			}?> 
 			<a href="<?php echo $albumLink?>" style="text-decoration:none !important;">
-                <span class="badgep"><?php echo $alb["count"] ?></span>
+                <span class="badgep"><?php echo isset($alb["count"])?$alb["count"]:"0" ?></span>
                 <?php if ($albumParam==$alb["albumName"]) {?>
 				    <span class="folderdivwhite"><?php echo $alb["albumText"]?></span>
 			    <?php } else {?>

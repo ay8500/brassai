@@ -106,6 +106,7 @@ class dbBL extends dbDAO
         return [
             "firstname"=>"",
             "lastname"=>"",
+            "title"=>"",
             "user"=>createPassword(8),
             "passw"=>encrypt_decrypt("encrypt",createPassword(8)),
             "role"=>""
