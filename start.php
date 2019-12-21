@@ -79,6 +79,7 @@ include("homemenu.inc.php");
         //initialise tabs
         $tabsCaption = array();
         array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
+        array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztály', "glyphicon" => "tasks"));
         array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "education"));
         array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
         array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));

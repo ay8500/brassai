@@ -29,6 +29,12 @@ if (isset($_SESSION["timeout"])) {
 
 $personIdList=$db->getPersonIdListWithPicture();
 $randPersonID=$personIdList[rand(0,sizeof($personIdList)-1)];
+$today = new DateTime();
+$xmas = $today >= new DateTime("December 6") || $today < new DateTime("March 1");
+if ($xmas)
+   Appl::addJs("js/snowFalling.js",false,true);
+
+
 
 
 include("homemenu.inc.php");
@@ -48,7 +54,12 @@ include("homemenu.inc.php");
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="start.php">
-                <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" /></div>
+                <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" />
+                <?php if ($xmas) { ?>
+                    <div style="overflow: visible;width: 0px;height: 0px;">
+                        <img style="width: 38px;position: relative;left: 30px;top: -86px;" src="images/xmas.png"></div>
+                <?php } ?>
+                </div>
 			    <div class="inlineBox" style="vertical-align: middle;">Újdonságok a véndiákok oldalán.</div>
             </a>
 		</div>
@@ -60,13 +71,18 @@ include("homemenu.inc.php");
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="message.php">
-                <div class="inlineBox"><img class="indeximg" src="images/speech-bubble.png" /></div>
+                <div class="inlineBox"><img class="indeximg" src="images/speech-bubble.png" />
+                    <?php if ($xmas) { ?>
+                        <div style="overflow: visible;width: 0px;height: 0px;">
+                            <img style="width: 38px;position: relative;left: 5px;top: -74px;" src="images/xmas.png"></div>
+                    <?php } ?>
+                </div>
                 <div class="inlineBox" style="vertical-align: middle;">Üzenetek küldése osztálytársnak iskolatársaknak vagy az egész világnak.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="rip.php">
-                <div class="inlineBox"><img img class="indeximg" src="images/candleicon.jpg" /></div>
+                <div class="inlineBox"><img img class="indeximg" src="images/candlerip.png" /></div>
 			    <div class="inlineBox" style="vertical-align: middle;">Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div>
             </a>
 		</div>
@@ -90,7 +106,12 @@ include("homemenu.inc.php");
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="#">
-                <div class="inlineBox"><img img class="indeximg" src="images/group.png" /></div>
+                <div class="inlineBox"><img img class="indeximg" src="images/group.png" />
+                    <?php if ($xmas) { ?>
+                        <div style="overflow: visible;width: 0px;height: 0px;">
+                            <img style="width: 25px;position: relative;left: 23px;top: -68px;" src="images/xmas.png"></div>
+                    <?php } ?>
+                </div>
                 <div class="inlineBox" style="vertical-align: middle;">Osztályfelelősők körlevelet (E-mailt) küldhetnek volt osztálytársuknak.</div>
             </a>
 		</div>
@@ -104,7 +125,7 @@ include("homemenu.inc.php");
 	<div class="row">&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2018. december 12.</b>-én.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módósítva <b>2019. december 12.</b>-én.
 	</div>
 </div>
 

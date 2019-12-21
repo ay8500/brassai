@@ -19,7 +19,7 @@ include('homemenu.inc.php');
     if (isActionParam("delete")) {
         if ($db->dataBase->deleteHistoryEntry(getParam("did"))) {
             $db->updateRecentChangesList();
-            \maierlabs\lpfw\Appl::setMessage("Adatmódosítás törlése sikerült!","succes");
+            \maierlabs\lpfw\Appl::setMessage("Adatmódosítás törlése sikerült!","success");
         } else {
             \maierlabs\lpfw\Appl::setMessage("Törlés nem sikerült!","danger");
         }
@@ -32,7 +32,6 @@ include('homemenu.inc.php');
 		<label id="dbDetails">Adat</label> 
 		&nbsp;&nbsp;&nbsp;&nbsp;Színek jelentése:<span style="background-color:#e0ffe0" > Adat nem üres</span>
 		<span style="background-color:yellow" > Adat módosítás</span>
-		
 	</div>
 	<table class="history">
 		<?php 
@@ -135,7 +134,7 @@ function displayPerson($db,$item,$person,$itemNext) {
 }
 
 function displayClass($db,$item,$class,$classNext) {
-	displayChangeData($db,$class,$item);
+	displayChangeData($db,$class,$classNext);
 	displayElementObj($class, $classNext, "schoolID","S");
 	displayElementObj($class, $classNext, "name");
 	displayElementObj($class, $classNext, "graduationYear");
@@ -146,7 +145,7 @@ function displayClass($db,$item,$class,$classNext) {
 }
 
 function displayPicture($db,$item,$picture,$pictureNext) {
-	displayChangeData($db,$picture,$item);
+	displayChangeData($db,$picture,$pictureNext);
 	displayElementObj($picture, $pictureNext, "title" );
 	displayElementObj($picture, $pictureNext, "comment");
 	displayElementObj($picture, $pictureNext, "isVisibleForAll" );
@@ -162,7 +161,7 @@ function displayPicture($db,$item,$picture,$pictureNext) {
  * @param $voteNext
  */
 function displayVote($db,$item,$vote,$voteNext) {
-	displayChangeData($db,$vote,$item);
+	displayChangeData($db,$vote,$voteNext);
 	if ($vote!=null) {
         $person = $db->getPersonByID($vote["personID"]);
         displayElement(getPersonName($person),getPersonName($person));
@@ -186,7 +185,7 @@ function displayVote($db,$item,$vote,$voteNext) {
  */
 function displayChangeData($db,$item,$historyItem) {
     ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
-	<?php if (userIsAdmin() || userIsSuperuser()) {?>
+	<?php if (userIsAdmin() || userIsSuperuser() ) {?>
         <td><button onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</button></td>
         <?php if ($historyItem!=null) {?>
             <td><button onclick="deleteHistory(<?php echo $historyItem["id"].",'".getParam("table")."',".getParam("id")?>)" class="btn btn-danger btn-sm" title="<?php echo $historyItem["id"]?>">Töröl</button></td>
@@ -200,6 +199,16 @@ function displayChangeData($db,$item,$historyItem) {
     <?php } else { ?>
         <td></td>
     <?php }
+	if (userIsAdmin()) {
+        if ($historyItem != null && $item["changeUserID"] != $historyItem["changeUserID"]) {
+            $changePerson=$db->getPersonByID($historyItem["changeUserID"]); ?>
+            <td> <?php echo Appl::dateTimeAsStr($historyItem["changeDate"]) ?></td>
+            <td><button onclick="showip('<?php echo array_get($historyItem,"changeIP")?>');" class="btn">IP</button></td>
+            <td><a href="editDiak.php?uid=<?php echo $historyItem["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
+        <?php } else {
+            echo("<td></td><td></td><td></td>");
+        }
+    }
 }
 
 function displayElement($text,$nextText="",$title=null,$field="") {
