@@ -8,9 +8,9 @@ include_once 'dbDaOpinion.class.php';
 include_once 'displayOpinion.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
-\maierlabs\lpfw\Appl::addCss('css/picture.css',true);
-\maierlabs\lpfw\Appl::addCss('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css',false);
-\maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+$limitOfPicturesPerPage=24;
+if (!isset($type)) $type=getParam("type");
+if (!isset($typeId)) $typeId=getParam("typeid");
 
 //Delete Picture
 if (getParam("action","")=="deletePicture" ) {
@@ -145,15 +145,8 @@ $sortAlphabet=(strpos($sort,"alphabet")!==false?"secundary":"default");
 $sortDate=(strpos($sort,"date")!==false?"secundary":"default");
 $alt=(strpos($sort,"desc")!==false?"-alt":"");
 $desc=(strpos($sort,"desc")!==false?"":"-desc");
-$limit=24;
-$offset=getIntParam("start",0)*$limit;
 $link="picture.inc.php?view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort;
 $url = "http".(!empty($_SERVER['HTTPS'])?"s":"")."://".$_SERVER['SERVER_NAME'];
-if ($view=="table") {
-    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin: 0 10px 10px 0;}');
-} else {
-    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-flex;vertical-align: top; margin-bottom: 10px;}');
-}
 
 //Sortparamteter
 if (strpos($sort,"order")!==false)  $sortSql="orderValue";
@@ -163,39 +156,46 @@ if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 
 //The list of pictures
 if ($albumParam=="_tablo_") {
-    $where="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
-    $pictures = $db->getListOfPicturesWhere($where,$sortSql, $limit, $offset );
-    $countPictures = $db->getTableCount("picture",$where);
+    $wherePictureList="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
 } elseif ($albumParam=="_mark_") {
-    $typeId=getParam("typeid");
-    $where = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
-    $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
-    $countPictures = $db->getTableCount("picture",$where);
+    $wherePictureList = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
 } elseif ($albumParam=="_card_") {
-    $where = "classID is not null and (title like '%icsengetési%') ";
-    $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
-    $countPictures = $db->getTableCount("picture",$where);
+    $wherePictureList = "classID is not null and (title like '%icsengetési%') ";
 } else {
-    if (!isset($type)) $type=getParam("type");
-    $where = $type.'='.$typeId;
+    $wherePictureList = $type.'='.$typeId;
     if ($albumParam!=null) {
-        $where.=" and albumName='".$albumParam."'";
+        $wherePictureList.=" and albumName='".$albumParam."'";
     } else {
         if (isset($picture) &&  isset($picture["albumName"])) {
-            $where.=" and albumName='".$picture["albumName"]."'";
+            $wherePictureList.=" and albumName='".$picture["albumName"]."'";
         } else {
-            $where.=" and (albumName is null or albumName='')";
+            $wherePictureList.=" and (albumName is null or albumName='')";
         }
     }
-    $pictures = $db->getListOfPicturesWhere($where, $sortSql, $limit, $offset);
-    $countPictures = $db->getTableCount("picture",$where);
 }
+$pictures = $db->getListOfPicturesWhere($wherePictureList, $sortSql, $limitOfPicturesPerPage, getIntParam("start",0)*$limitOfPicturesPerPage);
+$countPictures = $db->getTableCount("picture",$wherePictureList);
+
 $notDeletedPictures=0;
 foreach ($pictures as $pict) {
     if ( $pict["isDeleted"]==0 ) {
         $notDeletedPictures++;
     }
 }
+
+if (isActionParam("showmore")  ) {
+    displayPictureList($db,$pictures,null,null,$view);
+    return;
+}
+
+if ($view=="table") {
+    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;max-width:395px;background-color: #dddddd;border-radius:10px;display:inline-block;vertical-align: top; margin: 0 10px 10px 0;}');
+} else {
+    Appl::addCssStyle('.pictureframe {padding-bottom: 5px;width:100%;background-color: #dddddd;border-radius:10px;display:inline-flex;vertical-align: top; margin-bottom: 10px;}');
+}
+\maierlabs\lpfw\Appl::addCss('css/picture.css',true);
+\maierlabs\lpfw\Appl::addCss('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css',false);
+\maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
 
 //Create standard albumlist
 $startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"));
@@ -209,10 +209,9 @@ if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
         $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
     }
 }
+
 if (!isActionParam("showmore") ) {
-
     $albumList = $db->getListOfAlbum($type, $typeId, $startAlbumList);
-
     //Check if a new album want to be created
     if (getParam("album") != null) {
         $newAlbum = true;
@@ -226,9 +225,6 @@ if (!isActionParam("showmore") ) {
             $albumList = array_merge($albumList, array(array("albumName" => getParam("album"), "albumText" => getParam("album"))));
         }
     }
-} else {
-    displayPictureList($db,$pictures,null,null,$view);
-    die();
 }
 ?>
 	<div class="well"><?php
@@ -323,17 +319,17 @@ if (!isActionParam("showmore") ) {
             <ul class="pagination">
                 <li class="page-item"><span class="page-link" >Képek száma:<?php echo ($countPictures)?></span></li>
                 <li class="page-item"><a class="page-link" href="<?php echo $link."start=0" ?>"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $offset>0?$link."&start=".(floor($offset/$limit)-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="#"><?php echo ($offset+1).'-'.(($offset+$limit<$countPictures)?$offset+$limit:$countPictures) ?></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo (($offset+$limit)<$countPictures)?$link."&start=".(floor($offset/$limit)+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $link."&start=".floor($countPictures/$limit) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo $offset>0?$link."&start=".(floor($offset/$limitOfPicturesPerPage)-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="#"><?php echo ($offset+1).'-'.(($offset+$limitOfPicturesPerPage<$countPictures)?$offset+$limitOfPicturesPerPage:$countPictures) ?></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo (($offset+$limitOfPicturesPerPage)<$countPictures)?$link."&start=".(floor($offset/$limitOfPicturesPerPage)+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo $link."&start=".floor($countPictures/$limitOfPicturesPerPage) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
             </ul>
         </nav>
     <?php } ?>
 	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view); ?>
     <span id="more"></span>
 </form>
-<?php if (getParam("id")==null) {?>
+<?php if (getParam("id")==null && sizeof($db->getListOfPicturesWhere($wherePictureList, $sortSql, $limitOfPicturesPerPage, (getIntParam("start",0)+1)*$limitOfPicturesPerPage))>0) {?>
     <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()"><?php Appl::_("Többet szeretnék látni")?></button>
 <?php }?>
 

@@ -36,7 +36,7 @@ function addWrapperDiv(id) {
 	var d = data[id];
 
 	var w=$("#wrapper").width();
-        var width=Math.round(0.5+w/Math.round(0.5+w/wrapperWidth));
+        var width=Math.round(0.5+w/Math.round(0.5+w/wrapperWidth))-10;
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; margin: 0px 10px">';

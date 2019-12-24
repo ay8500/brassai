@@ -83,7 +83,7 @@ include("homemenu.inc.php");
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="rip.php">
                 <div class="inlineBox"><img img class="indeximg" src="images/candlerip.png" /></div>
-			    <div class="inlineBox" style="vertical-align: middle;">Gyújts te is gyertyát tanáraid és iskolatársaid emlékére.</div>
+			    <div class="inlineBox" style="vertical-align: middle;">Gyertyák tanáraink és iskolatársaink emlékére.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
@@ -101,7 +101,7 @@ include("homemenu.inc.php");
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="vote.php?classid=74">
                 <div class="inlineBox"><img img class="indeximg" src="images/vote.png" /></div>
-                <div class="inlineBox" style="vertical-align: middle;">Találkozók szervezésére alkalmas szavazati lista.</div>
+                <div class="inlineBox" style="vertical-align: middle;">Találkozók szervezésére alkalmas szavazás.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
@@ -112,13 +112,13 @@ include("homemenu.inc.php");
                             <img style="width: 25px;position: relative;left: 23px;top: -68px;" src="images/xmas.png"></div>
                     <?php } ?>
                 </div>
-                <div class="inlineBox" style="vertical-align: middle;">Osztályfelelősők körlevelet (E-mailt) küldhetnek volt osztálytársuknak.</div>
+                <div class="inlineBox" style="vertical-align: middle;">Osztályfelelősők körlevelet küldhetnek volt osztálytársuknak.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="zenetoplista.php?classid=all">
                 <div class="inlineBox"><img img class="indeximg" src="images/record-player.png" /></div>
-                <div class="inlineBox" style="vertical-align: middle;">Véndiákok toplistája, milyen zenére mullatnak az egykori diákok.</div>
+                <div class="inlineBox" style="vertical-align: middle;">Véndiákok zene toplistája.</div>
             </a>
 		</div>
 	</div>
