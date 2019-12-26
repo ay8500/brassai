@@ -37,8 +37,9 @@ if (userIsAdmin()) {
     $tabsCaption = array();
     array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>', "glyphicon" => "align-justify"));
     array_push($tabsCaption ,array("id" => "person", "caption" => 'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>', "glyphicon" => "user"));
-    array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek     <span class="badge">'.$db->getCountToBeChecked('picture').'</span>', "glyphicon" => "picture"));
-    array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek  <span class="badge">'.$db->getCountToBeChecked('message').'</span>', "glyphicon" => "blackboard"));
+    array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek <span class="badge">'.$db->getCountToBeChecked('picture').'</span>', "glyphicon" => "picture"));
+    array_push($tabsCaption ,array("id" => "mark", "caption" => 'Jelölések <span class="badge">'.$db->getCountToBeChecked('personInPicture').'</span>', "glyphicon" => "tag"));
+    array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek <span class="badge">'.$db->getCountToBeChecked('message').'</span>', "glyphicon" => "blackboard"));
     array_push($tabsCaption ,array("id" => "action", "caption" => 'Hozzáférések'));
 
 	include Config::$lpfw.'view/tabs.inc.php';
@@ -58,36 +59,60 @@ if (userIsAdmin()) {
 	if ($tabOpen=="picture") {
 		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
 	}
+    if ($tabOpen=="mark") {
+        $list=$db->getListToBeChecked('personInPicture');?>
+        <p align="center">
+            Személy jelölések:<br/>
+        <table align="center" border="1">
+            <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+                <td>Személy</td><td>Kép</td><td>Személy</td><td>Datum</td><td>Ip</td><td colspan="2">Akció</td>
+            </tr>
+            <?php
+            foreach ($list as $i=>$l) {
+                echo('<tr >');
+                echo("<td>".getPersonName($db->getPersonByID($l["personID"]))."</td>");
+                echo('<td><img src="'.($db->getPictureById($l["pictureID"]))["file"].'" style="height:75px" /></td>');
+                echo('<td><img src="imageTaggedPerson.php?personid='.$l["personID"].'&pictureid='.$l["pictureID"].'" style="height:75px" /></td>');
+                echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
+                echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
+                echo('<td><button class="btn btn-default" onclick="return okPersonMark(this,'.$l["personID"].','.$l["pictureID"].');"><span class="glyphicon glyphicon-ok-circle"></span></button></td>');
+                echo('<td><a class="btn btn-default" href="https://brassai.blue-l.de//picture.php?id='.$l["pictureID"].'$personid='.$l["personID"].'" target="picture"><span class="glyphicon glyphicon-edit"></span></a></td>');
+                echo("</tr>");
+            }
+            ?>
+        </table>
+        </p>
+    <?php
+    }
 	if ($tabOpen=="message") {
-		$list=$db->getListToBeChecked('message');
-?>
-	<p align="center">
-	   Üzenetek:<br/>	
-	  <table align="center" border="1">
-	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    	<td>Név</td><td>szöveg</td><td>Datum</td><td>Ip</td><td colspan="2">Akció</td>
-	    </tr>
-	  	<?php
-	  		foreach ($list as $i=>$l) {
-	   			echo('<tr >');
-	   			if (isset($l["changeUserID"]))
-	   				echo("<td>".getPersonName($db->getPersonByID($l["changeUserID"]))."</td>");
-	   			else
-	   				echo("<td>".html_entity_decode($l["name"])."</td>");
-	   			echo("<td>".html_entity_decode($l["text"])."</td>");
-	   			echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
-	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
-	   			if ($l["isDeleted"]==0)
-   					echo('<td><button class="btn btn-default" onclick="acceptMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
-   				else
-   					echo("<td></td>");
-	   			echo('<td><button class="btn btn-default" onclick="deleteMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
-	   			echo("</tr>");
-	  		}
-	  	?>
-	 </table>  
-	</p>
-<?php }?>
+		$list=$db->getListToBeChecked('message');?>
+        <p align="center">
+           Üzenetek:<br/>
+        <table align="center" border="1">
+            <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+                <td>Név</td><td>szöveg</td><td>Datum</td><td>Ip</td><td colspan="2">Akció</td>
+            </tr>
+            <?php
+                foreach ($list as $i=>$l) {
+                    echo('<tr >');
+                    if (isset($l["changeUserID"]))
+                        echo("<td>".getPersonName($db->getPersonByID($l["changeUserID"]))."</td>");
+                    else
+                        echo("<td>".html_entity_decode($l["name"])."</td>");
+                    echo("<td>".html_entity_decode($l["text"])."</td>");
+                    echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
+                    echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
+                    if ($l["isDeleted"]==0)
+                        echo('<td><button class="btn btn-default" onclick="acceptMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
+                    else
+                        echo("<td></td>");
+                    echo('<td><button class="btn btn-default" onclick="deleteMessageChange('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
+                    echo("</tr>");
+                }
+            ?>
+        </table>
+        </p>
+    <?php }?>
 <?php if ($tabOpen=="action") { ?>
 	<p align="center">
 	   Hozzáférések ma:<br/>
@@ -152,6 +177,18 @@ Appl::addJsScript('
     function resetChange(ip,type) {
         if (confirm("Müvelet erre az IP címre visszaálítsz, biztos vagy?"))
             document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=resetChange&type="+type+"&ip="+ip;
+    }
+    function okPersonMark(o,personid,pictureid) {
+        $.ajax({
+    		url:"ajax/setPicturePersonUser.php?personid="+personid+"&pictureid="+pictureid,
+    		success:function(data){
+                $(o).parent().parent("tr:first").remove()
+		    },
+		    error:function(error) {
+		        showMessage("'.Appl::__("Nem sikerült!!").'","danger");
+		    }
+        });
+        return false;
     }
 ');
 

@@ -512,8 +512,12 @@ class dbDAO {
      * @return array
 	 */
 	public function getListToBeChecked($table) {
-		$sql ="select c.*, o.id as changeForIDjoin from ".$table." as c ";
-		$sql.="left join ".$table." as o on c.changeForID=o.id  ";
+        if ($table!="personInPicture") {
+            $sql = "select c.*, o.id as changeForIDjoin from " . $table . " as c ";
+            $sql .= "left join " . $table . " as o on c.changeForID=o.id  ";
+        } else {
+            $sql = "select c.* from " . $table . " as c ";
+        }
 		$sql.="where c.changeUserID is null ";
 		$sql.="order by c.changeDate asc";
 		$this->dataBase->query($sql);
@@ -530,7 +534,8 @@ class dbDAO {
      */
     public function getCountToBeChecked($table) {
         $sql ="select count(1) from ".$table." as c ";
-        $sql.="left join ".$table." as o on c.changeForID=o.id  ";
+        if ($table!="personInPicture")
+          $sql.="left join ".$table." as o on c.changeForID=o.id  ";
         $sql.="where c.changeUserID is null ";
         $sql.="order by c.changeDate asc";
         return $this->dataBase->queryInt($sql);

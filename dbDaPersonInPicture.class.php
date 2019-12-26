@@ -54,6 +54,12 @@ class dbDaPersonInPicture
         return $this->dataBase->insert("personInPicture",$data);
     }
 
+    public function setUserForPersonInPicture($personId, $pictureId) {
+        $data = array();
+        $data = $this->dataBase->insertFieldInArray($data,"changeUserID",getLoggedInUserId());
+        return $this->dataBase->updateWhere("personInPicture",$data,"personId=".$personId." and pictureId=".$pictureId);
+    }
+
     /**
      * Get the list of persons as array tagged on a picture
      * @param int $pictureId
