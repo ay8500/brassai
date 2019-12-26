@@ -102,53 +102,55 @@ function onPictureFaceRecognitionLoad() {
 
 function showTagging(show) {
     var img=$("#thePicture");
-
-    $.ajax({
-        url: "ajax/getPicturePersons.php?pictureid="+img.attr("data-id"),
-        type:"GET",
-        success:function(data){
-            $('[person-id]').remove();$("[id*=personlist]").empty();
-            if (data.title!=null) {
-                $("#personlist").append('<div><b>' + data.title + ' </b> ' + (data.comment == "undefined" ?'': data.comment ) + '</div>');
+    if (img.attr("data-id")!==null) {
+        $.ajax({
+            url: "ajax/getPicturePersons.php?pictureid=" + img.attr("data-id"),
+            type: "GET",
+            success: function (data) {
+                $('[person-id]').remove();
+                $("[id*=personlist]").empty();
+                if (data.title != null) {
+                    $("#personlist").append('<div><b>' + data.title + ' </b> ' + (data.comment == "undefined" ? '' : data.comment) + '</div>');
+                }
+                data.face.forEach(function (p) {
+                    $('<div>', {
+                        'class': 'face',
+                        'person-id': p.personID,
+                        'onmouseover': "personShow(" + p.personID + ",true)",
+                        'onmouseout': "personShow(" + p.personID + ",false)",
+                        'onclick': "personModify(this," + p.personID + "," + p.pictureID + ")",
+                        'css': {
+                            'left': img.position().left + p.xPos * img.width() + 'px',
+                            'top': img.position().top + +p.yPos * img.height() + 'px',
+                            'width': p.size * img.width() + 'px',
+                            'height': p.size * img.width() + 'px',
+                            'opacity': (show ? '1' : '0')
+                        }
+                    }).insertAfter(img);
+                    $('<div>', {
+                        'text': (p.title != null ? p.title + ' ' : '') + p.lastname + ' ' + p.firstname,
+                        'class': 'facename',
+                        'person-id': p.personID,
+                        'css': {
+                            'left': img.position().left + +p.xPos * img.width() + 'px',
+                            'top': img.position().top + +p.yPos * img.height() + p.size * img.width() + 'px'
+                        }
+                    }).insertAfter(img);
+                    var html = '';
+                    html += '<span onmouseover="personShow(' + p.personID + ',true)"';
+                    html += ' onmouseout="personShow(' + p.personID + ',false)" class="personlist" ';
+                    html += ' style="border-radius:3px" person-id="' + p.personID + '">';
+                    html += '<a href="editDiak.php?uid=' + p.personID + '">' + (p.title != null ? p.title + ' ' : '') + p.lastname + ' ' + p.firstname + "</a>";
+                    html += '&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson(' + p.personID + ',' + p.pictureID + ')"></span>';
+                    html += '</span>';
+                    $("#personlist").append(html);
+                });
+            },
+            error: function (error) {
+                console.log.error;
             }
-            data.face.forEach(function(p){
-                $('<div>', {
-                    'class': 'face',
-                    'person-id':p.personID,
-                    'onmouseover':"personShow("+p.personID+",true)",
-                    'onmouseout':"personShow("+p.personID+",false)",
-                    'onclick':"personModify(this,"+p.personID+","+p.pictureID+")",
-                    'css': {
-                        'left': img.position().left+ p.xPos * img.width() + 'px',
-                        'top': img.position().top+ + p.yPos * img.height() + 'px',
-                        'width': p.size * img.width() + 'px',
-                        'height': p.size * img.width() + 'px',
-                        'opacity':(show?'1':'0')
-                    }
-                }).insertAfter(img);
-                $('<div>',{
-                    'text': (p.title!=null?p.title+' ':'')+p.lastname+' '+p.firstname,
-                    'class': 'facename',
-                    'person-id':p.personID,
-                    'css': {
-                        'left': img.position().left+ + p.xPos * img.width() + 'px',
-                        'top': img.position().top+ + p.yPos * img.height() + p.size * img.width()+ 'px'
-                    }
-                }).insertAfter(img);
-                var html='';
-                html +=     '<span onmouseover="personShow('+p.personID+',true)"';
-                html += ' onmouseout="personShow('+p.personID+',false)" class="personlist" ';
-                html += ' style="border-radius:3px" person-id="'+p.personID+'">';
-                html += '<a href="editDiak.php?uid='+p.personID+'">'+(p.title!=null?p.title+' ':'')+p.lastname+' '+p.firstname+"</a>";
-                html +='&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson('+p.personID+','+p.pictureID+')"></span>';
-                html +='</span>';
-                $("#personlist").append(html);
-            });
-        },
-        error:function(error) {
-            console.log.error;
-        }
-    });
+        });
+    }
 }
 
 function personModify(o,personid,pictureid) {
@@ -254,19 +256,21 @@ $(function() {
     closeNewModify();
 
     $("[class*=ibtn]").each(function(){
-        $.ajax({
-            url: "ajax/getPicturePersons.php?pictureid="+$(this).attr("data-id"),
-            type:"GET",
-            success:function(data){
-                if (data.face.length>0) {
-                    $('#imgspan' + data.face[0].pictureID).text("Megjelölt személyek a képen:" + data.face.length);
-                    $('#imgspan' + data.face[0].pictureID).show();
+        if($(this).attr("data-id")!==null) {
+            $.ajax({
+                url: "ajax/getPicturePersons.php?pictureid=" + $(this).attr("data-id"),
+                type: "GET",
+                success: function (data) {
+                    if (data.face.length > 0) {
+                        $('#imgspan' + data.face[0].pictureID).text("Megjelölt személyek a képen:" + data.face.length);
+                        $('#imgspan' + data.face[0].pictureID).show();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
                 }
-            },
-            error:function(error) {
-                console.log(error);
-            }
-        });
+            });
+        }
     });
 
     $(document).keydown(function(e){

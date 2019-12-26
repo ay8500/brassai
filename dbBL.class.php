@@ -27,6 +27,7 @@ class dbBL extends dbDAO
 
     /**
      * handle the params that change the class or school
+     * classId can be filled with the class id or the text e.g. 12A-1985, 1971 12A, 198112B
      * @return array NULL | school class
      */
     public function handleClassSchoolChange($classId = "all", $schoolId = null)
@@ -42,17 +43,22 @@ class dbBL extends dbDAO
                 unsetAktClass();
                 return null;
             }
-            $class = $this->getClassById($classId);
-            if ($class == null)
-                $class = $this->getClassByText($classId);
-            if ($class == null && $classId!=null)
-                $class = $this->getClassByText(substr($classId,3,4).' '.substr($classId,0,3));
-            if ($class != null) {
-                setAktClass($class["id"]);
-                setAktSchool($class["schoolID"]);
+            $class = $this->getClassById(intval($classId));
+            if ($class==null) {
+                $classId = str_replace(" ", "", $classId);
+                $classId = str_replace("-", "", $classId);
+                if (strlen($classId) == 7) {
+                    $class = $this->getClassByText(substr($classId, 0, 4) . ' ' . substr($classId, 4, 3));
+                    if ($class == null)
+                        $class = $this->getClassByText(substr($classId, 3, 4) . ' ' . substr($classId, 0, 3));
+                }
             }
-        } else {
+        }
+        if ($class==null) {
             $class = getAktClass();
+        } else {
+            setAktClass($class["id"]);
+            setAktSchool($class["schoolID"]);
         }
         return $class;
     }
