@@ -55,6 +55,8 @@ if ($album=="_tablo_" || $type=='tablo') {
 	$subtitle="Iskolánk tabló képei";
 } elseif ($album=="_card_" || $type=='card') {
     $subtitle="Kicsengetési kártyák";
+} elseif ($album=="_sport_" || $type=='sport') {
+    $subtitle="Oskolánk sportolói";
 }
 \maierlabs\lpfw\Appl::setSiteTitle($subtitle);
 \maierlabs\lpfw\Appl::setSiteSubTitle($type=="personID"?$link:$subtitle);

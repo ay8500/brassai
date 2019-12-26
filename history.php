@@ -152,6 +152,7 @@ function displayPicture($db,$item,$picture,$pictureNext) {
 	displayElementObj($picture, $pictureNext, "isDeleted");
     displayElementObj($picture, $pictureNext, "orderValue");
     displayElementObj($picture, $pictureNext, "albumName");
+    displayElementObj($picture, $pictureNext, "tag");
 }
 
 /**

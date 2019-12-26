@@ -669,11 +669,24 @@ class dbDAO {
 		return array_merge($startList,$this->dataBase->getRowList());
 	}
 
+    public function getListOfPictureTags($startList=array()) {
+        $sql = " where  (albumName is null or albumName='') and isDeleted=0 and tag is not null group by tag";
+        $sql="select count(tag) as count,tag from picture".$sql;
+        $this->dataBase->query($sql);
+        return array_merge($startList,$this->dataBase->getRowList());
+    }
+
     public function getMainAlbumCount($type,$typeId,$text) {
-        $sql = " where ".$type."=".$typeId. " and isDeleted=0 and (albumName='' or `albumName` is null) ";
+        $sql = " where ".$type."=".$typeId. " and isDeleted=0 and (albumName='' or `albumName` is null) and tag is null";
         $sql="select count(*) as count, '".$text."' as albumText, '' as albumName from picture".$sql;
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
+    }
+
+    public function getPictureTagCount($tag) {
+        $sql = " where isDeleted=0 and (albumName='' or `albumName` is null) and tag like '%".$tag."%'";
+        $sql="select count(*)  from picture".$sql;
+        return $this->dataBase->queryInt($sql);
     }
 
     public function getPersonMarks($personId) {

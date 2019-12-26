@@ -7,7 +7,7 @@ function savePicture(id) {
     showWaitMessage();
     if (id>0) {
         $.ajax({
-            url:encodeURI("ajax/setPictureTitle.php?id="+id+"&title="+t+"&comment="+c),
+            url:encodeURI("ajax/setPictureTitle.php?id="+id+"&title="+t+"&comment="+c+"&tag="+ $('#tagEdit_'+id).val()),
             type:"GET",
             dataType: 'json',
             success:function(data){

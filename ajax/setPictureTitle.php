@@ -8,6 +8,7 @@ include_once __DIR__ . '/../dbBL.class.php';
 $id = getIntParam("id",-1 );
 $title = getParam("title", "");
 $comment = getParam("comment", "");
+$tag = getParam("tag", "");
 
 $row = array();
 
@@ -16,6 +17,10 @@ if ( $db->checkRequesterIP(changeType::picturechange)) {
 	$p=$db->getPictureById($id);
 	$p["title"]=$title;
 	$p["comment"]=$comment;
+	if ($tag!="")
+        $p["tag"]=$tag;
+	else
+	    unset($p["tag"]);
 	if ($db->savePicture($p)>=0) {
 		$db->saveRequest(changeType::picturechange);
 	} else {
@@ -23,6 +28,7 @@ if ( $db->checkRequesterIP(changeType::picturechange)) {
 	}
 	$row["title"] = $title;
 	$row["comment"] = $comment;
+    $row["tag"] = $tag;
 	$row["id"] = $id;
 }
 else

@@ -156,13 +156,17 @@ if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 
 //The list of pictures
 if ($albumParam=="_tablo_") {
-    $wherePictureList="classID is not null and (title like '%Tabló%' or title like '%tabló%') ";
+    $wherePictureList="tag like 'tabl%'";
 } elseif ($albumParam=="_mark_") {
     $wherePictureList = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
 } elseif ($albumParam=="_card_") {
-    $wherePictureList = "classID is not null and (title like '%icsengetési%') ";
+    $wherePictureList = "tag like 'kicsenget%'";
+} elseif ($albumParam=="_sport_") {
+    $wherePictureList = "tag like '%sport%'";
 } else {
     $wherePictureList = $type.'='.$typeId;
+    if (getParam("type")=="schoolID")
+        $wherePictureList .=" and tag is null";
     if ($albumParam!=null) {
         $wherePictureList.=" and albumName='".$albumParam."'";
     } else {
@@ -200,8 +204,9 @@ if ($view=="table") {
 //Create standard albumlist
 $startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"));
 if (getParam("type")=="schoolID") {
-	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>"..")));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>"..")));
+	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>$db->getPictureTagCount("tabl"))));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>$db->getPictureTagCount("kicsengetési"))));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_sport_","albumText"=>Appl::__("Sportolók"),"albumName"=>"_sport_","count"=>$db->getPictureTagCount("sportolóink"))));
 }
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
     $countMark = $db->getPersonMarks($typeId);
@@ -280,7 +285,7 @@ if (!isActionParam("showmore") ) {
 	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
 		<div style="margin-bottom:15px;">
-            <?php if ($notDeletedPictures<50 || userIsAdmin()) {?>
+            <?php if (substr($albumParam,0,1)!="_" && ($notDeletedPictures<50 || userIsAdmin())) {?>
                 <button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
             <?php } ?>
             <button class="btn btn-default" onclick="return toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
@@ -474,6 +479,15 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
 <?php echo html_entity_decode(html_entity_decode($pict["comment"])) ?></textarea>
             <div >
+                <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
+                    <select id="tagEdit_<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Kép tartalma" style="margin-top: 5px">
+                        <option>vállassz tartalom jegyzéket</option>
+                        <?php foreach ($db->getListOfPictureTags() as $tag) {
+                            $selected =$pict["tag"]==$tag["tag"]?'selected="selected"':'' ?>
+                            <option value="<?php echo $tag["tag"]?>" <?php echo $selected ?>><?php echo $tag["tag"]?></option>
+                        <?php }?>
+                    </select>
+                <?php }?>
                 <?php if (userIsLoggedOn()) { ?>
                     <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
                 <?php }?>
