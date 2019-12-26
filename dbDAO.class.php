@@ -670,22 +670,24 @@ class dbDAO {
 	}
 
     public function getListOfPictureTags($startList=array()) {
-        $sql = " where  (albumName is null or albumName='') and isDeleted=0 and tag is not null group by tag";
-        $sql="select count(tag) as count,tag from picture".$sql;
+        $sql  = "select count(tag) as count,tag from picture";
+        $sql .= " where  (albumName is null or albumName='') and isDeleted=0 and tag is not null group by tag";
         $this->dataBase->query($sql);
         return array_merge($startList,$this->dataBase->getRowList());
     }
 
-    public function getMainAlbumCount($type,$typeId,$text) {
-        $sql = " where ".$type."=".$typeId. " and isDeleted=0 and (albumName='' or `albumName` is null) and tag is null";
-        $sql="select count(*) as count, '".$text."' as albumText, '' as albumName from picture".$sql;
+    public function getMainAlbumCount($type,$typeId,$text,$tagHaveToBeNull) {
+        $sql ="select count(*) as count, '".$text."' as albumText, '' as albumName from picture";
+        $sql .= " where ".$type."=".$typeId. " and isDeleted=0 and (albumName='' or `albumName` is null)";
+        if ($tagHaveToBeNull)
+            $sql .=" and tag is null";
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
     }
 
     public function getPictureTagCount($tag) {
-        $sql = " where isDeleted=0 and (albumName='' or `albumName` is null) and tag like '%".$tag."%'";
-        $sql="select count(*)  from picture".$sql;
+        $sql  = "select count(*)  from picture";
+        $sql .= " where isDeleted=0 and (albumName='' or `albumName` is null) and tag like '%".$tag."%'";
         return $this->dataBase->queryInt($sql);
     }
 

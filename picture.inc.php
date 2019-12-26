@@ -202,7 +202,7 @@ if ($view=="table") {
 \maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
 
 //Create standard albumlist
-$startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"));
+$startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"),getParam("type")=="schoolID");
 if (getParam("type")=="schoolID") {
 	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>$db->getPictureTagCount("tabl"))));
     $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>$db->getPictureTagCount("kicsengetési"))));
