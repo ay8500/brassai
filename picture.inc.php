@@ -424,8 +424,8 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
 
             if ( $albumParam=="_mark_") {
                 ?>
-                <div style="position: relative; bottom:95px;right:-295px;z-index: 10;height: 0px;">
-                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:60px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=90&padding=90"/>
+                <div style="position: relative; bottom:130px;right:-265px;z-index: 10;height: 0px;">
+                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:35px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=120"/>
                 </div><?php
             }
             ?></div><?php
@@ -478,15 +478,17 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo html_entity_decode(html_entity_decode($pict["title"])) ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
             <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
 <?php echo html_entity_decode(html_entity_decode($pict["comment"])) ?></textarea>
-            <div >
-                <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
-                    <select id="tagEdit_<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Kép tartalma" style="margin-top: 5px">
-                        <option>vállassz tartalom jegyzéket</option>
+            <div>
+                <?php if (userIsAdmin()) {?>
+                    <input class="form-control" value="<?php echo $pict["tag"]?>" id="tagEdit_<?php echo $pict["id"] ?>"/>
+                <?php } else {?>
+                    <select  class="chosen" multiple="true" data-placeholder="Mi a kép tartalma?" id="tagEdit_<?php echo $pict["id"] ?>" >
                         <?php foreach ($db->getListOfPictureTags() as $tag) {
-                            $selected =$pict["tag"]==$tag["tag"]?'selected="selected"':'' ?>
+                            $selected =(strstr($pict["tag"],$tag["tag"])!==false)?'selected="selected"':'' ?>
                             <option value="<?php echo $tag["tag"]?>" <?php echo $selected ?>><?php echo $tag["tag"]?></option>
                         <?php }?>
                     </select>
+                    <input type="hidden" name="tagEdit_<?php echo $pict["id"] ?>"/>
                 <?php }?>
                 <?php if (userIsLoggedOn()) { ?>
                     <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
@@ -664,4 +666,3 @@ foreach ($pictures as $idx=>$pict) {
         \maierlabs\lpfw\Appl::addJsScript('pictures['.$idx.']=Array(); pictures['.$idx.'].file ="'.$pict["file"].'"; pictures['.$idx.'].id='.$pict["id"].';');
     }
 };
-

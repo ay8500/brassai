@@ -668,7 +668,7 @@ class dbDAO {
 	 * get the list of picture albums 
 	 */
 	public function getListOfAlbum($type,$typeId,$startList=array()) {
-		$sql = " where ".$type."=".$typeId. " and albumName is not null and albumName!='' and isDeleted=0 group by albumName";
+		$sql = " where `".$type."`=".$typeId. " and albumName is not null and albumName!='' and isDeleted=0 group by albumName";
 		$sql="select count(albumName) as count,albumName, albumName as albumText from picture".$sql;
 		$this->dataBase->query($sql);
 		return array_merge($startList,$this->dataBase->getRowList());
@@ -676,7 +676,7 @@ class dbDAO {
 
     public function getListOfPictureTags($startList=array()) {
         $sql  = "select count(tag) as count,tag from picture";
-        $sql .= " where  (albumName is null or albumName='') and isDeleted=0 and tag is not null group by tag";
+        $sql .= " where  tag <>'' and tag is not null group by tag";
         $this->dataBase->query($sql);
         return array_merge($startList,$this->dataBase->getRowList());
     }

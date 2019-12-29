@@ -15,7 +15,6 @@ if (getParam("FacebookId")) {
 	$_SESSION["FacebookFirstName"]=getParam("first_name");
 	$_SESSION["FacebookLastName"]=getParam("last_name");
 	$_SESSION["FacebookEmail"]=getParam("email");
-	$_SESSION["FacebookLink"]="https://www.facebook.com/";
 } else {
 	unset($_SESSION['FacebookId']);
 	unset($_SESSION["FacebookName"]);

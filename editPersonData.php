@@ -65,7 +65,7 @@
 		</div>
 	<?php } ?>
 	<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-		<button onclick="document.location='gdpr.php?id=<?php echo($diak["id"]);?>';" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
+		<button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
 	</div>
 
 <?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
@@ -308,5 +308,9 @@ function showOptionsField($value,$fieldName,$options,$readOnly=false) {
             $('input[name="role"]').val(s);
         }
         $('#editform').submit();
+    }
+
+    function goGdpr(id) {
+        document.location="gdpr.php?id="+id;
     }
 </script>

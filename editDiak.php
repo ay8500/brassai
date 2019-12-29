@@ -8,7 +8,7 @@ include_once 'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
-$tabOpen= getParam("tabOpen", 0);
+$tabOpen= getParam("tabOpen", "person");
 
 $personid = getParam("uid",null);
 if (getParam("type")=="personID" && getParam("typeid")!=null) {
@@ -465,7 +465,7 @@ $tabUrl="editDiak.php";
 Appl::addJs('js/chosen.jquery.js');
 Appl::addJsScript('
     $(document).ready(function(){
-        $(".chosen").chosen();
+        $(".chosen").chosen({width:"100%",no_results_text:"Ilyen tartalmi megjelölés nincs!"});
     });
 ');
 include 'homefooter.inc.php';

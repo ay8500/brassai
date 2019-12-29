@@ -37,7 +37,7 @@ class dbBL extends dbDAO
             unsetAktClass();
             setAktSchool($schoolId);
         }
-
+        $class = null;
         if (null != $classId) {
             if ('all' == $classId) {
                 unsetAktClass();
