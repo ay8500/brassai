@@ -158,6 +158,32 @@ class dbBL extends dbDAO
         return $this->savePerson($person);
     }
 
+    /**
+     * Get type text from a picture
+     * @param $pict
+     * @return string
+     */
+    public function getPictureTypeText($pict)
+    {
+        $type="";$typeid="";$typeText="";
+        if (isset($pict["schoolID"])) {
+            $type = "school";
+            $typeid = $pict[$type . "ID"];
+            $school = $this->getSchoolById($typeid);
+            $typeText = '<b>Iskolakép:</b><br/><a href="picture.php?type=schoolID&typeid='.$typeid.'">' . html_entity_decode(html_entity_decode($school["name"])).'</a>';
+        } elseif (isset($pict["classID"])) {
+            $type = "class";
+            $typeid = $pict[$type . "ID"];
+            $class = $this->getClassById($typeid);
+            $typeText = '<b>Osztálykép:</b><br/><a href="picture.php?type=classID&typeid='.$typeid.'">' . $class["text"].'</a>';
+        } elseif (isset($pict["personID"])) {
+            $type = "person";
+            $typeid = $pict[$type . "ID"];
+            $picturePerson = $this->getPersonByID($typeid);
+            $typeText = '<b>Személyes kép:</b><br/><a href="editDiak.php?tabOpen=pictures&uid=' . $typeid .'">'. getPersonName($picturePerson).'</a>';
+        }
+        return array("type"=>$type,"typeId"=>$typeid,"text"=>$typeText);
+    }
 
 
 }
@@ -247,7 +273,7 @@ function isAktClassStaf() {
 
 /**
  * The aktual person school id
- * @return number|-1
+ * @return number|1
  */
 function getAktSchoolId() {
     if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)

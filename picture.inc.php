@@ -445,19 +445,25 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
 function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     $pict=$pictures[$idx];
     $checked= ($pict["isVisibleForAll"]==1)?"checked":"";
-    $dbOpinion = new dbDaOpinion($db); ?>
+    $dbOpinion = new dbDaOpinion($db);
+    $typeArray = $db->getPictureTypeText($pict);?>
 
     <div id="list-table">
 
         <?php if ($view=="table") {?>
-            <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" />
-            <div class="pdiv">
-                <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
-                <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
-                if (userIsAdmin()){?>
-                    <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
-                <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
-                } ?>
+            <?php if ($typeArray["text"]!='' && $albumParam=="_mark_") {?>
+                <span><?php echo $typeArray["text"]?></span>
+            <?php }?>
+            <div style="position: relative">
+                <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" style="position: relative"/>
+                <div class="pdiv">
+                    <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
+                    <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
+                    if (userIsAdmin()){?>
+                        <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
+                    <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
+                    } ?>
+                </div>
             </div>
             <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
         <?php } else {?>
@@ -473,7 +479,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
         <?php }?>
     </div>
 
-    <div  id="" >
+    <div>
         <div id="edit_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;cursor:default;margin: 0 10px 0 10px;display: none" >
             <input type="text" class="iledittitle" id="titleEdit_<?php echo $pict["id"] ?>" value="<?php echo html_entity_decode(html_entity_decode($pict["title"])) ?>" placeholder="A kép címe" style="width: 320px;"/><br/>
             <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
@@ -515,7 +521,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
         </div>
     </div>
 
-    <div  id="" >
+    <div >
         <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 10px 10px 0 10px;cursor:default;" >
             <?php //change Order buttons?>
             <?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
@@ -530,8 +536,11 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                 <?php } ?>
             <?php endif;?>
             <div id="text_<?php echo $pict["id"] ?>" style="display: inline-block;margin: 10px 0px 0 5px;width: 320px;">
-                <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo html_entity_decode(html_entity_decode($pict["title"])) ?></span></b><br/>
-                <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink(html_entity_decode(html_entity_decode($pict["comment"])),true) ?></span>
+                <b><span id="titleShow_<?php echo $pict["id"] ?>"><?php echo html_entity_decode($pict["title"]) ?></span></b><br/>
+                <span id="commentShow_<?php echo $pict["id"] ?>"><?php echo createLink(html_entity_decode($pict["comment"]),true) ?></span>
+                <?php if($pict["tag"]!=null && $pict["tag"]!='') {?>
+                    <br>Tartalom:<span><?php echo ($pict["tag"]) ?></span>
+                <?php } ?>
             </div><?php
             displayPictureOpinion($dbOpinion,$pict["id"]);?>
         </div>

@@ -63,10 +63,19 @@ if ($album=="_tablo_" || $type=='tablo') {
 if (isset($picture)) {
     \maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
 }
+\maierlabs\lpfw\Appl::addCss('css/chosen.css');
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
 <?php include_once 'picture.inc.php';?>
 </div>
 
-<?php include 'homefooter.inc.php'; ?>
+<?php
+\maierlabs\lpfw\Appl::addJs('js/chosen.jquery.js');
+\maierlabs\lpfw\Appl::addJsScript('
+    $(document).ready(function(){
+        $(".chosen").chosen({width:"100%",no_results_text:"Ilyen tartalmi megjelölés nincs!"});
+    });
+');
+include 'homefooter.inc.php';
+?>

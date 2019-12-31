@@ -110,7 +110,7 @@ function showTagging(show) {
                 $('[person-id]').remove();
                 $("[id*=personlist]").empty();
                 if (data.title != null) {
-                    $("#personlist").append('<div><b>' + data.title + ' </b> ' + (data.comment == "undefined" ? '' : data.comment) + '</div>');
+                    $("#personlist").append('<div><b>' + data.title + ' </b> ' + (data.comment == null ? '' : data.comment) + (data.tag == null?'':' Tartalom:'+data.tag) +'</div>');
                 }
                 data.face.forEach(function (p) {
                     $('<div>', {

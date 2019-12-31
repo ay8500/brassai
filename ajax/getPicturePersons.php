@@ -17,8 +17,14 @@ $ret = array();
 $ret["face"] = $dbPIP->getListOfPersonInPicture($pictureId);
 
 $picture = $db->getPictureById($pictureId);
+$ret["changeDate"]=\maierlabs\lpfw\Appl::dateTimeAsStr($picture["changeDate"]);
 $ret["title"]=$picture["title"];
-$ret["comment"]=$picture["comment"];
+if(isset($picture["comment"]) && $picture["comment"]!=null && $picture["comment"]!="" && $picture["comment"]!="undefinied")
+    $ret["comment"]=$picture["comment"];
+if(isset($picture["tag"]) && $picture["tag"]!=null && $picture["tag"]!="" && $picture["tag"]!="undefinied")
+    $ret["tag"]=$picture["tag"];
+if(isset($picture["albumName"]) && $picture["albumName"]!=null && $picture["albumName"]!="" && $picture["tag"]!="albumName")
+    $ret["album"]=$picture["albumName"];
 
 echo(json_encode($ret));
 ?>

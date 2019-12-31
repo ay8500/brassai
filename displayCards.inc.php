@@ -134,30 +134,13 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
     else
         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
 
-    if (isset($picture["schoolID"])){
-		$type="school";
-		$typeid=$picture[$type."ID"];
-		$school=$db->getSchoolById($typeid);
-		$typeText="<b>Iskolakép:</b><br/>".html_entity_decode(html_entity_decode($school["name"]));
-	} elseif (isset($picture["classID"])){
-		$type="class";
-		$typeid=$picture[$type."ID"];
-		$class=$db->getClassById($typeid);
-		$typeText="<b>Osztálykép:</b><br/>".$class["text"];
-	} elseif (isset($picture["personID"])){
-		$type="person";
-		$typeid=$picture[$type."ID"];
-		$picturePerson=$db->getPersonByID($typeid);
-		$typeText="<b>Személyes kép:</b><br/>".getPersonName($picturePerson);
-	} else {
-        return;
-    }
-	
+    $typeArray=$db->getPictureTypeText($picture);
+
 	?>
 	<div class="element">
         <div>
             <div style="display: inline-block; ">
-                <a href="picture.php?type=<?php echo $type?>&typeid=<?php echo $typeid?>&id=<?php echo $picture["id"]?>">
+                <a href="picture.php?type=<?php echo $typeArray["type"]?>&typeid=<?php echo $typeArray["typeId"]?>&id=<?php echo $picture["id"]?>">
                     <image src="imageConvert.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
                 </a>
                 <?php  if (userIsAdmin() || userIsSuperuser()) {?>
@@ -167,13 +150,16 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
                 <?php } ?>
             </div>
             <div style="display: inline-block;max-width:160px;min-width:150px; vertical-align: top;margin-bottom:10px;">
-                <?php echo $typeText;?><br/>
+                <?php echo $typeArray["text"];?><br/>
                 <?php if (isset($picture["albumName"])&&$picture["albumName"]!="") {?>
                     Album:<?php echo $picture["albumName"]?><br/>
                 <?php }?>
-                <br/>
-                <b>Kép címe:</b><br/>
-                <?php echo $picture["title"];?>
+                <?php if (isset($picture["tag"])&&$picture["tag"]!=""&&$picture["tag"]!="undefined") {?>
+                    Tartalom:<?php echo $picture["tag"]?><br/>
+                <?php }?>
+                <?php if (isset($picture["title"])&&$picture["title"]!="") {?>
+                    <br/><b>Kép címe:</b><br/><?php echo $picture["title"];?>
+                <?php } ?>
             </div>
         </div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
