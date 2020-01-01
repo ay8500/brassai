@@ -59,8 +59,7 @@ var picturePadding = 5;
 var pictureFile;
 var isShowFaceRecognition=true;
 
-function pictureModal(file,id) {
-    pictureFile=file;
+function pictureModal(id) {
     getNextPicture(false, id)!=null?$("#prevpicture").show():$("#prevpicture").hide();
     getNextPicture(true, id)!=null?$("#nextpicture").show():$("#nextpicture").hide();
     $("#thePicture").hide();

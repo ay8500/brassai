@@ -241,7 +241,7 @@ class dbDAO {
 	public function getClassStatistics($classId,$countPictures=true) {
 		$ret = new stdClass();
 		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
-        $ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where classID =".$classId." and changeForID is null ");
+        $ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where isDeleted=0 and classID =".$classId." and changeForID is null ");
         $ret->guestCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and role like '%guest%'");
 		if($countPictures) {
 			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null and picture<>''");
@@ -601,6 +601,15 @@ class dbDAO {
 		}
 		return $id;
 	}
+
+    /**
+     * remove isDeleted flag from picture
+     * @param $id
+     * @return bool
+     */
+	public function notUnlinkPicture($id) {
+        return 	$this->dataBase->update("picture", [["field"=>"isDeleted","type"=>"i","value"=>0]],"id",$id);
+    }
 	
 	/**
 	 * Get list of pictures
@@ -628,11 +637,7 @@ class dbDAO {
      * @param string where
      * @return array of pictures
      */
-    public function getListOfPicturesWhere($where="",$orderby=null,$limit=null,$offset=null) {
-        $sql="";
-        $sql.="isDeleted=0 ";
-        if ($where!="")
-            $sql.=" and ".$where;
+    public function getListOfPicturesWhere($sql="",$orderby=null,$limit=null,$offset=null) {
         return $this->dataBase->getElementList("picture",false, $sql,$limit,$offset,$orderby);
     }
 
@@ -676,9 +681,15 @@ class dbDAO {
 
     public function getListOfPictureTags($startList=array()) {
         $sql  = "select count(tag) as count,tag from picture";
-        $sql .= " where  tag <>'' and tag is not null group by tag";
+        $sql .= " where  tag !='' and tag is not null group by tag";
         $this->dataBase->query($sql);
-        return array_merge($startList,$this->dataBase->getRowList());
+        $ret = array();
+        foreach ($this->dataBase->getRowList() as $tag) {
+            if (strpos($tag["tag"],",")===false) {
+                array_push($ret,$tag);
+            }
+        }
+        return array_merge($startList,$ret);
     }
 
     public function getMainAlbumCount($type,$typeId,$text,$tagHaveToBeNull) {

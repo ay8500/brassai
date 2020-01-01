@@ -61,6 +61,17 @@ if (isActionParam("unlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
 	}
 }
 
+//Delete and unlink Picture
+if (isActionParam("notUnlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
+    if ($db->notUnlinkPicture(getIntParam("did"))) {
+        $db->updateRecentChangesList();
+        Appl::setMessage("Kép törlése sikeresen vissza állítva","success");
+    } else {
+        Appl::setMessage("Kép törlésének vissza állítása sikertelen!","warning");
+    }
+}
+
+
 //Upload Image
 if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 	if ($db->checkRequesterIP(changeType::classupload)) {
@@ -155,14 +166,19 @@ if (strpos($sort,"date")!==false)  $sortSql="uploadDate";
 if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 
 //The list of pictures
+if (userIsAdmin()) {
+    $wherePictureList='true ';
+} else {
+    $wherePictureList="isDeleted='0'";
+}
 if ($albumParam=="_tablo_") {
-    $wherePictureList="tag like 'tabl%'";
+    $wherePictureList .=" and tag like 'tabl%'";
 } elseif ($albumParam=="_mark_") {
-    $wherePictureList = "id in (select pictureID from personInPicture where personID=".$typeId.") ";
+    $wherePictureList .= "and id in (select pictureID from personInPicture where personID=".$typeId.") ";
 } elseif ($albumParam=="_card_") {
-    $wherePictureList = "tag like 'kicsenget%'";
+    $wherePictureList .= "and tag like 'kicsenget%'";
 } elseif ($albumParam=="_sport_") {
-    $wherePictureList = "tag like '%sport%'";
+    $wherePictureList .= "and tag like '%sport%'";
 } else {
     $wherePictureList = $type.'='.$typeId;
     if (getParam("type")=="schoolID")
@@ -451,13 +467,13 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     <div id="list-table">
 
         <?php if ($view=="table") {?>
-            <?php if ($typeArray["text"]!='' && $albumParam=="_mark_") {?>
+            <?php if ($typeArray["text"]!='' && substr($albumParam,0,1)=="_") {?>
                 <span><?php echo $typeArray["text"]?></span>
             <?php }?>
             <div style="position: relative">
                 <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" style="position: relative"/>
                 <div class="pdiv">
-                    <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
+                    <button title="Nagyít" class="pbtn" onclick="return pictureModal(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
                     <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
                     if (userIsAdmin()){?>
                         <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -499,12 +515,16 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                 <?php if (userIsLoggedOn()) { ?>
                     <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
                 <?php }?>
-                <button class="btn btn-default"  title="Kimenti a kép módosításait" onclick="return savePicture(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+                <button class="btn btn-info"  title="Kimenti a kép módosításait" onclick="return savePicture(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
                 <?php if ($pict["isDeleted"]!=1) { ?>
-                    <button class="btn btn-default" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
+                    <button class="btn btn-warning" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
                 <?php } ?>
                 <?php if (userIsAdmin()) { ?>
-                    <button class="btn btn-danger" title="Végleges törölés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
+                    <?php if ($pict["isDeleted"]==0) {?>
+                        <button class="btn btn-danger" title="Végleges törlés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
+                    <?php } else {?>
+                        <button class="btn btn-warning" title="Törlés vissza" onclick="notUnlinkPicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove"></span> Maradhat</button>
+                    <?php }?>
                 <?php }?>
                 <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
                     <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
@@ -648,12 +668,18 @@ Appl::addJsScript("
 ');
 
 //javascript delete picture
-if (userIsAdmin()) {
+if (userIsAdmin() || userIsSuperuser()) {
     \maierlabs\lpfw\Appl::addJsScript('
         function unlinkPicture(id) {
-            if (confirm("'.Appl::__("Fénykép törölését kérem konfirmálni!").'")) {
+            if (confirm("'.Appl::__("Fénykép törlését kérem konfirmálni!").'")) {
                 showWaitMessage();
                 window.location.href = "'.$_SERVER["PHP_SELF"].'?action=unlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
+            }
+        }
+        function notUnlinkPicture(id) {
+            if (confirm("'.Appl::__("Fénykép törlésének vissza állítását kérem konfirmálni!").'")) {
+                showWaitMessage();
+                window.location.href = "'.$_SERVER["PHP_SELF"].'?action=notUnlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
             }
         }
     ');
@@ -663,7 +689,7 @@ if (userIsAdmin()) {
 if(isset($picture)) {
     \maierlabs\lpfw\Appl::addJsScript('
         $(function() {
-            pictureModal("'.$picture['file'].'",'.intval($picture['id']).');
+            pictureModal('.intval($picture['id']).');
         });
     ');
 }

@@ -276,9 +276,11 @@ function isAktClassStaf() {
  * @return number|1
  */
 function getAktSchoolId() {
+    /*TODO
     if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)
         return intval($_SESSION['aktSchool']);
     else
+    */
         return 1;
 }
 
