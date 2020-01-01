@@ -59,7 +59,8 @@ var picturePadding = 5;
 var pictureFile;
 var isShowFaceRecognition=true;
 
-function pictureModal(id) {
+function pictureModal(file,id) {
+    pictureFile = file;
     getNextPicture(false, id)!=null?$("#prevpicture").show():$("#prevpicture").hide();
     getNextPicture(true, id)!=null?$("#nextpicture").show():$("#nextpicture").hide();
     $("#thePicture").hide();
@@ -216,7 +217,6 @@ function toggleFaceRecognition(recognition) {
 }
 
 function showFaceRecognition(force) {
-
     if (isShowFaceRecognition!==true) {
         $("[class*=recognition]").remove();
         return;
@@ -241,7 +241,7 @@ function showFaceRecognition(force) {
                     }).insertAfter(img);
                 }
             }
-
+            $("#facebutton").css("background-color","coral");
         },
         error: function (code, message) {
             console.log(message);

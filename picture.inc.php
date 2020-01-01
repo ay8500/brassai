@@ -127,7 +127,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 					}
 				}
 				else {
-                    Appl::setMessage($fileName[0].".".$fileName[1]." A kép file nagysága túlhaladja 3 MByteot.","warning");
+                    Appl::setMessage($fileName[0].".".$fileName[1]." A kép adat nagysága túlhaladja 3 MByteot.","warning");
                     \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: too big",\maierlabs\lpfw\LoggerLevel::error);
 				}
 			}
@@ -473,8 +473,8 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <div style="position: relative">
                 <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" style="position: relative"/>
                 <div class="pdiv">
-                    <button title="Nagyít" class="pbtn" onclick="return pictureModal(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-search"></span></button>
-                    <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" ><span class="glyphicon glyphicon-pencil"></span></button><?php
+                    <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" type="button"><span class="glyphicon glyphicon-pencil"></span></button><?php
                     if (userIsAdmin()){?>
                         <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
                     <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
@@ -520,9 +520,8 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                     <button class="btn btn-warning" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
                 <?php } ?>
                 <?php if (userIsAdmin()) { ?>
-                    <?php if ($pict["isDeleted"]==0) {?>
-                        <button class="btn btn-danger" title="Végleges törlés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
-                    <?php } else {?>
+                    <button class="btn btn-danger" title="Végleges törlés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
+                    <?php if ($pict["isDeleted"]==1) {?>
                         <button class="btn btn-warning" title="Törlés vissza" onclick="notUnlinkPicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove"></span> Maradhat</button>
                     <?php }?>
                 <?php }?>
@@ -610,7 +609,7 @@ Appl::addJsScript("
 ");
 
 
-\maierlabs\lpfw\Appl::addJs("js/picture.js",true);
+\maierlabs\lpfw\Appl::addJs("js/picture.js",true, true);
 \maierlabs\lpfw\Appl::addJs("js/jquery.facedetection.js");
 
 \maierlabs\lpfw\Appl::addJsScript('
@@ -685,7 +684,7 @@ if (userIsAdmin() || userIsSuperuser()) {
     ');
 }
 
-//Open picture modal if only one picure whant to be viewed
+//Open picture modal if only one picture should  be viewed
 if(isset($picture)) {
     \maierlabs\lpfw\Appl::addJsScript('
         $(function() {
@@ -694,10 +693,10 @@ if(isset($picture)) {
     ');
 }
 
-//Send the list of album pictures to javascript
+//Send the list of album pictures to javascript, for face recognition
 \maierlabs\lpfw\Appl::addJsScript('var pictures = Array();');
 foreach ($pictures as $idx=>$pict) {
-    if ($pict["isDeleted"] == 0) {
+    //if ($pict["isDeleted"] == 0) {
         \maierlabs\lpfw\Appl::addJsScript('pictures['.$idx.']=Array(); pictures['.$idx.'].file ="'.$pict["file"].'"; pictures['.$idx.'].id='.$pict["id"].';');
-    }
+    //}
 };

@@ -13,9 +13,13 @@ Appl::addCssStyle('
 	.history tr  {border-spacing: 2px};
 ');
 include('homemenu.inc.php');
-?>
 
-<?php if (userIsAdmin() || userIsSuperuser()) {
+if (!(userIsAdmin() || userIsSuperuser())) {
+    ?><div class="alert alert-danger text-center">Adat hozzáférési jog hiányzik!</div><?php
+    include 'homefooter.inc.php';
+    return;
+} else {
+
     if (isActionParam("delete")) {
         if ($db->dataBase->deleteHistoryEntry(getParam("did"))) {
             $db->updateRecentChangesList();
@@ -51,9 +55,6 @@ include('homemenu.inc.php');
   		<?php } ?>
 	</table>
 </div>
-
-<?php } else { ?>
-	<div class="alert alert-danger text-center" >Adat hozzáférési jog hiányzik!</div>
 <?php } ?>
 
 <?php 
@@ -62,31 +63,31 @@ function displayHistoryElement($db,$item,$itemNext) {
 	switch ($table) {
 		case "person" :
 			if ($item==null)
-				$person=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
+				$person=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
 			else
 				$person=json_decode_utf8($item["jsonData"]);
 			displayPerson($db, $item,$person,$itemNext);
 			break;
 		case "picture" :
 			if ($item==null)
-				$picture=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
+				$picture=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
 			else
 				$picture=json_decode_utf8($item["jsonData"]);
-			displayPicture($db, $item, $picture,json_decode_utf8($itemNext["jsonData"]));
+			displayPicture($db, $item, $picture,$itemNext);
 			break;
 		case "vote" :
 			if ($item==null)
-				$vote=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
+				$vote=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
 			else
 				$vote=json_decode_utf8($item["jsonData"]);
-			displayVote($db, $item, $vote,json_decode_utf8($itemNext["jsonData"]));
+			displayVote($db, $item, $vote,$itemNext);
 			break;
 		case "class" :
 			if ($item==null)
-				$class=$db->dataBase->getEntryById($itemNext["table"],$itemNext["entryID"],true);
+				$class=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
 			else
 				$class=json_decode_utf8($item["jsonData"]);
-			displayClass($db, $item,$class,json_decode_utf8($itemNext["jsonData"]));
+			displayClass($db, $item,$class,$itemNext);
 			break;
 	}
 }
@@ -133,8 +134,12 @@ function displayPerson($db,$item,$person,$itemNext) {
     displayElementObj($person, $personNext,"role","R");
 }
 
-function displayClass($db,$item,$class,$classNext) {
-	displayChangeData($db,$class,$classNext);
+function displayClass($db,$item,$class,$itemNext) {
+    if($itemNext!=null)
+        $classNext=json_decode_utf8($itemNext["jsonData"]);
+    else
+        $classNext=null;
+    displayChangeData($db,$class,$itemNext);
 	displayElementObj($class, $classNext, "schoolID","S");
 	displayElementObj($class, $classNext, "name");
 	displayElementObj($class, $classNext, "graduationYear");
@@ -144,8 +149,12 @@ function displayClass($db,$item,$class,$classNext) {
     displayElementObj($class, $classNext, "teachers");
 }
 
-function displayPicture($db,$item,$picture,$pictureNext) {
-	displayChangeData($db,$picture,$pictureNext);
+function displayPicture($db,$item,$picture,$itemNext) {
+    if($itemNext!=null)
+        $pictureNext=json_decode_utf8($itemNext["jsonData"]);
+    else
+        $pictureNext=null;
+	displayChangeData($db,$picture,$itemNext);
 	displayElementObj($picture, $pictureNext, "title" );
 	displayElementObj($picture, $pictureNext, "comment");
 	displayElementObj($picture, $pictureNext, "isVisibleForAll" );
@@ -161,8 +170,12 @@ function displayPicture($db,$item,$picture,$pictureNext) {
  * @param $vote
  * @param $voteNext
  */
-function displayVote($db,$item,$vote,$voteNext) {
-	displayChangeData($db,$vote,$voteNext);
+function displayVote($db,$item,$vote,$itemNext) {
+    if($itemNext!=null)
+        $voteNext=json_decode_utf8($itemNext["jsonData"]);
+    else
+        $voteNext=null;
+    displayChangeData($db,$vote,$itemNext);
 	if ($vote!=null) {
         $person = $db->getPersonByID($vote["personID"]);
         displayElement(getPersonName($person),getPersonName($person));

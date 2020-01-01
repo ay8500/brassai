@@ -32,7 +32,7 @@
         <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
         <tr><td class="caption1">Dátum</td><td>&nbsp;</td><td><?php echo $diak["userLastLogin"]?></a></td></tr>
 
-        <?php if (isset($diak["facebookid"]) && (userIsAdmin() || (isset($_SESSION['FacebookId']) && $diak["facebookid"]==$_SESSION['FacebookId']))) : ?>
+        <?php if (isset($diak["facebookid"]) && $diak["facebookid"]!='0' && (userIsAdmin() || (isset($_SESSION['FacebookId']) && $diak["facebookid"]==$_SESSION['FacebookId']))) : ?>
 		<tr><td colspan="3"><hr/> </td></tr>
 		<tr><td colspan="3">
 			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és "<?php echo isset($_SESSION["FacebookName"])?$_SESSION["FacebookName"]:"nem bejelentkezett" ?>" Facebook felhasználóval.<br />
