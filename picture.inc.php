@@ -688,7 +688,7 @@ if (userIsAdmin() || userIsSuperuser()) {
 if(isset($picture)) {
     \maierlabs\lpfw\Appl::addJsScript('
         $(function() {
-            pictureModal('.intval($picture['id']).');
+            pictureModal("'.$picture['file'].'",'.intval($picture['id']).');
         });
     ');
 }
