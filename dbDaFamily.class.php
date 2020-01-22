@@ -205,7 +205,7 @@ class dbDaFamily
         $data = $this->dataBase->insertFieldInArray($data,"gender",$relativeGender);
         $data = $this->dataBase->insertFieldInArray($data,"code",$code);
         $data = $this->dataBase->insertUserDateIP($data);
-        return $this->dataBase->insert("family",$data);
+        return $this->dataBase->insert("family",$data)!==false;
     }
 
     /**

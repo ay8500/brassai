@@ -29,7 +29,7 @@ class dbDaPersonInPicture
      * @return bool
      */
     public function deletePersonInPicture($personId, $pictureId) {
-        return $this->dataBase->deleteWhere("personInPicture", "personID=".$personId." and pictureID=".$pictureId);
+        return $this->dataBase->deleteWhere("personInPicture", "personID=".$personId." and pictureID=".$pictureId)!==false;
     }
 
     /**
@@ -51,7 +51,7 @@ class dbDaPersonInPicture
         $data = $this->dataBase->insertFieldInArray($data,"yPos",$yPos);
         $data = $this->dataBase->insertFieldInArray($data,"size",$size);
 
-        return $this->dataBase->insert("personInPicture",$data);
+        return $this->dataBase->insert("personInPicture",$data)!==false;
     }
 
     public function setUserForPersonInPicture($personId, $pictureId) {

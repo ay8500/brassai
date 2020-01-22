@@ -202,7 +202,7 @@ include('homemenu.inc.php');?>
   		<li>
   			<div class="input-group input-group-sm">
   				<span class="input-group-addon"><span class="statw">Geokoordináta</span></span>
-       			<span type="text" class="form-control"><?php echo $db->getTableCount("person","(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%' and geolat not like '46.77191%'");?></span>
+       			<span type="text" class="form-control"><?php echo $db->getTableCount("person","(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%'");?></span>
 	       		<div class="input-group-btn"><a href="search.php?type=nogeo" class="btn btn-default">Mutasd</a></div>
 	       	</div>
   		</li>

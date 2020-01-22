@@ -39,7 +39,7 @@
 		}
 	}
 	else	{ $gallery = "";}
-	//view variant posibble values are: thumbnails, comment, slideshow
+	//view variant possible values are: thumbnails, comment, slideshow
 	if (isset($_GET["view"])) 	{ $view = $_GET["view"]; } else { $view = "thumbnails"; }
 	//index of actual viewed image
 	if (isset($_GET["slideshow_index"])) { $slideshow_index = $_GET["slideshow_index"]; } else { $slideshow_index = 0; }

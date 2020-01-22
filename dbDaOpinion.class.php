@@ -48,7 +48,7 @@ class dbDaOpinion
         $data=$db->insertFieldInArray($data,'changeIP',$_SERVER["REMOTE_ADDR"]);
         if ($uid!=null)
             $data=$db->insertFieldInArray($data,'changeUserID',$uid);
-        if  ($db->insert('opinion',$data)) {
+        if  ($db->insert('opinion',$data)!==false) {
             $this->dbDAO->updateRecentChangesList();
             return $db->queryInt("select count(1) from opinion where `table`='".$table."' and opinion ='".$type."' and entryID=".$id);
         } else {

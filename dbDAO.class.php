@@ -1077,7 +1077,7 @@ class dbDAO {
 	 */
 	public function deleteRequest($type,$ip) {
 		$where="typeID=".$type." and ip='".$ip."'";
-		return $this->dataBase->deleteWhere("request", $where);
+		return $this->dataBase->deleteWhere("request", $where)!==false;
 	}
 	
 	/**

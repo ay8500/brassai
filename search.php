@@ -109,7 +109,7 @@ if (null==getParam("type")) {
                 break;
             }
             case "nogeo": {
-                $sql="(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%' and geolat not like '46.77191%'";
+                $sql="(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%'";
                 $personList=$db->getPersonList($sql,20,20*getIntParam("start",0),$sort,$fields,$join);
                 $personCount=$db->getTableCount("person",$sql);
                 $caption ="Diákok geokoordináta nélkül:".$personCount;
