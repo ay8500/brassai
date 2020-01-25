@@ -12,12 +12,12 @@ $limitOfPicturesPerPage=24;
 if (!isset($type)) $type=getParam("type");
 if (!isset($typeId)) $typeId=getParam("typeid");
 
-//Delete Picture
+//Delete picture
 if (getParam("action","")=="deletePicture" ) {
 	if ($db->getCountOfRequest(changeType::deletepicture,24)<5) {
 		if ($db->deletePicture(getIntParam("did"))>=0) {
 		    $db->updateRecentChangesList();
-            Appl::setMessage("Kép sikeresen törölve","success");
+            Appl::setMessage("Kép sikeresen törölve. Köszönjük szépen.","success");
 			$db->saveRequest(changeType::deletepicture);
 			\maierlabs\lpfw\Logger::_("PictureDelete\t".getLoggedInUserId()."\t".getIntParam("did"));
 		} else {
@@ -28,30 +28,30 @@ if (getParam("action","")=="deletePicture" ) {
 	}
 }
 
-//change picture order
+//Change picture order
 if (getParam("action","")=="changeOrder" && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
 	$db->changePictureOrderValues(getIntParam("id1", -1), getIntParam("id2", -1));
 }
 
-//change picture albumname
+//Change picture albumname
 if (isActionParam("changePictureAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
 	if ($db->changePictureAlbumName(getIntParam("pictureid", -1), getParam("album", ""))) {
-        Appl::setMessage("Kép sikeresen áthelyezve","success");
+        Appl::setMessage("Kép sikeresen áthelyezve. Köszönjük szépen.","success");
 	} else {
         Appl::setMessage("Kép éthelyezése sikertelen","warning");
 	}
 }
 
-//change albumname
+//Change albumname
 if (isActionParam("renameAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
 	if ($db->changeAlbumName($type, $typeId, getParam("oldAlbum", ""), getParam("album", ""))) {
-        Appl::setMessage("Album sikeresen étnevezve","success");
+        Appl::setMessage(" Album sikeresen étnevezve. Köszönjük szépen.","success");
 	} else {
         Appl::setMessage("Album átnevezése sikertelen","warning");
 	}
 }
 
-//Delete and unlink Picture
+//Delete and unlink picture
 if (isActionParam("unlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
 	if ($db->deletePicture(getIntParam("did"),true)>=0) {
 	    $db->updateRecentChangesList();
@@ -61,7 +61,7 @@ if (isActionParam("unlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
 	}
 }
 
-//Delete and unlink Picture
+//Delete and not unlink picture
 if (isActionParam("notUnlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
     if ($db->notUnlinkPicture(getIntParam("did"))) {
         $db->updateRecentChangesList();
@@ -72,7 +72,7 @@ if (isActionParam("notUnlinkPicture") && (userIsAdmin() || userIsSuperuser()) ) 
 }
 
 
-//Upload Image
+//Upload image
 if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 	if ($db->checkRequesterIP(changeType::classupload)) {
 		if (basename( $_FILES['userfile']['name'])!="") {
@@ -113,31 +113,31 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							if ($db->savePicture($upicture)>=0) {
 								$db->saveRequest(changeType::classupload);
 								resizeImage($uploadfile,1800,1800);
-                                Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve.","success");
+                                Appl::setMessage($fileName[0].".".$fileName[1]." Köszönjük szépen a kép feltöltését.","success");
                                 \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\t".$idx);
 							} else {
-                                Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
+                                Appl::setMessage($fileName[0].".".$fileName[1]." Köszönjük szépen a kép feltöltését. Sajnos a feltötés sikertelen volt. Probálkozz újra.","warning");
 							}
 						} else {
-                            Appl::setMessage($fileName[0].".".$fileName[1]." sikeresen feltöltve és felülírva.","success");
+                            Appl::setMessage($fileName[0].".".$fileName[1]." Köszönjük szépen a kép feltöltését.","success");
 						}
 					} else {
-                        Appl::setMessage($fileName[0].".".$fileName[1]." feltötése sikertelen. Probálkozz újra.","warning");
+                        Appl::setMessage($fileName[0].".".$fileName[1]." Köszönjük szépen a kép feltöltését. Sajnos a feltötés sikertelen. Probálkozz újra.","warning");
                         \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: moving picture",\maierlabs\lpfw\LoggerLevel::error);
 					}
 				}
 				else {
-                    Appl::setMessage($fileName[0].".".$fileName[1]." A kép adat nagysága túlhaladja 3 MByteot.","warning");
+                    Appl::setMessage($fileName[0].".".$fileName[1]." Köszönjük szépen a kép feltöltését. Sajnos a kép adat nagysága túlhaladja 3 MByteot. Próbáld kissebb formátumban újból.","warning");
                     \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: too big",\maierlabs\lpfw\LoggerLevel::error);
 				}
 			}
 			else {
-                Appl::setMessage($fileName[0].".".$fileName[1]." Csak jpg formátumban lehet képeket feltölteni.","warning");
+                Appl::setMessage($fileName[0].".".$fileName[1]." Köszönjük szépen a kép feltöltését. Sajnos csak jpg formátumban lehet képeket feltölteni. Próbáld a képet konvertálni és probáld újból.","warning");
                 \maierlabs\lpfw\Logger::_("PictureUpload\t".getLoggedInUserId()."\tError: only jpg",\maierlabs\lpfw\LoggerLevel::error);
 			}
 		}
 	} else {
-        Appl::setMessage("A feltöltött képek száma meghaladta a naponta megengedett határt!","warning");
+        Appl::setMessage("Köszönjük szépen a képek feltöltését. Sajnos a feltöltött képek száma meghaladta az anonim látogatok számára naponta megengedett határt! Jentkezz be és folytasd a képfeltöltést.","warning");
 	}
 }
 
@@ -303,13 +303,15 @@ if (!isActionParam("showmore") ) {
 		<div style="margin-bottom:15px;">
             <?php if (substr($albumParam,0,1)!="_" && ($notDeletedPictures<50 || userIsAdmin())) {?>
                 <button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
-            <?php } ?>
+            <?php } else {?>
+                <button class="btn btn-info" type="button" onclick="showModalMessage('Képek feltöltése','<b>Örvendünk mert képpel szeretnéd bővíteni az oldalt!</b><br/>Ebben az albumban a diákok és az osztályok képei jelennek meg tartalmuk beállítása szerint. Ha szeretnél képeket feltölteni akkor keresd meg az osztályt vagy a diákot amihez a kép legjobban passzol, majd ott töltsd fel a képet és jelöld meg a tartalmát. Köszönjük szépen.');"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
+            <?php }?>
             <button class="btn btn-default" onclick="return toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
             <?php if ((substr($albumParam,0,1)!="_" && !($type=="schoolID" && $albumParam=="")) || userIsAdmin()) {?>
                 <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
-                <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
-                <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
             <?php } ?>
+            <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
+            <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
         </div>
         <?php if ($notDeletedPictures<50 || userIsAdmin()) {?>
 		<div id="download" style="margin:15px;display:none;">
@@ -394,13 +396,7 @@ if (!isActionParam("showmore") ) {
 </div>
 
 
-
-
-
-
-<?php
-
-\maierlabs\lpfw\Appl::addCssStyle('
+<?php \maierlabs\lpfw\Appl::addCssStyle('
     .pbtn {background-color: white;box-shadow: 0 0 14px 3px black;border-radius: 20px;outline: none;border: none;min-width:35px;height:24px;font-weight: bold;display:inline-block;vertical-align: middle;text-align: center;}
     .pdiv {position: absolute;top: 10px;left: 10px;display:none}
     .pbtn:active .sbtn:active{ outline: none;border: none;}
@@ -416,7 +412,6 @@ if (!isActionParam("showmore") ) {
     #personlist{padding:5px;}
     tr:hover {background-color:floralwhite;}
     td {padding:4px}
-    
     .personsearch {position:absolute; background-color:lightgray;width:280px;padding:5px;border-radius: 5px;box-shadow: 1px 1px 12px 3px black;z-index:500;}
 ');
 
