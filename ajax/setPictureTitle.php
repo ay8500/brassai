@@ -17,10 +17,7 @@ if ( $db->checkRequesterIP(changeType::picturechange)) {
 	$p=$db->getPictureById($id);
 	$p["title"]=$title;
 	$p["comment"]=$comment;
-	if ($tag!="")
-        $p["tag"]=$tag;
-	else
-	    unset($p["tag"]);
+    $p["tag"]=$tag;
 	if ($db->savePicture($p)>=0) {
 		$db->saveRequest(changeType::picturechange);
 	} else {
