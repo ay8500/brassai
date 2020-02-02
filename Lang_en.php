@@ -1,4 +1,2 @@
-<?PHP
+<?php
 $TXT["empty"] 			="";
-return $TXT;
-?>

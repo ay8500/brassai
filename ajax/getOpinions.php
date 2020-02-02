@@ -31,6 +31,7 @@ if ($count!='candle') {
             $op->ip = '';
         }
         $op->date = \maierlabs\lpfw\Appl::dateTimeAsStr($o->date);
+        $op->id = $o->id;
         $op->myopinion = $o->myopinion;
         $person = $db->getPersonByID($o->person);
         if ($person != null) {
