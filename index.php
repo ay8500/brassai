@@ -30,7 +30,7 @@ if (isset($_SESSION["timeout"])) {
 $personIdList=$db->getPersonIdListWithPicture();
 $randPersonID=$personIdList[rand(0,sizeof($personIdList)-1)];
 $today = new DateTime();
-$xmas = $today >= new DateTime("December 6") || $today < new DateTime("March 1");
+$xmas = $today >= new DateTime("December 6") || $today < new DateTime("February 21");
 if ($xmas)
    Appl::addJs("js/snowFalling.js",false,true);
 
