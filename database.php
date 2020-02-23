@@ -133,7 +133,7 @@ function backup() {
 		    $('#dbResult').html(data);
 		},
 		error:function(error) {
-		    $('#dbResult').html("Error:"+data);
+		    $('#dbResult').html("Error:"+error);
 		}
     });
 }
@@ -147,7 +147,7 @@ function restore() {
 		    $('#dbResult').html(data);
 		},
 		error:function(error) {
-		    $('#bdResult').html("Error:"+data);
+		    $('#bdResult').html("Error:"+error);
 		}
     });
 }

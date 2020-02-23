@@ -18,15 +18,19 @@ $TXT["Welcome dear "]="Szeretettel üdvözlünk kedves ";
 $TXT["Thank you for your changes, data now processing..."]="Köszönjük a módosítást. Az adatok feldolgozása folyamatban...";
 $TXT["Save data"]="Adatok kimentése";
 
+$TXT['GDPR_COOKIE_TITLE']	= 'Ez az oldal sütik (cookies) használatával javítja szórakozását, miközben Ön ellátogat ezen a webhelyen.';
+$TXT['GDPR_COOKIE_TEXT']	= 'Kérjük, legyen kedves és fogadja el az alább felsorolt sütik használatát a folytatáshoz.<ul><li>Session-süti: PHPSESSID a munkamenet adatainak tárolására</li><li>Ügyfél-süti:CLIENT Ön tárolja, hogy elfogadta a sütik használatát</li><li>Facebook süti: fb, ha Facebook bejelentkezést használ </li></ul>';
+$TXT['Accept']	= 'Elfogad';
+$TXT['Close']	= 'Bezár';
+
 $TXT["If you leave before saving, your changes will be lost. Continue?"]="Adatok még nincsenek kimentve! Ha oldalt változtatsz elveszíted módosításaid. Folytatni akarod?";
 $TXT["Újdonságok"]	= "#Újdonságok#";
 $TXT["Újdonságok"]	= "#Újdonságok#";
 $TXT["Tanárnő"]	= "#Tanárnő#";
 $TXT["Tanár úr"]	= "#Tanár úr#";
 $TXT["Kép"]	= "#Kép#";
-$TXT["Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!"]	= "#Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!#";
 $TXT['Impresszum']	= '#Impresszum#';
 $TXT['Találatok a véndiákok adatbankjában']	= '#Találatok a véndiákok adatbankjában#';
 $TXT[' Keresés']	= '# Keresés#';
-$TXT['1985&nbsp;12A Osztályfőnök: <img src="images/Staf0/d855-720651.jpg"  class="diak_image_sicon"/> <a href="editDiak.php?uid=855">Tóth Károly</a>']	= '#1985&nbsp;12A Osztályfőnök: <img src="images/Staf0/d855-720651.jpg"  class="diak_image_sicon"/> <a href="editDiak.php?uid=855">Tóth Károly</a>#';
-$TXT['1985&nbsp;12A Osztályfőnök Tóth Károly']	= '#1985&nbsp;12A Osztályfőnök Tóth Károly#';
+
+$TXT['Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!']	= '#Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!#';
