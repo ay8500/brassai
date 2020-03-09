@@ -1,9 +1,9 @@
 <?php
 include_once '../config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
 include_once  Config::$lpfw.'ltools.php';
 //TODO Save user information in the DB
 
-session_start();
 $_SESSION["timeZone"]=getIntParam("timezone",0);
 
 if ( !isset($_SESSION['lastReq']) ) {
