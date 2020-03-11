@@ -1,14 +1,21 @@
 <?php
     ob_start("ob_gzhandler");
+    include_once 'config.class.php';
     include_once Config::$lpfw.'sessionManager.php';
     include_once Config::$lpfw.'logon.inc.php';
-	include_once 'config.class.php';
     include_once 'dbBL.class.php';
     include_once 'dbDaUser.class.php';
+    include_once Config::$lpfw.'dbDaTracker.class.php';
+    include_once Config::$lpfw.'userTracker.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
+    if(!userIsAdmin()) {
+        $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
+        new \maierlabs\lpfw\userTracker($trackerDb);
+    }
 
-	//Image gallery Menue
+
+//Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 	
 	Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));

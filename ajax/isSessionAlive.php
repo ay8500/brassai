@@ -8,6 +8,7 @@ $_SESSION["timeZone"]=getIntParam("timezone",0);
 
 if ( !isset($_SESSION['lastReq']) ) {
     http_response_code(401);
+    $date = new DateTime();
     $_SESSION["timeout"]=$date->format("Y-m-d H:i:s");
     echo("No session!");
     exit;

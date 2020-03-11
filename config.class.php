@@ -28,6 +28,8 @@ class Config {
     public static $secret_key = 'iskola';
     public static $secret_iv = 'brassai';
 
+    public static $backupTableList = "-accelerator,-article,-request";
+
 
 
     /**

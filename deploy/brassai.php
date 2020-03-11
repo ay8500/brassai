@@ -1,5 +1,8 @@
 <?php
-session_start();
+include_once "../config.class.php";
+include_once Config::$lpfw.'sessionManager.php';
+
+
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
     die("Only for admins");
 /**
