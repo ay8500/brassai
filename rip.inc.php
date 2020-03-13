@@ -26,7 +26,6 @@ function getActualCandles($id) {
  */
 function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate=false) {
 	$d=$person;
-	$disabled =$db->checkLightning($d["id"],getLoggedInUserId())?'':"disabled=disabled";
 	if ($d["id"]!=-1) {
 		if (userIsLoggedOn() || isLocalhost()) {
 			$personLink="editDiak.php?uid=".$d["id"];
@@ -87,19 +86,43 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 	  		<div id="candles<?php echo $d['id']?>" style="text-align: center;" >
 	  		</div>
 	  		<button class="btn btn-warning" style="margin:10px;color:black" onclick="showPersonCandle(<?php echo $d['id']?>);" ><img style="height: 25px;border-radius: 33px;" src="images/candle1.gif"/> Meggyújtotta</button>
-	  		<button id="light-button<?php echo $d['id']?>" <?php echo $disabled ?> class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújt</button>
-	  		<div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
-	  			Meggyújtok egy gyertyát<br/><br/>
-	  			A gyertya 2 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
-	  			<?php if (!userIsLoggedOn()){ ?>
-	  				<b>Nem vagy bejelentkezve</b>, a gyertya anonim név alatt fog égdegélni. Jelentkezz be ha szeretnéd mindenki tudja, hogy te gyújtottad ezt a gyertyát.
-	  			<?php }?>
-	  			<button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>);hideLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújtom</button>
-			</div>
-	  		<div id="person-candle<?php echo $d['id']?>" class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
-	  			<div id="personlist<?php echo $d['id']?>"></div>
-	  			<button class="btn btn-warning" style="margin:10px;color:black" onclick="hidePersonCandle(<?php echo $d['id']?>);">Bezár</button>
-			</div>
+            <?php if (($daysLeft=$db->checkLightning($d["id"],getLoggedInUserId()))!==false) {?>
+    	  		<button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújt</button>
+	      		<div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
+                    Az általad meggyúhtott<br/> gyertya még <?php echo($daysLeft)?>
+                    napig ég!
+                    <button class="btn btn-warning" style="margin:-13px;padding:3px;color:black;float: right" onclick="hideLightCandle(<?php echo $d['id']?>);">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </button>
+                    <div style="clear: both"></div><br/>
+                    Látogass el újból és gyújts új gyertyát kedves tantárod vagy osztálytársad emlékére!
+                </div>
+            <?php } else {?>
+                <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújt</button>
+                <div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
+                    Meggyújtok egy gyertyát
+                    <button class="btn btn-warning" style="margin:-13px;padding:3px;color:black;float: right" onclick="hideLightCandle(<?php echo $d['id']?>);">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </button>
+                    <div style="clear: both"></div><br/>
+                    <?php if (!userIsLoggedOn()){ ?>
+                        A gyertya 2 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
+                        Jelentkezz be, ha szeretnéd hogy gyertyáid <b>6</b> hónapot égjenek.
+                    <?php } else {?>
+                        A gyertya 6 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
+                        <button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>,false);hideLightCandle(<?php echo $d['id']?>);">
+                            <img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújtom nevem alatt
+                        </button>
+                    <?php } ?>
+                    <button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>,true);hideLightCandle(<?php echo $d['id']?>);">
+                        <img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújtom mint anonim
+                    </button>
+                </div>
+            <?php }?>
+            <div id="person-candle<?php echo $d['id']?>" class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
+                <div id="personlist<?php echo $d['id']?>"></div>
+                <button class="btn btn-warning" style="margin:10px;color:black" onclick="hidePersonCandle(<?php echo $d['id']?>);">Bezár</button>
+            </div>
 		</div>
 	</div>
 <?php } ?>

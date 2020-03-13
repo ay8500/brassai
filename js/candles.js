@@ -25,11 +25,11 @@ function showLightCandle(id) {
 function hideLightCandle(id) {
 	$("#light-candle"+id).hide();
 }
-function lightCandle(id) {
+function lightCandle(id,asAnonymous) {
 	candles[id] = ++candles[id];
     showWaitMessage();
 	$.ajax({
-		url: "ajax/setCandleLighter.php?id="+id,
+		url: "ajax/setCandleLighter.php?id="+id+"&asAnonymous="+(asAnonymous?"1":"0"),
 		success:function(data) {
 			clearModalMessage();
 			showCandles(id,candles[id]);

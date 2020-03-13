@@ -11,8 +11,9 @@ header('Content-Type: application/json');
 
 $dbCandle = new dbDaCandle($db);
 
-$id=getIntParam("id");	
-$dbOperation = $dbCandle->setCandleLighter($id,getLoggedInUserId());
+$id=getIntParam("id");
+$asAnonymous =getIntParam("asAnonymous",1);
+$dbOperation = $dbCandle->setCandleLighter($id,getLoggedInUserId(),$asAnonymous);
 
 $ret = array("id"=>$id,"uId"=>getLoggedInUserId(),"result"=>$dbOperation);
 echo json_encode($ret);

@@ -23,7 +23,8 @@ class dbDaCandle
     public function getLightedCandleList($id=null) {
         $sql = 'select personID from candle join person on person.id=candle.personID ';
         $sql .=" where deceasedYear is not null ";
-        $sql .=" and  lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+        $sql .=" and  ((candle.userId is null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."')";
+        $sql .=" or    (candle.userId is not null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."') )";
         if($id!=null) {
             $sql .=' and userID='.$id;
         }
@@ -50,21 +51,25 @@ class dbDaCandle
      */
     public function getCandlesByPersonId($id=null) {
         if (null!=$id) {
-            $sql='select count(*) from candle where personId='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-            $candles=$this->dbDAO->dataBase->queryInt($sql);
+            $sqlAnonymous='select count(*) from candle where personId='.$id." and userId is null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+            $sqlUsername ='select count(*) from candle where personId='.$id." and userId is not null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."'";
+            $candles=$this->dbDAO->dataBase->queryInt($sqlAnonymous) + $this->dbDAO->dataBase->queryInt($sqlUsername);
             $sql='select count(*) from person where deceasedYear is not null and id='.$id;
             return $candles + $this->dbDAO->dataBase->queryInt($sql);
         } else {
             $sql='select count(*) from person where deceasedYear is not null';
             $ret = $this->dbDAO->dataBase->queryInt($sql);
 
-            $sql="select count(*) from candle where lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-            return $ret + $this->dbDAO->dataBase->queryInt($sql);
+            $sqlAnonymous="select count(*) from candle where userId is null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+            $sqlUsername ="select count(*) from candle where userId is not null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."'";
+            return $ret + $this->dbDAO->dataBase->queryInt($sqlAnonymous) + $this->dbDAO->dataBase->queryInt($sqlUsername);
         }
     }
 
     public function getCandleDetailByPersonId($id) {
-        $sql='select * from candle where personID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."' order by id desc";
+        $sql ='select * from candle where personID='.$id." and ";
+        $sql .="((userId is     null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."') or ";
+        $sql .=" (userId is not null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."')  ) order by id desc";
         $this->dbDAO->dataBase->query($sql);
         if ($this->dbDAO->dataBase->count()>0)
             return $this->dbDAO->dataBase->getRowList();
@@ -73,7 +78,7 @@ class dbDaCandle
     }
 
     public function getCandleDetailByUserId($id) {
-        $sql='select * from candle where userID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+        $sql='select * from candle where userID='.$id." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."'";
         $this->dbDAO->dataBase->query($sql);
         if ($this->dbDAO->dataBase->count()>0)
             return $this->dbDAO->dataBase->getRowList();
@@ -81,18 +86,40 @@ class dbDaCandle
         return array();
     }
 
+    /**
+     * returns how many days will light the candle
+     * @param $id
+     * @param null $userId
+     * @return bool|DateTime|false
+     */
     public function checkLightning($id, $userId=null) {
         if ($userId!=null) {
-            $sql='select count(*) from candle where personId='.$id." and userID=".$userId." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-            $ret = $this->dbDAO->dataBase->queryInt($sql);
-            return ($ret==0);
+            $sql='select lightedDate from candle where personId='.$id." and userID=".$userId." and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."'";
+            $ret = $this->dbDAO->dataBase->queryArray($sql);
+            if (sizeof($ret)==0)
+                return false;
+            $d = DateTime::createFromFormat ( "Y-m-d H:i:s", $ret[0]["lightedDate"] );
+            $d->modify("+6 month");
+            return date_diff($d,new DateTime("now"))->format("%a");
+
         }
-        $sql='select count(*) from candle where personId='.$id." and ip='".$_SERVER["REMOTE_ADDR"]."' and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
-        $ret = $this->dbDAO->dataBase->queryInt($sql);
-        return ($ret==0);
+        $sql='select lightedDate from candle where personId='.$id." and ip='".$_SERVER["REMOTE_ADDR"]."' and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."'";
+        $ret = $this->dbDAO->dataBase->queryArray($sql);
+        if (sizeof($ret)==0)
+            return false;
+        $d = DateTime::createFromFormat ( "Y-m-d H:i:s", $ret[0]["lightedDate"] );
+        $d->modify("+2 month");
+        return date_diff($d,new DateTime("now"))->format("%a");
     }
 
-    public function setCandleLighter($id, $userId=null) {
+    /**
+     * light the candle
+     * @param $id
+     * @param null $userId
+     * @param int $asAnonymous
+     * @return bool
+     */
+    public function setCandleLighter($id, $userId=null,$asAnonymous=0) {
         $data=array();
         if (userIsLoggedOn()) {
             $data=$this->dbDAO->dataBase->insertFieldInArray($data, "userID", $userId);
@@ -100,6 +127,7 @@ class dbDaCandle
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "lightedDate", date("Y-m-d H:i:s"));
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "personID", $id);
+        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "showAsAnonymous", $asAnonymous);
         return $this->dbDAO->dataBase->insert("candle", $data)!==false;
     }
 
