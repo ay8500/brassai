@@ -8,7 +8,6 @@ use maierlabs\lpfw\MySqlDbAUH ;
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
-include_once Config::$lpfw.'appl.class.php';
 include_once Config::$lpfw.'mysqldbauh.class.php';
 
 
@@ -944,7 +943,7 @@ class dbDAO {
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","candle"))) {
-            $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where lightedDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlCandleIpUser." order by lightedDate desc limit " . $limit . ") ";
+            $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where showAsAnonymous=0 and lightedDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlCandleIpUser." order by lightedDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }

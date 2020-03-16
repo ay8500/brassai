@@ -10,7 +10,7 @@
 				<li><a href="dataCheck.php"  >Vizsga</a></li>
 				<li><a href="database.php"  >Adatbank</a></li>
 			<?PHP }	?>
-			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">&copy; 2019 Levi</span></li>
+			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">&copy; 2020 Levi</span></li>
 	      </ul>
 	</nav>
 	<?php

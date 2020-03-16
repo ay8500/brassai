@@ -6,14 +6,10 @@
     include_once 'dbBL.class.php';
     include_once 'dbDaUser.class.php';
     include_once Config::$lpfw.'dbDaTracker.class.php';
-    include_once Config::$lpfw.'userTracker.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
-    if(!userIsAdmin()) {
-        $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
-        new \maierlabs\lpfw\userTracker($trackerDb);
-    }
 
+    $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 
 //Image gallery Menue
 	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
@@ -82,7 +78,8 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <?php Appl::addCss("css/menu.css");?>	 
+    <?php Appl::addCss("css/menu.css");?>
+    <link rel=“canonical“ href=“<?php echo(Config::$siteUrl.$_SERVER['REQUEST_URI']) ?>">
 	<?php Appl::includeCss();?>
     <?php Appl::renderingStarted(); ?>
  </head>
@@ -205,6 +202,7 @@
             <li>
                 <a href="message.php">Ünzenőfal</a>
             </li>
+            <li>
             <form class="navbar-form navbar-left" role="search" action="">
                 <div class="input-group input-group" style="margin: 3px;">
                     <button type="button" class="btn btn-default " onclick="showSearchBox();"><span
@@ -233,6 +231,10 @@
                     </div>
                 </form>
             <?php } ?>
+            </li>
+            <?php if (userIsAdmin()) {?>
+                <li style="top:18px"><span class="badge"><?php echo $trackerDb->getSiteCount($_SERVER['REQUEST_URI'])?></span></li>
+            <?php }?>
         </ul>
     </div>
   </div>

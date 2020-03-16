@@ -23,13 +23,13 @@ if ($sum>0) {
     $html = $sum . appl::_text(" gyertya ég, meggyújtották:") . "<br/>";
     //The candle lighted by the system
     $html .= '<div class="person-candle">';
-    $html .= appl::_text('Webserver');
+    $html .= appl::_text('Internet');
     $html .= '<span style="float:right">' . appl::dateAsStr(new DateTime()) . '</span>';
     $html .= '</div>';
     //Candles lighted by users
     foreach ($candles as $candle) {
         $html .= '<div class="person-candle">';
-        if (isset($candle["userID"]) || $candle["showAsAnonymous"]===0)
+        if (isset($candle["userID"]) && intval($candle["showAsAnonymous"])==0)
             $html .= getPersonLinkAndPicture($db->getPersonById($candle["userID"]));
         else
             $html .= appl::_text('Anonim felhasználó');

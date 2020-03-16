@@ -54,7 +54,7 @@ if ($count!='candle') {
         $op->id = $o['id'];
         $op->myopinion = false;
         $person = $db->getPersonByID($o['userID']);
-        if ($person != null) {
+        if ($person != null && intval($o["showAsAnonymous"])===0 ) {
             $op->name = getPersonLinkAndPicture($person);
         } else {
             $op->name = getPersonLinkAndPicture($db->getPersonDummy());
