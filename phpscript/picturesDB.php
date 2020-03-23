@@ -1,5 +1,6 @@
 <?php
-session_start();
+include_once __DIR__ . "/../config.class.php";
+include_once Config::$lpfw.'sessionManager.php';
 //User is logged in and have the role of admin
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="") 
 	die("Only for admins");
@@ -7,7 +8,6 @@ if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
 error_reporting(1);
 set_time_limit(0);
 
-include_once __DIR__ . "/../config.class.php";
 $db = \Config::getDatabasePropertys();
 db_pictures($db->host,$db->user,$db->password,$db->database) ;
 

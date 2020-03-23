@@ -706,9 +706,18 @@ class dbDAO {
         return $this->dataBase->queryInt($sql);
     }
 
-    public function getPersonMarks($personId) {
-        $sql="SELECT count(*) FROM `personInPicture` WHERE `personID` =".$personId;
+    public function getPersonMarksCount($personId=null) {
+        $sql="SELECT count(*) FROM `personInPicture` ";
+        if ($personId!=null)
+            $sql .= " WHERE `personID` =".$personId;
         return $this->dataBase->queryInt($sql);
+    }
+
+    public function getPersonMarks($personId=null) {
+        $sql="SELECT pictureID,personID FROM `personInPicture` ";
+        if ($personId!=null)
+            $sql .= " WHERE `personID` =".$personId;
+        return $this->dataBase->queryArray($sql);
     }
 
     public function changePictureOrderValues($id1,$id2) {

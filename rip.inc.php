@@ -95,7 +95,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </button>
                     <div style="clear: both"></div><br/>
-                    Látogass el újból és gyújts új gyertyát kedves tantárod vagy osztálytársad emlékére!
+                    Látogass el újból és gyújts új gyertyát elhunyt tanárod vagy osztálytársad emlékére!
                 </div>
             <?php } else {?>
                 <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújt</button>

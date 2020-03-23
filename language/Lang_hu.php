@@ -19,7 +19,7 @@ $TXT["Thank you for your changes, data now processing..."]="Köszönjük a módo
 $TXT["Save data"]="Adatok kimentése";
 
 $TXT['GDPR_COOKIE_TITLE']	= 'Ez az oldal sütik (cookies) használatával javítja szórakozását, miközben Ön ellátogat ezen a webhelyen.';
-$TXT['GDPR_COOKIE_TEXT']	= 'Kérjük, legyen kedves és fogadja el az alább felsorolt sütik használatát a folytatáshoz.<ul><li>Session-süti: PHPSESSID a munkamenet adatainak tárolására</li><li>Ügyfél-süti:CLIENT Ön tárolja, hogy elfogadta a sütik használatát</li><li>Facebook süti: fb, ha Facebook bejelentkezést használ </li></ul>';
+$TXT['GDPR_COOKIE_TEXT']	= 'Kérjük, legyen kedves és fogadja el az alább felsorolt sütik használatát a folytatáshoz.<ul><li>Session-süti: LPFW a munkamenet adatainak tárolására</li><li>Ügyfél-süti:CLIENT Ön tárolja, hogy elfogadta a sütik használatát</li><li>Facebook süti: fb, ha Facebook bejelentkezést használ </li></ul>';
 $TXT['Accept']	= 'Elfogad';
 $TXT['Close']	= 'Bezár';
 

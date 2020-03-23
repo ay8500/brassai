@@ -8,6 +8,9 @@ include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbChangeType.class.php';
 include_once __DIR__ . '/../sendMail.php';
 
+include_once Config::$lpfw.'dbDaTracker.class.php';
+$trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
+
 header('Content-Type: application/json');
 
 $id=getParam("id");
@@ -53,7 +56,7 @@ $ret->result='ok';
 $ret->count=$dbOpinion->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
 $db->saveRequest(changeType::opinion);
 if ($type=='text') {
-    \maierlabs\lpfw\Appl::sendHtmlMail(null,'id:'.$id.'<br/> table:'.$table.'<br/> text:'.$text,'Vélemény: ');
+    \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> table:'.$table.'<br/> text:'.$text,'Vélemény: ');
 }
 
 echo(json_encode($ret));

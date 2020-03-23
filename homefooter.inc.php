@@ -50,8 +50,6 @@ if (userIsAdmin()) {
 <script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>
 <noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 <?php } ?>
-
-
 </html>
 
 <?php

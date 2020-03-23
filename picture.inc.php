@@ -225,7 +225,7 @@ if (getParam("type")=="schoolID") {
     $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_sport_","albumText"=>Appl::__("Sportolók"),"albumName"=>"_sport_","count"=>$db->getPictureTagCount("sportolóink"))));
 }
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
-    $countMark = $db->getPersonMarks($typeId);
+    $countMark = $db->getPersonMarksCount($typeId);
     if( $countMark>0 ) {
         $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
     }

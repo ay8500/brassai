@@ -13,6 +13,9 @@ include_once Config::$lpfw.'appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbDaCandle.class.php';
 
+include_once Config::$lpfw.'dbDaTracker.class.php';
+$trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
+
 use maierlabs\lpfw\Appl as appl;
 $dbCandle= new dbDaCandle($db);
 $id=getIntParam("id");
