@@ -29,12 +29,12 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         $ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
         $this->assertNotNull($ret);
         $this->assertTrue($ret=="" );
-        $ret=$this->callAjaxUrl($url."ajax/setCandleLighter.php?id=".$id);
-        $this->assertNotNull($ret);
-        $this->assertTrue(isset($ret["id"])  );
-        $this->assertSame(intval($id),intval($ret["id"]));
-        $ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
-        echo("$ret");
+        //$ret=$this->callAjaxUrl($url."ajax/setCandleLighter.php?id=".$id);
+        //$this->assertNotNull($ret);
+        //$this->assertTrue(isset($ret["id"])  );
+        //$this->assertSame(intval($id),intval($ret["id"]));
+        //$ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
+        //echo("$ret");
         //$this->assertSame(intval($uId),intval($ret["uId"]));
     }
 

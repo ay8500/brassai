@@ -335,7 +335,7 @@ if (!isActionParam("showmore") ) {
 
 	
 	<?php if ($notDeletedPictures==0) :?>
-		<div class="alert alert-warning" ><?php Appl::_("Jelenleg nincsenek képek feltöltve. Légy te az első aki képpet tőlt fel!")?></div>
+		<div class="alert alert-warning" ><?php Appl::_("Jelenleg nincsenek képek feltöltve. Légy te az első aki képet tőlt fel!")?></div>
 	<?php endif;?>
 	<?php if(false) {?>
         <nav aria-label="Page navigation example">
