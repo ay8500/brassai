@@ -7,7 +7,7 @@ include('homemenu.inc.php');
 ?>
 <div class="sub_title">Loging</div>
 <?PHP
-if (userIsAdmin() || userIsSuperuser()) {
+if (userIsSuperuser()) {
 
 	//initialise tabs
 	$tabsCaption=Array("","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");

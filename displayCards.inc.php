@@ -143,7 +143,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
                 <a href="picture.php?type=<?php echo $typeArray["type"]?>&typeid=<?php echo $typeArray["typeId"]?>&id=<?php echo $picture["id"]?>">
                     <image src="imageConvert.php?width=300&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
                 </a>
-                <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+                <?php  if (userIsSuperuser()) {?>
                     <br/><a href="history.php?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
                         <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("picture",$picture["id"]))?></span>
                     </a>
@@ -203,7 +203,7 @@ function displayClass($db,$class,$showDate=false) {
 			</div>
 		<?php } ?>
 
-        <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+        <?php  if (userIsSuperuser()) {?>
             <br/><a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
             </a>
@@ -232,7 +232,7 @@ function displayArticle($db,$article,$showDate=true) {
         </div>
 
 
-        <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+        <?php  if (userIsSuperuser()) {?>
             <br/><a href="history.php?table=article&id=<?php echo $article["id"]?>" style="display:inline-block;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("article",$article["id"]))?></span>
             </a>
@@ -308,7 +308,7 @@ function displayPersonPictureAndHistory($db,$d) {
     ?>
     <div style="display: inline-block; ">
         <?php $personLink = displayPersonPicture($d); ?>
-        <?php if (userIsAdmin() || userIsSuperuser()) { ?>
+        <?php if (userIsSuperuser()) { ?>
             <br/><a href="history.php?table=person&id=<?php echo $d["id"] ?>" title="módosítások"
                     style="position: relative;top: -37px;left: 10px;display:inline-block;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person", $d["id"])) ?></span>

@@ -6,7 +6,7 @@
 			<?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
 		</div>
 		<?php }?>
-		<?php  if (userIsAdmin() || userIsSuperuser()) {?>
+		<?php  if (userIsSuperuser()) {?>
 			<br/><a href="history.php?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -37px;left: 10px;display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person",$diak["id"]))?></span>
 			</a>
@@ -31,7 +31,7 @@
                         <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
                         <a class="btn btn-default" target="_download" href="images/<?php echo $pic?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
                     <?php }?>
-                    <?php if (userIsAdmin() || userIsSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
+                    <?php if (userIsSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
                         <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="deletePersonPicture" value="<?php echo $diak["id"]?>"><span class="glyphicon glyphicon-upload"></span> Töröl</button>
                     <?php } ?>
                 <?php } ?>
@@ -43,7 +43,7 @@
 	<?php } ?>
    <?php if ($edit) {  ?>	
 		<?php //Don't delete myself?>
-		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (userIsEditor() || userIsSuperuser() || userIsAdmin()) ) { ?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (userIsSuperuser() || userIsAdmin()) ) { ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
 		</div>

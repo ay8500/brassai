@@ -37,7 +37,7 @@ $action=getParam("action","");
 $anonymousEditor=getParam("anonymousEditor")=="true";
 
 //Edit or only view variant this page
-$edit = (userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
+$edit = (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
 
 //Create new person 
 $createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher" || $action=="savenewperson" || $action=="savenewguest" || $action=="savenewteacher";
@@ -104,7 +104,7 @@ if (true) { //Communication
 	array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true,true ,true );
 	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
 }
-if (userIsAdmin() || userIsSuperuser() ) {
+if (userIsSuperuser() ) {
     array_push($dataFieldNames, "role");
     array_push($dataItemProp,"role");
     array_push($dataFieldCaption, "Opciók");
@@ -250,7 +250,7 @@ if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
 }
 
 //Delete Picture
-if (getIntParam("deletePersonPicture",-1)>=0 && (userIsAdmin() || userIsSuperuser() || getLoggedInUserId()==getRealId($diak))) {
+if (getIntParam("deletePersonPicture",-1)>=0 && (userIsSuperuser() || getLoggedInUserId()==getRealId($diak))) {
 	if ($db->unlinkPersonPicture(getIntParam("deletePersonPicture"))) {
 		Appl::setMessage("Kép sikeresen törölve","success");
 		$diak["picture"]=null;

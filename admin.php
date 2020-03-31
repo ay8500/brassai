@@ -24,7 +24,7 @@ Appl::addJsScript("
 ");
 
 if (isActionParam("sendMail")) {
-	if (userIsAdmin() || userIsSuperuser() || userIsEditor()) {
+	if (userIsEditor()) {
 		include_once ("sendMail.php");
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		$mailsSent =0;$mailsError =0;
@@ -53,7 +53,7 @@ include("homemenu.inc.php");
 
 <div class="container-fluid">   
 
-<?php if (userIsAdmin() || userIsSuperuser() || userIsEditor() ) {
+<?php if (userIsSuperuser() || userIsEditor() ) {
     //initialise tabs
     $tabsCaption = array();
     array_push($tabsCaption ,array("id" => "mail", "caption" => 'Mail&nbsp;küldés', "glyphicon" => "envelope"));

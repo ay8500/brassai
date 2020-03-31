@@ -199,7 +199,7 @@ function displayVote($db,$item,$vote,$itemNext) {
  */
 function displayChangeData($db,$item,$historyItem) {
     ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
-	<?php if (userIsAdmin() || userIsSuperuser() ) {?>
+	<?php if (userIsSuperuser() ) {?>
         <td><button onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</button></td>
         <?php if ($historyItem!=null) {?>
             <td><button onclick="deleteHistory(<?php echo $historyItem["id"].",'".getParam("table")."',".getParam("id")?>)" class="btn btn-danger btn-sm" title="<?php echo $historyItem["id"]?>">Töröl</button></td>

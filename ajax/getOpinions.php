@@ -9,6 +9,8 @@ include_once __DIR__ . '/../dbDaCandle.class.php';
 
 $dbOpinions = new dbDaOpinion($db);
 $dbCandles = new dbDaCandle($db);
+include_once Config::$lpfw.'dbDaTracker.class.php';
+$trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 
 header('Content-Type: application/json');
 

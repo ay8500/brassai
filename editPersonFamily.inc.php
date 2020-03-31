@@ -40,7 +40,7 @@ Appl::addJs("js/chosen.jquery.js");
 Appl::addCss("css/chosen.css");
 include_once 'displayCards.inc.php';
 
-$edit = userIsAdmin() || userIsSuperuser() || userIsEditor() || $diak["id"]==getLoggedInUserId();
+$edit =  userIsSuperuser() || userIsEditor() || $diak["id"]==getLoggedInUserId();
 
 if (isActionParam("save")) {
     $relatives = $dbFamily->getPersonRelativesById(getParam("uid"));

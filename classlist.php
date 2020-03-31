@@ -23,16 +23,31 @@ Appl::addCssStyle('
 	.classdiv-b:hover	{background-color: #f8e8e8;}
 ');
 
-$eveningClass=getParam("tabOpen","day")=="day"?0:1;
-Appl::setSiteSubTitle("Osztályok");
-Appl::setSiteDesctiption(getAktSchoolName()." osztályai");
-Appl::setSiteTitle(getAktSchoolName()." osztályai");
+$isEveningClass=strpos(getParam("tabOpen","day"),"day")===false;
+$isTwentyfirstcentury=strpos(getParam("tabOpen","xx"),"xxi")!==false;
+if (!$isEveningClass && !$isTwentyfirstcentury) {
+    Appl::setSiteSubTitle("Nappali osztályok a XX. században");
+    Appl::setSiteDesctiption(getAktSchoolName()." nappali tagozat osztályai XX. században");
+    Appl::setSiteTitle(getAktSchoolName()." nappali tagozat osztályai a XX. században");
+}
+if (!$isEveningClass && $isTwentyfirstcentury) {
+    Appl::setSiteSubTitle("Nappali osztályok a XXI. században");
+    Appl::setSiteDesctiption(getAktSchoolName()." nappali tagozat osztályai XXI. században");
+    Appl::setSiteTitle(getAktSchoolName()." nappali tagozat osztályai a XXI. században");
+}
+if ($isEveningClass) {
+    Appl::setSiteSubTitle("Esti tagozat osztályai");
+    Appl::setSiteDesctiption(getAktSchoolName()." esti tagozat osztályai");
+    Appl::setSiteTitle(getAktSchoolName()." esti tagozat osztályai");
+}
+
 include("homemenu.inc.php");
 /** @var array $classes */
-$classes = $db->getClassList(getRealId(getAktSchool()),false,$eveningClass);
+$classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury);
 $tabsCaption = array();
-array_push($tabsCaption ,array("id" => "day", "caption" => 'Nappali tagozat', "glyphicon" => "asterisk"));
-array_push($tabsCaption ,array("id" => "night", "caption" => 'Esti tagozat', "glyphicon" => "star"));
+array_push($tabsCaption ,array("id" => "day", "caption" => 'század nappali tagozat',"iconText"=>"XX.", "glyphicon" => "asterisk"));
+array_push($tabsCaption ,array("id" => "dayxxi", "caption" => 'század nappali tagozat',"iconText"=>"XXI.", "glyphicon" => "asterisk"));
+array_push($tabsCaption ,array("id" => "night", "caption" => 'tagozat',"iconText"=>"esti", "glyphicon" => "star"));
 ?>
 
 <div class="container-fluid">
@@ -56,37 +71,40 @@ array_push($tabsCaption ,array("id" => "night", "caption" => 'Esti tagozat', "gl
  */
 function displayClassList($db, $classes) {
 	foreach($classes as $cclass) {
-        if (getAktClassId()==$cclass["id"])
-            $aktualClass="classdiv actual_class_in_menu";
-        else
-            $aktualClass="classdiv";
-        if (substr($cclass["name"],-1)==="A") {
-            $aktualClass .=" classdiv-a";
-        }
-        if (substr($cclass["name"],-1)==="B") {
-            $aktualClass .=" classdiv-b";
-        }
-        ?>
-        <div style="display: inline-block;" class="<?php echo($aktualClass);?>" >
-            <a style="font-size: large;" href="hometable.php?classid=<?php echo($cclass["id"]);?>">
-                <?php echo($cclass["text"]); ?>
-            </a>
-            <?php  $stat=$db->getClassStatistics($cclass["id"],userIsAdmin());?>
-                <span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
-            <?php if (userIsAdmin()) {?>
-                <span class="badge" title="képek száma"><?php echo $stat->personWithPicture+$stat->personPictures+$stat->classPictures?></span>
-            <?php } ?>
-            <div>
-            <?php
-            if (isset($stat->teacher->picture) && strlen($stat->teacher->picture)>1) {
-                echo('<div style="display:inline"><img src="images/'.$stat->teacher->picture.'" class="diak_image_sicon"/></div>');
+	    if (($cclass["name"]!="Todo" || userIsSuperuser()) && $cclass["name"]!="Staf"  ) {
+            if (getAktClassId() == $cclass["id"])
+                $aktualClass = "classdiv actual_class_in_menu";
+            else
+                $aktualClass = "classdiv";
+            if (substr($cclass["name"], -1) === "A") {
+                $aktualClass .= " classdiv-a";
             }
-            if (isset($stat->teacher->lastname)) {
-                echo ('<div style="display:inline">'.$stat->teacher->lastname." ".$stat->teacher->firstname.'</div>');
-            }?>
+            if (substr($cclass["name"], -1) === "B") {
+                $aktualClass .= " classdiv-b";
+            }
+            ?>
+            <div style="display: inline-block;" class="<?php echo($aktualClass); ?>">
+                <a style="font-size: large;" href="hometable.php?classid=<?php echo($cclass["id"]); ?>">
+                    <?php echo $cclass["text"]?>
+                </a>
+                <?php $stat = $db->getClassStatistics($cclass["id"], userIsAdmin()); ?>
+                <span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
+                <?php if (userIsAdmin()) { ?>
+                    <span class="badge"
+                          title="képek száma"><?php echo $stat->personWithPicture + $stat->personPictures + $stat->classPictures ?></span>
+                <?php } ?>
+                <div>
+                    <?php
+                    if (isset($stat->teacher->picture) && strlen($stat->teacher->picture) > 1) {
+                        echo('<div style="display:inline"><img src="images/' . $stat->teacher->picture . '" class="diak_image_sicon"/></div>');
+                    }
+                    if (isset($stat->teacher->lastname)) {
+                        echo('<div style="display:inline">' . $stat->teacher->lastname . " " . $stat->teacher->firstname . '</div>');
+                    } ?>
+                </div>
             </div>
-        </div>
-    <?php
+            <?php
+        }
 	}
 }
 

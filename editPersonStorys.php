@@ -38,7 +38,7 @@ include_once 'dbBL.class.php';
 ?>		
 
 	<h3><?php  echo $title; ?></h3>
-	<?php if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) { ?>
+	<?php if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) { ?>
 		<form id="stroryForm" onsubmit="saveStory(); return false;">
 		<fieldset onkeyup="fieldChanged();" >
 			<textarea id="story" style="visibility:hidden; height:400px;" >
@@ -97,7 +97,7 @@ include_once 'dbBL.class.php';
 	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px;"></div>
 
 <?php
-if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
+if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
     \maierlabs\lpfw\Appl::addJsScript("
 	function saveStory() {
 	    fieldSaved();

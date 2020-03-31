@@ -13,7 +13,7 @@ $text = getPostParam("story", "");
 $privacy = getPostParam("privacy", "class");
 
 
-if ( userIsAdmin() || userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) {
+if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) {
 	if ($privacy=="world") $text="~~".$text;
 	if ($privacy=="scool") $text="~".$text;
 	

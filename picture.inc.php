@@ -29,12 +29,12 @@ if (getParam("action","")=="deletePicture" ) {
 }
 
 //Change picture order
-if (getParam("action","")=="changeOrder" && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
+if (getParam("action","")=="changeOrder" && (userIsSuperuser() || userIsEditor())  )  {
 	$db->changePictureOrderValues(getIntParam("id1", -1), getIntParam("id2", -1));
 }
 
 //Change picture albumname
-if (isActionParam("changePictureAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
+if (isActionParam("changePictureAlbum") && (userIsSuperuser() || userIsEditor())  )  {
 	if ($db->changePictureAlbumName(getIntParam("pictureid", -1), getParam("album", ""))) {
         Appl::setMessage("Kép sikeresen áthelyezve. Köszönjük szépen.","success");
 	} else {
@@ -43,7 +43,7 @@ if (isActionParam("changePictureAlbum") && (userIsAdmin() || userIsSuperuser() |
 }
 
 //Change albumname
-if (isActionParam("renameAlbum") && (userIsAdmin() || userIsSuperuser() || userIsEditor())  )  {
+if (isActionParam("renameAlbum") && (userIsSuperuser() || userIsEditor())  )  {
 	if ($db->changeAlbumName($type, $typeId, getParam("oldAlbum", ""), getParam("album", ""))) {
         Appl::setMessage(" Album sikeresen étnevezve. Köszönjük szépen.","success");
 	} else {
@@ -52,7 +52,7 @@ if (isActionParam("renameAlbum") && (userIsAdmin() || userIsSuperuser() || userI
 }
 
 //Delete and unlink picture
-if (isActionParam("unlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
+if (isActionParam("unlinkPicture") && (userIsSuperuser()) )  {
 	if ($db->deletePicture(getIntParam("did"),true)>=0) {
 	    $db->updateRecentChangesList();
         Appl::setMessage("Kép sikeresen véglegesen törölve","success");
@@ -62,7 +62,7 @@ if (isActionParam("unlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
 }
 
 //Delete and not unlink picture
-if (isActionParam("notUnlinkPicture") && (userIsAdmin() || userIsSuperuser()) )  {
+if (isActionParam("notUnlinkPicture") && (userIsSuperuser()) )  {
     if ($db->notUnlinkPicture(getIntParam("did"))) {
         $db->updateRecentChangesList();
         Appl::setMessage("Kép törlése sikeresen vissza állítva","success");
@@ -266,7 +266,7 @@ if (!isActionParam("showmore") ) {
 			</a>
 		<?php }
         //New album
-		if ( (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
+		if ( (userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -284,7 +284,7 @@ if (!isActionParam("showmore") ) {
 			</div>
 		<?php }
 		//Rename album
-		if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsAdmin() || userIsSuperuser() || userIsEditor()) ) {?>
+		if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -483,7 +483,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             </div>
         <?php } ?>
 
-        <?php  if (userIsAdmin() || userIsSuperuser()) {?>
+        <?php  if (userIsSuperuser()) {?>
             <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("picture",$pict["id"]))?></span>
             </a>
@@ -520,7 +520,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                         <button class="btn btn-warning" title="Törlés vissza" onclick="notUnlinkPicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove"></span> Maradhat</button>
                     <?php }?>
                 <?php }?>
-                <?php if (userIsAdmin() || userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
+                <?php if (userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
                     <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
                         <?php foreach ($albumList as $alb) {?>
                             <?php if ($alb["albumName"]!=$albumParam && substr($alb["albumName"],0,1)!="_" ) { ?>
@@ -538,7 +538,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     <div >
         <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 10px 10px 0 10px;cursor:default;" >
             <?php //change Order buttons?>
-            <?php if($view!="table" && ( userIsAdmin() || userIsEditor() || userIsSuperuser()) ) :?>
+            <?php if($view!="table" && (userIsEditor() || userIsSuperuser()) ) :?>
                 <?php  if ($idx!=0) {?>
                     <button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);return false;" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
                 <?php } else {?>
@@ -662,7 +662,7 @@ Appl::addJsScript("
 ');
 
 //javascript delete picture
-if (userIsAdmin() || userIsSuperuser()) {
+if (userIsSuperuser()) {
     \maierlabs\lpfw\Appl::addJsScript('
         function unlinkPicture(id) {
             if (confirm("'.Appl::__("Fénykép törlését kérem konfirmálni!").'")) {

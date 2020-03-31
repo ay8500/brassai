@@ -172,7 +172,7 @@ include("homemenu.inc.php");
     </div>
 
 	<div class="well">
-		<?php  if ((userIsAdmin() || userIsSuperuser()) && isset($class)) {?>
+		<?php  if ((userIsSuperuser()) && isset($class)) {?>
 			<a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
 			</a>
@@ -199,7 +199,7 @@ include("homemenu.inc.php");
 		<h4>Statisztikai adatok</h4>
 		<div class="form">	      		
 		<a href="hometable.php?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
-        <a href="hometable.php?guesst=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
+        <a href="hometable.php?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
 		Diákok képpel:<?php echo $stat->personWithPicture?><br/>
 		Diakok képei:<?php echo $stat->personPictures?><br/>
 		<a href="picture.php?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
