@@ -56,7 +56,7 @@ function displayPersonOpinion($db,$id,$teacher,$decesed) {
                 <img src="images/runner.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->sport ?></span>
             </span>
         </a>
-        <a id="c-person-eastern-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Húsvéti locsolók','person','easter',<?php echo getLoggedInUserIdOrNull() ?>)"
+        <a id="c-person-easter-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Húsvéti locsolók','person','easter',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Öntözök száma <?php echo $o->easter ?> " <?php echo $oeaster?>>
             <span style="margin-right: -8px;">
                 <img src="images/easter.png" style="width: 32px"/><span class="countTag"><?php echo $o->easter ?></span>

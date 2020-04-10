@@ -64,10 +64,10 @@ if ($type=='easter') {
     $person = $db->getPersonByID($id);
     $email = getFieldValue($person,"email");
     if ($email!="") {
-        $text = "<h3>Kedves ". getPersonLinkAndPicture($person) . "</h3>";
-        $text .= "<p>A Bassai Sámuel véndiákok honoldalán keresztül virtuálisan meglocsolt ".getPersonLinkAndPicture($db->getPersonByID(getLoggedInUserId()))."</p>";
-        $text .= "<p>Kellemes husvéti ünnepeket</p>";
-        \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail, $text, 'Brassai Sámuel véndiákjai. Virtuális locsolás. ');
+        $text = "<h3>Kedves ". getPersonLinkAndPicture($person,true) . "</h3>";
+        $text .= "<p>A Bassai Sámuel véndiákok honoldalán keresztül virtuálisan meglocsolt ".getPersonLinkAndPicture($db->getPersonByID(getLoggedInUserId()),true)."</p>";
+        $text .= "<p>Kellemes husvéti ünnepeket!</p>";
+        \maierlabs\lpfw\Appl::sendHtmlMail($email, $text, 'Brassai Sámuel véndiákjai. Virtuális locsolás. ');
     }
 }
 

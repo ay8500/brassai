@@ -381,10 +381,13 @@ function getPersonPicture($person) {
     }
 }
 
-function getPersonLinkAndPicture($person) {
+function getPersonLinkAndPicture($person,$fullLink=false) {
     if (isset($person["id"])) {
-        $ret = '<img src="' . getPersonPicture($person) . '"  class="diak_image_sicon"/>';
-        $ret .= ' <a href="editDiak.php?uid=' . $person["id"] . '">' . $person["lastname"] . " " . $person["firstname"] . '</a>';
+        if ($fullLink)
+            $pict = '';
+        else
+            $pict = '<img src="' . getPersonPicture($person) . '"  class="diak_image_sicon" />';
+        $ret = ' <a href="'.($fullLink?Config::$siteUrl.'/':'') .'editDiak.php?uid=' . $person["id"] . '">' .$pict. $person["lastname"] . " " . $person["firstname"] . '</a>';
     } else {
         $ret = 'Anonim felhasználó';
     }
