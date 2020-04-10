@@ -59,6 +59,9 @@ function showRecentChanges($db,$date=null) {
         } elseif ($id["type"] == "article") {
             $article= $db->getArticleById($id["id"]);
             displayArticle($db, $article,true);
+        } elseif ($id["type"] == "message") {
+            $message= $db->getMessage($id["id"]);
+            displayMessage($db, $message,true);
         }
     }
     if (sizeof($ids)>0)
@@ -69,35 +72,36 @@ function showRecentChanges($db,$date=null) {
     return date("Y-m-d H:i:s",$date);
 }
 
-Appl::setSiteTitle('Újdonságok','Újdonságok');
+//initialise tabs
+$tabsCaption = array();
+array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
+array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek', "glyphicon" => "pushpin"));
+array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztály', "glyphicon" => "tasks"));
+array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "education"));
+array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
+array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));
+array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "picture"));
+array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "screenshot"));
+array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "thumbs-up"));
+array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "plus"));
+if (userIsLoggedOn() || getParam("userid")!=null) {
+    if (getParam("userid")!=null) {
+        $pers = getPersonShortName($db->getPersonByID(getParam("userid")));
+    } else {
+        $pers = getPersonShortName($db->getPersonByID(getLoggedInUserId()));
+    }
+    array_push($tabsCaption, array("id" => "user", "caption" => $pers, "glyphicon" => "user"));
+} else {
+    array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "user"));
+}
+
+$title = 'Újdonságok: '. $tabsCaption[(array_search(getParam("tabOpen","all"),array_column($tabsCaption,"id")))]["caption"];
+Appl::setSiteTitle($title,$title);
 include("homemenu.inc.php");
 
 ?>
 <div class="container-fluid">
 	<div class="panel panel-default " ><?php
-
-        //initialise tabs
-        $tabsCaption = array();
-        array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
-        array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztály', "glyphicon" => "tasks"));
-        array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "education"));
-        array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
-        array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));
-        array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "picture"));
-        array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "screenshot"));
-        array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "thumbs-up"));
-        array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "plus"));
-        if (userIsLoggedOn() || getParam("userid")!=null) {
-            if (getParam("userid")!=null) {
-                $pers = getPersonShortName($db->getPersonByID(getParam("userid")));
-            } else {
-                $pers = getPersonShortName($db->getPersonByID(getLoggedInUserId()));
-            }
-            array_push($tabsCaption, array("id" => "user", "caption" => $pers, "glyphicon" => "user"));
-        } else {
-            array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "user"));
-        }
-
     	include Config::$lpfw.'view/tabs.inc.php';?>
 		<div class="panel-body">
 		    <?php $lastDate=showRecentChanges($db);?>

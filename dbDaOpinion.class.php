@@ -134,6 +134,11 @@ class dbDaOpinion
             $ret->favorite = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='favorite' and entryID=".$id);
             $ret->content =$this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='content' and entryID=".$id);
             $ret->nice = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='nice' and entryID=".$id);
+        } elseif ($type=='message') {
+            $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='text' and entryID=".$id);
+            $ret->favorite = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='favorite' and entryID=".$id);
+            $ret->content =$this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='content' and entryID=".$id);
+            $ret->nice = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='nice' and entryID=".$id);
         } else {
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=".$id);
             $ret->friends= $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=".$id);

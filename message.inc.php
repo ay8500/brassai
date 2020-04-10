@@ -34,10 +34,11 @@ function displayMessageList($elements, $offset=0) {
  * @return void
  */
 function displayMessage($message, $person) {
-    if($message["isDeleted"]==0) {?>
-        <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">
-    <?php } else { ?>
+    $expired = false;
+    if(isset($message["endDate"]) && $message["endDate"]!=null && strtotime($message['endDate'])<(new DateTime())->getTimestamp()) { $expired = true; ?>
         <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#fff0f0">
+    <?php } else { ?>
+        <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">
     <?php }?>
     <img src="<?php echo getPersonPicture($person)?>" style="height:40px; border-radius:5px;margin:2px" />
     <div style="display: inline-block;vertical-align: bottom;margin-left:5px">
@@ -67,7 +68,7 @@ function displayMessage($message, $person) {
             if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
                 (isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
                 $message["changeUserID"]==getLoggedInUserId() )
-                if ($message["isDeleted"]==0) {
+                if (!$expired) {
                     echo '<button class="btn btn-danger" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
                 }
             if (userIsAdmin()) {?>
@@ -91,37 +92,36 @@ function displayMessage($message, $person) {
 
 /**
  * Delete one message
+ * @param dbDAO $db
  * @param integer $id
  * @return boolean
  */
-function deleteMessage($id) {
-	global $db;
+function deleteMessage($db,$id) {
 	$message = $db->getMessage($id);
 	if ($message==null)
 		return false;
 	if (userIsAdmin() || 
 		(userIsLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
-		$message["changeIP"]==$_SERVER["REMOTE_ADDR"] ) {
-			
-		return $db->setMessageAsDeleted($id);
+		$message["changeIP"]==$_SERVER["REMOTE_ADDR"] )
+	{
+    	return $db->setMessageAsDeleted($id);
 	}
 	return false;
-	
+
 }
 
 
 /**
- * Write message 
+ * Write message
+ * @param dbDAO $db
  * @param unknown $text
  * @param unknown $privacy
  * @param unknown $name
  */
-function writeMessage($text,$privacy,$name) {
-	global $db;
+function writeMessage($db,$text,$privacy,$name) {
 	$message = array();
 	$message["text"]=$text;
 	$message["privacy"]=$privacy;
-	$message["isDeleted"]=0;
 	if (!userIsLoggedOn()) {
 		$message["name"]=$name;
 		$message["privacy"]="world";

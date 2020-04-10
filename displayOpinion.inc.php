@@ -107,6 +107,54 @@ function displayPictureOpinion($db,$id){
     <?php
 }
 
+
+/**
+ * Display the opinion block for a message
+ * @param dbDaOpinion $db
+ * @param int $id picture id
+ */
+function displayMessageOpinion($db,$id){
+    $o = $db->getOpinionCount($id,'message');
+    $onice = $o->nice>0?'':'style="display:none"';
+    $oopinion = $o->opinions>0?'':'style="display:none"';
+    $ofavorite = $o->favorite>0?'':'style="display:none"';
+    $ocontent = $o->content>0?'':'style="display:none"';
+    ?>
+    <div>
+        <buton onclick="<?php
+        echo 'showMessageOpinion('.$id.','.getLoggedInUserId().')';
+        ?>" class="btn btn-default" >
+            <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
+        </buton>
+        <a id="c-message-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','message','text',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $oopinion?>>
+            <span style="margin-right: -8px;">
+                <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
+            </span>
+        </a>
+        <a id="c-message-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc üzenetem','message','favorite',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="<?php echo $o->favorite ?> személynek a kedvenc képei közé tartozik." <?php echo $ofavorite?>>
+            <span style="margin-right: -8px;">
+                <img src="images/favorite.png" style="width: 32px"/><span class="countTag"><?php echo $o->favorite ?></span>
+            </span>
+        </a>
+        <a id="c-message-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Üzenetnek jó tartalma','message','content',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="<?php echo $o->content ?> vélemény szerint ennek a képnek jó a tartalma." <?php echo $ocontent?>>
+            <span style="margin-right: -8px;">
+                <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->content ?></span>
+            </span>
+        </a>
+        <a id="c-message-nice-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Szép kép van az üzenetbe','message','nice',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="Ennek a képnek szép a tartalma <?php echo $o->nice ?> vélemény szerint." <?php echo $onice?>>
+            <span style="margin-right: -8px;">
+                <img src="images/star.png" style="width: 32px"/><span class="countTag"><?php echo $o->nice ?></span>
+            </span>
+        </a>
+    </div>
+    <div id="o-message-<?php echo $id ?>"></div>
+    <?php
+}
+
 function getLoggedInUserIdOrNull() {
     if (getLoggedInUserId()!=null)
         return getLoggedInUserId();
@@ -160,6 +208,27 @@ function getLoggedInUserIdOrNull() {
         $('#o-picture-'+id).show('fast');
         return false;
     }
+
+    function showMessageOpinion(id,uid) {
+        var html=$('#opinionmessage').html();
+        html = html.replace(new RegExp('{id}', 'g'),id);
+        html = html.replace(new RegExp('{uid}', 'g'),uid);
+        html = html.replace(new RegExp('{type}', 'g'),'message');
+        $('#o-message-'+id).html(html);
+        $('#o-message-'+id).show('fast');
+        return false;
+    }
+
+    function showPictureOpinion(id,uid) {
+        var html=$('#opinionmessage').html();
+        html = html.replace(new RegExp('{id}', 'g'),id);
+        html = html.replace(new RegExp('{uid}', 'g'),uid);
+        html = html.replace(new RegExp('{type}', 'g'),'message');
+        $('#o-message-'+id).html(html);
+        $('#o-message-'+id).show('fast');
+        return false;
+    }
+
 
     function saveOpinion(id,type,stype,uid) {
         showWaitMessage();
@@ -308,7 +377,7 @@ if (!isActionParam("showmore")) {
 
 <div id="opinionpicture" style="display: none">
     <div class="optiondiv">
-        <span class="otitle">Véleményem erröl a képröl</span>
+        <span class="otitle">Véleményem erről a képről</span>
         <span style="display: inline-block; float: right;">
             <button onclick="return saveOpinion({id},'picture','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
@@ -324,6 +393,25 @@ if (!isActionParam("showmore")) {
         </div>
     </div>
 </div>
+
+<div id="opinionmessage" style="display: none">
+    <div class="optiondiv">
+        <span class="otitle">Véleményem erről az üzenetről</span>
+        <span style="display: inline-block; float: right;">
+        <button onclick="return saveOpinion({id},'message','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+        <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
+    </span>
+        <div class="taopinion">
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+        </div>
+        <div>
+            <hr/>
+            <button onclick="return saveOpinion({id},'message','favorite',{uid})" title="Kedvenc üzeneteim közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
+            <button onclick="return saveOpinion({id},'message','content',{uid})" title="Az üzenet tartalma tetszik nekem" class="btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó tartalom</button>
+        </div>
+    </div>
+</div>
+
 
 <div id="opinionlist" style="display: none">
     <div class="optiondiv">

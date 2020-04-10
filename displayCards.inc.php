@@ -220,6 +220,38 @@ function displayClass($db,$class,$showDate=false) {
 <?php }
 
 /**
+ * Display a class
+ * @param dbDAO $db the database
+ * @param array $class
+ * @param bool $showDate
+ */
+function displayMessage($db,$message,$showDate=true) {
+    $dbOpinion = new dbDaOpinion($db);
+    ?>
+    <div class="element">
+        <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <h4>Üzenet</h4>
+            <?php if (isset($message["changeUserID"]) && $message["changeUserID"]!=null) {
+                $author = $db->getPersonByID($message["changeUserID"]);?>
+                Üzenetet írta: <?php echo getPersonLinkAndPicture($author)?>
+            <?php } else {?>
+                Üzenetet írta:<?php echo $message["name"] ?>
+            <?php } ?>
+            <div style="max-height: 300px; overflow-y: scroll;margin-top: 10px">
+                <?php
+                    echo($message["text"]);
+                    if (isset($message["comment"]) && $message["comment"]!=null)
+                        echo("Kommentár: ".$message["comment"]);
+                ?>
+            </div>
+            <br/>Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"]);?>
+        </div>
+        <?php  displayMessageOpinion($dbOpinion,$message["id"]); ?>
+    </div>
+<?php }
+
+
+/**
  * Display an article class
  * @param dbDAO $db the database
  * @param array $article

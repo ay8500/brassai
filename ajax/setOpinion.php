@@ -23,7 +23,8 @@ $ret = new stdClass();
 if (getLoggedInUserId()==null) {
     if (
         ($table == 'person' && $type == 'friend') ||
-        ($table == 'picture' && $type == 'favorite')
+        ($table == 'picture' && $type == 'favorite') ||
+        ($table == 'message' && $type == 'favorite')
     ) {
         $ret->result='login';
         echo(json_encode($ret));

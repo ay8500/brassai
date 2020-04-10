@@ -30,7 +30,7 @@ $paramText=getParam("T", "");
 if (isActionParam("postMessage")) {
 	if (userIsLoggedOn()) {
 		if (checkMessageContent($paramText)) {
-			if (writeMessage($paramText, getParam("privacy"), getLoggedInUserName($userDB))>=0) {
+			if (writeMessage($db,$paramText, getParam("privacy"), getLoggedInUserName($userDB))>=0) {
 				Appl::$resultDbOperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
 				$paramName="";
 				$paramText="";
@@ -74,7 +74,7 @@ if (isActionParam("checkMessage")) {
 if (isActionParam("deleteMessage")) {
 	$id=getIntParam("id",-1);
 	if ($id!=-1) {
-		if (deleteMessage($id))
+		if (deleteMessage($db,$id))
             Appl::setMessage("Az üzenet ki lett törölve!","success");
 		else
             Appl::setMessage("Az üzenet törlése nem sikerült!","warning");
@@ -119,7 +119,7 @@ include("homemenu.inc.php");
 			</div>
 			<?php } ?>
 			<?php $text="~" ?>
-			<textarea id="story" name="T" onchange="textChanged();" ><?php echo($paramText);?></textarea>
+<textarea id="story" name="T" onchange="textChanged();" ><?php echo($paramText);?></textarea>
 			<?php if (userIsLoggedOn()) {?>
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt az üzenetet?</div>
@@ -140,7 +140,7 @@ include("homemenu.inc.php");
 	</div>		
 
 <?php
-	displayMessageList(100);
+	displayMessageList(10);
 ?>
 	
 </div>

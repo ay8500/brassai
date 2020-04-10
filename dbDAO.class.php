@@ -952,7 +952,7 @@ class dbDAO {
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","opinion"))) {
-            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and `table`!='message' order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
@@ -968,6 +968,14 @@ class dbDAO {
         }
         if (in_array($filter,array("all","tag"))) {
             $sql = " (select pictureID as id, changeDate, 'picture' as type, 'marked' as action, changeUserID from personInPicture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
+            $this->dataBase->query($sql);
+            $rows = array_merge($rows, $this->dataBase->getRowList());
+        }
+        if (in_array($filter,array("all","message"))) {
+            $sql = " (select id, changeDate, 'message' as type, 'message' as action, changeUserID from message where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and endDate is null and privacy='world' order by changeDate desc limit " . $limit . ") ";
+            $this->dataBase->query($sql);
+            $rows = array_merge($rows, $this->dataBase->getRowList());
+            $sql = " (select id, NOW() as changeDate, 'message' as type, 'message' as action, changeUserID from message where true ".$sqlIpUser." and endDate>NOW() and privacy='world' order by endDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
@@ -1030,7 +1038,7 @@ class dbDAO {
 	public function setMessageAsDeleted($id) {
 		$entry=array();
 		$entry["id"]=$id;
-		$entry["isDeleted"]=1;
+		$entry["endDate"]=date("Y-m-j H:i:s");
 		$this->dataBase->createHistoryEntry("message",$id);
 		return $this->dataBase->updateEntry("message", $entry);
 	}
