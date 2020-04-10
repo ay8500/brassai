@@ -104,7 +104,16 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				<?php }?>
 	  		</div>
 		</div>
-    <?php displayPersonOpinion($dbOpinion,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"])); ?>
+    <?php
+        if (!isset($person["deceasedYear"]) || $person["deceasedYear"]==null && strtotime("now")<strtotime("2020-04-15")) {
+            if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !userIsLoggedOn())) {
+                ?>
+                <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId() ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
+                <?php
+            }
+        }
+        displayPersonOpinion($dbOpinion,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
+        ?>
 	</div>
 <?php
 }
