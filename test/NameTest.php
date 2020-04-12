@@ -121,7 +121,6 @@ class nameTest extends \PHPUnit_Framework_TestCase
             return 'n';
 
         return $genderM>$genderF?'m':'f';
-
     }
 
     /**

@@ -66,6 +66,7 @@ if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 					$person["role"]=getParam("role","");
                     $person["facebookid"]=getParam("fid");
 					$person["classID"]=$classid;
+                    $person["gender"]=getGender($person["firstname"]);
 					$newUserReturnValue = $db->savePerson($person);
 				} else {
 					//update a person
@@ -136,7 +137,7 @@ include 'homemenu.inc.php';
 				<div class="inline margin-hor"> Nem éretségiztem ebben az iskolabán, de egy ideig oda jártam.</div></div>
 			<div style="clear:both;"></div>
 			<div class="margin-def">
-				<input class="left fb-radio" type="radio" name="role" onclick="setRole(false,3);"/> 
+				<input class="left fb-radio" type="radio" name="role" onclick="setRole(false,3);"/> <?php//TODO?>
 				<div class="inline margin-hor"> Nem jártam ebben az iskolában, sok kedves ismerösöm és barátommal szeretnék kapcsolatba maradni.</div></div>
 			<div style="clear:both;"></div>
 			<div class="margin-def">
@@ -272,7 +273,13 @@ include 'homemenu.inc.php';
 		} else {
 		    $("#idclass").hide("slow");
 		}
-		showPersons();
+		if (r==1 || r==2 || r==4) {
+            showPersons();
+        } else {
+            $("#page2").hide("slow");
+            $("#page3").show("slow");
+            $("#signin").removeClass("disabled");
+        }
 	}
 
 	function signin() {

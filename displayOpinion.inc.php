@@ -270,7 +270,7 @@ function getLoggedInUserIdOrNull() {
                         showModalMessage('Anonim felhasználó véleménye','Sajnos véleményt mint anonim felhasználó csak bizonyos mértékben adhatsz. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.','warning');
                     } else if (data.result=='login') {
                         if (type='easter')
-                            showModalMessage('Anonim felhasználó','Sajnos csak bejelentkezett felhasználók tudnak locsolni. Kérjük jelentkezz be és locsolj újból. Köszönjük szépen.','warning');
+                            alert('Sajnos csak bejelentkezett felhasználók tudnak locsolni. Kérjük jelentkezz be és locsolj újból. Köszönjük szépen.');
                         else
                             showModalMessage('Anonim felhasználó véleménye','Sajnos ezt a véleményt csak bejelentkezett felhasználók adhatják meg. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.','warning');
                     }

@@ -7,6 +7,7 @@ include_once 'config.class.php';
 include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'ltools.php';
 include_once Config::$lpfw.'mysqldbauh.class.php';
+include_once Config::$lpfw.'htmlParser.class.php';
 
 include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
@@ -761,5 +762,39 @@ function getPersonLink($lastname,$firstname) {
     return getNormalisedChars($lastname).'_'.getNormalisedChars($firstname);
 }
 
+/**
+ * get gender by addressok database
+ * @param $firstname
+ * @return string "f" or "m"
+ */
+function getGender($firstname) {
+    $url="https://addressok.blue-l.de/ajax/jsonCheckName.php?name=".$firstname;
+    try {
+        $ret = maierlabs\lpfw\htmlParser::loadUrl($url);
+        $ret = json_decode($ret);
+    } catch (Exception $e) {
+        \maierlabs\lpfw\Logger::_("Get gender for $firstname ".$e->getMessage(),\maierlabs\lpfw\LoggerLevel::error);
+    }
+
+    if (isset($ret->countAll) && $ret->countAll>0) {
+        $genderM=0;
+        $genderF=0;
+        $genderN=0;
+        foreach ($ret as $r) {
+            if (is_object($r)) {
+                if ($r->gender=='m') $genderM++;
+                if ($r->gender=='n') $genderN++;
+                if ($r->gender=='f') $genderF++;
+            }
+        }
+    } else {
+        return "";
+    }
+
+    if ($genderM==0 && $genderF==0)
+        return "";
+
+    return $genderM>$genderF?'m':'f';
+}
 
 ?>

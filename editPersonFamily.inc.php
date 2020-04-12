@@ -21,6 +21,7 @@ $family=array(
     array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
     array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
     array ("code"=>"ps", "text"=>"Szüleim testvére","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
+    array ("code"=>"psl", "text"=>"Szüleim testvérének élettársa","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
     array ("code"=>"psc", "text"=>"Szüleim testvérének gyereke=Unokatestvérem","textf"=>"","textm"=>""),
     array ("code"=>"pscc", "text"=>"Szüleim testvérének unokája","textf"=>"Másodunokahugom","textm"=>"Másodunkaöcsém"),
     array ("code"=>"psccc", "text"=>"Szüleim testvérének dédunokája","textf"=>"","textm"=>""),
