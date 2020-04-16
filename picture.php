@@ -25,6 +25,13 @@ if (!isset($type)) {
 			$type="schoolID";$typeId=getRealId(getAktSchool());
 		}
 	}
+	if(!in_array($type,array("personID","schoolID","classID"))) {
+        header("HTTP/1.0 400 Bad Request");
+        include "homemenu.inc.php";
+        echo('<div class="well">Bad Request</div>');
+        include "homefooter.inc.php";
+        return;
+    }
 }
 if (!isset($typeId)) {
 	$typeId=getParam("typeid");

@@ -24,7 +24,7 @@ Appl::addJsScript("
 ");
 
 if (isActionParam("sendMail")) {
-	if (userIsEditor()) {
+	if (userIsEditor() || userIsSuperuser()) {
 		include_once ("sendMail.php");
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		$mailsSent =0;$mailsError =0;

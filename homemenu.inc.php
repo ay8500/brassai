@@ -5,6 +5,7 @@
     include_once Config::$lpfw.'logon.inc.php';
     include_once 'dbBL.class.php';
     include_once 'dbDaUser.class.php';
+    include_once 'dbDaOpinion.class.php';
     include_once Config::$lpfw.'dbDaTracker.class.php';
 
     use maierlabs\lpfw\Appl as Appl;
@@ -295,12 +296,18 @@
         </div>
     </div>
 </div>
+<?php $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter');?>
 
 <div id="topLine">
     <h1 class="appltitle">
+        <?php /*
+        <a href="start.php?tabOpen=easter" title="Meglocsolt virágszállak:<?php echo (sizeof($rpo->opinion))?> locsolók:<?php echo (sizeof($rpo->user))?> "><img src="images/easter.png" style="width: 50px" /><span class="badge" style="left: -20px;position: relative;top: 4px;">
+            <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
+            </span></a>
+        */?>
         <span id="o1024">A kolozsvári </span>
         Brassai Sámuel líceum <span id="o400">egykori </span>diákjai
-        <span id="o480"> <?PHP echo(getClassName(Appl::getMemberId("aktClass"))) ?></span>
+        <span id="o480"> <?PHP echo(getClassName(Appl::getMember("aktClass"))) ?></span>
     </h1>
 </div>
 <div class="sub_title"><?php echo Appl::$subTitle ?></div>

@@ -23,15 +23,17 @@ if (null!=$person) {
 		} 
 
 		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')==$_SESSION['SECURITY_CODE'])) {
-			Appl::setMessage("Személyes adatok védelme kérvényezve. Hamarosan visszajelzük mailben vagy telefonon.","info");
 			include_once 'sendMail.php';
 			$html="";
-			$html .="<h2>Végzös diákok honoldala</h2>";
+			$html .="<h2>Véndiákok honoldala</h2>";
 			$html .='<div>Server-Addr:'.print_r($_SERVER["SERVER_ADDR"],true).'</div>';
 			$html .='<div>Remote-Addr:'.print_r($_SERVER["REMOTE_ADDR"],true).'</div>';
 			$html .='<div>Request-Time:'.date("Y.m.d H:i:s",print_r($_SERVER["REQUEST_TIME"],true)).'</div>';
 			$html .='<div>'.print_r($_REQUEST,true).'</div>';
-            \maierlabs\lpfw\Appl::sendHtmlMail(null, $html, "GDPR");
+            if (\maierlabs\lpfw\Appl::sendHtmlMail(getParam("email"), $html, "GDPR"))
+                Appl::setMessage("Személyes adatok védelme kérvényezve. Hamarosan visszajelzük mailben vagy telefonon.","info");
+            else
+                Appl::setMessage("Személyes adatok védelmének kérvényezése nem sikerült. Kérünk probálkozz újból vagy írj a brassai@blue-l.de címre egy kérvényt.","warning");
 		}
 	}
 }

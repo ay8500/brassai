@@ -89,6 +89,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				    if ($action=='change' || $action==null) $action="Módósította: ";
                     if ($action=='family' || $action==null) $action="Rokont jelölt: ";
                     if ($action=='opinion') $action="Vélemény: ";
+                    if ($action=='easter') $action="Locsoló: ";
                     if ($changeDate==null)
                         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);
                     else
@@ -105,6 +106,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	  		</div>
 		</div>
     <?php
+        /*Easter
         if (!isset($person["deceasedYear"]) || $person["deceasedYear"]==null && strtotime("now")<strtotime("2020-04-15")) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !userIsLoggedOn())) {
                 ?>
@@ -112,6 +114,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                 <?php
             }
         }
+        */
         displayPersonOpinion($dbOpinion,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
         ?>
 	</div>
@@ -248,7 +251,7 @@ function displayMessage($db,$message,$showDate=true) {
             <?php } ?>
             <div style="max-height: 300px; overflow-y: scroll;margin-top: 10px">
                 <?php
-                    echo($message["text"]);
+                    echo(htmlspecialchars_decode($message["text"]));
                     if (isset($message["comment"]) && $message["comment"]!=null)
                         echo("Kommentár: ".$message["comment"]);
                 ?>

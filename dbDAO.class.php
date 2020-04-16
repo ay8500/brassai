@@ -952,7 +952,12 @@ class dbDAO {
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","opinion"))) {
-            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and `table`!='message' order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and `table`!='message' and `opinion`!='easter' order by changeDate desc limit " . $limit . ") ";
+            $this->dataBase->query($sql);
+            $rows = array_merge($rows, $this->dataBase->getRowList());
+        }
+        if (in_array($filter,array("all","easter"))) {
+            $sql = " (select entryID as id, changeDate, `table` as type, 'easter' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and  opinion='easter' order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
