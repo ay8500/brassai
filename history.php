@@ -102,6 +102,7 @@ function displayPerson($db,$item,$person,$itemNext) {
     displayElementObj($person, $personNext,"gender","X");
 	displayElementObj($person, $personNext,"picture","Pic");
 	displayElementObj($person, $personNext,"partner","P");
+    displayElementObj($person, $personNext,"birthyear","+");
 	displayElementObj($person, $personNext,"deceasedYear","†");
     displayElementObj($person, $personNext,"cementery","†");
 

@@ -10,7 +10,7 @@
 				<li><a href="dataCheck.php"  >Vizsga</a></li>
 				<li><a href="database.php"  >Adatbank</a></li>
 			<?PHP }	?>
-			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">&copy; 2020 Levi</span></li>
+			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">Vers:<?php echo Config::$webAppVersion?></span></li>
 	      </ul>
 	</nav>
 	<?php
@@ -35,7 +35,17 @@ if (userIsAdmin()) {
             $.ajax({
                 url: "ajax/getIpLocation.php?ip="+ip,
                 success:function(data) {
-                    showModalMessage("IP cím:"+ip+" földrajzi adatai","Ország:"+data.country+"<br/>Irányítószám:"+data.zip+"<br/>Város:"+data.city);
+                    var m  = "Ország:"+data.country+"<br/>";
+                        m += "Irányítószám:"+data.zip+"<br/>";
+                        m += "Város:"+data.city+"<hr/>";
+                        m += "Ország:"+data.x.country_name+"<br/>";
+                        m += "Irányítószám:"+data.x.zip+"<br/>";
+                        m += "Város:"+data.x.city+"<br/>";
+                        m += "<img src=\""+data.x.location.country_flag+"\" style=\"height:35px\" /><br/>";
+                        m += "ISP:"+data.isp+"<br/>";
+                        m += "ORG:"+data.org+"<br/>";
+                        m += "AS:"+data.as+"<br/>";
+                    showModalMessage("IP cím:"+ip+" földrajzi adatai",m);
                 }
             });
         }

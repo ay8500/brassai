@@ -262,14 +262,14 @@ function getLoggedInUserIdOrNull() {
                     } else if (data.result=='empty') {
                         showModalMessage('Vélemény','Sajnos a vélemény mező szövege üres. Kérjük ismételd meg véleményed. Köszönjük szépen.');
                     } else if (data.result=='exists') {
-                        if (type='easter')
+                        if (type=='easter')
                             alert('Ezt a virágszálat már meglocsoltad.');
                         else
                             showModalMessage('Vélemény','Ezt a tipusú véleményt már megadtad.','warning');
                     } else if (data.result=='count') {
                         showModalMessage('Anonim felhasználó véleménye','Sajnos véleményt mint anonim felhasználó csak bizonyos mértékben adhatsz. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.','warning');
                     } else if (data.result=='login') {
-                        if (type='easter')
+                        if (type=='easter')
                             alert('Sajnos csak bejelentkezett felhasználók tudnak locsolni. Kérjük jelentkezz be és locsolj újból. Köszönjük szépen.');
                         else
                             showModalMessage('Anonim felhasználó véleménye','Sajnos ezt a véleményt csak bejelentkezett felhasználók adhatják meg. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.','warning');
@@ -368,7 +368,7 @@ if (!isActionParam("showmore")) {
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div  class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, dicséreted"></textarea>
         </div>
         <div>
             <hr/>
@@ -387,7 +387,7 @@ if (!isActionParam("showmore")) {
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div  class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, élményed"></textarea>
         </div>
         <div>
             <hr/>
@@ -405,7 +405,7 @@ if (!isActionParam("showmore")) {
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide dicséreted, megjegyzésed, gondolatod"></textarea>
         </div>
         <div>
             <hr/>
@@ -424,7 +424,7 @@ if (!isActionParam("showmore")) {
         <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
     </span>
         <div class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megyjegyzésed, gondolatod"></textarea>
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, hozzászólásod"></textarea>
         </div>
         <div>
             <hr/>

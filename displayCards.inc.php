@@ -26,6 +26,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 		<div class="personboxc">
             <?php displayPersonNameAndClass($db,$d,$personLink,$showClass); ?>
 			<div class="fields"><?php
+                if(showField($d,"birthyear")) 	echo "<div><div>Született:</div><div>".$d["birthyear"]."</div></div>";
 				if ($d["isTeacher"]==0) {
 					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
 					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d["education"])."</div></div>";

@@ -140,31 +140,22 @@ function writeMessage($db,$text,$privacy,$name) {
  * @param string $message
  * @param boolean $returnCount if true will return the count of hungarian words
  */
-function checkMessageContent($message,$returnCount=false) {
-	if (strlen($message)<10)
-		if ($returnCount)
-			return 0;
-		else
-			return false;
+function checkMessageContent($message) {
+    $ret = new \stdClass();
 	$msg = " ".mb_strtolower(strip_tags($message))." ";
-	$rr = array("/","=","-",":",",",".","(",")","?","!");
+	$rr = array("/","=","-",":",",",".","(",")","?","!","  ");
 	$msg = str_replace($rr, " ", $msg);
 	$whiteList = array(	"lessz ", " volt "," van "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz "," itt ", " ott "," de "," is ",
 						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ","nagyon","puszilok",
-						"legyek", " aki ", "mikor", "honlap", "honoldal","vagyok","leszek"," vagy ",
-						" én ",
+						"legyek", " aki ", "mikor", "honlap", "oldal","vagyok","leszek"," vagy "," minden ",
+						" én "," te ", " brassai ","köszön", "üdvöz",
 						"ünnepek",  "boldog ", "karácsony", "husvét", "egy ","minden","senki","neked","fénykép" );
-	$count = 0;
 	foreach ($whiteList as $s) {
-		$count += substr_count($msg, $s);
+		$ret->count += substr_count($msg, $s);
 	}
-	if ($returnCount) {
-		return $count;
-	} else {
-		if ($count==0)
-			return false;
-		return ($count > strlen($msg) /70);
-	}
+	$ret->words=sizeof(explode(" ",$msg));
+	$ret->ok = $ret->count >= $ret->words/10 && $ret->words>10;
+	return $ret;
 }
 
 ?>

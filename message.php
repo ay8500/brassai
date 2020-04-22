@@ -29,7 +29,7 @@ $paramText=getParam("T", "");
 
 if (isActionParam("postMessage")) {
 	if (userIsLoggedOn()) {
-		if (checkMessageContent($paramText)) {
+		if (checkMessageContent($paramText)->ok) {
 			if (writeMessage($db,$paramText, getParam("privacy"), getLoggedInUserName($userDB))>=0) {
 				Appl::$resultDbOperation='<div class="alert alert-success" > A beadott üzenet elküldése sikerült!</div>';
 				$paramName="";
@@ -45,7 +45,7 @@ if (isActionParam("postMessage")) {
 			Appl::$resultDbOperation='<div class="alert alert-warning" >Írd be család és keresztneved!</div>';
 		}
 		else { 
-			if (checkMessageContent($paramText)) {
+			if (checkMessageContent($paramText)->ok) {
 				if ($db->checkRequesterIP(changeType::message)) {
 					if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
                         $db->saveRequest(changeType::message);
@@ -66,8 +66,12 @@ if (isActionParam("postMessage")) {
 }
 
 if (isActionParam("checkMessage")) {
-    Appl::setMessage('A beadott üzenet tartalmaz-e magyar kifejezést? Eredmény:'.
-        (checkMessageContent($paramText)?"igen, rendben":"nem, probálkozz újból"),checkMessageContent($paramText)?"success":"warning");
+    error_reporting(~E_ALL );
+    $checkMsg=checkMessageContent($paramText);
+    $text = 'A beadott üzenet tartalmaz-e magyar értelmes szöveget? ';
+    $text .="Szavak:".$checkMsg->words." Magyar szavak:".$checkMsg->count." Eredmény: ";
+    $text .=$checkMsg->ok?"rendben":"nem, probálkozz újból";
+    Appl::setMessage($text,$checkMsg->ok?"success":"warning");
 }
 
 
