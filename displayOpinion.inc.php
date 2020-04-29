@@ -225,17 +225,6 @@ function getLoggedInUserIdOrNull() {
         return false;
     }
 
-    function showPictureOpinion(id,uid) {
-        var html=$('#opinionmessage').html();
-        html = html.replace(new RegExp('{id}', 'g'),id);
-        html = html.replace(new RegExp('{uid}', 'g'),uid);
-        html = html.replace(new RegExp('{type}', 'g'),'message');
-        $('#o-message-'+id).html(html);
-        $('#o-message-'+id).show('fast');
-        return false;
-    }
-
-
     function saveEasterOpinion(id,type,stype,uid) {
         showModalMessage('Virtuális husvéti locsolás','Rózsa, rózsa szép virágszál,<br/>Szálló szélben hajladozzál.<br/>Napsütésben nyiladozzál,<br/>Meglocsollak, illatozzál.','info',{
             'Megszabad locsolni?':function() {

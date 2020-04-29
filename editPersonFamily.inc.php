@@ -15,14 +15,18 @@ $family=array(
     array ("code"=>"l", "text"=>"Élettársam","textf"=>"Feleségem","textm"=>"Férjem"),
     array ("code"=>"lp", "text"=>"Élettársam szülei","textf"=>"Anyósom","textm"=>"Apósóm"),
     array ("code"=>"s", "text"=>"Testvérem","textf"=>"Hugom / Növérem","textm"=>"Fivérem"),
-    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sogornöm","textm"=>"Sogorom"),
-    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sogornöm","textm"=>"Sogorom"),
+    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"sls", "text"=>"Testvérem élettársának testvére","textf"=>"Sógornőm/sógorom testvére","textm"=>"Sógornőm/sógorom testvére"),
+    array ("code"=>"slsl", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
+    array ("code"=>"lsls", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
     array ("code"=>"sc", "text"=>"Testvérem gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
     array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
     array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
     array ("code"=>"ps", "text"=>"Szüleim testvére","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
     array ("code"=>"psl", "text"=>"Szüleim testvérének élettársa","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
     array ("code"=>"psc", "text"=>"Szüleim testvérének gyereke=Unokatestvérem","textf"=>"","textm"=>""),
+    array ("code"=>"pscl", "text"=>"Szüleim testvérének gyerekének élettársa","textf"=>"Unokatestvérem felesége","textm"=>"Unokatestvérem férje"),
     array ("code"=>"pscc", "text"=>"Szüleim testvérének unokája","textf"=>"Másodunokahugom","textm"=>"Másodunkaöcsém"),
     array ("code"=>"psccc", "text"=>"Szüleim testvérének dédunokája","textf"=>"","textm"=>""),
     array ("code"=>"pp", "text"=>"Nagyszüleim","textf"=>"Nagyanyám","textm"=>"Nagyapám"),
@@ -84,7 +88,7 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
                     if (strpos($familyPerson["coderec"],'lp')!==false)
                         $textGender = " anyóson vagy apóson keresztül";
                     elseif (strpos($familyPerson["coderec"],'ls')!==false)
-                        $textGender = " sogornön vagy sogoron keresztül";
+                        $textGender = " sógornőn vagy sógoron keresztül";
                     elseif (strpos($familyPerson["coderec"],'l')!==false)
                         $textGender = " élettársamon keresztül";
                 }
@@ -104,7 +108,7 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
         <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokon neme</span>
         <select class="form-control" onchange="setGender()" id="relativeGender">
             <option value="">... válassz ...</option>
-            <option value="f">Lány / Nö</option>
+            <option value="f">Lány / Nő</option>
             <option value="m">Férfi / Fiú</option>
         </select>
     </div>

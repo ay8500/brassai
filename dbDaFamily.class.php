@@ -232,7 +232,7 @@ class dbDaFamily
         $ret = str_replace("sss","s",$ret); //silbling silbling = silbling
         $ret = str_replace("ss","s",$ret); //silbling silbling = silbling
         $ret = preg_replace("/pl\z/","p",$ret,1); // my parent life partner is also my parent
-        $ret = preg_replace("/lc\z/","c",$ret,1); // my lifepartners child is my brother
+        $ret = preg_replace("/lc\z/","c",$ret,1); // my lifepartners child is my also my child
 
         return $ret;
     }

@@ -71,7 +71,6 @@ if (isActionParam("notUnlinkPicture") && (userIsSuperuser()) )  {
     }
 }
 
-
 //Upload image
 if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 	if ($db->checkRequesterIP(changeType::classupload)) {
@@ -180,9 +179,9 @@ if ($albumParam=="_tablo_") {
 } elseif ($albumParam=="_sport_") {
     $wherePictureList .= "and tag like '%sport%'";
 } else {
-    $wherePictureList = $type.'='.$typeId;
+    $wherePictureList .= ' and '.$type.'='.$typeId;
     if (getParam("type")=="schoolID")
-        $wherePictureList .=" and tag is null";
+        $wherePictureList .=" and (tag is null or tag ='') ";
     if ($albumParam!=null) {
         $wherePictureList.=" and albumName='".$albumParam."'";
     } else {
