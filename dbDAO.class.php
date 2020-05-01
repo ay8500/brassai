@@ -144,16 +144,21 @@ class dbDAO {
      * @param int $schoolID
      * @return array
      */
-	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=false,$isTwentyfirstcentury=false) {
-	    if ($isTwentyfirstcentury)
-	        $xxi=" and graduationYear > 1999";
-	    else
-	        $xxi=" and graduationYear <= 1999";
-	    if ($isEveningClass) {
-	        $eveningClass = " and eveningClass = 1 ";
-            $xxi="";
-        } else {
-	        $eveningClass = " and eveningClass = 0 ";
+	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=null,$isTwentyfirstcentury=null) {
+        $xxi="";
+        $eveningClass="";
+        if ($isTwentyfirstcentury!=null) {
+            if ($isTwentyfirstcentury)
+                $xxi = " and graduationYear > 1999";
+            else
+                $xxi = " and graduationYear <= 1999";
+        }
+        if ($isEveningClass!=null) {
+            if ($isEveningClass) {
+                $eveningClass = " and eveningClass = 1 ";
+            } else {
+                $eveningClass = " and eveningClass = 0 ";
+            }
         }
 		return   $this->dataBase->getElementList("class",$originalId, "schoolID=".$schoolID.$xxi.$eveningClass,null,null,"text asc");
 	}
@@ -210,8 +215,11 @@ class dbDAO {
 	 * @return integer if negativ an error occurs
 	 */
 	public function savePerson($person) {
-	    if (isset($person["deceasedYear"]) && $person["deceasedYear"]=='') {
+	    if (isset($person["deceasedYear"]) && ($person["deceasedYear"]==''|| intval($person["birthyear"])<1800)) {
             $person["deceasedYear"]=null;
+        }
+        if (isset($person["birthyear"]) && ($person["birthyear"]=='' || intval($person["birthyear"])<1800)) {
+            $person["birthyear"]=null;
         }
 	    $ret =$this->dataBase->saveEntry("person", $person);
 		return $ret;

@@ -22,7 +22,7 @@ if (null!=$person) {
 			Appl::setMessage("Biztonságí kód nem helyes. Probáld még egyszer!","warning");
 		} 
 
-		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')==$_SESSION['SECURITY_CODE'])) {
+		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')===$_SESSION['SECURITY_CODE'])) {
 			include_once 'sendMail.php';
 			$html="";
 			$html .="<h2>Véndiákok honoldala</h2>";
@@ -115,9 +115,9 @@ include 'homemenu.inc.php';
 	<div class="input-group" style="margin: 20px 0px 20px 0px;">
 		<span style="min-width:120px; text-align:right" class="input-group-addon">Biztonsági cód</span>
 		<span class="input-group-addon" style="padding:2px">
-			<img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" />
+			<img style="vertical-align: middle;" alt="" src="../lpfw/SecurityImage/SecurityImage.php" />
 		</span>
-		<input type="text" class="form-control" value="" id="code-gdpr" name="code" placeholder="cód" onkeyup="checkgdpr();" />
+		<input type="text" class="form-control" value="" id="code-gdpr" name="code" placeholder="írd be az 5 karakteres biztonsági kódot" onkeyup="checkgdpr();" />
 	</div>
 	<?php }?>
 

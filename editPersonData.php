@@ -64,9 +64,11 @@
 			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
 		</div>
 	<?php } ?>
-	<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-		<button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
-	</div>
+    <?php if (!isActionParam("newperson")) {?>
+        <div style="display: inline-block;margin:15px;vertical-align: bottom;">
+            <button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
+        </div>
+    <?php } ?>
 
 <?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
     <form method="get" id="editform" >
@@ -96,7 +98,7 @@
                     <select class="form-control" name="classID" id="classID">
                         <option value="-1" >...válassz...</option>
                         <?php foreach ($optionClasses as $optionClass) {?>
-                            <option value="<?php echo $optionClass["id"]?>" <?php echo ($optionClass["id"]==$diak["classID"])?"selected":""?>><?php echo $optionClass["text"]?></option>
+                            <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getAktClassId()?"selected":""?>><?php echo $optionClass["text"]?></option>
                         <?php } ?>
                     </select>
                 </div>

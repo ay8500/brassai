@@ -76,15 +76,15 @@ include_once 'dbBL.class.php';
 				Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
 				
 				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-					<span style="min-width:110px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
-					<input id="code" type="text" size="6" value="" placeholder="Kód" class="form-control"/>
+					<span style="min-width:130px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
 					<div class="input-group-btn">
-						<img style="vertical-align: middle;" alt="" src="SecurityImage/SecurityImage.php" />
+						<img style="height: 34px;border: 1px solid lightgrey;" alt="" src="../lpfw/SecurityImage/SecurityImage.php" />
 					</div>
+                    <input id="code" type="text" size="6" value="" placeholder="írd be az 5 karakteres biztonsági kódot" class="form-control"/>
 				</div>
 				
 				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
-					<span style="min-width:110px; text-align:right" class="input-group-addon" >Nevem:</span>
+					<span style="min-width:130px; text-align:right" class="input-group-addon" >Nevem:</span>
 					<input id="name" type="text" value="<?php echo $name ?>" placeholder="Név" class="form-control" />
 				</div>
 				
