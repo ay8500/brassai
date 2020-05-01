@@ -13,13 +13,8 @@ $family=array(
     array ("code"=>"cl", "text"=>"Gyerekem élettársa","textf"=>"Menyem","textm"=>"Vöm"),
     array ("code"=>"c", "text"=>"Gyerekem","textf"=>"Lányom","textm"=>"Fiam"),
     array ("code"=>"l", "text"=>"Élettársam","textf"=>"Feleségem","textm"=>"Férjem"),
-    array ("code"=>"lp", "text"=>"Élettársam szülei","textf"=>"Anyósom","textm"=>"Apósóm"),
     array ("code"=>"s", "text"=>"Testvérem","textf"=>"Hugom / Növérem","textm"=>"Fivérem"),
-    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sógornőm","textm"=>"Sógorom"),
-    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
     array ("code"=>"sls", "text"=>"Testvérem élettársának testvére","textf"=>"Sógornőm/sógorom testvére","textm"=>"Sógornőm/sógorom testvére"),
-    array ("code"=>"slsl", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
-    array ("code"=>"lsls", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
     array ("code"=>"sc", "text"=>"Testvérem gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
     array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
     array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
@@ -37,7 +32,23 @@ $family=array(
     array ("code"=>"ppp", "text"=>"Dédszüleim","textf"=>"Dédanyám","textm"=>"Dédapám"),
     array ("code"=>"pppsc", "text"=>"Dédszüleim testvérének gyereke","textf"=>"Harmaddédnéném","textm"=>"Harmaddédédbátyám"),
     array ("code"=>"pppscc", "text"=>"Dédszüleim testvérének unokája","textf"=>"Harmadnagynéném","textm"=>"Harmadnagybátyám"),
-    array ("code"=>"pppsccc", "text"=>"Dédszüleim testvérének dédunokája=Harmadunokatestvér","textf"=>"","textm"=>"")
+    array ("code"=>"pppsccc", "text"=>"Dédszüleim testvérének dédunokája=Harmadunokatestvér","textf"=>"","textm"=>""),
+
+    array ("code"=>"lp", "text"=>"Élettársam szülei","textf"=>"Anyósom","textm"=>"Apósóm"),
+    array ("code"=>"lps", "text"=>"Élettársam szüleinek testvére","textf"=>"Anyósom/aposom higa/növére","textm"=>"Anyosom/apósóm fivére"),
+    array ("code"=>"lpsc", "text"=>"Élettársam szüleinek testvérének gyereke","textf"=>"Anyósom/aposom unokahuga","textm"=>"Anyosom/apósóm unokaöccse"),
+    array ("code"=>"lpscl", "text"=>"Élettársam szüleinek testvérének gyerekének élettársa","textf"=>"Anyósom/aposom unokahugának/unokaöccsének felesége","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének férje"),
+    array ("code"=>"lpscl", "text"=>"Élettársam szüleinek testvérének gyerekének élettársa","textf"=>"Anyósom/aposom unokahugának/unokaöccsének felesége","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének férje"),
+    array ("code"=>"lpscls", "text"=>"Élettársam szüleinek testvérének gyerekének élettársának gyereke","textf"=>"Anyósom/aposom unokahugának/unokaöccsének élettársának lánya","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének élettársának fia"),
+
+    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"lsl", "text"=>"Élettársam testvérének élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"slsl", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
+    array ("code"=>"lsls", "text"=>"Élettársam testvérének élettérsának terstvére","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
+    array ("code"=>"slsc", "text"=>"Testvérem élettársának testvérének gyereke","textf"=>"Sógornőm/sógorom unokahuga","textm"=>"Sógornőm/sógorom unokaöccse"),
+    array ("code"=>"lssc", "text"=>"Élettársam testvérének testvérének gyereke","textf"=>"Sógornőm/sógorom unokahuga","textm"=>"Sógornőm/sógorom unokaöccse"),
+
 );
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -78,19 +89,11 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
             ?><div class="element"><?php
                 $relative= array_search($familyPerson["coderec"],array_column($family,"code"));
                 if ($familyPerson["gender"]=="f" || $person["gender"]=="f")
-                    $textGender=($family[$relative]["textf"]!='')?'='.$family[$relative]["textf"]:"";
+                    $textGender =($family[$relative]["textf"]!='')?'='.$family[$relative]["textf"]:"";
                 elseif ($familyPerson["gender"]=="m" || $person["gender"]=="m")
-                    $textGender=($family[$relative]["textm"]!='')?'='.$family[$relative]["textm"]:"";
+                    $textGender =($family[$relative]["textm"]!='')?'='.$family[$relative]["textm"]:"";
                 else {
                     $textGender = ($family[$relative]["textf"] != '') ? '=' . $family[$relative]["textf"] . " / " . $family[$relative]["textm"] : "";
-                }
-                if ($family[$relative]["code"]=='x') {
-                    if (strpos($familyPerson["coderec"],'lp')!==false)
-                        $textGender = " anyóson vagy apóson keresztül";
-                    elseif (strpos($familyPerson["coderec"],'ls')!==false)
-                        $textGender = " sógornőn vagy sógoron keresztül";
-                    elseif (strpos($familyPerson["coderec"],'l')!==false)
-                        $textGender = " élettársamon keresztül";
                 }
                 echo("<h4>".$family[$relative]["text"].$textGender);
                 if ($edit)

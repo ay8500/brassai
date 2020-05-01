@@ -78,7 +78,7 @@ if (!userIsAdmin() && getFieldChecked($diak,"place")!="") {
 //preparation of the field to be edited and the itemprop characteristic
 $offset=0;
 $dataFieldNames 	=array("gender","title","lastname","firstname","email","birthname","birthyear","deceasedYear");
-$dataFieldCaption 	=array("Megszólítás","Akad.titulus","Családnév","Keresztnév","E-Mail","Diákkori név","Született","† elhunyt");
+$dataFieldCaption 	=array("Megszólítás","Akad.titulus","Családnév","Keresztnév","E-Mail","Diákkori név","* Született","† Elhunyt");
 $dataItemProp       =array("gender","title","","","","","","");
 $dataCheckFieldVisible	=array(false,false,false,false,true,false,false,false);
 $dataFieldObl			=array("Hölgy/Úr","Akadémia titulus pl: Dr. Dr.Prof. ",true,true,"fontos mező","leánykori családnév","születési év pl.1967","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");

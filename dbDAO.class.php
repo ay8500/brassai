@@ -215,7 +215,7 @@ class dbDAO {
 	 * @return integer if negativ an error occurs
 	 */
 	public function savePerson($person) {
-	    if (isset($person["deceasedYear"]) && ($person["deceasedYear"]==''|| intval($person["birthyear"])<1800)) {
+	    if (isset($person["deceasedYear"]) && $person["deceasedYear"]=='') {
             $person["deceasedYear"]=null;
         }
         if (isset($person["birthyear"]) && ($person["birthyear"]=='' || intval($person["birthyear"])<1800)) {

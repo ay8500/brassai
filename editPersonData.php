@@ -2,10 +2,17 @@
 	<div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
 		<img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
 		<?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
-		<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
-			<?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
-		</div>
-		<?php }?>
+		    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+        <?php } else {?>
+            <div style="background-color: white;color: black;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+        <?php }?>
+        <?php if (isset($diak["birthyear"])) {?>
+			<?php echo "* ".intval($diak["birthyear"]).'&nbsp;&nbsp;'; ?>
+        <?php }?>
+        <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
+                <?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
+        <?php }?>
+        </div>
 		<?php  if (userIsSuperuser()) {?>
 			<br/><a href="history.php?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -37px;left: 10px;display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person",$diak["id"]))?></span>

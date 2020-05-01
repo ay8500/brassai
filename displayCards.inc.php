@@ -26,7 +26,6 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 		<div class="personboxc">
             <?php displayPersonNameAndClass($db,$d,$personLink,$showClass); ?>
 			<div class="fields"><?php
-                if(showField($d,"birthyear")) 	echo "<div><div>Született:</div><div>".$d["birthyear"]."</div></div>";
 				if ($d["isTeacher"]==0) {
 					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
 					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d["education"])."</div></div>";
@@ -352,13 +351,13 @@ function displayPersonCandle($db,$person,$date) {
 function displayPersonPictureAndHistory($db,$d) {
     ?>
     <div style="display: inline-block; ">
-        <?php $personLink = displayPersonPicture($d); ?>
         <?php if (userIsSuperuser()) { ?>
-            <br/><a href="history.php?table=person&id=<?php echo $d["id"] ?>" title="módosítások"
-                    style="position: relative;top: -37px;left: 10px;display:inline-block;">
+            <a href="history.php?table=person&id=<?php echo $d["id"] ?>" title="módosítások"
+                    style="position: absolute;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person", $d["id"])) ?></span>
             </a>
         <?php } ?>
+        <?php $personLink = displayPersonPicture($d); ?>
     </div> <?php
     return $personLink;
 }
@@ -412,9 +411,18 @@ function displayPersonPicture($d)
     <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
         <div>
             <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
-            <?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
-                <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+            <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
+                <?php if (isset($d["deceasedYear"])) {?>
+                    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                <?php } else { ?>
+                    <div style="background-color: lightgray;color: black;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                <?php }?>
+                <?php if (isset($d["birthyear"]) && intval($d["birthyear"])>1800) {?>
+                    <?php echo "* ".intval($d["birthyear"]).'&nbsp;&nbsp;'; ?>
+                <?php } ?>
+                <?php if (isset($d["deceasedYear"])) {?>
                     <?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
+                <?php } ?>
                 </div>
             <?php }?>
         </div>

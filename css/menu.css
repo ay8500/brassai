@@ -222,6 +222,11 @@
 	#o400 {	display: none;}
 }
 
+@media ( min-width : 400px) {
+	.container-fluid {padding-right: 15px;margin-right: auto;margin-left: auto;}
+	.well{background-color: #f5f5f5;}
+}
+
 @media ( max-width : 480px) {
 	#o480 {	display: none;}
 	.diak_image_empty {	height:34px;width: 42px}

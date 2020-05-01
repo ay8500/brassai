@@ -78,7 +78,7 @@ include_once 'dbBL.class.php';
 				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
 					<span style="min-width:130px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
 					<div class="input-group-btn">
-						<img style="height: 34px;border: 1px solid lightgrey;" alt="" src="../lpfw/SecurityImage/SecurityImage.php" />
+						<img style="height: 34px;border: 1px solid lightgrey;" alt="" src="SecurityImage/SecurityImage.php" />
 					</div>
                     <input id="code" type="text" size="6" value="" placeholder="írd be az 5 karakteres biztonsági kódot" class="form-control"/>
 				</div>
