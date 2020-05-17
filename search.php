@@ -12,7 +12,7 @@ $classList=array();
 $pictureList=array();
 $name="";
 $start=getIntParam("start",0);
-$link="search.php?type=".getParam("type")."&start=";
+$link="search?type=".getParam("type")."&start=";
 Appl::setSiteSubTitle("Találatok a véndiákok adatbankjában");
 $fields = "person.*,concat(graduationYear,' ',name) as classText";
 $join ="class on person.classID=class.id ";

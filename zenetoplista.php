@@ -116,7 +116,7 @@ if ($delVote>=0 && $edit) {
 			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
 	} else {
 		if (userIsLoggedOn())
-			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista.php?classid='.$db->getLoggedInUserClassId().'">Az én osztályom toplistálya</a>';
+			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista?classid='.$db->getLoggedInUserClassId().'">Az én osztályom toplistálya</a>';
 		else
 			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
 	}
@@ -128,7 +128,7 @@ if ($delVote>=0 && $edit) {
 	<div class="well"><?php echo $voteStatus?></div>
 
 	<?php if ( $voteCount<$maxVoteCount && $edit ) { ?>
-	<form action="zenetoplista.php">
+	<form action="zenetoplista">
 	<div class="panel panel-default">
 		<?php if (!($pinterpret>0)) { ?>
 			<div class="panel-heading">
@@ -194,7 +194,7 @@ if ($delVote>=0 && $edit) {
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" ></label>
 	    		<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
-	    		<button class="btn btn-default" onclick="document.location.href='zenetoplista.php?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
+	    		<button class="btn btn-default" onclick="document.location.href='zenetoplista?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
 	    	</div>
 	    	 <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />	
 			<?php } ?>
@@ -242,15 +242,15 @@ if ($delVote>=0 && $edit) {
 					$v=$topList[$i];
 					$dh='&nbsp;';
 					if  ($v['voted']!=0) {
-						$voted='<a href="zenetoplista.php?delVote='.$v['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
+						$voted='<a href="zenetoplista?delVote='.$v['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
 						$dh='<span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span>';
 					} else {
 						if (($voteCount<$maxVoteCount)&&userIsLoggedOn())
-							$voted='<a href="zenetoplista.php?song='.$v['songID'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
+							$voted='<a href="zenetoplista?song='.$v['songID'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
 						else
 							$voted='';
 					}
-					$YouTubeLink='<a href="zenePlayer.php?link='.$v['songVideo'].'&id='.$v['songID'].'"><span class="glyphicon glyphicon-film"></span></a>';
+					$YouTubeLink='<a href="zenePlayer?link='.$v['songVideo'].'&id='.$v['songID'].'"><span class="glyphicon glyphicon-film"></span></a>';
 					?>
 					<tr style="height: 26px">
 						<?php if (userIsAdmin()) :?>
@@ -275,7 +275,7 @@ if ($delVote>=0 && $edit) {
 		</div>
 	</div>
 	<?php if (userIsAdmin()) :?>
-		<button onclick="document.location='zenetoplista.php?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
+		<button onclick="document.location='zenetoplista?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
 	<?php endif;?>
 </div>
 
@@ -309,7 +309,7 @@ if ($delVote>=0 && $edit) {
 const songs = [<?php foreach($topList as $i=>$v) echo(($i!=0?',"':'"').$v['songVideo'].'"');?>];
 
 function playBackward() {
-    var url="zenePlayer.php?listdir=előre&link="+songs[0]+"&list=";
+    var url="zenePlayer?listdir=előre&link="+songs[0]+"&list=";
     for (var i=1;i<songs.length;i++) {
         url =url + songs[i]+",";
     }
@@ -317,7 +317,7 @@ function playBackward() {
 }
 
 function playForward() {
-    var url="zenePlayer.php?listdir=visszafele&link="+songs[songs.length-1]+"&list=";
+    var url="zenePlayer?listdir=visszafele&link="+songs[songs.length-1]+"&list=";
     for (var i=songs.length-2;i>=0;i--) {
         url+=songs[i]+",";
     }
@@ -326,7 +326,7 @@ function playForward() {
 
 function playRandom() {
     var idx=Math.floor(Math.random()*(songs.length));
-    var url="zenePlayer.php?listdir=véletlenszerüen&link="+songs[idx]+"&list=";
+    var url="zenePlayer?listdir=véletlenszerüen&link="+songs[idx]+"&list=";
     songs[idx]="";
     for (var i=1;i<songs.length;i++) {
 		idx=Math.floor(Math.random()*(songs.length));

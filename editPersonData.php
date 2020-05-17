@@ -14,7 +14,7 @@
         <?php }?>
         </div>
 		<?php  if (userIsSuperuser()) {?>
-			<br/><a href="history.php?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -37px;left: 10px;display:inline-block;">
+			<br/><a href="history?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -37px;left: 10px;display:inline-block;">
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person",$diak["id"]))?></span>
 			</a>
 		<?php }?>
@@ -23,7 +23,7 @@
 	<?php //Person picture download only  if person already saved?>
 	<?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<form enctype="multipart/form-data" action="editDiak.php" method="post">
+			<form enctype="multipart/form-data" action="editDiak" method="post">
 				<h4>Profiképed</h4>
 				<div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
 				<span>Válassz egy új jpg képet max. 2MByte</span>
@@ -61,14 +61,14 @@
 	<?php if ($edit || $createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
 			<button id="saveButton" onclick="savePerson();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
-            <button onclick="location.href='editDiak.php'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
+            <button onclick="location.href='editDiak'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
 		</div>
 	<?php } ?>
 	
 	<?php //Anonymous user edit button?>
 	<?php if (!$edit && !$createNewPerson) {?>
 		<div style="display: inline-block;margin:15px;vertical-align: bottom;">
-			<button onclick="document.location='editDiak.php?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
+			<button onclick="document.location='editDiak?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
 		</div>
 	<?php } ?>
     <?php if (!isActionParam("newperson")) {?>
@@ -176,7 +176,7 @@
                             foreach ($c as $id=>$cc) {
                                 if ($id!=0) echo(',');
                                 $class= $db->getClassByText($cc);
-                                echo(' <a href="hometable.php?classid='.$class["id"].'">'.$cc.'</a> ');
+                                echo(' <a href="hometable?classid='.$class["id"].'">'.$cc.'</a> ');
                             }
                             echo('</div>');
                         } else {
@@ -320,6 +320,6 @@ function showOptionsField($value,$fieldName,$options,$readOnly=false) {
     }
 
     function goGdpr(id) {
-        document.location="gdpr.php?id="+id;
+        document.location="gdpr?id="+id;
     }
 </script>

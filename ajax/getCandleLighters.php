@@ -1,7 +1,7 @@
 <?php
 /**
  * Returns a html code containing the candle lighters. One candle is always lighted by the system
- * test local call https://localhost/brassai/ajax/getCandleLighters.php?id=608
+ * test local call https://localhost/brassai/ajax/getCandleLighters?id=608
  *
  */
 

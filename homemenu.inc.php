@@ -93,7 +93,7 @@
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00;" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
-      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start.php" title="Újdonságok"><img src="favicon.jpg" style="height:27px" /></a>
+      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="favicon.jpg" style="height:27px" /></a>
       <div class="navbar-header" style="margin-left:32px;">
           <button type="button" class="navbar-toggle" style="float: none" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
@@ -105,21 +105,21 @@
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-left:22px;">
 		<ul class="nav navbar-nav">
 			<li class="dropdown">
-				<a href="index.php" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
+				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a href="index.php">Start</a></li>
-					<li><a href="start.php">Újdonságok</a></li>
-					<li><a href="rip.php">Emléküket örökké őrizzük</a></li>
-					<li><a href="hometable.php?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
-        			<li><a href="brassai.php">Brassai Sámuel élete</a></li>
-        			<li><a href="iskola.php">Liceum története</a></li>
-        			<li><a href="picture.php?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
-        			<li><a href="picture.php?type=schoolID&typeid=<?php echo getAktSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
-        			<li><a href="search.php?type=jmlaureat">Juhász Máthé díjasok</a></li>
-                    <li><a href="search.php?type=unknown">Nem tudunk róluk</a></li>
-        			<li><a href="worldmap.php?classid=all">Térkép</a></li>
-        			<li><a href="statistics.php">Statisztika</a></li>
-        			<li><a href="zenetoplista.php?classid=all">Zenetoplista</a></li>
+					<li><a href="index">Start</a></li>
+					<li><a href="start">Újdonságok</a></li>
+					<li><a href="rip">Emléküket örökké őrizzük</a></li>
+					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
+        			<li><a href="brassai">Brassai Sámuel élete</a></li>
+        			<li><a href="iskola">Liceum története</a></li>
+        			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
+        			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
+        			<li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
+                    <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
+        			<li><a href="worldmap?classid=all">Térkép</a></li>
+        			<li><a href="statistics">Statisztika</a></li>
+        			<li><a href="zenetoplista?classid=all">Zenetoplista</a></li>
        			</ul>
       		</li>
       		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || userIsAdmin())) {
@@ -129,79 +129,79 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getClassName(Appl::getMember("aktClass"),true)); ?><b
                             class="caret"></b></a>
                 <ul class="dropdown-menu multi-level">
-                    <li><a href="hometable.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Véndiákok
+                    <li><a href="hometable?classid=<?php echo Appl::getMemberId("aktClass") ?>">Véndiákok
                             <?php if ($classStat->personCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->personCount ?></span><?php } ?></a></li>
                     </a></li>
-                    <li><a href="hometable.php?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek barátok
+                    <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek barátok
                             <?php if ($classStat->guestCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->guestCount ?></span><?php } ?></a></li>
-                    <li><a href="picture.php?type=classID&typeid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
+                    <li><a href="picture?type=classID&typeid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
                             <?php if ($classStat->classPictures > 0) { ?><span
                                     class="badge"><?php echo $classStat->classPictures ?></span><?php } ?></a></li>
-                    <?php //<li><a href="chat.php">Osztálytárs körlevelek</a></li>?>
-                    <li><a href="worldmap.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
+                    <?php //<li><a href="chat">Osztálytárs körlevelek</a></li>?>
+                    <li><a href="worldmap?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
                     <?php if (Appl::getMemberId("aktClass") == $db->getClassIdByText("1985 12A")) { ?>
                         <li class="dropdown-submenu"><a>Régi képek</a>
                             <ul class="dropdown-menu">
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=BALLAGAS">Ballagás</a></li>
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=LASTDAYS">Utolsó órák</a></li>
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=EMLEKEK">Emlékek</a></li>
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=SzepIdok">Kirándulások és
+                                <li><a href="pictureGallery?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=BALLAGAS">Ballagás</a></li>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=LASTDAYS">Utolsó órák</a></li>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=EMLEKEK">Emlékek</a></li>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=SzepIdok">Kirándulások és
                                         bulik</a></li>
                             </ul>
                         </li>
                         <li class="dropdown-submenu"><a href="#">Találkozók</a>
                             <ul class="dropdown-menu">
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK10">10-éves Találkozó</a>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=TALALK10">10-éves Találkozó</a>
                                 </li>
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK15">15-éves Találkozó</a>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=TALALK15">15-éves Találkozó</a>
                                 </li>
-                                <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK20">20-éves Találkozó</a>
+                                <li><a href="pictureGallery?view=thumbnails&gallery=TALALK20">20-éves Találkozó</a>
                                 </li>
                                 <li class="dropdown-submenu"><a href="#">25-éves Találkozó</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="zenetoplista.php">Zenetoplista</a></li>
-                                        <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25">Az
+                                        <li><a href="zenetoplista">Zenetoplista</a></li>
+                                        <li><a href="pictureGallery?view=thumbnails&gallery=TALALK25">Az
                                                 iskolánkban</a></li>
-                                        <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25T">Torockói
+                                        <li><a href="pictureGallery?view=thumbnails&gallery=TALALK25T">Torockói
                                                 panzió</a></li>
-                                        <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK25S">Székelykő</a>
+                                        <li><a href="pictureGallery?view=thumbnails&gallery=TALALK25S">Székelykő</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu"><a href="#">30-éves Találkozó</a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="pictureGallery.php?view=thumbnails&gallery=TALALK30">Osztályfőnöki</a>
+                                            <a href="pictureGallery?view=thumbnails&gallery=TALALK30">Osztályfőnöki</a>
                                         </li>
-                                        <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30T">Temetőben</a>
+                                        <li><a href="pictureGallery?view=thumbnails&gallery=TALALK30T">Temetőben</a>
                                         </li>
-                                        <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30Torocko">Torockón</a>
+                                        <li><a href="pictureGallery?view=thumbnails&gallery=TALALK30Torocko">Torockón</a>
                                         </li>
-                                        <li><a href="pictureGallery.php?view=thumbnails&gallery=TALALK30BuvoPatak">Buvó
+                                        <li><a href="pictureGallery?view=thumbnails&gallery=TALALK30BuvoPatak">Buvó
                                                 Patak</a></li>
-                                        <li><a href="talalk30.php">Programajánlat</a></li>
+                                        <li><a href="talalk30">Programajánlat</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu"><a
-                                            href="pictureGallery.php?view=thumbnails&gallery=50evesek">50-évesek
+                                            href="pictureGallery?view=thumbnails&gallery=50evesek">50-évesek
                                         Találkozója</a>
                             </ul>
                         </li>
                     <?php } ?>
-                    <li><a href="vote.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">A következő Találkozó</a></li>
-                    <li><a href="zenetoplista.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Zenetoplista</a></li>
-                    <li><a href="editSchoolClass.php?classid=<?php echo Appl::getMemberId("aktClass") ?>">Tanárok infók</a></li>
+                    <li><a href="vote?classid=<?php echo Appl::getMemberId("aktClass") ?>">A következő Találkozó</a></li>
+                    <li><a href="zenetoplista?classid=<?php echo Appl::getMemberId("aktClass") ?>">Zenetoplista</a></li>
+                    <li><a href="editSchoolClass?classid=<?php echo Appl::getMemberId("aktClass") ?>">Tanárok infók</a></li>
                 </ul>
             </li>
             <?php } ?>
             <li>
-                <a href="classlist.php">Osztályok</a>
+                <a href="classlist">Osztályok</a>
             </li>
             <li>
-                <a href="message.php">Ünzenőfal</a>
+                <a href="message">Ünzenőfal</a>
             </li>
             <li>
             <form class="navbar-form navbar-left" role="search" action="">
@@ -266,7 +266,7 @@
         <b>Keresgélés: név, évfolyam, kép</b>
         <span class="glyphicon glyphicon-remove-circle"  style="float: right;cursor: pointer;" onclick="closeSearch();"></span>
     </div>
-    <form action="search.php" method="get">
+    <form action="search" method="get">
         <input type="hidden" value="search" name="action"/>
         <div class="input-group" style="width:300px;margin: 3px;display: inline-table;">
             <span class="input-group-addon" style="width:30px" title="Véndiak neve"><span
@@ -301,7 +301,7 @@
 <div id="topLine">
     <h1 class="appltitle">
         <?php /*
-        <a href="start.php?tabOpen=easter" title="Meglocsolt virágszállak:<?php echo (sizeof($rpo->opinion))?> locsolók:<?php echo (sizeof($rpo->user))?> "><img src="images/easter.png" style="width: 50px" /><span class="badge" style="left: -20px;position: relative;top: 4px;">
+        <a href="start?tabOpen=easter" title="Meglocsolt virágszállak:<?php echo (sizeof($rpo->opinion))?> locsolók:<?php echo (sizeof($rpo->user))?> "><img src="images/easter.png" style="width: 50px" /><span class="badge" style="left: -20px;position: relative;top: 4px;">
             <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
             </span></a>
         */?>

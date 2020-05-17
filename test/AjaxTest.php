@@ -15,7 +15,7 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         $url=$this->getUrl();
         if($url==null)
             return;
-        $ret=$this->callAjaxUrl($url."ajax/getRandomPerson.php");
+        $ret=$this->callAjaxUrl($url."ajax/getRandomPerson");
         $this->assertNotNull($ret);
         $this->assertTrue(isset($ret["id"]) && isset($ret["name"]) && isset($ret["image"]) );
     }
@@ -26,14 +26,14 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         $url=$this->getUrl();
         if($url==null)
             return;
-        $ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
+        $ret=$this->callAjaxUrl($url."ajax/getCandleLighters?id=".$id,false);
         $this->assertNotNull($ret);
         $this->assertTrue($ret=="" );
-        //$ret=$this->callAjaxUrl($url."ajax/setCandleLighter.php?id=".$id);
+        //$ret=$this->callAjaxUrl($url."ajax/setCandleLighter?id=".$id);
         //$this->assertNotNull($ret);
         //$this->assertTrue(isset($ret["id"])  );
         //$this->assertSame(intval($id),intval($ret["id"]));
-        //$ret=$this->callAjaxUrl($url."ajax/getCandleLighters.php?id=".$id,false);
+        //$ret=$this->callAjaxUrl($url."ajax/getCandleLighters?id=".$id,false);
         //echo("$ret");
         //$this->assertSame(intval($uId),intval($ret["uId"]));
     }

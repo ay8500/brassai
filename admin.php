@@ -98,9 +98,9 @@ Ide kell írni a szöveget....
 	
 	<?php if ($tabOpen=="user") { ?>
 		<p style="text-align:center">
-			<!---a href="getExcelData.php?data=Kontakt" target="excel">Kontaklista letöltése Excel formátumban</a>
+			<!---a href="getExcelData?data=Kontakt" target="excel">Kontaklista letöltése Excel formátumban</a>
 			&nbsp;|&nbsp;-->
-			<a href="getExcelData.php?data=All" target="excel">Összes adatok letöltése Excel formátumban</a>
+			<a href="getExcelData?data=All" target="excel">Összes adatok letöltése Excel formátumban</a>
 		</p>
 		<div>
 		<table  class="table-sp" >

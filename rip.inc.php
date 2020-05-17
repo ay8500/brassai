@@ -28,7 +28,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 	$d=$person;
 	if ($d["id"]!=-1) {
 		if (userIsLoggedOn() || isLocalhost()) {
-			$personLink="editDiak.php?uid=".$d["id"];
+			$personLink="editDiak?uid=".$d["id"];
 		} else {
 			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
 		}
@@ -49,6 +49,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 					<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
 					<?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
 						<div style="background-color: black;color: #ffbb66;;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                            <?php if (isset($d["birthyear"]) && intval($d["birthyear"])>1800) { echo '* '.intval($d["birthyear"]).'&nbsp;'; } ?>
 							<?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
 						</div>
 					<?php }?>
@@ -65,12 +66,12 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 					$classText = getClassName($diakClass);
 					if (isPersonGuest($d)==1) {
 						if ($d["classID"]!=0)
-							echo '<h5 style="color: #ffbb66;">Jó barát:<a style="color: #ffbb66;"href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5 style="color: #ffbb66;">Jó barát:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
-							echo '<h5 style="color: #ffbb66;">Vendég:<a style="color: #ffbb66;"href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5 style="color: #ffbb66;">Vendég:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 					} else {
 						if (null!=$diakClass)
-							echo '<h5 style="color: #ffbb66;">Véndiák:<a style="color: #ffbb66;"href="hometable.php?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5 style="color: #ffbb66;">Véndiák:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
 							echo('<h5 style="color: #ffbb66;">Véndiák:'.-1 * $d["classID"].'</h5>'); //Graduation year for laurates that are not in the db
 					}

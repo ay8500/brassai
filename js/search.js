@@ -14,7 +14,7 @@ function closeSearch() {
 }
 
 function search() {
-    document.location.href="search.php?srcText="+$("#srcText").val();
+    document.location.href="search?srcText="+$("#srcText").val();
 }
 
 
@@ -23,7 +23,7 @@ function searchPersonAndPicture() {
     $('#searchpersonbadge').html('<img src="images/loading.gif" style="height: 14px"/>');
 
     $.ajax({
-        url: "ajax/getPersonByName.php?name="+$("#srcText").val(),
+        url: "ajax/getPersonByName?name="+$("#srcText").val(),
         type:"GET",
         success:function(data){
             $('#searchpersontable').empty();
@@ -48,7 +48,7 @@ function searchPersonAndPicture() {
                     }
                     var html = '<tr>';
                     html += '<td style="text-align: center">' + pimg + '</td>';
-                    html += '<td><a href="editDiak.php?uid='+row.id+'">' + pname + '</a></td>';
+                    html += '<td><a href="editDiak?uid='+row.id+'">' + pname + '</a></td>';
                     html += '<td>' + pclass + '</td>';
                     html += '</tr>';
                     console.log(html);
@@ -63,7 +63,7 @@ function searchPersonAndPicture() {
     });
 
     $.ajax({
-        url: "ajax/getPictureByText.php?text="+$("#srcText").val(),
+        url: "ajax/getPictureByText?text="+$("#srcText").val(),
         type:"GET",
         success:function(data){
             $('#searchpicturetable').empty();
@@ -74,7 +74,7 @@ function searchPersonAndPicture() {
                     var pname = '<b>'+$("<div>").html(row.title.substring(0,20)).text()+'</b> ';
                     pname +=$("<div>").html(row.comment.substring(0,25)).text();
                     var html = '<tr>';
-                    html += '<td><a href="picture.php?id='+row.id+'">' + pname + '</a></td>';
+                    html += '<td><a href="picture?id='+row.id+'">' + pname + '</a></td>';
                     //html += '<td>' + pclass + '</td>';
                     html += '</tr>';
                     console.log(html);

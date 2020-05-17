@@ -127,7 +127,7 @@ if (userIsAdmin()) {?>
 function backup() {
     $('#dbResult').html('backup....');
     $.ajax({
-		url:"../lpfw/dbbackup.php?password="+$('#dbPassword').val()+"&url=brassai",
+		url:"../lpfw/dbbackup?password="+$('#dbPassword').val()+"&url=brassai",
 		type:"GET",
 		success:function(data){
 		    $('#dbResult').html(data);
@@ -141,7 +141,7 @@ function backup() {
 function restore() {
     $('#dbResult').html('restore....');
     $.ajax({
-		url:"../lpfw/dbrestore.php?password="+$('#dbPassword').val()+"&url=brassai",
+		url:"../lpfw/dbrestore?password="+$('#dbPassword').val()+"&url=brassai",
 		type:"GET",
 		success:function(data){
 		    $('#dbResult').html(data);
@@ -155,7 +155,7 @@ function restore() {
 function picturesDB() {
     $('#pictureResult').html('searching....');
     $.ajax({
-		url:"phpscript/picturesDB.php",
+		url:"phpscript/picturesDB",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
@@ -169,7 +169,7 @@ function picturesDB() {
 function picturesFS() {
     $('#pictureResult').html('searching....');
     $.ajax({
-		url:"phpscript/picturesFS.php",
+		url:"phpscript/picturesFS",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
@@ -184,7 +184,7 @@ function picturesDelete() {
     if (confirm("Are you sure, that you want to delete all unreferenced pictures?")) {
 	    $('#pictureResult').html('searching....');
 	    $.ajax({
-			url:"phpscript/picturesFS.php?action=delete",
+			url:"phpscript/picturesFS?action=delete",
 			type:"GET",
 			success:function(data){
 			    $('#pictureResult').html(data);
@@ -199,7 +199,7 @@ function picturesDelete() {
 function createZipFile() {
     $('#pictureResult').html('creating zip file....');
     $.ajax({
-		url:"phpscript/zipPictures.php",
+		url:"phpscript/zipPictures",
 		type:"GET",
 		success:function(data){
 		    $('#pictureResult').html(data);
@@ -213,7 +213,7 @@ function createZipFile() {
 function doSomething(action) {
     $('#databaseResult').html('working....');
     $.ajax({
-		url:"database.php?action="+action+"&param="+$('#dbText').val(),
+		url:"database?action="+action+"&param="+$('#dbText').val(),
 		type:"GET",
 		success:function(data){
 		    $('#databaseResult').html(data);

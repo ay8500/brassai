@@ -26,7 +26,7 @@ if (getParam("FacebookId")) {
 include_once Config::$lpfw.'logon.inc.php';
 handleLogInOff(new dbDaUser($db));
 if (userIsLoggedOn()) {
-	header('Location: index.php?loginok=true');
+	header('Location: index?loginok=true');
 }
 //New User
 if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!="") {
@@ -193,9 +193,9 @@ include 'homemenu.inc.php';
 			</div>
 		</div>		
 		<button class="margin-def btn btn-success disabled"  onclick="signin()" id="signin">Bejelentkezem</button>
-        <button class="margin-def btn btn-warning"  onclick="document.location.href='index.php'" >Kilép</button>
+        <button class="margin-def btn btn-warning"  onclick="document.location.href='index'" >Kilép</button>
 		<?php } else {?>
-			<button class="btn btn-default" onclick="javascript:document.location.href='editDiak.php?uid=<?php echo $newUserReturnValue?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
+			<button class="btn btn-default" onclick="javascript:document.location.href='editDiak?uid=<?php echo $newUserReturnValue?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
 		<?php } ?>
 	</div>
 </div></div>
@@ -210,7 +210,7 @@ include 'homemenu.inc.php';
 		    $("#page2").hide("slow");
 		    return;
 		}
-		var url="ajax/getPersonsInClass.php";
+		var url="ajax/getPersonsInClass";
 		if (role==4 || role==3)
 			url+="?classid="+<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>;
 		else
@@ -297,7 +297,7 @@ include 'homemenu.inc.php';
 			msg="Bejelentkezés nem lehetséges mert:\n\n"+msg;
 			alert(msg);
 		} else {
-			var url="signin.php?action=newUser";
+			var url="signin?action=newUser";
 			if (role==1 || role==4) url+="&role=";
 			if (role==2 || role==3) url+="&role=guest";
 			if (role==3 || role==4) url+="&classtext=0 staf";	

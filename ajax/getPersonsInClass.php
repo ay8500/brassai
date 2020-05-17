@@ -1,6 +1,6 @@
 <?php
 /*
-Used by sign in procedure (singnin.php)
+Used by sign in procedure (singnin)
 */
 include_once '../config.class.php';
 include_once Config::$lpfw.'sessionManager.php';

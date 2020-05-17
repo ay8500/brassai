@@ -13,7 +13,7 @@ $ret->x = json_decode(file_get_contents("http://api.ipapi.com/".$ip."?access_key
 echo json_encode($ret);
 
 /*
-https://localhost/brassai/ajax/getIpLocation.php?ip=192.77.237.9
+https://localhost/brassai/ajax/getIpLocation?ip=192.77.237.9
 
 status: "success",
 country: "United States",

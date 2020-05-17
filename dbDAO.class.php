@@ -144,23 +144,18 @@ class dbDAO {
      * @param int $schoolID
      * @return array
      */
-	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=null,$isTwentyfirstcentury=null) {
-        $xxi="";
-        $eveningClass="";
-        if ($isTwentyfirstcentury!=null) {
+	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=false,$isTwentyfirstcentury=false) {
+        $sql="schoolID=".$schoolID;
+        if ($isEveningClass) {
+            $sql .= " and eveningClass = 1";
+        } else {
+            $sql .= " and eveningClass = 0";
             if ($isTwentyfirstcentury)
-                $xxi = " and graduationYear > 1999";
+                $sql .= " and graduationYear > 1999";
             else
-                $xxi = " and graduationYear <= 1999";
+                $sql .= " and graduationYear <= 1999";
         }
-        if ($isEveningClass!=null) {
-            if ($isEveningClass) {
-                $eveningClass = " and eveningClass = 1 ";
-            } else {
-                $eveningClass = " and eveningClass = 0 ";
-            }
-        }
-		return   $this->dataBase->getElementList("class",$originalId, "schoolID=".$schoolID.$xxi.$eveningClass,null,null,"text asc");
+		return   $this->dataBase->getElementList("class",$originalId, $sql,null,null,"text asc");
 	}
 	
 	/**

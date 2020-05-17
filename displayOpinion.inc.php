@@ -241,7 +241,7 @@ function getLoggedInUserIdOrNull() {
         if (stype=='text')
             text=$('#t-'+type+'-'+id).val();
         $.ajax({
-            url:'ajax/setOpinion.php?id='+id+'&type='+type+'&count='+stype+'&text='+text,
+            url:'ajax/setOpinion?id='+id+'&type='+type+'&count='+stype+'&text='+text,
             type:'GET',
             success:function(data){
                     $('#fb-root').hide();
@@ -292,7 +292,7 @@ function getLoggedInUserIdOrNull() {
         $('#o-'+type+'-'+id).html('pillanat <img src=\"images/loading.gif\" />');
         $('#o-'+type+'-'+id).show();
         $.ajax({
-            url:'ajax/getOpinions.php?id='+id+'&type='+type+'&count='+count,
+            url:'ajax/getOpinionsid='+id+'&type='+type+'&count='+count,
             type:'GET',
             success:function(data){
                 var html=$('#opinionlist').html();
@@ -333,7 +333,7 @@ function getLoggedInUserIdOrNull() {
     function deleteOpinion(id) {
         showWaitMessage();
         $.ajax({
-            url:'ajax/deleteOpinion.php?id='+id,
+            url:'ajax/deleteOpinion?id='+id,
             type:'GET',
             success:function(data){
                 clearModalMessage();

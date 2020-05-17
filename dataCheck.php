@@ -72,11 +72,11 @@ if (userIsAdmin()) {
                 echo('<tr >');
                 echo("<td>".getPersonName($db->getPersonByID($l["personID"]))."</td>");
                 echo('<td><img src="'.($db->getPictureById($l["pictureID"]))["file"].'" style="height:75px" /></td>');
-                echo('<td><img src="imageTaggedPerson.php?personid='.$l["personID"].'&pictureid='.$l["pictureID"].'" style="height:75px" /></td>');
+                echo('<td><img src="imageTaggedPerson?personid='.$l["personID"].'&pictureid='.$l["pictureID"].'" style="height:75px" /></td>');
                 echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
                 echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
                 echo('<td><button class="btn btn-default" onclick="return okPersonMark(this,'.$l["personID"].','.$l["pictureID"].');"><span class="glyphicon glyphicon-ok-circle"></span></button></td>');
-                echo('<td><a class="btn btn-default" href="https://brassai.blue-l.de//picture.php?id='.$l["pictureID"].'$personid='.$l["personID"].'" target="picture"><span class="glyphicon glyphicon-edit"></span></a></td>');
+                echo('<td><a class="btn btn-default" href="https://brassai.blue-l.de//picture?id='.$l["pictureID"].'$personid='.$l["personID"].'" target="picture"><span class="glyphicon glyphicon-edit"></span></a></td>');
                 echo("</tr>");
             }
             ?>
@@ -168,19 +168,19 @@ else
 Appl::addJsScript('
     function deleteMessageChange(id) {
         if (confirm("Üzenetet törölsz, biztos vagy?"))
-            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=deleteMessageChange&id="+id;
+            document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=deleteMessageChange&id="+id;
     }
     function acceptMessageChange(id) {
         if (confirm("Üzenet módosítást jóváhagysz, biztos vagy?"))
-            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=acceptMessageChange&id="+id;
+            document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=acceptMessageChange&id="+id;
     }
     function resetChange(ip,type) {
         if (confirm("Müvelet erre az IP címre visszaálítsz, biztos vagy?"))
-            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=resetChange&type="+type+"&ip="+ip;
+            document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=resetChange&type="+type+"&ip="+ip;
     }
     function okPersonMark(o,personid,pictureid) {
         $.ajax({
-    		url:"ajax/setPicturePersonUser.php?personid="+personid+"&pictureid="+pictureid,
+    		url:"ajax/setPicturePersonUser?personid="+personid+"&pictureid="+pictureid,
     		success:function(data){
                 $(o).parent().parent("tr:first").remove()
 		    },
@@ -317,17 +317,17 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
     Appl::addJsScript('
         function delete'.$fieldDb.'Change(id) {
             if (confirm("'.$fieldText.' módosítást akarsz törölni. Biztos vagy?"))
-                document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=delete'.$fieldDb.'Change&id="+id;
+                document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=delete'.$fieldDb.'Change&id="+id;
         }
         function edit'.$fieldDb.'Change(id) {
-            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=show'.$fieldDb.'Change&id="+id;
+            document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=show'.$fieldDb.'Change&id="+id;
         }
         function accept'.$fieldDb.'Change(id) {
         if (confirm("'.$fieldText.' módosítást akarsz jóváhagyni. Biztos vagy?"))
-                document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=accept'.$fieldDb.'Change&id="+id;
+                document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=accept'.$fieldDb.'Change&id="+id;
         }
         function accept'.$fieldDb.'FieldChange(id,field) {
-            document.location="dataCheck.php?tabOpen='.getParam("tabOpen").'&action=accept'.$fieldDb.'FieldChange&id="+id+"&field="+field;
+            document.location="dataCheck?tabOpen='.getParam("tabOpen").'&action=accept'.$fieldDb.'FieldChange&id="+id+"&field="+field;
         }
     ');
 }

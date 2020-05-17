@@ -161,7 +161,7 @@ Appl::addJsScript('
     
     function searchPerson () {
         $.ajax({
-    		url:\'ajax/getPersonByName.php?name=\'+$("#searchName").val(),
+    		url:\'ajax/getPersonByName?name=\'+$("#searchName").val(),
     		success:function(data){
     		    $("#selectPerson").empty();
     		    data.forEach(function(e){
@@ -171,7 +171,7 @@ Appl::addJsScript('
     		            c="Tanár "
     		        else
     		            c=e.scoolYear+" "+e.scoolClass+" ";
-    		        c +="<a target=\"_blank\" href=\"editDiak.php?uid="+e.id+"\">";  
+    		        c +="<a target=\"_blank\" href=\"editDiak?uid="+e.id+"\">";  
     		        var name= e.lastname+" "+e.firstname; 
     		        c +="<b>"+name+((e.birthname!=null && e.birthname!="")?" ("+e.birthname+")":"")+"</b>";
     		        c +="</a>";
@@ -192,7 +192,7 @@ Appl::addJsScript('
     function saveRelative(id,name) {
         if (confirm("Megszeretnéd jelölni: "+name+" "+$("#selectRelativGrad option:selected").text())) {
             showWaitMessage();
-            document.location="editDiak.php?action=save&tabOpen=family&uid=' . $diak["id"] . '&sid="+id+"&code="+$("#selectRelativGrad").val()+"&gender="+$("#relativeGender").val();
+            document.location="editDiak?action=save&tabOpen=family&uid=' . $diak["id"] . '&sid="+id+"&code="+$("#selectRelativGrad").val()+"&gender="+$("#relativeGender").val();
         }
     }
 ');
@@ -202,7 +202,7 @@ Appl::addJsScript('
     function deleteRelative(id) {
         if (confirm("Ki szeretnéd törölni a rokonsági kapcsolatot?")) {
             showWaitMessage();
-            document.location="editDiak.php?action=delete&tabOpen=family&id="+id;
+            document.location="editDiak?action=delete&tabOpen=family&id="+id;
         }
     }
 ');

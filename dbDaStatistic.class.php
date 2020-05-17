@@ -152,20 +152,14 @@ class dbDaStatistic
 
         $sql="select count(1) as count, changeUserID as uid from opinion where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
         $ret = $this->mergeBestArrays($ret,$sql,1);
+        asort($ret);
+        $ret = array_reverse($ret,true);
 
         $rets=array();
-        for($i=0;$i<$count;$i++) {
-            $value = 0;
-            foreach ($ret as $uid => $counts) {
-                if ($counts > $value) {
-                    $value = $counts;
-                    $vuid = $uid;
-                }
-            }
-            if (isset($vuid)) {
-                $rets[$vuid] = $value;
-                unset($ret[$vuid]);
-            }
+        foreach ($ret as $uid=>$ucount) {
+            $rets[$uid] = $ucount;
+            if (sizeof($rets)==$count)
+                break;
         }
         return $rets;
     }

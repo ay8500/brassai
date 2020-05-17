@@ -4,10 +4,10 @@
  *
  * It's preferable to configure the script using this file istead of directly.
  *
- * Rename this file to `deploy-config.class.php` and edit the
- * configuration options here instead of directly in `deploy.php`.
+ * Rename this file to `deploy-config.class .php` and edit the
+ * configuration options here instead of directly in `deploy. php`.
  * That way, you won't have to edit the configuration again if you download the
- * new version of `deploy.php`.
+ * new version of `deploy .php`.
  *
  * @version 1.3.1
  */
@@ -15,7 +15,7 @@
 /**
  * Protect the script from unauthorized access by using a secret access token.
  * If it's not present in the access URL as a GET variable named `sat`
- * e.g. deploy.php?sat=Bett...s the script is not going to deploy.
+ * e.g. deploy .php?sat=Bett...s the script is not going to deploy.
  *
  * @var string
  */

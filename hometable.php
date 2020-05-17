@@ -57,7 +57,7 @@ $personList=$db->getPersonListByClassId(getRealId($class),$guests);
 ?>
 <div class="container-fluid">
 	<div style="margin-bottom: 15px;width: 100%;background-color: #E3E3E3;padding: 10px;">
-		<form action="editDiak.php">
+		<form action="editDiak">
 			<?php if ($guests) {?>
 				<button id="new-btn" class="btn-c btn btn-default" name="action" value="newguest"><span class="glyphicon glyphicon-user"></span> Névsor bővítése jó baráttal</button>
 			<?php } elseif (!isAktClassStaf()) {?>

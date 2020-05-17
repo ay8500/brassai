@@ -34,7 +34,6 @@ $TXT["Üzenőfal"]	= "Pinwand";
 $TXT["Találatok a véndiákok adatbankjában"]	= "Suchergebnisse";
 $TXT[" Keresés"]	= "Suche";
 $TXT[" Rendszer Gazda (Levi) képei"]	= "# Rendszer Gazda (Levi) képei#";
-$TXT['<img src="../images/Staf0/d834-704356.jpg"  class="diak_image_sicon"/> <a href="../editDiak.php?uid=834">Rendszer Gazda</a> képei']	= '#<img src="images/Staf0/d834-704356.jpg"  class="diak_image_sicon"/> <a href="editDiak.php?uid=834">Rendszer Gazda</a> képei#';
 $TXT["Főalbum"]	= "#Főalbum#";
 $TXT["Kép feltöltése"]	= "#Kép feltöltése#";
 $TXT["Lista/Album"]	= "#Lista/Album#";

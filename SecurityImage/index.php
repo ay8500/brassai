@@ -12,7 +12,7 @@ $paramSI=htmlentities(isset($_GET['paramSI']) ? $_GET['paramSI'] : "",ENT_QUOTES
 ?>
 <div class="title"> Security code </div>
 
-<img name="paramSI" alt="" src="SecurityImage.php" />
+<img name="paramSI" alt="" src="SecurityImage" />
 <form>
 <input name="paramSI"  type="text" size="6"/>
 </form>

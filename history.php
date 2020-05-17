@@ -210,7 +210,7 @@ function displayChangeData($db,$item,$historyItem) {
 	<?php }
 	if (isset($item["changeUserID"])) {
 	    $changePerson=$db->getPersonByID($item["changeUserID"]); ?>
-    	<td><a href="editDiak.php?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
+    	<td><a href="editDiak?uid=<?php echo $item["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
     <?php } else { ?>
         <td></td>
     <?php }
@@ -219,7 +219,7 @@ function displayChangeData($db,$item,$historyItem) {
             $changePerson=$db->getPersonByID($historyItem["changeUserID"]); ?>
             <td> <?php echo Appl::dateTimeAsStr($historyItem["changeDate"]) ?></td>
             <td><button onclick="showip('<?php echo array_get($historyItem,"changeIP")?>');" class="btn">IP</button></td>
-            <td><a href="editDiak.php?uid=<?php echo $historyItem["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
+            <td><a href="editDiak?uid=<?php echo $historyItem["changeUserID"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a></td>
         <?php } else {
             echo("<td></td><td></td><td></td>");
         }
@@ -280,7 +280,7 @@ function array_get($array,$field,$default='') {
 Appl::addJsScript('
     function deleteHistory(id,table,tid) {
         showWaitMessage();
-        document.location="history.php?table="+table+"&id="+tid+"&action=delete&did="+id;
+        document.location="history?table="+table+"&id="+tid+"&action=delete&did="+id;
     }
 ');
 

@@ -70,7 +70,7 @@ if (userIsSuperuser()) {
         </table>
     </p>
 	<p>
-        <a href="generateSitemap.php">Sitemap</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="generateSitemap.php?htacces=true">htacces</a>
+        <a href="generateSitemap">Sitemap</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="generateSitemap?htacces=true">htacces</a>
 	</p>
 
 <?php }

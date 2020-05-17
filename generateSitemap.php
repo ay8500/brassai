@@ -35,18 +35,18 @@ include_once("dbBL.class.php");
 
 	$list=$dbSongVote->getSongList();
 	foreach ($list as $element) {
-		writeSitemapLink("zenePlayer.php?id=".$element["id"],$element["changeDate"]);
+		writeSitemapLink("zenePlayer?id=".$element["id"],$element["changeDate"]);
 	}
 
 
 	$pictureList=$db->getPictureList();
 	foreach ($pictureList as $picture) {
-		writeSitemapLink("picture.php?id=".$picture["id"],$element["changeDate"]);
+		writeSitemapLink("picture?id=".$picture["id"],$element["changeDate"]);
 	}
 
 	$classList=$db->getClassList(getRealId(getAktSchool()));
 	foreach ($classList as $class) {
-		writeSitemapLink("hometable.php?classid=".$class["id"],$element["changeDate"]);
+		writeSitemapLink("hometable?classid=".$class["id"],$element["changeDate"]);
 	}
 
 	queryPersons($db);

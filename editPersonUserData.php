@@ -2,7 +2,7 @@
 <?php if ( userIsAdmin() || isAktUserTheLoggedInUser()) { ?>
 	<table style="width:90%" class="editpagetable">
 
-        <form action="editDiak.php" method="get">
+        <form action="editDiak" method="get">
 			<tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-user"></span> Becenév módosítása</h3> A becenév minimum 6 karakter hosszú kell legyen. </p></td></tr>
 			<tr><td class="caption1">Becenév</td><td>&nbsp;</td><td><input type="text" class="input2" name="user" value="<?php  echo $diak["user"] ?>" /></td></tr>
 			<tr><td>&nbsp;</td><td>&nbsp;</td><td><input type="submit" class="btn btn-default" value="Új becenév!" title="Új becenév kimentése" /></td></tr>
@@ -12,7 +12,7 @@
 		</form>
 
         <tr><td colspan="3"><hr/> </td></tr>
-			<form action="editDiak.php" method="get">
+			<form action="editDiak" method="get">
 			<tr><td colspan="3"><p style="text-align:left"><h3><span class="glyphicon glyphicon-sunglasses"></span> Jelszó módosítása</h3> A jelszó minimum 6 karakter hosszú kell legyen. </p></td></tr>
 			<tr><td class="caption1">Jelszó</td><td>&nbsp;</td>
 			<td>
@@ -27,7 +27,7 @@
 		</form>
 
         <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-wrench"></span> Direkt link az adataimhoz</h3> Ezzel a linkkel becenév és jelszó nélkül lehet bejelentkezni.</p></td></tr>
-        <tr><td class="caption1">Link</td><td>&nbsp;</td><td><a href="editDiak.php?key=<?php echo generateUserLoginKey(getAktUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
+        <tr><td class="caption1">Link</td><td>&nbsp;</td><td><a href="editDiak?key=<?php echo generateUserLoginKey(getAktUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
 
         <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
         <tr><td class="caption1">Dátum</td><td>&nbsp;</td><td><?php echo $diak["userLastLogin"]?></a></td></tr>
@@ -40,7 +40,7 @@
 				Facebook kép: <img src="https://graph.facebook.com/<?php echo $diak['facebookid']; ?>/picture" />
 			</div> 
 			<br />
-			<form action="editDiak.php" method="get">
+			<form action="editDiak" method="get">
 				<input type="hidden" value="removefacebookconnection" name="action" />
 				<input type="hidden" value="<?php echo getAktUserId() ?>" name="uid" />
 				<input type="hidden" value="<?php echo $tabOpen ?>" name="tabOpen" />

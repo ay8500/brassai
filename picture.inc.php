@@ -155,7 +155,7 @@ $sortAlphabet=(strpos($sort,"alphabet")!==false?"secundary":"default");
 $sortDate=(strpos($sort,"date")!==false?"secundary":"default");
 $alt=(strpos($sort,"desc")!==false?"-alt":"");
 $desc=(strpos($sort,"desc")!==false?"":"-desc");
-$link="picture.inc.php?view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort;
+$link="picture.inc?view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort;
 $url = "http".(!empty($_SERVER['HTTPS'])?"s":"")."://".$_SERVER['SERVER_NAME'];
 
 //Sortparamteter
@@ -219,14 +219,14 @@ if ($view=="table") {
 //Create standard albumlist
 $startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"),getParam("type")=="schoolID");
 if (getParam("type")=="schoolID") {
-	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>$db->getPictureTagCount("tabl"))));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>$db->getPictureTagCount("kicsengetési"))));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture.php?type=schoolID&typeid=".getParam("typeid")."&album=_sport_","albumText"=>Appl::__("Sportolók"),"albumName"=>"_sport_","count"=>$db->getPictureTagCount("sportolóink"))));
+	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>$db->getPictureTagCount("tabl"))));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>$db->getPictureTagCount("kicsengetési"))));
+    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_sport_","albumText"=>Appl::__("Sportolók"),"albumName"=>"_sport_","count"=>$db->getPictureTagCount("sportolóink"))));
 }
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
     $countMark = $db->getPersonMarksCount($typeId);
     if( $countMark>0 ) {
-        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak.php?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
+        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
     }
 }
 
@@ -376,7 +376,7 @@ if (!isActionParam("showmore") ) {
                 <button title="<?php Appl::_("Bezár")?>" class="pbtn" id="modal-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span></button>
                 <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" id="facebutton" onclick="return toggleFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
-                <button title="<?php Appl::_("Kép link a clipbordba")?>" class="pbtn" onclick="showModalMessage('A kép linkje','<?php echo($url.pathinfo(parse_url($_SERVER['SCRIPT_NAME'])["path"])["dirname"]."/picture.php?id=") ?>'+$('#thePicture').attr('data-id'));return false;" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-link"></span></button>
+                <button title="<?php Appl::_("Kép link a clipbordba")?>" class="pbtn" onclick="showModalMessage('A kép linkje','<?php echo($url.pathinfo(parse_url($_SERVER['SCRIPT_NAME'])["path"])["dirname"]."/picture?id=") ?>'+$('#thePicture').attr('data-id'));return false;" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-link"></span></button>
                 <?php if(userIsAdmin() ) {?>
                     <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
                 <?php }?>
@@ -435,7 +435,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
             if ( $albumParam=="_mark_") {
                 ?>
                 <div style="position: relative; bottom:130px;right:-265px;z-index: 10;height: 0px;">
-                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:35px; " src="imageTaggedPerson.php?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=120"/>
+                <img style="box-shadow: 2px 2px 17px 6px black;border-radius:35px; " src="imageTaggedPerson?pictureid=<?php echo $pict["id"] ?>&personid=<?php echo getParam("typeid") ?>&size=120"/>
                 </div><?php
             }
             ?></div><?php
@@ -465,7 +465,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                 <span><?php echo $typeArray["text"]?></span>
             <?php }?>
             <div style="position: relative">
-                <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert.php?id=<?php echo $pict["id"] ?>" style="position: relative"/>
+                <img class="img-responsive ibtn" data-id="<?php echo $pict["id"] ?>"  style="min-height:100px;position: relative;" src="imageConvert?id=<?php echo $pict["id"] ?>" style="position: relative"/>
                 <div class="pdiv">
                     <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" type="button"><span class="glyphicon glyphicon-search"></span></button>
                     <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" type="button"><span class="glyphicon glyphicon-pencil"></span></button><?php
@@ -478,12 +478,12 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <span id="imgspan<?php echo $pict["id"] ?>" style="display: none"></span>
         <?php } else {?>
             <div style="vertical-align: top; margin:10px" >
-                <img class="img-responsive" src="imageConvert.php?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
+                <img class="img-responsive" src="imageConvert?width=80&thumb=true&id=<?php echo $pict["id"] ?>" />
             </div>
         <?php } ?>
 
         <?php  if (userIsSuperuser()) {?>
-            <a href="history.php?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
+            <a href="history?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("picture",$pict["id"]))?></span>
             </a>
         <?php }?>

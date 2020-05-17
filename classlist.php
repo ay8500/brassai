@@ -54,7 +54,7 @@ array_push($tabsCaption ,array("id" => "night", "caption" => 'tagozat',"iconText
     <?php include Config::$lpfw.'view/tabs.inc.php';?>
     <div class="panel panel-default " >
 		<div class="panel-heading">
-			<a class="btn btn-default" href="editSchoolClass.php?action=newclass">Új osztály</a></h4>
+			<a class="btn btn-default" href="editSchoolClass?action=newclass">Új osztály</a></h4>
 		</div>
 		<div class="panel-body">
 			<?php displayClassList($db,$classes);?>
@@ -84,7 +84,7 @@ function displayClassList($db, $classes) {
             }
             ?>
             <div style="display: inline-block;" class="<?php echo($aktualClass); ?>">
-                <a style="font-size: large;" href="hometable.php?classid=<?php echo($cclass["id"]); ?>">
+                <a style="font-size: large;" href="hometable?classid=<?php echo($cclass["id"]); ?>">
                     <?php echo $cclass["text"]?>
                 </a>
                 <?php $stat = $db->getClassStatistics($cclass["id"], userIsAdmin()); ?>

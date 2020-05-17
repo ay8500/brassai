@@ -85,7 +85,7 @@ include 'homemenu.inc.php';
 <script type="text/javascript">
 
 	function newUser () {
-		document.location.href="signin.php?action=newUser";
+		document.location.href="signin?action=newUser";
 	}
 
 	function validateEmailInput(sender,button) { 

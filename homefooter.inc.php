@@ -2,15 +2,15 @@
 	<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
 	      <ul class="nav navbar-nav">
 			<?PHP if (userIsSuperuser() ) { ?>
-				<li><a href="admin.php"  >Adminsztráció</a></li>
-                <li><a href="logingData.php"  >Loging</a></li>
+				<li><a href="admin"  >Adminsztráció</a></li>
+                <li><a href="logingData"  >Loging</a></li>
 			<?PHP }	?>
 			<?PHP if (userIsAdmin() ) { ?>
-				<li><a href="ig/ig.php?multipleGalleries=1" target="_new" >Képek</a></li>
-				<li><a href="dataCheck.php"  >Vizsga</a></li>
-				<li><a href="database.php"  >Adatbank</a></li>
+				<li><a href="ig/ig?multipleGalleries=1" target="_new" >Képek</a></li>
+				<li><a href="dataCheck"  >Vizsga</a></li>
+				<li><a href="database"  >Adatbank</a></li>
 			<?PHP }	?>
-			<li><a href="impressum.php" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">Vers:<?php echo Config::$webAppVersion?></span></li>
+			<li><a href="impressum" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">Vers:<?php echo Config::$webAppVersion?></span></li>
 	      </ul>
 	</nav>
 	<?php
@@ -33,7 +33,7 @@ if (userIsAdmin()) {
     \maierlabs\lpfw\Appl::addJsScript('    
         function showip(ip) {
             $.ajax({
-                url: "ajax/getIpLocation.php?ip="+ip,
+                url: "ajax/getIpLocation?ip="+ip,
                 success:function(data) {
                     var m  = "Ország:"+data.country+"<br/>";
                         m += "Irányítószám:"+data.zip+"<br/>";

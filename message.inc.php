@@ -45,7 +45,7 @@ function displayMessage($message, $person) {
     <?php if (isset($message["name"]) && strlen($message["name"])>3) {
         echo $message["name"];
     } else if (isset($message["changeUserID"]) && $message["changeUserID"]!=1 && $message["changeUserID"]!=-1) {
-        echo '<a href="editDiak.php?uid='.$message["changeUserID"].'" >'.getPersonName($person).'</a>';
+        echo '<a href="editDiak?uid='.$message["changeUserID"].'" >'.getPersonName($person).'</a>';
     } else {
         echo "Anonim felhasználó";
     }?>

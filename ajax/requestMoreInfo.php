@@ -41,7 +41,7 @@ if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) 
 	$text .="ezt az üzenetet a ".getAktSchoolName()." végzős diakjainak honoldaláról azért kaptad, mert ".$name;
 	$text .=" szertné ha többet olvashatna rólad az -".$title."- oldalon.<br /><br />";
 	$text .="Légyszíves szakíts két perc időt és egészítsd ki az oldalt egy egyszerü kattintással a következö linkre.";
-	$text .='<a href="'.Config::$siteUrl.'/editDiak.php?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />';
+	$text .='<a href="'.Config::$siteUrl.'/editDiak?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />';
 	$text .='Üdvözlettel '.$name;
 
 	if (!\maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text,"Kérés kiegészítésre.")) {

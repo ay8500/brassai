@@ -63,7 +63,7 @@ include("homemenu.inc.php");
 			</div>
 		<?php endif;?>
 		<?php if (is_object($json) ) {?>
-			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista.php">Vissza a toplistához. </a></div>
+			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 			<?php if (null==$playlist):?>
 				<h2><?php echo $json->title?></h2>
 			<?php else: ?>
@@ -75,7 +75,7 @@ include("homemenu.inc.php");
 		<?php } else {?>
 			<div class="resultDBoperation" ><div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?></div></div>
 		<?php }?>
-		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista.php">Vissza a toplistához. </a></div>
+		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 	</div>
 </div>
 

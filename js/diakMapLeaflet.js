@@ -77,7 +77,7 @@ function fillPoints() {
         while(markers.length > 0) {
             markers.pop();
         }
-        var url="ajax/getGeoPoints.php";
+        var url="ajax/getGeoPoints";
         url +="?lat2="+map.getBounds().getNorth();
         url +="&lng1="+map.getBounds().getWest();
         url +="&lat1="+map.getBounds().getSouth();

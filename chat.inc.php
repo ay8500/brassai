@@ -37,7 +37,7 @@ function showChatEnterfields($personList) {
 	}
 	if ( userIsAdmin() || (false && $personWithEmail>0 && getAktClassId()==$userDB->dbDAO->getLoggedInUserClassId() )) {
 		?>
-		<form action="chat.php" method="post" id="chatform">
+		<form action="chat" method="post" id="chatform">
 			<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>
 			<div id="message-fields"  style="display: none;">
 				<div style="display: inline-block;font-size: 125%;">Körlevél e-mail <?php echo $personWithEmail?> osztálytársnak.</div>

@@ -7,7 +7,7 @@ function savePicture(id) {
     showWaitMessage();
     if (id>0) {
         $.ajax({
-            url:encodeURI("ajax/setPictureTitle.php?id="+id+"&title="+t+"&comment="+c+"&tag="+ $('#tagEdit_'+id).val()),
+            url:encodeURI("ajax/setPictureTitle?id="+id+"&title="+t+"&comment="+c+"&tag="+ $('#tagEdit_'+id).val()),
             type:"GET",
             dataType: 'json',
             success:function(data){
@@ -30,7 +30,7 @@ function savePicture(id) {
 function changeVisibility(id) {
     var c = $('#visibility'+id).prop('checked')?1:0;
     $.ajax({
-        url:"ajax/setPictureVisibility.php?id="+id+"&attr="+c,
+        url:"ajax/setPictureVisibility?id="+id+"&attr="+c,
         type:"GET",
         success:function(data){
             showDbMessage('<?php maierlabs\lpfw\Appl::_("Kép láthatósága sikeresen kimentve")?>',"success");
@@ -76,7 +76,7 @@ function pictureModal(file,id) {
     $("#thePictureFaceRecognition").on('load',function(){
         onPictureFaceRecognitionLoad();
     });
-    $("#thePicture").attr("src","imageConvert.php?width=1900&id="+id);
+    $("#thePicture").attr("src","imageConvert?width=1900&id="+id);
     $('#pictureModal').modal();
     return false;
 }
@@ -104,7 +104,7 @@ function showTagging(show) {
     var img=$("#thePicture");
     if (img.attr("data-id")!==null) {
         $.ajax({
-            url: "ajax/getPicturePersons.php?pictureid=" + img.attr("data-id"),
+            url: "ajax/getPicturePersons?pictureid=" + img.attr("data-id"),
             type: "GET",
             success: function (data) {
                 $('[person-id]').remove();
@@ -140,7 +140,7 @@ function showTagging(show) {
                     html += '<span onmouseover="personShow(' + p.personID + ',true)"';
                     html += ' onmouseout="personShow(' + p.personID + ',false)" class="personlist" ';
                     html += ' style="border-radius:3px" person-id="' + p.personID + '">';
-                    html += '<a href="editDiak.php?uid=' + p.personID + '">' + (p.title != null ? p.title + ' ' : '') + p.lastname + ' ' + p.firstname + "</a>";
+                    html += '<a href="editDiak?uid=' + p.personID + '">' + (p.title != null ? p.title + ' ' : '') + p.lastname + ' ' + p.firstname + "</a>";
                     html += '&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson(' + p.personID + ',' + p.pictureID + ')"></span>';
                     html += '</span>';
                     $("#personlist").append(html);
@@ -257,7 +257,7 @@ $(function() {
     $("[class*=ibtn]").each(function(){
         if($(this).attr("data-id")!==null) {
             $.ajax({
-                url: "ajax/getPicturePersons.php?pictureid=" + $(this).attr("data-id"),
+                url: "ajax/getPicturePersons?pictureid=" + $(this).attr("data-id"),
                 type: "GET",
                 success: function (data) {
                     if (data.face.length > 0) {
@@ -302,7 +302,7 @@ function deletePerson(personid,pictureid,verbose,savenewposition) {
     if (savenewposition==null) savenewposition= false;
     if (!verbose || confirm('<?php maierlabs\lpfw\Appl::_("Személy megjelölést törölni szeretnéd?")?>')) {
         $.ajax({
-            url: "ajax/deletePicturePerson.php?pictureid="+pictureid+"&personid="+personid,
+            url: "ajax/deletePicturePerson?pictureid="+pictureid+"&personid="+personid,
             type:"GET",
             success:function(data){
                 $('*[person-id='+personid+']').each(function(){
@@ -414,7 +414,7 @@ function searchPerson(pictureid,x,y) {
     $('#persontable').empty();
     $("#personedit").focus();
     $.ajax({
-        url: "ajax/getPersonByName.php?name="+$("#personedit").val(),
+        url: "ajax/getPersonByName?name="+$("#personedit").val(),
         type:"GET",
         success:function(data){
             if (data!=null && data.length>0) {
@@ -454,14 +454,14 @@ function savePerson(personid,pictureid,x,y) {
     closeNewModify();
     var img=$("#thePicture");
     $.ajax({
-        url: "ajax/setPicturePerson.php?pictureid="+pictureid+"&personid="+personid+"&x="+(x-faceSize/2)/img.width()+"&y="+(y-faceSize/2)/img.height()+"&w="+faceSize/img.width(),
+        url: "ajax/setPicturePerson?pictureid="+pictureid+"&personid="+personid+"&x="+(x-faceSize/2)/img.width()+"&y="+(y-faceSize/2)/img.height()+"&w="+faceSize/img.width(),
         type:"GET",
         success:function(data){
             showTagging(true);
             showConfirmMessage(
                 "<?php maierlabs\lpfw\Appl::_('Személy megjelölése sikerült')?>",
                 "<?php maierlabs\lpfw\Appl::_('Akkor perfekt e személy megjelölése:<ul><li>ha a képen a személy szemei, orra és szája látszik</li><li>a személy naka és teljes frizurája nem fontos a jelöléshez</li><li>ha más személyek teljes arca nincs a megjelölt mezőben</li></ul>Ha nem sikerült, akkor kérünk törölj, és probáld meg újból.<br/>Köszönjük szépen.')?>",
-                "imageTaggedPerson.php?pictureid="+pictureid+"&personid="+personid+"&size=100&padding=20",
+                "imageTaggedPerson?pictureid="+pictureid+"&personid="+personid+"&size=100&padding=20",
                 pictureid,personid
             )
         },
@@ -508,7 +508,7 @@ function slideToNextPicture(direction) {
                         );
 
                     });
-                    img.attr("src","imageConvert.php?width=1200&id="+id);
+                    img.attr("src","imageConvert?width=1200&id="+id);
                 }
             }
         );
@@ -532,7 +532,7 @@ function slideToNextPicture(direction) {
                             }
                         );
                     });
-                    img.attr("src","imageConvert.php?width=1200&id="+id);
+                    img.attr("src","imageConvert?width=1200&id="+id);
                 }
             }
         );

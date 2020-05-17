@@ -121,20 +121,20 @@ include("homemenu.inc.php");
                 <li>Március 2019: Személyeket lehet a fényképeken megjelölni</li>
                 <li>December 2018: Családtagokat lehet megjelölni</li>
                 <li>November 2018: Véleményeket lehet személyekhez és képekhez hozzáfűzni</li>
-                <li>Szeptember 2018: Fényképeket <a href="picture.php?type=schoolID&typeid=1&album=Iskolánk%20sportolói">albumokba</a> lehet csoportosítani</li>
-                <li>Junius 2018: GDPR:<a href="gdpr.php?id=658">Személyes adatok megvédésére alkalmas kérvényenési lehetőség.</a>
+                <li>Szeptember 2018: Fényképeket <a href="picture?type=schoolID&typeid=1&album=Iskolánk%20sportolói">albumokba</a> lehet csoportosítani</li>
+                <li>Junius 2018: GDPR:<a href="gdpr?id=658">Személyes adatok megvédésére alkalmas kérvényenési lehetőség.</a>
 				<li>Május 2018: <a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a>A weboldal https biztonságos kommunikációt használ a személyes adatok megvédésére.
-				<li>Január 2018: <a href="hometable.php?classid=340">Estis tanfolyamok névsora.</a></li>
-				<li>December 2017: <a href="start.php">Újdonságok,</a> ezen az oldalon az utólsó frissitéseket illetve bejegyzéseket lehet megtekinteni.</li>
-				<li>December 2016: <a href="picture.php?type=schoolID&typeid=1&album=_tablo_">Tablók</a> albumával bővült az oldal.</li>
-				<li>Március 2016: <a href="hometable.php?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanárok</a> listályával bővült az oldal.</li>
-                <li>Junius 2015: <a href="message.php">Üzenőfal</a> híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
+				<li>Január 2018: <a href="hometable?classid=340">Estis tanfolyamok névsora.</a></li>
+				<li>December 2017: <a href="start">Újdonságok,</a> ezen az oldalon az utólsó frissitéseket illetve bejegyzéseket lehet megtekinteni.</li>
+				<li>December 2016: <a href="picture?type=schoolID&typeid=1&album=_tablo_">Tablók</a> albumával bővült az oldal.</li>
+				<li>Március 2016: <a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanárok</a> listályával bővült az oldal.</li>
+                <li>Junius 2015: <a href="message">Üzenőfal</a> híreknek, véleményeknek, szervezésnek, újdonságoknak.</li>
 				<li>Május 2015: Honoldal mobil készülékekkel is kompatibilis.</li>
 				<li>Május 2015: A véndiákok életrajzzal, diákkori történetekkel és hobbikkal egészíthetik ki a profiljukat.</li>
 				<li>Aprilis 2015: Bejelentkezés Facebook felhasználóval.</li>
-				<li>Julius 2010:<a href="hometable.php?classid=74&guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
-				<li>Május 2010: Zene toplista <a href="zenetoplista.php?classid=0">Zenetoplista</a></li>
-                <li>Julius 2006: <a href="worldmap.php?classid=all">Térképen megjelenített szétszóródása a véndiákoknak.</a></li>
+				<li>Julius 2010:<a href="hometable?classid=74&guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
+				<li>Május 2010: Zene toplista <a href="zenetoplista?classid=0">Zenetoplista</a></li>
+                <li>Julius 2006: <a href="worldmap?classid=all">Térképen megjelenített szétszóródása a véndiákoknak.</a></li>
 			</ul>
 		</div>
 	</div>
@@ -150,7 +150,7 @@ Appl::addJsScript("
     function showmore(date) {
         $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
-    		url:'start.php?action=showmore&date='+$('#date').val()+'&tabOpen=".getParam('tabOpen','all').$urlParam."',
+    		url:'start?action=showmore&date='+$('#date').val()+'&tabOpen=".getParam('tabOpen','all').$urlParam."',
 	    	type:'GET',
     		success:function(data){
     		    var idx=data.lastIndexOf('#');

@@ -53,7 +53,7 @@ include("homemenu.inc.php");
 	<div  style="padding:15px;" class="col-sm-8" >
 		<h4>Lehetőségeid a véndiákok oldalán:</h4>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="start.php">
+			<a class="inlineBox" href="start">
                 <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" />
                 <?php if ($xmas) { ?>
                     <div style="overflow: visible;width: 0px;height: 0px;">
@@ -64,13 +64,13 @@ include("homemenu.inc.php");
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="hometable.php?classid=10">
+			<a class="inlineBox" href="hometable?classid=<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>">
                 <div class="inlineBox"><img img class="indeximg" src="images/teacher.png" /></div>
                 <div class="inlineBox" style="vertical-align: middle;">Tanáraink névsorának bővítése és kiegészítése.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="message.php">
+			<a class="inlineBox" href="message">
                 <div class="inlineBox"><img class="indeximg" src="images/speech-bubble.png" />
                     <?php if ($xmas) { ?>
                         <div style="overflow: visible;width: 0px;height: 0px;">
@@ -81,25 +81,25 @@ include("homemenu.inc.php");
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="rip.php">
+			<a class="inlineBox" href="rip">
                 <div class="inlineBox"><img img class="indeximg" src="images/candlerip.png" /></div>
 			    <div class="inlineBox" style="vertical-align: middle;">Gyertyák tanáraink és iskolatársaink emlékére.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="editDiak.php?uid=658&tabOpen=school">
+			<a class="inlineBox" href="editDiak?uid=658&tabOpen=school">
                 <div class="inlineBox"><img img class="indeximg" src="images/hand-holding-cv.png" /></div>
                 <div class="inlineBox" style="vertical-align: middle;">Történetek, képek és életrajz megosztása.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="worldmap.php">
+			<a class="inlineBox" href="worldmap">
                 <div class="inlineBox"><img img class="indeximg" src="images/geography.png" /></div>
                 <div class="inlineBox" style="vertical-align: middle;">Térképen megjelenített szétszóródása az osztálytársaknak.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="vote.php?classid=74">
+			<a class="inlineBox" href="vote?classid=74">
                 <div class="inlineBox"><img img class="indeximg" src="images/vote.png" /></div>
                 <div class="inlineBox" style="vertical-align: middle;">Találkozók szervezésére alkalmas szavazás.</div>
             </a>
@@ -116,7 +116,7 @@ include("homemenu.inc.php");
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="zenetoplista.php?classid=all">
+			<a class="inlineBox" href="zenetoplista?classid=all">
                 <div class="inlineBox"><img img class="indeximg" src="images/record-player.png" /></div>
                 <div class="inlineBox" style="vertical-align: middle;">Véndiákok zene toplistája.</div>
             </a>

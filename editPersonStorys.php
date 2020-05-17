@@ -78,7 +78,7 @@ include_once 'dbBL.class.php';
 				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
 					<span style="min-width:130px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
 					<div class="input-group-btn">
-						<img style="height: 34px;border: 1px solid lightgrey;" alt="" src="SecurityImage/SecurityImage.php" />
+						<img style="height: 34px;border: 1px solid lightgrey;" alt="" src="SecurityImage/SecurityImage" />
 					</div>
                     <input id="code" type="text" size="6" value="" placeholder="írd be az 5 karakteres biztonsági kódot" class="form-control"/>
 				</div>
@@ -109,7 +109,7 @@ if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
 		};
 		$('#ajaxStatus').html('kiment...');
 		$.ajax({
-			url : 'ajax/setPersonStory.php',
+			url : 'ajax/setPersonStory',
 			type : 'POST',
 			dataType : 'json',
 			success:function(data){
@@ -123,7 +123,7 @@ if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
 \maierlabs\lpfw\Appl::addJsScript("
 	function sendMoreInfoRequest() {
 		$.ajax({
-			url : 'ajax/requestMoreInfo.php?title=".$title."&tab=".$tab."&code='+$('#code').val()+'&name='+$('#name').val(),
+			url : 'ajax/requestMoreInfo?title=".$title."&tab=".$tab."&code='+$('#code').val()+'&name='+$('#name').val(),
 			success : function(data){
 				showAjaxStatus(' Üzenet sikeresen elküldve. ','lightgreen');
 			},

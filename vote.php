@@ -123,7 +123,7 @@ if ($class!=null) {
                                     <span class="glyphicon glyphicon-save"></span> Kiment
                                 </button>
                                 <?php if (userIsEditor() || userIsSuperuser()) { ?>
-                                    <a title="módosítások" href="history.php?table=vote&id=<?php echo $vote["id"] ?>"
+                                    <a title="módosítások" href="history?table=vote&id=<?php echo $vote["id"] ?>"
                                        style="display:inline-block;">
                                         <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("vote", $vote["id"])) ?></span>
                                     </a>

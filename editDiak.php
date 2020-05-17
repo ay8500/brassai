@@ -57,7 +57,7 @@ if ($personid!=null && $personid>=0) {
 		$class=$db->getClassById($classId);
 		setAktClass($classId);
 	} else {
-		header('Location:dc.php');
+		header('Location:dc');
 		exit;
 	}
 }
@@ -119,12 +119,12 @@ if (userIsAdmin()) { //only for admin
 	array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
 if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-    $dataFieldObl[18+$offset] = "Évszám mettől meddig pl: 1961-1987";
-    $dataFieldCaption[18+$offset] = "Mettől meddig";
-    $dataFieldObl[19+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
-    $dataFieldCaption[19+$offset] = "Tantárgy";
-    $dataFieldCaption[20+$offset] = "Osztályfönök";
-    $dataFieldObl[20+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszövel elválasztva. Például: 1985 12A,1989 12C";
+    $dataFieldObl[19+$offset] = "Évszám mettől meddig pl: 1961-1987";
+    $dataFieldCaption[19+$offset] = "Mettől meddig";
+    $dataFieldObl[20+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
+    $dataFieldCaption[20+$offset] = "Tantárgy";
+    $dataFieldCaption[21+$offset] = "Osztályfönök";
+    $dataFieldObl[21+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszővel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
@@ -173,7 +173,7 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 					setAktClass($diak["classID"]);	//set actual class in case of class changes
                     \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId(),\maierlabs\lpfw\LoggerLevel::info);
 					$db->saveRequest(changeType::personchange);
-					header("location:hometable.php?class=".$diak["classID"]."&action=saveok");
+					header("location:hometable?class=".$diak["classID"]."&action=saveok");
 				} else {
 					Appl::setMessage("Az adatok kimentése nem sikerült! Hibakód:1631","warning");
                     \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError:1631",\maierlabs\lpfw\LoggerLevel::error);
@@ -393,7 +393,7 @@ if(userIsLoggedOn() || userIsAdmin()) {
     array_push($tabsCaption ,array("id" => "info", "caption" => "Infók", "glyphicon" => "info-sign"));
 }
 
-$tabUrl="editDiak.php";
+$tabUrl="editDiak";
 ?>
 <?php if (null!=getAktClass()) {?>
     <div class="container-fluid"><?php
@@ -450,7 +450,7 @@ $tabUrl="editDiak.php";
 <script type="text/javascript">
 	function deleteDiak(id) {
 		if (confirm("Személy végleges törölését kérem konfirmálni!")) {
-			window.location.href="hometable.php?uid="+id+"&action=delete_diak";
+			window.location.href="hometable?uid="+id+"&action=delete_diak";
 		}
 	}
 </script>

@@ -40,7 +40,7 @@ function addWrapperDiv(id) {
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; margin: 0px 10px">';
-        html +='<a href="editDiak.php?uid='+d.id+'" title="'+d.name+'">';
+        html +='<a href="editDiak?uid='+d.id+'" title="'+d.name+'">';
         html +='<div >';
         html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium">';
         if (d["deceasedYear"]!=null && parseInt(d["deceasedYear"])>=0) {
@@ -62,15 +62,15 @@ function addWrapperDiv(id) {
     	    	var kx= d.children.split(",");
     	    	for (var k=0;k<kx.length;k++) {
     	    	    if (k!=0) html+=',';
-    	    	    html +='<a href="hometable.php?classid='+kx[k]+'">'+kx[k]+'</a> ';
+    	    	    html +='<a href="hometable?classid='+kx[k]+'">'+kx[k]+'</a> ';
     	    	}
     	    	html +='</div></div>';
             }
         } else {
             if (d.isGuest==0)
-        	html +='<div><div>Osztály:</div><div><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div></div>';
+        	html +='<div><div>Osztály:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
             else
-        	html +='<div><div>Osztály:</div><div><a href="hometable.php?classid='+d.classID+'">'+d.classText+'</a></div></div>';
+        	html +='<div><div>Osztály:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
         }
         if (d.place!=null)
     		html +='<div><div>Helyiség:</div><div>'+d.place+'</div></div>';
@@ -87,7 +87,7 @@ function addWrapperDiv(id) {
         if (d.homepage!=null)
     		html +='&nbsp;<a target="_new" href='+d.homepage+'><img src="images/www.png" /></a>';
         if (d.geolocation===1)
-        	html +='&nbsp;<a href=editDiak.php?tabOpen=5&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
+        	html +='&nbsp;<a href=editDiak?tabOpen=5&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
         html +='</div>';
 
         html +='</div>';
@@ -127,7 +127,7 @@ function getWrapperData() {
     }
     //get new data
     $.ajax({
-	url:"ajax/getRandomPerson.php?ids="+ids,
+	url:"ajax/getRandomPerson?ids="+ids,
  	type:"GET",
  	async:true,
  	success:function(person){

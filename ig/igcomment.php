@@ -81,7 +81,7 @@
 			</td></tr>
 			<tr>
 				<?PHP 
-					$secutiryImagePHP ="SecurityImage/SecurityImage.php";
+					$secutiryImagePHP ="SecurityImage/SecurityImage";
 					$path=getenv("SCRIPT_FILENAME");
 					$path=strtr($path,"\\","/");
 					$path=substr($path,0,strrpos($path,"/"))."/";

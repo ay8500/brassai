@@ -15,18 +15,18 @@ if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
  */
 
 /**
- * It's preferable to configure the script using `deploy-config.class.php` file.
+ * It's preferable to configure the script using `deploy-config.class .php` file.
  *
- * Rename `deploy-config.example.php` to `deploy-config.class.php` and edit the
+ * Rename `deploy-config.example .php` to `deploy-config.class .php` and edit the
  * configuration options there instead of here. That way, you won't have to edit
- * the configuration again if you download the new version of `deploy.php`.
+ * the configuration again if you download the new version of `deploy .php`.
  */
 if (file_exists(basename(__FILE__, '.php').'-config.php')) require_once basename(__FILE__, '.php').'-config.php';
 
 /**
  * Protect the script from unauthorized access by using a secret access token.
  * If it's not present in the access URL as a GET variable named `sat`
- * e.g. deploy.php?sat=Bett...s the script is not going to deploy.
+ * e.g. deploy .php?sat=Bett...s the script is not going to deploy.
  *
  * @var string
  */

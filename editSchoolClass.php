@@ -173,7 +173,7 @@ include("homemenu.inc.php");
 
 	<div class="well">
 		<?php  if ((userIsSuperuser()) && isset($class)) {?>
-			<a href="history.php?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
+			<a href="history?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
 			</a>
 		<?php }?>
@@ -198,11 +198,11 @@ include("homemenu.inc.php");
 	<div class="well " style="margin-bottom: 25px;">
 		<h4>Statisztikai adatok</h4>
 		<div class="form">	      		
-		<a href="hometable.php?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
-        <a href="hometable.php?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
+		<a href="hometable?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
+        <a href="hometable?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
 		Diákok képpel:<?php echo $stat->personWithPicture?><br/>
 		Diakok képei:<?php echo $stat->personPictures?><br/>
-		<a href="picture.php?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
+		<a href="picture?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
 		</div>
 	</div>
 </div>
@@ -265,12 +265,12 @@ Appl::addJsScript('
 
 	function saveClass() {
 	    showWaitMessage();
-	    document.location="editSchoolClass.php?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
+	    document.location="editSchoolClass?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
 	}
 
 	function saveNewClass() {
 	    showWaitMessage();
-	    document.location="editSchoolClass.php?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val();
+	    document.location="editSchoolClass?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val();
 	}
 	
 	function getTeachers() {
@@ -279,7 +279,7 @@ Appl::addJsScript('
 	
 	function deleteClass() {
 		if (confirm("Biztos ki szeretnéd törölni az osztályt?"))
-	    	document.location="editclass.php?action=deleteclass&classid='.$classid.'";
+	    	document.location="editclass?action=deleteclass&classid='.$classid.'";
 	}
 ');
 

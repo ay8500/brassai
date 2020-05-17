@@ -40,7 +40,7 @@ include('homemenu.inc.php');?>
         <h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb tanáraink és véndiákok</h4>
     </div>
     <div class="panel-body"><?php
-        $bests=$dbStatistic->getPersonChangeBest(userIsAdmin()?24:12);
+        $bests=$dbStatistic->getPersonChangeBest(userIsAdmin()?48:24);
         foreach ($bests as $uid=>$count) {
             if ($count>=1) {
                 $person=$db->getPersonByID($uid);
@@ -49,7 +49,7 @@ include('homemenu.inc.php');?>
                     ?>
                     <div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
                         <span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
-                        <span style="width: 146px;display: inline-block;"><a href="editDiak.php?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
+                        <span style="width: 146px;display: inline-block;"><a href="editDiak?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
                         <span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
                     </div>
                     <?php
@@ -71,42 +71,42 @@ include('homemenu.inc.php');?>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Összesen</span></span>
 	       		<span type="text" class="form-control"><?php echo $teacher?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=teacher" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=teacher" class="btn btn-default">Mutasd</a></div>
 	  		</div>
   		</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Elhunyt</span></span>
 	       		<span type="text" class="form-control"><?php echo $teacherDeceased?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=teacherdeceased" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=teacherdeceased" class="btn btn-default">Mutasd</a></div>
 	  		</div>
   		</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Képpel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $teacherPicture." (".round($teacherPicture/$teacher*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=teacherwithpicture" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=teacherwithpicture" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">E-Mail címmel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $teacherEmail." (".round($teacherEmail/$teacher*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=teacherwithemail" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=teacherwithemail" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Facebook</span></span>	
 	       		<span type="text" class="form-control"><?php echo $teacherFacebook." (".round($teacherFacebook/$teacher*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=teacherwithfacebook" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=teacherwithfacebook" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Wikipedia</span></span>	
 	       		<span type="text" class="form-control"><?php echo $teacherWikipedia." (".round($teacherWikipedia/$teacher*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=teacherwithwikipedia" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=teacherwithwikipedia" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
 	</ul>
@@ -121,42 +121,42 @@ include('homemenu.inc.php');?>
   			<div class="input-group input-group-sm">
   				<span class="input-group-addon"><span class="statw">Összesen</span></span>
        			<span type="text" class="form-control"><?php echo $classmate?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=classmate" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=classmate" class="btn btn-default">Mutasd</a></div>
 	       	</div>
   		</li>
   		<li>
   			<div class="input-group input-group-sm">
   				<span class="input-group-addon"><span class="statw">Elhunyt</span></span>
        			<span type="text" class="form-control"><?php echo $classmateDeceased?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=classmatedeceased" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=classmatedeceased" class="btn btn-default">Mutasd</a></div>
 	       	</div>
   		</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Képpel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classmatePicture." (".round($classmatePicture/$classmate*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=classmatewithpicture" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=classmatewithpicture" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">E-Mail címmel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classmateEmail." (".round($classmateEmail/$classmate*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=classmatewithemail" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=classmatewithemail" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Facebook</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classmateFacebook." (".round($classmateFacebook/$classmate*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=classmatewithfacebook" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=classmatewithfacebook" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li>
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Wikipedia</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classmateWikipedia." (".round($classmateWikipedia/$classmate*100,2)."%)"?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=classmatewithwikipedia" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=classmatewithwikipedia" class="btn btn-default">Mutasd</a></div>
 	  		</div>
 	  	</li>
   		<li class="">
@@ -203,14 +203,14 @@ include('homemenu.inc.php');?>
   			<div class="input-group input-group-sm">
   				<span class="input-group-addon"><span class="statw">Geokoordináta</span></span>
        			<span type="text" class="form-control"><?php echo $db->getTableCount("person","(geolat='' or geolat is null) and place <>'' and place is not null and place not like 'Kolozsv%'");?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=nogeo" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=nogeo" class="btn btn-default">Mutasd</a></div>
 	       	</div>
   		</li>
   		<li>
   			<div class="input-group input-group-sm">
   				<span class="input-group-addon"><span class="statw">Facebook kapcsolat</span></span>
        			<span type="text" class="form-control"><?php echo $db->getTableCount("person","facebookid <> '0' and facebookid is not null");?></span>
-	       		<div class="input-group-btn"><a href="search.php?type=fbconnection" class="btn btn-default">Mutasd</a></div>
+	       		<div class="input-group-btn"><a href="search?type=fbconnection" class="btn btn-default">Mutasd</a></div>
 	       	</div>
   		</li>
 	</ul>

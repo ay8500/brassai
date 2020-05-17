@@ -14,7 +14,7 @@ include("homemenu.inc.php");
         $marks = $db->getPersonMarks();
         foreach ($marks as $mark) {
             if(rand(0,100)==5)
-                echo('<img src="imageTaggedPerson.php?pictureid='.$mark["pictureID"].'&personid='.$mark["personID"].'&size=120&rounded=true" />');
+                echo('<img src="imageTaggedPerson?pictureid='.$mark["pictureID"].'&personid='.$mark["personID"].'&size=120&rounded=true" />');
         }
     ?>
 </div>
