@@ -123,7 +123,7 @@ include("homemenu.inc.php");
 			</div>
 			<?php } ?>
 			<?php $text="~" ?>
-<textarea id="story" name="T" onchange="textChanged();" ><?php echo($paramText);?></textarea>
+<div style="margin:1px"><textarea id="story" name="T" onchange="textChanged();" ><?php echo($paramText);?></textarea></div>
 			<?php if (userIsLoggedOn()) {?>
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt az üzenetet?</div>

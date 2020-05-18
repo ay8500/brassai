@@ -296,8 +296,11 @@ if (!isActionParam("showmore") ) {
 			</div>
 		<?php }?>
 	</div>
-	
-	<form enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+    <?php
+        $scriptArray=explode("/",$_SERVER["SCRIPT_NAME"]);
+        $script=pathinfo($scriptArray[sizeof($scriptArray)-1],PATHINFO_FILENAME);
+    ?>
+	<form enctype="multipart/form-data" action="<?php echo $script?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
 		<div style="margin-bottom:15px;">
             <?php if (substr($albumParam,0,1)!="_" && ($notDeletedPictures<50 || userIsAdmin())) {?>

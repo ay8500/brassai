@@ -292,7 +292,7 @@ function getLoggedInUserIdOrNull() {
         $('#o-'+type+'-'+id).html('pillanat <img src=\"images/loading.gif\" />');
         $('#o-'+type+'-'+id).show();
         $.ajax({
-            url:'ajax/getOpinionsid='+id+'&type='+type+'&count='+count,
+            url:'ajax/getOpinions?id='+id+'&type='+type+'&count='+count,
             type:'GET',
             success:function(data){
                 var html=$('#opinionlist').html();

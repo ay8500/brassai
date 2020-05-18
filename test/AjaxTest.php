@@ -15,9 +15,9 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         $url=$this->getUrl();
         if($url==null)
             return;
-        $ret=$this->callAjaxUrl($url."ajax/getRandomPerson");
+        $ret=(array)$this->callTestUrl($url."ajax/getRandomPerson",true);
         $this->assertNotNull($ret);
-        $this->assertTrue(isset($ret["id"]) && isset($ret["name"]) && isset($ret["image"]) );
+        $this->assertTrue(isset($ret["content"]) && isset($ret["content"]["id"]) && isset($ret["content"]["name"]) && isset($ret["content"]["image"]) );
     }
 
     public function testCandleLighter() {
@@ -26,9 +26,9 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         $url=$this->getUrl();
         if($url==null)
             return;
-        $ret=$this->callAjaxUrl($url."ajax/getCandleLighters?id=".$id,false);
+        $ret=(array)$this->callTestUrl($url."ajax/getCandleLighters?id=".$id,false);
         $this->assertNotNull($ret);
-        $this->assertTrue($ret=="" );
+        $this->assertTrue(isset($ret["content"]) );
         //$ret=$this->callAjaxUrl($url."ajax/setCandleLighter?id=".$id);
         //$this->assertNotNull($ret);
         //$this->assertTrue(isset($ret["id"])  );
@@ -36,25 +36,6 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         //$ret=$this->callAjaxUrl($url."ajax/getCandleLighters?id=".$id,false);
         //echo("$ret");
         //$this->assertSame(intval($uId),intval($ret["uId"]));
-    }
-
-    private function callAjaxUrl($url,$json=true){
-        if ($url==null || strlen($url)==0)
-            return null;
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
-        //curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
-        $resp = curl_exec($ch);
-        curl_close($ch);
-        if ($resp===false)
-            return null;
-        if ($json)
-            return json_decode($resp,true);
-        return $resp;
     }
 
     private function getUrl() {

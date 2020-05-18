@@ -32,8 +32,8 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 
     public function testDatabaseEncryption()
     {
-        $ok = $this->db->queryInt("select  count(length(passw)),passw   from person having length(passw)=32");
-        $all = $this->db->queryInt("select  count(*) from person");
+        $ok = $this->db->queryInt("select count(*),passw from person having length(passw)>=32");
+        $all = $this->db->queryInt("select count(*) from person");
         $this->assertSame($all,$ok);
         /*
         while ($row = $this->db->fetchRow()) {

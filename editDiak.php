@@ -10,7 +10,7 @@ use \maierlabs\lpfw\Appl as Appl;
 
 $tabOpen= getParam("tabOpen", "person");
 
-$personid = getParam("uid",null);
+$personid = getIntParam("uid",null);
 if (getParam("type")=="personID" && getParam("typeid")!=null) {
     $personid=getParam("typeid");
 }

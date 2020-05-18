@@ -1,6 +1,8 @@
 <?php
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'ltools.php';
+include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
     die("Only for admins");
@@ -18,14 +20,10 @@ if (getParam("action")=="todosomething") {
 }
 
 if (getParam("action")=="decrypt") {
-    include_once("lpfw/ltools.php");
-    include_once("lpfw/userManager.php");
     echo (encrypt_decrypt("decrypt",getParam("param")));
     die();
 }
 if (getParam("action")=="encrypt") {
-    include_once("lpfw/ltools.php");
-    include_once("lpfw/userManager.php");
     echo (encrypt_decrypt("encrypt",getParam("param")));
     die();
 }

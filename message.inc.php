@@ -38,7 +38,7 @@ function displayMessage($message, $person) {
     if(isset($message["endDate"]) && $message["endDate"]!=null && strtotime($message['endDate'])<(new DateTime())->getTimestamp()) { $expired = true; ?>
         <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#fff0f0">
     <?php } else { ?>
-        <div style="border-style:solid; border-radius:5px; border-width:1px; background-color:#f2f2f2">
+        <div style="background-color:#f2f2f2; box-shadow:5px 5px 10px black;padding: 5px;margin-bottom: 20px;border-radius: 10px">
     <?php }?>
     <img src="<?php echo getPersonPicture($person)?>" style="height:40px; border-radius:5px;margin:2px" />
     <div style="display: inline-block;vertical-align: bottom;margin-left:5px">
@@ -50,7 +50,7 @@ function displayMessage($message, $person) {
         echo "Anonim felhasználó";
     }?>
     </div>
-    <div style="margin:10px 0px 10px 0px">
+    <div style="margin:15px 5px 15px 5px">
         <div class="message_text"><?php echo htmlspecialchars_decode(htmlspecialchars_decode(htmlspecialchars_decode($message["text"])))?></div>
         <?php if (isset($message["comment"])) {?>
             <br /><b>Kommentár: </b><?php echo htmlspecialchars_decode(htmlspecialchars_decode($message["comment"])); ?>

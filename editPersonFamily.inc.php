@@ -59,9 +59,9 @@ include_once 'displayCards.inc.php';
 $edit =  userIsSuperuser() || userIsEditor() || $diak["id"]==getLoggedInUserId();
 
 if (isActionParam("save")) {
-    $relatives = $dbFamily->getPersonRelativesById(getParam("uid"));
+    $relatives = $dbFamily->getPersonRelativesById(getIntParam("uid"));
     if (array_search(getParam("sid"),array_column($relatives,"id2"))===false ) {
-        if ($dbFamily->saveRelatives(getParam("uid"), getParam("sid"), getParam("code"), getParam("gender"))) {
+        if ($dbFamily->saveRelatives(getIntParam("uid"), getIntParam("sid"), getParam("code"), getParam("gender"))) {
             $db->updateRecentChangesList();
             Appl::setMessage("Rokonsági kapcsolat létrehozva", "success");
         } else {

@@ -14,7 +14,7 @@ Appl::addCssStyle('
 Appl::setSiteTitle("GDPR Adatok törlésének kérvényezése");
 Appl::setSiteSubTitle('Személyes adatok törlésének kérvényezése');
 
-$person=$db->getPersonByID(getParam("id"));
+$person=$db->getPersonByID(getIntParam("id"));
 if (null!=$person) {
 	if (getParam("action")!=null) {
 	

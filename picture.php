@@ -34,8 +34,8 @@ if (!isset($type)) {
     }
 }
 if (!isset($typeId)) {
-	$typeId=getParam("typeid");
-	if ($typeId==null) {
+	$typeId=getIntParam("typeid");
+	if ($typeId==0) {
 		if (null!=getAktClass()) {
 			$type="classID";$typeId=getRealId(getAktClass());
 		} else {
