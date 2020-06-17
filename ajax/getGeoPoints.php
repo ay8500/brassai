@@ -24,7 +24,7 @@ if($classId==null) {
 }
 
 
-if ( userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId()) {
+if ( userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId() || userIsViewer()) {
 	$xrandom=0;
 	$yrandom=0;
 } else {

@@ -43,7 +43,7 @@ if ($isEveningClass) {
 
 include("homemenu.inc.php");
 /** @var array $classes */
-$classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury);
+$classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury,!userIsSuperuser());
 $tabsCaption = array();
 array_push($tabsCaption ,array("id" => "day", "caption" => 'század nappali tagozat',"iconText"=>"XX.", "glyphicon" => "asterisk"));
 array_push($tabsCaption ,array("id" => "dayxxi", "caption" => 'század nappali tagozat',"iconText"=>"XXI.", "glyphicon" => "asterisk"));

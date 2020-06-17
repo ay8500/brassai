@@ -12,7 +12,7 @@ $tabOpen= getParam("tabOpen", "person");
 
 $personid = getIntParam("uid",null);
 if (getParam("type")=="personID" && getParam("typeid")!=null) {
-    $personid=getParam("typeid");
+    $personid=getIntParam("typeid");
 }
 if($personid!=null){
     $diak = $db->getPersonByID($personid);

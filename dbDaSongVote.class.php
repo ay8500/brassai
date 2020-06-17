@@ -18,7 +18,7 @@ class dbDaSongVote
     private $dataBase;
 
     /**
-     * dbDaOpinion constructor.
+     * dbDaSongData constructor.
      * @param dbDAO $dbDAO
      */
     public function __construct(dbDAO $dbDAO)

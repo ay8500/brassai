@@ -155,7 +155,7 @@ $sortAlphabet=(strpos($sort,"alphabet")!==false?"secundary":"default");
 $sortDate=(strpos($sort,"date")!==false?"secundary":"default");
 $alt=(strpos($sort,"desc")!==false?"-alt":"");
 $desc=(strpos($sort,"desc")!==false?"":"-desc");
-$link="picture.inc?view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort;
+$link="picture.inc.php?view=".$view."&typeid=".getParam("type")."&type=".getParam("typeid")."&album=".getParam("album")."&sort=".$sort;
 $url = "http".(!empty($_SERVER['HTTPS'])?"s":"")."://".$_SERVER['SERVER_NAME'];
 
 //Sortparamteter
@@ -339,7 +339,7 @@ if (!isActionParam("showmore") ) {
 	<?php if ($notDeletedPictures==0) :?>
 		<div class="alert alert-warning" ><?php Appl::_("Jelenleg nincsenek képek feltöltve. Légy te az első aki képet tőlt fel!")?></div>
 	<?php endif;?>
-	<?php if(false) {?>
+	<?php /*?>
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item"><span class="page-link" >Képek száma:<?php echo ($countPictures)?></span></li>
@@ -350,7 +350,7 @@ if (!isActionParam("showmore") ) {
                 <li class="page-item"><a class="page-link" href="<?php echo $link."&start=".floor($countPictures/$limitOfPicturesPerPage) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
             </ul>
         </nav>
-    <?php } ?>
+    <?php */ ?>
 	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view); ?>
     <span id="more"></span>
 </form>

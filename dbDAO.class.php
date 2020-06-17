@@ -144,12 +144,19 @@ class dbDAO {
      * @param int $schoolID
      * @return array
      */
-	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=false,$isTwentyfirstcentury=false) {
+	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=null,$isTwentyfirstcentury=null,$realClass=true) {
         $sql="schoolID=".$schoolID;
-        if ($isEveningClass) {
-            $sql .= " and eveningClass = 1";
-        } else {
-            $sql .= " and eveningClass = 0";
+        if($realClass) {
+            $sql .= " and graduationYear>1800 ";
+        }
+        if ($isEveningClass!=null) {
+            if ($isEveningClass) {
+                $sql .= " and eveningClass = 1";
+            } else {
+                $sql .= " and eveningClass = 0";
+            }
+        }
+        if ($isTwentyfirstcentury!=null) {
             if ($isTwentyfirstcentury)
                 $sql .= " and graduationYear > 1999";
             else
@@ -994,7 +1001,7 @@ class dbDAO {
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
 
-        //Order list by change date
+        //Order list by change date using the spaceship operator
         usort($rows,function($a,$b) {
             return ($b["changeDate"]<=>$a["changeDate"]);
         });

@@ -105,7 +105,7 @@
                     <select class="form-control" name="classID" id="classID">
                         <option value="-1" >...válassz...</option>
                         <?php foreach ($optionClasses as $optionClass) {?>
-                            <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getAktClassId()?"selected":""?>><?php echo $optionClass["text"]?></option>
+                            <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getAktClassId()?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
                         <?php } ?>
                     </select>
                 </div>

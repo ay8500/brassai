@@ -8,10 +8,12 @@ $(document).ready(function() {
 
 function initialize() {
     map = L.map('map_canvas').setView([centerx, centery], 11);
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+        tileSize: 512,
         maxZoom: 18,
-        id: 'mapbox.streets',
+        zoomOffset: -1,
+        id: 'mapbox/streets-v11',
         accessToken: 'pk.eyJ1IjoiYXk4NTAwIiwiYSI6ImNqa3VyMzA5NDBhMTEzcXJydHIyY3dtMTYifQ.2bYqsOo9fV8tEOW-Jirxuw'
     }).addTo(map);
     L.control.scale().addTo(map);

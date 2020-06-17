@@ -71,8 +71,8 @@ function searchPersonAndPicture() {
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
                     var pclass = "<?php maierlabs\lpfw\Appl::_('Kép')?>";
-                    var pname = '<b>'+$("<div>").html(row.title.substring(0,20)).text()+'</b> ';
-                    pname +=$("<div>").html(row.comment.substring(0,25)).text();
+                    var pname = '<b>'+$("<div>").html(row.title.toText().substring(0,20)).text()+'</b> ';
+                    pname +=$("<div>").html(row.comment.toText().substring(0,25)).text();
                     var html = '<tr>';
                     html += '<td><a href="picture?id='+row.id+'">' + pname + '</a></td>';
                     //html += '<td>' + pclass + '</td>';
@@ -88,4 +88,7 @@ function searchPersonAndPicture() {
         }
     });
 
+    String.prototype.toText = function(){
+        return $('<div>').html(this).text();
+    };
 }

@@ -131,7 +131,7 @@ include("homemenu.inc.php");
 				<option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
 				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
 				<?php 
-					for($cl=8;$cl<14;$cl++) {
+					for($cl=10;$cl<14;$cl++) {
 						for($cs="A";$cs<="L";$cs++) {
 				?>
 					<option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option>
