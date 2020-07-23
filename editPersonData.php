@@ -234,16 +234,16 @@
 function showRoleField($value,$fieldName) {
     $options = array();
     $disabled='';
-    array_push($options, array('role' => 'unknown', 'text' => 'Nem tudunk róla','disabled'=>$disabled));
+    array_push($options, array('role' => 'unknown', 'text' => 'nem tudunk róla','disabled'=>$disabled));
     array_push($options, array('role' => 'jmlaureat', 'text' => "Juhász Máthé díjas",'disabled'=>$disabled));
     if(!userIsAdmin() && !userIsSuperuser())
         $disabled='disabled';
-    array_push($options, array('role' => 'editor', 'text' => 'Osztályfelelős','disabled'=>$disabled));
-    array_push($options, array('role' => 'guest', 'text' => 'Vendég / barát','disabled'=>$disabled));
+    array_push($options, array('role' => 'editor', 'text' => 'osztályfelelős / szervező','disabled'=>$disabled));
+    array_push($options, array('role' => 'guest', 'text' => 'vendég / barát','disabled'=>$disabled));
     if (!userIsAdmin())
         $disabled='disabled';
-    array_push($options, array('role' => 'superuser', 'text' => "Rendszerfelelős",'disabled'=>$disabled));
-    array_push($options, array('role' => 'admin', 'text' => "Rendszergazda",'disabled'=>'disabled'));
+    array_push($options, array('role' => 'superuser', 'text' => "rendszerfelelős",'disabled'=>$disabled));
+    array_push($options, array('role' => 'admin', 'text' => "rendszergazda",'disabled'=>'disabled'));
     showChosenField($value,$fieldName,$options);
 }
 
