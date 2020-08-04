@@ -115,6 +115,7 @@
         			<li><a href="iskola">Liceum története</a></li>
         			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
         			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
+                    <li><a href="search?type=incharge">Osztályfelelősők</a></li>
         			<li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
                     <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
         			<li><a href="worldmap?classid=all">Térkép</a></li>
