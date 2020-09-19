@@ -19,7 +19,7 @@ class Config {
     public static $dateTimeFormat="<b>Y.m.d</b> H:i:s";
     public static $dateFormat="<b>Y.m.d</b>";
 
-    public static $webAppVersion = "2020.05.20";  //Used to load the actual css und js files.
+    public static $webAppVersion = "2020.08.10";  //Used to load the actual css und js files.
 
     public static $SupportedLang = array("hu"); //First language ist the default language.
 

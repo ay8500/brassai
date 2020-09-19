@@ -76,14 +76,14 @@ function showRecentChanges($db,$date=null) {
 $tabsCaption = array();
 array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
 array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek', "glyphicon" => "pushpin"));
-array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztály', "glyphicon" => "tasks"));
+array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok', "glyphicon" => "tasks"));
 array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "education"));
 array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
 array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));
 array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "picture"));
 array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "screenshot"));
-array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemény', "glyphicon" => "thumbs-up"));
-array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertya', "glyphicon" => "plus"));
+array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemények', "glyphicon" => "thumbs-up"));
+array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertyák', "glyphicon" => "plus"));
 if (userIsLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
         $pers = getPersonShortName($db->getPersonByID(getParam("userid")));

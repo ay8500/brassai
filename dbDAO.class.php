@@ -149,14 +149,14 @@ class dbDAO {
         if($realClass) {
             $sql .= " and graduationYear>1800 ";
         }
-        if ($isEveningClass!=null) {
+        if ($isEveningClass!==null) {
             if ($isEveningClass) {
                 $sql .= " and eveningClass = 1";
             } else {
                 $sql .= " and eveningClass = 0";
             }
         }
-        if ($isTwentyfirstcentury!=null) {
+        if ($isTwentyfirstcentury!==null) {
             if ($isTwentyfirstcentury)
                 $sql .= " and graduationYear > 1999";
             else

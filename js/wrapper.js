@@ -87,7 +87,7 @@ function addWrapperDiv(id) {
         if (d.homepage!=null)
     		html +='&nbsp;<a target="_new" href='+d.homepage+'><img src="images/www.png" /></a>';
         if (d.geolocation===1)
-        	html +='&nbsp;<a href=editDiak?tabOpen=5&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
+        	html +='&nbsp;<a href=editDiak?tabOpen=geoplace&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
         html +='</div>';
 
         html +='</div>';
