@@ -5,8 +5,10 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
+include_once 'displayCards.inc.php';
 
 $dbSongVote = new dbDaSongVote($db);
+$dbOpinion = new dbDaOpinion($db);
 $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -18,116 +20,65 @@ if (getAktClassId()==-1) {
     Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.');
 } 
 
-
-
-//User can make changes in the toplist
-$edit = (userIsLoggedOn() && getRealId(getAktClass())==$db->getLoggedInUserClassId()) || userIsAdmin();
-
-//action  delete vote
-$delVote = intval(getGetParam("delVote", "-1"));
-if ($delVote>=0 && $edit) {
-   	if ($dbSongVote->deleteVote($delVote))
-		Appl::setMessage("Zene sikeresen a szavazataidból törölve","succes");
-	else 
-		Appl::setMessage("Szavazat törlése nem sikerült.","warning");
-   	$psong=0;$pinterpret=0;
+//Parameter Interpret
+$pinterpret = getIntParam("interpret",0);
+$pnewinterpret = html_entity_decode(getParam("newinterpret",""),ENT_QUOTES,"UTF-8");
+if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
+    $pinterpret=$dbSongVote->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
+    if ($pinterpret>=0)
+        Appl::setMessage("Előadó sikeresen kimentve","success");
+    else
+        Appl::setMessage("Előadó az adatbankban már létezik! Kimentés nem volt szükséges.","warning");
 }
 
-
- //Site Status 
- $siteStatus="Válaszd ki a kedvenc előadód, ha nem találod a listában akkor írd be a lenti mezőbe.";
-
-   //Parameter Interpret
-   $pinterpret = getIntParam("interpret",0);
-   $pnewinterpret = html_entity_decode(getParam("newinterpret",""),ENT_QUOTES,"UTF-8");
-   if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
-   		$pinterpret=$dbSongVote->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
-   		if ($pinterpret>=0) 
-   			Appl::setMessage("Előadó sikeresen kimentve","success");
-   		else
-   			Appl::setMessage("Előadó az adatbankban már létezik! Kimentés nem volt szükséges.","warning");
-   }
-   
-   //Parameter Song
-   $psong=intval(getIntParam("song", "0"));
-   $pnewSong = html_entity_decode(getParam("newSong"),ENT_QUOTES,"UTF-8");
-   $pnewVideo = getParam("newVideo");
-   $pnewLink = getParam("newLink");
-   if (($psong=="0") && ($pnewSong<>"" && $edit )) {
-   		if (getSongName($pnewVideo)!="") {
-	   		$psong=$dbSongVote->saveSong([
-	   				'id'=>-1,
-	   				'interpretID'=>$pinterpret,
-	   				'name'=>$pnewSong,
-	   				'video'=>$pnewVideo,
-	   				'link'=>$pnewLink]);
-	   		if ($psong>=0) {
-	   			if(	$dbSongVote->saveSongVote([
-	   					'id'=>-1,
-	   					'personID'=>getLoggedInUserId(),
-	   					'songID'=>$psong])>=0) {
-	   				Appl::setMessage('Zene és a szavazatod sikeresen kimentve.','success');
-	   			} else {
-                    Appl::setMessage('Zene kimentése sikertelen! Elnézést kérünl.','warning');
-	   			}
-	   			$psong=0;$pinterpret=0;
-	   		} else {
-                Appl::setMessage('Zene már az adatbankban létezik, válassz újból!','warning');
-	   			$psong=0;
-	   		}
-   		} else {
-   			Appl::setMessage('Videó nem létezik a youtubeon! Írd be a youtoube linkből a videó anzonosítót pédául:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51'.'warning');
-   			$psong=0;
-   		}
-   } 
-   if ($psong>0 && $edit) {
-   		$vote=array();
-   		$vote["id"]=-1;
-   		$vote["songID"]=$psong;
-   		$vote["personID"]=getLoggedInUserId();
-   		if ($dbSongVote->saveSongVote($vote))
-			Appl::$resultDbOperation='<div class="alert alert-success" >Zene sikeresen a szavazataidhoz hozzátéve.</div>';
-		else 
-			Appl::$resultDbOperation='<div class="alert alert-warning" >Szavazat nem sikerült.</div>';
-   		$psong=0;$pinterpret=0;
-   } 
+//Parameter Song
+$psong=intval(getIntParam("song", "0"));
+$pnewSong = html_entity_decode(getParam("newSong"),ENT_QUOTES,"UTF-8");
+$pnewVideo = getParam("newVideo");
+$pnewLink = getParam("newLink");
+if (($psong=="0") && ($pnewSong<>"" && userIsLoggedOn() )) {
+    if (getSongName($pnewVideo)!="") {
+        $psong=$dbSongVote->saveSong([
+                'id'=>-1,
+                'interpretID'=>$pinterpret,
+                'name'=>$pnewSong,
+                'video'=>$pnewVideo,
+                'link'=>$pnewLink]);
+        if ($psong>=0) {
+            saveVote($dbOpinion,$psong);
+            $psong=0;$pinterpret=0;
+        } else {
+            Appl::setMessage('Zene már az adatbankban létezik, válassz újból!','warning');
+            $psong=0;
+        }
+    } else {
+        Appl::setMessage('Videó nem létezik a youtubeon! Írd be a youtoube linkből a videó anzonosítót. Lásd a pédából a sárgán megjelöt azonosítót:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51'.'warning');
+        $psong=0;
+    }
+}
+if ($psong>0 && userIsLoggedOn()) {
+    saveVote($dbOpinion,$psong);
+    $psong=0;$pinterpret=0;
+}
 	
-   //Read voters List by ClassID
-   	if (getAktClassId()!=-1)
-		$votersList=$dbSongVote->getVotersListByClassId(getRealId(getAktClass()));
-   	else
-		$votersList=$dbSongVote->getVotersListBySchoolId(getRealId(getAktSchool()));
-   	usort($votersList, "compareAlphabetical");
-	$allVotes=0;
-	$voteCount=0;
-	foreach ($votersList as $voter) {
-		if (trim($voter["firstname"])!="")
-			$allVotes +=$voter["count"];
-		if (trim($voter["id"])==getLoggedInUserId())
-			$voteCount =$voter["count"];
-	}
-	
-	//Check the maximal amout of vote
-	if (userIsAdmin()) $maxVoteCount=500; else $maxVoteCount=50;
-	if ($edit) {
-		if ($voteCount<$maxVoteCount)  
-			$voteStatus = " Még ".($maxVoteCount-$voteCount)." szavatot adhatsz"; 
-		else 
-			$voteStatus="A maximális szavazatok számát elérted. Ha szeretnél mégis más zenére szavazni, akkor törölj ki a szavazataidból.";
-	} else {
-		if (userIsLoggedOn())
-			$voteStatus='Ez nem a te osztályod top 100-as listálya, ezért nem szavazhatsz. <a href="zenetoplista?classid='.$db->getLoggedInUserClassId().'">Az én osztályom toplistálya</a>';
-		else
-			$voteStatus="Jelentkezz be és szavazatoddal járulj hozzá az osztályod és a volt iskolád top 100-as zenelistályához.";
-	}
+//Read voters List by ClassID
+if (getAktClassId()!=-1)
+    $votersList=$dbSongVote->getVotersListByClassId(getRealId(getAktClass()));
+else
+    $votersList=$dbSongVote->getVotersListBySchoolId(getRealId(getAktSchool()));
+usort($votersList, "compareAlphabetical");
 
-	include("homemenu.inc.php");
+$allVotesNoAnonymous=0;
+foreach ($votersList as $voter) {
+    if (trim($voter["firstname"])!="")
+        $allVotesNoAnonymous +=$voter["count"];
+}
+	
+include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
-	<div class="well"><?php echo $voteStatus?></div>
-
-	<?php if ( $voteCount<$maxVoteCount && $edit ) { ?>
+	<?php if ( userIsLoggedOn() ) { ?>
 	<form action="zenetoplista">
 	<div class="panel panel-default">
 		<?php if (!($pinterpret>0)) { ?>
@@ -213,66 +164,25 @@ if ($delVote>=0 && $edit) {
   	 	else
   	 		$listLength=25;
 ?>
-<div class="col-sm-9">	
+<div class="col-sm-10">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<label id="dbDetails">Top <?php echo $listLength?> zenelista lejátszó</label><br/> 
+			<label id="dbDetails">Top <?php echo $listLength>100?100:$listLength?> zenelista lejátszó</label><br/>
 			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-attributes"></span> Legjobb szám elsőnek</button>
 			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Legjobb szám utoljára</button>
 			<button class="btn btn-default" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
 		</div>
 		<div class="form-group navbar-form navbar" >
-			<table>
-			   <tr class="zenecaption">
-				<?php if (userIsAdmin()) :?>
-				   	<td>&nbsp;</td>
-				<?php  endif;?>
-			   	<td>&nbsp;</td>
-			   	<td style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span></td>
-			   	<td class="hidden-xs">Elöadó</td>
-			   	<td style="padding-left:5px;">Ének</td>
-			   	<?php if ($edit) :?>
-			   		<td style="padding-left:5px;padding-right:5px;">Szavaz</td>
-			   	<?php endif;?>
-			   	<td class="hidden-xs">Youtube</td>
-			   	<td class="visible-xs" style="padding-left:5px;padding-right:5px;"><span class="glyphicon glyphicon-film"></span></td>
-			  </tr>
-			   <?php
-				for ($i=0;$i<$listLength;$i++) {
-					$v=$topList[$i];
-					$dh='&nbsp;';
-					if  ($v['voted']!=0) {
-						$voted='<a href="zenetoplista?delVote='.$v['id'].'" title="Törlöm"><span style="color:red" class="glyphicon glyphicon-remove-circle"></span></a>';
-						$dh='<span class="glyphicon glyphicon-thumbs-up" title="Nekem tetszik"></span>';
-					} else {
-						if (($voteCount<$maxVoteCount)&&userIsLoggedOn())
-							$voted='<a href="zenetoplista?song='.$v['songID'].'" title="Bejelölöm mert tetszik nekem!"><span style="color:green" class="glyphicon glyphicon-ok-circle"></span></a>';
-						else
-							$voted='';
-					}
-					$YouTubeLink='<a href="zenePlayer?link='.$v['songVideo'].'&id='.$v['songID'].'"><span class="glyphicon glyphicon-film"></span></a>';
-					?>
-					<tr style="height: 26px">
-						<?php if (userIsAdmin()) :?>
-							<td><?php echo $v["count"]."-"?></td>
-						<?php endif;?>
-						<td><?php echo $i+1?></td>
-						<td style="padding-left:5px;padding-right:5px;"><?php echo $dh?></td>
-						<td class="hidden-xs"><?php echo $v['interpretName']?></td>
-						<td style="padding-left:5px;"><?php echo $v['songName']?></td>
-						<?php if ($edit) :?>
-							<td style="text-align: center;"><?php echo $voted?></td>
-						<?php endif;?>
-						<td style="text-align: center;">
-						<?php 
-							echo $YouTubeLink;
-							if (userIsAdmin() && getParam("check")=="true" && getSongName($v['songVideo'])=="") echo ("!");
-						?>
-						</td>
-					</tr>
-			<?php }?> 
-			</table>
-		</div>
+            <?php
+                for ($i=0;$i<$listLength;$i++) {
+                    $v = $topList[$i];
+                    if (userIsAdmin() && getParam("check")=="true") {
+                        $v["check"] = (getSongName($v['songVideo']) == "");
+                    }
+                    displayMusic($db, $v);
+                }
+            ?>
+        </div>
 	</div>
 	<?php if (userIsAdmin()) :?>
 		<button onclick="document.location='zenetoplista?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
@@ -280,10 +190,10 @@ if ($delVote>=0 && $edit) {
 </div>
 
 
-<div class="col-sm-3">	
+<div class="col-sm-2">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotes); ?></label> 
+			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotesNoAnonymous); ?></label>
 		</div>
 		<div class="form-group navbar-form navbar">
 			<table>
@@ -306,7 +216,13 @@ if ($delVote>=0 && $edit) {
 </div>
  
 <script>
-const songs = [<?php foreach($topList as $i=>$v) echo(($i!=0?',"':'"').$v['songVideo'].'"');?>];
+const songs = [<?php
+    foreach($topList as $i=>$v) {
+        echo(($i!=0?',"':'"').$v['video'].'"');
+        if ($i>100)
+            break;
+    }
+?>];
 
 function playBackward() {
     var url="zenePlayer?listdir=előre&link="+songs[0]+"&list=";
@@ -377,7 +293,7 @@ function autoComplete (field, select, property, forcematch) {
  * @param string $youtubeId
  * @return string
  */
- function getSongName($youtubeId) {
+ function getSongName(string $youtubeId) {
  	$apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
  	try {
         $response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $youtubeId . '&key=' . $apiPublicKey);
@@ -389,4 +305,27 @@ function autoComplete (field, select, property, forcematch) {
     }
 	return "";
  }
- ?>
+
+/**
+ * Save song vote as favorite and send status messages to the ui
+ * @param dbDaOpinion $dbOpinion
+ * @param int $songId
+ */
+ function saveVote(dbDaOpinion $dbOpinion,int $songId)
+ {
+     $oldOpinion = $dbOpinion->getOpinion($songId, "music", "favorite");
+     if (sizeof($oldOpinion) > 0) {
+         Appl::setMessage('Ezt a zenét már megjelölted mit a kedvenced!', 'warning');
+         $psong = 0;
+     } else {
+         $ret = $dbOpinion->setOpinion($songId, getLoggedInUserId(), "music", "favorite");
+         if ($ret >= 0) {
+             Appl::setMessage('Zene és a szavazatod sikeresen kimentve.', 'success');
+         } else {
+             Appl::setMessage('Zene kimentése sikertelen! Elnézést kérünl.', 'warning');
+         }
+     }
+ }
+
+
+?>

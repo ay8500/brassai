@@ -51,7 +51,8 @@ class dbDaOpinion
             $data = $db->insertFieldInArray($data, 'changeUserID', $uid);
         if ($db->insert('opinion', $data) !== false) {
             $this->dbDAO->updateRecentChangesList();
-            return $db->queryInt("select count(1) from opinion where `table`='" . $table . "' and opinion ='" . $type . "' and entryID=" . $id);
+            return sizeof($this->getOpinions($id, $table, $type));
+            //return $db->queryInt("select count(1) from opinion where `table`='" . $table . "' and opinion ='" . $type . "' and entryID=" . $id);
         } else {
             return -1;
         }
@@ -118,7 +119,7 @@ class dbDaOpinion
             $opinion->date = $data[$i]["changeDate"];
             $opinion->ip = $data[$i]["changeIP"];
             $opinion->myopinion = (userIsAdmin() || getLoggedInUserId() == $data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"] == $_SERVER["REMOTE_ADDR"]);
-            $ret[$i] = $opinion;
+            $ret[] = $opinion;
         }
         return $ret;
     }
@@ -142,6 +143,11 @@ class dbDaOpinion
             $ret->favorite = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='favorite' and entryID=" . $id);
             $ret->content = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='content' and entryID=" . $id);
             $ret->nice = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='message' and opinion='nice' and entryID=" . $id);
+        } elseif ($type == 'music') {
+            $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='music' and opinion='text' and entryID=" . $id);
+            $ret->favorite = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='music' and opinion='favorite' and entryID=" . $id);
+            $ret->content = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='music' and opinion='content' and entryID=" . $id);
+            $ret->nice = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='music' and opinion='nice' and entryID=" . $id);
         } else {
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=" . $id);
             $ret->friends = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=" . $id);

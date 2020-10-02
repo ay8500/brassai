@@ -97,7 +97,7 @@ if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 		}
 	}
 }
-Appl::setSiteSubTitle('Bejelentkezés');
+Appl::setSiteTitle(getAktSchoolName().' Bejelentkezés','Bejelentkezés regisztrálás');
 Appl::addCssStyle('
 	.fb-radio{width: 25px;height: 25px;position: relative;top: -6px;}
 ');
@@ -121,13 +121,16 @@ include 'homemenu.inc.php';
 					<div class="left margin-hor"><img src="https://graph.facebook.com/<?php echo $_SESSION['FacebookId']; ?>/picture" /></div>
 					<div class="inline">Kedves <?php echo $_SESSION["FacebookName"]?> szeretettel köszöntünk a véndiákok honoldalán.</div>
 				<?php  } else {?>
-				<div class="inline">Kedves látogató szeretettel köszöntünk a véndiákok honoldalán.</div>
+				<h3 class="inline">Kedves látogató szeretettel köszöntünk a véndiákok honoldalán.</h3>
 				<?php  } ?>
-                <div>Légyszíves és állítsd be milyen viszonyban állsz a véndiákokkal.</div>
-			</label> 
+                <div><hr/></div>
+                <div>Motiváció:</div>
+                <div>Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket. Kellemes időtöltést és szorakozást kivánunk.</div>
+			</label>
 		</div>
 		<div id="page1">
 			<h4 class="margin-hor">Kapcsolatom a <?php  echo getAktSchoolName() ?> véndiákjaival:</h4>
+            <div class="margin-def">Légyszíves állítsd be milyen viszonyban állsz a véndiákokkal.</div>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,1);"/> 
 				<div class="inline margin-hor"> Véndiák vagyok, ebben az iskolában éretségiztem és ballagtam.</div></div>

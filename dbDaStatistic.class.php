@@ -39,9 +39,6 @@ class dbDaStatistic
         $sql="select count(1) as count from candle where userID=".$id;
         $ret["lightedCandles"]=$db->queryInt($sql);
 
-        $sql="select count(1) as count from songvote where personID=".$id;
-        $ret["songVotes"]=$db->queryInt($sql);
-
         $sql="select count(1) as count from song where changeUserID=".$id;
         $ret["songs"]=$db->queryInt($sql);
 
@@ -140,9 +137,6 @@ class dbDaStatistic
 
         $sql="select count(1) as count, userID as uid from candle where userID is not null group by  userID order by count desc limit  ".$count;
         $ret = $this->mergeBestArrays($ret,$sql,2);
-
-        $sql="select count(1) as count, personID as uid from songvote where personID !=0 group by  personID order by count desc limit  ".$count;
-        $ret = $this->mergeBestArrays($ret,$sql,7);
 
         $sql="select count(1) as count, changeUserID as uid from song where changeUserID !=0 group by  changeUserID order by count desc limit  ".$count;
         $ret = $this->mergeBestArrays($ret,$sql,7);

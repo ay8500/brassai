@@ -232,9 +232,9 @@ function displayClass($db,$class,$showDate=false) {
 <?php }
 
 /**
- * Display a class
+ * Display a message
  * @param dbDAO $db the database
- * @param array $class
+ * @param array $message
  * @param bool $showDate
  */
 function displayMessage($db,$message,$showDate=true) {
@@ -262,6 +262,37 @@ function displayMessage($db,$message,$showDate=true) {
     </div>
 <?php }
 
+/**
+ * Display a music by vote
+ * @param dbDAO $db the database
+ * @param array $musicVote
+ * @param bool $showDate
+ */
+function displayMusic($db,$music,$action,$userId,$date) {
+    $dbOpinion = new dbDaOpinion($db);
+    $actionText = "Mejelőlte mint kendvenc zenéje";
+    ?>
+    <div class="element">
+        <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <div style="">
+                <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><span class="glyphicon glyphicon-film"></span> <h4><?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
+            </div>
+            <?php if (isset($userId) && $userId!=null) {
+                $author = $db->getPersonByID($userId);?>
+                <?php echo $actionText.': '.getPersonLinkAndPicture($author)?>
+            <?php } else {?>
+                <?php echo $actionText?>: anonim látogató
+            <?php } ?>
+            <br/>Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($date);?>
+            <?php
+                if (isset($music["check"])) {
+                    echo("<br/>Check:".$music["check"]?"Ok":"ERROR");
+                }
+            ?>
+        </div>
+        <?php  displayMusicOpinion($dbOpinion,$music["id"]); ?>
+    </div>
+<?php }
 
 /**
  * Display an article class
@@ -361,7 +392,6 @@ function displayPersonPictureAndHistory($db,$d) {
     </div> <?php
     return $personLink;
 }
-
 
 function displayPersonNameAndClass ($db,$d,$personLink,$showClass) {
     ?>

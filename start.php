@@ -4,6 +4,7 @@ include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
+include_once 'dbDaSongVote.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 
@@ -28,12 +29,13 @@ if (isActionParam('showmore')) {
  * @param string $date
  * @return string date of the last entry
  */
-function showRecentChanges($db,$date=null) {
+function showRecentChanges(dbDAO $db,$date=null) {
     if ($date!=null) {
         $date=new \DateTime($date);
     } else {
         $date=new \DateTime();
     }
+    $dbSong = new dbDaSongVote($db);
     $ip = getParam("ip",null);
     $userid= getParam("userid",null);
     if (($filter=getParam("tabOpen","all"))=='user') {
@@ -62,6 +64,9 @@ function showRecentChanges($db,$date=null) {
         } elseif ($id["type"] == "message") {
             $message= $db->getMessage($id["id"]);
             displayMessage($db, $message,true);
+        } elseif ($id["type"] == "music") {
+            $musicVote = $dbSong->getSongById($id["id"]);
+            displayMusic($db, $musicVote,$id["action"],$id["changeUserID"],$id["changeDate"]);
         }
     }
     if (sizeof($ids)>0)

@@ -115,6 +115,47 @@ function displayPictureOpinion($db,$id){
 }
 
 /**
+ * Display the opinion block for a picture
+ * @param dbDaOpinion $db the database business layer
+ * @param int $id picture id
+ */
+function displayMusicOpinion(dbDaOpinion $db,$id){
+    $o = $db->getOpinionCount($id,'music');
+    $oopinion = $o->opinions>0?'':'style="display:none"';
+    $ofavorite = $o->favorite>0?'':'style="display:none"';
+    $ocontent = $o->content>0?'':'style="display:none"';
+    ?>
+    <div>
+        <buton onclick="<?php
+        echo 'showMusicOpinion('.$id.','.getLoggedInUserId().')';
+        ?>" class="btn btn-default" >
+            <img src="images/opinion.jpg" style="width: 22px"/> Véleményem
+        </buton>
+        <a id="c-music-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','music','text',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="Vélemények száma: <?php echo $o->opinions ?>" <?php echo $oopinion?>>
+            <span style="margin-right: -8px;">
+                <img src="images/opinion.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->opinions ?></span>
+            </span>
+        </a>
+        <a id="c-music-favorite-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Kedvenc zenéje','music','favorite',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="<?php echo $o->favorite ?> személynek a kedvenc zenéi közé tartozik." <?php echo $ofavorite?>>
+            <span style="margin-right: -8px;">
+                <img src="images/favorite.png" style="width: 32px"/><span class="countTag"><?php echo $o->favorite ?></span>
+            </span>
+        </a>
+        <a id="c-music-content-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Jó zene','music','content',<?php echo getLoggedInUserIdOrNull() ?>)"
+           title="<?php echo $o->content ?> vélemény szerint ez jó zene." <?php echo $ocontent?>>
+            <span style="margin-right: -8px;">
+                <img src="images/funny.png" style="width: 32px"/><span class="countTag"><?php echo $o->content ?></span>
+            </span>
+        </a>
+    </div>
+    <div id="o-music-<?php echo $id ?>"></div>
+    <?php
+}
+
+
+/**
  * Display the opinion block for a message
  * @param dbDaOpinion $db
  * @param int $id picture id
@@ -222,6 +263,16 @@ function getLoggedInUserIdOrNull() {
         html = html.replace(new RegExp('{type}', 'g'),'message');
         $('#o-message-'+id).html(html);
         $('#o-message-'+id).show('fast');
+        return false;
+    }
+
+    function showMusicOpinion(id,uid) {
+        var html=$('#opinionmusic').html();
+        html = html.replace(new RegExp('{id}', 'g'),id);
+        html = html.replace(new RegExp('{uid}', 'g'),uid);
+        html = html.replace(new RegExp('{type}', 'g'),'music');
+        $('#o-music-'+id).html(html);
+        $('#o-music-'+id).show('fast');
         return false;
     }
 
@@ -423,6 +474,23 @@ if (!isActionParam("showmore")) {
     </div>
 </div>
 
+<div id="opinionmusic" style="display: none">
+    <div class="optiondiv">
+        <span class="otitle">Véleményem erről az zenéről</span>
+        <span style="display: inline-block; float: right;">
+            <button onclick="return saveOpinion({id},'music','text',{uid})" title="Kimentem" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
+            <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
+        </span>
+        <div class="taopinion">
+            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, hozzászólásod"></textarea>
+        </div>
+        <div>
+            <hr/>
+            <button onclick="return saveOpinion({id},'music','favorite',{uid})" title="Kedvenc zeném közé tartozik." class="btn btn-sm"><img src="images/favorite.png" style="width: 16px"/> Kedvencem</button>
+            <button onclick="return saveOpinion({id},'music','content',{uid})" title="A zene tetszik nekem" class="btn btn-sm"><img src="images/funny.png" style="width: 16px"/> Jó zene</button>
+        </div>
+    </div>
+</div>
 
 <div id="opinionlist" style="display: none">
     <div class="optiondiv">
