@@ -9,10 +9,12 @@
 				<li><a href="ig/ig?multipleGalleries=1" target="_new" >Képek</a></li>
 				<li><a href="dataCheck"  >Vizsga</a></li>
 				<li><a href="database"  >Adatbank</a></li>
+                <li><a href="<?php echo $_SERVER['REQUEST_URI'].substr_count($_SERVER['REQUEST_URI'],"&")==0?'?':'&' ?>showDatabaseQuery=true"  >Sebesség</a></li>
 			<?PHP }	?>
 			<li><a href="impressum" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">Vers:<?php echo Config::$webAppVersion?></span></li>
 	      </ul>
 	</nav>
+
 	<?php
 		if (getParam('showDatabaseQuery')!=null) {
 			echo "Querys:".$db->dataBase->getCounter()->querys." Changes:".$db->dataBase->getCounter()->changes."<br/>";

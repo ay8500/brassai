@@ -195,13 +195,6 @@ if ($albumParam=="_tablo_") {
 $pictures = $db->getListOfPicturesWhere($wherePictureList, $sortSql, $limitOfPicturesPerPage, getIntParam("start",0)*$limitOfPicturesPerPage);
 $countPictures = $db->getTableCount("picture",$wherePictureList);
 
-$notDeletedPictures=0;
-foreach ($pictures as $pict) {
-    if ( $pict["isDeleted"]==0 ) {
-        $notDeletedPictures++;
-    }
-}
-
 if (isActionParam("showmore")  ) {
     displayPictureList($db,$pictures,null,null,$view);
     return;
@@ -303,7 +296,7 @@ if (!isActionParam("showmore") ) {
 	<form enctype="multipart/form-data" action="<?php echo $script?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
 		<div style="margin-bottom:15px;">
-            <?php if (substr($albumParam,0,1)!="_" && ($notDeletedPictures<50 || userIsAdmin())) {?>
+            <?php if (substr($albumParam,0,1)!="_" && ($countPictures<50 || userIsAdmin())) {?>
                 <button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
             <?php } else {?>
                 <button class="btn btn-info" type="button" onclick="showModalMessage('Képek feltöltése','<b>Örvendünk mert képpel szeretnéd bővíteni az oldalt!</b><br/>Ebben az albumban a diákok és az osztályok képei jelennek meg tartalmuk beállítása szerint. Ha szeretnél képeket feltölteni akkor keresd meg az osztályt vagy a diákot amihez a kép legjobban passzol, majd ott töltsd fel a képet és jelöld meg a tartalmát. Köszönjük szépen.');"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
@@ -315,7 +308,7 @@ if (!isActionParam("showmore") ) {
             <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
             <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
         </div>
-        <?php if ($notDeletedPictures<50 || userIsAdmin()) {?>
+        <?php if ($countPictures<50 || userIsAdmin()) {?>
 		<div id="download" style="margin:15px;display:none;">
 			<div><?php Appl::_("Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.")?><span></span></div>
 			<span style="display: inline-block;"><?php Appl::_("Válassz egy jpg képet max. 3MByte")?></span>
@@ -336,7 +329,7 @@ if (!isActionParam("showmore") ) {
         <?php } ?>
 
 	
-	<?php if ($notDeletedPictures==0) :?>
+	<?php if ($countPictures==0) :?>
 		<div class="alert alert-warning" ><?php Appl::_("Jelenleg nincsenek képek feltöltve. Légy te az első aki képet tőlt fel!")?></div>
 	<?php endif;?>
 	<?php /*?>
@@ -354,7 +347,7 @@ if (!isActionParam("showmore") ) {
 	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view); ?>
     <span id="more"></span>
 </form>
-<?php if (getParam("id")==null && sizeof($db->getListOfPicturesWhere($wherePictureList, $sortSql, $limitOfPicturesPerPage, (getIntParam("start",0)+1)*$limitOfPicturesPerPage))>0) {?>
+<?php if (getParam("id")==null && $countPictures>((getIntParam("start",0)+1)*$limitOfPicturesPerPage) ) {?>
     <button id="buttonmore" class="btn btn-success" style="margin:10px;" onclick="return showmore()"><?php Appl::_("Többet szeretnék látni")?></button>
 <?php }?>
 
@@ -581,16 +574,21 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
 //Show more button
 Appl::addJsScript("
     var picturesStart=1;
+    var countPictures=".$countPictures.";
+    var limitPictures=".$limitOfPicturesPerPage.";
     var picturesButton='';
-    function showmore(date) {
+    function showmore(showNext) {
         picturesButton=$('#buttonmore').html();
         $('#buttonmore').html('Pillanat...<img src=\"images/loading.gif\" />');
         $.ajax({
-    		url:'".$link."'+'&action=showmore&start='+picturesStart++,
+    		url:'".$link."'+'&action=showmore&start='+picturesStart,
 	    	type:'GET',
     		success:function(data){
+    		    picturesStart++;
+    		    var s = document.documentElement.scrollTop || document.body.scrollTop;
 	    	    $('#more').replaceWith(data+'<span id=\"more\"></span>');
-	    	    if(data.length>200) {
+	    	    document.documentElement.scrollTop = document.body.scrollTop = s;
+	    	    if(countPictures>picturesStart*limitPictures) {
 	    	        $('#buttonmore').html(picturesButton);
 	    	    } else {
 	    	        $('#buttonmore').html('".Appl::__("Több kép nincs!")."');
