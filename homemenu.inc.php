@@ -109,7 +109,7 @@
 				<ul class="dropdown-menu">
 					<li><a href="index">Start</a></li>
 					<li><a href="start">Újdonságok</a></li>
-					<li><a href="rip">Emléküket örökké őrizzük</a></li>
+					<li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
         			<li><a href="brassai">Brassai Sámuel élete</a></li>
         			<li><a href="iskola">Liceum története</a></li>
@@ -283,32 +283,33 @@
     </form>
 
     <div style="width: 400px;display: inline-block;margin:5px;padding: 5px; border: solid 1px gray;border-radius:5px; vertical-align: top;">
-        <div style="height:30px;padding:5px;width:100%;font-weight:bold;background-color: lightgray;"><span class="glyphicon glyphicon-user"></span> Tanárok, diákok <span id="searchpersonbadge"  class="badge">0</span></div>
+        <div style="height:30px;padding:5px;width:100%;font-weight:bold;background-color:lightgray;">
+            <span class="glyphicon glyphicon-user"></span> Tanárok, diákok <span id="searchpersonbadge"  class="badge">0</span></div>
         <div style="max-height: 200px;overflow-y: scroll;">
         <table id="searchpersontable" >
         </table>
         </div>
     </div>
     <div style="width: 400px;display: inline-block;margin:5px;padding: 5px; border: solid 1px gray;border-radius:5px; vertical-align: top;">
-        <div style="height:30px;padding:5px;width:100%;font-weight:bold;background-color: lightgray;"><span class="glyphicon glyphicon-picture"></span> Képek <span id="searchpicturebadge" class="badge">0</span></div>
+        <div style="height:30px;padding:5px;width:100%;font-weight:bold;background-color:lightgray;"><span class="glyphicon glyphicon-picture"></span> Képek <span id="searchpicturebadge" class="badge">0</span></div>
         <div style="max-height: 200px;overflow-y: scroll;">
             <table id="searchpicturetable">
             </table>
         </div>
     </div>
 </div>
-<?php $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter');?>
+<?php //easter $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter');?>
 
 <div id="topLine">
     <h1 class="appltitle">
-        <?php /*
+        <?php /*easter
         <a href="start?tabOpen=easter" title="Meglocsolt virágszállak:<?php echo (sizeof($rpo->opinion))?> locsolók:<?php echo (sizeof($rpo->user))?> "><img src="images/easter.png" style="width: 50px" /><span class="badge" style="left: -20px;position: relative;top: 4px;">
             <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
             </span></a>
         */?>
         <span id="o1024">A kolozsvári </span>
-        Brassai Sámuel líceum <span id="o400">egykori </span>diákjai
-        <span id="o480"> <?PHP echo(getClassName(Appl::getMember("aktClass"))) ?></span>
+        <?php echo(getAktSchoolName()) ?> <span id="o400">egykori </span>diákjai
+        <span id="o480"> <?php echo(getAktClassName()) ?></span>
     </h1>
 </div>
 <div class="sub_title"><?php echo Appl::$subTitle ?></div>

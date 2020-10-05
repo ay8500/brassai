@@ -66,7 +66,7 @@ function showRecentChanges(dbDAO $db,$date=null) {
             displayMessage($db, $message,true);
         } elseif ($id["type"] == "music") {
             $musicVote = $dbSong->getSongById($id["id"]);
-            displayMusic($db, $musicVote,$id["action"],$id["changeUserID"],$id["changeDate"]);
+            displayMusic($db, $musicVote,$id["action"],$id["changeUserID"],$id["changeDate"],true);
         }
     }
     if (sizeof($ids)>0)

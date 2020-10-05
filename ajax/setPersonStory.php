@@ -28,21 +28,33 @@ if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() ) {
 	else if ($type=="spare") 
 		$p["aboutMe"]=$text;
 	
-	$db->savePerson($p);
-    $row = array();
-	$row["classid"] = getAktClassId();
-	$row["person"] = $personId;
-	$row["type"] = $type;
-	$row["privacy"] =$privacy;
-	
-	$row["story"] = substr($text,0,40)."...";
-    header('Content-Type: application/json');
-    echo(json_encode($row));
+	if ($db->savePerson($p)>=0) {
+        $row = array();
+        $row["classid"] = getAktClassId();
+        $row["person"] = $personId;
+        $row["type"] = $type;
+        $row["privacy"] = $privacy;
+
+        $row["story"] = substr($text, 0, 40) . "...";
+        header('Content-Type: application/json');
+        $r = json_encode($row,JSON_PARTIAL_OUTPUT_ON_ERROR);
+        if ($r!==false) {
+            echo($r);
+        } else {
+            http_response_code(400);
+            $row["error"] = "JSON Error!";
+            echo(json_encode($row));
+        }
+    } else {
+        http_response_code(400);
+        $row["error"] = "Database Error!";
+        echo(json_encode($row));
+    }
 }
 else {
     http_response_code(401);
     $row["error"] = "Not authorized!";
-    die();
+    echo(json_encode($row));
 }
 
 ?>

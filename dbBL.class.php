@@ -282,7 +282,7 @@ function getAktSchoolId() {
         return intval($_SESSION['aktSchool']);
     else
     */
-        return 1;
+    return 1;
 }
 
 

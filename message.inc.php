@@ -69,21 +69,24 @@ function displayMessage($message, $person) {
                 (isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
                 $message["changeUserID"]==getLoggedInUserId() )
                 if (!$expired) {
-                    echo '<button class="btn btn-danger" onclick="deleteMessage('.$message["id"].')" >Kitöröl</button>';
+                    echo '<button class="btn btn-danger" onclick="deactivateMessage('.$message["id"].')" >Deaktivál</button>';
                 }
-            if (userIsAdmin()) {?>
+            if (userIsSuperuser()) {?>
                 <span>
                     <form><input type="hidden" name="id" value="<?php echo $message['id'] ?>"/>
                         Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;"/>
                         <button class="btn btn-warning" name="action" value="commentMessage">Kiment</button>
                     </form>
                 </span>
+            <?php }
+            if (userIsAdmin()) {?>
                 <span>
                     <form><input type="hidden" name="id" value="<?php echo $message['id'] ?>"/>
                         Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;" value="<?php echo (isset($message["changeUserID"])?$message["changeUserID"]:'')?>"/>
                         <button class="btn btn-warning" name="action" value="setPersonID">Kiment</button>
                     </form>
                 </span>
+                <button class="btn btn-danger" onclick="deleteMessage(<?php echo $message["id"] ?>);" >Kitöröl </button>
             <?php }?>
         </div>
     </div>
@@ -91,12 +94,12 @@ function displayMessage($message, $person) {
 <?php }
 
 /**
- * Delete one message
+ * Deactivate one message
  * @param dbDAO $db
  * @param integer $id
  * @return boolean
  */
-function deleteMessage($db,$id) {
+function deactivateMessage($db,$id) {
 	$message = $db->getMessage($id);
 	if ($message==null)
 		return false;
@@ -110,6 +113,25 @@ function deleteMessage($db,$id) {
 
 }
 
+/**
+ * Delete one message
+ * @param dbDAO $db
+ * @param integer $id
+ * @return boolean
+ */
+function deleteMessage($db,$id) {
+    $message = $db->getMessage($id);
+    if ($message==null)
+        return false;
+    if (userIsAdmin() ||
+        (userIsLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
+        $message["changeIP"]==$_SERVER["REMOTE_ADDR"] )
+    {
+        return $db->deleteMessageEntry($id);
+    }
+    return false;
+
+}
 
 /**
  * Write message
@@ -142,19 +164,25 @@ function writeMessage($db,$text,$privacy,$name) {
  */
 function checkMessageContent($message) {
     $ret = new \stdClass();
+    $ret->count=0;
+    $ret->words=0;
+    $ret->ok=false;
+    if ($message==null || strlen($message)<10) {
+        return $ret;
+    }
 	$msg = " ".mb_strtolower(strip_tags($message))." ";
 	$rr = array("/","=","-",":",",",".","(",")","?","!","  ");
 	$msg = str_replace($rr, " ", $msg);
-	$whiteList = array(	"lessz ", " volt "," van "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz "," itt ", " ott "," de "," is ",
+	$whiteList = array(	"lessz ", " volt "," van "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz "," itt ", " ott "," de "," is "," és ",
 						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ","nagyon","puszilok",
 						"legyek", " aki ", "mikor", "honlap", "oldal","vagyok","leszek"," vagy "," minden ",
 						" én "," te ", " brassai ","köszön", "üdvöz",
-						"ünnepek",  "boldog ", "karácsony", "husvét", "egy ","minden","senki","neked","fénykép" );
+						"ünnep",  "boldog ", "karácsony", "husvét", "egy ","minden","senki","neked","fénykép" );
 	foreach ($whiteList as $s) {
 		$ret->count += substr_count($msg, $s);
 	}
-	$ret->words=sizeof(explode(" ",$msg));
-	$ret->ok = $ret->count >= $ret->words/10 && $ret->words>10;
+	$ret->words=sizeof(explode(" ",trim($msg)));
+	$ret->ok = $ret->count >= $ret->words/20 && $ret->words>10;
 	return $ret;
 }
 

@@ -12,7 +12,7 @@ use \maierlabs\lpfw\Appl as Appl;
 
 //Save Youtube id
 if (getParam("action")=="savesong" && userIsAdmin()) {
-	$dbSongVote->updateSongFields(getIntParam("id"), getParam("link"), html_entity_decode(getParam("song"),ENT_QUOTES,"UTF-8"));
+	$dbSongVote->updateSongFields(getIntParam("id"), getParam("link"), html_entity_decode(getParam("song"),ENT_NOQUOTES,"UTF-8"));
 }
 
 //Get playlist

@@ -330,30 +330,30 @@ class dbDAO {
 		$ret = array();
 		$nameItems=explode(' ', trim($name));
 		foreach ($nameItems as $nameWord) {
-				$ret=$this->personMerge($ret,$this->searchForPersonOneString($nameWord));
+				$ret=$this->arrayMergeByFieldId($ret,$this->searchForPersonOneString($nameWord));
 		}
 		usort($ret, "compareAlphabetical");
 		return $ret;
 	}
 	
 	/**
-	 * Merge two person lists and return a list of persons that existst in both of the input array
+	 * Merge two array lists by the field id and return a list of elements that existst in both of the input array
 	 * If one of the input arrays are empty the return the other one
 	 * @param array $array1
 	 * @param array $array2
      * @return array
 	 */
-	private function personMerge($array1,$array2) {
+	private function arrayMergeByFieldId($array1, $array2) {
 		$ret=array();
 		if (sizeof($array1)==0)
 			return  $array2;
 		if (sizeof($array2)==0)
 			return  $array1;
-		foreach ($array1 as $person1) {
-			foreach ($array2 as $person2) {
-				if ($person1["id"]==$person2["id"]) {
-                    if (array_search($person1["id"],array_column($ret,"id"))===false) {
-                        array_push($ret, $person1);
+		foreach ($array1 as $row1) {
+			foreach ($array2 as $row2) {
+				if ($row1["id"]==$row2["id"]) {
+                    if (array_search($row1["id"],array_column($ret,"id"))===false) {
+                        array_push($ret, $row1);
                     }
 				}
 			}

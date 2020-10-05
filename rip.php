@@ -10,6 +10,7 @@ include_once 'rip.inc.php';
 
 $SiteDescription="Elhunyt tanáraink és diákok";
 Appl::setSiteTitle($SiteDescription);
+$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
 $dbCandle = new dbDaCandle($db);
 

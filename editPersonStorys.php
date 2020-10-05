@@ -4,6 +4,15 @@ include_once 'dbBL.class.php';
 
 \maierlabs\lpfw\Appl::addCss('editor/ui/trumbowyg.min.css');
 \maierlabs\lpfw\Appl::addJs('editor/trumbowyg.min.js');
+\maierlabs\lpfw\Appl::addCss('editor/plugins/specialchars/ui/trumbowyg.specialchars.min.css');
+\maierlabs\lpfw\Appl::addJs('editor/plugins/specialchars/trumbowyg.specialchars.min.js');
+\maierlabs\lpfw\Appl::addCss('editor/plugins/table/ui/trumbowyg.table.min.css');
+\maierlabs\lpfw\Appl::addJs('editor/plugins/table/trumbowyg.table.min.js');
+\maierlabs\lpfw\Appl::addCss('editor/plugins/colors/ui/trumbowyg.colors.min.css');
+\maierlabs\lpfw\Appl::addJs('editor/plugins/colors/trumbowyg.colors.min.js');
+\maierlabs\lpfw\Appl::addCss('editor/plugins/emoji/ui/trumbowyg.emoji.min.css');
+\maierlabs\lpfw\Appl::addJs('editor/plugins/emoji/trumbowyg.emoji.js');
+\maierlabs\lpfw\Appl::addJs('editor/plugins/pasteimage/trumbowyg.pasteimage.min.js');
 \maierlabs\lpfw\Appl::addJs('editor/langs/hu.min.js');
 \maierlabs\lpfw\Appl::addJsScript("
 	$( document ).ready(function() {
@@ -11,13 +20,25 @@ include_once 'dbBL.class.php';
 			fullscreenable: false,
 			closable: false,
 			lang: 'hu',
-			btns: ['formatting','btnGrp-design','|', 'link', 'insertImage','btnGrp-lists'],
+			btns: [
+                ['undo', 'redo'],
+                ['formatting'],
+                ['strong', 'em'],
+                ['superscript', 'subscript'],
+                ['link','insertImage','table','emoji'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['removeformat'],
+                ['specialChars'],
+			    ['foreColor', 'backColor'],['viewHTML']
+			],
 			removeformatPasted: true,
+			imageWidthModalEdit: true,
 			autogrow: true
 		});
 	});
 ");
-
 
 	$person=$db->getPersonByID($personid);
 	
@@ -94,7 +115,6 @@ include_once 'dbBL.class.php';
 			<?php } ?> 
 		<?php } ?>
 	<?php }  ?>
-	<div id="ajaxStatus" style="margin-top:10px; padding:5px; border-radius:4px;"></div>
 
 <?php
 if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
@@ -113,7 +133,11 @@ if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
 			type : 'POST',
 			dataType : 'json',
 			success:function(data){
-				showAjaxStatus(' Kimetés sikerült. ','lightgreen');
+				showDbMessage(' Szöveg kimentése sikerült. <br/>Köszönjük szépen.','success');
+
+			},
+			error:function(data){
+				showDbMessage(' Szöveg kimentése sikertelen. ','warning');
 			},
 			data:data
 		});
@@ -125,21 +149,11 @@ if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
 		$.ajax({
 			url : 'ajax/requestMoreInfo?title=".$title."&tab=".$tab."&code='+$('#code').val()+'&name='+$('#name').val(),
 			success : function(data){
-				showAjaxStatus(' Üzenet sikeresen elküldve. ','lightgreen');
+				showDbMessage(' Üzenet sikeresen elküldve. ','success');
 			},
 			error:function(data){
-				showAjaxStatus(data.responseText,'lightcoral');
+				showDbMessage(' Üzenet elküldés sikertelen. '+data.responseText,'warning');
 			}
 		});
-	}
-
-	function showAjaxStatus(m,color) {
-	    $('#ajaxStatus').css('background-color',color);
-		$('#ajaxStatus').html(m);
-		$('#ajaxStatus').show();
-		setTimeout(function(){
-	    	$('#ajaxStatus').html('');
-	    	$('#ajaxStatus').hide();
-		}, 4000);
 	}
 ");

@@ -263,20 +263,29 @@ function displayMessage($db,$message,$showDate=true) {
 <?php }
 
 /**
- * Display a music by vote
+ * Display a music
  * @param dbDAO $db the database
  * @param array $musicVote
  * @param bool $showDate
  */
-function displayMusic($db,$music,$action,$userId,$date) {
+function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
     $dbOpinion = new dbDaOpinion($db);
-    $actionText = "Mejelőlte mint kendvenc zenéje";
+    if ($action=="change")
+        $actionText = "Zenét kiválasztotta";
+    else
+        $actionText = "Mejelőlte mint kendvenc zenéje";
+
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
             <div style="">
-                <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><span class="glyphicon glyphicon-film"></span> <h4><?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
+                <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><h4><span class="glyphicon glyphicon-film"></span> <?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
             </div>
+            <?php if ($showVideo) {?>
+                <object  class="embed-responsive embed-responsive-16by9">
+                    <embed src="https://www.youtube.com/v/<?php echo $music["video"]?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
+                </object>
+            <?php }?>
             <?php if (isset($userId) && $userId!=null) {
                 $author = $db->getPersonByID($userId);?>
                 <?php echo $actionText.': '.getPersonLinkAndPicture($author)?>
@@ -476,7 +485,6 @@ function displayIcon($d,$field,$image,$title,$appl) {
         else
             echo '<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
 }
-
 
 \maierlabs\lpfw\Appl::addJsScript("
 	function hiddenData(title) {

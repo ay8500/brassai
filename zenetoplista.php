@@ -3,6 +3,7 @@ include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
+include_once Config::$lpfw.'htmlParser.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
 include_once 'displayCards.inc.php';
@@ -22,7 +23,7 @@ if (getAktClassId()==-1) {
 
 //Parameter Interpret
 $pinterpret = getIntParam("interpret",0);
-$pnewinterpret = html_entity_decode(getParam("newinterpret",""),ENT_QUOTES,"UTF-8");
+$pnewinterpret = html_entity_decode(getParam("newinterpret",""),ENT_NOQUOTES,"UTF-8");
 if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
     $pinterpret=$dbSongVote->saveInterpret(["id"=>-1,"name"=>$pnewinterpret]);
     if ($pinterpret>=0)
@@ -33,7 +34,7 @@ if (($pinterpret=="0") && ($pnewinterpret<>"" )) {
 
 //Parameter Song
 $psong=intval(getIntParam("song", "0"));
-$pnewSong = html_entity_decode(getParam("newSong"),ENT_QUOTES,"UTF-8");
+$pnewSong = html_entity_decode(getParam("newSong"),ENT_NOQUOTES,"UTF-8");
 $pnewVideo = getParam("newVideo");
 $pnewLink = getParam("newLink");
 if (($psong=="0") && ($pnewSong<>"" && userIsLoggedOn() )) {
@@ -164,12 +165,13 @@ include("homemenu.inc.php");
   	 	else
   	 		$listLength=25;
 ?>
-<div class="col-sm-10">
+<div class="col-sm-9">
 	<div class="panel panel-default">
-		<div class="panel-heading">
+		<div class="panel-heading" style="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
+
 			<label id="dbDetails">Top <?php echo $listLength>100?100:$listLength?> zenelista lejátszó</label><br/>
-			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-attributes"></span> Legjobb szám elsőnek</button>
-			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> Legjobb szám utoljára</button>
+			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
+			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-order-alt"></span> Legjobb szám utoljára</button>
 			<button class="btn btn-default" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
 		</div>
 		<div class="form-group navbar-form navbar" >
@@ -177,9 +179,9 @@ include("homemenu.inc.php");
                 for ($i=0;$i<$listLength;$i++) {
                     $v = $topList[$i];
                     if (userIsAdmin() && getParam("check")=="true") {
-                        $v["check"] = (getSongName($v['songVideo']) == "");
+                        $v["check"] = (getSongName($v['video']) !== "");
                     }
-                    displayMusic($db, $v);
+                    displayMusic($db, $v,"change",$v["changeUserID"],$v["changeDate"]);
                 }
             ?>
         </div>
@@ -190,7 +192,7 @@ include("homemenu.inc.php");
 </div>
 
 
-<div class="col-sm-2">
+<div class="col-sm-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotesNoAnonymous); ?></label>
@@ -296,7 +298,8 @@ function autoComplete (field, select, property, forcematch) {
  function getSongName(string $youtubeId) {
  	$apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
  	try {
-        $response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $youtubeId . '&key=' . $apiPublicKey);
+ 	    $url='https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $youtubeId . '&key=' . $apiPublicKey;
+        $response = maierlabs\lpfw\htmlParser::loadUrl($url);
         $json = json_decode($response);
         if (is_object($json))
             return $json->title;
