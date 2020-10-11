@@ -158,8 +158,10 @@ Appl::addJsScript("
     		url:'start?action=showmore&date='+$('#date').val()+'&tabOpen=".getParam('tabOpen','all').$urlParam."',
 	    	type:'GET',
     		success:function(data){
+    		    var s = document.documentElement.scrollTop || document.body.scrollTop;
     		    var idx=data.lastIndexOf('#');
-    		    $('#more').replaceWith(data.substring(0,idx-1)+'<span id=\"more\"></span>');
+    		    $('#more').replaceWith(data.substring(0,idx-1)+'<span id=\"more\"></span>');	    	    
+    		    document.documentElement.scrollTop = document.body.scrollTop = s;
 	    	    $('#date').val(data.substring(idx+1));
 	    	    $('#buttonmore').html('Többet szeretnék látni');
 		    },
