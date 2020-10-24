@@ -19,6 +19,7 @@ var flyingObjects = (function(window, document) {
 //****************************************************************************************************
     $("#mainmenucontainer").css("background-image","url('images/fire.gif')");
     $("#mainmenucontainer").css("background-size","cover");
+    $("#mainmenucontainer").css("background-position-y","bottom");
 
     this.moveObject = function(element,x,y,ydir,xdir) {
         var s = document.documentElement.scrollTop || document.body.scrollTop;
