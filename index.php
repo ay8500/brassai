@@ -34,6 +34,9 @@ $xmas = $today >= new DateTime("December 6") || $today < new DateTime("February 
 if ($xmas)
    Appl::addJs("js/snowFalling.js",false,true);
 
+$haloween = $today >= new DateTime("October 23") || $today < new DateTime("November 6");
+if ($haloween)
+    Appl::addJs("js/haloween.js",false,true);
 
 
 
@@ -59,13 +62,21 @@ include("homemenu.inc.php");
                     <div style="overflow: visible;width: 0px;height: 0px;">
                         <img style="width: 38px;position: relative;left: 30px;top: -86px;" src="images/xmas.png"></div>
                 <?php } ?>
+                <?php if ($haloween) { ?>
+                    <div style="overflow: visible;width: 0px;height: 0px;">
+                        <img style="width: 41px;position: relative;left: 34px;top: -98px;" src="images/haloween.png"></div>
+                <?php } ?>
                 </div>
 			    <div class="inlineBox" style="vertical-align: middle;">Újdonságok a véndiákok oldalán.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="hometable?classid=<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>">
-                <div class="inlineBox"><img img class="indeximg" src="images/teacher.png" /></div>
+                <?php if ($haloween) { ?>
+                    <div class="inlineBox"><img img class="indeximg" src="images/haloweenfun.png" /></div>
+                <?php } else { ?>
+                    <div class="inlineBox"><img img class="indeximg" src="images/teacher.png" /></div>
+                <?php } ?>
                 <div class="inlineBox" style="vertical-align: middle;">Tanáraink névsorának bővítése és kiegészítése.</div>
             </a>
 		</div>
@@ -75,6 +86,10 @@ include("homemenu.inc.php");
                     <?php if ($xmas) { ?>
                         <div style="overflow: visible;width: 0px;height: 0px;">
                             <img style="width: 38px;position: relative;left: 5px;top: -74px;" src="images/xmas.png"></div>
+                    <?php } ?>
+                    <?php if ($haloween) { ?>
+                        <div style="overflow: visible;width: 0px;height: 0px;">
+                            <img style="width: 42px;position: relative;left: 9px;top: -91px;" src="images/haloween.png"></div>
                     <?php } ?>
                 </div>
                 <div class="inlineBox" style="vertical-align: middle;">Üzenetek küldése osztálytársnak iskolatársaknak vagy az egész világnak.</div>
@@ -100,7 +115,11 @@ include("homemenu.inc.php");
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="vote?classid=74">
-                <div class="inlineBox"><img img class="indeximg" src="images/vote.png" /></div>
+                <?php if ($haloween) { ?>
+                    <div class="inlineBox"><img img class="indeximg" src="images/haloweenpirat.png" /></div>
+                <?php } else { ?>
+                    <div class="inlineBox"><img img class="indeximg" src="images/vote.png" /></div>
+                <?php } ?>
                 <div class="inlineBox" style="vertical-align: middle;">Találkozók szervezésére alkalmas szavazás.</div>
             </a>
 		</div>
@@ -111,13 +130,22 @@ include("homemenu.inc.php");
                         <div style="overflow: visible;width: 0px;height: 0px;">
                             <img style="width: 25px;position: relative;left: 23px;top: -68px;" src="images/xmas.png"></div>
                     <?php } ?>
+                    <?php if ($haloween) { ?>
+                        <div style="overflow: visible;width: 0px;height: 0px;">
+                                <img style="width: 25px;position: relative;left: 27px;top: -78px;" src="images/haloween.png"></div>
+                    <?php } ?>
+
                 </div>
                 <div class="inlineBox" style="vertical-align: middle;">Osztályfelelősők körlevelet küldhetnek volt osztálytársuknak.</div>
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="zenetoplista?classid=all">
-                <div class="inlineBox"><img img class="indeximg" src="images/record-player.png" /></div>
+                <?php if ($haloween) { ?>
+                    <div class="inlineBox"><img img class="indeximg" src="images/haloweenmusic.png" /></div>
+                <?php } else { ?>
+                    <div class="inlineBox"><img img class="indeximg" src="images/record-player.png" /></div>
+                <?php } ?>
                 <div class="inlineBox" style="vertical-align: middle;">Véndiákok zene toplistája.</div>
             </a>
 		</div>
