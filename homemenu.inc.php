@@ -23,6 +23,11 @@
 	    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
 	}
 
+//Events
+$today = new DateTime();
+$xmas = $today >= new DateTime("December 6") || $today < new DateTime("February 21");
+$haloween = $today >= new DateTime("October 23") || $today < new DateTime("November 6");
+
 /**
  * @param dbDaUser $db
  * @param $key
@@ -91,7 +96,7 @@
 <div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00;" role="navigation">
-  <div class="container-fluid">
+  <div class="container-fluid" id="mainmenucontainer" >
     <!-- Brand and toggle get grouped for better mobile display -->
       <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="favicon.jpg" style="height:27px" /></a>
       <div class="navbar-header" style="margin-left:32px;">

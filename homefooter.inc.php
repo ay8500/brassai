@@ -52,7 +52,15 @@ if (userIsAdmin()) {
             });
         }
     ');
-} ?>
+}
+
+if ($haloween)
+    \maierlabs\lpfw\Appl::addJs("js/haloween.js",false,true);
+if ($xmas)
+    \maierlabs\lpfw\Appl::addJs("js/snowFalling.js",false,true);
+
+
+?>
 
 <?php \maierlabs\lpfw\Appl::setApplJScript();?>
 <?php \maierlabs\lpfw\Appl::addCookieCompilance();?>
