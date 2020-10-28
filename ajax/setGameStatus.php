@@ -25,6 +25,4 @@ if ($dbGame->saveGame(getIntParam("gameid"),htmlspecialchars_decode(getParam("ga
     die("Save Error");
 }
 
-
-
 ?>

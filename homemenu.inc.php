@@ -209,11 +209,9 @@ handleLogInOff(new dbDaUser($db));
             <li>
                 <a href="message">Ünzenőfal</a>
             </li>
-            <?php if (isLocalhost() || userIsAdmin()) {?>
-                <li>
-                    <a href="games">Játékok</a>
-                </li>
-            <?php }?>
+            <li>
+                <a href="games">Játékok</a>
+            </li>
             <li>
             <form class="navbar-form navbar-left" role="search" action="">
                 <div class="input-group input-group" style="margin: 3px;">

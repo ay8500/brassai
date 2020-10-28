@@ -16,7 +16,7 @@ $tabsCaption = array();
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
 array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => ""));
 array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => ""));
-array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
+//array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
 if (userIsLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
         $pers = getPersonShortName($db->getPersonByID(getParam("userid")));
@@ -36,8 +36,13 @@ $ip = $_SERVER['REMOTE_ADDR'];
 $title = 'Logikai játékok: '. $tabsCaption[(array_search(getParam("tabOpen","A legjobb játékosok"),array_column($tabsCaption,"id")))]["caption"];
 Appl::setSiteTitle($title,$title);
 
-\maierlabs\lpfw\Appl::addCss("game/game2048.css");
-\maierlabs\lpfw\Appl::addCss("game/gamememory.css");
+if ($tabOpen=="sudoku")
+    \maierlabs\lpfw\Appl::addCss("game/gamesudoku.css");
+elseif ($tabOpen=="memory")
+    \maierlabs\lpfw\Appl::addCss("game/gamememory.css");
+else
+    \maierlabs\lpfw\Appl::addCss("game/game2048.css");
+
 include("homemenu.inc.php");
 ?>
 
@@ -99,6 +104,11 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="memory") {
                 \maierlabs\lpfw\Appl::addJs("game/gamememory.js");
                 include_once "game/gamememory.inc.php";
+            }?>
+
+            <?php if ($tabOpen=="sudoku") {
+                \maierlabs\lpfw\Appl::addJs("game/gamesudoku.js");
+                include_once "game/gamesudoku.inc.php";
             }?>
 
             <?php if ($tabOpen=="user") {?>

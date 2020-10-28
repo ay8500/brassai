@@ -80,11 +80,13 @@ class dbDaGames
     }
 
     public function getGameByUseridAgentLangGameId($userId,$ip,$agent,$lang,$gameId,$limit=25) {
-        $query  = "select * from game  ";
-        $query .=" where gameId=".$gameId." and userId=".$userId." order by dateBegin desc limit ".$limit;
-        $ret = $this->dataBase->queryArray($query);
-        if (sizeof($ret)!=0)
-            return $this->decodeGameDataInArray($ret);
+        if ($userId!=null) {
+            $query = "select * from game  ";
+            $query .= " where gameId=" . $gameId . " and userId=" . $userId . " order by dateBegin desc limit " . $limit;
+            $ret = $this->dataBase->queryArray($query);
+            if (sizeof($ret) != 0)
+                return $this->decodeGameDataInArray($ret);
+        }
         //IP, Agent, Language
         $query  = "select * from game  ";
         $query .=" where gameId=".$gameId." and ip='".$ip."' and agent='".$agent."' and language='".$lang."' order by dateBegin desc limit ".$limit;
