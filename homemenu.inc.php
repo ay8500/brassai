@@ -1,27 +1,27 @@
 <?php
-    ob_start("ob_gzhandler");
-    include_once 'config.class.php';
-    include_once Config::$lpfw.'sessionManager.php';
-    include_once Config::$lpfw.'logon.inc.php';
-    include_once 'dbBL.class.php';
-    include_once 'dbDaUser.class.php';
-    include_once 'dbDaOpinion.class.php';
-    include_once Config::$lpfw.'dbDaTracker.class.php';
+ob_start("ob_gzhandler");
+include_once 'config.class.php';
+include_once Config::$lpfw.'sessionManager.php';
+include_once Config::$lpfw.'logon.inc.php';
+include_once 'dbBL.class.php';
+include_once 'dbDaUser.class.php';
+include_once 'dbDaOpinion.class.php';
+include_once Config::$lpfw.'dbDaTracker.class.php';
 
-    use maierlabs\lpfw\Appl as Appl;
+use maierlabs\lpfw\Appl as Appl;
 
-    $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
+$trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 
 //Image gallery Menue
-	if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
-	
-	Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
-	Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getAktSchoolId()));
+if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 
-	//Login if crypted loginkey present and correct
-	if (isset($_GET['key'])) {
-	    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
-	}
+Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
+Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getAktSchoolId()));
+
+//Login if crypted loginkey present and correct
+if (isset($_GET['key'])) {
+    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
+}
 
 //Events
 $today = new DateTime();
@@ -33,35 +33,35 @@ $haloween = $today >= new DateTime("October 23") || $today < new DateTime("Novem
  * @param $key
  * @return string
  */
-	function directLogin($db,$key){
-	    $keyStr = encrypt_decrypt("decrypt", $key);
-	    if (substr($keyStr, 0,2)=="M-") {
-	        $action="M";
-	        $keyStr=substr($keyStr,2);
-	    }
-	    $person=$db->getUserByID($keyStr);
-	    if (null!=$person) {
-            setAktUserId($keyStr);
-	        setUserInSession($db,$person["role"], $person["user"],$keyStr);
-            \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
-	        $class=$db->dbDAO->getClassById($person["classID"]);
-	        Appl::setMember("aktClass",$class);
-	        setAktClass($class["id"]);
-	        setAktSchool($class["schoolID"]);
-	        if (!userIsAdmin() && !userIsSuperuser()) {
-                \maierlabs\lpfw\Appl::sendHtmlMail(null,
-	                "<h2>Login</h2>".
-	                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
-	        }
-	        return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
-	    } else {
-            \maierlabs\lpfw\Logger::_("LoginDirect\t".$key,\maierlabs\lpfw\LoggerLevel::error);
-            return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
-	    }
-	}
-    handleLogInOff(new dbDaUser($db));
-	
-	?>
+function directLogin($db,$key){
+    $keyStr = encrypt_decrypt("decrypt", $key);
+    if (substr($keyStr, 0,2)=="M-") {
+        $action="M";
+        $keyStr=substr($keyStr,2);
+    }
+    $person=$db->getUserByID($keyStr);
+    if (null!=$person) {
+        setAktUserId($keyStr);
+        setUserInSession($db,$person["role"], $person["user"],$keyStr);
+        \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
+        $class=$db->dbDAO->getClassById($person["classID"]);
+        Appl::setMember("aktClass",$class);
+        setAktClass($class["id"]);
+        setAktSchool($class["schoolID"]);
+        if (!userIsAdmin() && !userIsSuperuser()) {
+            \maierlabs\lpfw\Appl::sendHtmlMail(null,
+                "<h2>Login</h2>".
+                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
+        }
+        return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
+    } else {
+        \maierlabs\lpfw\Logger::_("LoginDirect\t".$key,\maierlabs\lpfw\LoggerLevel::error);
+        return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
+    }
+}
+handleLogInOff(new dbDaUser($db));
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
   <head>
@@ -209,6 +209,11 @@ $haloween = $today >= new DateTime("October 23") || $today < new DateTime("Novem
             <li>
                 <a href="message">Ünzenőfal</a>
             </li>
+            <?php if (isLocalhost() || userIsAdmin()) {?>
+                <li>
+                    <a href="games">Játékok</a>
+                </li>
+            <?php }?>
             <li>
             <form class="navbar-form navbar-left" role="search" action="">
                 <div class="input-group input-group" style="margin: 3px;">

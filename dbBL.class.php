@@ -192,7 +192,7 @@ class dbBL extends dbDAO
 
 //Connect to the DB
 $dbPropertys = \Config::getDatabasePropertys();
-$dataBase = new \maierlabs\lpfw\MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password);
+$dataBase = new \maierlabs\lpfw\MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password,true);
 
 /**
  * @var dbBL;
