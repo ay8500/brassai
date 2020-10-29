@@ -53,10 +53,10 @@ include("homemenu.inc.php");
 
             <?php if ($tabOpen=="bestlist") {?>
                 <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;">
-                    <div style="display: inline-block;margin-left: 25px ">
+                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>2048</h2>
                         <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
-                        <br/> <img src="images/game2048.jpg" style="width: 200px;margin-left: -20px"/>
+                        <br/> <img src="images/game2048.jpg" style="width: 200px;"/>
                     </div>
                     <div style="display: inline-block;vertical-align: top;margin: 10px">
                         <table>
@@ -64,10 +64,15 @@ include("homemenu.inc.php");
                             $personList = $dbGames->getBestPlayers(1,10);
                             foreach ($personList as $idx=>$person) {?>
                                     <tr>
-                                        <td style="padding-right: 20px"><?php echo $idx+1 ?></td>
-                                        <td style="padding-right: 20px"><?php writePersonLinkAndPicture($person)?></td>
-                                        <td style="padding-right: 20px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["dateBegin"])) ?></td>
+                                        <td style="padding-right: 10px"><?php echo $idx+1 ?></td>
+                                        <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
+                                        <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["dateBegin"])) ?></td>
                                         <td style="text-align: right"><?php echo $person["highScore"]?></td>
+                                        <td style="padding-left: 10px">
+                                            <?php if ($person["gameStatus"]["over"]==true) { ?>
+                                                <a class="btn btn-success btn-xs" href="games?tabOpen=2048&gameid=1&id=<?php echo($person["theGameId"])?>">Lássam</a>
+                                            <?php }?>
+                                        </td>
                                     </tr>
                             <?php }
                         ?>
@@ -114,10 +119,10 @@ include("homemenu.inc.php");
 
             <?php if ($tabOpen=="user") {?>
                 <div style="border: 1px solid black;border-radius: 5px; ">
-                    <div style="display: inline-block;margin-left: 10px;">
+                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>2048</h2>
-                        <a class="btn btn-default" href="games?tabOpen=2048">Játszani szeretnék</a>
-                        <br/> <img src="images/game2048.jpg" style="width: 200px"/>
+                        <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
+                        <br/> <img src="images/game2048.jpg" style="width: 200px;"/>
                     </div>
                     <div style="display: inline-block;vertical-align: top;margin: 10px">
                         <?php

@@ -17,20 +17,23 @@ if ($game==null) {
     header("HTTP/1.0 500 Internal Server Error");
     die("Game not found");
 }
+$gamestatus = json_decode($game["gameStatusJson"],true);
 
-if ($dbGame->saveGame(getIntParam("gameid"),htmlspecialchars_decode(getParam("gamestatus")))) {
-    $gamestatus=json_decode(htmlspecialchars_decode(getParam("gamestatus")),true);
-    if ($gamestatus["over"] || $gamestatus["won"]) {
-        $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-        $agent = $_SERVER['HTTP_USER_AGENT'];
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $gameId = $dbGame->createGame($game["userId"],$ip,$agent,$lang,$game["gameId"]);
-        $game = $dbGame->getGameById($gameId);
+if ($gamestatus["over"]==false &&  $gamestatus["won"]==false) {
+    if ($dbGame->saveGame(getIntParam("gameid"), htmlspecialchars_decode(getParam("gamestatus")))) {
+        $gamestatus = json_decode(htmlspecialchars_decode(getParam("gamestatus")), true);
+        if ($gamestatus["over"] || $gamestatus["won"]) {
+            $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $gameId = $dbGame->createGame($game["userId"], $ip, $agent, $lang, $game["gameId"]);
+            $game = $dbGame->getGameById($gameId);
+        }
+    } else {
+        header("HTTP/1.0 500 Internal Server Error");
+        die("Save Error");
     }
-    echo json_encode($game);
-} else {
-    header("HTTP/1.0 500 Internal Server Error");
-    die("Save Error");
 }
+echo json_encode($game);
 
 ?>

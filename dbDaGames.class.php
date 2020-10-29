@@ -112,7 +112,8 @@ class dbDaGames
 
     public function getBestPlayers(int $gameId, int $limit=25)
     {
-        $query = "select person.*,game.highScore,game.gameStatusJson,game.dateBegin from game left join person on person.id=game.userId where gameId=".$gameId." order by highScore desc limit ".$limit;
+        $query = "select person.*,game.highScore,game.gameStatusJson,game.dateBegin,game.id as theGameId from game left join person on person.id=game.userId ";
+        $query .=" where gameId=".$gameId." order by highScore desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         return $this->decodeGameDataInArray($ret);;
     }
