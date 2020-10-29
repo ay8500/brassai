@@ -9,7 +9,8 @@ include_once 'dbDaOpinion.class.php';
 include_once Config::$lpfw.'dbDaTracker.class.php';
 
 use maierlabs\lpfw\Appl as Appl;
-
+global $db;
+global $userDB;
 $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 
 //Image gallery Menue
@@ -93,7 +94,7 @@ handleLogInOff(new dbDaUser($db));
 <?php if (\maierlabs\lpfw\Appl::getMember("firstPicture")!==null) {
     echo('<img id="firstPicture" style="display:none" src="'.\maierlabs\lpfw\Appl::getMember("firstPicture")["file"].'" />');
 }?>
-<div class="homeLogo"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
+<div class="homeLogo" style="z-index: -1"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00;" role="navigation">
   <div class="container-fluid" id="mainmenucontainer" >

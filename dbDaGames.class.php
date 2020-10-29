@@ -59,7 +59,7 @@ class dbDaGames
 
     public function createGame($userId,$ip,$agent,$lang,$gameId){
         $data=array();
-        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "userId", $userId);
+        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "userId", $userId==null?0:$userId);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "gameId", $gameId);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "ip", $ip);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "agent", $agent);
@@ -86,6 +86,8 @@ class dbDaGames
             $ret = $this->dataBase->queryArray($query);
             if (sizeof($ret) != 0)
                 return $this->decodeGameDataInArray($ret);
+            else
+                return null;
         }
         //IP, Agent, Language
         $query  = "select * from game  ";
