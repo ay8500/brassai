@@ -68,7 +68,7 @@ class dbDaGames
     }
 
 
-        public function getLastActivGame($userId,$ip,$agent,$lang,$gameId){
+    public function getLastActivGame($userId,$ip,$agent,$lang,$gameId){
         $ret = $this->getGameByUseridAgentLangGameId($userId,$ip,$agent,$lang,$gameId);
         if ($ret==null)
             return null;
@@ -112,7 +112,7 @@ class dbDaGames
 
     public function getBestPlayers(int $gameId, int $limit=25)
     {
-        $query = "select person.*,game.highScore,game.gameStatusJson from game left join person on person.id=game.userId where gameId=".$gameId." order by highScore desc limit ".$limit;
+        $query = "select person.*,game.highScore,game.gameStatusJson,game.dateBegin from game left join person on person.id=game.userId where gameId=".$gameId." order by highScore desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         return $this->decodeGameDataInArray($ret);;
     }

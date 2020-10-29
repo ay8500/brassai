@@ -355,7 +355,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
         });
 
         self.updateScore(metadata.score);
-        //TODO Ajax savescore
+        //Ajax savescore
         var json = {"lastTiles":lastTiles,"score":metadata.score,"over":metadata.over,"won":metadata.won};
         console.log(metadata.gameId+" "+JSON.stringify(json));
 
@@ -364,6 +364,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
             type:"GET",
             success:function(data){
                 console.log(data);
+                game2048.gameId = data.id;
             },
             error:function(data) {
                 console.log(data);
@@ -372,7 +373,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
         });
 
 
-                if (metadata.over) self.message(false); // You lose
+        if (metadata.over) self.message(false); // You lose
         if (metadata.won) self.message(true); // You win!
     });
 };

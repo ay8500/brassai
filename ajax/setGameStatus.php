@@ -19,6 +19,14 @@ if ($game==null) {
 }
 
 if ($dbGame->saveGame(getIntParam("gameid"),htmlspecialchars_decode(getParam("gamestatus")))) {
+    $gamestatus=json_decode(htmlspecialchars_decode(getParam("gamestatus")),true);
+    if ($gamestatus["over"] || $gamestatus["won"]) {
+        $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $gameId = $dbGame->createGame($game["userId"],$ip,$agent,$lang,$game["gameId"]);
+        $game = $dbGame->getGameById($gameId);
+    }
     echo json_encode($game);
 } else {
     header("HTTP/1.0 500 Internal Server Error");

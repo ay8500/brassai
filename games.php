@@ -14,8 +14,8 @@ $dbGames = new dbDaGames($db);
 //initialise tabs
 $tabsCaption = array();
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
-array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => ""));
-array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => ""));
+array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
+array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
 if (userIsLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
@@ -36,11 +36,11 @@ $ip = $_SERVER['REMOTE_ADDR'];
 $title = 'Logikai játékok: '. $tabsCaption[(array_search(getParam("tabOpen","A legjobb játékosok"),array_column($tabsCaption,"id")))]["caption"];
 Appl::setSiteTitle($title,$title);
 
-if ($tabOpen=="sudoku")
+if (getParam("tabOpen")=="sudoku")
     \maierlabs\lpfw\Appl::addCss("game/gamesudoku.css");
-elseif ($tabOpen=="memory")
+elseif (getParam("tabOpen")=="memory")
     \maierlabs\lpfw\Appl::addCss("game/gamememory.css");
-else
+elseif (getParam("tabOpen")=="2048")
     \maierlabs\lpfw\Appl::addCss("game/game2048.css");
 
 include("homemenu.inc.php");
@@ -88,16 +88,17 @@ include("homemenu.inc.php");
                     $tile = $game["gameStatus"];
                 } else {
                     $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,1);
-                    $gameId = $game["id"];
-                    if  (isset($game["gameStatus"]))
-                        $tile = $game["gameStatus"];
+                    if ($game!=null) {
+                        $gameId = $game["id"];
+                        if (isset($game["gameStatus"]))
+                            $tile = $game["gameStatus"];
+                    } else {
+                        $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,1);
+                    }
                 }
-                if($gameId==null) {
-                    $game = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,1);
-                    $gameId = $game["id"];
-                }
+                \maierlabs\lpfw\Appl::addJsScript('var game2048=null');
                 \maierlabs\lpfw\Appl::addJsScript('
-                    var manager = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($tile).'\','.$gameId.');
+                    game2048 = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($tile).'\','.$gameId.');
                 ',true);
             }?>
 
@@ -126,6 +127,7 @@ include("homemenu.inc.php");
                                 <table>
                                     <tr>
                                         <td><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
+                                        <td><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateEnd"])) ?></td>
                                         <td style="text-align:right;width: 100px"><?php echo $game["highScore"]?></td>
                                         <td style="padding: 5px">
                                             <?php if (isset($game["gameStatus"]["over"])) { ?>
