@@ -7,10 +7,12 @@ use \maierlabs\lpfw\Appl as Appl;
 include_once 'dbBL.class.php';
 include_once 'dbDaCandle.class.php';
 include_once 'rip.inc.php';
-
+global $db;
 $SiteDescription="Elhunyt tanáraink és diákok";
 Appl::setSiteTitle($SiteDescription);
 $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
+$picture["file"] = "images/candle3.gif";
+\maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
 
 $dbCandle = new dbDaCandle($db);
 

@@ -7,7 +7,7 @@ include_once 'dbBL.class.php';
 include_once 'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
-
+global $db;
 $tabOpen= getParam("tabOpen", "person");
 
 $personid = getIntParam("uid",null);
@@ -56,7 +56,10 @@ if ($personid!=null && $personid>=0) {
 		$classId=$diak["classID"];
 		$class=$db->getClassById($classId);
 		setAktClass($classId);
-	} else {
+        $picture["file"] = "images/".$diak["picture"];
+        \maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
+
+    } else {
 		header('Location:dc');
 		exit;
 	}

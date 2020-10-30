@@ -1,4 +1,10 @@
-<?php //https://codepen.io/camsong/pen/wcKrg?>
+<?php
+//2048 https://codepen.io/camsong/pen/wcKrg
+
+//két pont https://codepen.io/MyXoToD/pen/vznLu
+//vizuális memoria https://codepen.io/FCCJMC/pen/WxEYAA
+//torony https://codepen.io/ste-vg/pen/ppLQNW
+?>
 <div class="container">
     <div class="heading">
         <h1 class="title">2048</h1>

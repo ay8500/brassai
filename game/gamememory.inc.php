@@ -1,4 +1,7 @@
-<?php //https://codepen.io/jstarnate/pen/QoagLr ?>
+<?php
+//https://codepen.io/jstarnate/pen/QoagLr
+//https://codepen.io/muaz06/pen/ZEWLERN
+?>
 <main class="game">
 
     <section class="game__cards js-cards">

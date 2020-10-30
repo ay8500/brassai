@@ -64,15 +64,17 @@ include("homemenu.inc.php");
                             $personList = $dbGames->getBestPlayers(1,10);
                             foreach ($personList as $idx=>$person) {?>
                                     <tr>
-                                        <td style="padding-right: 10px"><?php echo $idx+1 ?></td>
+                                        <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
                                         <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
                                         <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["dateBegin"])) ?></td>
                                         <td style="text-align: right"><?php echo $person["highScore"]?></td>
+                                        <?php /*
                                         <td style="padding-left: 10px">
-                                            <?php if ($person["gameStatus"]["over"]==true) { ?>
+                                            <?php if ($person["gameStatus"]["over"]==true || $person["gameStatus"]["won"]==true ) { ?>
                                                 <a class="btn btn-success btn-xs" href="games?tabOpen=2048&gameid=1&id=<?php echo($person["theGameId"])?>">Lássam</a>
                                             <?php }?>
                                         </td>
+                                        */ ?>
                                     </tr>
                             <?php }
                         ?>
@@ -131,8 +133,8 @@ include("homemenu.inc.php");
                             foreach ($gameList as $game) {?>
                                 <table>
                                     <tr>
-                                        <td><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
-                                        <td><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateEnd"])) ?></td>
+                                        <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
+                                        <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateEnd"])) ?></td>
                                         <td style="text-align:right;width: 100px"><?php echo $game["highScore"]?></td>
                                         <td style="padding: 5px">
                                             <?php if (isset($game["gameStatus"]["over"])) { ?>
