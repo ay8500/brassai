@@ -117,6 +117,9 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="sudoku") {
                 \maierlabs\lpfw\Appl::addJs("game/gamesudoku.js");
                 include_once "game/gamesudoku.inc.php";
+                \maierlabs\lpfw\Appl::addJsScript('
+                    var sudoku = gamesudoku(\''.json_encode($tile).'\','.$gameId.');
+                ',true);
             }?>
 
             <?php if ($tabOpen=="user") {?>

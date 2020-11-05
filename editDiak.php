@@ -8,6 +8,10 @@ include_once 'dbDaCandle.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 global $db;
+global $userDB;
+
+Appl::addCss('css/chosen.css');
+
 $tabOpen= getParam("tabOpen", "person");
 
 $personid = getIntParam("uid",null);
@@ -50,15 +54,15 @@ if ( $createNewPerson ) {
 	$personid=-1;
 }
 
+//load person data from db in $diak
 if ($personid!=null && $personid>=0) {
 	$diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
 		$classId=$diak["classID"];
 		$class=$db->getClassById($classId);
 		setAktClass($classId);
-        $picture["file"] = "images/".$diak["picture"];
-        \maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
-
+        $firstPicture["file"] = "images/".$diak["picture"];
+        \maierlabs\lpfw\Appl::setMember("firstPicture",$firstPicture);
     } else {
 		header('Location:dc');
 		exit;
@@ -130,6 +134,7 @@ if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { 
     $dataFieldObl[21+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszővel elválasztva. Például: 1985 12A,1989 12C";
 }
 
+//save changes
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
 	if ($db->checkRequesterIP(changeType::personchange)) {
 		if ($diak!=null) {
@@ -262,7 +267,6 @@ if (getIntParam("deletePersonPicture",-1)>=0 && (userIsSuperuser() || getLoggedI
 	}
 }
 
-
 //Upload Image
 if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 	if (basename( $_FILES['userfile']['name'])!="") {
@@ -347,7 +351,6 @@ if (isAktClassStaf()) {
         Appl::$title=getPersonName($diak)." ".getAktClassName();
     }
 }
-Appl::addCss('css/chosen.css');
 
 include("homemenu.inc.php");
 ?>
@@ -468,7 +471,7 @@ $tabUrl="editDiak";
 Appl::addJs('js/chosen.jquery.js');
 Appl::addJsScript('
     $(document).ready(function(){
-        $(".chosen").chosen({width:"100%",no_results_text:"Ilyen tartalmi megjelölés nincs!"});
+        $(".chosen").chosen({width:"100%",no_results_text:"Ilyen opció nincs!"});
     });
 ');
 include 'homefooter.inc.php';

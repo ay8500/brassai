@@ -33,4 +33,14 @@ $TXT['Impresszum']	= '#Impresszum#';
 $TXT['Találatok a véndiákok adatbankjában']	= '#Találatok a véndiákok adatbankjában#';
 $TXT[' Keresés']	= '# Keresés#';
 
+$TXT["for %d years"] = "%d évvel ezelött";
+$TXT['this year'] = 'ebben az évben';
+$TXT['last month'] = 'a múlt hónapban';
+$TXT['this month'] = 'ebben a hónapban';
+$TXT['last week'] = 'múlt héten';
+$TXT['this week'] = 'ezen a héten';
+$TXT['yesterday'] = 'tegnap';
+$TXT['today'] = 'ma';
+$TXT['less then one hour'] = 'egy órával ezelött';
+
 $TXT['Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!']	= '#Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!#';

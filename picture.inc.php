@@ -8,6 +8,7 @@ include_once 'dbDaOpinion.class.php';
 include_once 'displayOpinion.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
+global $db;
 $limitOfPicturesPerPage=24;
 if (!isset($type)) $type=getParam("type");
 if (!isset($typeId)) $typeId=getParam("typeid");
