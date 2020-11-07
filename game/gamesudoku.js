@@ -6,44 +6,59 @@ function Sudoku(params) {
     this.RUNNING = 1;
     this.END = 2;
 
+    this.gameId = params.gameId;
     this.id = params.id || 'sudoku_container';
-    this.displaySolution = params.displaySolution || 0;
-    this.displaySolutionOnly = params.displaySolutionOnly || 0;
     this.displayTitle = params.displayTitle || 0;
     this.highlight = params.highlight || 0;
     this.fixCellsNr = params.fixCellsNr || 32;
-    this.n = 3;
-    this.nn = this.n * this.n;
-    this.cellsNr = this.nn * this.nn;
 
     if (this.fixCellsNr < 10 ) this.fixCellsNr = 10;
     if (this.fixCellsNr > 70 ) this.fixCellsNr = 70;
 
-    this.init();
+    this.init(this.fixCellsNr,params.secondsElapsed, params.score, params.board, params.boardSolution, params.boardValues, params.boardNotes);
 
-    //counter
-    setInterval(function(){
-        t.timer();
-    },1000);
-
+    setInterval(function(){ t.timer(); },1000);
     return this;
 }
 
-Sudoku.prototype.init = function() {
+Sudoku.prototype.init = function(fixedCells,secondsElapsed, score, board, boardSolution, boardValues, boardNotes) {
     this.status = this.INIT;
     this.cellsComplete = 0;
-    this.board = [];
-    this.boardSolution = [];
+    this.score = score!=null?score:0;
+    this.board = board!=null?board:[];
+    this.boardSolution = boardSolution!=null?boardSolution:[];
+    this.boardValues = boardValues!=undefined?boardValues:new Array(81).fill(0,0,81);
+    this.boardNotes = boardNotes!=undefined?boardNotes:new Array(81).fill('',0,81);
     this.cell = null;
     this.markNotes = 0;
-    this.secondsElapsed = 0;
+    this.secondsElapsed = secondsElapsed!=null?secondsElapsed:0;
+    this.fixCellsNr=fixedCells!=null?fixedCells:50;
 
     if(this.displayTitle == 0) {
         $('#sudoku_title').hide();
+    } else {
+        if (this.fixCellsNr==55)
+            $('#sudoku_title').html("Sudoku ügyeseknek");
+        if (this.fixCellsNr==50)
+            $('#sudoku_title').html("Sudoku haladoknak");
+        if (this.fixCellsNr==40)
+            $('#sudoku_title').html("Sudoku lángeszüknek");
+        if (this.fixCellsNr==30)
+            $('#sudoku_title').html("Sudoku zseniknek");
     }
 
-    this.board = this.boardGenerator(this.n, this.fixCellsNr);
-
+    if (this.board.length==0) {
+        this.boardGenerator(this.fixCellsNr);
+        this.boardNotes=new Array(81).fill('',0,81);
+        this.boardValues=new Array(81).fill(0,0,81);
+    }
+    if(this.cellsComplete==0) {
+        for (var i = 0; i < 81; i++) {
+            if (parseInt(this.board[i]) > 0 || parseInt(this.boardValues[i]) == parseInt(this.boardSolution[i]))
+                this.cellsComplete++;
+        }
+    }
+    console.log("gameInit id="+this.gameId+" fixedCells="+this.fixCellsNr);
     return this;
 };
 
@@ -71,8 +86,10 @@ Sudoku.prototype.shuffle = function(array) {
     return array;
 };
 
-/** Generate the sudoku board */
-Sudoku.prototype.boardGenerator = function(n, fixCellsNr) {
+/** Generate the sudoku board
+ * changes this.board this.boardSolution and  this.cellsComplete
+ */
+Sudoku.prototype.boardGenerator = function(fixCellsNr) {
     var matrix_fields = [],
         index = 0,
         i = 0,
@@ -80,19 +97,17 @@ Sudoku.prototype.boardGenerator = function(n, fixCellsNr) {
         j_start = 0,
         j_stop = 0;
 
-    //generate solution
     this.boardSolution = [];
 
-    //shuffle matrix indexes
-    for (i = 0; i < this.nn; i++) {
+    //set matrix indexes an shuffle them
+    for (var i = 0; i < 9; i++) {
         matrix_fields[i] = i+1;
     }
-
-    //shuffle sudoku 'collors'
     matrix_fields = this.shuffle(matrix_fields);
-    for (i = 0; i < n*n; i++) {
-        for (j = 0; j < n*n; j++) {
-            var value = Math.floor( (i*n + i/n + j) % (n*n) + 1 );
+
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            var value = Math.floor( (i*3 + i/3 + j) % (9) + 1 );
             this.boardSolution[index] = value;
             index++;
         }
@@ -100,18 +115,17 @@ Sudoku.prototype.boardGenerator = function(n, fixCellsNr) {
 
     //shuffle sudokus indexes of bands on horizontal and vertical
     var blank_indexes = [];
-    for (i = 0; i < this.n; i++) {
+    for (i = 0; i < 3; i++) {
         blank_indexes[i] = i+1;
     }
-
 
     //shuffle sudokus bands horizontal
     var bands_horizontal_indexes = this.shuffle(blank_indexes);
     var board_solution_tmp = [];
     index = 0;
     for (i = 0; i < bands_horizontal_indexes.length; i++) {
-        j_start = (bands_horizontal_indexes[i] -1) * this.n * this.nn;
-        j_stop  = bands_horizontal_indexes[i] * this.n * this.nn;
+        j_start = (bands_horizontal_indexes[i] -1) * 3 * 9;
+        j_stop  = bands_horizontal_indexes[i] * 3 * 9;
 
         for( j = j_start; j < j_stop; j++ ) {
             board_solution_tmp[index] = this.boardSolution[j];
@@ -125,18 +139,21 @@ Sudoku.prototype.boardGenerator = function(n, fixCellsNr) {
     var bands_vertical_indexes   = this.shuffle(blank_indexes);
     board_solution_tmp = [];
     index = 0;
-    for (k = 0; k < this.nn; k++) {
-        for (i = 0; i < this.n; i++) {
-            j_start = (bands_vertical_indexes[i]-1) * this.n;
-            j_stop  = bands_vertical_indexes[i] * this.n;
+    for (k = 0; k < 9; k++) {
+        for (i = 0; i < 3; i++) {
+            j_start = (bands_vertical_indexes[i]-1) * 3;
+            j_stop  = bands_vertical_indexes[i] * 3;
 
             for( j = j_start; j < j_stop; j++ ) {
-                board_solution_tmp[index] = this.boardSolution[j + (k*this.nn)];
+                board_solution_tmp[index] = this.boardSolution[j + (k*9)];
                 index++;
             }
         }
     }
     this.boardSolution = board_solution_tmp;
+    for (var i=0;i<81;i++) {
+        this.boardSolution[i]=matrix_fields[this.boardSolution[i]-1];
+    }
 
     //shuffle sudokus lines on each bands horizontal
     //TO DO
@@ -155,7 +172,7 @@ Sudoku.prototype.boardGenerator = function(n, fixCellsNr) {
     }
 
     board_indexes = this.shuffle(board_indexes);
-    board_indexes = board_indexes.slice(0, this.fixCellsNr);
+    board_indexes = board_indexes.slice(0, fixCellsNr);
 
     //build the init board
     for (i=0; i< board_indexes.length; i++) {
@@ -165,7 +182,7 @@ Sudoku.prototype.boardGenerator = function(n, fixCellsNr) {
         }
     }
 
-    return (this.displaySolutionOnly) ? this.boardSolution : board_init;
+    this.board = board_init;
 };
 
 /** Draw sudoku board in the specified container */
@@ -175,17 +192,20 @@ Sudoku.prototype.drawBoard = function(){
         group_position = { x: 0, y: 0 };
 
     var sudoku_board = $('<div></div>').addClass('sudoku_board');
+    var sts ='<b>Mezők:</b> <span class="cells_complete">'+ this.cellsComplete +'/'+81;
+    sts +='</span> <b>Idő:</b> <span class="time">' + this.secondsElapsed + '</span>';
+    sts +='</span> <b>Pontszám:</b> <span class="score">' + Math.round(this.score) + '</span>';
     var sudoku_statistics = $('<div></div>')
         .addClass('statistics')
-        .html('<b>Cells:</b> <span class="cells_complete">'+ this.cellsComplete +'/'+this.cellsNr +'</span> <b>Time:</b> <span class="time">' + this.secondsElapsed + '</span>');
+        .html( sts);
 
     $('#'+ this.id).empty();
 
     //draw board
-    for (i=0; i < this.nn; i++) {
-        for (j=0; j < this.nn; j++) {
+    for (i=0; i < 9; i++) {
+        for (j=0; j < 9; j++) {
             position       = { x: i+1, y: j+1 };
-            group_position = { x: Math.floor((position.x -1)/this.n), y: Math.floor((position.y-1)/this.n) };
+            group_position = { x: Math.floor((position.x -1)/3), y: Math.floor((position.y-1)/3) };
 
             var value = (this.board[index] > 0 ? this.board[index] : ''),
                 value_solution = (this.boardSolution[index] > 0 ? this.boardSolution[index] : ''),
@@ -196,19 +216,37 @@ Sudoku.prototype.drawBoard = function(){
                     .attr('gr', group_position.x +''+ group_position.y)
                     .html('<span>'+ value +'</span>' );
 
-            if (this.displaySolution) {
-                $('<span class="solution">('+ value_solution +')</span>').appendTo(cell);
-            }
-
             if ( value > 0) {
                 cell.addClass('fix');
             }
+            //Set player values
+            if( this.boardValues[index]>0) {
+                cell.html('<span>'+ this.boardValues[index] +'</span>');
+                if (this.boardValues[index]!==this.boardSolution[index])
+                    cell.addClass('notvalid');
+                else
+                    this.cellsComplete++;
+            }
+            //Set player notes
+            if(this.boardNotes[index]!==undefined && this.boardNotes[index]!=='') {
+                var notes=this.boardNotes[index].toString().split(',');
+                var note_width = Math.floor($(this.cell).width() / 2);
+                for (var ino=0;ino<notes.length;ino++) {
+                    if (parseInt(notes[ino])>0) {
+                        $('<div></div>')
+                            .addClass('note')
+                            .css({'line-height': note_width + 'px', 'height': note_width - 1, 'width': note_width - 1})
+                            .text(notes[ino])
+                            .appendTo(cell);
+                    }
+                }
+            }
 
-            if ( position.x % this.n === 0 && position.x != this.nn ) {
+            if ( position.x % 3 === 0 && position.x != 9 ) {
                 cell.addClass('border_h');
             }
 
-            if ( position.y % this.n === 0 && position.y != this.nn ) {
+            if ( position.y % 3 === 0 && position.y != 9 ) {
                 cell.addClass('border_v');
             }
 
@@ -223,14 +261,14 @@ Sudoku.prototype.drawBoard = function(){
     var sudoku_console_cotainer = $('<div></div>').addClass('board_console_container');
     var sudoku_console = $('<div></div>').addClass('board_console');
 
-    for (i=1; i <= this.nn; i++) {
+    for (i=1; i <= 9; i++) {
         $('<div></div>').addClass('num').text(i).appendTo(sudoku_console);
     }
     $('<div></div>').addClass('num remove').text('X').appendTo(sudoku_console);
     $('<div></div>').addClass('num note').text('?').appendTo(sudoku_console);
 
     //draw gameover
-    var sudoku_gameover = $('<div class="gameover_container"><div class="gameover">Congratulation! <button class="restart">Play Again</button></div></div>');
+    var sudoku_gameover = $('<div class="gameover_container"><div class="gameover">Ügyes! Sikerült.<button class="restart">Új játék</button></div></div>');
 
     //add all to sudoku container
     sudoku_console_cotainer.appendTo('#'+ this.id).hide();
@@ -243,8 +281,6 @@ Sudoku.prototype.drawBoard = function(){
 };
 
 Sudoku.prototype.resizeWindow = function(){
-    console.time("resizeWindow");
-
     var screen = { w: $(window).width(), h: $(window).height() };
 
     //adjust the board
@@ -287,8 +323,6 @@ Sudoku.prototype.resizeWindow = function(){
 
     $('#'+ this.id +' .gameover').css({'left': gameover_pos_new.left, 'top': gameover_pos_new.top});
 
-    console.log('screen', screen);
-    console.timeEnd("resizeWindow");
 };
 
 /** Show console */
@@ -388,6 +422,7 @@ Sudoku.prototype.addValue = function(value) {
 
     //delete value or write it in cell
     $( this.cell ).find('span').text( (value === 0) ? '' : value );
+    this.boardValues[this.getCellIndex()]=(value === 0 ? '' : value);
 
     if ( this.cell !== null && ( horizontal_cells_exists.length || vertical_cells_exists.length || group_cells_exists.length ) ) {
         if (old_value !== value) {
@@ -399,34 +434,60 @@ Sudoku.prototype.addValue = function(value) {
         //add value
         $(this.cell).removeClass('notvalid');
         console.log('Value added ', value);
-
+        if (value!=0) {
+            this.score += 60*(1 + (1 / this.secondsElapsed * 300) > 50 ? 50 : (1 / this.secondsElapsed * 300));
+            $('.score').text('' + Math.round(this.score));
+        }
         //remove all notes from current cell,  line column and group
         $(horizontal_notes).remove();
         $(vertical_notes).remove();
         $(group_notes).remove();
     }
-
     //recalculate completed cells
     this.cellsComplete = $('#'+ this.id +' .sudoku_board .cell:not(.notvalid) span:not(:empty)').length;
-    console.log('is game over? ', this.cellsComplete, this.cellsNr, (this.cellsComplete === this.cellsNr) );
+    //console.log('is game over? ', this.cellsComplete, 81, (this.cellsComplete === 81) );
     //game over
-    if (this.cellsComplete === this.cellsNr) {
+    if (this.cellsComplete === 81) {
         this.gameOver();
     }
 
-    $('#'+ this.id +' .statistics .cells_complete').text(''+this.cellsComplete+'/'+this.cellsNr);
+    $('#'+ this.id +' .statistics .cells_complete').text(''+this.cellsComplete+'/'+81);
+    this.saveGame();
 
     return this;
 };
+
+/** save game status **/
+Sudoku.prototype.saveGame = function() {
+    //Ajax savescore
+    var json = {"board":game.board,"boardSolution":game.boardSolution,
+        "boardValues":game.boardValues,"boardNotes":game.boardNotes,
+        "fixedCellsNr":game.fixCellsNr,"secondsElapsed":game.secondsElapsed,
+        "score":game.score,"over":false,"won":game.cellsComplete === 81};
+    //console.log(game.gameId+" "+JSON.stringify(json));
+
+    $.ajax({
+        url: "ajax/setGameStatus?gameid="+game.gameId+"&gamestatus="+JSON.stringify(json),
+        type:"GET",
+        success:function(data){
+            console.log(data);
+            game.gameId = data.id;
+        },
+        error:function(data) {
+            console.log(data);
+            alert("A játék szerver nem elérhetö, probáld késöbb újból!");
+        }
+    });
+
+}
 
 /** Add note from sudoku console to selected board cell */
 Sudoku.prototype.addNote = function(value) {
     console.log('addNote', value);
 
     var
-        t = this,
-        oldNotes = $(t.cell).find('.note'),
-        note_width = Math.floor($(t.cell).width() / 2);
+        oldNotes = $(this.cell).find('.note'),
+        note_width = Math.floor($(this.cell).width() / 2);
 
     //add note to cell
     if (oldNotes.length < 4) {
@@ -435,19 +496,53 @@ Sudoku.prototype.addNote = function(value) {
             .css({'line-height' : note_width+'px', 'height': note_width -1, 'width': note_width -1})
             .text(value)
             .appendTo( this.cell );
+        this.addNoteToArray(value);
+        this.saveGame();
     }
 
     return this;
 };
 
+Sudoku.prototype.getCellIndex = function() {
+    return (parseInt(this.cell.attributes.x.value)-1)*9+parseInt(this.cell.attributes.y.value)-1;
+}
+
+Sudoku.prototype.addNoteToArray = function(value) {
+    var notes = this.boardNotes[this.getCellIndex()].toString().split(',');
+    if (notes.indexOf(value)==-1) {
+        notes.push(value);
+    }
+    var newValue='';
+    for (var i=0;i<notes.length;i++) {
+        if (newValue.length>0) newValue +=',';
+        newValue +=notes[i];
+    }
+    this.boardNotes[this.getCellIndex()]=newValue;
+}
+
+Sudoku.prototype.removeNoteFromArray = function(value) {
+    var notes = this.boardNotes[this.getCellIndex()].toString().split(',');
+    if (notes.indexOf(value)==-1) {
+        notes.splice(notes.indexOf(value),1);
+    }
+    var newValue='';
+    for (var i=0;i<notes.length;i++) {
+        if (newValue.length>0) newValue +=',';
+        newValue +=notes[i];
+    }
+    this.boardNotes[this.getCellIndex()]=newValue;
+}
+
 /**  Remove note from sudoku console to selected board cell */
 Sudoku.prototype.removeNote = function(value) {
     if (value === 0) {
         $(this.cell).find('.note').remove();
+        this.boardNotes[this.getCellIndex()]='';
     } else {
         $(this.cell).find('.note:contains('+value+')').remove();
+        this.removeNoteFromArray(value);
     }
-
+    this.saveGame();
     return this;
 };
 
@@ -520,17 +615,20 @@ Sudoku.prototype.run = function(){
 };
 
 //main
-function gamesudoku() {
-    console.time("loading time");
-
-    //game
-    var game = new Sudoku({
+var game;
+function gamesudoku(gameId,fixedCellsNr,secondsElapsed,score,board,boardSolution,boardValues,boardNotes) {
+    game = new Sudoku({
         id: 'sudoku_container',
-        fixCellsNr: 50,
+        gameId :gameId,
+        fixCellsNr: fixedCellsNr,
+        secondsElapsed:secondsElapsed,
+        score:score,
+        board:board,
+        boardSolution:boardSolution,
+        boardValues:boardValues,
+        boardNotes:boardNotes,
         highlight: 1,
         displayTitle: 1,
-        //displaySolution: 1,
-        //displaySolutionOnly: 1,
     });
 
     game.run();
@@ -540,176 +638,29 @@ function gamesudoku() {
     });
 
     //restart game
-    $('#' + game.id + ' .restart').on('click', function () {
-        game.init().run();
-    });
+    $('#' + game.id + ' .restart').on('click', function () {  game.init().run(); });
 
-    $('#sudoku_menu .restart').on('click', function () {
-        game.init().run();
+    $('#sudoku_menu .restart55').on('click', function () {
+        game.init(55).run();
         $('#sudoku_menu').removeClass('open-sidebar');
     });
 
-    console.timeEnd("loading time");
+    $('#sudoku_menu .restart50').on('click', function () {
+        game.init(50).run();
+        $('#sudoku_menu').removeClass('open-sidebar');
+    });
+
+    $('#sudoku_menu .restart40').on('click', function () {
+        game.init(40).run();
+        $('#sudoku_menu').removeClass('open-sidebar');
+    });
+
+    $('#sudoku_menu .restart30').on('click', function () {
+        game.init(30).run();
+        $('#sudoku_menu').removeClass('open-sidebar');
+    });
 }
 
 
 
-//***********************************************
-function verify(puz){
-    var t,t2;
-    //All tiles are filled
-    for(var i=0;i<81;++i)if(!puz[i]) return false;
 
-    for(var i=0;i<9;++i){
-        for(var j=0;j<9;++j){
-            //rows
-            t=j+i*9;
-            for(var k=0;k<9;++k){
-                t2=k+i*9;
-                if(t!=t2){
-                    if(puz[t]==puz[t2]) return false;
-                }
-            }
-            //columns
-            for(var k=0;puz[t]&&k<9;++k){
-                t2=j+k*9;
-                if(t!=t2){
-                    if(puz[t]==puz[t2]) return false;
-                }
-            }
-            //squares
-            for(var k=0;k<3;++k){
-                for(var l=0;l<3;++l){
-                    t2=l+k*9+Math.floor((t%9)/3)*3+Math.floor(t/27)*27;
-                    if(t!=t2){
-                        if(puz[t]==puz[t2]) return false;
-                    }
-                }
-            }
-        }
-    }
-    return true;
-}
-
-function generatePuzzle(x){
-    var v,t,t2;
-    do{
-        var puzzle=Array(81).fill(0);
-        do {
-            //Put random values in the puzzle
-            for (var i = 0; i < 81; ++i) puzzle[i] = parseInt(1 + Math.random() * 9);
-
-            for (var i = 0; i < 9; ++i) {
-                for (var j = 0; j < 9; ++j) {
-                    t = j + i * 9;
-                    //Rows: remove 50% of duplicate values
-                    if (puzzle[t]) {
-                        for (var k = 0; puzzle[t] && k < 9; ++k) {
-                            t2 = k + i * 9;
-                            if (t != t2) {
-                                if (puzzle[t] == puzzle[t2]) puzzle[Math.random() < .5 ? t : t2] = 0;
-                            }
-                        }
-                    }
-                    //Columns: remove 50% of duplicate values
-                    if (puzzle[t]) {
-                        for (var k = 0; puzzle[t] && k < 9; ++k) {
-                            t2 = j + k * 9;
-                            if (t != t2) {
-                                if (puzzle[t] == puzzle[t2]) puzzle[Math.random() < .5 ? t : t2] = 0;
-                            }
-                        }
-                    }
-                    //Squares: remove 50% of duplicate values
-                    if (puzzle[t]) {
-                        for (var k = 0; puzzle[t] && k < 3; ++k) {
-                            for (var l = 0; puzzle[t] && l < 3; ++l) {
-                                t2 = l + k * 9 + Math.floor((t % 9) / 3) * 3 + Math.floor(t / 27) * 27;
-                                if (t != t2) {
-                                     if (puzzle[t] == puzzle[t2]) puzzle[Math.random() < .5 ? t : t2] = 0;
-                                }
-                        }
-                    }
-                }
-            }
-        }
-
-        //for(var i=0;i<15;++i) puzzle[parseInt(Math.random()*81)]=0;
-
-        var poss=Array(81);
-        for(var i=0;i<81;++i) poss[i]=puzzle[i]?[puzzle[i]]:[1,2,3,4,5,6,7,8,9];
-        var tPuzzle=JSON.parse(JSON.stringify(puzzle));
-        var cycles=0;
-        do{
-            var stuck=true;
-            for(var i=0;i<81;++i){
-                if(poss[i].length==1)tPuzzle[i]=poss[i][0];
-                if(poss[i].length>1){
-                    for(var j=0;j<9;++j){
-                        t=Math.floor(i/9)*9+j;
-                        if(t!=i){
-                            v=tPuzzle[t];
-                            if(v&&poss[i].indexOf(v)!==-1){
-                                poss[i].remove(v);
-                                stuck=false;
-                            }
-                        }
-                    }
-                    for(var j=0;j<9;++j){
-                        t=i%9+j*9;
-                        if(t!=i){
-                            v=tPuzzle[t];
-                            if(v&&poss[i].indexOf(v)!==-1){
-                                poss[i].remove(v);
-                                stuck=false;
-                            }
-                        }
-                    }
-                    for(var k=0;k<3;++k){
-                        for(var l=0;l<3;++l){
-                            t=l+k*9+Math.floor((i%9)/3)*3+Math.floor(i/27)*27;
-                            if(t!=i){
-                                v=tPuzzle[t];
-                                if(v&&poss[i].indexOf(v)!==-1){
-                                    poss[i].remove(v);
-                                    stuck=false;
-                                }
-                            }
-                        }
-                    }
-                }
-                if(!poss[i].length) stuck=true;
-            }
-            if(!cycles){
-                tPoss=JSON.parse(JSON.stringify(poss));
-            }
-            cycles++;
-        }while(!stuck);
-    }while(!verify(tPuzzle));
-    var ret = [];
-    //start values in array puzzle
-    ret.puzzle = puzzle;
-    //possible values in array tPoss
-    ret.tPoss = tPoss;
-    //solved values in array tPuzzle
-    ret.tPuzzle = tPuzzle;
-    return ret;
-}
-Array.prototype.remove = function() {
-    var what, a = arguments, L = a.length, ax;
-    while (L && this.length) {
-        what = a[--L];
-        while ((ax = this.indexOf(what)) !== -1) {
-            this.splice(ax, 1);
-        }
-    }
-    return this;
-}
-function countNumbers(puzzle) {
-    var ii = 0;
-    for (var iii=0;iii<81;iii++) if (puzzle[iii]) ii++;
-    return ii;
-}
-var ret = generatePuzzle(0);
-ret.count=countNumbers(ret.puzzle);
-console.log(ret);

@@ -11,10 +11,10 @@
 <div id="sudoku_menu">
     <div id="sudoku_title">Új játék</div>
     <ul>
-        <li><a class="restart" href="#">Ügyeseknek</a></li>
-        <li><a class="restart" href="#">Haladóknak</a></li>
-        <li><a class="restart" href="#">Lángeszüknek</a></li>
-        <li><a class="restart" href="#">Zseniknek</a></li>
+        <li><a class="restart55" href="#">Ügyeseknek</a></li>
+        <li><a class="restart50" href="#">Haladóknak</a></li>
+        <li><a class="restart40" href="#">Lángeszüknek</a></li>
+        <li><a class="restart30" href="#">Zseniknek</a></li>
     </ul>
 </div>
 

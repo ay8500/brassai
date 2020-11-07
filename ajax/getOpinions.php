@@ -6,7 +6,7 @@ include_once Config::$lpfw.'appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbDaOpinion.class.php';
 include_once __DIR__ . '/../dbDaCandle.class.php';
-
+global $db;
 $dbOpinions = new dbDaOpinion($db);
 $dbCandles = new dbDaCandle($db);
 include_once Config::$lpfw.'dbDaTracker.class.php';

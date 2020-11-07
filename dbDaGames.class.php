@@ -52,7 +52,7 @@ class dbDaGames
     public function saveGame($gameId,$gameStatus) {
         $data=array();
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "gameStatusJson", $gameStatus);
-        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "dateEnd", Date("Y-m-d h:i:s"));
+        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "dateEnd", Date("Y-m-d H:i:s"));
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "highScore", (json_decode($gameStatus))->score);
         return $this->dbDAO->dataBase->update("game", $data,"id",$gameId);
     }
@@ -73,7 +73,7 @@ class dbDaGames
         if ($ret==null)
             return null;
         foreach ($ret as $game) {
-            if (!isset($game["gameStatus"]) || !isset($game["gameStatus"]["over"]) || !$game["gameStatus"]["over"] )
+            if (!isset($game["gameStatus"]) || ((!isset($game["gameStatus"]["over"]) || !$game["gameStatus"]["over"]) && (!isset($game["gameStatus"]["won"]) || !$game["gameStatus"]["won"])))
                 return $game;
         }
         return null;
