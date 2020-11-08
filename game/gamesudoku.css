@@ -98,16 +98,22 @@
 }
 
 .gameover_container .gameover {
-    color:white;
+    background-color:white;
     font-weight:bold;
     text-align:center;
     display:block;
     position:absolute;
     width:90%;
     padding:30px;
-    box-shadow: 0px 0px 5px 5px #bdc3c7;
+    box-shadow: 3px 3px 5px 5px darkgray;
 }
 
+.restart {
+    padding: 6px;
+    margin-left: 27px;
+    border: 1px solid black;
+    box-shadow: 1px 1px 2px 2px lightgrey;
+}
 
 .restart55, .restart30, .restart40, .restart50 {
     background:#7F8C8D;

@@ -26,8 +26,8 @@ if (isset($_GET['key'])) {
 
 //Events
 $today = new DateTime();
-$xmas = $today >= new DateTime("December 6") || $today < new DateTime("February 21");
-$haloween = $today >= new DateTime("October 23") || $today < new DateTime("November 6");
+$xmas = $today >= new DateTime("December 6") && $today < new DateTime("February 1");
+$haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 /**
  * @param dbDaUser $db

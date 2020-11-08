@@ -139,7 +139,7 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="sudoku") {
                 \maierlabs\lpfw\Appl::addJs("game/gamesudoku.js");
                 include_once "game/gamesudoku.inc.php";
-                $status = new stdClass();
+                $status =array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardValues"=>null);
                 $gameId = null;
                 if (getIntParam("gameid")==2 && getIntParam("id",-1)!=-1) {
                     $game = $dbGames->getGameById(getIntParam("id"));
@@ -151,7 +151,6 @@ include("homemenu.inc.php");
                         $gameId = $game["id"];
                         if (isset($game["gameStatus"]) && $game["gameStatus"]!=null)
                             $status = $game["gameStatus"];
-                        else $status =array("fixedCellsNr"=>50,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardValues"=>null);
                     } else {
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,2);
                     }
@@ -159,8 +158,8 @@ include("homemenu.inc.php");
                 \maierlabs\lpfw\Appl::addJsScript('
                     gamesudoku('.$gameId.',
                                 '.$status["fixedCellsNr"].',
-                                '.$status["secondsElapsed"].',
-                                '.$status["score"].',
+                                '.intval($status["secondsElapsed"]).',
+                                '.intval($status["score"]).',
                                 '.json_encode($status["board"]).',
                                 '.json_encode($status["boardSolution"]).',
                                 '.json_encode($status["boardValues"]).',
@@ -188,9 +187,9 @@ include("homemenu.inc.php");
                                     <td style="padding: 5px">
                                         <?php if (isset($game["gameStatus"]["over"])) { ?>
                                     <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                        <a class="btn btn-success" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                        <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Végeredmény</a>
                                     <?php } else { ?>
-                                        <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&&id=<?php echo($game["id"])?>">Folytatom</a>
+                                        <a class="btn btn-success" href="games?tabOpen=2048&gameid=1&&id=<?php echo($game["id"])?>">Folytatom</a>
                                     <?php }  ?>
                                         <?php }  ?>
                                     </td>
