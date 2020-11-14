@@ -81,7 +81,7 @@ class dbDaGames
 
     public function getGameByUseridAgentLangGameId($userId,$ip,$agent,$lang,$gameId,$limit=25) {
         if ($userId!=null) {
-            $query = "select * from game  ";
+            $query = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";
             $query .= " where gameId=" . $gameId . " and userId=" . $userId . " order by dateBegin desc limit " . $limit;
             $ret = $this->dataBase->queryArray($query);
             if (sizeof($ret) != 0)
@@ -90,19 +90,19 @@ class dbDaGames
                 return null;
         }
         //IP, Agent, Language
-        $query  = "select * from game  ";
+        $query  = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";
         $query .=" where gameId=".$gameId." and ip='".$ip."' and agent='".$agent."' and language='".$lang."' order by dateBegin desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         if (sizeof($ret)!=0)
             return $this->decodeGameDataInArray($ret);
         //IP
-        $query  = "select * from game  ";
+        $query  = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";
         $query .=" where gameId=".$gameId." and ip='".$ip."'  order by dateBegin desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         if (sizeof($ret)!=0)
             return $this->decodeGameDataInArray($ret);
         //Agent Language
-        $query  = "select * from game  ";
+        $query  = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";
         $query .=" where gameId=".$gameId." and agent='".$agent."' and language='".$lang."' order by dateBegin desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         if (sizeof($ret)!=0)
@@ -112,7 +112,7 @@ class dbDaGames
 
     public function getBestPlayers(int $gameId, int $limit=25)
     {
-        $query = "select person.*,game.highScore,game.gameStatusJson,game.dateBegin,game.id as theGameId from game left join person on person.id=game.userId ";
+        $query = "select person.*,game.highScore,game.gameStatusJson,game.dateBegin,game.id as theGameId, GREATEST(game.dateBegin,game.dateEnd) as aktDate from game left join person on person.id=game.userId ";
         $query .=" where highScore> 0 and gameId=".$gameId." order by highScore desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         return $this->decodeGameDataInArray($ret);;

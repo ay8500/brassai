@@ -66,7 +66,7 @@ include("homemenu.inc.php");
                                     <tr>
                                         <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
                                         <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                        <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["dateBegin"])) ?></td>
+                                        <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
                                         <td style="text-align: right"><?php echo $person["highScore"]?></td>
                                         <?php /*
                                         <td style="padding-left: 10px">
@@ -139,12 +139,16 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="sudoku") {
                 \maierlabs\lpfw\Appl::addJs("game/gamesudoku.js");
                 include_once "game/gamesudoku.inc.php";
-                $status =array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardValues"=>null);
+                $status =getNewSudokuGameStatus();
                 $gameId = null;
                 if (getIntParam("gameid")==2 && getIntParam("id",-1)!=-1) {
                     $game = $dbGames->getGameById(getIntParam("id"));
                     $gameId = $game["id"];
                     $status = $game["gameStatus"];
+                    if ($status["won"]) {
+                        $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,2);
+                        $status = getNewSudokuGameStatus();
+                    }
                 } else {
                     $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,2);
                     if ($game!=null) {
@@ -216,7 +220,7 @@ include("homemenu.inc.php");
                             ?><table><?php
                             foreach ($gameList as $game) {?>
                                     <tr>
-                                        <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
+                                        <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
                                         <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                         <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                         <td style="padding: 5px">
@@ -241,4 +245,12 @@ include("homemenu.inc.php");
 	</div>
 </div>
 
-<?php include("homefooter.inc.php"); ?>
+
+<?php
+include("homefooter.inc.php");
+
+function getNewSudokuGameStatus() {
+    return array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardValues"=>null,"won"=>false);
+}
+
+?>

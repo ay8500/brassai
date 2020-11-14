@@ -1,11 +1,16 @@
 .sudoku_board {
     margin:6px auto;
     overflow: hidden;
+    overflow-y: visible;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     box-shadow: 0px 0px 5px 5px #bdc3c7;
+}
+
+#sudoku_container{
+    overflow: visible;
 }
 
 .sudoku_board .cell {
@@ -59,9 +64,10 @@
     color:blue;
 }
 
-.sudoku_board .cell span.samevalue, .sudoku_board .cell.fix span.samevalue {
+.samevalue, .sudoku_board .cell span.samevalue, .sudoku_board .cell.fix span.samevalue {
     font-weight:bold;
-    color:#1438db;
+    background: #3498db !important;
+    color:white !important;
 }
 
 .sudoku_board .cell.notvalid, .sudoku_board .cell.selected.notvalid{
@@ -105,17 +111,14 @@
     position:absolute;
     width:90%;
     padding:30px;
-    box-shadow: 3px 3px 5px 5px darkgray;
+    box-shadow: 3px 3px 5px 5px grey;
+    margin: 30px;
+    top: 25%;
+    border-radius: 15px;;
 }
 
-.restart {
-    padding: 6px;
-    margin-left: 27px;
-    border: 1px solid black;
-    box-shadow: 1px 1px 2px 2px lightgrey;
-}
 
-.restart55, .restart30, .restart40, .restart50 {
+.restart1, .restart2, .restart3, .restart4 {
     background:#7F8C8D;
     color:#ecf0f1;
 }
@@ -226,22 +229,22 @@
     width: 250px;
 }
 
-#sudoku_menu ul {
+#sudoku_menu ul, .gameover ul {
     margin: 0;
     padding: 10px 0px 0px 0px;
     list-style: none;
 }
 
-#sudoku_menu div{
+#sudoku_menu div, .gameover {
     font-size: x-large;
     background-color: whitesmoke;
 }
 
-#sudoku_menu ul li{
+#sudoku_menu ul li, .gameover ul li{
     margin: 5px 25px;
 }
 
-#sudoku_menu ul li a {
+#sudoku_menu ul li a, .gameover ul li a {
     text-align:center;
     padding: 12px 10px;
     font-size: x-large;
@@ -282,6 +285,13 @@
 
 #sidebar-toggle .bar:last-child{
     margin-bottom: 0;
+}
+
+.score_tag {
+    position: absolute;
+    left: 0px;
+    color: aqua !important;
+    width: 100%;
 }
 
 /*Responsive Stuff*/

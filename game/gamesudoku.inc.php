@@ -11,11 +11,25 @@
 <div id="sudoku_menu">
     <div id="sudoku_title">Új játék</div>
     <ul>
-        <li><a class="restart55" href="#">Ügyeseknek</a></li>
-        <li><a class="restart50" href="#">Haladóknak</a></li>
-        <li><a class="restart40" href="#">Lángeszüknek</a></li>
-        <li><a class="restart30" href="#">Zseniknek</a></li>
+        <li><a class="restart1" href="#">Ügyeseknek</a></li>
+        <li><a class="restart2" href="#">Haladóknak</a></li>
+        <li><a class="restart3" href="#">Lángeszüknek</a></li>
+        <li><a class="restart4" href="#">Zseniknek</a></li>
     </ul>
 </div>
 
-<div id="sudoku_container"></div>
+<div class="gameover_container" style="display: none">
+    <div class="gameover">
+        Ügyes! Sikerült. Játszodj újból<br/>
+        Elért pontszám:<span id="gameover_score">0</span>
+        <ul>
+            <li><a class="restart1" href="#">Ügyeseknek</a></li>
+            <li><a class="restart2" href="#">Haladóknak</a></li>
+            <li><a class="restart3" href="#">Lángeszüknek</a></li>
+            <li><a class="restart4" href="#">Zseniknek</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="sudoku_container" >
+</div>
