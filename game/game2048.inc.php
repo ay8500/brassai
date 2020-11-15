@@ -1,9 +1,12 @@
 <?php
 //2048 https://codepen.io/camsong/pen/wcKrg
-
+//3d akció https://codepen.io/MillerTime/pen/BexBbE
 //két pont https://codepen.io/MyXoToD/pen/vznLu
 //vizuális memoria https://codepen.io/FCCJMC/pen/WxEYAA
 //torony https://codepen.io/ste-vg/pen/ppLQNW
+//flight https://codepen.io/raurir/pen/oXmEPM
+//Solitär https://codepen.io/bfa/pen/ggGYeE  oder https://codepen.io/Mobius1/pen/PpJPKE
+//Fill all cells https://codepen.io/matteobruni/pen/zYqavva
 ?>
 <div class="container">
     <div class="heading">

@@ -16,6 +16,9 @@ $tabsCaption = array();
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
 array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
 array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
+if (userIsAdmin()) {
+    array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
+}
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
 if (userIsLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
@@ -42,6 +45,8 @@ elseif (getParam("tabOpen")=="memory")
     \maierlabs\lpfw\Appl::addCss("game/gamememory.css");
 elseif (getParam("tabOpen")=="2048")
     \maierlabs\lpfw\Appl::addCss("game/game2048.css");
+elseif (getParam("tabOpen")=="solitaire")
+    \maierlabs\lpfw\Appl::addCss("game/gamesolitaire.css");
 
 include("homemenu.inc.php");
 ?>
@@ -128,6 +133,32 @@ include("homemenu.inc.php");
                 \maierlabs\lpfw\Appl::addJsScript('var game2048=null');
                 \maierlabs\lpfw\Appl::addJsScript('
                     game2048 = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($tile).'\','.$gameId.');
+                ',true);
+            }?>
+
+
+            <?php if ($tabOpen=="solitaire") {
+                \maierlabs\lpfw\Appl::addJs("game/gamesolitaire.js");
+                include_once "game/gamesolitaire.inc.php";
+                $tile = new stdClass();
+                $gameId = null;
+                if (getIntParam("gameid")==3 && getIntParam("id",-1)!=-1) {
+                    $game = $dbGames->getGameById(getIntParam("id"));
+                    $gameId = $game["id"];
+                    $tile = $game["gameStatus"];
+                } else {
+                    $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,3);
+                    if ($game!=null) {
+                        $gameId = $game["id"];
+                        if (isset($game["gameStatus"]))
+                            $tile = $game["gameStatus"];
+                    } else {
+                        $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
+                    }
+                }
+                \maierlabs\lpfw\Appl::addJsScript('var game2048=null');
+                \maierlabs\lpfw\Appl::addJsScript('
+                    ;
                 ',true);
             }?>
 

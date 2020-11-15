@@ -211,7 +211,7 @@ handleLogInOff(new dbDaUser($db));
                 <a href="message">Ünzenőfal</a>
             </li>
             <li>
-                <a href="games">Játékok</a>
+                <a href="games" class="blob">Játékok</a>
             </li>
             <li>
             <form class="navbar-form navbar-left" role="search" action="">
