@@ -100,7 +100,7 @@ include("homemenu.inc.php");
                                 <tr>
                                     <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
                                     <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["dateBegin"])) ?></td>
+                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
                                     <td style="text-align: right"><?php echo $person["highScore"]?></td>
                                 </tr>
                             <?php }
@@ -156,9 +156,8 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
                     }
                 }
-                \maierlabs\lpfw\Appl::addJsScript('var game2048=null');
                 \maierlabs\lpfw\Appl::addJsScript('
-                    ;
+                    startSolaireGame('.$gameId.');
                 ',true);
             }?>
 
@@ -281,7 +280,7 @@ include("homemenu.inc.php");
 include("homefooter.inc.php");
 
 function getNewSudokuGameStatus() {
-    return array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardValues"=>null,"won"=>false);
+    return array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardNotes"=>null,"won"=>false);
 }
 
 ?>

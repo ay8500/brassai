@@ -5,7 +5,7 @@ canvas {
     top: 0;
     pointer-events: none;
 }
-.solitaire.button {
+#controls > button {
     color: #fff;
     font-family: inherit;
     font-weight: 500;
@@ -14,8 +14,10 @@ canvas {
     cursor: pointer;
     background-color: transparent;
     border: none;
+    box-shadow: 1px 1px 1px 1px black;
+    border-radius: 5px;
 }
-.solitaire.button:hover {
+#controls > button:hover {
     background-color: rgba(0, 0, 0, 0.3);
     border-color: rgba(0, 0, 0, 0.3);
 }
@@ -27,17 +29,19 @@ canvas {
 #container {
     height: 80vh;
     text-align: center;
-    margin: 10% auto;
+    background-color: green;
+    padding: 15px;
 }
 #controls {
     position: relative;
     width: auto;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: green;
     margin-top: 20px;
+    padding: 10px;
     z-index: 10;
 }
-#score {
+#scoretext {
     color: #fff;
     float: right;
     padding: 6px 12px;
@@ -246,8 +250,9 @@ canvas {
     top: 0;
     border-radius: 6.25px;
     z-index: 100;
-    border: 2px dashed #fff;
+    border: 2px dashed red !important;
     box-sizing: border-box;
+    transform: scale(1.1, 1.1);
 }
 .column.over > .card:not(.dragging):last-child::before {
     top: 25px;
@@ -581,4 +586,48 @@ canvas {
     left: 50%;
     bottom: 16.6667%;
     transform: translate3d(-50%, 16.6667%, 0) rotate(180deg);
+}
+
+@media only screen and (max-width: 1050px){
+    .column, .card, .pack, .dealt, .stack {
+        width: 100px;
+        height: 150px;
+    }
+    .value, .card { font-size:16px !important; }
+    .value::after { top:14px !important; font-size:23px !important; }
+    .middle span::after{ font-size: 30px !important;}
+
+}
+@media only screen and (max-width: 880px){
+    .column, .card, .pack, .dealt, .stack {
+        width: 60px;
+        height: 90px;
+    }
+    .value, .card { font-size:13px !important;}
+    .value::after { top:8px !important; font-size:19px !important; }
+    .middle span::after{ font-size: 16px !important;top:-10px !important;}
+    .middle span:nth-child(9) { top: 60%;}
+    .picture .middle {transform: scale(0.8);left:-2px; width: 60px;}
+    .panel-body {padding: 0px !important;}
+    #controls button span:nth-child(1){ display: none !important;}
+}
+@media only screen and (max-width: 550px){
+    .column, .card, .pack, .dealt, .stack {
+        width: 40px;
+        height: 60px;
+    }
+    .value, .card { font-size:10px !important; }
+    .value::after { top:4px !important; font-size:17px !important; }
+    .middle, middle::after { display: none !important; }
+    #controls button span:nth-child(1){ display: block !important;}
+    #controls button span:nth-child(2){ display: none !important;}
+}
+
+@media only screen and (max-width: 400px){
+    .column, .card, .pack, .dealt, .stack {
+        width: 30px;
+        height: 45px;
+    }
+    .value, .card { font-size:10px !important; }
+    .value::after { top:3px; font-size:15px !important; }
 }

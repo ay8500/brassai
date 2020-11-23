@@ -234,21 +234,15 @@
         }
 
         this.el = el;
-
         this.score = 0;
-
         this.animationInterval = 250;
-
         this.stackToColumn = false;
-
         this.history = [];
-
         this.pack = new Pack();
-
+        this.dealCards = 1;
         this.autoStacking = false;
-
+        this.movingCard = Array();
         Emitter.mixin(this);
-
         this.render();
     }
 
@@ -327,7 +321,10 @@
             dragstart: this.dragstart.bind(this),
             dragenter: this.dragenter.bind(this),
             dragover: this.dragover.bind(this),
-            dragend: this.dragend.bind(this)
+            dragend: this.dragend.bind(this),
+            touchstart: this.pickup.bind(this),
+            touchend: this.drop.bind(this),
+            touchmove: this.move.bind(this)
         };
 
         on(this.dealer, "click", this.events.click);
@@ -335,11 +332,13 @@
         on(this.el, "mousedown", this.events.mousedown);
         on(doc, "keydown", this.events.keydown);
         on(doc, "mouseup", this.events.mouseup);
-
         on(doc, "dragstart", this.events.dragstart);
         on(doc, "dragenter", this.events.dragenter);
         on(doc, "dragover", this.events.dragover);
         on(doc, "dragend", this.events.dragend);
+        on(doc, "touchstart", this.events.touchstart);
+        on(doc, "touchend", this.events.touchend);
+        on(doc, "touchmove", this.events.touchmove);
     };
 
     Game.prototype.click = function(e) {
@@ -362,6 +361,88 @@
         }
     };
 
+    Game.prototype.pickup = function(event) {
+        if ( $(event.target).attr("draggable")==="true") {
+            disableScroll();
+            this.movingCard.push(event.target);
+            let movingCard = this.movingCard;
+            $(event.target).nextAll().each(function(){
+                movingCard.push(this);
+            });
+            this.movingCard = movingCard;
+            for (var i=0;i<this.movingCard.length;i++) {
+                var parentOffset = offset($(this.movingCard[i]).siblings().get(0));
+                $(this.movingCard[i]).attr("mx", event.changedTouches[0].clientX);
+                $(this.movingCard[i]).attr("my", event.changedTouches[0].clientY);
+                if (parentOffset!==null)
+                    $(this.movingCard[i]).attr("sy", offset(this.movingCard[i]).top - parentOffset.top );
+                else
+                    $(this.movingCard[i]).attr("sy",0);
+                this.movingCard[i].style.height = this.movingCard[i].height + "px";
+                this.movingCard[i].style.width = this.movingCard[i].width + "px";
+            }
+            this.activeCard = this.pack.cards[this.movingCard[0].idx];
+            this.mousedown(event);
+        }
+        function offset(el) {
+            if (el===undefined) {
+                return null
+            }
+            var rect = el.getBoundingClientRect(),
+                scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+                scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            return {top: rect.top + scrollTop, left: rect.left + scrollLeft};
+        }
+    }
+
+    Game.prototype.drop = function(event) {
+        if (this.movingCard) {
+            enableScroll();
+            // reset our element
+            for (var i=0;i<this.movingCard.length;i++) {
+                this.movingCard[i].style.left = '';
+                this.movingCard[i].style.top = '';
+                this.movingCard[i].style.height = '';
+                this.movingCard[i].style.width = '';
+                this.movingCard[i].style.position = '';
+            }
+            this.movingCard = Array();
+            this.dragend(event);
+            this.dragging=false;
+        }
+        this.mouseup(event);
+    }
+
+    Game.prototype.move = function(event) {
+        if (this.movingCard[0]) {
+            this.dragging=true;
+            for (var i=0;i<this.movingCard.length;i++) {
+                this.movingCard[i].style.left = -$(this.movingCard[i]).attr("mx")  + event.changedTouches[0].clientX + "px";
+                this.movingCard[i].style.top = ($(this.movingCard[i]).attr("sy") -$(this.movingCard[i]).attr("my") + event.changedTouches[0].clientY) + "px";
+            }
+            let t = document.elementFromPoint(event.changedTouches[0].clientX,
+                 event.changedTouches[0].clientY - 100);
+            if (t) {
+                var column = t.classList.contains("column");
+                var stack = t.classList.contains("stack");
+                var canDrop = t.card || column || stack;
+
+                if (this.activeColumn) {
+                    this.activeColumn.classList.remove("over");
+                }
+
+                if (canDrop  ) {
+                    if (column || stack) {
+                        this.activeColumn = t;
+                    } else {
+                        this.activeColumn = t.parentNode;
+                    }
+
+                    this.activeColumn.classList.add("over");
+                }
+            }
+        }
+    }
     Game.prototype.mousedown = function(e) {
 
         if ( this.autoStacking ) {
@@ -413,6 +494,7 @@
     };
 
     Game.prototype.dragenter = function(e) {
+
         var t = e.target;
         var column = t.classList.contains("column");
         var stack = t.classList.contains("stack");
@@ -431,6 +513,7 @@
 
             this.activeColumn.classList.add("over");
         }
+
     };
 
     Game.prototype.dragover = function(e) {
@@ -541,8 +624,6 @@
             }
         }
         this.hinted = false;
-
-
         this.emit("change");
     };
 
@@ -737,8 +818,8 @@
         this.dealer.classList.add("dealing");
         this.startParent = this.packArea;
         var items;
-        if ( count > 3 ) {
-            items = pack.slice(Math.max(count - 3, 1));
+        if ( count > this.dealCards ) {
+            items = pack.slice(Math.max(count - this.dealCards, 1));
         } else {
             items = pack;
         }
@@ -1140,8 +1221,8 @@
 
             var img = that.images[suits[x]];
 
-            var dWidth = sWidth;
-            var dHeight = sHeight;
+            var dWidth = $(window).width() / 9;
+            var dHeight = dWidth * 1.5;
 
             vel.add(gravity);
 
@@ -1154,9 +1235,9 @@
             }
 
             ctx.fillStyle="#FFFFFF";
-            ctx.drawImage(img, sx, sy, sWidth, sHeight, pos.x, pos.y, dWidth, dHeight);
+            ctx.drawImage(img, sx, sy, 125, 188, pos.x, pos.y, dWidth, dHeight);
 
-            outline(pos, sWidth, sHeight);
+            outline(pos, dWidth, dHeight);
 
             if ( pos.x < 0 - sWidth || pos.x > w ) {
 
@@ -1177,9 +1258,9 @@
                     if ( count === 51 ) {
                         var newGame = false;
                         if ( isFilled(ctx, 0, 0, that.canvas.width,that.canvas.height) ) {
-                            newGame = confirm("Congrats! You filled the canvas with cards!!!!\n\nStart a new game?");
+                            newGame = confirm("Ügyes sikerült kirakni a kártyákat. Mindent betarkanak a kártyák!\n\nÚj játék?");
                         } else {
-                            newGame = confirm("Congrats!\n\nStart a new game?");
+                            newGame = confirm("Ügyes sikerült kirakni a kártyákat!\n\nÚj játék?");
                         }
 
                         if ( newGame ) {
@@ -1285,45 +1366,43 @@ var controls = document.getElementById("controls");
 var score = document.getElementById("score");
 var game = new Game("#container");
 
-game.start();
-
 game.on("start", function() {
-    score.textContent = "Score: " + this.score;
+    score.textContent = this.score;
 });
 
 
 game.on("change", function() {
-    score.textContent = "Score: " + this.score;
+    score.textContent = this.score;
 });
 
 controls.addEventListener("click", function(e) {
     var t = e.target;
-    if ( t.nodeName === "BUTTON" ) {
-        var action = t.getAttribute("data-action");
+    if ( t.parentElement.nodeName === "BUTTON" ) {
+        var action = t.parentElement.getAttribute("data-action");
         game[action]();
     }
 }, false);
 
-$(window).resize(function(){
-    $(".column, .card, .pack, .dealt, .stack").width($(window).width()/9-1);
-    $(".column, .card, .pack, .dealt, .stack").height($(window).width()/9*4/3);
-    //$(".card").width($(window).width()/9);
-    //$(".card").height($(window).width()/9*4/3);
-    if ($(window).width()<800) {
-        $(".value, .card").css("font-size","10px");
-        $("span::after").css("font-size","20px");
-        $(".card .value").after().css("top","4px!important");
-        $(".middle").hide();
-    } else if ($(window).width()<1400) {
-        $(".value, .card").css("font-size","15px");
-        $("span::after").css("font-size","35px");
-        $(".middle").show();
-    } else {
-        $(".value, .card").css("font-size","20px");
-        $("span::after").css("font-size","50px");
-        $(".middle").show();
-    }
 
+function disableScroll() {
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
 
-});
-$(window).resize();
+        // if any scroll is attempted, set this to the previous value
+        window.onscroll = function() {
+            window.scrollTo(scrollLeft, scrollTop);
+        };
+}
+
+function enableScroll() {
+    window.onscroll = function() {};
+}
+
+function startSolaireGame() {
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+    game.start();
+}
