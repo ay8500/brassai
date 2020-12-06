@@ -259,9 +259,9 @@ class dbDAO {
 	 */
 	public function getClassStatistics($classId,$countPictures=true) {
 		$ret = new stdClass();
-		$ret->personCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null");
-        $ret->classPictures=$this->dataBase->queryInt("select count(id) from picture where isDeleted=0 and classID =".$classId." and changeForID is null ");
-        $ret->guestCount=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and role like '%guest%'");
+		$ret->personCount=$this->dataBase->queryInt("select count(*) as c from person where classID=".$classId." and changeForID is null ");
+        $ret->classPictures=$this->dataBase->queryInt("select count(*) as c from picture where isDeleted=0 and classID =".$classId." and changeForID is null ");
+        $ret->guestCount=$this->dataBase->queryInt("select count(*) as c from person where classID=".$classId." and changeForID is null and role like '%guest%'");
 		if($countPictures) {
 			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null and picture<>''");
 			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");

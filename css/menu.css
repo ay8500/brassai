@@ -104,11 +104,6 @@
 	overflow: visible;
 }
 
-.navbar-default {
-	display: table-footer-group;
-}
-
-
 .dropdown-submenu {
     position: relative;
 }

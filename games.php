@@ -112,7 +112,6 @@ include("homemenu.inc.php");
 
             <?php if ($tabOpen=="2048") {
                 \maierlabs\lpfw\Appl::addJs("game/game2048.js");
-                \maierlabs\lpfw\Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/hammer.js/1.0.6/hammer.min.js");
                 include_once "game/game2048.inc.php";
                 $tile = new stdClass();
                 $gameId = null;

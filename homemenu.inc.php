@@ -16,8 +16,10 @@ $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 //Image gallery Menue
 if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 
-Appl::setMember("aktClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
-Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getAktSchoolId()));
+$actClass = $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
+Appl::setMember("aktClass",$actClass);
+Appl::setMember("actSchool",$db->getSchoolById($actClass!=null?$actClass["schoolID"]:getAktSchoolId()));
+Appl::setMember( "staffClass",$db->getStafClassBySchoolId($actClass!=null?$actClass["schoolID"]:getAktSchoolId()));
 
 //Login if crypted loginkey present and correct
 if (isset($_GET['key'])) {
@@ -26,7 +28,8 @@ if (isset($_GET['key'])) {
 
 //Events
 $today = new DateTime();
-$xmas = $today >= new DateTime("December 6") && $today < new DateTime("February 1");
+$xmas = (intval(date("m")) === 12 || intval(date("m")) === 1);
+$xmasStyle = $xmas?" border-bottom: 2px solid red;":"";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 /**
@@ -47,6 +50,7 @@ function directLogin($db,$key){
         \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
         $class=$db->dbDAO->getClassById($person["classID"]);
         Appl::setMember("aktClass",$class);
+        Appl::setMember("actSchool",$db->dbDAO->getStafClassIdBySchoolId($class["schoolID"]));
         setAktClass($class["id"]);
         setAktSchool($class["schoolID"]);
         if (!userIsAdmin() && !userIsSuperuser()) {
@@ -79,7 +83,7 @@ handleLogInOff(new dbDaUser($db));
 	<meta name="geo.position" content="46.771919;23.592248" />
 	<meta name="author" content="Levente Maier" />
 	<meta name="description" content="<?php echo(Config::$SiteTitle.' '.Appl::$description) ?>" />
-	<meta name="keywords" content="Brassai Sámuel iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
+	<meta name="keywords" content="<? echo Appl::getMember("actSchool")["name"]?> iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
 	<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -96,7 +100,7 @@ handleLogInOff(new dbDaUser($db));
 }?>
 <div class="homeLogo" style="z-index: -1"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
-<nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00;" role="navigation">
+<nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00; <?php echo $xmasStyle?>" role="navigation">
   <div class="container-fluid" id="mainmenucontainer" >
     <!-- Brand and toggle get grouped for better mobile display -->
       <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="favicon.jpg" style="height:27px" /></a>
@@ -148,7 +152,7 @@ handleLogInOff(new dbDaUser($db));
                                     class="badge"><?php echo $classStat->classPictures ?></span><?php } ?></a></li>
                     <?php //<li><a href="chat">Osztálytárs körlevelek</a></li>?>
                     <li><a href="worldmap?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
-                    <?php if (Appl::getMemberId("aktClass") == $db->getClassIdByText("1985 12A")) { ?>
+                    <?php if (Appl::getMember("aktClass")["text"] == "1985 12A") { ?>
                         <li class="dropdown-submenu"><a>Régi képek</a>
                             <ul class="dropdown-menu">
                                 <li><a href="pictureGallery?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
@@ -248,6 +252,9 @@ handleLogInOff(new dbDaUser($db));
             <?php }?>
         </ul>
     </div>
+      <?php if ($xmas) {?>
+        <div><img style="height: 129px;position: absolute;top:1px; right: 1px;" src="images/xmas.gif"></div>
+      <?php } ?>
   </div>
 </nav>
 

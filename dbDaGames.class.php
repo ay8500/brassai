@@ -62,7 +62,7 @@ class dbDaGames
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "userId", $userId==null?0:$userId);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "gameId", $gameId);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "ip", $ip);
-        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "agent", $agent);
+        $data=$this->dbDAO->dataBase->insertFieldInArray($data, "agent", $this->dbDAO->dataBase->replaceSpecialChars($agent));
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "language", $lang);
         return $this->dbDAO->dataBase->insert("game", $data);
     }
@@ -91,7 +91,7 @@ class dbDaGames
         }
         //IP, Agent, Language
         $query  = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";
-        $query .=" where gameId=".$gameId." and ip='".$ip."' and agent='".$agent."' and language='".$lang."' order by dateBegin desc limit ".$limit;
+        $query .=" where gameId=".$gameId." and ip='".$ip."' and agent='".$this->dbDAO->dataBase->replaceSpecialChars($agent)."' and language='".$lang."' order by dateBegin desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         if (sizeof($ret)!=0)
             return $this->decodeGameDataInArray($ret);
@@ -103,7 +103,7 @@ class dbDaGames
             return $this->decodeGameDataInArray($ret);
         //Agent Language
         $query  = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";
-        $query .=" where gameId=".$gameId." and agent='".$agent."' and language='".$lang."' order by dateBegin desc limit ".$limit;
+        $query .=" where gameId=".$gameId." and agent='".$this->dbDAO->dataBase->replaceSpecialChars($agent)."' and language='".$lang."' order by dateBegin desc limit ".$limit;
         $ret = $this->dataBase->queryArray($query);
         if (sizeof($ret)!=0)
             return $this->decodeGameDataInArray($ret);

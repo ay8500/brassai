@@ -247,6 +247,9 @@ function getAktClassId() {
  * @return array|NULL
  */
 function getAktClass() {
+    $class = \maierlabs\lpfw\Appl::getMember("aktClass");
+    if ($class!==null)
+        return $class;
     global $db;
     if (isset($_SESSION['aktClass'])) {
         return $db->getClassById(intval($_SESSION['aktClass']));
@@ -259,6 +262,9 @@ function getAktClass() {
  * @return array|NULL
  */
 function getAktSchool() {
+    $school = \maierlabs\lpfw\Appl::getMember("actSchool");
+    if ($school!==null)
+        return $school;
     global $db;
     return $db->getSchoolById(getAktSchoolId());
 }
@@ -268,6 +274,11 @@ function getAktSchool() {
  * @return boolean
  */
 function isAktClassStaf() {
+    $staf=\maierlabs\lpfw\Appl::getMember("staffClass");
+    $class = \maierlabs\lpfw\Appl::getMember("aktClass");
+    if ($class!==null && $staf!==null) {
+        return $staf["id"]===$class["id"];
+    }
     global $db;
     return $db->getStafClassIdBySchoolId(getAktSchoolId())==getAktClassId();
 }
@@ -292,9 +303,11 @@ function getAktSchoolId() {
  * @return string
  */
 function getAktClassName($short=false) {
+    $class=getAktClass();
+    if ($class==null)
+        return  "";
     if (isAktClassStaf())
         return "";
-    $class=getAktClass();
     return getClassName($class,$short);
 }
 

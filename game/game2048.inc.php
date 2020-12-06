@@ -15,7 +15,9 @@
     </div>
     <p class="game-intro">Csatolj össze azonos számokat, és érj el <strong>2048-at</strong></p>
 
-    <div class="game-container">
+    <div class="slideup" slide="0" ><span class="glyphicon glyphicon-arrow-up" slide="0"></span></div>
+    <div class="slideleft" slide="3"><span class="glyphicon glyphicon-arrow-left" slide="3"></span></div>
+    <div class="game-container" style="display: inline-block">
         <div class="game-message">
             <p></p>
             <div class="lower">
@@ -49,11 +51,10 @@
                 <div class="grid-cell"></div>
             </div>
         </div>
-
-        <div class="tile-container">
-
-        </div>
+        <div class="tile-container"></div>
     </div>
+    <div class="slideright" slide="1"><span class="glyphicon glyphicon-arrow-right" slide="1"></span></div>
+    <div class="slidedown" slide="2"><span class="glyphicon glyphicon-arrow-down" slide="2"></span></div>
 
     <p class="game-explanation">
         <strong class="important">HOGYAN KELL JÁTSZANI:</strong> A nyílbillentyűkkel mozgasd a lapkákat. Amikor két azonos számú lapka érintkezik, egybeolvadnak!
