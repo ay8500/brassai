@@ -1,8 +1,10 @@
 <?PHP
 include_once '../config.class.php';
 include_once  Config::$lpfw. 'sessionManager.php';
+include_once  Config::$lpfw. 'appl.class.php';
 
 include_once __DIR__ . '/../dbBL.class.php';
+global $db;
 
 $lat1=$_GET["lat1"];
 $lng1=$_GET["lng1"];
@@ -12,6 +14,7 @@ $lng2=$_GET["lng2"];
 $points = Array();
 $classId=getRealId(getAktClass());
 $where="geolat is not null and geolat <>'' ";
+
 if($classId==null) {
 	$classList=$db->getClassList(getRealId(getAktSchool()),true);
 	$classIdList=array();

@@ -133,7 +133,7 @@ include 'homemenu.inc.php';
             <div class="margin-def">Légyszíves állítsd be milyen viszonyban állsz a véndiákokkal.</div>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,1);"/> 
-				<div class="inline margin-hor"> Véndiák vagyok, ebben az iskolában éretségiztem és ballagtam.</div></div>
+				<div class="inline margin-hor"> Véndiákja vagyok, ennek az iskolának, itt éretségiztem és ballagtam.</div></div>
 			<div style="clear:both;"></div>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,2);"/> 

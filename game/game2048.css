@@ -522,6 +522,7 @@ hr {
 
 .slidedown, .slideleft, .slideright, .slideup {
   background-color: antiquewhite;
+  cursor: pointer;
 }
 
 .slideup, .slidedown {
@@ -551,8 +552,8 @@ hr {
 
 
 @media screen and (max-width: 770px) {
-  .slideup, .slidedown { width: 410px; }
-  .slideleft, .slideright {height: 365px;}
+  .slideup, .slidedown { width: 398px; }
+  .slideleft, .slideright {width:30px; height: 365px;}
   .slideleft>span, .slideright>span {top:170px}
 
   html, body {
@@ -566,7 +567,7 @@ hr {
 
   .container {
     width: 100%;
-    padding: 3px;
+    padding: 0px !important;
     margin: 0 auto;
   }
 
