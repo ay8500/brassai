@@ -174,7 +174,7 @@ function checkMessageContent($message) {
 	$rr = array("/","=","-",":",",",".","(",")","?","!","  ");
 	$msg = str_replace($rr, " ", $msg);
 	$whiteList = array(	"lessz ", " volt "," van "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz "," itt ", " ott "," de "," is "," és ",
-						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok", " puszi ", "kellemes ","nagyon","puszilok",
+						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok ", " puszi ", "kellemes ","nagyon ","puszilok ",
 						"legyek", " aki ", "mikor", "honlap", "oldal","vagyok","leszek"," vagy "," minden ",
 						" én "," te ", " brassai ","köszön", "üdvöz",
 						"ünnep",  "boldog ", "karácsony", "husvét", "egy ","minden","senki","neked","fénykép" );
@@ -182,7 +182,7 @@ function checkMessageContent($message) {
 		$ret->count += substr_count($msg, $s);
 	}
 	$ret->words=sizeof(explode(" ",trim($msg)));
-	$ret->ok = $ret->count >= $ret->words/20 && $ret->words>10;
+	$ret->ok = $ret->count >= $ret->words/20 && $ret->words>9;
 	return $ret;
 }
 

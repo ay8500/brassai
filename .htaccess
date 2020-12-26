@@ -5,7 +5,7 @@ AddHandler	x-mapp-php5	.php
 
 DirectoryIndex index.php index.html
 
-ErrorDocument 404 /dc.php
+ErrorDocument 404 /brassai/dc.php
 
 RewriteEngine On 
 Options FollowSymLinks 

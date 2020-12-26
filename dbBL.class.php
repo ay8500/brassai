@@ -8,6 +8,7 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'ltools.php';
 include_once Config::$lpfw.'mysqldbauh.class.php';
 include_once Config::$lpfw.'htmlParser.class.php';
+include_once Config::$lpfw.'appl.class.php';
 
 include_once 'dbChangeType.class.php';
 include_once 'dbDAO.class.php';
@@ -171,17 +172,17 @@ class dbBL extends dbDAO
             $type = "school";
             $typeid = $pict[$type . "ID"];
             $school = $this->getSchoolById($typeid);
-            $typeText = '<b>Iskolakép:</b><br/><a href="picture?type=schoolID&typeid='.$typeid.'">' . html_entity_decode(html_entity_decode($school["name"])).'</a>';
+            $typeText = '<a href="picture?type=schoolID&typeid='.$typeid.'">Iskolakép:' . html_entity_decode(html_entity_decode($school["name"])).'</a>';
         } elseif (isset($pict["classID"])) {
             $type = "class";
             $typeid = $pict[$type . "ID"];
             $class = $this->getClassById($typeid);
-            $typeText = '<b>Osztálykép:</b><br/><a href="picture?type=classID&typeid='.$typeid.'">' . $class["text"].'</a>';
+            $typeText = '<a href="picture?type=classID&typeid='.$typeid.'">Osztálykép:' . $class["text"].'</a>';
         } elseif (isset($pict["personID"])) {
             $type = "person";
             $typeid = $pict[$type . "ID"];
             $picturePerson = $this->getPersonByID($typeid);
-            $typeText = '<b>Személyes kép:</b><br/><a href="editDiak?tabOpen=pictures&uid=' . $typeid .'">'. getPersonName($picturePerson).'</a>';
+            $typeText = '<a href="editDiak?tabOpen=pictures&uid=' . $typeid .'">Személyes kép:'. getPersonName($picturePerson).'</a>';
         }
         return array("type"=>$type,"typeId"=>$typeid,"text"=>$typeText);
     }
@@ -398,10 +399,10 @@ function getPersonPicture($person) {
 function getPersonLinkAndPicture($person,$fullLink=false) {
     if (isset($person["id"])) {
         if ($fullLink)
-            $pict = '';
+            $picture = '';
         else
-            $pict = '<img src="' . getPersonPicture($person) . '"  class="diak_image_sicon" />';
-        $ret = ' <a href="'.($fullLink?Config::$siteUrl.'/':'') .'editDiak?uid=' . $person["id"] . '">' .$pict. $person["lastname"] . " " . $person["firstname"] . '</a>';
+            $picture = '<img src="' . getPersonPicture($person) . '"  class="diak_image_sicon" />';
+        $ret = ' <a href="'.($fullLink?Config::$siteUrl.'/':'') .getPersonLink($person["lastname"],$person["firstname"])."-".$person["id"]. '">' .$picture. $person["lastname"] . " " . $person["firstname"] . '</a>';
     } else {
         $ret = 'Anonim felhasználó';
     }

@@ -35,6 +35,7 @@ if (userIsAdmin()) {
 
 	//initialise tabs
     $tabsCaption = array();
+    $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
     array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>', "glyphicon" => "align-justify"));
     array_push($tabsCaption ,array("id" => "person", "caption" => 'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>', "glyphicon" => "user"));
     array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek <span class="badge">'.$db->getCountToBeChecked('picture').'</span>', "glyphicon" => "picture"));

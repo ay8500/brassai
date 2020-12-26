@@ -79,6 +79,7 @@ function showRecentChanges(dbDAO $db,$date=null) {
 
 //initialise tabs
 $tabsCaption = array();
+$tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
 array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek', "glyphicon" => "pushpin"));
 array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok', "glyphicon" => "tasks"));

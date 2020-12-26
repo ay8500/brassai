@@ -151,11 +151,27 @@ class dbDaStatistic
 
         $rets=array();
         foreach ($ret as $uid=>$ucount) {
-            $rets[$uid] = $ucount;
-            if (sizeof($rets)==$count)
-                break;
+            $person = $this->dbDAO->getPersonByID($uid, true);
+            if (strpos($person["role"],"admin")===false) {
+                $person["count"] = $ucount;
+                $rets[$uid] = $person;
+                if (sizeof($rets) == $count)
+                    break;
+            }
         }
         return $rets;
+    }
+
+    public function getContentStatistic($limit=25)
+    {
+        $ret = new stdClass();
+        $ret->girlnames=$this->dbDAO->dataBase->queryArray("SELECT count(firstname) as c,firstname as content FROM person WHERE gender='f' and changeForID is null GROUP BY firstname ORDER BY c DESC LIMIT ".$limit);
+        $ret->boynames=$this->dbDAO->dataBase->queryArray("SELECT count(firstname) as c,firstname as content FROM person WHERE gender='m' and changeForID is null GROUP BY firstname ORDER BY c DESC LIMIT ".$limit);
+        $ret->lastnames=$this->dbDAO->dataBase->queryArray("SELECT count(lastname) as c,lastname as content FROM person WHERE changeForID is null GROUP BY lastname ORDER BY c DESC LIMIT ".$limit);
+        $ret->countrys=$this->dbDAO->dataBase->queryArray("SELECT count(country) as c,country as content FROM person WHERE changeForID is null GROUP BY country ORDER BY c DESC LIMIT ".$limit);
+        $ret->places=$this->dbDAO->dataBase->queryArray("SELECT count(place) as c,place as content FROM person WHERE changeForID is null GROUP BY place ORDER BY c DESC LIMIT ".$limit);
+        $ret->gender=$this->dbDAO->dataBase->queryArray("SELECT count(gender) as c,gender as content FROM person WHERE changeForID is null GROUP BY gender ORDER BY c DESC LIMIT 5");
+        return $ret;
     }
 
     /**

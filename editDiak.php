@@ -370,6 +370,8 @@ include("homemenu.inc.php");
 <?php }
 
 //initialize tabs
+$tabsTranslate["search"] = array(".php","/dc?","/brassai/dc?");
+$tabsTranslate["replace"] = array("","/editDiak?","/brassai/editDiak?");
 if ($action=="newperson") {
     $tabsCaption = array(array("id" => "person", "caption" => "Új diák adatai", "glyphicon" => "user"));
 } else if ($action=="newguest") {

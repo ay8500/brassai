@@ -74,7 +74,9 @@ define('EXCLUDE', serialize(array(
 	'login.log',
 	'access.log',
 	'facebooklogin.log',
-    'images'
+    'images',
+    '.htaccess',
+    'config.class.php'
 )));
 
 /**

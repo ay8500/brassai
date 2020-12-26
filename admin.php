@@ -56,6 +56,7 @@ include("homemenu.inc.php");
 <?php if (userIsSuperuser() || userIsEditor() ) {
     //initialise tabs
     $tabsCaption = array();
+    $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
     array_push($tabsCaption ,array("id" => "mail", "caption" => 'Mail&nbsp;küldés', "glyphicon" => "envelope"));
     array_push($tabsCaption ,array("id" => "user", "caption" => 'Diákok&nbsp;táblázatai', "glyphicon" => "user"));
     array_push($tabsCaption ,array("id" => "admin", "caption" => 'Administrátorok', "glyphicon" => "tower"));

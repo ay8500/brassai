@@ -5,7 +5,7 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
-
+global $db;
 $dbSongVote = new dbDaSongVote($db);
 
 use \maierlabs\lpfw\Appl as Appl;
@@ -38,13 +38,14 @@ else {
 //Get the vote list for this music
 $voters =$dbSongVote->getVotersListForMusicId(getIntParam("id"));
 
-//Check if video exists	
-$apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
-$response = file_get_contents('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $Video . '&key=' . $apiPublicKey);
+//Check if video exists
+//https://console.developers.google.com/apis/api/youtubeoembed.googleapis.com/quotas?project=skilful-works-806
+$apiPublicKey=encrypt_decrypt("decrypt","STRGZTdISFVONExKVVhkOE1Bay9ZOVhjMmVPQnZpUE5oNi84UlBBeDJ3OGZ6aDZyY3hWTGZkT3lEMHZUS0w4Ng==");
+$response = maierlabs\lpfw\htmlParser::loadUrl('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $Video . '&key=' . $apiPublicKey);
 $json = json_decode($response);
 //print_r($json);
 
-$Title="Zenedoboz".(is_object($json)?': '.$json->title:'');
+$Title="Zenedoboz".(is_object($json)&&isset($json->title)?': '.$json->title:'');
 $SiteDescription="Kendvenc zenénket itt lejátszhatod";
 Appl::setSiteTitle($Title,$Title,$SiteDescription);
 include("homemenu.inc.php");
@@ -62,25 +63,31 @@ include("homemenu.inc.php");
 				</div></div>
 			</div>
 		<?php endif;?>
-		<?php if (is_object($json) ) {?>
+		<?php if (is_object($json)&& !isset($json->error) ) {?>
 			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 			<?php if (null==$playlist):?>
-				<h2><?php echo $json->title?></h2>
+				<h2>
+                    <?php //echo (is_object($json)&&isset($json->author_name)?' '.$json->author_name:'')?>
+                    <?php echo (is_object($json)&&isset($json->title)?' '.$json->title:'')?>
+                </h2>
 			<?php else: ?>
 				<h2>Toplista teljes lejátszása <?php echo getParam("listdir","")?></h2>
 			<?php endif;?>
-			<object  class="embed-responsive embed-responsive-16by9">
-				<embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
+            <object  class="embed-responsive embed-responsive-16by9">
+                <embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
             </object>
+            <?php //echo (is_object($json)&&isset($json->html)?$json->html:'')?>
 		<?php } else {?>
-			<div class="resultDBoperation" ><div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?></div></div>
+			<div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?>
+                <?php if (userIsAdmin()) { print_r($json->error); } ?>
+            </div>
 		<?php }?>
 		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 	</div>
 </div>
 
 
-<?php if (userIsAdmin()) {
+<?php if (userIsAdmin() && getIntParam("id",-1)!=-1) {
 	$song = $dbSongVote->getSongById(getIntParam("id"));
 ?>
 	<div class="panel panel-default" style="margin: 15px; padding:10px">

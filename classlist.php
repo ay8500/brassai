@@ -46,6 +46,7 @@ include("homemenu.inc.php");
 global $db;
 $classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury,!userIsSuperuser());
 $tabsCaption = array();
+$tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "day", "caption" => 'század nappali tagozat',"iconText"=>"XX.", "glyphicon" => "asterisk"));
 array_push($tabsCaption ,array("id" => "dayxxi", "caption" => 'század nappali tagozat',"iconText"=>"XXI.", "glyphicon" => "asterisk"));
 array_push($tabsCaption ,array("id" => "night", "caption" => 'tagozat',"iconText"=>"esti", "glyphicon" => "star"));

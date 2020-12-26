@@ -5,7 +5,7 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaStatistic.class.php';
-
+global $db;
 $dbStatistic = new dbDaStatistic($db);
 
 $classmate=$db->getTableCount("person","isTeacher='0'");
@@ -27,13 +27,42 @@ $classCount=$db->getTableCount("class");
 $classGraduationPicture=$db->getTableCount("picture","classID is not null and title like 'Tabló%'");
 $classPicture=$db->getTableCount("picture","classID is not null");
 
-$calendar=$dbStatistic->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
+//$calendar=$dbStatistic->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
+
+$contentStatistics = $dbStatistic->getContentStatistic(userIsAdmin()?125:25);
 
 \maierlabs\lpfw\Appl::setSiteTitle("Statisztikai adatok", "Statistikai adatok");
 \maierlabs\lpfw\Appl::addCssStyle('
-	.statw {width:150px; text-align:right; display: inline-block;};
+	.statw {
+	    width:150px; text-align:right; display: inline-block;
+	    }
+	    
+	.content-stat {
+	    margin-bottom:10px;
+	    background-color:#eeeeee;
+	    border-radius:5px;
+	    padding:5px;
+	    font-weight:bold;
+	}
+	.content-stat > span {
+	    border: 1px solid lightgray;
+	    padding: 3px;
+        line-height: 13px;
+        margin: 3px;
+        border-radius: 5px;
+        display: inline-block;
+        background-color:white;
+	}
+    .content-stat > span > span:nth-child(2n ){
+        font-weight: bold;
+    }
+    .content-stat > span > span:nth-child(2n-1 ){
+        font-weight: normal;
+        font-size:11px;
+    }
 ');
 include('homemenu.inc.php');?>
+
 
 <div class="panel panel-default " >
     <div class="panel-heading">
@@ -41,20 +70,15 @@ include('homemenu.inc.php');?>
     </div>
     <div class="panel-body"><?php
         $bests=$dbStatistic->getPersonChangeBest(userIsAdmin()?48:24);
-        foreach ($bests as $uid=>$count) {
-            if ($count>=1) {
-                $person=$db->getPersonByID($uid);
-                $personName=$person["lastname"]." ".$person["firstname"];
-                if ($uid>0 && strlen($personName)>2) {
-                    ?>
-                    <div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
-                        <span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
-                        <span style="width: 146px;display: inline-block;"><a href="editDiak?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
-                        <span style="width: 100px;display: inline-block;">Pontok:<?php echo $count?></span>
-                    </div>
-                    <?php
-                }
-            }
+        foreach ($bests as $uid=>$person) {
+            $personName=$person["lastname"]." ".$person["firstname"];
+            ?>
+            <div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
+                <span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
+                <span style="width: 146px;display: inline-block;"><a href="editDiak?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
+                <span style="width: 100px;display: inline-block;">Pontok:<?php echo $person["count"]?></span>
+            </div>
+            <?php
         }
         ?>
         <div>Pontok:  bejelentkezés=1000, zenelista=7, képek=5, új személy=3, gyertya gyújtás=2, személy módosítás=1, vélemény=1 </div>
@@ -62,8 +86,43 @@ include('homemenu.inc.php');?>
     </div>
 </div>
 <div  style="margin:30px">
+    <div class="content-stat">Gyakori lány keresztnevek<br/>
+    <?php
+        foreach ($contentStatistics->girlnames as $text) {  showStatisticElement($text); }
+    ?>
+    </div>
+    <div class="content-stat">Gyakori fiú keresztnevek<br/>
+        <?php
+        foreach ($contentStatistics->boynames as $text) {  showStatisticElement($text); }
+        ?>
+    </div>
+    <div class="content-stat">Gyakori családnevek<br/>
+        <?php
+        foreach ($contentStatistics->lastnames as $text) {  showStatisticElement($text); }
+        ?>
+    </div>
+    <div class="content-stat">Ország statisztika<br/>
+        <?php
+        foreach ($contentStatistics->countrys as $text) {  showStatisticElement($text); }
+        ?>
+    </div>
+    <div class="content-stat">Helység statisztika<br/>
+        <?php
+        foreach ($contentStatistics->places as $text) {  showStatisticElement($text); }
+        ?>
+    </div>
+    <div class="content-stat">Hölgy/úr lány/fiú statisztika<br/>
+        <?php
+        foreach ($contentStatistics->gender as $text) {  showStatisticElement($text); }
+        ?>
+    </div>
+
+</div>
+<?php /* ?>
+<div  style="margin:30px">
 <div class="panel panel-default"  style="padding:5px; max-width:650px" id="calendargg"></div>
 <br/>
+ <?php */ ?>
 <div id="teacherff" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
 	<div class="panel-heading text-center"><span class="icon"></span><label> Tanárok</label></div>
 	<ul class="list-group"  style="list-style: none;">
@@ -271,7 +330,7 @@ include('homemenu.inc.php');?>
         var chart3 = new google.visualization.BarChart(document.getElementById("classgg"));
         options.title="Osztályok";options.height=$("#classff").height();
         chart3.draw(view, options);
-
+        <?php /* ?>
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn({ type: 'date', id: 'Date' });
         dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
@@ -304,7 +363,12 @@ include('homemenu.inc.php');?>
         };
 
         chart.draw(dataTable, options);
-        
+        <?php */ ?>
       }
 </script>
 <?php include 'homefooter.inc.php';?>
+<?php
+function showStatisticElement($text)
+{
+    echo("<span><span>" . $text["c"] .":</span><span>" . $text["content"] . " </span></span>");
+}

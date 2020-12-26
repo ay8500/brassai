@@ -83,7 +83,7 @@ if (isActionParam("postMessage")) {
 				}
 			}
 			else
-                Appl::setMessage("A beadott üzenet úgytűnik nem tartalmaz érthező magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.","warning");
+                Appl::setMessage("A beadott üzenet úgytűnik nem tartalmaz értelmes magyar szöveget! <br/> Probálkozz rövidítések nélkül és írj egy kicsitt bővebben.","warning");
 		} 
 	}
 }

@@ -96,10 +96,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
 				?>
                     <div class="diakCardIcons">
-                        <?php echo $action ?>
-                        <?php if($changePerson!=null) {?>
-                              <a href="editDiak?uid=<?php echo $changePerson["id"] ?>"><?php echo $changePerson["lastname"]." ".$changePerson["firstname"]?></a>
-                        <?php } else {echo ('Anonim látogató');} ?>
+                        <?php echo $action. getPersonLinkAndPicture($changePerson) ?>
                         <br/>Dátum:<?php echo $changeDate;?><br/>
                     </div>
 				<?php }?>
@@ -152,8 +149,9 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
 	<div class="element">
         <div>
             <div style="display: inline-block; ">
+                <h4><?php echo $typeArray["text"];?></h4>
                 <a href="picture?type=<?php echo $typeArray["type"]?>&typeid=<?php echo $typeArray["typeId"]?>&id=<?php echo $picture["id"]?>">
-                    <image src="imageConvert?width=300&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
+                    <img src="imageConvert?width=396&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
                 </a>
                 <?php  if (userIsSuperuser()) {?>
                     <br/><a href="history?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
@@ -161,24 +159,20 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
                     </a>
                 <?php } ?>
             </div>
-            <div style="display: inline-block;max-width:160px;min-width:150px; vertical-align: top;margin-bottom:10px;">
-                <?php echo $typeArray["text"];?><br/>
+            <div style="vertical-align: top;margin-bottom:10px;">
+                <?php if (isset($picture["title"])&&$picture["title"]!="") {?>
+                    <b><?php echo $picture["title"];?></b>
+                <?php } ?>
                 <?php if (isset($picture["albumName"])&&$picture["albumName"]!="") {?>
-                    Album:<?php echo $picture["albumName"]?><br/>
+                    <br/>Album:<?php echo $picture["albumName"]?>
                 <?php }?>
                 <?php if (isset($picture["tag"])&&$picture["tag"]!=""&&$picture["tag"]!="undefined") {?>
-                    Tartalom:<?php echo $picture["tag"]?><br/>
+                    <br/>Tartalom:<?php echo $picture["tag"]?>
                 <?php }?>
-                <?php if (isset($picture["title"])&&$picture["title"]!="") {?>
-                    <br/><b>Kép címe:</b><br/><?php echo $picture["title"];?>
-                <?php } ?>
             </div>
         </div>
 		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php echo $action?>
-            <?php if($person!=null) {?>
-                <a href="editDiak?uid=<?php echo $person["id"]?>" ><?php echo $person["lastname"]." ".$person["firstname"]?></a>
-            <?php } else {echo ('Anonim látogató');} ?>
+            <?php echo $action . getPersonLinkAndPicture($person) ?>
             <br/>Dátum:<?php echo $changeDate?>
 		</div>
         <?php  displayPictureOpinion($dbOpinion,$picture["id"]); ?>
@@ -221,10 +215,10 @@ function displayClass($db,$class,$showDate=false) {
             </a>
         <?php }?>
 		<?php if ($showDate) {
-		    $c = $db->getPersonByID($class["changeUserID"]);
+		    $person = $db->getPersonByID($class["changeUserID"]);
 		    ?>
             <br/><div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-				Módosította: <a href="editDiak?uid=<?php echo $class["changeUserID"]?>" ><?php echo $c["lastname"]." ".$c["firstname"]?></a> <br/>
+				Módosította: <?php echo getPersonLinkAndPicture($person) ?> <br/>
 				Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
 			</div>
 		<?php }?>
@@ -243,12 +237,6 @@ function displayMessage($db,$message,$showDate=true) {
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
             <h4>Üzenet</h4>
-            <?php if (isset($message["changeUserID"]) && $message["changeUserID"]!=null) {
-                $author = $db->getPersonByID($message["changeUserID"]);?>
-                Üzenetet írta: <?php echo getPersonLinkAndPicture($author)?>
-            <?php } else {?>
-                Üzenetet írta:<?php echo $message["name"] ?>
-            <?php } ?>
             <div style="max-height: 300px; overflow-y: scroll;margin-top: 10px">
                 <?php
                     echo(htmlspecialchars_decode($message["text"]));
@@ -256,6 +244,12 @@ function displayMessage($db,$message,$showDate=true) {
                         echo("Kommentár: ".$message["comment"]);
                 ?>
             </div>
+            <?php if (isset($message["changeUserID"]) && $message["changeUserID"]!=null) {
+                $author = $db->getPersonByID($message["changeUserID"]);?>
+                Üzenetet írta: <?php echo getPersonLinkAndPicture($author)?>
+            <?php } else {?>
+                Üzenetet írta:<?php echo $message["name"] ?>
+            <?php } ?>
             <br/>Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"]);?>
         </div>
         <?php  displayMessageOpinion($dbOpinion,$message["id"]); ?>
@@ -283,7 +277,7 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
             </div>
             <?php if ($showVideo) {?>
                 <object  class="embed-responsive embed-responsive-16by9">
-                    <embed src="https://www.youtube.com/v/<?php echo $music["video"]?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
+                    <embed src="https://www.youtube.com/v/<?php echo $music["video"]?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
                 </object>
             <?php }?>
             <?php if (isset($userId) && $userId!=null) {
@@ -438,11 +432,11 @@ function displayPersonPicture($d)
         $rstyle = ' diak_image_empty';
     }
     if ($d["id"]!=-1) {
-        if (userIsLoggedOn() || isLocalhost()) {
-            $personLink="editDiak?uid=".$d["id"];
-        } else {
+        //if (userIsLoggedOn() || isLocalhost()) {
+        //     $personLink="editDiak?uid=".$d["id"];
+        //} else {
             $personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
-        }
+        //}
     } else {
         $personLink="javascript:alert('Sajnos erről a személyről nincsenek adatok.');";
     }

@@ -215,6 +215,10 @@
 
 @media ( max-width : 400px) {
 	#o400 {	display: none;}
+	.nav-justified > li {
+		display: inline-block;
+		width: 23px !important;
+	}
 }
 
 @media ( max-width : 700px) {
@@ -228,6 +232,10 @@
 	.element{width:100%; display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 5px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
 	.panel-body {padding:0px;}
 	.personboxc {min-width: 250px;}
+	.nav-justified > li {
+		display: inline-block;
+		width: 29px !important;
+	}
 }
 
 @media ( max-width : 1024px) {

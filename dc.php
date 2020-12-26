@@ -20,13 +20,16 @@ $su = explode("-",$su[sizeof($su)-1]);
 $id=$su[sizeof($su)-1];
 
 if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
+    global $db;
 	$diak=$db->getPersonByID($id);
 	if ($diak==null) {
 		pageNotFound();
 		exit;
 	} else {
+        header("HTTP/1.1 200 OK");
 		setAktUserId($diak["id"]);
 		include ("editDiak.php");
+        echo($diak["lastname"]);
 		exit();
 	}
 }

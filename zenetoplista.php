@@ -8,6 +8,7 @@ include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
 include_once 'displayCards.inc.php';
 
+global $db;
 $dbSongVote = new dbDaSongVote($db);
 $dbOpinion = new dbDaOpinion($db);
 $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
@@ -167,7 +168,7 @@ include("homemenu.inc.php");
 ?>
 <div class="col-sm-9">
 	<div class="panel panel-default">
-		<div class="panel-heading" style="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
+		<div class="panel-heading" style_notgood="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
 
 			<label id="dbDetails">Top <?php echo $listLength>100?100:$listLength?> zenelista lejátszó</label><br/>
 			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
@@ -181,7 +182,7 @@ include("homemenu.inc.php");
                     if (userIsAdmin() && getParam("check")=="true") {
                         $v["check"] = (getSongName($v['video']) !== "");
                     }
-                    displayMusic($db, $v,"change",$v["changeUserID"],$v["changeDate"]);
+                    displayMusic($db, $v,"change",$v["changeUserID"],$v["changeDate"],false);
                 }
             ?>
         </div>
@@ -202,10 +203,9 @@ include("homemenu.inc.php");
 			  <?php foreach ($votersList as $voter) {
 			     	if (intval($voter["count"])>0) {?>
 			     		<tr>
-			     			<td><img src="<?php echo getPersonPicture($voter) ?>" class="diak_image_sicon" style="margin:2px;"/></td>
-			     			<td><?php echo $voter["lastname"]." ".$voter["firstname"]?></td>
-			     			<td>&nbsp;</td>
-			     			<td style="padding-left:15px;"><?php echo $voter["count"]?></td>
+			     			<td> <?php echo getPersonLinkAndPicture($voter) ?></td>
+                            <td style="width: 40px">&nbsp;</td>
+			     			<td style="text-align:right"><?php echo $voter["count"]?></td>
 			     		</tr>
 			     	<?php }
 			  } ?>
@@ -296,7 +296,8 @@ function autoComplete (field, select, property, forcematch) {
  * @return string
  */
  function getSongName(string $youtubeId) {
- 	$apiPublicKey=encrypt_decrypt("decrypt","aXg2Zk9QMEp6eGtsMlRkMDR1MGN3LzdPd2pqMUhNRG5LWDl5bU9yMGpDVTlXUzY1YWJ3dFVGL3pxZGhEcUFyRg==");
+    //https://console.developers.google.com/apis/api/youtubeoembed.googleapis.com/quotas?project=skilful-works-806
+ 	$apiPublicKey=encrypt_decrypt("decrypt","STRGZTdISFVONExKVVhkOE1Bay9ZOVhjMmVPQnZpUE5oNi84UlBBeDJ3OGZ6aDZyY3hWTGZkT3lEMHZUS0w4Ng==");
  	try {
  	    $url='https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $youtubeId . '&key=' . $apiPublicKey;
         $response = maierlabs\lpfw\htmlParser::loadUrl($url);

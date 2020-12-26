@@ -9,10 +9,9 @@ include('homemenu.inc.php');
 <?PHP
 if (userIsSuperuser()) {
 
-	//initialise tabs
-	$tabsCaption=Array("","Sikertelen&nbsp;bejelentkezés","Adatmódosítás","Bejelentkezési adatok","Facebook");
     //initialise tabs
     $tabsCaption = array();
+    $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
     array_push($tabsCaption ,array("id" => "ok", "caption" => 'Bejelentkezés', "glyphicon" => "user"));
     array_push($tabsCaption ,array("id" => "change", "caption" => 'Adatmódosítás', "glyphicon" => ""));
     array_push($tabsCaption ,array("id" => "userdata", "caption" => 'Bejelentkezési adatok', "glyphicon" => "cloud"));
