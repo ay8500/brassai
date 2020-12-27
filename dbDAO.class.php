@@ -145,6 +145,8 @@ class dbDAO {
      * @return array
      */
 	public function getClassList($schoolID=1,$originalId=false,$isEveningClass=null,$isTwentyfirstcentury=null,$realClass=true) {
+	    if (intval($schoolID)<=0)
+            return array();
         $sql="schoolID=".$schoolID;
         if($realClass) {
             $sql .= " and graduationYear>1800 ";
@@ -370,7 +372,7 @@ class dbDAO {
 		$ret = array();
         $name=trim($name);
         if( intval($name)>1930 && intval($name)<2100 ) {
-            $where =  "graduationYear=".$name;
+            $where =  "graduationYear=".intval($name);
         } elseif( strlen($name)>0 ) {
 
             $where ="(";

@@ -58,6 +58,8 @@ class dbDaGames
     }
 
     public function createGame($userId,$ip,$agent,$lang,$gameId){
+        if ($lang==null ||strlen($lang)==0)
+            $lanf="noLanguage";
         $data=array();
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "userId", $userId==null?0:$userId);
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "gameId", $gameId);

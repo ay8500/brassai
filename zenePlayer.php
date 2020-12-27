@@ -43,7 +43,6 @@ $voters =$dbSongVote->getVotersListForMusicId(getIntParam("id"));
 $apiPublicKey=encrypt_decrypt("decrypt","STRGZTdISFVONExKVVhkOE1Bay9ZOVhjMmVPQnZpUE5oNi84UlBBeDJ3OGZ6aDZyY3hWTGZkT3lEMHZUS0w4Ng==");
 $response = maierlabs\lpfw\htmlParser::loadUrl('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $Video . '&key=' . $apiPublicKey);
 $json = json_decode($response);
-//print_r($json);
 
 $Title="Zenedoboz".(is_object($json)&&isset($json->title)?': '.$json->title:'');
 $SiteDescription="Kendvenc zenénket itt lejátszhatod";
@@ -66,17 +65,16 @@ include("homemenu.inc.php");
 		<?php if (is_object($json)&& !isset($json->error) ) {?>
 			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 			<?php if (null==$playlist):?>
-				<h2>
-                    <?php //echo (is_object($json)&&isset($json->author_name)?' '.$json->author_name:'')?>
-                    <?php echo (is_object($json)&&isset($json->title)?' '.$json->title:'')?>
-                </h2>
+				<h2><?php echo (is_object($json)&&isset($json->title)?' '.$json->title:'')?></h2>
+                <object  class="embed-responsive embed-responsive-16by9">
+                    <embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
+                </object>
 			<?php else: ?>
 				<h2>Toplista teljes lejátszása <?php echo getParam("listdir","")?></h2>
+                <object  class="embed-responsive embed-responsive-16by9">
+                    <embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
+                </object>
 			<?php endif;?>
-            <object  class="embed-responsive embed-responsive-16by9">
-                <embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
-            </object>
-            <?php //echo (is_object($json)&&isset($json->html)?$json->html:'')?>
 		<?php } else {?>
 			<div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?>
                 <?php if (userIsAdmin()) { print_r($json->error); } ?>
