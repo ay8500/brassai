@@ -7,6 +7,7 @@ include_once 'dbDaSongVote.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 include_once("dbBL.class.php");
 
+global $db;
 $dbVote = new dbDaSongVote($db);
 
 $sTitle="Következő érettségi találkozónk";

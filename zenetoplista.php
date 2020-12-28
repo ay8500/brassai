@@ -81,11 +81,16 @@ include("homemenu.inc.php");
 
 <div class="container-fluid">
 	<?php if ( userIsLoggedOn() ) { ?>
-	<form action="zenetoplista">
-	<div class="panel panel-default">
+    <?php if (getParam("interpret")==null ) {?>
+        <div style="margin:10px">
+            <button class="btn btn-default" onclick="$('#newEntry').show('slow');">Új zene, vagy kedvenceim kiválasztása</button>
+        </div>
+    <?php } ?>
+    <form action="zenetoplista">
+	<div id="newEntry" <?php echo getParam("interpret")==null?'style="display: none"':''?> class="panel panel-default">
 		<?php if (!($pinterpret>0)) { ?>
 			<div class="panel-heading">
-				<label id="dbDetails">Szavazat: Válaszd ki az előadót</label> 
+				<label id="dbDetails">Válaszd ki az előadót</label>
 			</div>
 			<div class="form-group navbar-form">
 				Válaszd ki a kedvenc előadód, ha nem találod a listában akkor írd be a lenti mezőbe.
@@ -99,8 +104,8 @@ include("homemenu.inc.php");
 						foreach ($interpretList as $interpret)	{
 							if ($interpret['id']==$pinterpret) $def="selected"; else $def="";
 							echo('<option value="'.$interpret['id'].'" '.$def.' >'.$interpret['name'].'</option>');
-						} 
-					?>	 
+						}
+					?>
 				</select>
 			</div>
 			<div class="form-group navbar-form navbar">
@@ -111,9 +116,9 @@ include("homemenu.inc.php");
 	    	   	<label style="min-width:300px;" ></label>
 	    		<button class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span> Tovább</button>
 	    	</div>
-			<?php } else {?> 
+			<?php } else {?>
 			<div class="panel-heading">
-				<label id="dbDetails">Szavazat: Válaszd ki az éneket</label> 
+				<label id="dbDetails">Válaszd ki az éneket</label>
 			</div>
 			<div class="form-group navbar-form">
 				Válaszd ki a kedvenc énkedet, ha nem találod a listában akkor írd be a lenti mezőbe.
@@ -132,10 +137,10 @@ include("homemenu.inc.php");
 						{
 							if ($song['id']==$psong) $def="selected"; else $def="";
 							echo('<option value='.$song['id'].' '.$def.' >'.$song['name'].'</option>');
-						} 
-					 ?>	 
+						}
+					 ?>
 				</select>
-			</div> 	 		
+			</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" for="newSong" >vagy írj be egy újat<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
 	    	   	<input name="newSong" id="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control" value="<?php echo $pnewSong; ?>" />
@@ -149,35 +154,91 @@ include("homemenu.inc.php");
 	    		<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
 	    		<button class="btn btn-default" onclick="document.location.href='zenetoplista?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
 	    	</div>
-	    	 <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />	
+	    	 <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />
 			<?php } ?>
 		</div>
-		</form><?php
+    </form>
+    <?php
 	}
 
-  	 	$topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId());
-		
-  	 	if (sizeof($topList)<25)
-  	 		$listLength=sizeof($topList);
-  	 	else if (userIsAdmin() || getAktClassId()==-1)
-  	 		$listLength=sizeof($topList);
-  	 	else if (userIsLoggedOn())
-  	 		$listLength=100;
-  	 	else
-  	 		$listLength=25;
+
+$language["hu"]=getParam("filter_hu")!=="false";
+$language["en"]=getParam("filter_en")!=="false";
+$language["it"]=getParam("filter_it")!=="false";
+$language["es"]=getParam("filter_es")!=="false";
+$language["pt"]=getParam("filter_pt")!=="false";
+$language["fr"]=getParam("filter_fr")!=="false";
+$genre["d"]=getParam("filter_d")!=="false"?"dance":false;
+$genre["s"]=getParam("filter_s")!=="false"?"danceslow":false;
+$genre["h"]=getParam("filter_h")!=="false"?"hardrock":false;;
+$genre["c"]=getParam("filter_c")!=="false"?"classic":false;;
+$genre["f"]=getParam("filter_f")!=="false"?"folk":false;;
+$genre["r"]=getParam("filter_r")!=="false"?"relax":false;;
+$genre["j"]=getParam("filter_j")!=="false"?"jazz":false;;
+$topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),200, $language, $genre);
+
+if (sizeof($topList)<25)
+    $listLength=sizeof($topList);
+else if (userIsAdmin() || getAktClassId()==-1)
+    $listLength=sizeof($topList);
+else if (userIsLoggedOn())
+    $listLength=100;
+else
+    $listLength=25;
+\maierlabs\lpfw\Appl::addCssStyle('
+.music-filter {
+    display:inline-block;
+    margin-top: 9px;
+}
+.music-filter > div > div {
+    background-color: white;
+    display:inline-block;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+}
+.music-filter > div > div > input {
+    vertical-align:top;
+}
+');
+
 ?>
 <div class="col-sm-9">
 	<div class="panel panel-default">
 		<div class="panel-heading" style_notgood="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
-
-			<label id="dbDetails">Top <?php echo $listLength>100?100:$listLength?> zenelista lejátszó</label><br/>
+			<label id="dbDetails"><?php echo sizeof($topList)?> zenelista lejátszó</label><br/>
+            <div style="">
 			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
 			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-order-alt"></span> Legjobb szám utoljára</button>
 			<button class="btn btn-default" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
+            </div>
+            <div class="music-filter" >
+                <div style="display: inline-block;margin-bottom: 3px;">Nyelv</div>
+                <div style="display: inline-block">
+                    <div>Magyar   <input id="filter_hu" type="checkbox" name="filter_hu" onclick="musicFilter()" <?php echo $language["hu"]?"checked":"" ?>/></div>
+                    <div>Angol    <input id="filter_en" type="checkbox" name="filter_en" onclick="musicFilter()" <?php echo $language["en"]?"checked":"" ?>/></div>
+                    <div>Olasz    <input id="filter_it" type="checkbox" name="filter_it" onclick="musicFilter()" <?php echo $language["it"]?"checked":"" ?>/></div>
+                    <div>Spanyol  <input id="filter_es" type="checkbox" name="filter_es" onclick="musicFilter()" <?php echo $language["es"]?"checked":"" ?>/></div>
+                    <div>Portugál <input id="filter_pt" type="checkbox" name="filter_pt" onclick="musicFilter()" <?php echo $language["pt"]?"checked":"" ?>/></div>
+                    <div>Francia  <input id="filter_fr" type="checkbox" name="filter_fr" onclick="musicFilter()" <?php echo $language["fr"]?"checked":"" ?>/></div>
+                </div>
+            </div>
+            <div class="music-filter" >
+                <div style="display: inline-block;margin-bottom: 3px;">Műfaj</div>
+                <div style="display: inline-block">
+                    <div>Tánczene       <input id="filter_d" type="checkbox" name="filter_d" onclick="musicFilter()" <?php echo $genre["d"]!==false?"checked":"" ?>/></div>
+                    <div>Lassú tánczene <input id="filter_s" type="checkbox" name="filter_s" onclick="musicFilter()" <?php echo $genre["s"]!==false?"checked":"" ?>/></div>
+                    <div>Hardrock       <input id="filter_h" type="checkbox" name="filter_h" onclick="musicFilter()" <?php echo $genre["h"]!==false?"checked":"" ?>/></div>
+                    <div>Klassikus      <input id="filter_c" type="checkbox" name="filter_c" onclick="musicFilter()" <?php echo $genre["c"]!==false?"checked":"" ?>/></div>
+                    <div>Népzene/Nóta   <input id="filter_f" type="checkbox" name="filter_f" onclick="musicFilter()" <?php echo $genre["f"]!==false?"checked":"" ?>/></div>
+                    <div>Relax          <input id="filter_r" type="checkbox" name="filter_r" onclick="musicFilter()" <?php echo $genre["r"]!==false?"checked":"" ?>/></div>
+                    <div>Jazz           <input id="filter_j" type="checkbox" name="filter_j" onclick="musicFilter()" <?php echo $genre["j"]!==false?"checked":"" ?>/></div>
+                </div>
+            </div>
 		</div>
 		<div class="form-group navbar-form navbar" >
             <?php
-                for ($i=0;$i<$listLength;$i++) {
+                for ($i=0;$i<sizeof($topList);$i++) {
                     $v = $topList[$i];
                     if (userIsAdmin() && getParam("check")=="true") {
                         $v["check"] = (getSongName($v['video']) !== "");
@@ -331,5 +392,23 @@ function autoComplete (field, select, property, forcematch) {
      }
  }
 
-
 ?>
+<script>
+    function musicFilter() {
+        var url="zenetoplista?classId=<?php echo getParam("classid","all")?>";
+        url +="&filter_hu="+$("#filter_hu").is(":checked");
+        url +="&filter_en="+$("#filter_en").is(":checked");
+        url +="&filter_fr="+$("#filter_fr").is(":checked");
+        url +="&filter_pt="+$("#filter_pt").is(":checked");
+        url +="&filter_es="+$("#filter_es").is(":checked");
+        url +="&filter_it="+$("#filter_it").is(":checked");
+        url +="&filter_d="+$("#filter_d").is(":checked");
+        url +="&filter_s="+$("#filter_s").is(":checked");
+        url +="&filter_h="+$("#filter_h").is(":checked");
+        url +="&filter_c="+$("#filter_c").is(":checked");
+        url +="&filter_r="+$("#filter_r").is(":checked");
+        url +="&filter_f="+$("#filter_f").is(":checked");
+        url +="&filter_j="+$("#filter_j").is(":checked");
+        document.location=url;
+    }
+</script>

@@ -41,11 +41,13 @@ class dbDaSongVote
         return $this->dataBase->update("song", [["field"=>$field,"type"=>"s","value"=>$value]],"id",$id);
     }
 
-    public function updateSongFields($id,$video,$name) {
+    public function updateSongFields($id,$video,$name,$language,$genre) {
         $this->dbDAO->dataBase->createHistoryEntry("song",$id);
         $data=array();
         $data=$this->dataBase->insertFieldInArray($data, "video", $video);
         $data=$this->dataBase->insertFieldInArray($data, "name", $name);
+        $data=$this->dataBase->insertFieldInArray($data, "language", $language);
+        $data=$this->dataBase->insertFieldInArray($data, "genre", $genre);
         return $this->dataBase->update("song", $data,"id",$id);
     }
 
@@ -116,7 +118,7 @@ class dbDaSongVote
      * read songvotelist
      * @return array(count,voted,songID,songLink,songVideo,songName,interpretName,id)
      */
-    public function readTopList($classId,$personId) {
+    public function readTopList($classId,$personId,$limit=1000,$language=null,$genre=null) {
         $sql  ="select count(song.id) as count, instr(GROUP_CONCAT(person.id),'".$personId."') as voted, song.*, ";
         $sql .="interpret.name as interpretName ";
         $sql .="from opinion join person on person.id=opinion.changeUserID ";
@@ -125,7 +127,23 @@ class dbDaSongVote
         $sql .=" where opinion.table='music' and opinion.opinion='favorite'";
         if (intval($classId!=0))
             $sql .=" and person.classID=".$classId;
-        $sql .=" group by song.id order by count desc";
+        if ($language!=null && sizeof($language)>0) {
+            $sql .= " and ( song.language in (";
+            foreach ($language as $lang=>$value) {
+                if ($value)
+                    $sql .= "'".$lang."',";
+            }
+            $sql = trim($sql,",").") or song.language='') ";
+        }
+        if ($genre!=null && sizeof($genre)>0) {
+            $sql .= "  and ( song.genre in (";
+            foreach ($genre as $gen=>$value) {
+                if ($value!==false)
+                    $sql .= "'".$value."',";
+            }
+            $sql = trim($sql,",").") or song.genre='') ";
+        }
+        $sql .=" group by song.id order by count desc limit ".$limit;
         $this->dataBase->query($sql);
         return  $this->dataBase->getRowList();
     }
