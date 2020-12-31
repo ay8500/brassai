@@ -109,13 +109,12 @@ include("homemenu.inc.php");
                             <option <?php echo $song["genre"]==="dance"?'selected="selected"':''?> value="dance">Tánczene</option>
                             <option <?php echo $song["genre"]==="danceslow"?'selected="selected"':''?> value="danceslow">Lassú tánczene</option>
                             <option <?php echo $song["genre"]==="hardrock"?'selected="selected"':''?> value="hardrock">Hardrock</option>
-                            <option <?php echo $song["genre"]==="classic"?'selected="selected"':''?> value="classic">Klassikus</option>
+                            <option <?php echo $song["genre"]==="classic"?'selected="selected"':''?> value="classic">Klasszikus</option>
                             <option <?php echo $song["genre"]==="folk"?'selected="selected"':''?> value="folk">Népzene/Dal</option>
-                            <option <?php echo $song["genre"]==="relax"?'selected="selected"':''?> value="relax">Relax</option>
+                            <option <?php echo $song["genre"]==="relax"?'selected="selected"':''?> value="relax">Relax/Lazíts</option>
                             <option <?php echo $song["genre"]==="jazz"?'selected="selected"':''?> value="jazz">Jazz</option>
                         </select>
                     </div>
-                    <input type="hidden"  />
                     <input type="hidden" name="id" value="<?php echo getIntParam("id") ?>" />
                     <div style="text-align: center;">
                         <button name="action" value="savesong" class="btn btn-success">Kiment</button>

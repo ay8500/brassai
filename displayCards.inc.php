@@ -280,22 +280,19 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
                     <embed src="https://www.youtube.com/v/<?php echo $music["video"]?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
                 </object>
             <?php }?>
+            <br/>Megjelenési év:<?php echo $music["year"] ?><br/>
             <?php if (isset($userId) && $userId!=null) {
                 $author = $db->getPersonByID($userId);?>
                 <?php echo $actionText.': '.getPersonLinkAndPicture($author)?>
             <?php } else {?>
                 <?php echo $actionText?>: anonim látogató
             <?php } ?>
-            <br/>Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($date);?>
+            <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($date);?>
             <?php
                 if (isset($music["check"])) {
                     echo("<br/>Check:".$music["check"]?"Ok":"ERROR");
                 }
             ?>
-            <?php if(userIsAdmin()) {
-                echo('<br/>Info:'.$music["year"].' '.$music["language"].' '.$music["genre"]);
-                if (isset($music["count"])) echo(' Votes:'.$music["count"]);
-            }?>
         </div>
         <?php  displayMusicOpinion($dbOpinion,$music["id"]); ?>
     </div>

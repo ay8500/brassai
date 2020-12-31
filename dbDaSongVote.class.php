@@ -155,7 +155,6 @@ class dbDaSongVote
         }
         $sql .=" group by song.id order by count desc limit ".$limit;
         $this->dataBase->query($sql);
-        echo($sql);
         return  $this->dataBase->getRowList();
     }
 

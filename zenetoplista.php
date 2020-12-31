@@ -56,12 +56,18 @@ $psong=intval(getIntParam("song", "0"));
 $pnewSong = html_entity_decode(getParam("newSong"),ENT_NOQUOTES,"UTF-8");
 $pnewVideo = getParam("newVideo");
 $pnewLink = getParam("newLink");
+$pnewYear = getIntParam("newYear",1996);
+$pnewLanguage = getParam("newLanguage","");
+$pnewGenre = getParam("newGenre","");
 if (($psong=="0") && ($pnewSong<>"" && userIsLoggedOn() )) {
     if (getSongName($pnewVideo)!="") {
         $psong=$dbSongVote->saveSong([
                 'id'=>-1,
                 'interpretID'=>$pinterpret,
                 'name'=>$pnewSong,
+                'language'=>$pnewLanguage,
+                'genre'=>$pnewGenre,
+                'year'=>$pnewYear,
                 'video'=>$pnewVideo,
                 'link'=>$pnewLink]);
         if ($psong>=0) {
@@ -72,7 +78,7 @@ if (($psong=="0") && ($pnewSong<>"" && userIsLoggedOn() )) {
             $psong=0;
         }
     } else {
-        Appl::setMessage('Videó nem létezik a youtubeon! Írd be a youtoube linkből a videó anzonosítót. Lásd a pédából a sárgán megjelöt azonosítót:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51'.'warning');
+        Appl::setMessage('Videó nem létezik a youtubeon! Írd be a youtoube linkből a videó anzonosítót. Lásd a pédából a sárgán megjelöt azonosítót:<br/>https://www.youtube.com/watch?v=<b style="background-color:yellow;color:black">VjBefVAKmIM</b>&list=PLigfHYFbRfpKkCJjJGhf-0WB83q0eP_fT&index=51','warning');
         $psong=0;
     }
 }
@@ -127,8 +133,8 @@ include("homemenu.inc.php");
 				</select>
 			</div>
 			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="newinterpret" id="search_left">vagy írj be egy újat <br />Például: ABBA, Hungaria, Vangelis stb.</label>
-	    	   	<input name="newinterpret" id="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)" class="form-control" />
+	    	   	<label style="min-width:300px;" for="newinterpret" id="search_left">vagy írj be egy újat</label>
+	    	   	<input name="newinterpret" id="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)" class="form-control" placeholder="Például: ABBA, Hungaria, Vangelis stb." />
 	    	</div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" ></label>
@@ -159,25 +165,59 @@ include("homemenu.inc.php");
 					 ?>
 				</select>
 			</div>
-			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="newSong" >vagy írj be egy újat<br/>Például: Létezem, A Kör,Csókkirály  stb.</label>
-	    	   	<input name="newSong" id="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control" value="<?php echo $pnewSong; ?>" />
+            <div style="margin: 15px; font-weight: bold">vagy írj be egy újat</div>
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="min-width:200px; text-align:right" for="newSong" class="input-group-addon" id="basic-addon1">Cím</label>
+	    	   	<input name="newSong" id="newSong" type="text" size="50"  onkeyup="autoComplete(this,this.form.song,'text',false)" class="form-control" value="<?php echo $pnewSong; ?>" placeholder="Például: Love Song, Létezem, A Kör,Csókkirály"/>
 	    	</div>
-			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" for="newVideo" >Youtube link vagy cód</label>
-		    	<input name="newVideo" id="newVideo" type="text" size="50" class="form-control" value="<?php echo $pnewVideo; ?>" />
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Megjelenési év</label>
+                <input name="newYear" id="newYear" type="text" size="50" class="form-control" value="<?php echo $pnewYear; ?>" />
+            </div>
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Ezen a nyelven énekelnek</label>
+                <select class="form-control" id="newLanguage" name="newLanguage" >
+                    <option value="">nemzetközi</option>
+                    <option <?php echo $song["language"]==="hu"?'selected="selected"':''?> value="hu">Magyarul</option>
+                    <option <?php echo $song["language"]==="en"?'selected="selected"':''?> value="en">Angolul</option>
+                    <option <?php echo $song["language"]==="it"?'selected="selected"':''?> value="it">Olaszul</option>
+                    <option <?php echo $song["language"]==="es"?'selected="selected"':''?> value="es">Spanyolul</option>
+                    <option <?php echo $song["language"]==="pt"?'selected="selected"':''?> value="pt">Portugálul</option>
+                    <option <?php echo $song["language"]==="fr"?'selected="selected"':''?> value="fr">Franciául</option>
+                </select>
+            </div>
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Zenetipus</label>
+                <select type="text" class="form-control" id="newGenre" name="newGenre" >
+                    <option value="">határozattlan</option>
+                    <option <?php echo $song["genre"]==="dance"?'selected="selected"':''?> value="dance">Tánczene</option>
+                    <option <?php echo $song["genre"]==="danceslow"?'selected="selected"':''?> value="danceslow">Lassú tánczene</option>
+                    <option <?php echo $song["genre"]==="hardrock"?'selected="selected"':''?> value="hardrock">Hardrock</option>
+                    <option <?php echo $song["genre"]==="classic"?'selected="selected"':''?> value="classic">Klasszikus</option>
+                    <option <?php echo $song["genre"]==="folk"?'selected="selected"':''?> value="folk">Népzene/Dal</option>
+                    <option <?php echo $song["genre"]==="relax"?'selected="selected"':''?> value="relax">Relax/Lazíts</option>
+                    <option <?php echo $song["genre"]==="jazz"?'selected="selected"':''?> value="jazz">Jazz</option>
+                </select>
+            </div>
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label style="min-width:200px; text-align:right" for="newVideo" class="input-group-addon" id="basic-addon1">Youtube link vagy cód</label>
+		    	<input name="newVideo" id="newVideo" type="text" size="50" class="form-control" value="<?php echo $pnewVideo; ?>" placeholder="a youtube kód pl: 234fwe523_1"/>
 		    </div>
 			<div class="form-group navbar-form navbar">
 	    	   	<label style="min-width:300px;" ></label>
-	    		<button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
-	    		<button class="btn btn-default" onclick="document.location.href='zenetoplista?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
+	    		<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
+	    		<button class="btn btn-warning" onclick="document.location.href='zenetoplista?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
 	    	</div>
 	    	 <input name="interpret" type="hidden" value="<?PHP echo($pinterpret); ?>" />
 			<?php } ?>
 		</div>
     </form>
     <?php
-	}
+	} else {?>
+        <div class="panel-heading">
+            Ha szeretnél új zenét felvenni a listába, akkor kattints a "Belépés"-re és jelentkezz be. Köszönjük az új zenét!
+        </div>
+    <?php }
 
 $musicFilter = isset($_COOKIE["MUSIC_FILTER"])?json_decode($_COOKIE["MUSIC_FILTER"],true):array();
 
@@ -199,27 +239,19 @@ $year["1970"]=isset($musicFilter["filter_70"])?$musicFilter["filter_70"]:false;
 $year["1980"]=isset($musicFilter["filter_80"])?$musicFilter["filter_80"]:true;
 $year["1990"]=isset($musicFilter["filter_90"])?$musicFilter["filter_90"]:true;
 $year["2000"]=isset($musicFilter["filter_00"])?$musicFilter["filter_00"]:false;
-$year["2010"]=isset($musicFilter["filter_10"])?$musicFilter["filter_10"]:false;
+$year["2010"]=isset($musicFilter["filter_10"])?$musicFilter["filter_10"]:true;
 $year["2020"]=isset($musicFilter["filter_20"])?$musicFilter["filter_20"]:false;
 $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),500, $language, $genre,$year);
 
-if (sizeof($topList)<25)
-    $listLength=sizeof($topList);
-else if (userIsAdmin() || getAktClassId()==-1)
-    $listLength=sizeof($topList);
-else if (userIsLoggedOn())
-    $listLength=100;
-else
-    $listLength=25;
 ?>
 <div class="col-sm-9">
 	<div class="panel panel-default">
 		<div class="panel-heading" style_notgood="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
-			<label id="dbDetails"><?php echo sizeof($topList)?> zenelista lejátszó</label><br/>
+			<label id="dbDetails"><?php echo sizeof($topList)?> zenelista lejátszó (max 100)</label><br/>
             <div style="">
-			<button class="btn btn-default" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
-			<button class="btn btn-default" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-order-alt"></span> Legjobb szám utoljára</button>
-			<button class="btn btn-default" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
+			<button class="btn btn-success" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
+			<button class="btn btn-warning" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-order-alt"></span> Legjobb szám utoljára</button>
+			<button class="btn btn-warning" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
             </div>
             <div class="music-filter" >
                 <div style="display: inline-block;margin-bottom: 3px;">Nyelv</div>
@@ -265,16 +297,12 @@ else
                         $v["check"] = (getSongName($v['video']) !== "");
                     }
                     displayMusic($db, $v,"change",$v["changeUserID"],$v["changeDate"],false);
-                    if (userIsAdmin()) {
-                        $q = urlencode($v['interpretName'] . ' ' . $v['name']);
-                        echo('<a target="_music" href="https://www.discogs.com/search/?q=' . $q . '&type=all">Query</a>');
-                    }
                 }
             ?>
         </div>
 	</div>
 	<?php if (userIsAdmin()) :?>
-		<button onclick="document.location='zenetoplista?check=true'" class="btn btn-default">Youtube Link vizsgálata</button>
+		<button onclick="document.location='zenetoplista?check=true'" class="btn btn-danger">Youtube Link vizsgálata !</button>
 	<?php endif;?>
 </div>
 
@@ -282,7 +310,7 @@ else
 <div class="col-sm-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<label id="dbDetails">Szavazatok száma:<?PHP echo($allVotesNoAnonymous); ?></label>
+			<label id="dbDetails">Kedvenc zene jelölések száma:<?PHP echo($allVotesNoAnonymous); ?></label>
 		</div>
 		<div class="form-group navbar-form navbar">
 			<table>
