@@ -11,8 +11,17 @@ $dbSongVote = new dbDaSongVote($db);
 use \maierlabs\lpfw\Appl as Appl;
 
 //Save Youtube id
-if (getParam("action")=="savesong" && userIsAdmin()) {
-    $dbSongVote->updateSongFields(getIntParam("id"), getParam("link"), html_entity_decode(getParam("song"),ENT_NOQUOTES,"UTF-8"),getParam("language",""),getParam("genre",""));
+if ( (isActionParam("savesong") || isActionParam("savesongback")) && userIsAdmin()) {
+    $dbSongVote->updateSongFields(
+        getIntParam("id"),
+        getParam("link"),
+        html_entity_decode(getParam("song"),ENT_NOQUOTES,"UTF-8"),
+        getParam("language",""),
+        getParam("genre",""),
+        getParam("year"));
+    if (isActionParam("savesongback")) {
+        header("Location: zenetoplista");
+    }
 }
 
 //Get playlist
@@ -51,6 +60,7 @@ include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
+
 	<div style="text-align: center;">
 		<?php if (sizeof($voters)>0) :?>
 			<div class="panel panel-default" style="margin-top: 15px">
@@ -62,8 +72,61 @@ include("homemenu.inc.php");
 				</div></div>
 			</div>
 		<?php endif;?>
-		<?php if (is_object($json)&& !isset($json->error) ) {?>
-			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="javascript:window.history.back();">Vissza a toplistához. </a></div>
+
+        <?php if (userIsAdmin() && getIntParam("id",-1)!=-1) {
+            $song = $dbSongVote->getSongById(getIntParam("id"));
+            ?>
+            <div class="panel panel-default" style="padding:10px">
+                <form>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label style="min-width:200px; text-align:right" for="song" class="input-group-addon" id="basic-addon1">Zene címe</label>
+                        <input type="text" class="form-control" id="song" name="song" value="<?php  echo $song["name"] ?>" />
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Youtube kód</label>
+                        <input class="form-control" id="link" name="link" value="<?php  echo $song["video"] ?>"/>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Évszám</label>
+                        <input class="form-control" id="year" name="year" value="<?php  echo intval($song["year"]) ?>"/>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Ezen a nyelven énekelnek</label>
+                        <select class="form-control" id="language" name="language" >
+                            <option value="">nemzetközi</option>
+                            <option <?php echo $song["language"]==="hu"?'selected="selected"':''?> value="hu">Magyarul</option>
+                            <option <?php echo $song["language"]==="en"?'selected="selected"':''?> value="en">Angolul</option>
+                            <option <?php echo $song["language"]==="it"?'selected="selected"':''?> value="it">Olaszul</option>
+                            <option <?php echo $song["language"]==="es"?'selected="selected"':''?> value="es">Spanyolul</option>
+                            <option <?php echo $song["language"]==="pt"?'selected="selected"':''?> value="pt">Portugálul</option>
+                            <option <?php echo $song["language"]==="fr"?'selected="selected"':''?> value="fr">Franciául</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Zenetipus</label>
+                        <select type="text" class="form-control" id="genre" name="genre" >
+                            <option value="">határozattlan</option>
+                            <option <?php echo $song["genre"]==="dance"?'selected="selected"':''?> value="dance">Tánczene</option>
+                            <option <?php echo $song["genre"]==="danceslow"?'selected="selected"':''?> value="danceslow">Lassú tánczene</option>
+                            <option <?php echo $song["genre"]==="hardrock"?'selected="selected"':''?> value="hardrock">Hardrock</option>
+                            <option <?php echo $song["genre"]==="classic"?'selected="selected"':''?> value="classic">Klassikus</option>
+                            <option <?php echo $song["genre"]==="folk"?'selected="selected"':''?> value="folk">Népzene/Dal</option>
+                            <option <?php echo $song["genre"]==="relax"?'selected="selected"':''?> value="relax">Relax</option>
+                            <option <?php echo $song["genre"]==="jazz"?'selected="selected"':''?> value="jazz">Jazz</option>
+                        </select>
+                    </div>
+                    <input type="hidden"  />
+                    <input type="hidden" name="id" value="<?php echo getIntParam("id") ?>" />
+                    <div style="text-align: center;">
+                        <button name="action" value="savesong" class="btn btn-success">Kiment</button>
+                        <button name="action" value="savesongback" class="btn btn-success">Kiment és vissza</button>
+                    </div>
+                </form>
+            </div>
+        <?php } ?>
+
+        <?php if (is_object($json)&& !isset($json->error) ) {?>
+			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 			<?php if (null==$playlist):?>
 				<h2><?php echo (is_object($json)&&isset($json->title)?' '.$json->title:'')?></h2>
                 <object  class="embed-responsive embed-responsive-16by9">
@@ -80,56 +143,10 @@ include("homemenu.inc.php");
                 <?php if (userIsAdmin()) { print_r($json->error); } ?>
             </div>
 		<?php }?>
-		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="javascript:window.history.back();">Vissza a toplistához. </a></div>
+		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 	</div>
 
 
-<?php if (userIsAdmin() && getIntParam("id",-1)!=-1) {
-	$song = $dbSongVote->getSongById(getIntParam("id"));
-    ?>
-	<div class="panel panel-default" style="padding:10px">
-	<form>
-		<div class="input-group" style="margin-bottom: 10px;">
-			<label style="min-width:200px; text-align:right" for="song" class="input-group-addon" id="basic-addon1">Zene címe</label>
-			<input type="text" class="form-control" id="song" name="song" value="<?php  echo $song["name"] ?>" />
-		</div>
-		<div class="input-group" style="margin-bottom: 10px;">
-			<label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Youtube kód</label>
-			<input class="form-control" id="link" name="link" value="<?php  echo $song["video"] ?>"/>
-		</div>
-        <div class="input-group" style="margin-bottom: 10px;">
-            <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Ezen a nyelven énekelnek</label>
-            <select class="form-control" id="language" name="language" >
-                <option value="">nemzetközi</option>
-                <option <?php echo $song["language"]==="hu"?'selected="selected"':''?> value="hu">Magyarul</option>
-                <option <?php echo $song["language"]==="en"?'selected="selected"':''?> value="en">Angolul</option>
-                <option <?php echo $song["language"]==="it"?'selected="selected"':''?> value="it">Olaszul</option>
-                <option <?php echo $song["language"]==="es"?'selected="selected"':''?> value="es">Spanyolul</option>
-                <option <?php echo $song["language"]==="pt"?'selected="selected"':''?> value="pt">Portugálul</option>
-                <option <?php echo $song["language"]==="fr"?'selected="selected"':''?> value="fr">Franciául</option>
-            </select>
-        </div>
-        <div class="input-group" style="margin-bottom: 10px;">
-            <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Zenetipus</label>
-            <select type="text" class="form-control" id="genre" name="genre" >
-                <option value="">határozattlan</option>
-                <option <?php echo $song["genre"]==="dance"?'selected="selected"':''?> value="dance">Tánczene</option>
-                <option <?php echo $song["genre"]==="danceslow"?'selected="selected"':''?> value="danceslow">Lassú tánczene</option>
-                <option <?php echo $song["genre"]==="hardrock"?'selected="selected"':''?> value="hardrock">Hardrock</option>
-                <option <?php echo $song["genre"]==="classic"?'selected="selected"':''?> value="classic">Klassikus</option>
-                <option <?php echo $song["genre"]==="folk"?'selected="selected"':''?> value="folk">Népzene/Dal</option>
-                <option <?php echo $song["genre"]==="relax"?'selected="selected"':''?> value="relax">Relax</option>
-                <option <?php echo $song["genre"]==="jazz"?'selected="selected"':''?> value="jazz">Jazz</option>
-            </select>
-        </div>
-		<input type="hidden" name="action" value="savesong" />
-		<input type="hidden" name="id" value="<?php echo getIntParam("id") ?>" />
-		<div style="text-align: center;">
-			<button class="btn btn-success">Kiment</button>
-		</div>
-	</form>
-	</div>
-<?php } ?>
 
 </div>
 

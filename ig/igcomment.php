@@ -97,7 +97,7 @@
 		</table>
 		</form>
 	</td></tr>
-	<tr><td colspan="2"><? writeComment($image); ?></td></tr>
+	<tr><td colspan="2"><?php writeComment($image); ?></td></tr>
 	<tr><td colspan="2">&nbsp;</td></tr>
 </table>
 

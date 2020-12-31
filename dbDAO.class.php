@@ -268,7 +268,7 @@ class dbDAO {
 			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null and picture<>''");
 			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
 		}
-		$t = $this->dataBase->querySignleRow("select firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
+		$t = $this->dataBase->querySignleRow("select person.id,title, firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
 		if ($t!=null) {
 		    $ret->teacher=(object)$t;
 		}

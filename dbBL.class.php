@@ -398,11 +398,13 @@ function getPersonPicture($person) {
 
 function getPersonLinkAndPicture($person,$fullLink=false) {
     if (isset($person["id"])) {
-        if ($fullLink)
-            $picture = '';
-        else
-            $picture = '<img src="' . getPersonPicture($person) . '"  class="diak_image_sicon" />';
-        $ret = ' <a href="'.($fullLink?Config::$siteUrl.'/':'') .getPersonLink($person["lastname"],$person["firstname"])."-".$person["id"]. '">' .$picture. $person["lastname"] . " " . $person["firstname"] . '</a>';
+        $fullLink = $fullLink?Config::$siteUrl.'/':'';
+        $picture = '<span style="display:inline-block;min-width: 25px">';
+        $picture .= '<img src="' .$fullLink. getPersonPicture($person) . '"  class="diak_image_sicon" />';
+        $picture .= '</span>';
+        $ret  = ' <a href="'.$fullLink .getPersonLink($person["lastname"],$person["firstname"])."-".$person["id"]. '">';
+        $ret .= $picture. (array_key_exists("title",$person)?($person["title"]." "):"") . $person["lastname"] . " " . $person["firstname"];
+        $ret .= '</a>';
     } else {
         $ret = 'Anonim felhasználó';
     }

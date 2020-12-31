@@ -109,7 +109,7 @@ include("homemenu.inc.php");
                         </table>
                     </div>
                 </div>
-            <? }?>
+            <?php }?>
 
             <?php if ($tabOpen=="2048") {
                 \maierlabs\lpfw\Appl::addJs("game/game2048.js");
@@ -269,7 +269,7 @@ include("homemenu.inc.php");
                         } ?>
                     </div>
                 </div>
-            <? }?>
+            <?php }?>
 
 		</div>
 	</div>

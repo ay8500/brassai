@@ -292,6 +292,10 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
                     echo("<br/>Check:".$music["check"]?"Ok":"ERROR");
                 }
             ?>
+            <?php if(userIsAdmin()) {
+                echo('<br/>Info:'.$music["year"].' '.$music["language"].' '.$music["genre"]);
+                if (isset($music["count"])) echo(' Votes:'.$music["count"]);
+            }?>
         </div>
         <?php  displayMusicOpinion($dbOpinion,$music["id"]); ?>
     </div>

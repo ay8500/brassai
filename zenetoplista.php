@@ -20,7 +20,25 @@ if (getAktClassId()==-1) {
     Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.');
 } else {
     Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.');
-} 
+}
+
+\maierlabs\lpfw\Appl::addCssStyle('
+.music-filter {
+    display:inline-block;
+    margin-top: 9px;
+}
+.music-filter > div > div {
+    background-color: white;
+    display:inline-block;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+}
+.music-filter > div > div > input {
+    vertical-align:top;
+}
+');
+
 
 //Parameter Interpret
 $pinterpret = getIntParam("interpret",0);
@@ -161,21 +179,29 @@ include("homemenu.inc.php");
     <?php
 	}
 
+$musicFilter = isset($_COOKIE["MUSIC_FILTER"])?json_decode($_COOKIE["MUSIC_FILTER"],true):array();
 
-$language["hu"]=getParam("filter_hu")!=="false";
-$language["en"]=getParam("filter_en")!=="false";
-$language["it"]=getParam("filter_it")!=="false";
-$language["es"]=getParam("filter_es")!=="false";
-$language["pt"]=getParam("filter_pt")!=="false";
-$language["fr"]=getParam("filter_fr")!=="false";
-$genre["d"]=getParam("filter_d")!=="false"?"dance":false;
-$genre["s"]=getParam("filter_s")!=="false"?"danceslow":false;
-$genre["h"]=getParam("filter_h")!=="false"?"hardrock":false;;
-$genre["c"]=getParam("filter_c")!=="false"?"classic":false;;
-$genre["f"]=getParam("filter_f")!=="false"?"folk":false;;
-$genre["r"]=getParam("filter_r")!=="false"?"relax":false;;
-$genre["j"]=getParam("filter_j")!=="false"?"jazz":false;;
-$topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),200, $language, $genre);
+$language["hu"]=isset($musicFilter["filter_hu"])?$musicFilter["filter_hu"]:true;
+$language["en"]=isset($musicFilter["filter_en"])?$musicFilter["filter_en"]:true;
+$language["it"]=isset($musicFilter["filter_it"])?$musicFilter["filter_it"]:true;
+$language["es"]=isset($musicFilter["filter_es"])?$musicFilter["filter_es"]:true;
+$language["pt"]=isset($musicFilter["filter_pt"])?$musicFilter["filter_pt"]:true;
+$language["fr"]=isset($musicFilter["filter_fr"])?$musicFilter["filter_fr"]:false;
+$genre["dance"]=isset($musicFilter["filter_d"])?$musicFilter["filter_d"]:true;
+$genre["danceslow"]=isset($musicFilter["filter_s"])?$musicFilter["filter_s"]:true;
+$genre["hardrock"]=isset($musicFilter["filter_h"])?$musicFilter["filter_h"]:false;
+$genre["classic"]=isset($musicFilter["filter_c"])?$musicFilter["filter_c"]:false;
+$genre["folk"]=isset($musicFilter["filter_f"])?$musicFilter["filter_f"]:false;
+$genre["relax"]=isset($musicFilter["filter_r"])?$musicFilter["filter_r"]:false;
+$genre["jazz"]=isset($musicFilter["filter_j"])?$musicFilter["filter_j"]:false;
+$year["1960"]=isset($musicFilter["filter_60"])?$musicFilter["filter_60"]:false;
+$year["1970"]=isset($musicFilter["filter_70"])?$musicFilter["filter_70"]:false;
+$year["1980"]=isset($musicFilter["filter_80"])?$musicFilter["filter_80"]:true;
+$year["1990"]=isset($musicFilter["filter_90"])?$musicFilter["filter_90"]:true;
+$year["2000"]=isset($musicFilter["filter_00"])?$musicFilter["filter_00"]:false;
+$year["2010"]=isset($musicFilter["filter_10"])?$musicFilter["filter_10"]:false;
+$year["2020"]=isset($musicFilter["filter_20"])?$musicFilter["filter_20"]:false;
+$topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),500, $language, $genre,$year);
 
 if (sizeof($topList)<25)
     $listLength=sizeof($topList);
@@ -185,23 +211,6 @@ else if (userIsLoggedOn())
     $listLength=100;
 else
     $listLength=25;
-\maierlabs\lpfw\Appl::addCssStyle('
-.music-filter {
-    display:inline-block;
-    margin-top: 9px;
-}
-.music-filter > div > div {
-    background-color: white;
-    display:inline-block;
-    padding: 6px;
-    border-radius: 5px;
-    border: 1px lightgray solid;
-}
-.music-filter > div > div > input {
-    vertical-align:top;
-}
-');
-
 ?>
 <div class="col-sm-9">
 	<div class="panel panel-default">
@@ -215,7 +224,7 @@ else
             <div class="music-filter" >
                 <div style="display: inline-block;margin-bottom: 3px;">Nyelv</div>
                 <div style="display: inline-block">
-                    <div>Magyar   <input id="filter_hu" type="checkbox" name="filter_hu" onclick="musicFilter()" <?php echo $language["hu"]?"checked":"" ?>/></div>
+                    <div>Magyar   <input id="filter_hu" type="checkbox" name="filter_hu" onclick="musicFilter()" <?php echo $language["hu"]===true?"checked":"" ?>/></div>
                     <div>Angol    <input id="filter_en" type="checkbox" name="filter_en" onclick="musicFilter()" <?php echo $language["en"]?"checked":"" ?>/></div>
                     <div>Olasz    <input id="filter_it" type="checkbox" name="filter_it" onclick="musicFilter()" <?php echo $language["it"]?"checked":"" ?>/></div>
                     <div>Spanyol  <input id="filter_es" type="checkbox" name="filter_es" onclick="musicFilter()" <?php echo $language["es"]?"checked":"" ?>/></div>
@@ -226,13 +235,25 @@ else
             <div class="music-filter" >
                 <div style="display: inline-block;margin-bottom: 3px;">Műfaj</div>
                 <div style="display: inline-block">
-                    <div>Tánczene       <input id="filter_d" type="checkbox" name="filter_d" onclick="musicFilter()" <?php echo $genre["d"]!==false?"checked":"" ?>/></div>
-                    <div>Lassú tánczene <input id="filter_s" type="checkbox" name="filter_s" onclick="musicFilter()" <?php echo $genre["s"]!==false?"checked":"" ?>/></div>
-                    <div>Hardrock       <input id="filter_h" type="checkbox" name="filter_h" onclick="musicFilter()" <?php echo $genre["h"]!==false?"checked":"" ?>/></div>
-                    <div>Klassikus      <input id="filter_c" type="checkbox" name="filter_c" onclick="musicFilter()" <?php echo $genre["c"]!==false?"checked":"" ?>/></div>
-                    <div>Népzene/Nóta   <input id="filter_f" type="checkbox" name="filter_f" onclick="musicFilter()" <?php echo $genre["f"]!==false?"checked":"" ?>/></div>
-                    <div>Relax          <input id="filter_r" type="checkbox" name="filter_r" onclick="musicFilter()" <?php echo $genre["r"]!==false?"checked":"" ?>/></div>
-                    <div>Jazz           <input id="filter_j" type="checkbox" name="filter_j" onclick="musicFilter()" <?php echo $genre["j"]!==false?"checked":"" ?>/></div>
+                    <div>Tánczene       <input id="filter_d" type="checkbox" name="filter_d" onclick="musicFilter()" <?php echo $genre["dance"]!==false?"checked":"" ?>/></div>
+                    <div>Lassú tánczene <input id="filter_s" type="checkbox" name="filter_s" onclick="musicFilter()" <?php echo $genre["danceslow"]!==false?"checked":"" ?>/></div>
+                    <div>Hardrock       <input id="filter_h" type="checkbox" name="filter_h" onclick="musicFilter()" <?php echo $genre["hardrock"]!==false?"checked":"" ?>/></div>
+                    <div>Klassikus      <input id="filter_c" type="checkbox" name="filter_c" onclick="musicFilter()" <?php echo $genre["classic"]!==false?"checked":"" ?>/></div>
+                    <div>Népzene/Nóta   <input id="filter_f" type="checkbox" name="filter_f" onclick="musicFilter()" <?php echo $genre["folk"]!==false?"checked":"" ?>/></div>
+                    <div>Relax          <input id="filter_r" type="checkbox" name="filter_r" onclick="musicFilter()" <?php echo $genre["relax"]!==false?"checked":"" ?>/></div>
+                    <div>Jazz           <input id="filter_j" type="checkbox" name="filter_j" onclick="musicFilter()" <?php echo $genre["jazz"]!==false?"checked":"" ?>/></div>
+                </div>
+            </div>
+            <div class="music-filter" >
+                <div style="display: inline-block;margin-bottom: 3px;">Évszám</div>
+                <div style="display: inline-block">
+                    <div>60-as   <input id="filter_60" type="checkbox" name="filter_60" onclick="musicFilter()" <?php echo $year["1960"]!==false?"checked":"" ?>/></div>
+                    <div>70-es   <input id="filter_70" type="checkbox" name="filter_70" onclick="musicFilter()" <?php echo $year["1970"]!==false?"checked":"" ?>/></div>
+                    <div>80-as   <input id="filter_80" type="checkbox" name="filter_80" onclick="musicFilter()" <?php echo $year["1980"]!==false?"checked":"" ?>/></div>
+                    <div>90-es   <input id="filter_90" type="checkbox" name="filter_90" onclick="musicFilter()" <?php echo $year["1990"]!==false?"checked":"" ?>/></div>
+                    <div>2000-es <input id="filter_00" type="checkbox" name="filter_00" onclick="musicFilter()" <?php echo $year["2000"]!==false?"checked":"" ?>/></div>
+                    <div>2010-es <input id="filter_10" type="checkbox" name="filter_10" onclick="musicFilter()" <?php echo $year["2010"]!==false?"checked":"" ?>/></div>
+                    <div>2020-as <input id="filter_20" type="checkbox" name="filter_20" onclick="musicFilter()" <?php echo $year["2020"]!==false?"checked":"" ?>/></div>
                 </div>
             </div>
 		</div>
@@ -244,6 +265,10 @@ else
                         $v["check"] = (getSongName($v['video']) !== "");
                     }
                     displayMusic($db, $v,"change",$v["changeUserID"],$v["changeDate"],false);
+                    if (userIsAdmin()) {
+                        $q = urlencode($v['interpretName'] . ' ' . $v['name']);
+                        echo('<a target="_music" href="https://www.discogs.com/search/?q=' . $q . '&type=all">Query</a>');
+                    }
                 }
             ?>
         </div>
@@ -349,7 +374,6 @@ function autoComplete (field, select, property, forcematch) {
 </script>
  
  <?php 
- include "homefooter.inc.php";
 
 /**
  * Get the soung title using youtube API
@@ -392,23 +416,20 @@ function autoComplete (field, select, property, forcematch) {
      }
  }
 
-?>
-<script>
+\maierlabs\lpfw\Appl::addJsScript('
+    var cookieFilter;
     function musicFilter() {
-        var url="zenetoplista?classId=<?php echo getParam("classid","all")?>";
-        url +="&filter_hu="+$("#filter_hu").is(":checked");
-        url +="&filter_en="+$("#filter_en").is(":checked");
-        url +="&filter_fr="+$("#filter_fr").is(":checked");
-        url +="&filter_pt="+$("#filter_pt").is(":checked");
-        url +="&filter_es="+$("#filter_es").is(":checked");
-        url +="&filter_it="+$("#filter_it").is(":checked");
-        url +="&filter_d="+$("#filter_d").is(":checked");
-        url +="&filter_s="+$("#filter_s").is(":checked");
-        url +="&filter_h="+$("#filter_h").is(":checked");
-        url +="&filter_c="+$("#filter_c").is(":checked");
-        url +="&filter_r="+$("#filter_r").is(":checked");
-        url +="&filter_f="+$("#filter_f").is(":checked");
-        url +="&filter_j="+$("#filter_j").is(":checked");
+        cookieFilter = {};
+        $("input[type=checkbox]").each(function() {
+            var name = $(this).attr("name");
+            cookieFilter[name]=$(this).prop("checked");        
+        });
+        var jsonString=JSON.stringify(cookieFilter);
+        Cookie("MUSIC_FILTER",jsonString );
+        var url="zenetoplista?classId='.getParam("classid","all").'";
         document.location=url;
     }
-</script>
+');
+
+
+include "homefooter.inc.php";

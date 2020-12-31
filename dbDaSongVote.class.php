@@ -41,13 +41,14 @@ class dbDaSongVote
         return $this->dataBase->update("song", [["field"=>$field,"type"=>"s","value"=>$value]],"id",$id);
     }
 
-    public function updateSongFields($id,$video,$name,$language,$genre) {
+    public function updateSongFields($id,$video,$name,$language,$genre,$year) {
         $this->dbDAO->dataBase->createHistoryEntry("song",$id);
         $data=array();
         $data=$this->dataBase->insertFieldInArray($data, "video", $video);
         $data=$this->dataBase->insertFieldInArray($data, "name", $name);
         $data=$this->dataBase->insertFieldInArray($data, "language", $language);
         $data=$this->dataBase->insertFieldInArray($data, "genre", $genre);
+        $data=$this->dataBase->insertFieldInArray($data, "year", intval($year));
         return $this->dataBase->update("song", $data,"id",$id);
     }
 
@@ -118,13 +119,14 @@ class dbDaSongVote
      * read songvotelist
      * @return array(count,voted,songID,songLink,songVideo,songName,interpretName,id)
      */
-    public function readTopList($classId,$personId,$limit=1000,$language=null,$genre=null) {
-        $sql  ="select count(song.id) as count, instr(GROUP_CONCAT(person.id),'".$personId."') as voted, song.*, ";
+    public function readTopList($classId,$personId,$limit=1000,$language=null,$genre=null,$year=null) {
+        $sql  ="select count(song.id) as count, song.*, ";
         $sql .="interpret.name as interpretName ";
-        $sql .="from opinion join person on person.id=opinion.changeUserID ";
-        $sql .="join song on song.id=opinion.entryID ";
+        $sql .="from song ";
+        $sql .="left join opinion on song.id=opinion.entryID and 'music'=opinion.table and 'favorite'=opinion.opinion ";
+        $sql .="join person on person.id=opinion.changeUserID ";
         $sql .="join interpret on interpret.id=song.interpretID ";
-        $sql .=" where opinion.table='music' and opinion.opinion='favorite'";
+        $sql .=" where true ";
         if (intval($classId!=0))
             $sql .=" and person.classID=".$classId;
         if ($language!=null && sizeof($language)>0) {
@@ -139,12 +141,21 @@ class dbDaSongVote
             $sql .= "  and ( song.genre in (";
             foreach ($genre as $gen=>$value) {
                 if ($value!==false)
-                    $sql .= "'".$value."',";
+                    $sql .= "'".$gen."',";
             }
             $sql = trim($sql,",").") or song.genre='') ";
         }
+        if ($year!=null && sizeof($year)>0) {
+            $sql .= "  and ( false or ";
+            foreach ($year as $y=>$value) {
+                if ($value!==false)
+                    $sql .= "song.year BETWEEN ".(intval($y)>1960?intval($y):1000). " AND ".(9+intval($y)). " OR ";
+            }
+            $sql = substr($sql,0,-3)." or song.year is null) ";
+        }
         $sql .=" group by song.id order by count desc limit ".$limit;
         $this->dataBase->query($sql);
+        echo($sql);
         return  $this->dataBase->getRowList();
     }
 
