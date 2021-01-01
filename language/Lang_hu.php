@@ -34,8 +34,9 @@ $TXT['Találatok a véndiákok adatbankjában']	= '#Találatok a véndiákok ada
 $TXT[' Keresés']	= '# Keresés#';
 
 $TXT["for %d years"] = "%d évvel ezelött";
+$TXT['last year'] = 'múlt évben';
 $TXT['this year'] = 'ebben az évben';
-$TXT['last month'] = 'a múlt hónapban';
+$TXT['last month'] = 'múlt hónapban';
 $TXT['this month'] = 'ebben a hónapban';
 $TXT['last week'] = 'múlt héten';
 $TXT['this week'] = 'ezen a héten';

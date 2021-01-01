@@ -335,13 +335,9 @@ function getClassName($class,$short=false) {
  */
 function getAktSchoolName() {
     $school=getAktSchool();
-    if ($school!=null) {
-        if ($school["id"]==0)
-            return "";
-        else
-            return html_entity_decode(html_entity_decode($school["name"]));
-    } else
+    if ($school!=null && isset($school["id"]) && $school["id"]==0)
         return "";
+    return html_entity_decode($school["name"]);
 }
 
 /**
