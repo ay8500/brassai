@@ -22,10 +22,14 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	$d=$person;
 	?>
 	<div class="element">
-        <?php $personLink=displayPersonPictureAndHistory($db,$d);?>
+        <?php $personClass = displayPersonNameAndGetClass($db,$person,$showClass); ?>
+        <?php displayPersonPictureAndHistory($db,$d);?>
 		<div class="personboxc">
-            <?php displayPersonNameAndClass($db,$d,$personLink,$showClass); ?>
-			<div class="fields"><?php
+            <?php if ($showClass)
+                echo($personClass);?>
+            <?php if (strstr($d["role"],"jmlaureat")!==false)
+                echo('<div><a href="search?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
+            <div class="fields"><?php
 				if ($d["isTeacher"]==0) {
 					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
 					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d["education"])."</div></div>";
@@ -85,23 +89,22 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         $changePerson=$db->getPersonByID($changeUserID);
 				    else
 					    $changePerson=$db->getPersonByID($d["changeUserID"]);
-				    if ($action=='candle') $action="Gyertyát gyújtott: ";
-				    if ($action=='change' || $action==null) $action="Módósította: ";
-                    if ($action=='family' || $action==null) $action="Rokont jelölt: ";
-                    if ($action=='opinion') $action="Vélemény: ";
-                    if ($action=='easter') $action="Locsoló: ";
+				    if ($action=='candle') $action="Gyertyát gyújtott ";
+				    if ($action=='change' || $action==null) $action="Módósította ";
+                    if ($action=='family' || $action==null) $action="Rokont jelölt ";
+                    if ($action=='opinion') $action="Vélemény ";
+                    if ($action=='easter') $action="Locsoló ";
                     if ($changeDate==null)
                         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);
                     else
                         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
 				?>
-                    <div class="diakCardIcons">
-                        <?php echo $action. getPersonLinkAndPicture($changePerson) ?>
-                        <br/>Dátum:<?php echo $changeDate;?><br/>
-                    </div>
 				<?php }?>
 	  		</div>
 		</div>
+    <div class="diakCardIcons" style="margin-bottom: 5px">
+        <?php echo $action. getPersonLinkAndPicture($changePerson) .' '. $changeDate;?><br/>
+    </div>
     <?php
         /*Easter
         if (!isset($person["deceasedYear"]) || $person["deceasedYear"]==null && strtotime("now")<strtotime("2020-04-15")) {
@@ -135,9 +138,9 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
         $person=$db->getPersonByID($changeUserID);
     else
         $person = $db->getPersonByID($picture["changeUserID"]);
-    if ($action=='change' || $action==null) $action="Módósította: ";
-    if ($action=='opinion') $action="Vélemény: ";
-    if ($action=='marked') $action="Személyt megjelölt:";
+    if ($action=='change' || $action==null) $action="Módósította";
+    if ($action=='opinion') $action="Vélemény";
+    if ($action=='marked') $action="Személyt jelölt";
     if ($changeDate==null)
         $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($picture["changeDate"]);
     else
@@ -171,9 +174,9 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
                 <?php }?>
             </div>
         </div>
-		<div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php echo $action . getPersonLinkAndPicture($person) ?>
-            <br/>Dátum:<?php echo $changeDate?>
+		<div style="margin-top:5px; margin-bottom: 5px">
+            <?php echo $action .' '. getPersonLinkAndPicture($person) ?>
+            <?php echo $changeDate?>
 		</div>
         <?php  displayPictureOpinion($dbOpinion,$picture["id"]); ?>
 	</div>
@@ -189,7 +192,7 @@ function displayClass($db,$class,$showDate=false) {
 	?>
 	<div class="element">
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <h4>Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getClassName($class);?></h4></a><br/>
+            <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getClassName($class);?></h4></a><br/>
 			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
 				Osztályfőnök: <a href="editDiak?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a> <br/>
@@ -218,8 +221,8 @@ function displayClass($db,$class,$showDate=false) {
 		    $person = $db->getPersonByID($class["changeUserID"]);
 		    ?>
             <br/><div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-				Módosította: <?php echo getPersonLinkAndPicture($person) ?> <br/>
-				Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
+				Módosította: <?php echo getPersonLinkAndPicture($person) ?>
+				<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
 			</div>
 		<?php }?>
 	</div>
@@ -236,21 +239,21 @@ function displayMessage($db,$message,$showDate=true) {
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <h4>Üzenet</h4>
+            <h4><i class="material-icons" style="vertical-align: bottom">chat</i> Üzenet</h4>
             <div style="max-height: 300px; overflow-y: scroll;margin-top: 10px">
                 <?php
                     echo(htmlspecialchars_decode($message["text"]));
                     if (isset($message["comment"]) && $message["comment"]!=null)
                         echo("Kommentár: ".$message["comment"]);
                 ?>
+            </div><div style="margin-top: 5px;">
+                Üzenetet írta
+                <?php if (isset($message["changeUserID"]) && $message["changeUserID"]!=null) {
+                    echo getPersonLinkAndPicture($db->getPersonByID($message["changeUserID"])).' '.maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"]);
+                } else {
+                    echo $message["name"].' '.maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"]);
+                } ?>
             </div>
-            <?php if (isset($message["changeUserID"]) && $message["changeUserID"]!=null) {
-                $author = $db->getPersonByID($message["changeUserID"]);?>
-                Üzenetet írta: <?php echo getPersonLinkAndPicture($author)?>
-            <?php } else {?>
-                Üzenetet írta:<?php echo $message["name"] ?>
-            <?php } ?>
-            <br/>Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($message["changeDate"]);?>
         </div>
         <?php  displayMessageOpinion($dbOpinion,$message["id"]); ?>
     </div>
@@ -281,12 +284,7 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
                 </object>
             <?php }?>
             <br/>Megjelenési év:<?php echo $music["year"] ?><br/>
-            <?php if (isset($userId) && $userId!=null) {
-                $author = $db->getPersonByID($userId);?>
-                <?php echo $actionText.': '.getPersonLinkAndPicture($author)?>
-            <?php } else {?>
-                <?php echo $actionText?>: anonim látogató
-            <?php } ?>
+            <?php echo $actionText.' '.getPersonLinkAndPicture($db->getPersonByID($userId))?>
             <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($date);?>
             <?php
                 if (isset($music["check"])) {
@@ -397,31 +395,32 @@ function displayPersonPictureAndHistory($db,$d) {
     return $personLink;
 }
 
-function displayPersonNameAndClass ($db,$d,$personLink,$showClass) {
-    ?>
-    <a href="<?php echo $personLink?>"><h4><?php echo getPersonName($d);?></h4></a>
-    <?php if (strstr($d["role"],"jmlaureat")!==false)
-        echo('<div><a href="search?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
-    <?php if($showClass) {
-        if ($d["isTeacher"]==1) {
-            if ($d["gender"]=='f') echo('<h5>Tanárnő</h5>');
-            elseif ($d["gender"]=='m') echo('<h5>Tanár úr</h5>');
-            else echo('<h5>Tanár</h5>');
+function displayPersonNameAndGetClass ($db,$d) {
+    if ($d["isTeacher"]==1) {
+        $icon = '<i style="vertical-align: bottom" class="material-icons">school</i> ';
+    } else {
+        $icon = '<i style="vertical-align: bottom" class="material-icons">person</i> ';
+    }
+    echo '<a href="'.getPersonLink($d["lastname"],$d["firstname"]).'-'. $d["id"] .'"><h4>'.$icon. getPersonName($d).'</h4></a>';
+    if ($d["isTeacher"]==1) {
+        if ($d["gender"]=='f') $personClass='<h5>Tanárnő</h5>';
+        elseif ($d["gender"]=='m') $personClass='<h5>Tanár úr</h5>';
+        else $personClass = '<h5>Tanár</h5>';
+    } else {
+        if (!isset($d["classText"])) {
+            $diakClass = $db->getClassById($d["classID"]);
+            $d["classText"] = getClassName($diakClass);
+        }
+        if (isPersonGuest($d)==1) {
+            if (strstr($d["classText"],"staf")!==false)
+                $personClass = '<h5>Jó barát:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
+            else
+                $personClass = '<h5>Vendég:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
         } else {
-            if (!isset($d["classText"])) {
-                $diakClass = $db->getClassById($d["classID"]);
-                $d["classText"] = getClassName($diakClass);
-            }
-            if (isPersonGuest($d)==1) {
-                if (strstr($d["classText"],"staf")!==false)
-                    echo '<h5>Jó barát:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
-                else
-                    echo '<h5>Vendég:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
-            } else {
-                    echo '<h5>Véndiák:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
-            }
+            $personClass = '<h5>Véndiák:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
         }
     }
+    return $personClass;
 }
 
 function displayPersonPicture($d)

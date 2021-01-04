@@ -172,17 +172,17 @@ class dbBL extends dbDAO
             $type = "school";
             $typeid = $pict[$type . "ID"];
             $school = $this->getSchoolById($typeid);
-            $typeText = '<a href="picture?type=schoolID&typeid='.$typeid.'">Iskolakép:' . html_entity_decode(html_entity_decode($school["name"])).'</a>';
+            $typeText = '<a href="picture?type=schoolID&typeid='.$typeid.'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Iskolakép:' . html_entity_decode($school["name"]).'</a>';
         } elseif (isset($pict["classID"])) {
             $type = "class";
             $typeid = $pict[$type . "ID"];
             $class = $this->getClassById($typeid);
-            $typeText = '<a href="picture?type=classID&typeid='.$typeid.'">Osztálykép:' . $class["text"].'</a>';
+            $typeText = '<a href="picture?type=classID&typeid='.$typeid.'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Osztálykép:' . $class["text"].'</a>';
         } elseif (isset($pict["personID"])) {
             $type = "person";
             $typeid = $pict[$type . "ID"];
             $picturePerson = $this->getPersonByID($typeid);
-            $typeText = '<a href="editDiak?tabOpen=pictures&uid=' . $typeid .'">Személyes kép:'. getPersonName($picturePerson).'</a>';
+            $typeText = '<a href="editDiak?tabOpen=pictures&uid=' . $typeid .'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Személyes kép:'. getPersonName($picturePerson).'</a>';
         }
         return array("type"=>$type,"typeId"=>$typeid,"text"=>$typeText);
     }
@@ -706,7 +706,7 @@ function getPersonShortName($user) {
  * @return string
  */
 function getPersonName($user) {
-    if ($user==null || !isset($user["lastname"]) || !isset($user["firstname"]) )
+    if ($user==null || (!isset($user["lastname"]) && !isset($user["firstname"])) )
         return '';
     $ret ="";
     if (isset($user["title"]))

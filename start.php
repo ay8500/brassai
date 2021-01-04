@@ -7,6 +7,7 @@ include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
+global $db;
 
 $userId=getIntParam("userId",-1);
 if ($userId>=0) {
@@ -80,25 +81,25 @@ function showRecentChanges(dbDAO $db,$date=null) {
 //initialise tabs
 $tabsCaption = array();
 $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
-array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "globe"));
-array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek', "glyphicon" => "pushpin"));
-array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok', "glyphicon" => "tasks"));
-array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "education"));
-array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "user"));
-array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "heart"));
-array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "picture"));
-array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "screenshot"));
-array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemények', "glyphicon" => "thumbs-up"));
-array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertyák', "glyphicon" => "plus"));
+array_push($tabsCaption ,array("id" => "all", "caption" => 'Minden újdonság', "glyphicon" => "*public"));
+array_push($tabsCaption ,array("id" => "message", "caption" => 'Üzenetek', "glyphicon" => "*chat"));
+array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok', "glyphicon" => "*people"));
+array_push($tabsCaption ,array("id" => "teacher", "caption" => 'Tanárok', "glyphicon" => "*school"));
+array_push($tabsCaption ,array("id" => "person", "caption" => 'Diákok', "glyphicon" => "*person"));
+array_push($tabsCaption ,array("id" => "family", "caption" => 'Rokonok', "glyphicon" => "*device_hub"));
+array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek', "glyphicon" => "*photo_camera"));
+array_push($tabsCaption ,array("id" => "tag", "caption" => 'Jelölések', "glyphicon" => "*center_focus_strong"));
+array_push($tabsCaption ,array("id" => "opinion", "caption" => 'Vélemények', "glyphicon" => "*thumb_up"));
+array_push($tabsCaption ,array("id" => "candle", "caption" => 'Gyertyák', "glyphicon" => "*whatshot"));
 if (userIsLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
         $pers = getPersonShortName($db->getPersonByID(getParam("userid")));
     } else {
         $pers = getPersonShortName($db->getPersonByID(getLoggedInUserId()));
     }
-    array_push($tabsCaption, array("id" => "user", "caption" => $pers, "glyphicon" => "user"));
+    array_push($tabsCaption, array("id" => "user", "caption" => $pers, "glyphicon" => "*person"));
 } else {
-    array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "user"));
+    array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "*person"));
 }
 
 $title = 'Újdonságok: '. $tabsCaption[(array_search(getParam("tabOpen","all"),array_column($tabsCaption,"id")))]["caption"];
