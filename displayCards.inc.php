@@ -334,7 +334,7 @@ function displayArticle($db,$article,$showDate=true) {
 function displayPersonCandle($db,$person,$date) {
     if ($person==null) {
         $person = $db->getPersonDummy();
-        $person["id"]=0;$person["classID"]=-1;$person["isTeacher"]=null;$person["lastname"]="Anonim látogató";
+        $person["id"]=0;$person["classID"]=-1;$person["isTeacher"]=null;$person["lastname"]="anonim látogató";
     }
     $d=$person;
     ?>

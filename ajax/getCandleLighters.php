@@ -35,7 +35,7 @@ if ($sum>0) {
         if (isset($candle["userID"]) && intval($candle["showAsAnonymous"])==0)
             $html .= getPersonLinkAndPicture($db->getPersonById($candle["userID"]));
         else
-            $html .= appl::_text('Anonim felhasználó');
+            $html .= appl::_text('anonim látogató');
         $html .= '<span style="float:right">' . appl::dateAsStr($candle["lightedDate"]) . '</span>';
         if (userIsAdmin()) {
             $html .= '<span title="' . $candle["ip"] . '" onclick="showip(' . "'" . $candle["ip"] . "'" . ')"> IP</span>';

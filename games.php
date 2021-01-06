@@ -29,7 +29,7 @@ if (userIsLoggedOn() || getParam("userid")!=null) {
     }
     array_push($tabsCaption, array("id" => "user", "caption" => $pers. " játékai", "glyphicon" => "user"));
 } else {
-    array_push($tabsCaption, array("id" => "user", "caption" => 'Az én anonim játékaim', "glyphicon" => "user"));
+    array_push($tabsCaption, array("id" => "user", "caption" => 'Az én játékaim', "glyphicon" => "user"));
 }
 
 $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];

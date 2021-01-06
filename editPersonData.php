@@ -227,7 +227,7 @@
 	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">"1 und 1"</a> cég szamitógépközpontjában.
 	Biztonsági másolatok a személyes adatokról csak az internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az másolatok maximum 6 hónapig vannak tárolva.
 	A személyes adatok és fényképek megjelennek külömbőző internet kereső oldalok találati listáján.
-	A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim felhasználok és internet kereső oldalok ellen védve vannak. </span><br/>
+	A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim látogató és internet kereső oldalok ellen védve vannak. </span><br/>
 
 
 <?php

@@ -30,7 +30,7 @@ include("homemenu.inc.php");
 		<td>
 			<?php if ( !userIsLoggedOn() ) {?> 
 				<div style="text-align:center;font-size:12px; margin:10px">
-					Mivel a weboldal látogatója anonim a koordináták véletlenszerüen el vannak kb. 10 km el tólva. Jelenkezz be a pontos poziciók megtekintéséhez.
+					A koordináták véletlenszerüen el vannak néhány kilométerrel tólva. Jelenkezz be a pontos poziciók megtekintéséhez.
 				</div>
 			<?php } ?>
 			
@@ -46,7 +46,7 @@ include("homemenu.inc.php");
 					<a class="btn btn-default" href="javascript:zoomMap(6);"><span><img src="images/europa.png"></span> Europa</a>
 					<a class="btn btn-default" href="javascript:zoomMap(7);"><span><img src="images/world.png"></span> Az egész világ</a>
 				</div>				
-				<div id="txtPerson" style="text-align:center;font-size:12px; margin:10px">Osztálytárs a térképen:</div> 
+				<div id="txtPerson" style="text-align:center;font-size:12px; margin:10px">Személyek a térképen:</div>
 			</div>
 		</td>
 	</tr>

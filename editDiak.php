@@ -192,7 +192,7 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
             \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError:1034",\maierlabs\lpfw\LoggerLevel::error);
 		}
 	} else {
-		Appl::setMessage("Az adatok módosítása anonim felhasználok részére korlátozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.","warning");
+		Appl::setMessage("Az adatok módosítása anonim látogatók részére korlátozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.","warning");
         \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError: too many",\maierlabs\lpfw\LoggerLevel::error);
 	}
 	if ($personid==-1) {

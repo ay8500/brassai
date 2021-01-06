@@ -402,7 +402,7 @@ function getPersonLinkAndPicture($person,$fullLink=false) {
         $ret .= $picture. (array_key_exists("title",$person)?($person["title"]." "):"") . $person["lastname"] . " " . $person["firstname"];
         $ret .= '</a>';
     } else {
-        $ret = 'Anonim felhasználó';
+        $ret = 'anonim látogató';
     }
     return $ret;
 }
