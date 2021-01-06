@@ -90,7 +90,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				    else
 					    $changePerson=$db->getPersonByID($d["changeUserID"]);
 				    if ($action=='candle') $action="Gyertyát gyújtott ";
-				    if ($action=='change' || $action==null) $action="Módósította ";
+				    if ($action=='change' || $action==null) $action="Módosította ";
                     if ($action=='family' || $action==null) $action="Rokont jelölt ";
                     if ($action=='opinion') $action="Vélemény ";
                     if ($action=='easter') $action="Locsoló ";
@@ -138,7 +138,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
         $person=$db->getPersonByID($changeUserID);
     else
         $person = $db->getPersonByID($picture["changeUserID"]);
-    if ($action=='change' || $action==null) $action="Módósította";
+    if ($action=='change' || $action==null) $action="Módosította";
     if ($action=='opinion') $action="Vélemény";
     if ($action=='marked') $action="Személyt jelölt";
     if ($changeDate==null)

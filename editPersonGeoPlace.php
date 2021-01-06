@@ -21,11 +21,11 @@ if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 			if (!userIsAdmin())
                 \maierlabs\lpfw\Logger::_("SaveGeo\t".getLoggedInUserId());
 
-            \maierlabs\lpfw\Appl::setMessage('Geokoordináták sikeresen módósítva!', 'success');
+            \maierlabs\lpfw\Appl::setMessage('Geokoordináták sikeresen módosítva!', 'success');
 			$diak["geolat"]=$geolat;
 			$diak["geolng"]=$geolng;
 		} else {
-			\maierlabs\lpfw\Appl::setMessage('Geokoordináták módósítása nem sikerült!', 'warning');
+			\maierlabs\lpfw\Appl::setMessage('Geokoordináták módosítása nem sikerült!', 'warning');
 		}
 	}
 }
@@ -89,7 +89,7 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUser
 			<span style="min-width:110px; text-align:right" class="input-group-addon" >Hosszúság</span>
 			<input type="text" size="24" name="geolng" class="form-control" />
 			<div class="input-group-btn">
-				<input type="submit" class="btn btn-default" value="Geokoordinátákat módósít" title="" />
+				<input type="submit" class="btn btn-default" value="Geokoordinátákat módosít" title="" />
 			</div>
 		</div>
 	</form>
