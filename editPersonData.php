@@ -78,7 +78,7 @@
     <?php } ?>
 
 <?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
-    <form method="get" id="editform" >
+    <form method="get" id="editform" action="editDiak.php">
         <?php
         //Editfields school and class
         if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {

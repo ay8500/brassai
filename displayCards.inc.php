@@ -60,7 +60,9 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				}
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
-					echo('<div class="diakCardIcons" style="margin-top:10px">');
+				?>
+					<div class="diakCardIcons" style="margin-top:10px">
+                    <?php
 					    displayIcon($d,"phone","phone.png","Telefon","tel:");
                         displayIcon($d,"mobil","mobile.png","Mobil","tel:");
                         displayIcon($d,"email","email.png","E-Mail","mailto:");
@@ -79,32 +81,30 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 						if (isset($d["geolat"]) && $d["geolat"]!="")
 							echo '<a href="editDiak?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
 						$relatives=$dbFamily->getPersonRelativesCountById($d["id"]);
-						if ($relatives>0) {
+						if ($relatives>0)
                             echo '<a href="editDiak?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
-                        }
-						?>
-					</div>
-				<?php  if ($showDate) {
-				    if ($action!='change')
-                        $changePerson=$db->getPersonByID($changeUserID);
-				    else
-					    $changePerson=$db->getPersonByID($d["changeUserID"]);
-				    if ($action=='candle') $action="Gyertyát gyújtott ";
-				    if ($action=='change' || $action==null) $action="Módosította ";
-                    if ($action=='family' || $action==null) $action="Rokont jelölt ";
-                    if ($action=='opinion') $action="Vélemény ";
-                    if ($action=='easter') $action="Locsoló ";
-                    if ($changeDate==null)
-                        $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);
-                    else
-                        $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
-				?>
-				<?php }?>
+					?>
+				</div>
 	  		</div>
 		</div>
-    <div class="diakCardIcons" style="margin-bottom: 5px">
-        <?php echo $action. getPersonLinkAndPicture($changePerson) .' '. $changeDate;?><br/>
-    </div>
+        <?php  if ($showDate) {
+            if ($action!='change')
+                $changePerson=$db->getPersonByID($changeUserID);
+            else
+                $changePerson=$db->getPersonByID($d["changeUserID"]);
+            if ($action=='candle') $action="Gyertyát gyújtott ";
+            if ($action=='change' || $action==null) $action="Módosította ";
+            if ($action=='family' || $action==null) $action="Rokont jelölt ";
+            if ($action=='opinion') $action="Vélemény ";
+            if ($action=='easter') $action="Locsoló ";
+            if ($changeDate==null)
+                $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);
+            else
+                $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($changeDate);
+            ?><div class="diakCardIcons" style="margin-bottom: 5px">
+                <?php echo $action. getPersonLinkAndPicture($changePerson) .' '. $changeDate;?><br/>
+            </div>
+        <?php }?>
     <?php
         /*Easter
         if (!isset($person["deceasedYear"]) || $person["deceasedYear"]==null && strtotime("now")<strtotime("2020-04-15")) {
@@ -116,7 +116,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         }
         */
         displayPersonOpinion($dbOpinion,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
-        ?>
+    ?>
 	</div>
 <?php
 }

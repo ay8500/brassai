@@ -20,27 +20,21 @@ class dbDaCandle
         $this->dbDAO = $dbDAO;
     }
 
-    public function getLightedCandleList($id=null) {
-        $sql = 'select personID from candle join person on person.id=candle.personID ';
+    public function getLightedCandleList($id=null, $limit=12) {
+        $sql = 'select distinct personID from candle join person on person.id=candle.personID ';
         $sql .=" where deceasedYear is not null ";
         $sql .=" and  ((candle.userId is null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."')";
         $sql .=" or    (candle.userId is not null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."') )";
         if($id!=null) {
             $sql .=' and userID='.$id;
         }
-        $this->dbDAO->dataBase->query($sql);
-        if ($this->dbDAO->dataBase->count()>0) {
-            $candles= $this->dbDAO->dataBase->getRowList();
-
-            $sql='id in (';
-            foreach ($candles as $idx=>$candle) {
-                if ($idx!=0) $sql .=",";
-                $sql .=$candle["personID"];
-            }
-            $sql.=')';
-            return $this->dbDAO->getSortedPersonList($sql);
+        $sql .= ' ORDER BY candle.lightedDate DESC LIMIT '.$limit;
+        $candles= $this->dbDAO->dataBase->queryArray($sql);
+        $ret = array();
+        foreach ($candles as $candle) {
+            $ret[] = $this->dbDAO->getPersonByID($candle["personID"]);
         }
-        return array();
+        return $ret;
     }
 
     /**

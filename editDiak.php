@@ -13,7 +13,6 @@ global $userDB;
 Appl::addCss('css/chosen.css');
 
 $tabOpen= getParam("tabOpen", "person");
-
 $personid = getIntParam("uid",null);
 if (getParam("type")=="personID" && getParam("typeid")!=null) {
     $personid=getIntParam("typeid");
