@@ -53,12 +53,28 @@ class dbDaUser implements \maierlabs\lpfw\iDbDaUser
 
     public function setUserName($id, $username)
     {
-        return $this->dbDAO->savePersonField($id,"user",encrypt_decrypt("encrypt",$username));
+        return $this->dbDAO->savePersonField($id,"user",$username);
+    }
+
+    public function setUserFullName($id, $fullname)
+    {
+        //TODO split fullname into firstanam and lastname
+        return $this->dbDAO->savePersonField($id,"lastname",$fullname);
     }
 
     public function setUserFacebookId($id, $facebookId)
     {
-        return $this->dbDAO->savePersonField($id,"facebookid",encrypt_decrypt("encrypt",$facebookId));
+        return $this->dbDAO->savePersonField($id,"facebookid",$facebookId);
+    }
+
+    public function setUserEmail($id, $email)
+    {
+        return $this->dbDAO->savePersonField($id,"email",$email);
+    }
+
+    public function setUserRole($id, $role)
+    {
+        return $this->dbDAO->savePersonField($id,"role",$role);
     }
 
     public function setUserLastLogin($id)

@@ -7,6 +7,7 @@ include_once 'dbBL.class.php';
 include_once 'displayOpinion.inc.php';
 use \maierlabs\lpfw\Appl as Appl;
 
+global $db;
 $personList=array();
 $classList=array();
 $pictureList=array();
