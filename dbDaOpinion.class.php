@@ -92,13 +92,14 @@ class dbDaOpinion
      * @param $type
      * @return array|null
      */
-    public function getOpinion($id, $table, $type)
+    public function getOpinion($id, $table, $type, $where=null)
     {
+        $where = $where==null?"":" and ".$where;
         if (userIsLoggedOn()) {
-            $this->dbDAO->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id . " and changeUserID=" . getLoggedInUserId());
+            $this->dbDAO->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id .$where. " and changeUserID=" . getLoggedInUserId());
             return $this->dbDAO->dataBase->getRowList();
         }
-        $this->dbDAO->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id . " and changeIP='" . $_SERVER["REMOTE_ADDR"] . "'");
+        $this->dbDAO->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type .$where. "' and entryID=" . $id . " and changeIP='" . $_SERVER["REMOTE_ADDR"] . "'");
         return $this->dbDAO->dataBase->getRowList();
     }
 
@@ -152,7 +153,7 @@ class dbDaOpinion
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=" . $id);
             $ret->friends = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=" . $id);
             $ret->sport = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=" . $id);
-            $ret->easter = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion like 'easter%' and entryID=" . $id);
+            $ret->easter = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion like 'easter%' and entryID=" . $id. " and changeDate >'".date("Y")."-01-01 00:00:00'");
             $ret->candles = $this->dbCandle->getCandlesByPersonId($id);
         }
         return $ret;
