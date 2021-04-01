@@ -4,11 +4,12 @@
  * Display the opinion block for a person
  * @param dbDaOpinion $db the database business layer
  * @param int $id person id
+ * @param string $gender m=>male f=>female
  * @param bool $teacher is the person a teacher
  * @param bool $decesed person is decesed
  * @return void
  */
-function displayPersonOpinion($db,$id,$teacher,$decesed) {
+function displayPersonOpinion($db,$id,$gender,$teacher,$decesed) {
     $o=$db->getOpinionCount($id,'person');
     if ($teacher) {
         $ttt="Kedvenc tanárja ".$o->friends." véndiáknak";
@@ -56,12 +57,21 @@ function displayPersonOpinion($db,$id,$teacher,$decesed) {
                 <img src="images/runner.jpg" style="width: 32px"/><span class="countTag"><?php echo $o->sport ?></span>
             </span>
         </a>
+        <?php if ($gender=="f") {?>
         <a id="c-person-easter-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Húsvéti locsolók','person','easter',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Öntözök száma <?php echo $o->easter ?> " <?php echo $oeaster?>>
             <span style="margin-right: -8px;">
                 <img src="images/easter.png" style="width: 32px"/><span class="countTag"><?php echo $o->easter ?></span>
             </span>
         </a>
+        <?php } else { ?>
+            <a id="c-person-easter-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Húsvéti piros tojások','person','easteregg',<?php echo getLoggedInUserIdOrNull() ?>)"
+               title="Piros tojások száma <?php echo $o->easter ?> " <?php echo $oeaster?>>
+            <span style="margin-right: -8px;">
+                <img src="images/easter.png" style="width: 32px"/><span class="countTag"><?php echo $o->easter ?></span>
+            </span>
+            </a>
+        <?php }  ?>
     </div>
     <div id="o-person-<?php echo $id ?>"></div>
     <?php
@@ -302,14 +312,14 @@ function getLoggedInUserIdOrNull() {
                     } else if (data.result=='empty') {
                         showModalMessage('Vélemény','Sajnos a vélemény mező szövege üres. Kérjük ismételd meg véleményed. Köszönjük szépen.');
                     } else if (data.result=='exists') {
-                        if (type=='easter')
+                        if (stype=='easter')
                             alert('Ezt a virágszálat már meglocsoltad.');
                         else
                             showModalMessage('Vélemény','Ezt a tipusú véleményt már megadtad.','warning');
                     } else if (data.result=='count') {
                         showModalMessage('Anonim felhasználó véleménye','Sajnos véleményt mint anonim felhasználó csak bizonyos mértékben adhatsz. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.','warning');
                     } else if (data.result=='login') {
-                        if (type=='easter')
+                        if (stype=='easter')
                             alert('Sajnos csak bejelentkezett felhasználók tudnak locsolni. Kérjük jelentkezz be és locsolj újból. Köszönjük szépen.');
                         else
                             showModalMessage('Anonim felhasználó véleménye','Sajnos ezt a véleményt csak bejelentkezett felhasználók adhatják meg. Kérjük jelentkezz be és ismételd meg véleményed. Köszönjük szépen.','warning');

@@ -152,17 +152,18 @@ class dbDaOpinion
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=" . $id);
             $ret->friends = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=" . $id);
             $ret->sport = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=" . $id);
-            $ret->easter = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='easter' and entryID=" . $id);
+            $ret->easter = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion like 'easter%' and entryID=" . $id);
             $ret->candles = $this->dbCandle->getCandlesByPersonId($id);
         }
         return $ret;
     }
 
-    public function getOpinionPersonCount($table, $type)
+    public function getOpinionPersonCount($table, $type, $year=null)
     {
         $ret = new stdClass();
-        $ret->user = $this->dbDAO->dataBase->queryArray("select count(changeUserID), changeUserID from opinion where `table`='" .$table. "' and opinion='" .$type. "' GROUP BY changeUserID");
-        $ret->opinion = $this->dbDAO->dataBase->queryArray("select count(entryID), entryID from opinion where `table`='" .$table. "' and opinion='" .$type. "' GROUP BY entryID");
+        $year = $year==null?"":" AND changeDate > '".$year."-01-01 00:00:00' ";
+        $ret->user = $this->dbDAO->dataBase->queryArray("select count(changeUserID), changeUserID from opinion where `table`='" . $table . "' and opinion='" . $type . "'" . $year . " GROUP BY changeUserID");
+        $ret->opinion = $this->dbDAO->dataBase->queryArray("select count(entryID), entryID from opinion where `table`='" . $table . "' and opinion='" . $type . "'" . $year . " GROUP BY entryID");
         return $ret;
     }
 }

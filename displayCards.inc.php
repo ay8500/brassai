@@ -96,7 +96,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             if ($action=='change' || $action==null) $action="Módosította ";
             if ($action=='family' || $action==null) $action="Rokont jelölt ";
             if ($action=='opinion') $action="Vélemény ";
-            if ($action=='easter') $action="Locsoló ";
+            if ($action=='easter') $action=$changePerson["gender"]=="m"?"Locsoló ":"Piros tojás";
             if ($changeDate==null)
                 $changeDate = maierlabs\lpfw\Appl::dateTimeAsStr($d["changeDate"]);
             else
@@ -106,16 +106,16 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             </div>
         <?php }?>
     <?php
-        /*Easter
-        if (!isset($person["deceasedYear"]) || $person["deceasedYear"]==null && strtotime("now")<strtotime("2020-04-15")) {
+        /*Easter*/
+        if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) && strtotime("now")<strtotime("2021-04-15")) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !userIsLoggedOn())) {
                 ?>
                 <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId() ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
                 <?php
             }
         }
-        */
-        displayPersonOpinion($dbOpinion,$d["id"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
+
+        displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
     ?>
 	</div>
 <?php

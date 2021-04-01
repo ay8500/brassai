@@ -101,8 +101,10 @@ if (userIsLoggedOn() || getParam("userid")!=null) {
 } else {
     array_push($tabsCaption, array("id" => "user", "caption" => 'Én magam', "glyphicon" => "*person"));
 }
-
 $title = 'Újdonságok: '. $tabsCaption[(array_search(getParam("tabOpen","all"),array_column($tabsCaption,"id")))]["caption"];
+if (getParam("tabOpen")=="easter") {
+    $title = "Kellemes húsvéti ünnepeket! ";
+}
 Appl::setSiteTitle($title,$title);
 include("homemenu.inc.php");
 
