@@ -85,6 +85,25 @@ class dbDaOpinion
         return $ret;
     }
 
+    public function sendEasterEgg($id) {
+        $ret = new stdClass();
+        $opinion = $this->dbDAO->dataBase->querySignleRow("select * from opinion where id=" . $id);
+        $exist = $this->existOpinion($opinion["changeUserID"],$opinion["entryID"],"person","easteregg","changeDate >'".date("Y")."-01-01 00:00:00'");
+        if ($opinion != null && !$exist &&
+            ( userIsAdmin() ||  (userIsLoggedOn() && $opinion["entryID"] == getLoggedInUserId()) )
+
+        ) {
+            $ret->table = $opinion["table"];
+            $ret->type = $opinion["opinion"];
+            $ret->id = $opinion["entryID"];
+            $ret->ok = $this->setOpinion($opinion["changeUserID"],$opinion["entryID"],"person","easteregg")>0;
+        } else {
+            $ret->ok = false;
+        }
+        return $ret;
+
+    }
+
     /**
      * get only one opinion from logge in user or teh ip address
      * @param $id
@@ -101,6 +120,18 @@ class dbDaOpinion
         }
         $this->dbDAO->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type .$where. "' and entryID=" . $id . " and changeIP='" . $_SERVER["REMOTE_ADDR"] . "'");
         return $this->dbDAO->dataBase->getRowList();
+    }
+
+    /**
+     * check if an Opinion exists
+     * @return boolean
+     */
+    public function existOpinion($entryID,$changeUserID, $table, $type, $where=null)
+    {
+        $where = $where==null?"":" and ".$where;
+        $where = "select id from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $entryID .$where. " and changeUserID=".$changeUserID ;
+        $ret = $this->dbDAO->dataBase->queryArray($where);
+        return sizeof($ret)>0;
     }
 
     /**

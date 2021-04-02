@@ -29,7 +29,8 @@ if (isset($_GET['key'])) {
 //Events
 $today = new DateTime();
 $xmas = (intval(date("m")) === 12 || intval(date("m")) === 1);
-$xmasStyle = $xmas?" border-bottom: 2px solid red;":"";
+$eventStyle = $xmas?" border-bottom: 2px solid red;":"";
+/*easter*/ $eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 /**
@@ -101,7 +102,7 @@ handleLogInOff(new dbDaUser($db));
 }?>
 <div class="homeLogo" style="z-index: -1"><img id="homelogo" class="img-responsive" src="images/BrassaiLiceumNagy.JPG" /></div>
 
-<nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00; <?php echo $xmasStyle?>" role="navigation">
+<nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00; <?php echo $eventStyle?>" role="navigation">
   <div class="container-fluid" id="mainmenucontainer" >
     <!-- Brand and toggle get grouped for better mobile display -->
       <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="favicon.jpg" style="height:27px" /></a>
@@ -316,14 +317,14 @@ handleLogInOff(new dbDaUser($db));
     </div>
 </div>
 <?php
-//easter
+/*easter*/
 $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2021);
 $rrpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easteregg',2021);
 ?>
 <div id="topLine">
     <h1 class="appltitle">
         <?php /*easter*/ ?>
-        <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user).' piros tojások:'.sizeof($rrpo->opinion)?> ">
+        <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user).' piros tojások:'.sizeof($rrpo->user)?> ">
             <img class="blob" src="images/easter.png" style="width: 50px" />
             <span class="badge" style="left: -20px;position: relative;top: 4px;">
                 <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>

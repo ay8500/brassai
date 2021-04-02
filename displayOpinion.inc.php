@@ -365,6 +365,9 @@ function getLoggedInUserIdOrNull() {
                     if (e.myopinion) {
                         text +=' <span title=\"kitöröl\" class=\"oglyph glyphicon glyphicon-remove\" onclick=\"deleteOpinion('+e.id+')\"></span>';
                     }
+                    if (e.sendEgg!=null) {
+                        text +='<button style=\"margin-left:5px;border: 1px solid green;\" onclick=\"sendEgg('+e.id+')\" title=\"Köszönetként piros tojást küldök a locsolónak\">piros tojást küldök</button>';
+                    }
                     text +='</span></div>';
                     if (null!=e.text)
                      text +=e.text;
@@ -400,6 +403,26 @@ function getLoggedInUserIdOrNull() {
                 clearModalMessage();
                 showOpinions(data.id,'',data.table,data.type);
                 showOpinionLogo(data.id,data.table,data.type,data.count);
+            },
+            error:function(error) {
+                alert('error');
+            }
+        });
+        return false;
+    }
+    
+    function sendEgg(id) {
+        showWaitMessage();
+        $.ajax({
+            url:'ajax/sendEasterEgg?id='+id,
+            type:'GET',
+            success:function(data){
+                clearModalMessage();
+                showOpinions(data.id,'',data.table,data.type);
+                if (data.ok==true)
+                    alert('Piros tojás sikeresen elküldve, a locsoló nevében köszönjük szépen.');
+                else
+                    alert('Piros tojás már el tett küldve!');
             },
             error:function(error) {
                 alert('error');

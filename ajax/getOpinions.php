@@ -25,8 +25,10 @@ if ($count!='candle') {
 
     foreach ($opinions as $o) {
         $op = new stdClass();
-        if ($count == "text" || $count = "")
+        if ($count == "text" )
             $op->text = $o->text;
+        else
+            $op->text =null;
         if (userIsAdmin()) {
             $op->ip =  $o->ip;
         }else {
@@ -40,6 +42,14 @@ if ($count!='candle') {
             $op->name = getPersonLinkAndPicture($person);
         } else {
             $op->name = getPersonLinkAndPicture($db->getPersonDummy());
+        }
+        //Only for earter opinions form this year
+        if ($count=="easter" && $o->date > date("Y")."-01-01 00:00:00") {
+            //Check if the girl allready sent an easter egg to the boy
+            $egg=$dbOpinions->existOpinion($o->person,$id,"person","easteregg", "changeDate > '".date("Y")."-01-01 00:00:00'");
+            $op->sendEgg = $egg?null:true;
+        } else {
+            $op->senEgg = null;
         }
         array_push($ret, $op);
     }

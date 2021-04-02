@@ -31,8 +31,8 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                 echo('<div><a href="search?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
             <div class="fields"><?php
 				if ($d["isTeacher"]==0) {
-					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".$d["partner"]."</div></div>";
-					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d["education"])."</div></div>";
+					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".getFieldValue($d,"partner")."</div></div>";
+					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d,"education")."</div></div>";
 					if(showField($d,"employer")) 	{
 						$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "",	getFieldValue($d["employer"]));
 						echo "<div><div>Munkahely:</div><div>".$fieldString ."</div></div>";
