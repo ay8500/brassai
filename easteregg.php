@@ -17,18 +17,28 @@ include("homemenu.inc.php");
 $id = encrypt_decrypt("decrypt",getParam("id"));
 $person = $db->getPersonByID($id);
 
-$id = encrypt_decrypt("decrypt",getParam("key"));
-$me = $db->getPersonByID($id);
-directLogin($userDB,getParam("key"))
+$key = encrypt_decrypt("decrypt",getParam("key"));
+$me = $db->getPersonByID($key);
+directLogin($userDB,getParam("key"));
+
+$dbOpinion = new dbDaOpinion($db);
+$oldOpinion = $dbOpinion->getOpinion($id,"person","easteregg","changeDate > '".date("Y")."-01-01 00:00:00'");
+if (sizeof($oldOpinion)==0) {
+    $dbOpinion->setOpinion($id, getLoggedInUserId(), "person", "easteregg", "");
+}
 
 ?>
 
 <p>&nbsp;</p>
 <div style="text-align: center">
-    <?php if ($person!=null && $me!=null) {?>
+    <?php if ($person!=null && $me!=null && sizeof($oldOpinion)==0) {?>
         <h3>Kedves <?php echo getPersonName($me)?>,</h3>
         <h3>köszönjük szépen <?php echo getPersonName($person)?> nevében a piros tojást.</h3>
 
+    <?php } elseif ($person!=null && $me!=null && sizeof($oldOpinion)>0) {?>
+        <h3>Kedves <?php echo getPersonName($me)?>,</h3>
+        <h3>köszönjük szépen <?php echo getPersonName($person)?> nevében a piros tojást,</h3>
+        <h3>ezt a linket csak egyszer lehet használni.</h3>
     <?php } else { ?>
         <h3>Sajnos ez az oldal nincs helyesen felhívva.</h3>
     <?php } ?>

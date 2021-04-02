@@ -177,7 +177,7 @@ function checkMessageContent($message) {
 						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok ", " puszi ", "kellemes ","nagyon ","puszilok ",
 						"legyek", " aki ", "mikor", "honlap", "oldal","vagyok","leszek"," vagy "," minden ",
 						" én "," te ", " brassai ","köszön", "üdvöz",
-						"ünnep",  "boldog ", "karácsony", "husvét", "egy ","minden","senki","neked","fénykép" );
+						"ünnep",  "boldog ", "karácsony", "húsvét", "egy ","minden","senki","neked","fénykép" );
 	foreach ($whiteList as $s) {
 		$ret->count += substr_count($msg, $s);
 	}

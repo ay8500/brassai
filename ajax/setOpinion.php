@@ -64,11 +64,12 @@ if ($type=='easter') {
     $person = $db->getPersonByID($id);
     $email = getFieldValue($person,"email");
     if ($email!="") {
-        $text = "<h3>Kedves ". getPersonLinkAndPicture($person,true) . "</h3>";
-        $text .= "<p>A Bassai Sámuel véndiákok honoldalán keresztül virtuálisan meglocsolt ".getPersonLinkAndPicture($db->getPersonByID(getLoggedInUserId()),true)."</p>";
-        $text .= '<p>Ha szeretnél a locsolónak piros tojást adni, kattints a piros tojás linkre. <a href="https://brassai.blue-l.de/easteregg?id='.encrypt_decrypt("encrypt",getLoggedInUserId()).'&key='.encrypt_decrypt("encrypt",$id).'">piros tojás</a> </p>';
-        $text .= "<p>Kellemes husvéti ünnepeket!</p>";
-        \maierlabs\lpfw\Appl::sendHtmlMail($email, $text, 'Brassai Sámuel véndiákjai. Virtuális locsolás. ');
+        $text = "<h3>Kedves ". getPersonName($person) . "</h3>";
+        $text .= "<p>A Bassai Sámuel véndiákok honoldalán keresztül virtuálisan meglocsolt ".getPersonName($db->getPersonByID(getLoggedInUserId()),true)."</p>";
+        $text .= '<p>Ha szeretnél a locsolónak piros tojást adni, kattints a piros tojás linkre. 
+        $text .=  <a href="https://brassai.blue-l.de/easteregg?id='.encrypt_decrypt("encrypt",getLoggedInUserId()).'&key='.encrypt_decrypt("encrypt",$id).'"> <img src="https://brassai.blue-l.de/images/easter.png" style="width: 32px"> piros tojás</a> </p>';
+        $text .= "<p>Kellemes húsvéti ünnepeket!</p>";
+        \maierlabs\lpfw\Appl::sendHtmlMail($email, $text, 'Virtuális locsolás. ');
     }
 }
 

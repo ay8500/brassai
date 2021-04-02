@@ -287,7 +287,7 @@ function getLoggedInUserIdOrNull() {
     }
 
     function saveEasterOpinion(id,type,stype,uid) {
-        showModalMessage('Virtuális husvéti locsolás','Rózsa, rózsa szép virágszál,<br/>Szálló szélben hajladozzál.<br/>Napsütésben nyiladozzál,<br/>Meglocsollak, illatozzál.','info',{
+        showModalMessage('Virtuális húsvéti locsolás','Rózsa, rózsa szép virágszál,<br/>Szálló szélben hajladozzál.<br/>Napsütésben nyiladozzál,<br/>Meglocsollak, illatozzál.','info',{
             'Megszabad locsolni?':function() {
                 saveOpinion(id,type,stype,uid);
                 clearModalMessage();
