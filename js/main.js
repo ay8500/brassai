@@ -12,9 +12,7 @@ var logoDirection =-1;
 var backGroundHPos = 0;
 
 function onResize(hplus) {
-    var h= 	$(".sub_title").height()+
-        $(".appltitle").height()+
-        $("#main-menu").height()+40;
+    var h= 	$(".sub_title").height()+ $(".appltitle").height()+ $("#main-menu").height()+20;
     if (null!=hplus) {
         h += hplus;
         backGroundHPos = hplus;
@@ -43,4 +41,10 @@ function removePX(p) {
     else
         return 0;
 }
+
+$(".diak_image_medium").hover(function (self) {
+    console.log($(o).attr("src"));
+},function (o) {
+    console.log("ss");
+});
 

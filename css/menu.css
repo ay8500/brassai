@@ -173,8 +173,8 @@
 .diak_image {
 	height:240px;
 	border-radius: 10px;
-	filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
+	/*filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);*/
 }
 
 

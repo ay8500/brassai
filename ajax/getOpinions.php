@@ -44,7 +44,7 @@ if ($count!='candle') {
             $op->name = getPersonLinkAndPicture($db->getPersonDummy());
         }
         //Only for earter opinions form this year
-        if ($count=="easter" && $o->date > date("Y")."-01-01 00:00:00") {
+        if ($count=="easter" && $o->date > date("Y")."-01-01 00:00:00" && (getLoggedInUserId()==$id || userIsAdmin()) ) {
             //Check if the girl allready sent an easter egg to the boy
             $egg=$dbOpinions->existOpinion($o->person,$id,"person","easteregg", "changeDate > '".date("Y")."-01-01 00:00:00'");
             $op->sendEgg = $egg?null:true;

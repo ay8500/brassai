@@ -23,7 +23,7 @@ class Config {
     public static $dateTimeFormat="text";
     public static $dateFormat="text";
 
-    public static $webAppVersion = "2020.11.14";  //Used to load the actual css und js files.
+    public static $webAppVersion = "2021.04.02";  //Used to load the actual css und js files.
 
     public static $SupportedLang = array("hu"); //First language ist the default language.
 

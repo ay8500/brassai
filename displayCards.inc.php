@@ -383,10 +383,10 @@ function displayPersonCandle($db,$person,$date) {
 
 function displayPersonPictureAndHistory($db,$d) {
     ?>
-    <div style="display: inline-block; ">
+    <div style="display: inline-block;position: relative;">
         <?php if (userIsSuperuser()) { ?>
             <a href="history?table=person&id=<?php echo $d["id"] ?>" title="módosítások"
-                    style="position: absolute;">
+                    style="position: absolute;top:2px;left:2px;z-index:10;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person", $d["id"])) ?></span>
             </a>
         <?php } ?>
@@ -443,12 +443,12 @@ function displayPersonPicture($d)
     ?>
     <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
         <div>
-            <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+            <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="position: relative" />
             <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
                 <?php if (isset($d["deceasedYear"])) {?>
-                    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">
                 <?php } else { ?>
-                    <div style="background-color: lightgray;color: black;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                    <div style="background-color: lightgray;color: black;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">
                 <?php }?>
                 <?php if (isset($d["birthyear"]) && intval($d["birthyear"])>1800) {?>
                     <?php echo "* ".intval($d["birthyear"]).'&nbsp;&nbsp;'; ?>
