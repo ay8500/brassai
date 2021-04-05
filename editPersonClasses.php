@@ -37,13 +37,25 @@ if ($diak["gender"]=="m") {
         if (sizeof($mainClasses)>0) {
             echo("<div>".$headTeacher."</div>");
             foreach ($mainClasses as $c) {
-                echo('<div id="tclass"><a href="hometable?classid='.$c["id"].'"> ' .$c["graduationYear"].' '.$c["name"] .' '.($c["eveningClass"]==1?"esti tagozat":"").'</a></div>');
+                echo('<div id="tclass"><a href="hometable?classid='.$c["id"].'"> ');
+                $pictureId = $db->getGroupPictureIdByClassId($c["id"]);
+                if ($pictureId >0) {
+                    echo('<img src="imageConvert?width=300&thumb=false&id='. $pictureId . '" style="height: 70px;"/>');
+                }
+                echo('<br/>'.$c["graduationYear"].' '.$c["name"] .' '.($c["eveningClass"]==1?"esti tagozat":""));
+                echo('</a></div>');
             }
         }
         if (sizeof($classes)>0) {
             echo("<div>" . $teacher . "</div>");
             foreach ($classes as $c) {
-                echo('<div id="tclass"><a href="hometable?classid=' . $c["id"] . '"> ' . $c["graduationYear"] . ' ' . $c["name"] . ' ' . ($c["eveningClass"] == 1 ? "esti tagozat" : "") . '</a></div>');
+                echo('<div id="tclass"><a href="hometable?classid='.$c["id"].'"> ');
+                $pictureId = $db->getGroupPictureIdByClassId($c["id"]);
+                if ($pictureId >0) {
+                    echo('<img src="imageConvert?width=300&thumb=false&id='. $pictureId . '" style="height: 70px;"/>');
+                }
+                echo('<br/>'.$c["graduationYear"].' '.$c["name"] .' '.($c["eveningClass"]==1?"esti tagozat":""));
+                echo('</a></div>');
             }
         }
     }

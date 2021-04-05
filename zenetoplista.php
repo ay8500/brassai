@@ -111,7 +111,7 @@ include("homemenu.inc.php");
         </div>
     <?php } ?>
     <form action="zenetoplista">
-	<div id="newEntry" <?php echo getParam("interpret")==null?'style="display: none"':''?> class="panel panel-default">
+	<div id="newEntry" <?php echo (getParam("newinterpret")==null && getParam("interpret")==null)?'style="display: none"':''?> class="panel panel-default">
 		<?php if (!($pinterpret>0)) { ?>
 			<div class="panel-heading">
 				<label id="dbDetails">Válaszd ki az előadót</label>
@@ -227,6 +227,7 @@ $language["it"]=isset($musicFilter["filter_it"])?$musicFilter["filter_it"]:true;
 $language["es"]=isset($musicFilter["filter_es"])?$musicFilter["filter_es"]:true;
 $language["pt"]=isset($musicFilter["filter_pt"])?$musicFilter["filter_pt"]:true;
 $language["fr"]=isset($musicFilter["filter_fr"])?$musicFilter["filter_fr"]:false;
+$language["int"]=isset($musicFilter["filter_int"])?$musicFilter["filter_int"]:true;
 $genre["dance"]=isset($musicFilter["filter_d"])?$musicFilter["filter_d"]:true;
 $genre["danceslow"]=isset($musicFilter["filter_s"])?$musicFilter["filter_s"]:true;
 $genre["hardrock"]=isset($musicFilter["filter_h"])?$musicFilter["filter_h"]:false;
@@ -262,6 +263,7 @@ $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId()
                     <div>Spanyol  <input id="filter_es" type="checkbox" name="filter_es" onclick="musicFilter()" <?php echo $language["es"]?"checked":"" ?>/></div>
                     <div>Portugál <input id="filter_pt" type="checkbox" name="filter_pt" onclick="musicFilter()" <?php echo $language["pt"]?"checked":"" ?>/></div>
                     <div>Francia  <input id="filter_fr" type="checkbox" name="filter_fr" onclick="musicFilter()" <?php echo $language["fr"]?"checked":"" ?>/></div>
+                    <div>Nemzetközi<input id="filter_int" type="checkbox" name="filter_int" onclick="musicFilter()" <?php echo $language["int"]?"checked":"" ?>/></div>
                 </div>
             </div>
             <div class="music-filter" >

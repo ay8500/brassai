@@ -93,7 +93,8 @@ include("homemenu.inc.php");
                     <div class="input-group" style="margin-bottom: 10px;">
                         <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Ezen a nyelven énekelnek</label>
                         <select class="form-control" id="language" name="language" >
-                            <option value="">nemzetközi</option>
+                            <option value="">nem tudom</option>
+                            <option <?php echo $song["language"]==="int"?'selected="selected"':''?> value="int">Nemzetközi</option>
                             <option <?php echo $song["language"]==="hu"?'selected="selected"':''?> value="hu">Magyarul</option>
                             <option <?php echo $song["language"]==="en"?'selected="selected"':''?> value="en">Angolul</option>
                             <option <?php echo $song["language"]==="it"?'selected="selected"':''?> value="it">Olaszul</option>

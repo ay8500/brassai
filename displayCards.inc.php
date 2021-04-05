@@ -110,7 +110,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) && strtotime("now")<strtotime("2021-04-15")) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !userIsLoggedOn())) {
                 ?>
-                <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId() ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
+                <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId()!=null?getLoggedInUserId():"null" ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
                 <?php
             }
         }

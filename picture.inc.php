@@ -169,7 +169,7 @@ if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 if (userIsAdmin()) {
     $wherePictureList='true ';
 } else {
-    $wherePictureList="isDeleted='0'";
+    $wherePictureList="isDeleted<>'1'";
 }
 if ($albumParam=="_tablo_") {
     $wherePictureList .=" and tag like 'tabl%'";
@@ -242,6 +242,7 @@ if (!isActionParam("showmore") ) {
 }
 ?>
 	<div class="well"><?php
+        $serverPhpSelf = substr($_SERVER["PHP_SELF"],0,-4);
         //Albumlist
         foreach ($albumList as $alb) {
 			if (isset($alb["albumName"])) {
@@ -261,7 +262,7 @@ if (!isActionParam("showmore") ) {
         //New album
 		if ( (userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
-				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+				<form action="<?php echo $serverPhpSelf?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
 						<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
 					<?php } ?>
@@ -279,7 +280,7 @@ if (!isActionParam("showmore") ) {
 		//Rename album
 		if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsSuperuser() || userIsEditor()) ) {?>
 			<div style="display:inline-block">
-				<form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+				<form action="<?php echo $serverPhpSelf?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
 						<input name="tabOpen" type="hidden" value="<?php echo getParam('tabOpen')?>" /> 
 					<?php } ?>
@@ -616,7 +617,7 @@ Appl::addJsScript("
         url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
         url +="&sort='.$sort.'";
         url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
-        window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
+        window.location.href="'.$serverPhpSelf.'?"+url;
         return false;
     }
 
@@ -627,7 +628,7 @@ Appl::addJsScript("
         url +="'.(isset($typeId)?"&typeid=".$typeId:"").'";
         url +="&sort="+sort;
         url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
-        window.location.href="'.$_SERVER["PHP_SELF"].'?"+url;
+        window.location.href="'.$serverPhpSelf.'?"+url;
         return false;
     }
 
@@ -639,7 +640,7 @@ Appl::addJsScript("
         url +="'.(null!=getParam("album")?"&album=".getParam("album"):"").'";
         url +="'.(isset($id)?"&id=".$id:"").'";
         url +="&action=changeOrder";
-        window.location.href="'.$_SERVER["PHP_SELF"].'?"+url+"&id1="+id1+"&id2="+id2;
+        window.location.href="'.$serverPhpSelf.'?"+url+"&id1="+id1+"&id2="+id2;
     }
     
     function changePictureAlbum(id) {
@@ -651,13 +652,13 @@ Appl::addJsScript("
         if (a!="") url +="&typeid="+a;
         url +="&album="+$("#changeAlbum"+id).val();
         url +="&action=changePictureAlbum";
-        window.location.href="'.$_SERVER["PHP_SELF"].'"+url;
+        window.location.href="'.$serverPhpSelf.'"+url;
     }
 
     function deletePicture(id) {
         if (confirm("'.Appl::__("Fénykép törölését kérem konfirmálni!").'")) {
             showWaitMessage();
-            window.location.href="'.$_SERVER["PHP_SELF"].'?action=deletePicture&did="+id+"&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
+            window.location.href="'.$serverPhpSelf.'?action=deletePicture&did="+id+"&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
         }
     }
 ');
@@ -668,13 +669,13 @@ if (userIsSuperuser()) {
         function unlinkPicture(id) {
             if (confirm("'.Appl::__("Fénykép törlését kérem konfirmálni!").'")) {
                 showWaitMessage();
-                window.location.href = "'.$_SERVER["PHP_SELF"].'?action=unlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
+                window.location.href = "'.$serverPhpSelf.'?action=unlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
             }
         }
         function notUnlinkPicture(id) {
             if (confirm("'.Appl::__("Fénykép törlésének vissza állítását kérem konfirmálni!").'")) {
                 showWaitMessage();
-                window.location.href = "'.$_SERVER["PHP_SELF"].'?action=notUnlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
+                window.location.href = "'.$serverPhpSelf.'?action=notUnlinkPicture&did=" + id + "&tabOpen='.getParam("tabOpen","pictures").'&type='.$type.'&typeid='.$typeId.'&album='.getParam("album").'";
             }
         }
     ');
