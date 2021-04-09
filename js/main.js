@@ -12,7 +12,7 @@ var logoDirection =-1;
 var backGroundHPos = 0;
 
 function onResize(hplus) {
-    var h= 	$(".sub_title").height()+ $(".appltitle").height()+ $("#main-menu").height()+20;
+    var h= 	$(".sub_title").height()+ $(".appltitle").height()+ $("#main-menu").height()+40;
     if (null!=hplus) {
         h += hplus;
         backGroundHPos = hplus;

@@ -2,57 +2,58 @@
     include 'displayCards.inc.php';
     displayPerson($db,$diak,false,false);
     //Person picture?>
-    <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
-        <div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
-            <img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
-            <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
-                <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
-            <?php } else {?>
-                <div style="background-color: white;color: black;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
-            <?php }?>
-            <?php if (isset($diak["birthyear"])) {?>
-                <?php echo "* ".intval($diak["birthyear"]).'&nbsp;&nbsp;'; ?>
-            <?php }?>
-            <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
-                    <?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
-            <?php }?>
+    <?php if(userIsLoggedOn() || $anonymousEditor) {?>
+        <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
+            <div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
+                <img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
+                <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
+                    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                <?php } else {?>
+                    <div style="background-color: white;color: black;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                <?php }?>
+                <?php if (isset($diak["birthyear"])) {?>
+                    <?php echo "* ".intval($diak["birthyear"]).'&nbsp;&nbsp;'; ?>
+                <?php }?>
+                <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
+                        <?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
+                <?php }?>
+                </div>
+                <?php  if (userIsSuperuser()) {?>
+                    <br/><a href="history?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -70px;left: 10px;display:inline-block;">
+                        <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person",$diak["id"]))?></span>
+                    </a>
+                <?php }?>
             </div>
-            <?php  if (userIsSuperuser()) {?>
-                <br/><a href="history?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -70px;left: 10px;display:inline-block;">
-                    <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person",$diak["id"]))?></span>
-                </a>
-            <?php }?>
-        </div>
-
-        <?php //Person picture download only  if person already saved?>
-        <?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
-            <div style="display: inline-block;margin:15px;vertical-align: bottom;max-width: 400px;">
-                <form enctype="multipart/form-data" action="editDiak" method="post">
-                    <h4>Profiképed</h4>
-                    <div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
-                    <span>Válassz egy új jpg képet max. 2MByte</span>
-                    <input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />
-                    <button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" onclick="showWaitMessage();">
-                        <span class="glyphicon glyphicon-upload"></span> Feltölt</button>
-                    <?php if (isset($diak["picture"]) && $diak["picture"]!=null) {?>
-                        <?php  if (userIsAdmin()){
-                            $pic=$diak['picture'];
-                            $pic=substr($pic,0,strlen($pic)-4)."_o".substr($pic,strlen($pic)-4);
-                            ?>
-                            <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
-                            <a class="btn btn-default" target="_download" href="images/<?php echo $pic?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
-                        <?php }?>
-                        <?php if (userIsSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
-                            <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="deletePersonPicture" value="<?php echo $diak["id"]?>"><span class="glyphicon glyphicon-upload"></span> Töröl</button>
+            <?php //Person picture download only  if person already saved?>
+            <?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
+                <div style="display: inline-block;margin:15px;vertical-align: bottom;max-width: 400px;">
+                    <form enctype="multipart/form-data" action="editDiak" method="post">
+                        <h4>Profiképed</h4>
+                        <div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
+                        <span>Válassz egy új jpg képet max. 2MByte</span>
+                        <input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />
+                        <button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" onclick="showWaitMessage();">
+                            <span class="glyphicon glyphicon-upload"></span> Feltölt</button>
+                        <?php if (isset($diak["picture"]) && $diak["picture"]!=null) {?>
+                            <?php  if (userIsAdmin()){
+                                $pic=$diak['picture'];
+                                $pic=substr($pic,0,strlen($pic)-4)."_o".substr($pic,strlen($pic)-4);
+                                ?>
+                                <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
+                                <a class="btn btn-default" target="_download" href="images/<?php echo $pic?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
+                            <?php }?>
+                            <?php if (userIsSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
+                                <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="deletePersonPicture" value="<?php echo $diak["id"]?>"><span class="glyphicon glyphicon-upload"></span> Töröl</button>
+                            <?php } ?>
                         <?php } ?>
-                    <?php } ?>
-                    <input type="hidden" value="upload_diak" name="action" />
-                    <input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
-                    <input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
-                </form>
-            </div>
-        <?php } ?>
-    </div>
+                        <input type="hidden" value="upload_diak" name="action" />
+                        <input type="hidden" value="<?PHP echo($personid) ?>" name="uid" />
+                        <input type="hidden" value="<?PHP echo($tabOpen) ?>" name="tabOpen" />
+                    </form>
+                </div>
+            <?php } ?>
+        </div>
+    <?php }?>
     <div style="margin:15px;vertical-align: bottom;">
    <?php if ($edit) {  ?>	
 		<?php //Don't delete myself?>

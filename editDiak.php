@@ -5,6 +5,7 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaCandle.class.php';
+include_once 'displayCards.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 global $db;
@@ -68,13 +69,14 @@ if ($personid!=null && $personid>=0) {
 	}
 }
 
-//GDPS person requested all data to be deleted exept name
-if (!userIsAdmin() && getFieldChecked($diak,"place")!="") {
+//GDPR person requested all data to be deleted exept name
+if (!userIsAdmin() && $diak["gdpr"]==5) {
     include_once "homemenu.inc.php";
     ?>
         <div class="well">
             <h3><?php echo ($diak["lastname"].' '.$diak["firstname"]) ?></h3>
             Személyes adatok védve vannak. Módosítás vagy bővítés a személy kérésére nem lehetséges.
+            <?php displayPerson($db,$diak,false,false); ?>
         </div>
     <?php
     include_once "homefooter.inc.php";

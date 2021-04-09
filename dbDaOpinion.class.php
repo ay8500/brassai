@@ -184,7 +184,8 @@ class dbDaOpinion
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='text' and entryID=" . $id);
             $ret->friends = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='friend' and entryID=" . $id);
             $ret->sport = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion='sport' and entryID=" . $id);
-            $ret->easter = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion like 'easter%' and entryID=" . $id. " and changeDate >'".date("Y")."-01-01 00:00:00'");
+            /* easter */
+            $ret->easter = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='person' and opinion like 'easter%' and entryID=" . $id/*. " and changeDate >'".date("Y")."-01-01 00:00:00'"*/);
             $ret->candles = $this->dbCandle->getCandlesByPersonId($id);
         }
         return $ret;

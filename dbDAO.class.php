@@ -245,7 +245,11 @@ class dbDAO {
 	 * save changes on only one field 
 	 * @return integer -1 on error or person id if operation is succeded
 	 */
-	public function savePersonField($personId,$fieldName,$fieldValue=null) {
+	public function savePersonField($personId,$fieldName,$fieldValue=null, $noHistory=false) {
+	    if ($noHistory) {
+	        $ret = $this->dataBase->update("person", [["field"=>$fieldName,"type"=>"s","value"=>$fieldValue]],"id",$personId);
+	        return $ret?$personId:-1;
+        }
 		$person=$this->getPersonByID($personId);
 		if ($person!=null) {
 		    $person[$fieldName]=$fieldValue;
@@ -694,7 +698,7 @@ class dbDAO {
 	 * get the list of picture albums 
 	 */
 	public function getListOfAlbum($type,$typeId,$startList=array()) {
-		$sql = " where `".$type."`=".$typeId. " and albumName is not null and albumName!='' and isDeleted=0 group by albumName";
+		$sql = " where `".$type."`=".$typeId. " and albumName is not null and albumName!='' and isDeleted<>1 group by albumName";
 		$sql="select count(albumName) as count,albumName, albumName as albumText from picture".$sql;
 		$this->dataBase->query($sql);
 		return array_merge($startList,$this->dataBase->getRowList());

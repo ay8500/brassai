@@ -23,6 +23,12 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	?>
 	<div class="element">
         <?php $personClass = displayPersonNameAndGetClass($db,$person,$showClass); ?>
+        <?php if ($person["gdpr"]==100) {?>
+            <img title="A személy jováhagyta a személyes adatainak a használatát kizárolag ezen az oldalon!" src="images/gdpr.png" style="position: absolute;width:88px;left:409px;top:3px" />
+        <?php } ?>
+        <?php if ($person["gdpr"]>0 && $person["gdpr"]<=5) {?>
+            <img title="A személy tiltja részben vagy teljes mértékben a személyes adatainak a használatát!" src="images/gdpr.png" style="position: absolute;width:150px;left:335px;top:3px;filter: hue-rotate(90deg);" />
+        <?php } ?>
         <?php displayPersonPictureAndHistory($db,$d);?>
 		<div class="personboxc">
             <?php if ($showClass)
@@ -107,14 +113,15 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         <?php }?>
     <?php
         /*Easter*/
-        if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) && strtotime("now")<strtotime("2021-04-15")) {
+        /*
+        if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) && strtotime("now")<strtotime("2021-04-08")) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !userIsLoggedOn())) {
                 ?>
                 <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId()!=null?getLoggedInUserId():"null" ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
                 <?php
             }
         }
-
+        */
         displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
     ?>
 	</div>
