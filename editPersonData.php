@@ -1,5 +1,5 @@
 	<?php
-    include 'displayCards.inc.php';
+    include_once 'displayCards.inc.php';
     displayPerson($db,$diak,false,false);
     //Person picture?>
     <?php if(userIsLoggedOn() || $anonymousEditor) {?>

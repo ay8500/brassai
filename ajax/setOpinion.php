@@ -9,6 +9,7 @@ include_once __DIR__ . '/../dbChangeType.class.php';
 include_once __DIR__ . '/../sendMail.php';
 
 include_once Config::$lpfw.'dbDaTracker.class.php';
+global $db;
 $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 
 header('Content-Type: application/json');
@@ -17,6 +18,7 @@ $id=getParam("id");
 $table =getParam("type");
 $type =getParam("count");
 $text = getParam("text",'');
+$phpUnitTest = getParam("test")=="test";
 
 $ret = new stdClass();
 
@@ -24,6 +26,7 @@ if (getLoggedInUserId()==null) {
     if (
         ($table == 'person' && $type == 'friend') ||
         ($table == 'person' && $type == 'easter') ||
+        ($table == 'music' && $type == 'favorite') ||
         ($table == 'picture' && $type == 'favorite') ||
         ($table == 'message' && $type == 'favorite')
     ) {
@@ -56,20 +59,22 @@ if (sizeof($oldOpinion)>0 && $type!='text') {
 
 $ret->result='ok';
 $ret->count=$dbOpinion->setOpinion($id,getLoggedInUserId(),$table,$type,$text);
-$db->saveRequest(changeType::opinion);
-if ($type=='text') {
-    \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail,'id:'.$id.'<br/> table:'.$table.'<br/> text:'.$text,'Vélemény: ');
-}
-if ($type=='easter') {
-    $person = $db->getPersonByID($id);
-    $email = getFieldValue($person,"email");
-    if ($email!="") {
-        $text = "<h3>Kedves ". getPersonName($person) . "</h3>";
-        $text .= "<p>A Bassai Sámuel véndiákok honoldalán keresztül virtuálisan meglocsolt ".getPersonName($db->getPersonByID(getLoggedInUserId()),true)."</p>";
-        $text .= '<p>Ha szeretnél a locsolónak piros tojást adni, kattints a piros tojás linkre.';
-        $text .=  '<a href="https://brassai.blue-l.de/easteregg?id='.encrypt_decrypt("encrypt",getLoggedInUserId()).'&key='.encrypt_decrypt("encrypt",$id).'"> <img src="https://brassai.blue-l.de/images/easter.png" style="width: 32px"> piros tojás</a> </p>';
-        $text .= "<p>Kellemes húsvéti ünnepeket!</p>";
-        \maierlabs\lpfw\Appl::sendHtmlMail($email, $text, 'Virtuális locsolás. ');
+if (!$phpUnitTest) {
+    $db->saveRequest(changeType::opinion);
+    if ($type == 'text') {
+        \maierlabs\lpfw\Appl::sendHtmlMail(Config::$siteMail, 'id:' . $id . '<br/> table:' . $table . '<br/> text:' . $text, 'Vélemény: ');
+    }
+    if ($type == 'easter') {
+        $person = $db->getPersonByID($id);
+        $email = getFieldValue($person, "email");
+        if ($email != "") {
+            $text = "<h3>Kedves " . getPersonName($person) . "</h3>";
+            $text .= "<p>A Bassai Sámuel véndiákok honoldalán keresztül virtuálisan meglocsolt " . getPersonName($db->getPersonByID(getLoggedInUserId()), true) . "</p>";
+            $text .= '<p>Ha szeretnél a locsolónak piros tojást adni, kattints a piros tojás linkre.';
+            $text .= '<a href="https://brassai.blue-l.de/easteregg?id=' . encrypt_decrypt("encrypt", getLoggedInUserId()) . '&key=' . encrypt_decrypt("encrypt", $id) . '"> <img src="https://brassai.blue-l.de/images/easter.png" style="width: 32px"> piros tojás</a> </p>';
+            $text .= "<p>Kellemes húsvéti ünnepeket!</p>";
+            \maierlabs\lpfw\Appl::sendHtmlMail($email, $text, 'Virtuális locsolás. ');
+        }
     }
 }
 

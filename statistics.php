@@ -5,7 +5,11 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaStatistic.class.php';
+/**
+ * @var dbBL
+ */
 global $db;
+
 $dbStatistic = new dbDaStatistic($db);
 
 $classmate=$db->getTableCount("person","isTeacher='0'");
@@ -24,8 +28,10 @@ $teacherFacebook=$db->getTableCount("person","isTeacher='1' and (facebook is not
 $teacherWikipedia=$db->getTableCount("person","isTeacher='1' and homepage like '%wikipedia%'");
 
 $classCount=$db->getTableCount("class");
-$classGraduationPicture=$db->getTableCount("picture","classID is not null and title like 'Tabló%'");
-$classPicture=$db->getTableCount("picture","classID is not null");
+$classGraduationPicture=$db->getTableCount("picture","classID is not null AND tag like '%Tabló%'","classID");
+$classGraduationCardPicture=$db->getTableCount("picture","classID is not null AND tag like '%Kicsengetési kártya%'","classID");
+$classHeadTeacher=$db->getTableCount("class","headTeacherID is not null AND headTeacherID <> -1");
+$classPicture=$db->getTableCount("picture","classID is not null","classID");
 
 //$calendar=$dbStatistic->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
 
@@ -238,18 +244,30 @@ include('homemenu.inc.php');?>
 	       		<span type="text" class="form-control"><?php echo $classCount?></span>
 	  		</div>
   		</li>
+        <li class="">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon"><span class="statw">Osztályfőnök megjelölve</span></span>
+                <span type="text" class="form-control"><?php echo $classHeadTeacher." (".round($classHeadTeacher/$classCount*100,2)."%)"?></span>
+            </div>
+        </li>
+        <li class="">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon"><span class="statw">Képekkel</span></span>
+                <span type="text" class="form-control"><?php echo $classPicture." (".round($classPicture/$classCount*100,2)."%)"?></span>
+            </div>
+        </li>
   		<li class="">
 			<div class="input-group input-group-sm">
 	  			<span class="input-group-addon"><span class="statw">Tablóképpel</span></span>	
 	       		<span type="text" class="form-control"><?php echo $classGraduationPicture." (".round($classGraduationPicture/$classCount*100,2)."%)"?></span>
 	  		</div>
 	  	</li>
-  		<li class="">
-			<div class="input-group input-group-sm">
-	  			<span class="input-group-addon"><span class="statw">Képek</span></span>	
-	       		<span type="text" class="form-control"><?php echo $classPicture?></span>
-	  		</div>
-	  	</li>
+        <li class="">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon"><span class="statw">Kicsengetési kártyával</span></span>
+                <span type="text" class="form-control"><?php echo $classGraduationCardPicture." (".round($classGraduationCardPicture/$classCount*100,2)."%)"?></span>
+            </div>
+        </li>
 	</ul>
 </div>
 <div class="panel panel-default"  style="padding:5px;width:400px; display:inline-block;vertical-align: top;" id="classgg"></div>
@@ -296,7 +314,7 @@ include('homemenu.inc.php');?>
         var data2 = google.visualization.arrayToDataTable([
  		  ['','',{ role: 'style' }],                                                          
           ['Összesen',<?php echo $classmate?>,'red'],
-          ['Összesen',<?php echo $classmateDeceased?>,'darkgray'],
+          ['Elhunyt',<?php echo $classmateDeceased?>,'darkgray'],
           ['Képpel',<?php echo $classmatePicture?>,'green'],
           ['E-Mail',<?php echo $classmateEmail?>,'blue'],
           ['Facebook',<?php echo $classmateFacebook?>,'lightblue'],
@@ -306,8 +324,10 @@ include('homemenu.inc.php');?>
         var data3 = google.visualization.arrayToDataTable([
  			['','',{ role: 'style' }],                                                          
 			['Összesen',<?php echo $classCount?>,'red'],
-			['Tablóképpel',<?php echo $classGraduationPicture?>,'green'],
-			['Képek',<?php echo $classPicture?>,'lightgreen']
+            ['Osztályfőnök',<?php echo $classHeadTeacher?>,'green'],
+            ['Képekkel',<?php echo $classPicture?>,'lightgreen'],
+            ['Tablóképpel',<?php echo $classGraduationPicture?>,'cyan'],
+            ['Kártyával',<?php echo $classGraduationCardPicture?>,'blue']
         ]);
 
         var options = {chart: { }, bars: 'horizontal', legend: { position: "none" }};

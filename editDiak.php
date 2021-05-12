@@ -5,7 +5,6 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaCandle.class.php';
-include_once 'displayCards.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 global $db;

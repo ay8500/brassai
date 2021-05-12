@@ -17,7 +17,7 @@
 
 	<?php
 		if (getParam('showDatabaseQuery')!=null) {
-			echo "Querys:".$db->dataBase->getCounter()->querys." Changes:".$db->dataBase->getCounter()->changes."<br/>";
+			echo "Querys:".$db->dataBase->getCounter()->querys." Changes:".$db->dataBase->getCounter()->changes." Time:".$db->dataBase->getCounter()->time."<br/>";
 			$sql=$db->dataBase->getCounter()->sql;
 			foreach ($sql as $s) {
 				echo($s."<br/>");

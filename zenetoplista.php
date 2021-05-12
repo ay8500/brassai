@@ -263,7 +263,7 @@ $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId()
                     <div>Spanyol  <input id="filter_es" type="checkbox" name="filter_es" onclick="musicFilter()" <?php echo $language["es"]?"checked":"" ?>/></div>
                     <div>Portugál <input id="filter_pt" type="checkbox" name="filter_pt" onclick="musicFilter()" <?php echo $language["pt"]?"checked":"" ?>/></div>
                     <div>Francia  <input id="filter_fr" type="checkbox" name="filter_fr" onclick="musicFilter()" <?php echo $language["fr"]?"checked":"" ?>/></div>
-                    <div>Nemzetközi<input id="filter_int" type="checkbox" name="filter_int" onclick="musicFilter()" <?php echo $language["int"]?"checked":"" ?>/></div>
+                    <div>Nemzetközi <input id="filter_int" type="checkbox" name="filter_int" onclick="musicFilter()" <?php echo $language["int"]?"checked":"" ?>/></div>
                 </div>
             </div>
             <div class="music-filter" >

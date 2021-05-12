@@ -1,4 +1,5 @@
 <?php
+
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
@@ -334,18 +335,6 @@ if (!isActionParam("showmore") ) {
 	<?php if ($countPictures==0) :?>
 		<div class="alert alert-warning" ><?php Appl::_("Jelenleg nincsenek képek feltöltve. Légy te az első aki képet tőlt fel!")?></div>
 	<?php endif;?>
-	<?php /*?>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><span class="page-link" >Képek száma:<?php echo ($countPictures)?></span></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $link."start=0" ?>"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $offset>0?$link."&start=".(floor($offset/$limitOfPicturesPerPage)-1):"#" ?>"><span class="glyphicon glyphicon-step-backward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="#"><?php echo ($offset+1).'-'.(($offset+$limitOfPicturesPerPage<$countPictures)?$offset+$limitOfPicturesPerPage:$countPictures) ?></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo (($offset+$limitOfPicturesPerPage)<$countPictures)?$link."&start=".(floor($offset/$limitOfPicturesPerPage)+1):"#" ?>"><span class="glyphicon glyphicon-step-forward"></span></a></li>
-                <li class="page-item"><a class="page-link" href="<?php echo $link."&start=".floor($countPictures/$limitOfPicturesPerPage) ?>"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
-            </ul>
-        </nav>
-    <?php */ ?>
 	<?php displayPictureList($db,$pictures,$albumList,$albumParam,$view); ?>
     <span id="more"></span>
 </form>

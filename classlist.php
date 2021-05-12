@@ -62,9 +62,11 @@ array_push($tabsCaption ,array("id" => "night", "caption" => 'tagozat',"iconText
 			<?php displayClassList($db,$classes);?>
 		</div>
 	</div>
-
-
 <?php
+
+showTabFooterLinks();
+include("homefooter.inc.php");
+
 /**
  * get scholl class list
  * @param dbDAO $db
@@ -104,5 +106,4 @@ function displayClassList($db, $classes) {
 	}
 }
 
-include("homefooter.inc.php");
-?>
+

@@ -8,6 +8,8 @@ include_once __DIR__ . '/../dbDaOpinion.class.php';
 
 header('Content-Type: application/json');
 
+global $db;
+
 $id=getParam("id");
 
 $ret = new stdClass();

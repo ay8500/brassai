@@ -175,5 +175,6 @@ Appl::addJsScript("
         });
     }
 ");
+showTabFooterLinks();
 include("homefooter.inc.php");
 ?>

@@ -520,9 +520,13 @@ class dbDAO {
 	 * @param string $where
 	 * @return integer
 	 */
-	public function getTableCount($table,$where=null) {
+	public function getTableCount($table,$where=null,$distinct=null) {
+        if ($distinct!=null)
+            $sql =" COUNT(DISTINCT ".$distinct.") ";
+        else
+            $sql =" COUNT(1) ";
 		//normal entrys
-		$sql="select count(1) from ".$table." where ( (changeForID is null and changeUserID is not null) ";
+		$sql="select ".$sql." from ".$table." where ( (changeForID is null and changeUserID is not null) ";
 		//anonymous new entrys from the aktual ip
 		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
 		if ($where!=null)
