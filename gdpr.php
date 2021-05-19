@@ -17,13 +17,13 @@ Appl::setSiteSubTitle('Személyes adatok törlésének kérvényezése');
 global $db;
 $gdprPerson=$db->getPersonByID(getIntParam("id"));
 if (null!=$gdprPerson) {
-    if (isActionParam("setGdpr") && userIsAdmin()) {
+    if (isActionParam("setGdpr") && isUserAdmin()) {
         if ($db->savePersonField($gdprPerson["id"],"gdpr",getIntParam("gdpr",0),true)>=0) {
             Appl::setMessage("Gdpr kimentve", "info");
             $gdprPerson["gdpr"]=getIntParam("gdpr",0);
         } else
             Appl::setMessage("Hibás gdpr kimentés!","danger");
-    } elseif (userIsLoggedOn() && getLoggedInUserId()==$gdprPerson["id"] && getParam("action")=="gdprok") {
+    } elseif (isUserLoggedOn() && getLoggedInUserId()==$gdprPerson["id"] && getParam("action")=="gdprok") {
         if ($db->savePersonField($gdprPerson["id"],"gdpr",getIntParam("gdpr",100),true)>=0) {
             Appl::setMessage("Köszönjük a gdpr visszajelzést", "info");
             $gdprPerson["gdpr"]=getIntParam("gdpr",0);
@@ -31,11 +31,11 @@ if (null!=$gdprPerson) {
             Appl::setMessage("Hibás gdpr kimentés!","danger");
     } elseif (getParam("action")!=null) {
 	
-		if (!userIsLoggedOn() && isset($_SESSION['SECURITY_CODE']) && getParam('code')!=$_SESSION['SECURITY_CODE']) {
+		if (!isUserLoggedOn() && isset($_SESSION['SECURITY_CODE']) && getParam('code')!=$_SESSION['SECURITY_CODE']) {
 			Appl::setMessage("Biztonságí kód nem helyes. Probáld még egyszer!","warning");
 		} 
 
-		if (userIsLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')===$_SESSION['SECURITY_CODE'])) {
+		if (isUserLoggedOn() || (isset($_SESSION['SECURITY_CODE']) && getParam('code')===$_SESSION['SECURITY_CODE'])) {
 			include_once 'sendMail.php';
 			$html="";
 			$html .="<h2>Véndiákok honoldala</h2>";
@@ -143,7 +143,7 @@ include 'homemenu.inc.php';
 		<input type="text" class="form-control" value="<?php echo getParam("text","")?>" name="text" />
 	</div>
 	
-	<?php if (!userIsLoggedOn()) {?>
+	<?php if (!isUserLoggedOn()) {?>
 	<div class="input-group" style="margin: 20px 0px 20px 0px;">
 		<span style="min-width:120px; text-align:right" class="input-group-addon">Biztonsági cód</span>
 		<span class="input-group-addon" style="padding:2px">
@@ -155,7 +155,7 @@ include 'homemenu.inc.php';
 
 	<div>
 		<button type="submit" disabled="disabled" class="btn btn-warning" id="submit-gdpr">Adatvédelmi kérést végrehajt</button>
-        <?php if (userIsAdmin()) {?>
+        <?php if (isUserAdmin()) {?>
             <button type="button" class="btn btn-danger" onclick="setGdpr();" >Adatvédelmi kérést leszögez</button>
         <?php } ?>
 	</div>

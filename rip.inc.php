@@ -27,7 +27,7 @@ function getActualCandles($id) {
 function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate=false) {
 	$d=$person;
 	if ($d["id"]!=-1) {
-		if (userIsLoggedOn() || isLocalhost()) {
+		if (isUserLoggedOn() || isLocalhost()) {
 			$personLink="editDiak?uid=".$d["id"];
 		} else {
 			$personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
@@ -64,7 +64,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 					<?php if (isset($d["function"])) { echo $d["function"]; }?></h5>
 				<?php } else {
 					$classText = getClassName($diakClass);
-					if (isPersonGuest($d)==1) {
+					if (isUserGuest($d)==1) {
 						if ($d["classID"]!=0)
 							echo '<h5 style="color: #ffbb66;">Jó barát:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
@@ -106,7 +106,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </button>
                     <div style="clear: both"></div><br/>
-                    <?php if (!userIsLoggedOn()){ ?>
+                    <?php if (!isUserLoggedOn()){ ?>
                         A gyertya 2 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
                         Jelentkezz be, ha szeretnéd hogy gyertyáid <b>6</b> hónapot égjenek.
                     <?php } else {?>

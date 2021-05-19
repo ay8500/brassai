@@ -35,7 +35,7 @@ function showChatEnterfields($personList) {
 		if(isset($d["email"]) && strlen($d["email"])>6)
 			$personWithEmail++;
 	}
-	if ( userIsAdmin() || (false && $personWithEmail>0 && getAktClassId()==$userDB->dbDAO->getLoggedInUserClassId() )) {
+	if ( isUserAdmin() || (false && $personWithEmail>0 && getAktClassId()==$userDB->dbDAO->getLoggedInUserClassId() )) {
 		?>
 		<form action="chat" method="post" id="chatform">
 			<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>
@@ -48,7 +48,7 @@ function showChatEnterfields($personList) {
 				<button type="button" class="btn btn-default btn-t" onclick="setText(3);"><span class="glyphicon glyphicon-heart"></span> szíből</button>
 				<button type="button" class="btn btn-default btn-t" onclick="setText(0);"><span class="glyphicon glyphicon-remove-circle"></span> töröl</button>
 				<div id="login-fields" style="display: none;">
-					<?php if (!userIsLoggedOn()) {?>
+					<?php if (!isUserLoggedOn()) {?>
 					Jelentkezz be! Körlevelet csak akkor tudsz küldeni az osztálytársaidnak ha be vagy jelentkezve.<br/>
 					<input type="hidden" value="logon" name="action"/>
 					<div style="display: inline-block;">

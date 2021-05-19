@@ -59,7 +59,7 @@ $pnewLink = getParam("newLink");
 $pnewYear = getIntParam("newYear",1996);
 $pnewLanguage = getParam("newLanguage","");
 $pnewGenre = getParam("newGenre","");
-if (($psong=="0") && ($pnewSong<>"" && userIsLoggedOn() )) {
+if (($psong=="0") && ($pnewSong<>"" && isUserLoggedOn() )) {
     if (getSongName($pnewVideo)!="") {
         $psong=$dbSongVote->saveSong([
                 'id'=>-1,
@@ -82,7 +82,7 @@ if (($psong=="0") && ($pnewSong<>"" && userIsLoggedOn() )) {
         $psong=0;
     }
 }
-if ($psong>0 && userIsLoggedOn()) {
+if ($psong>0 && isUserLoggedOn()) {
     saveVote($dbOpinion,$psong);
     $psong=0;$pinterpret=0;
 }
@@ -104,7 +104,7 @@ include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
-	<?php if ( userIsLoggedOn() ) { ?>
+	<?php if ( isUserLoggedOn() ) { ?>
     <?php if (getParam("interpret")==null ) {?>
         <div style="margin:10px">
             <button class="btn btn-default" onclick="$('#newEntry').show('slow');">Új zene, vagy kedvenceim kiválasztása</button>
@@ -295,7 +295,7 @@ $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId()
             <?php
                 for ($i=0;$i<sizeof($topList);$i++) {
                     $v = $topList[$i];
-                    if (userIsAdmin() && getParam("check")=="true") {
+                    if (isUserAdmin() && getParam("check")=="true") {
                         $v["check"] = (getSongName($v['video']) !== "");
                     }
                     displayMusic($db, $v,"change",$v["changeUserID"],$v["changeDate"],false);
@@ -303,7 +303,7 @@ $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId()
             ?>
         </div>
 	</div>
-	<?php if (userIsAdmin()) :?>
+	<?php if (isUserAdmin()) :?>
 		<button onclick="document.location='zenetoplista?check=true'" class="btn btn-danger">Youtube Link vizsgálata !</button>
 	<?php endif;?>
 </div>

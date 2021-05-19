@@ -38,7 +38,7 @@ if ($sum>0) {
         else
             $html .= appl::_text('anonim látogató');
         $html .= '<span style="float:right">' . appl::dateAsStr($candle["lightedDate"]) . '</span>';
-        if (userIsAdmin()) {
+        if (isUserAdmin()) {
             $html .= '<span title="' . $candle["ip"] . '" onclick="showip(' . "'" . $candle["ip"] . "'" . ')"> IP</span>';
         }
         $html .= '</div>';

@@ -24,7 +24,7 @@ Appl::addJsScript("
 ");
 
 if (isActionParam("sendMail")) {
-	if (userIsEditor() || userIsSuperuser()) {
+	if (isUserEditor() || isUserSuperuser()) {
 		include_once ("sendMail.php");
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		$mailsSent =0;$mailsError =0;
@@ -53,7 +53,7 @@ include("homemenu.inc.php");
 
 <div class="container-fluid">   
 
-<?php if (userIsSuperuser() || userIsEditor() ) {
+<?php if (isUserSuperuser() || isUserEditor() ) {
     //initialise tabs
     $tabsCaption = array();
     $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
@@ -107,7 +107,7 @@ Ide kell írni a szöveget....
 		<table  class="table-sp" >
 		<tr style="text-align:center;font-weight:bold;">
 			<td style="min-width:160px">Név</td><td id="o1024" >Becenév</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td>
-			<?php if(userIsAdmin()) {?>
+			<?php if(isUserAdmin()) {?>
 				<td  id="o1024">IP</td>
 			<?php }?>
 			<td  id="o1024">Datum</td>
@@ -116,7 +116,7 @@ Ide kell írni a szöveget....
 		<?php
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $l=>$d) {
-			if (!isPersonGuest($d)) {
+			if (!isUserGuest($d)) {
 				if (($l % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
@@ -124,7 +124,7 @@ Ide kell írni a szöveget....
 				echo "<td valign=top>".$d["lastname"].' '.$d["firstname"]."</font>".'</td><td  id="o1024">'.getFieldValue($d,"user")."</td><td>";
 				echo "<a href=mailto:".getFieldValue($d,"email").">".getFieldValue($d,"email")."</a>";
 				echo '<td  id="o400">'.getFieldValue($d,"phone").'</td><td  id="o480">'.getFieldValue($d,"mobil").'</td><td  id="o1024">'.getFieldValue($d,"skype").'</td>';
-				if (userIsAdmin()) {
+				if (isUserAdmin()) {
 					echo '<td  id="o1024">'.getFieldValue($d,"ip").'</td>';
 				}
 				echo '<td  id="o1024">'.getFieldValue($d,"date")."</td>";
@@ -134,7 +134,7 @@ Ide kell írni a szöveget....
 		}
 		echo("<tr><td>Vendégek, Tanárok</td></tr>");
 		foreach ($persons as $d) {
-			if (isPersonGuest($d)) {
+			if (isUserGuest($d)) {
 				if (($l % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else
@@ -156,7 +156,7 @@ Ide kell írni a szöveget....
 		<?php
 		$persons = $db->getPersonListByClassId(getAktClassId());
 		foreach ($persons as $idx=>$d) {
-			if (isPersonAdmin($d) || isPersonEditor($d))  {
+			if (isuserAdmin($d) || isUserEditor($d))  {
 				if (($idx % 2) ==0) 
 					echo '<tr style="background-color:#f8f8f8">';
 				else

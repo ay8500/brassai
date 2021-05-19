@@ -27,7 +27,7 @@ if (isActionParam("phpunit_logon")) {
     return;
 };
 
-if ( !userIsSuperuser() && !userIsAdmin() ) {
+if ( !isUserSuperuser() && !isUserAdmin() ) {
     header("HTTP/1.0 401 Not authorized");
     echo("Not authorized");
     die();

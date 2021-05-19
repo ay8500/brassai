@@ -35,7 +35,7 @@ $classPicture=$db->getTableCount("picture","classID is not null","classID");
 
 //$calendar=$dbStatistic->getActivityCalendar((new DateTime('first day of this year'))->modify("-1 year"));
 
-$contentStatistics = $dbStatistic->getContentStatistic(userIsAdmin()?125:25);
+$contentStatistics = $dbStatistic->getContentStatistic(isUserAdmin()?125:25);
 
 \maierlabs\lpfw\Appl::setSiteTitle("Statisztikai adatok", "Statistikai adatok");
 \maierlabs\lpfw\Appl::addCssStyle('
@@ -75,7 +75,7 @@ include('homemenu.inc.php');?>
         <h4><span class="glyphicon glyphicon-user"></span> Legszorgalmasabb és legaktivabb tanáraink és véndiákok</h4>
     </div>
     <div class="panel-body"><?php
-        $bests=$dbStatistic->getPersonChangeBest(userIsAdmin()?48:24);
+        $bests=$dbStatistic->getPersonChangeBest(isUserAdmin()?48:24);
         foreach ($bests as $uid=>$person) {
             $personName=$person["lastname"]." ".$person["firstname"];
             ?>
@@ -272,7 +272,7 @@ include('homemenu.inc.php');?>
 </div>
 <div class="panel panel-default"  style="padding:5px;width:400px; display:inline-block;vertical-align: top;" id="classgg"></div>
 <br/>
-<?php if (userIsAdmin()) {?>
+<?php if (isUserAdmin()) {?>
 <div id="adminok" class="panel panel-default" style="width: 400px;display:inline-block;vertical-align: top;">
 	<div class="panel-heading text-center"><label >Administrátoroknak</label></div>
 	<ul class="list-group"  style="list-style: none;">

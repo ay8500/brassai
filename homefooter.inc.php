@@ -1,11 +1,11 @@
 <div class="container-fluid" style="width: 100%;background: #f8f8f8">
 	<nav id="footerdiv" class="navbar navbar-default xnavbar-fixed-bottom" role="navigation">
 	      <ul class="nav navbar-nav">
-			<?PHP if (userIsSuperuser() ) { ?>
+			<?PHP if (isUserSuperuser() ) { ?>
 				<li><a href="admin"  >Adminsztráció</a></li>
                 <li><a href="logingData"  >Loging</a></li>
 			<?PHP }	?>
-			<?PHP if (userIsAdmin() ) { ?>
+			<?PHP if (isUserAdmin() ) { ?>
 				<li><a href="ig/ig?multipleGalleries=1" target="_new" >Képek</a></li>
 				<li><a href="dataCheck"  >Vizsga</a></li>
 				<li><a href="database"  >Adatbank</a></li>
@@ -31,7 +31,7 @@
 
 <?php
 \maierlabs\lpfw\Appl::addJs('js/main.js');
-if (userIsAdmin()) {
+if (isUserAdmin()) {
     \maierlabs\lpfw\Appl::addJsScript('    
         function showip(ip) {
             $.ajax({
@@ -66,7 +66,7 @@ if ($xmas)
 <?php \maierlabs\lpfw\Appl::addCookieCompilance();?>
 <?php \maierlabs\lpfw\Appl::includeJs();?>
 
-<?php if (!userIsAdmin()) { ?>
+<?php if (!isUserAdmin()) { ?>
 <script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>
 <noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
 <?php } ?>

@@ -13,13 +13,13 @@ include_once __DIR__ . '/../sendMail.php';
 
 $code = getParam("code", "+");
 
-if (!userIsLoggedOn() && $code!=$_SESSION['SECURITY_CODE']) {
+if (!isUserLoggedOn() && $code!=$_SESSION['SECURITY_CODE']) {
 	http_response_code(400);
 	echo ("Biztonságí kód nem helyes. Probáld még egyszer!");
 	return;
 }
 
-if (!userIsLoggedOn() && getParam("name", "")=="") {
+if (!isUserLoggedOn() && getParam("name", "")=="") {
 	http_response_code(400);
 	echo ("Kérlek írd be a neved!");
 	return;

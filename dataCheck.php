@@ -13,7 +13,7 @@ $id=getIntParam("id");
 $ret=false;
 $show=false;
 
-if (userIsAdmin()) {
+if (isUserAdmin()) {
     if (isActionParam("deleteMessageChange")) {
         $ret =$db->deleteMessageEntry($id);$show=true;
     }
@@ -247,7 +247,7 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	  		}
 	  	?>
 	  	<?php //Parameter read and action handling
-	  	if ((isActionParam("show".$fieldDb."Change") || isActionParam("accept".$fieldDb."FieldChange")) && userIsAdmin()) {
+	  	if ((isActionParam("show".$fieldDb."Change") || isActionParam("accept".$fieldDb."FieldChange")) && isUserAdmin()) {
   			$cp=call_user_func_array(array($db,$functionGetByID),array($id,true));
   			if ($compare = isset($cp["changeForID"])) 
   				$op=call_user_func_array(array($db,$functionGetByID),array($cp["changeForID"],true));

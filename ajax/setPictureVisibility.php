@@ -15,7 +15,7 @@ if ($id==-1 || $visibility==null) {
     die();
 }
 
-if ( userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
+if ( isUserAdmin() || isUserEditor() || isAktUserTheLoggedInUser()) {
 
 	$p=$db->getPictureById($id);
 	$p["isVisibleForAll"]=$visibility;

@@ -128,7 +128,7 @@ else
 imagecopyresized($resized_img, $new_img, $xpos, $ypos, 0, 0, $newwidth, $newheight, $width, $height);
 
 //visibility
-if ($picture["isVisibleForAll"]==0 && !userIsLoggedOn()  ) {
+if ($picture["isVisibleForAll"]==0 && !isUserLoggedOn()  ) {
     imagefilter ( $resized_img , IMG_FILTER_PIXELATE, 16,true);
     imagefilter ( $resized_img , IMG_FILTER_GAUSSIAN_BLUR);
 }

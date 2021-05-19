@@ -33,7 +33,7 @@ if (getParam("action")=="encrypt") {
 include('homemenu.inc.php');
 
 
-if (userIsAdmin()) {?>
+if (isUserAdmin()) {?>
 
 <div class="panel panel-default">
 	<div class="panel-heading">

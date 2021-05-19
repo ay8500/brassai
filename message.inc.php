@@ -15,7 +15,7 @@ function displayMessageList($elements, $offset=0) {
 		if (isset($message["changeUserID"]) && $message["changeUserID"]>=0) {
 			$person=$db->getPersonByID($message["changeUserID"]);
 		}
-		if	(	userIsAdmin() ||  	//Admin
+		if	(	isUserAdmin() ||  	//Admin
 				($person!=null && $person["classID"]==$db->getLoggedInUserClassId()) || //User
 				($message["isDeleted"]==0 &&  
 				$message["privacy"]=="world" && 
@@ -65,13 +65,13 @@ function displayMessage($message, $person) {
             if ($message["privacy"]=="scool")
                 echo '<span class="cmessage message_scool">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
             //Delete button
-            if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || userIsAdmin() ||
+            if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || isUserAdmin() ||
                 (isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&
                 $message["changeUserID"]==getLoggedInUserId() )
                 if (!$expired) {
                     echo '<button class="btn btn-danger" onclick="deactivateMessage('.$message["id"].')" >Deaktivál</button>';
                 }
-            if (userIsSuperuser()) {?>
+            if (isUserSuperuser()) {?>
                 <span>
                     <form><input type="hidden" name="id" value="<?php echo $message['id'] ?>"/>
                         Komentár:<input name="comment" class="form-control" style="width:300px;display:inline-block;"/>
@@ -79,7 +79,7 @@ function displayMessage($message, $person) {
                     </form>
                 </span>
             <?php }
-            if (userIsAdmin()) {?>
+            if (isUserAdmin()) {?>
                 <span>
                     <form><input type="hidden" name="id" value="<?php echo $message['id'] ?>"/>
                         Személy ID:<input name="personid" class="form-control" style="width:80px;display:inline-block;" value="<?php echo (isset($message["changeUserID"])?$message["changeUserID"]:'')?>"/>
@@ -103,8 +103,8 @@ function deactivateMessage($db,$id) {
 	$message = $db->getMessage($id);
 	if ($message==null)
 		return false;
-	if (userIsAdmin() || 
-		(userIsLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
+	if (isUserAdmin() ||
+		(isUserLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
 		$message["changeIP"]==$_SERVER["REMOTE_ADDR"] )
 	{
     	return $db->setMessageAsDeleted($id);
@@ -123,8 +123,8 @@ function deleteMessage($db,$id) {
     $message = $db->getMessage($id);
     if ($message==null)
         return false;
-    if (userIsAdmin() ||
-        (userIsLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
+    if (isUserAdmin() ||
+        (isUserLoggedOn() && $message["changeUserID"]==getLoggedInUserId()) ||
         $message["changeIP"]==$_SERVER["REMOTE_ADDR"] )
     {
         return $db->deleteMessageEntry($id);
@@ -144,11 +144,11 @@ function writeMessage($db,$text,$privacy,$name) {
 	$message = array();
 	$message["text"]=$text;
 	$message["privacy"]=$privacy;
-	if (!userIsLoggedOn()) {
+	if (!isUserLoggedOn()) {
 		$message["name"]=$name;
 		$message["privacy"]="world";
 	}
-	if (!userIsAdmin())
+	if (!isUserAdmin())
         \maierlabs\lpfw\Appl::sendHtmlMail(null, $text, " Message");
 	$db->saveRequest(changeType::message);
 	return $db->saveNewMessage($message); 

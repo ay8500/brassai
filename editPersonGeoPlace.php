@@ -10,15 +10,15 @@
 \maierlabs\lpfw\Appl::addJs("js/diakEditGeoLeaflet.js");
 
 
-if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
+if (isUserAdmin() || isUserEditor() || isAktUserTheLoggedInUser()) {
 	//Save geo data
-	if (getParam("action","")=="changegeo" && userIsLoggedOn()) {
+	if (getParam("action","")=="changegeo" && isUserLoggedOn()) {
 	
 		$geolat=getGetParam("geolat", "46.7719");
 		$geolng=getGetParam("geolng", "23.5923");
 	
 		if ($db->savePersonGeolocation($diak["id"],$geolat,$geolng)>=0) {
-			if (!userIsAdmin())
+			if (!isUserAdmin())
                 \maierlabs\lpfw\Logger::_("SaveGeo\t".getLoggedInUserId());
 
             \maierlabs\lpfw\Appl::setMessage('Geokoordináták sikeresen módosítva!', 'success');
@@ -29,7 +29,7 @@ if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) {
 		}
 	}
 }
-if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId()) ) {
+if ( isUserAdmin() || (isUserLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId()) ) {
 	$xrandom=0;
 	$yrandom=0;
 } else {
@@ -53,7 +53,7 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUser
 		<?php } ?>
 	</script>
 
-<?php if (!(userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser())) { ?>	
+<?php if (!(isUserAdmin() || isUserEditor() || isAktUserTheLoggedInUser())) { ?>
 	<div  class="panel panel-default" style="display: block;">
 		<div class="panel-heading">A pontos lakhelyet csak bejelentkezett osztálytársak látják pontosan.</div>
 	</div>
@@ -61,7 +61,7 @@ if ( userIsAdmin() || (userIsLoggedOn() && getAktClassId()==$db->getLoggedInUser
 	
 	<div id="map_canvas" style="width: 100%; height: 400px;"></div>
 	
-<?php if (userIsAdmin() || userIsEditor() || isAktUserTheLoggedInUser()) { ?>	
+<?php if (isUserAdmin() || isUserEditor() || isAktUserTheLoggedInUser()) { ?>
 	<div  class="panel panel-default" style="display: block;">
 		<div class="panel-heading"><b>Jelöld meg a térképen a lakhelyedet.</b> Ezt a poziciót csak az osztálytársak látják pontosan.</div>
 	</div>

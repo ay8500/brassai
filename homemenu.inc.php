@@ -102,7 +102,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
         			<li><a href="zenetoplista?classid=all">Zenetoplista</a></li>
        			</ul>
       		</li>
-      		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || userIsAdmin())) {
+      		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || isUserAdmin())) {
                 $classStat = $db->getClassStatistics(Appl::getMemberId("aktClass"), false);
             ?>
             <li id="classmenu" class="dropdown">
@@ -194,7 +194,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
                     </button>
                 </div>
             </form>
-            <?php if (userIsLoggedOn()) {
+            <?php if (isUserLoggedOn()) {
                 $person = $db->getPersonLogedOn(); ?>
                 <form class="navbar-form navbar-right" role="search">
                     <div class="input-group input-group" style="margin: 3px;">
@@ -216,7 +216,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
                 </form>
             <?php } ?>
             </li>
-            <?php if (userIsAdmin()) {?>
+            <?php if (isUserAdmin()) {?>
                 <li style="top:18px"><span class="badge"><?php echo $trackerDb->getSiteCount($_SERVER['REQUEST_URI'])?></span></li>
             <?php }?>
         </ul>
@@ -331,7 +331,7 @@ function directLogin($db,$key){
         Appl::setMember("actSchool",$db->dbDAO->getStafClassIdBySchoolId($class["schoolID"]));
         setAktClass($class["id"]);
         setAktSchool($class["schoolID"]);
-        if (!userIsAdmin() && !userIsSuperuser()) {
+        if (!isUserAdmin() && !isUserSuperuser()) {
             \maierlabs\lpfw\Appl::sendHtmlMail(null,
                 "<h2>Login</h2>".
                 "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");

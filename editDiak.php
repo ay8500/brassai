@@ -40,7 +40,7 @@ $action=getParam("action","");
 $anonymousEditor=getParam("anonymousEditor")=="true";
 
 //Edit or only view variant this page
-$edit = (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
+$edit = (isUserEditor() || isUserSuperuser() || isAktUserTheLoggedInUser() || $anonymousEditor || $action=="changediak");
 
 //Create new person 
 $createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newteacher" || $action=="savenewperson" || $action=="savenewguest" || $action=="savenewteacher";
@@ -69,7 +69,7 @@ if ($personid!=null && $personid>=0) {
 }
 
 //GDPR person requested all data to be deleted exept name
-if (!userIsAdmin() && $diak["gdpr"]==5) {
+if (!isUserAdmin() && $diak["gdpr"]==5) {
     include_once "homemenu.inc.php";
     ?>
         <div class="well">
@@ -111,14 +111,14 @@ if (true) { //Communication
 	array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true,true ,true );
 	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
 }
-if (userIsSuperuser() ) {
+if (isUserSuperuser() ) {
     array_push($dataFieldNames, "role");
     array_push($dataItemProp,"role");
     array_push($dataFieldCaption, "Opciók");
     array_push($dataCheckFieldVisible, true);
     array_push($dataFieldObl, false);
 }
-if (userIsAdmin()) { //only for admin
+if (isUserAdmin()) { //only for admin
 	array_push($dataFieldNames, "facebookid","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
 	array_push($dataItemProp,"","","","","","","","","","","");
 	array_push($dataFieldCaption, "FB-ID","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
@@ -165,13 +165,13 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 				Appl::setMessage("Felhasználó név már létezik!<br/>Az adatok kimentése sikertelen.","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tUsername exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
                 //Validate the mail address if no admin logged on
-			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !userIsAdmin()) {
+			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !isUserAdmin()) {
 				Appl::setMessage("E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail wrong syntax".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
-            } elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !userIsAdmin()) {
+            } elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !isUserAdmin()) {
 				Appl::setMessage("Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tEmpty name fields".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
-            } elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !userIsAdmin()) {
+            } elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !isUserAdmin()) {
 				Appl::setMessage("Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.","warning");
                 \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tName too short".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
             } else {
@@ -203,14 +203,14 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 }
 
 //Change password
-if ($action=="changepassw" && userIsLoggedOn()) {
+if ($action=="changepassw" && isUserLoggedOn()) {
 	if (isset($_GET["newpwd1"])) $newpwd1=$_GET["newpwd1"]; else $newpwd1="";
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
 		if ($newpwd1==$newpwd2) {
             $ret=$userDB->setUserPassword(getAktUserId(),encrypt_decrypt("encrypt",$newpwd1));
 			if ($ret>=0) {
-				if (!userIsAdmin()) 
+				if (!isUserAdmin())
                     \maierlabs\lpfw\Logger::_("SavePassw\t".getLoggedInUserId());
 					Appl::setMessage("Jelszó módosíva!", "success");
 			} else {
@@ -223,14 +223,14 @@ if ($action=="changepassw" && userIsLoggedOn()) {
 }
 
 //Change user name
-if ($action=="changeuser" && userIsLoggedOn()) {
+if ($action=="changeuser" && isUserLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
 		if (!checkUserNameExists($userDB,$personid,$user)) {
 			$ret=$db->savePersonField(getAktUserId(),'user', $user);
 			if ($ret>=0) {
 				$_SESSION["USER"]=$user;
-				if (!userIsAdmin()) 
+				if (!isUserAdmin())
                     \maierlabs\lpfw\Logger::_("SaveDataname\t".getLoggedInUserId());
 					Appl::setMessage("Becenév módosíva!", "success");
 			} else {
@@ -245,7 +245,7 @@ if ($action=="changeuser" && userIsLoggedOn()) {
 }
 
 //Remove Facebook connection
-if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
+if ($action=="removefacebookconnection"  && isUserLoggedOn()) {
 	$ret = $db->savePersonField(getLoggedInUserId(), "facebookid", 0);
 	$diak=$db->getPersonByID(getLoggedInUserId());
 	if ((!isset($diak["facebookid"]) || $diak["facebookid"]=null) && $ret>=0) {
@@ -258,7 +258,7 @@ if ($action=="removefacebookconnection"  && userIsLoggedOn()) {
 }
 
 //Delete Picture
-if (getIntParam("deletePersonPicture",-1)>=0 && (userIsSuperuser() || getLoggedInUserId()==getRealId($diak))) {
+if (getIntParam("deletePersonPicture",-1)>=0 && (isUserSuperuser() || getLoggedInUserId()==getRealId($diak))) {
 	if ($db->unlinkPersonPicture(getIntParam("deletePersonPicture"))) {
 		Appl::setMessage("Kép sikeresen törölve","success");
 		$diak["picture"]=null;
@@ -281,7 +281,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 				}
 				//The max size of e picture 
 				if ($_FILES['userfile']['size']<3100000) {
-					if (userIsAdmin() && null!=getParam("overwriteFileName")) {
+					if (isUserAdmin() && null!=getParam("overwriteFileName")) {
 						//Overwrite an existing file
 						$pFileName='/'.basename(getParam("overwriteFileName"));
 						unlink($fileFolder.$pFileName);
@@ -330,7 +330,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 }
 
 // Title an subtitle of the page schoolmate or guests
-$guests = isPersonGuest($diak);
+$guests = isUserGuest($diak);
 if (isAktClassStaf()) {
     if (intval($diak["isTeacher"])==1)
         Appl::setSiteSubTitle("Tanári kar");
@@ -395,8 +395,8 @@ if ($diak["isTeacher"]==0) {
     array_push($tabsCaption ,array("id" => "classes", "caption" => "Tanítványok", "glyphicon" => "*folder_shared"));
 }
 array_push($tabsCaption ,array("id" => "geoplace", "caption" => "Térkép", "glyphicon" => "*public"));
-if(userIsLoggedOn() || userIsAdmin()) {
-    if (getLoggedInUserId()==$diak["id"] || userIsAdmin())
+if(isUserLoggedOn() || isUserAdmin()) {
+    if (getLoggedInUserId()==$diak["id"] || isUserAdmin())
         array_push($tabsCaption ,array("id" => "user", "caption" => "Bejelentkezési&nbsp;adatok", "glyphicon" => "*vpn_key"));
     array_push($tabsCaption ,array("id" => "info", "caption" => "Infók", "glyphicon" => "info-sign"));
 }

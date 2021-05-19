@@ -115,7 +115,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         /*Easter*/
         /*
         if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) && strtotime("now")<strtotime("2021-04-08")) {
-            if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !userIsLoggedOn())) {
+            if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !isUserLoggedOn())) {
                 ?>
                 <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId()!=null?getLoggedInUserId():"null" ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
                 <?php
@@ -163,7 +163,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
                 <a href="picture?type=<?php echo $typeArray["type"]?>&typeid=<?php echo $typeArray["typeId"]?>&id=<?php echo $picture["id"]?>">
                     <img src="imageConvert?width=396&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
                 </a>
-                <?php  if (userIsSuperuser()) {?>
+                <?php  if (isUserSuperuser()) {?>
                     <br/><a href="history?table=picture&id=<?php echo $picture["id"]?>" style="display:inline-block;position: relative;top:-30px; left:10px;">
                         <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("picture",$picture["id"]))?></span>
                     </a>
@@ -219,7 +219,7 @@ function displayClass($db,$class,$showDate=false) {
 			</div>
 		<?php } ?>
 
-        <?php  if (userIsSuperuser()) {?>
+        <?php  if (isUserSuperuser()) {?>
             <br/><a href="history?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
             </a>
@@ -316,7 +316,7 @@ function displayArticle($db,$article,$showDate=true) {
         </div>
 
 
-        <?php  if (userIsSuperuser()) {?>
+        <?php  if (isUserSuperuser()) {?>
             <br/><a href="history?table=article&id=<?php echo $article["id"]?>" style="display:inline-block;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("article",$article["id"]))?></span>
             </a>
@@ -367,7 +367,7 @@ function displayPersonCandle($db,$person,$date) {
                     $diakClass = $db->getClassById($d["classID"]);
                     if ($diakClass!=null) {
                         $classText = getClassName($diakClass);
-                        if (isPersonGuest($d) == 1) {
+                        if (isUserGuest($d) == 1) {
                             if ($d["classID"] != 0)
                                 echo '<h5>Jó barát:<a href="hometable?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
                             else
@@ -391,7 +391,7 @@ function displayPersonCandle($db,$person,$date) {
 function displayPersonPictureAndHistory($db,$d) {
     ?>
     <div style="display: inline-block;position: relative;">
-        <?php if (userIsSuperuser()) { ?>
+        <?php if (isUserSuperuser()) { ?>
             <a href="history?table=person&id=<?php echo $d["id"] ?>" title="módosítások"
                     style="position: absolute;top:2px;left:2px;z-index:10;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person", $d["id"])) ?></span>
@@ -418,7 +418,7 @@ function displayPersonNameAndGetClass ($db,$d) {
             $diakClass = $db->getClassById($d["classID"]);
             $d["classText"] = getClassName($diakClass);
         }
-        if (isPersonGuest($d)==1) {
+        if (isUserGuest($d)==1) {
             if (strstr($d["classText"],"staf")!==false)
                 $personClass = '<h5>Jó barát:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
             else
@@ -439,7 +439,7 @@ function displayPersonPicture($d)
         $rstyle = ' diak_image_empty';
     }
     if ($d["id"]!=-1) {
-        //if (userIsLoggedOn() || isLocalhost()) {
+        //if (isUserLoggedOn() || isLocalhost()) {
         //     $personLink="editDiak?uid=".$d["id"];
         //} else {
             $personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];

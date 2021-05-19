@@ -17,11 +17,11 @@ $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
 array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
 array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
-if (userIsAdmin()) {
+if (isUserAdmin()) {
     array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
 }
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
-if (userIsLoggedOn() || getParam("userid")!=null) {
+if (isUserLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
         $pers = getPersonShortName($db->getPersonByID(getParam("userid")));
     } else {

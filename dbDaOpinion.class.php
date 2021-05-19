@@ -69,9 +69,9 @@ class dbDaOpinion
         $opinion = $this->dbDAO->dataBase->querySignleRow("select * from opinion where id=" . $id);
         if ($opinion != null &&
             (
-                userIsAdmin() ||
-                (userIsLoggedOn() && $opinion["changeUserID"] == getLoggedInUserId()) ||
-                (!userIsLoggedOn() && $opinion["changeIP"]) == $_SERVER["REMOTE_ADDR"]
+                isUserAdmin() ||
+                (isUserLoggedOn() && $opinion["changeUserID"] == getLoggedInUserId()) ||
+                (!isUserLoggedOn() && $opinion["changeIP"]) == $_SERVER["REMOTE_ADDR"]
             )
         ) {
             $ret->table = $opinion["table"];
@@ -90,7 +90,7 @@ class dbDaOpinion
         $opinion = $this->dbDAO->dataBase->querySignleRow("select * from opinion where id=" . $id);
         $exist = $this->existOpinion($opinion["changeUserID"],$opinion["entryID"],"person","easteregg","changeDate >'".date("Y")."-01-01 00:00:00'");
         if ($opinion != null && !$exist &&
-            ( userIsAdmin() ||  (userIsLoggedOn() && $opinion["entryID"] == getLoggedInUserId()) )
+            ( isUserAdmin() ||  (isUserLoggedOn() && $opinion["entryID"] == getLoggedInUserId()) )
 
         ) {
             $ret->table = $opinion["table"];
@@ -114,7 +114,7 @@ class dbDaOpinion
     public function getOpinion($id, $table, $type, $where=null)
     {
         $where = $where==null?"":" and ".$where;
-        if (userIsLoggedOn()) {
+        if (isUserLoggedOn()) {
             $this->dbDAO->dataBase->query("select * from opinion where `table`='" . $table . "' and opinion='" . $type . "' and entryID=" . $id .$where. " and changeUserID=" . getLoggedInUserId());
             return $this->dbDAO->dataBase->getRowList();
         }
@@ -150,7 +150,7 @@ class dbDaOpinion
             $opinion->person = $data[$i]["changeUserID"];
             $opinion->date = $data[$i]["changeDate"];
             $opinion->ip = $data[$i]["changeIP"];
-            $opinion->myopinion = (userIsAdmin() || getLoggedInUserId() == $data[$i]["changeUserID"]) || (!userIsLoggedOn() && $data[$i]["changeIP"] == $_SERVER["REMOTE_ADDR"]);
+            $opinion->myopinion = (isUserAdmin() || getLoggedInUserId() == $data[$i]["changeUserID"]) || (!isUserLoggedOn() && $data[$i]["changeIP"] == $_SERVER["REMOTE_ADDR"]);
             $ret[] = $opinion;
         }
         return $ret;

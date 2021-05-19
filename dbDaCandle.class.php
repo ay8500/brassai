@@ -115,7 +115,7 @@ class dbDaCandle
      */
     public function setCandleLighter($id, $userId=null,$asAnonymous=0) {
         $data=array();
-        if (userIsLoggedOn()) {
+        if (isUserLoggedOn()) {
             $data=$this->dbDAO->dataBase->insertFieldInArray($data, "userID", $userId);
         }
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);

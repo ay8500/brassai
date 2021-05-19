@@ -27,7 +27,7 @@ if($classId==null) {
 }
 
 
-if ( userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId() || userIsViewer()) {
+if ( isUserLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId() || isUserViewer()) {
 	$xrandom=0;
 	$yrandom=0;
 } else {
@@ -39,7 +39,7 @@ if ( userIsLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId() || userI
 $i=0;
 $persons = $db->getPersonList($where);
 foreach ($persons as $d)  {
-	if (!isPersonGuest($d)) {
+	if (!isUserGuest($d)) {
 		if ( floatval($d["geolat"])+$xrandom>floatval($lat1) && 
 			 floatval($d["geolat"])+$xrandom<floatval($lat2) && 
 			 floatval($d["geolng"])+$yrandom>floatval($lng1) && 

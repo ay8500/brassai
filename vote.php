@@ -37,7 +37,7 @@ if ($class!=null) {
     //Save vote data
     if (isActionParam("vote")) {
         //Save all data for admins, superusers and editors
-        if ( userIsEditor() || userIsSuperuser() || (userIsLoggedOn() && getAktUserId()==getParam("personID"))) {
+        if ( isUserEditor() || isUserSuperuser() || (isUserLoggedOn() && getAktUserId()==getParam("personID"))) {
             $vote=array();
             $vote["personID"]=getParam("personID");
             $vote["classID"]=getParam("classID");
@@ -62,7 +62,7 @@ if ($class!=null) {
     <div class="well well-lg">
         <b>A következő <?php echo $classMeetingCount?> éves talákozonk <?php echo $classMeetingYear?> ben lesz megtartva.</b>
         Légyszíves
-        <?PHP if (!userIsLoggedOn()) echo(' jelenkezz be '); ?>
+        <?PHP if (!isUserLoggedOn()) echo(' jelenkezz be '); ?>
         és töltsd ki a táblázatot egyszerübb organizáció miatt.
     </div>
 
@@ -97,7 +97,7 @@ if ($class!=null) {
                         if (showField($d, "birthname")) echo(' (' . $d["birthname"] . ')'); ?>
                     </td>
                     <?php
-                    if (userIsEditor() || userIsSuperuser() || $d["id"] == getLoggedInUserId() && getRealId(getAktClass()) == $db->getLoggedInUserClassId()) {
+                    if (isUserEditor() || isUserSuperuser() || $d["id"] == getLoggedInUserId() && getRealId(getAktClass()) == $db->getLoggedInUserClassId()) {
                         $dis = "";
                         $ro = "";
                     } else {
@@ -123,7 +123,7 @@ if ($class!=null) {
                                 <button value="<?php echo $vote["id"] ?>" name="id" type="submit" class="btn btn-default">
                                     <span class="glyphicon glyphicon-save"></span> Kiment
                                 </button>
-                                <?php if (userIsEditor() || userIsSuperuser()) { ?>
+                                <?php if (isUserEditor() || isUserSuperuser()) { ?>
                                     <a title="módosítások" href="history?table=vote&id=<?php echo $vote["id"] ?>"
                                        style="display:inline-block;">
                                         <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("vote", $vote["id"])) ?></span>

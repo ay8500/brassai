@@ -14,7 +14,7 @@ Appl::addCssStyle('
 ');
 include('homemenu.inc.php');
 
-if (!(userIsAdmin() || userIsSuperuser())) {
+if (!(isUserAdmin() || isUserSuperuser())) {
     ?><div class="alert alert-danger text-center">Adat hozzáférési jog hiányzik!</div><?php
     include 'homefooter.inc.php';
     return;
@@ -200,7 +200,7 @@ function displayVote($db,$item,$vote,$itemNext) {
  */
 function displayChangeData($db,$item,$historyItem) {
     ?><td><?php echo Appl::dateTimeAsStr(array_get($item,"changeDate"))?> </td>
-	<?php if (userIsSuperuser() ) {?>
+	<?php if (isUserSuperuser() ) {?>
         <td><button onclick="showip('<?php echo array_get($item,"changeIP")?>');" class="btn">IP</button></td>
         <?php if ($historyItem!=null) {?>
             <td><button onclick="deleteHistory(<?php echo $historyItem["id"].",'".getParam("table")."',".getParam("id")?>)" class="btn btn-danger btn-sm" title="<?php echo $historyItem["id"]?>">Töröl</button></td>
@@ -214,7 +214,7 @@ function displayChangeData($db,$item,$historyItem) {
     <?php } else { ?>
         <td></td>
     <?php }
-	if (userIsAdmin()) {
+	if (isUserAdmin()) {
         if ($historyItem != null && $item["changeUserID"] != $historyItem["changeUserID"]) {
             $changePerson=$db->getPersonByID($historyItem["changeUserID"]); ?>
             <td> <?php echo Appl::dateTimeAsStr($historyItem["changeDate"]) ?></td>

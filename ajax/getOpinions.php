@@ -29,7 +29,7 @@ if ($count!='candle') {
             $op->text = $o->text;
         else
             $op->text =null;
-        if (userIsAdmin()) {
+        if (isUserAdmin()) {
             $op->ip =  $o->ip;
         }else {
             $op->ip = '';
@@ -44,7 +44,7 @@ if ($count!='candle') {
             $op->name = getPersonLinkAndPicture($db->getPersonDummy());
         }
         //Only for easter opinions form this year
-        if ($count=="easter" && $o->date > date("Y")."-01-01 00:00:00" && (getLoggedInUserId()==$id || userIsAdmin()) ) {
+        if ($count=="easter" && $o->date > date("Y")."-01-01 00:00:00" && (getLoggedInUserId()==$id || isUserAdmin()) ) {
             //Check if the girl allready sent an easter egg to the boy
             $egg=$dbOpinions->existOpinion($o->person,$id,"person","easteregg", "changeDate > '".date("Y")."-01-01 00:00:00'");
             $op->sendEgg = $egg?null:true;
@@ -57,7 +57,7 @@ if ($count!='candle') {
     $candles=$dbCandles->getCandleDetailByPersonId($id);
     foreach ($candles as $o) {
         $op = new stdClass();
-        if (userIsAdmin()) {
+        if (isUserAdmin()) {
             $op->ip =  $o['ip'];
         }else {
             $op->ip = '';

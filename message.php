@@ -50,7 +50,7 @@ $paramName=getParam("name", "");
 $paramText=getParam("T", "");
 
 if (isActionParam("postMessage")) {
-	if (userIsLoggedOn()) {
+	if (isUserLoggedOn()) {
 		if (checkMessageContent($paramText)->ok) {
 			if (writeMessage($db,$paramText, getParam("privacy"), getLoggedInUserName($userDB))>=0) {
                 Appl::setMessage("A beadott üzenet elküldése sikerült","success");
@@ -108,7 +108,7 @@ if (isActionParam("deactivateMessage")) {
 	}
 }
 
-if (isActionParam("deleteMessage") && userIsAdmin()) {
+if (isActionParam("deleteMessage") && isUserAdmin()) {
     $id=getIntParam("id",-1);
     if ($id!=-1) {
         if (deleteMessage($db,$id))
@@ -118,7 +118,7 @@ if (isActionParam("deleteMessage") && userIsAdmin()) {
     }
 }
 
-if (isActionParam("commentMessage") && userIsAdmin()) {
+if (isActionParam("commentMessage") && isUserAdmin()) {
 	if ($db->saveMessageComment(getIntParam("id"),getParam("comment"))===true) {
         Appl::setMessage("A beadott kommentár elküldése sikerült.","success");
 	} else {
@@ -126,7 +126,7 @@ if (isActionParam("commentMessage") && userIsAdmin()) {
 	}
 }
 
-if (isActionParam("setPersonID") && userIsAdmin()) {
+if (isActionParam("setPersonID") && isUserAdmin()) {
 	if ($db->saveMessagePersonID(getIntParam("id"),getParam("personid"))===true) {
         Appl::setMessage("Személy csere sikerült.","success");
 	} else {
@@ -148,7 +148,7 @@ include("homemenu.inc.php");
 </div>
 	<div id="message" style="margin-bottom: 10px;">
 		<form method="post" >
-			<?php if (!userIsLoggedOn()) {?>
+			<?php if (!isUserLoggedOn()) {?>
                 <div class="input-group">
                     <span style="min-width:120px; text-align:right" class="input-group-addon" id="basic-addon1">Név</span>
                     <input type="text" class="form-control input-lg" value="<?php echo($paramName)?>" name="name" placeholder="családnév keresztnév"/>
@@ -156,7 +156,7 @@ include("homemenu.inc.php");
 			<?php } ?>
 			<?php $text="~~" ?>
 <div style="margin:1px"><textarea id="story" name="T" onchange="textChanged();"><?php echo(htmlspecialchars_decode($paramText));?></textarea></div>
-			<?php if (userIsLoggedOn()) {?>
+			<?php if (isUserLoggedOn()) {?>
                 <div class="radiogroup">
                     <div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt az üzenetet?</div>
                     <div title="Az egész világ" class="cradio radio_world"><input type="radio" name="privacy" value="world" <?php echo getFieldCheckedWord($text)?> onclick="saveMessage();" /></div>
@@ -165,7 +165,7 @@ include("homemenu.inc.php");
                 </div>
 			<?php } ?>
 			<button value="postMessage" name="action" class="btn btn-success" type="submit" ><span class="glyphicon glyphicon-send"></span> küldés</button>
-			<?php if (userIsAdmin()) {?>
+			<?php if (isUserAdmin()) {?>
 				<button value="checkMessage" name="action" class="btn btn-info" type="submit" ><span class="glyphicon glyphicon-check"></span> magyar?</button>
 			<?php } ?>
 		</form>

@@ -31,12 +31,12 @@ if (getParam("action","")=="deletePicture" ) {
 }
 
 //Change picture order
-if (getParam("action","")=="changeOrder" && (userIsSuperuser() || userIsEditor())  )  {
+if (getParam("action","")=="changeOrder" && (isUserSuperuser() || isUserEditor())  )  {
 	$db->changePictureOrderValues(getIntParam("id1", -1), getIntParam("id2", -1));
 }
 
 //Change picture albumname
-if (isActionParam("changePictureAlbum") && (userIsSuperuser() || userIsEditor())  )  {
+if (isActionParam("changePictureAlbum") && (isUserSuperuser() || isUserEditor())  )  {
 	if ($db->changePictureAlbumName(getIntParam("pictureid", -1), getParam("album", ""))) {
         Appl::setMessage("Kép sikeresen áthelyezve. Köszönjük szépen.","success");
 	} else {
@@ -45,7 +45,7 @@ if (isActionParam("changePictureAlbum") && (userIsSuperuser() || userIsEditor())
 }
 
 //Change albumname
-if (isActionParam("renameAlbum") && (userIsSuperuser() || userIsEditor())  )  {
+if (isActionParam("renameAlbum") && (isUserSuperuser() || isUserEditor())  )  {
 	if ($db->changeAlbumName($type, $typeId, getParam("oldAlbum", ""), getParam("album", ""))) {
         Appl::setMessage(" Album sikeresen étnevezve. Köszönjük szépen.","success");
 	} else {
@@ -54,7 +54,7 @@ if (isActionParam("renameAlbum") && (userIsSuperuser() || userIsEditor())  )  {
 }
 
 //Delete and unlink picture
-if (isActionParam("unlinkPicture") && (userIsSuperuser()) )  {
+if (isActionParam("unlinkPicture") && (isUserSuperuser()) )  {
 	if ($db->deletePicture(getIntParam("did"),true)>=0) {
 	    $db->updateRecentChangesList();
         Appl::setMessage("Kép sikeresen véglegesen törölve","success");
@@ -64,7 +64,7 @@ if (isActionParam("unlinkPicture") && (userIsSuperuser()) )  {
 }
 
 //Delete and not unlink picture
-if (isActionParam("notUnlinkPicture") && (userIsSuperuser()) )  {
+if (isActionParam("notUnlinkPicture") && (isUserSuperuser()) )  {
     if ($db->notUnlinkPicture(getIntParam("did"))) {
         $db->updateRecentChangesList();
         Appl::setMessage("Kép törlése sikeresen vissza állítva","success");
@@ -80,7 +80,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 			$fileName = explode( ".", basename( $_FILES['userfile']['name']));
 			$idx=$db->getNextPictureId();
 	
-			if (userIsAdmin() && null!=getParam("overwriteFileName")) {
+			if (isUserAdmin() && null!=getParam("overwriteFileName")) {
 				//Overwrite an existing file
 				$uploadfile=dirname($_SERVER["SCRIPT_FILENAME"])."/".getParam("overwriteFileName");
 				unlink($uploadfile);
@@ -167,7 +167,7 @@ if (strpos($sort,"date")!==false)  $sortSql="uploadDate";
 if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 
 //The list of pictures
-if (userIsAdmin()) {
+if (isUserAdmin()) {
     $wherePictureList='true ';
 } else {
     $wherePictureList="isDeleted<>'1'";
@@ -261,7 +261,7 @@ if (!isActionParam("showmore") ) {
 			</a>
 		<?php }
         //New album
-		if ( (userIsSuperuser() || userIsEditor()) ) {?>
+		if ( (isUserSuperuser() || isUserEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $serverPhpSelf?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -279,7 +279,7 @@ if (!isActionParam("showmore") ) {
 			</div>
 		<?php }
 		//Rename album
-		if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (userIsSuperuser() || userIsEditor()) ) {?>
+		if ($albumParam!="" && substr($albumParam,0,1)!="_" && 	!$newAlbum && (isUserSuperuser() || isUserEditor()) ) {?>
 			<div style="display:inline-block">
 				<form action="<?php echo $serverPhpSelf?>" method="post">
 					<?php if (getParam("tabOpen")!=null) {?>
@@ -299,19 +299,19 @@ if (!isActionParam("showmore") ) {
 	<form enctype="multipart/form-data" action="<?php echo $script?>" method="post">
         <input type="hidden" name="album" value="<?php echo getParam("album","")?>"/>
 		<div style="margin-bottom:15px;">
-            <?php if (substr($albumParam,0,1)!="_" && ($countPictures<50 || userIsAdmin())) {?>
+            <?php if (substr($albumParam,0,1)!="_" && ($countPictures<50 || isUserAdmin())) {?>
                 <button class="btn btn-info" onclick="$('#download').slideDown();return false;"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
             <?php } else {?>
                 <button class="btn btn-info" type="button" onclick="showModalMessage('Képek feltöltése','<b>Örvendünk mert képpel szeretnéd bővíteni az oldalt!</b><br/>Ebben az albumban a diákok és az osztályok képei jelennek meg tartalmuk beállítása szerint. Ha szeretnél képeket feltölteni akkor keresd meg az osztályt vagy a diákot amihez a kép legjobban passzol, majd ott töltsd fel a képet és jelöld meg a tartalmát. Köszönjük szépen.');"><span class="glyphicon glyphicon-cloud-upload"> </span> <?php Appl::_("Kép feltöltése")?></button>
             <?php }?>
             <button class="btn btn-default" onclick="return toogleListBlock();"><span class="glyphicon glyphicon-eye-open"> </span> <?php Appl::_("Lista/Album")?></button>
-            <?php if ((substr($albumParam,0,1)!="_" && !($type=="schoolID" && $albumParam=="")) || userIsAdmin()) {?>
+            <?php if ((substr($albumParam,0,1)!="_" && !($type=="schoolID" && $albumParam=="")) || isUserAdmin()) {?>
                 <button class="btn btn-<?php echo $sortOrder ?>" onclick="return sortPictures('order<?php echo $desc ?>')" title="<?php Appl::_("Beálított sorrend")?>"><span class="glyphicon glyphicon-sort-by-order<?php echo $alt ?>"> </span></button>
             <?php } ?>
             <button class="btn btn-<?php echo $sortAlphabet ?>" onclick="return sortPictures('alphabet<?php echo $desc ?>')" title="<?php Appl::_("ABC szerint")?>"><span class="glyphicon glyphicon-sort-by-alphabet<?php echo $alt ?>"> </span></button>
             <button class="btn btn-<?php echo $sortDate ?>" onclick="return sortPictures('date<?php echo $desc ?>')" title="<?php Appl::_("Dátum szerint")?>"><span class="glyphicon glyphicon-sort-by-attributes<?php echo $alt ?>"> </span></button>
         </div>
-        <?php if ($countPictures<50 || userIsAdmin()) {?>
+        <?php if ($countPictures<50 || isUserAdmin()) {?>
 		<div id="download" style="margin:15px;display:none;">
 			<div><?php Appl::_("Bővitsd a véndiákok oldalát képekkel! Válsszd ki a privát fényképid közül azokat az értékes felvételeket amelyeknek mindenki örvend ha látja.")?><span></span></div>
 			<span style="display: inline-block;"><?php Appl::_("Válassz egy jpg képet max. 3MByte")?></span>
@@ -364,7 +364,7 @@ if (!isActionParam("showmore") ) {
                 <button title="<?php Appl::_("Arc felismerés")?>" class="pbtn" id="facebutton" onclick="return toggleFaceRecognition();"><span class="glyphicon glyphicon-user"></span></button>
                 <button title="<?php Appl::_("Jelölések")?>" class="pbtn" onmouseover="personShowAll(true);" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-eye-open"></span></button>
                 <button title="<?php Appl::_("Kép link a clipbordba")?>" class="pbtn" onclick="showModalMessage('A kép linkje','<?php echo($url.pathinfo(parse_url($_SERVER['SCRIPT_NAME'])["path"])["dirname"]."/picture?id=") ?>'+$('#thePicture').attr('data-id'));return false;" onmouseout="personShowAll(false);"><span class="glyphicon glyphicon-link"></span></button>
-                <?php if(userIsAdmin() ) {?>
+                <?php if(isUserAdmin() ) {?>
                     <button title="<?php Appl::_("Beállítások")?>" class="pbtn" onclick="showImageSettings();"><span class="glyphicon glyphicon-cog"></span></button>
                 <?php }?>
             </div>
@@ -415,7 +415,7 @@ function displayPictureList($db,$pictures,$albumList,$albumParam,$view) {
         \maierlabs\lpfw\Appl::addJsScript('$("#buttonmore").hide();');
     }
     foreach ($pictures as $idx=>$pict) {
-        if ( $pict["isDeleted"]==0  || userIsAdmin() ) {
+        if ( $pict["isDeleted"]==0  || isUserAdmin() ) {
             ?><div class="pictureframe" <?php echo $pict["isDeleted"]==1?'style="background-color: #ffbcac;"':'' ?>><?php
             displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view);
 
@@ -456,7 +456,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                 <div class="pdiv">
                     <button title="Nagyít" class="pbtn" onclick="return pictureModal('<?php echo $pict["file"] ?>',<?php echo $pict["id"] ?>);" type="button"><span class="glyphicon glyphicon-search"></span></button>
                     <button title="Módosít" class="pbtn" onclick="return displayedit(<?php echo $pict["id"] ?>);" type="button"><span class="glyphicon glyphicon-pencil"></span></button><?php
-                    if (userIsAdmin()){?>
+                    if (isUserAdmin()){?>
                         <button title="Kicserél" class="pbtn" name="overwriteFileName" value="<?php echo $pict["file"]?>"><span class="glyphicon glyphicon-refresh"></span></button>
                     <a title="Letölt" class="pbtn " target="_download" href="<?php echo $pict['file']?>" ><span style="vertical-align: middle;" class="glyphicon glyphicon-download-alt"></span></a><?php
                     } ?>
@@ -469,7 +469,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             </div>
         <?php } ?>
 
-        <?php  if (userIsSuperuser()) {?>
+        <?php  if (isUserSuperuser()) {?>
             <a href="history?table=picture&id=<?php echo $pict["id"]?>" title="módosítások" style="position: absolute;bottom:28px;left: 10px;">
                 <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("picture",$pict["id"]))?></span>
             </a>
@@ -482,7 +482,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             <textarea class="ileditcomment" id="commentEdit_<?php echo $pict["id"] ?>"  placeholder="Írj egy pár sort a kép tartarmáról." >
 <?php echo html_entity_decode(html_entity_decode($pict["comment"])) ?></textarea>
             <div>
-                <?php if (userIsAdmin()) {?>
+                <?php if (isUserAdmin()) {?>
                     <input class="form-control" value="<?php echo $pict["tag"]?>" id="tagEdit_<?php echo $pict["id"] ?>"/>
                 <?php } else {?>
                     <select  class="chosen" multiple="true" data-placeholder="Mi a kép tartalma?" id="tagEdit_<?php echo $pict["id"] ?>" >
@@ -493,20 +493,20 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
                     </select>
                     <input type="hidden" name="tagEdit_<?php echo $pict["id"] ?>"/>
                 <?php }?>
-                <?php if (userIsLoggedOn()) { ?>
+                <?php if (isUserLoggedOn()) { ?>
                     <span  class="ilbutton ilbuttonworld" ><input <?php echo $checked ?> type="checkbox"  onchange="changeVisibility(<?php echo $pict["id"] ?>);" id="visibility<?php echo $pict["id"]?>" title="ezt a képet mindenki láthatja, nem csak az osztálytársaim" /></span >
                 <?php }?>
                 <button class="btn btn-info"  title="Kimenti a kép módosításait" onclick="return savePicture(<?php echo $pict["id"] ?>);"><span class="glyphicon glyphicon-save-file"></span> Kiment</button>
                 <?php if ($pict["isDeleted"]!=1) { ?>
                     <button class="btn btn-warning" title="Képet töröl" onclick="deletePicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove-circle"></span> Töröl</button>
                 <?php } ?>
-                <?php if (userIsAdmin()) { ?>
+                <?php if (isUserAdmin()) { ?>
                     <button class="btn btn-danger" title="Végleges törlés" onclick="unlinkPicture(<?php echo $pict["id"] ?>);return false;"><img src="images/delete.gif" /> Végleges</button>
                     <?php if ($pict["isDeleted"]==1) {?>
                         <button class="btn btn-warning" title="Törlés vissza" onclick="notUnlinkPicture(<?php echo $pict["id"] ?>);return false;"><span class="glyphicon glyphicon-remove"></span> Maradhat</button>
                     <?php }?>
                 <?php }?>
-                <?php if (userIsEditor() ||userIsSuperuser() || userIsEditor()) { ?>
+                <?php if (isUserEditor() ||isUserSuperuser() || isUserEditor()) { ?>
                     <select id="changeAlbum<?php echo $pict["id"] ?>" name="album" class="form-control inline" title="Áthelyezi egy másik abumba" style="margin-top: 5px">
                         <?php foreach ($albumList as $alb) {?>
                             <?php if ($alb["albumName"]!=$albumParam && substr($alb["albumName"],0,1)!="_" ) { ?>
@@ -524,7 +524,7 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
     <div >
         <div id="show_<?php echo $pict["id"] ?>" style="width:auto;display: inline-block; background-color: white;border-radius: 7px;padding: 5px;margin: 10px 10px 0 10px;cursor:default;" >
             <?php //change Order buttons?>
-            <?php if($view!="table" && (userIsEditor() || userIsSuperuser()) ) :?>
+            <?php if($view!="table" && (isUserEditor() || isUserSuperuser()) ) :?>
                 <?php  if ($idx!=0) {?>
                     <button id="picsort" style="margin: 0px 5px 0 10px;" class="btn btn-default" onclick="changeOrder(<?php echo $pict["id"] ?>,<?php echo $pictures[$idx-1]["id"] ?>);return false;" title="eggyel előrébb"><span class="glyphicon glyphicon-arrow-up"></span></button>
                 <?php } else {?>
@@ -544,11 +544,11 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
             </div><?php
             displayPictureOpinion($dbOpinion,$pict["id"]);?>
         </div>
-        <?php if (!userIsLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
+        <?php if (!isUserLoggedOn() && $pict["isVisibleForAll"]==0) { ?>
             <br/><span  class="iluser" title="<?php Appl::_("Csak bejelnkezett felhasználok látják ezt a képet élesen.")?>"><?php Appl::_("Ez a kép védve van!")?></span >
         <?php } ?>
     </div>
-    <?php if ($view!="table" && userIsAdmin()) {?>
+    <?php if ($view!="table" && isUserAdmin()) {?>
         <div  id="list-table" >
             <div style="margin:10px;">
                 id=<?php echo $pict["id"]?>
@@ -653,7 +653,7 @@ Appl::addJsScript("
 ');
 
 //javascript delete picture
-if (userIsSuperuser()) {
+if (isUserSuperuser()) {
     \maierlabs\lpfw\Appl::addJsScript('
         function unlinkPicture(id) {
             if (confirm("'.Appl::__("Fénykép törlését kérem konfirmálni!").'")) {

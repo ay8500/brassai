@@ -56,7 +56,7 @@ if (isset($p["children"]) && showField($p,"children"))
 	$person["children"]=getFieldValue($p,"children");
 
 $person["geolocation"] = (isset($p["geolat"]) && $p["geolat"]!="")?1:0;
-$person["isGuest"] = isPersonGuest($p)?1:0;
+$person["isGuest"] = isUserGuest($p)?1:0;
 	
 
 echo(json_encode($person));

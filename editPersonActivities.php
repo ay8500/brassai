@@ -15,7 +15,7 @@ $activities=$dbStatistic->getPersonActivities($personid);
 	}
 ');
 ?>
-<?php if ( userIsAdmin() || isAktUserTheLoggedInUser() || userIsSuperuser()) { ?>
+<?php if ( isUserAdmin() || isAktUserTheLoggedInUser() || isUserSuperuser()) { ?>
 	<div>
 		<h4>Aktívitási pontszámok</h4>
         <a href="start?&tabOpen=user&userid=<?php echo getAktUserId()?>" class="btn btn-default">

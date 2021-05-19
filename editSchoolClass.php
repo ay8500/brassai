@@ -18,7 +18,7 @@ $action = getParam("action","");
 $classid= getIntParam("classid",-1);
 if ($classid>=0) {
 	$class=$db->getClassById($classid);
-	if ($action=="deleteclass" && userIsAdmin()) {
+	if ($action=="deleteclass" && isUserAdmin()) {
         $personCount=sizeof($db->getPersonListByClassId($class["id"]));
         if(  $personCount==0 ) {
             if ($db->deleteClass($classid)) {
@@ -67,7 +67,7 @@ include("homemenu.inc.php");
 		<h2 class="sub_title">Új végzős osztály létrehozása</h2>
 	<?php } ?>
 
-	<?php if ($classid>=0 && !userIsAdmin()) {  //Edit an existing class?>
+	<?php if ($classid>=0 && !isUserAdmin()) {  //Edit an existing class?>
 
 		<div class="input-group shadowbox" >
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>
@@ -172,7 +172,7 @@ include("homemenu.inc.php");
     </div>
 
 	<div class="well">
-		<?php  if ((userIsSuperuser()) && isset($class)) {?>
+		<?php  if ((isUserSuperuser()) && isset($class)) {?>
 			<a href="history?table=class&id=<?php echo $class["id"]?>" style="display:inline-block;" title="módosítások">
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
 			</a>
@@ -186,7 +186,7 @@ include("homemenu.inc.php");
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
 		</button>
-		<?php if (userIsAdmin() && isset($personCount) ) :?>
+		<?php if (isUserAdmin() && isset($personCount) ) :?>
 			<span>Diákok száma:<?php echo $personCount?></span>
 			<button class="btn btn-default " <?php if($personCount>0) echo "disabled";?> onclick="deleteClass();">
 				<span class="glyphicon glyphicon-remove-circle"></span> Osztályt töröl

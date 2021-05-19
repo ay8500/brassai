@@ -33,7 +33,7 @@ include_once 'chat.inc.php';
 
 
 
-if (isActionParam("sendMessage") && userIsLoggedOn()) {
+if (isActionParam("sendMessage") && isUserLoggedOn()) {
 	$mailsSent = 0;
 	include_once ("sendMail.php");
 	$persons = $db->getPersonListByClassId(getAktClassId(),null,null,true);
@@ -53,7 +53,7 @@ if (isActionParam("sendMessage") && userIsLoggedOn()) {
 $personList=$db->getPersonListByClassId(getRealId(getAktClass()),null,null,true);
 $messageList=$db->getClassMessages(getAktClassId());
 $administrator=$db->getAktSchoolAdminPerson();
-if(!userIsLoggedOn()) {
+if(!isUserLoggedOn()) {
     $message=array();
     $message["changeDate"]=date("Y-m-d H:i:s");
     $message["changeUserID"]=$administrator["id"];

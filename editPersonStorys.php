@@ -59,7 +59,7 @@ include_once 'dbBL.class.php';
 ?>		
 
 	<h3><?php  echo $title; ?></h3>
-	<?php if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) { ?>
+	<?php if (isUserEditor() || isUserSuperuser() || isAktUserTheLoggedInUser()) { ?>
 		<form id="stroryForm" onsubmit="saveStory(); return false;">
 		<fieldset onkeyup="fieldChanged();" >
 			<textarea id="story" style="visibility:hidden; height:400px;" >
@@ -87,7 +87,7 @@ include_once 'dbBL.class.php';
 			echo $okText;
 		} else { 
 			$name="";
-			if (userIsLoggedOn()) {
+			if (isUserLoggedOn()) {
 				$p =$db->getPersonLogedOn();
 				$name=$p["user"];
 			}
@@ -96,7 +96,7 @@ include_once 'dbBL.class.php';
 			<?php if (isset($person["email"]) && $person["email"]!="") {?>
 				Ha szeretnél többet megtudni a véndiákról, akkor üzenj neki. Ahoz csak kattinsd meg a mellékelt gombot.<br />
 				
-				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+				<div class="input-group input-group-sl" style="margin:15px;<?php if (isUserLoggedOn()) { ?>display:none;<?php } ?>">
 					<span style="min-width:130px; text-align:right" class="input-group-addon" >Biztonsági kód:</span>
 					<div class="input-group-btn">
 						<img style="height: 34px;border: 1px solid lightgrey;" alt="" src="SecurityImage/SecurityImage" />
@@ -104,7 +104,7 @@ include_once 'dbBL.class.php';
                     <input id="code" type="text" size="6" value="" placeholder="írd be az 5 karakteres biztonsági kódot" class="form-control"/>
 				</div>
 				
-				<div class="input-group input-group-sl" style="margin:15px;<?php if (userIsLoggedOn()) { ?>display:none;<?php } ?>">
+				<div class="input-group input-group-sl" style="margin:15px;<?php if (isUserLoggedOn()) { ?>display:none;<?php } ?>">
 					<span style="min-width:130px; text-align:right" class="input-group-addon" >Nevem:</span>
 					<input id="name" type="text" value="<?php echo $name ?>" placeholder="Név" class="form-control" />
 				</div>
@@ -117,7 +117,7 @@ include_once 'dbBL.class.php';
 	<?php }  ?>
 
 <?php
-if (userIsEditor() || userIsSuperuser() || isAktUserTheLoggedInUser()) {
+if (isUserEditor() || isUserSuperuser() || isAktUserTheLoggedInUser()) {
     \maierlabs\lpfw\Appl::addJsScript("
 	function saveStory() {
 	    fieldSaved();

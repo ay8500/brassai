@@ -11,7 +11,7 @@ $dbSongVote = new dbDaSongVote($db);
 use \maierlabs\lpfw\Appl as Appl;
 
 //Save Youtube id
-if ( (isActionParam("savesong") || isActionParam("savesongback")) && userIsAdmin()) {
+if ( (isActionParam("savesong") || isActionParam("savesongback")) && isUserAdmin()) {
     $dbSongVote->updateSongFields(
         getIntParam("id"),
         getParam("link"),
@@ -73,7 +73,7 @@ include("homemenu.inc.php");
 			</div>
 		<?php endif;?>
 
-        <?php if (userIsAdmin() && getIntParam("id",-1)!=-1) {
+        <?php if (isUserAdmin() && getIntParam("id",-1)!=-1) {
             $song = $dbSongVote->getSongById(getIntParam("id"));
             ?>
             <div class="panel panel-default" style="padding:10px">
@@ -140,7 +140,7 @@ include("homemenu.inc.php");
 			<?php endif;?>
 		<?php } else {?>
 			<div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?>
-                <?php if (userIsAdmin()) { print_r($json->error); } ?>
+                <?php if (isUserAdmin()) { print_r($json->error); } ?>
             </div>
 		<?php }?>
 		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>

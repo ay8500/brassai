@@ -25,11 +25,11 @@ if (getParam("FacebookId")) {
 
 include_once Config::$lpfw.'logon.inc.php';
 handleLogInOff(new dbDaUser($db));
-if (userIsLoggedOn()) {
+if (isUserLoggedOn()) {
 	header('Location: index?loginok=true');
 }
 //New User
-if (!userIsLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!="") {
+if (!isUserLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!="") {
 	if ($db->getCountOfRequest(changeType::newuser)>5) {
 		logoutUser();
 		Appl::$resultDbOperation='<div class="alert alert-warning" >Túl sok bejelenkezést szeretnél létrehozni, kérünk probálkozz késöbb még egyszer!</div>';

@@ -7,7 +7,7 @@ include('homemenu.inc.php');
 ?>
 <div class="sub_title">Loging</div>
 <?PHP
-if (userIsSuperuser()) {
+if (isUserSuperuser()) {
 
     //initialise tabs
     $tabsCaption = array();
@@ -25,7 +25,7 @@ if (userIsSuperuser()) {
 	<?php
         $year=date("Y");
         $length=getIntParam("count",500);
-        if (userIsSuperuser())
+        if (isUserSuperuser())
             $length = 25;
         if ($tabOpen=='ok') {
             $textTitle="Bejelentkezések";

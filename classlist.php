@@ -44,7 +44,7 @@ if ($isEveningClass) {
 include("homemenu.inc.php");
 /** @var array $classes */
 global $db;
-$classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury,!userIsSuperuser());
+$classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury,!isUserSuperuser());
 $tabsCaption = array();
 $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "day", "caption" => 'század nappali tagozat',"iconText"=>"XX.", "glyphicon" => "*wb_sunny"));
@@ -75,7 +75,7 @@ include("homefooter.inc.php");
  */
 function displayClassList($db, $classes) {
 	foreach($classes as $cclass) {
-	    if (($cclass["name"]!="Todo" || userIsSuperuser()) && $cclass["name"]!="Staf"  ) {
+	    if (($cclass["name"]!="Todo" || isUserSuperuser()) && $cclass["name"]!="Staf"  ) {
             if (getAktClassId() == $cclass["id"])
                 $aktualClass = "classdiv actual_class_in_menu";
             else
@@ -91,9 +91,9 @@ function displayClassList($db, $classes) {
                 <a style="font-size: large;" href="hometable?classid=<?php echo($cclass["id"]); ?>">
                     <?php echo $cclass["text"]?>
                 </a>
-                <?php $stat = $db->getClassStatistics($cclass["id"], userIsAdmin()); ?>
+                <?php $stat = $db->getClassStatistics($cclass["id"], isUserAdmin()); ?>
                 <span class="badge" title="diákok száma"><?php echo $stat->personCount?></span>
-                <?php if (userIsAdmin()) { ?>
+                <?php if (isUserAdmin()) { ?>
                     <span class="badge"
                           title="képek száma"><?php echo $stat->personWithPicture + $stat->personPictures + $stat->classPictures ?></span>
                 <?php } ?>

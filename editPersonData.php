@@ -2,7 +2,7 @@
     include_once 'displayCards.inc.php';
     displayPerson($db,$diak,false,false);
     //Person picture?>
-    <?php if(userIsLoggedOn() || $anonymousEditor) {?>
+    <?php if(isUserLoggedOn() || $anonymousEditor) {?>
         <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
             <div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
                 <img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
@@ -18,7 +18,7 @@
                         <?php echo intval($diak["deceasedYear"])==0?"†":"† ".intval($diak["deceasedYear"]); ?>
                 <?php }?>
                 </div>
-                <?php  if (userIsSuperuser()) {?>
+                <?php  if (isUserSuperuser()) {?>
                     <br/><a href="history?table=person&id=<?php echo $diak["id"]?>" title="módosítások" style="position: relative;top: -70px;left: 10px;display:inline-block;">
                         <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("person",$diak["id"]))?></span>
                     </a>
@@ -35,14 +35,14 @@
                         <button style="margin-top:5px;" type="submit" class="btn btn-info" title="Feltölti a kivásztott képet" onclick="showWaitMessage();">
                             <span class="glyphicon glyphicon-upload"></span> Feltölt</button>
                         <?php if (isset($diak["picture"]) && $diak["picture"]!=null) {?>
-                            <?php  if (userIsAdmin()){
+                            <?php  if (isUserAdmin()){
                                 $pic=$diak['picture'];
                                 $pic=substr($pic,0,strlen($pic)-4)."_o".substr($pic,strlen($pic)-4);
                                 ?>
                                 <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="overwriteFileName" value="<?php echo $diak["picture"]?>"><span class="glyphicon glyphicon-upload"></span> Kicserél</button>
                                 <a class="btn btn-default" target="_download" href="images/<?php echo $pic?>" title="ImageName"><span class="glyphicon glyphicon-download"></span> Letölt</a>
                             <?php }?>
-                            <?php if (userIsSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
+                            <?php if (isUserSuperuser() || getLoggedInUserId()==getRealId($diak)) {?>
                                 <button style="display: inline-block;margin: 5px 10px 0 10px;" class="btn btn-danger" name="deletePersonPicture" value="<?php echo $diak["id"]?>"><span class="glyphicon glyphicon-upload"></span> Töröl</button>
                             <?php } ?>
                         <?php } ?>
@@ -57,7 +57,7 @@
     <div style="margin:15px;vertical-align: bottom;">
    <?php if ($edit) {  ?>	
 		<?php //Don't delete myself?>
-		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (userIsSuperuser() || userIsAdmin()) ) { ?>
+		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (isUserSuperuser() || isUserAdmin()) ) { ?>
 			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
 		<?php } ?>
 	<?php } ?>
@@ -80,7 +80,7 @@
     <form method="get" id="editform" action="editDiak">
         <?php
         //Editfields school and class
-        if (($edit || $createNewPerson) && !$anonymousEditor && userIsLoggedOn()) {
+        if (($edit || $createNewPerson) && !$anonymousEditor && isUserLoggedOn()) {
             $optionClasses=$db->getClassList(getRealId(getAktSchool()),true);
         ?>
             <div style="min-height:30px" class="input-group">
@@ -126,7 +126,7 @@
                 //Inpufields
                 if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
                     <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
-                    if ( userIsLoggedOn()) {?>
+                    if ( isUserLoggedOn()) {?>
                         <span style="width:40px" id="highlight" class="input-group-addon">
                             <?php if ($dataCheckFieldVisible[$i]) {?>
                                 <input type="checkbox" name="cb_<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?> title="A megjelölt mezöket csak az osztálytásaid látják." />
@@ -209,7 +209,7 @@
             }
             echo('<input type="hidden" name="uid"		value="'.$diak["id"].'"  />');
             echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
-            if (!userIsAdmin() && !userIsSuperuser())
+            if (!isUserAdmin() && !isUserSuperuser())
                 echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
         }
     ?>
@@ -235,11 +235,11 @@ function showRoleField($value,$fieldName) {
     $disabled='';
     array_push($options, array('role' => 'unknown', 'text' => 'nem tudunk róla','disabled'=>$disabled));
     array_push($options, array('role' => 'jmlaureat', 'text' => "Juhász Máthé díjas",'disabled'=>$disabled));
-    if(!userIsAdmin() && !userIsSuperuser())
+    if(!isUserAdmin() && !isUserSuperuser())
         $disabled='disabled';
     array_push($options, array('role' => 'editor', 'text' => 'osztályfelelős / szervező','disabled'=>$disabled));
     array_push($options, array('role' => 'guest', 'text' => 'vendég / barát','disabled'=>$disabled));
-    if (!userIsAdmin())
+    if (!isUserAdmin())
         $disabled='disabled';
     array_push($options, array('role' => 'superuser', 'text' => "rendszerfelelős",'disabled'=>$disabled));
     array_push($options, array('role' => 'admin', 'text' => "rendszergazda",'disabled'=>'disabled'));

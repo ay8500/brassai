@@ -24,7 +24,7 @@ class dbBL extends dbDAO
      * @param changeType $action
      */
     function checkRequesterIP($action) {
-        return userIsLoggedOn() || $this->getCountOfRequest($action,24) < $action;
+        return isUserLoggedOn() || $this->getCountOfRequest($action,24) < $action;
     }
 
     /**
@@ -84,7 +84,7 @@ class dbBL extends dbDAO
      * @return object person or null
      */
     public function getPersonLogedOn() {
-        if ( userIsLoggedOn())  {
+        if ( isUserLoggedOn())  {
             return $this->getPersonByID(getLoggedInUserId());
         } else {
             return null;
@@ -343,7 +343,7 @@ function getAktSchoolName() {
 /**
  *User is logged in and have the role of  editor
  */
-function userIsEditor() {
+function isUserEditor() {
     if (null==getLoggedInUserId())              //No logged in user
         return false;
     if (getLoggedInUserId()==getAktUserId())    //Logged in user views his entry
@@ -580,11 +580,11 @@ function resizeImage($fileName,$maxWidth,$maxHight,$originalFileSufix="")
 
 function getFieldAccessValue($field) {
     global $db;
-    if (userIsAdmin() || isAktUserTheLoggedInUser())
+    if (isUserAdmin() || isAktUserTheLoggedInUser())
         return getFieldValue($field);
-    else if (userIsLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClassId()==$db->getLoggedInUserClassId())
+    else if (isUserLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClassId()==$db->getLoggedInUserClassId())
         return getFieldValue($field);
-    else if (userIsLoggedOn() && getFieldCheckedScool($field)=="checked")
+    else if (isUserLoggedOn() && getFieldCheckedScool($field)=="checked")
         return getFieldValue($field);
     else if (getFieldCheckedWord($field))
         return getFieldValue($field);
@@ -672,7 +672,7 @@ function getFieldChecked($diak,$field) {
 function showField($diak,$field) {
     if (!isset($diak[$field]) || $diak[$field]=="")
         return false;
-    if (($diak[$field][0]!="~") || userIsLoggedOn()) {
+    if (($diak[$field][0]!="~") || isUserLoggedOn()) {
         if (ltrim($diak[$field],"~")!="") {
             return true;
         } else {

@@ -235,7 +235,7 @@ class dbDAO {
 	}
 
 	public function savePersonGeolocation($id,$lat,$lng) {
-		if (!userIsAdmin()) {
+		if (!isUserAdmin()) {
 			$this->dataBase->createHistoryEntry("person",$id);
 		}
 		$this->dataBase->update("person", [["field"=>"geolat","type"=>"s","value"=>$lat],["field"=>"geolng","type"=>"s","value"=>$lng]],"id",$id);
@@ -1174,7 +1174,7 @@ class dbDAO {
      * @return void
 	 */
 	public function saveRequest($type,$forceCount=false) {
-		if (!userIsLoggedOn() || $forceCount) {
+		if (!isUserLoggedOn() || $forceCount) {
 			$data=array();
 			$data=$this->dataBase->insertFieldInArray($data, "ip", $_SERVER["REMOTE_ADDR"]);
 			$data=$this->dataBase->insertFieldInArray($data, "date", date("Y-m-d H:i:s"));

@@ -40,7 +40,7 @@ if (isActionParam("saveok")) {
 }
 
 
-if (isActionParam("delete_diak") &&  userIsLoggedOn() && ((userIsEditor() && getRealId(getAktClass())==$db->getLoggedInUserClassId()) || userIsSuperuser()) ) {
+if (isActionParam("delete_diak") &&  isUserLoggedOn() && ((isUserEditor() && getRealId(getAktClass())==$db->getLoggedInUserClassId()) || isUserSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" ))) {
         Appl::setMessage("Véndiák sikeresen törölve!", "success");
         $db->updateRecentChangesList();

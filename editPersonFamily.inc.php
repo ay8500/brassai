@@ -56,7 +56,7 @@ Appl::addJs("js/chosen.jquery.js");
 Appl::addCss("css/chosen.css");
 include_once 'displayCards.inc.php';
 
-$edit =  userIsSuperuser() || userIsEditor() || $diak["id"]==getLoggedInUserId();
+$edit =  isUserSuperuser() || isUserEditor() || $diak["id"]==getLoggedInUserId();
 
 if (isActionParam("save")) {
     $relatives = $dbFamily->getPersonRelativesById(getIntParam("uid"));
@@ -99,7 +99,7 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
                 if ($edit)
                     echo ('<span onclick="deleteRelative('.$familyPerson["id"].')" style="float: right;cursor: pointer" class="glyphicon glyphicon-remove-circle"></span>');
                 echo('</h4>');
-                if (userIsAdmin())
+                if (isUserAdmin())
                     echo("<br/>".$familyPerson["coderec"]." Dir: ".$familyPerson["direction"]);
                 displayPerson($db,$person, true,false);
             ?></div><?php

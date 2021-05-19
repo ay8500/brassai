@@ -1,5 +1,10 @@
-<?php $diak = $db->getPersonByID($personid);?>
-<?php if ( userIsAdmin() || isAktUserTheLoggedInUser()) { ?>
+<?php
+global $db;
+global $personid;
+global $tabOpen;
+$diak = $db->getPersonByID($personid);
+?>
+<?php if ( isUserAdmin() || isAktUserTheLoggedInUser()) { ?>
 	<table style="width:90%" class="editpagetable">
 
         <form action="editDiak" method="get">
@@ -29,10 +34,10 @@
         <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-wrench"></span> Direkt link az adataimhoz</h3> Ezzel a linkkel becenév és jelszó nélkül lehet bejelentkezni.</p></td></tr>
         <tr><td class="caption1">Link</td><td>&nbsp;</td><td><a href="editDiak?key=<?php echo generateUserLoginKey(getAktUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
 
-        <tr><td colspan="3"><p style="text-align:left" ><h3><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
+        <tr><td colspan="3"><p style="text-align:left" ><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
         <tr><td class="caption1">Dátum</td><td>&nbsp;</td><td><?php echo $diak["userLastLogin"]?></a></td></tr>
 
-        <?php if (isset($diak["facebookid"]) && $diak["facebookid"]!='0' && (userIsAdmin() || (isset($_SESSION['FacebookId']) && $diak["facebookid"]==$_SESSION['FacebookId']))) : ?>
+        <?php if (isset($diak["facebookid"]) && $diak["facebookid"]!='0' && (isUserAdmin() || (isset($_SESSION['FacebookId']) && $diak["facebookid"]==$_SESSION['FacebookId']))) : ?>
 		<tr><td colspan="3"><hr/> </td></tr>
 		<tr><td colspan="3">
 			<h3>Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és "<?php echo isset($_SESSION["FacebookName"])?$_SESSION["FacebookName"]:"nem bejelentkezett" ?>" Facebook felhasználóval.<br />

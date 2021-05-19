@@ -40,7 +40,7 @@ if (null==getParam("type")) {
     $personCount=$db->getTableCount("person","role like '%unknown%'");
     $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bármilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
 } else {
-    if (userIsAdmin() || userIsEditor() || userIsSuperuser()) {
+    if (isUserAdmin() || isUserEditor() || isUserSuperuser()) {
         switch (getParam("type")) {
             case "teacher": {
                 $personList=$db->getPersonList("isTeacher='1'",20,20*getIntParam("start",0),$sort,$fields,$join);

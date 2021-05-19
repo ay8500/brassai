@@ -28,7 +28,7 @@ include("homemenu.inc.php");
 <table class="pannel" style="width:100%">
 	<tr>
 		<td>
-			<?php if ( !userIsLoggedOn() ) {?> 
+			<?php if ( !isUserLoggedOn() ) {?>
 				<div style="text-align:center;font-size:12px; margin:10px">
 					A koordináták véletlenszerüen el vannak néhány kilométerrel tólva. Jelenkezz be a pontos poziciók megtekintéséhez.
 				</div>
