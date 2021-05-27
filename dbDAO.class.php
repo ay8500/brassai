@@ -326,8 +326,31 @@ class dbDAO {
 		    return $this->dataBase->getEntryById("person", $personid,$forceThisID);
 	    return null;
 	}
-	
-	/**
+
+    function getPersonWithInfo($personId) {
+        $sql = "SELECT ";
+        $sql .= "person.*, ";
+        $sql .= "class.name as className, class.graduationYear, class.schoolID, ";
+        $sql .= "changer.id as changerID, changer.firstname as changerFirstName, changer.lastname as changerLastName, ";
+        $sql .= "count( distinct history.id) as countHistory, ";
+        $sql .= "count( distinct picture.id) as countPictures, ";
+        $sql .= "count( distinct personinpicture.pictureID) as countTagedPictures, ";
+        $sql .= "count( distinct opinionText.id) as opinionText, ";
+        $sql .= "count( distinct opinionEaster.id) as opinionEaster ";
+        $sql .= "from person ";
+        $sql .= "join class on class.id = person.classID ";
+        $sql .= "join person as changer on changer.id = person.changeUserID ";
+        $sql .= "inner join picture on person.id = picture.personID  ";
+        $sql .= "inner join personinpicture on personinpicture.personID = person.id ";
+        $sql .= "inner join history on history.entryID=person.id and history.table='person' ";
+        $sql .= "inner join opinion as opinionEaster on opinionEaster.entryID = person.id and opinionEaster.table='person' and opinionEaster.opinion like 'easter%' ";
+        $sql .= "inner join opinion as opinionText on opinionText.entryID = person.id and opinionText.table='person' and opinionText.opinion = 'text' ";
+        $sql .= "where id=".$personId." or (changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeForID =".$personId.") order by id desc";
+        return $this->dataBase->queryFirstRow($sql);
+    }
+
+
+    /**
  	* Search for person lastname and firstname 
  	* @param string $name
      *@return array

@@ -380,7 +380,6 @@ function isUserEditor() {
     }
 }
 
-
 function getPersonPicture($person) {
     if (null==$person || !isset($person["picture"]) || $person["picture"]=="") {
         if (isset($person["gender"]) && $person["gender"]=="f")

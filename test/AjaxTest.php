@@ -46,7 +46,7 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
     }
 
     private function opinionTester($count, $type,$login=true) {
-        if (($url=$this->getUrl())===false) return;
+        $url="/brassai/";
         $ret=$this->logoff();
         $this->assertNotNull($ret);
         if ($login) {
@@ -75,9 +75,7 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testGetRandomPerson() {
-        $url=$this->getUrl();
-        if($url==null)
-            return;
+        $url="/brassai/";
         $ret=(array)$this->callTestUrl($url."ajax/getRandomPerson",true);
         $this->assertNotNull($ret);
         $this->assertTrue(isset($ret["content"]) && isset($ret["content"]["id"]) && isset($ret["content"]["name"]) && isset($ret["content"]["image"]) );
@@ -86,9 +84,7 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
     public function testCandleLighter() {
         $id = "9898989891";
         $uId = "7878787878";
-        $url=$this->getUrl();
-        if($url==null)
-            return;
+        $url="/brassai/";
         $ret=(array)$this->callTestUrl($url."ajax/getCandleLighters?id=".$id,false);
         $this->assertNotNull($ret);
         $this->assertTrue(isset($ret["content"]) );
@@ -104,23 +100,13 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
     /**************************[ private ]*************************************************/
 
     private function logon($session=null) {
-        if (($url=$this->getUrl())===false)
-            return;
+        $url="/brassai/";
         return $this->callTestUrl($url."ajax/authorization.php?action=phpunit_logon".($session!=null?("&session=".json_encode($session)):""),true);
     }
 
     private function logoff() {
-        if (($url=$this->getUrl())===false)
-            return;
+        $url="/brassai/";
         return $this->callTestUrl($url."ajax/authorization.php?action=phpunit_logoff",true);
-    }
-
-    private function getUrl() {
-        if( !is_array($_SERVER) || !isset($_SERVER["HTTP_REFERER"]))
-            return null;
-        $url=pathinfo($_SERVER["HTTP_REFERER"], PATHINFO_DIRNAME);
-        $url = substr($url,0,strlen($url)-strlen("phpunit/"));
-        return $url."/brassai/";
     }
 
 }

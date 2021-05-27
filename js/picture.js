@@ -221,34 +221,36 @@ function showFaceRecognition(force) {
         $("[class*=recognition]").remove();
         return;
     }
-
-    $("#thePictureFaceRecognition").faceDetection({
-        complete: function (faces) {
-            var img=$("#thePicture");
-            var screenScale=$("#thePicture").width()/$("#thePictureFaceRecognition").width();
-            for (var i = 0; i < faces.length; i++) {
-                var w = faces[i].width * faces[i].scaleX * screenScale ;
-                if (faces[i].confidence > -1.0) {
-                    $('<div>', {
-                        'class': 'recognition',
-                        'onclick':'$(".newperson").remove();showDetectionList(this,' +(faces[i].x*faces[i].scaleX*screenScale +w/2)+','+(faces[i].y*faces[i].scaleY*screenScale +w/2)+','+img.attr("data-id")+','+w+ ')',
-                        'css': {
-                            'left': img.position().left + faces[i].x * faces[i].scaleX * screenScale + 'px',
-                            'top': img.position().top + faces[i].y * faces[i].scaleY * screenScale + 'px',
-                            'width': faces[i].width * faces[i].scaleX * screenScale + 'px',
-                            'height': faces[i].height * faces[i].scaleY * screenScale + 'px'
-                        }
-                    }).insertAfter(img);
+    if ($("#thePicture").width()>0) {
+        $("#thePictureFaceRecognition").faceDetection({
+            complete: function (faces) {
+                var img = $("#thePicture");
+                var screenScale = $("#thePicture").width() / $("#thePictureFaceRecognition").width();
+                for (var i = 0; i < faces.length; i++) {
+                    var w = faces[i].width * faces[i].scaleX * screenScale;
+                    if (faces[i].confidence > -1.0) {
+                        $('<div>', {
+                            'class': 'recognition',
+                            'onclick': '$(".newperson").remove();showDetectionList(this,' + (faces[i].x * faces[i].scaleX * screenScale + w / 2) + ',' + (faces[i].y * faces[i].scaleY * screenScale + w / 2) + ',' + img.attr("data-id") + ',' + w + ')',
+                            'css': {
+                                'left': img.position().left + faces[i].x * faces[i].scaleX * screenScale + 'px',
+                                'top': img.position().top + faces[i].y * faces[i].scaleY * screenScale + 'px',
+                                'width': faces[i].width * faces[i].scaleX * screenScale + 'px',
+                                'height': faces[i].height * faces[i].scaleY * screenScale + 'px'
+                            }
+                        }).insertAfter(img);
+                    }
                 }
+                $("#facebutton").css("background-color", "coral");
+            },
+            error: function (code, message) {
+                console.log(message);
             }
-            $("#facebutton").css("background-color","coral");
-        },
-        error: function (code, message) {
-            console.log(message);
-        }
-    });
+        });
+    }
     return false;
 }
+
 
 $(function() {
     $("[class*=recognition]").remove();

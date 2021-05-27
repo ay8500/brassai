@@ -15,6 +15,7 @@ include_once 'dbDaFamily.class.php';
  * @return void
  */
 function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null,$changeUserID=null, $changeDate=null) {
+    //TODO user the function $db->getPersonWithInfo()
 	if ($person==null)
 		return;
     $dbOpinion = new dbDaOpinion($db);
