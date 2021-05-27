@@ -64,7 +64,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 					<?php if (isset($d["function"])) { echo $d["function"]; }?></h5>
 				<?php } else {
 					$classText = getClassName($diakClass);
-					if (isUserGuest($d)==1) {
+					if (isUserGuest($d)) {
 						if ($d["classID"]!=0)
 							echo '<h5 style="color: #ffbb66;">Jó barát:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else

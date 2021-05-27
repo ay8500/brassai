@@ -368,7 +368,7 @@ function displayPersonCandle($db,$person,$date) {
                     $diakClass = $db->getClassById($d["classID"]);
                     if ($diakClass!=null) {
                         $classText = getClassName($diakClass);
-                        if (isUserGuest($d) == 1) {
+                        if (isUserGuest($d)) {
                             if ($d["classID"] != 0)
                                 echo '<h5>Jó barát:<a href="hometable?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
                             else
@@ -419,7 +419,7 @@ function displayPersonNameAndGetClass ($db,$d) {
             $diakClass = $db->getClassById($d["classID"]);
             $d["classText"] = getClassName($diakClass);
         }
-        if (isUserGuest($d)==1) {
+        if (isUserGuest($d)) {
             if (strstr($d["classText"],"staf")!==false)
                 $personClass = '<h5>Jó barát:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
             else
