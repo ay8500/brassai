@@ -91,7 +91,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
 					<li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
         			<li><a href="brassai">Brassai Sámuel élete</a></li>
-        			<li><a href="iskola">Liceum története</a></li>
+        			<li><a href="iskola">Líceum története</a></li>
         			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
         			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
                     <li><a href="search?type=incharge">Osztályfelelősők</a></li>

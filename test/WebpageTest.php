@@ -74,6 +74,19 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(320,$div->length);
     }
 
+    public function testRIP() {
+        $ret = $this->callTestUrl($this->url . "rip", false);
+        $dom = new DOMDocument();
+        $dom->loadHTML($ret->content);
+        $finder = new DOMXPath($dom);
+        $div = $finder->query("//*[contains(@class, 'rip-element')]");
+        $this->assertEquals(24,$div->length);
+        for ($i =0 ; $i<$div->length;$i++) {
+            $text = $div->item($i)->childNodes->item(1)->nodeValue;
+            $this->assertContains("†",$text);
+        }
+    }
+
     public function testStartPage()
     {
         $ret = $this->callTestUrl($this->url . "start", false);
