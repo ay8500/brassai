@@ -52,7 +52,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testUser1() {
-        $ret = $this->callTestUrl($this->url . "U-834", false);
+        $ret = $this->callTestUrl($this->url . "editDiak?uid=834", false);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $firstPicture = $dom->getElementById("firstPicture");
