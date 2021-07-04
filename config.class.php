@@ -33,7 +33,7 @@ class Config {
     public static $secret_iv = 'brassai';
 
     public static $backupDb = array("tables"=>"-accelerator,-article,-request");            //list of tables for backup
-    public static $backupMedia = array("source"=>"images","excludeDir"=>array(''),"excludeFile"=>array('.php','.html'));
+    public static $backupMedia = array("source"=>"images","excludeDir"=>array(),"excludeFile"=>array('.php','.html'));
 
 
 
