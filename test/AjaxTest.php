@@ -66,6 +66,8 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         }
         $ret=$this->callTestUrl($url."ajax/getOpinions?id=9999000&count=".$count."&type=".$type,true);
         if (sizeof($ret->content)>0) {
+            $o1 = $ret->content[0];
+            $this->assertTrue(strpos($o1["date"],"today")===false && strpos($o1["date"],"yesterday")===false && strpos($o1["date"],"week")===false && strpos($o1["date"],"month")===false && strpos($o1["date"],"year")===false);
             foreach ($ret->content as $option) {
                 $ret = $this->callTestUrl($url."ajax/deleteOpinion?id=".$option["id"],true);
             }

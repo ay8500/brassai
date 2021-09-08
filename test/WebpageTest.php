@@ -11,7 +11,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
 
     private $url ="/brassai/";
 
-    public function testInexPageLogon()
+    public function testIndexPageLogon()
     {
         $this->logoff();
         $ret = $this->callTestUrl($this->url . "index", false);
