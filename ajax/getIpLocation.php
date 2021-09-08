@@ -8,7 +8,7 @@ $ip=getParam("ip");
 
 $ret = json_decode(file_get_contents("http://ip-api.com/json/".$ip));
 
-$ret->x = json_decode(file_get_contents("http://api.ipapi.com/".$ip."?access_key=68ae26e798c7aaef5446488d3ecd36ef&output=json&fields=country_name,city,zip,location.country_flag,security,connection"));
+$ret->x = json_decode(file_get_contents("http://api.ipapi.com/".$ip."?access_key=68ae26e798c7aaef5446488d3ecd36ef&output=json&fields=country_name,city,zip"));
 
 echo json_encode($ret);
 

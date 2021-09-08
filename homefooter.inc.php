@@ -43,7 +43,7 @@ if (isUserAdmin()) {
                         m += "Ország:"+data.x.country_name+"<br/>";
                         m += "Irányítószám:"+data.x.zip+"<br/>";
                         m += "Város:"+data.x.city+"<br/>";
-                        m += "<img src=\""+data.x.location.country_flag+"\" style=\"height:35px\" /><br/>";
+                        //m += "<img src=\""+data.x.location.country_flag+"\" style=\"height:35px\" /><br/>";
                         m += "ISP:"+data.isp+"<br/>";
                         m += "ORG:"+data.org+"<br/>";
                         m += "AS:"+data.as+"<br/>";
