@@ -186,4 +186,81 @@ class dbDaSongVote
         return $this->dataBase->queryArray("select * from songvote");
     }
 
+    /**
+     * Search for Music
+     * @param string $text
+     *@return array
+     */
+    public function searchForMusic($text) {
+        $ret = array();
+        $textItems=explode(' ', trim($text));
+        foreach ($textItems as $item) {
+            $ret=$this->arrayMergeByFieldId($ret,$this->searchForMusicOneString($item));
+        }
+        usort($ret, "self::compareAlphabeticalSong");
+        return $ret;
+    }
+
+    /**
+     * Search for class by year name
+     * @param string $text
+     * @return array
+     */
+    private function searchForMusicOneString($text) {
+        $ret = array();
+        $text=trim($text);
+        if( strlen($text)>1) {
+            $text= searchSpecialChars($text);
+            $sql = "select song.*, interpret.name as interpretName from song ";
+            $sql .="join interpret on interpret.id=song.interpretID ";
+            $sql .="where song.name rlike '".$text."' ";
+            $sql .="or interpret.name rlike '".$text."' ";
+            $sql .=" limit 50";
+            $this->dataBase->query($sql);
+            while ($class=$this->dataBase->fetchRow()) {
+                array_push($ret, $class);
+            }
+            asort($ret);
+        }
+        return $ret;
+    }
+
+    /**
+     * Merge two array lists by the field id and return a list of elements that existst in both of the input array
+     * If one of the input arrays are empty the return the other one
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    private function arrayMergeByFieldId($array1, $array2) {
+        $ret=array();
+        if (sizeof($array1)==0)
+            return  $array2;
+        if (sizeof($array2)==0)
+            return  $array1;
+        foreach ($array1 as $row1) {
+            foreach ($array2 as $row2) {
+                if ($row1["id"]==$row2["id"]) {
+                    if (array_search($row1["id"],array_column($ret,"id"))===false) {
+                        array_push($ret, $row1);
+                    }
+                }
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Compare persons by isTeacher,firstname,lastname,birthname
+     * @param person $a
+     * @param person $b
+     * @return int
+     */
+    function compareAlphabeticalSong($a,$b) {
+        $c = strcmp($a["name"],$b["name"]);
+        if ($c!=0) {
+            return strcmp($a["interpretName"],$b["interpretName"]);
+        }
+    }
+
 }

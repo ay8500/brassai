@@ -15,16 +15,15 @@ $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
 use \maierlabs\lpfw\Appl as Appl;
 
-Appl::setSiteTitle("A véndiákok ezt hallgatják szívesen");
+Appl::setSiteTitle("A véndiákok ezeket a zenéket hallgatják szívesen");
 if (getAktClassId()==-1) {
-    Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják az iskola véndiákjai szívesen.');
+    Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják szívesen az iskola véndiákjai.');
 } else {
-    Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezt hallgatjuk mi szívesen.');
+    Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezeket számokat szívesen hallgatjuk.');
 }
 
 \maierlabs\lpfw\Appl::addCssStyle('
 .music-filter {
-    display:inline-block;
     margin-top: 9px;
 }
 .music-filter > div > div {
@@ -242,7 +241,10 @@ $year["1990"]=isset($musicFilter["filter_90"])?$musicFilter["filter_90"]:true;
 $year["2000"]=isset($musicFilter["filter_00"])?$musicFilter["filter_00"]:false;
 $year["2010"]=isset($musicFilter["filter_10"])?$musicFilter["filter_10"]:true;
 $year["2020"]=isset($musicFilter["filter_20"])?$musicFilter["filter_20"]:false;
-$topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),500, $language, $genre,$year);
+if (getParam("srcText")==null)
+    $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),500, $language, $genre,$year);
+else
+    $topList= $dbSongVote->searchForMusic(getParam("srcText"));
 
 ?>
 <div class="col-sm-9">
@@ -253,6 +255,19 @@ $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId()
 			<button class="btn btn-success" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
 			<button class="btn btn-warning" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-order-alt"></span> Legjobb szám utoljára</button>
 			<button class="btn btn-warning" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
+            </div>
+            <div class="music-filter" >
+                <div style="vertical-align:top;display: inline-block;margin-top: 17px;">Keresés</div>
+                <div style="display: inline-block">
+                    <div class="input-group" style="width:300px;margin: 3px;display: inline-table;">
+                    <span class="input-group-addon" style="width:30px"><span
+                                class="glyphicon glyphicon-search"></span></span>
+                    <input class="form-control" placeholder="Zene címe vagy együttes"
+                           id="searchText" value="<?php echo getGetParam("srcText", "") ?>" onkeyup="searchMusic(this);" />
+                    </div>
+                    <button id="showMusic" class="btn btn-default" style="display:none;margin-top: -29px" onclick="showMusic();">Mutasd</button><br/>
+                    <div id="searchMusic" style="display: none"><table id="musicList"></table></div>
+                </div>
             </div>
             <div class="music-filter" >
                 <div style="display: inline-block;margin-bottom: 3px;">Nyelv</div>
@@ -458,6 +473,31 @@ function autoComplete (field, select, property, forcematch) {
         Cookie("MUSIC_FILTER",jsonString );
         var url="zenetoplista?classId='.getParam("classid","all").'";
         document.location=url;
+    }
+    function searchMusic(o) {
+        $.ajax({
+            url: "ajax/getMusicByText?text="+$(o).val(),
+            type:"GET",
+            success:function(data){
+                if (data.length>0) {
+                    $("#searchMusic").show();$("#showMusic").show();
+                    var buffer="";
+                    $.each(data, function(index, item){ 
+                        buffer+="<tr><td><a href=\"zenePlayer?id="+item.id+"\">"+item.interpretName+":"+item.name+"</a><td></td></tr>"; 
+                    }); 
+                    $("#musicList").html(buffer);
+                    
+                } else {
+                    $("#searchMusic").hide();$("#showMusic").hide();
+                }
+            },
+            error:function() {
+                $("#searchMusic").hide();
+            }
+        });
+    }
+    function showMusic() {
+        document.location.href="zenetoplista?srcText="+$("#searchText").val();
     }
 ');
 

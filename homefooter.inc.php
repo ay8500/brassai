@@ -53,9 +53,10 @@ if (isUserAdmin()) {
         }
     ');
 }
-
+global $haloween;
 if ($haloween)
     \maierlabs\lpfw\Appl::addJs("js/haloween.js",false,true);
+global $xmas;
 if ($xmas)
     \maierlabs\lpfw\Appl::addJs("js/snowFalling.js",false,true);
 

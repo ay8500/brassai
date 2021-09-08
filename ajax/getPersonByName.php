@@ -8,8 +8,7 @@ header('Content-Type: application/json');
 
 $name = getParam("name","");
 
-$personList = array();
-
+global $db;
 $persons=$db->searchForPerson($name);
 
 echo(json_encode($persons));

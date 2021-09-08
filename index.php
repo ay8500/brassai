@@ -30,6 +30,9 @@ if (isset($_SESSION["timeout"])) {
 $personIdList=$db->getPersonIdListWithPicture();
 $randPersonID=$personIdList[rand(0,sizeof($personIdList)-1)];
 
+global $haloween;
+global $xmas;
+
 
 include("homemenu.inc.php");
 ?>
