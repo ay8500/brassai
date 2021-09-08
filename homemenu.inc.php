@@ -58,7 +58,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
     <![endif]-->
     <?php Appl::addCss("css/bootstrap.min.css");?>
     <?php Appl::addCss("css/menu.css");?>
-    <?php Appl::addCss("//fonts.googleapis.com/icon?family=Material+Icons",);?>
+    <?php Appl::addCss("//fonts.googleapis.com/icon?family=Material+Icons",false,false);?>
     <link rel="canonical" href="<?php echo(Config::$siteUrl.$_SERVER['REQUEST_URI']) ?>">
 	<?php Appl::includeCss();?>
     <?php Appl::renderingStarted(); ?>
