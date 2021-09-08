@@ -570,7 +570,8 @@ class dbDAO {
         } else {
             $sql = "select c.* from " . $table . " as c ";
         }
-		$sql.="where c.changeUserID is null ";
+        //c.changeUserID is null
+		$sql.="where  c.changeForID is not null or c.changeUserID is null ";
 		$sql.="order by c.changeDate asc";
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()>0) {
@@ -588,7 +589,7 @@ class dbDAO {
         $sql ="select count(1) from ".$table." as c ";
         if ($table!="personInPicture")
           $sql.="left join ".$table." as o on c.changeForID=o.id  ";
-        $sql.="where c.changeUserID is null ";
+        $sql.="where c.changeForID is not null or c.changeUserID is null ";
         $sql.="order by c.changeDate asc";
         return $this->dataBase->queryInt($sql);
     }
