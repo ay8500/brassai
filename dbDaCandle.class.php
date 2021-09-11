@@ -60,6 +60,10 @@ class dbDaCandle
         }
     }
 
+    public function getAllCandlesCount() {
+        return $this->dbDAO->dataBase->queryInt("select count(*) from candle");
+    }
+
     public function getCandleDetailByPersonId($id) {
         $sql ='select * from candle where personID='.$id." and ";
         $sql .="((userId is     null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."') or ";

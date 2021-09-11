@@ -31,22 +31,29 @@ include("homemenu.inc.php");
 ?>
 
 <div style="margin-top:20px;padding:10px;background-color: black; color: #ffbb66;">
-    <h2>Juhász Gyula: Consolatio</h2>
-    <div style="display: inline-block; margin: 0px 25px 25px 0px;">
-        Nem múlnak ők el, kik szívünkben élnek,<br />
-        Hiába szállnak árnyak, álmok, évek.<br />
-        Ők itt maradnak bennünk csöndesen még,<br />
-        Hiszen hazánk nekünk a végtelenség.<br />
-    </div><div style="display: inline-block; margin: 0px 25px 25px 0px;">
-        Emlékük, mint a lámpafény az estben,<br />
-        Kitündököl és ragyog egyre szebben<br />
-        És melegít, mint kandalló a télben,<br />
-        Derűs szelíden és örök fehéren.<br />
-    </div><div style="display: inline-block">
-        Szemünkben tükrözik tekintetük még<br />
-        S a boldog órák drága, tiszta üdvét<br />
-        Fölissza lelkünk, mint virág a napfényt<br />
-        És élnek ők tovább, szűz gondolatként.<br />
+    <div style="display: inline-block">
+        <h2>Juhász Gyula: Consolatio</h2>
+        <div style="display: inline-block; margin: 0px 25px 25px 0px;">
+            Nem múlnak ők el, kik szívünkben élnek,<br />
+            Hiába szállnak árnyak, álmok, évek.<br />
+            Ők itt maradnak bennünk csöndesen még,<br />
+            Hiszen hazánk nekünk a végtelenség.<br />
+        </div><div style="display: inline-block; margin: 0px 25px 25px 0px;">
+            Emlékük, mint a lámpafény az estben,<br />
+            Kitündököl és ragyog egyre szebben<br />
+            És melegít, mint kandalló a télben,<br />
+            Derűs szelíden és örök fehéren.<br />
+        </div><div style="display: inline-block">
+            Szemünkben tükrözik tekintetük még<br />
+            S a boldog órák drága, tiszta üdvét<br />
+            Fölissza lelkünk, mint virág a napfényt<br />
+            És élnek ők tovább, szűz gondolatként.<br />
+        </div>
+    </div>
+    <div style="display: inline-block;width: 340px;">
+        <object  class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
+            <embed src="https://www.youtube.com/v/UgmfzsYHqxA?enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&modestbranding=1&rel=0&start=13" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
+        </object>
     </div>
 	<div class="well" style="background-color: black; color: #ffbb66;border-color: black;">
 		<form>
@@ -59,7 +66,11 @@ include("homemenu.inc.php");
 				<button class="btn btn-warning" style="margin:10px;color:black" name="action" value="person">Iskolatársaink emlékére</button>
 			</span>
 		</form>
-        <h2 class="sub_title">Elhunyt tanáraink és iskolatársaink emlékére <?php echo $dbCandle->getCandlesByPersonId() ?> gyertya ég</h2>
+        <h2 class="sub_title">
+            Elhunyt tanáraink és iskolatársaink emlékére <?php echo $dbCandle->getAllCandlesCount() ?> gyertyából még <?php echo $dbCandle->getCandlesByPersonId() ?> gyertya ég
+            <p>Gyújts te gyertyákat szeretett tanáraidnál és iskolatársaidnál.</p>
+        </h2>
+
 	</div>
 	<?php 	
 	foreach ($personList as $d) {
