@@ -12,7 +12,7 @@ Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
 
 unsetAktClass();
-Appl::setSiteSubTitle('Szeretettel köszöntünk a Brassaista véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori Brassaista tanáraiddal, osztálytársaiddal és iskolatársaiddal!');
+Appl::setSiteSubTitle('Szeretettel köszöntünk a '.getAktSchoolName().' véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
 
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
@@ -38,17 +38,8 @@ include("homemenu.inc.php");
 ?>
 
 <div class="container-fluid">
-	<div  style="padding:15px;margin-top:20px" class="col-sm-4" >
-		<img src="images/BRASSAIS.JPG"  alt="Brassai Sámuel" /><br/>
-		<div style="font-size:12px;font-weight:bold;height:20px">Brassai Sámuel (1800-1897)</div>
-	 	<div>
-		   	&quot;A tanító, mint a gazda, csak magvakat vet el,<br/>
-		   	melyböl a tanítvány elméjében ismeretek teremnek,<br/>
-		   	mint a gabona s más termék a földben.&quot;
-		</div>
-	</div>
-	<div  style="padding:15px;" class="col-sm-8" >
-		<h4>Lehetőségeid a véndiákok oldalán:</h4>
+	<div  style="padding:15px;" class="col-sm-12" >
+		<h3>Lehetőségeid a véndiákok oldalán:</h3>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="start">
                 <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" />

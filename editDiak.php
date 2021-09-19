@@ -21,7 +21,7 @@ if($personid!=null){
     $diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
 		setAktUserId($personid);	//save actual person in case of tab changes
-		setAktClass($diak["classID"]);
+		setAktClass($diak["classID"],$diak["schoolID"]);
 	} else {
 		$diak=$db->getPersonByUser($personid);
 		if ($diak!=null) {
@@ -59,7 +59,7 @@ if ($personid!=null && $personid>=0) {
 	if ($diak!=null) {
 		$classId=$diak["classID"];
 		$class=$db->getClassById($classId);
-		setAktClass($classId);
+		setAktClass($classId, $class["schoolID"]);
         $firstPicture["file"] = "images/".$diak["picture"];
         \maierlabs\lpfw\Appl::setMember("firstPicture",$firstPicture);
     } else {

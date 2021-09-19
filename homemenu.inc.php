@@ -83,12 +83,21 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
       </div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-left:22px;">
 		<ul class="nav navbar-nav">
-			<li class="dropdown">
+            <li>
+                <a  href="index" class="dropdown-toggle" data-toggle="dropdown" title="Kolozsvári iskolák">Iskolák<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="index">Start</a></li>
+                    <li><a href="start?all=all">Újdonságok</a></li>
+                    <li><a href="start?schoolid=1">Brassai Sámuel Líceum</a></li>
+                    <li><a href="start?schoolid=2">Apáczai Csere János Elméleti Líceum</a></li>
+                </ul>
+            </li>
+            <?php if (getAktSchool()!==null) {?>
+            <li class="dropdown">
 				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
-				<ul class="dropdown-menu">
-					<li><a href="index">Start</a></li>
-					<li><a href="start">Újdonságok</a></li>
-					<li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
+                <ul class="dropdown-menu">
+                    <li><a href="classlist">Osztályok</a> </li>
+                    <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
         			<li><a href="brassai">Brassai Sámuel élete</a></li>
         			<li><a href="iskola">Líceum története</a></li>
@@ -102,6 +111,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
         			<li><a href="zenetoplista?classid=all">Zenetoplista</a></li>
        			</ul>
       		</li>
+            <?php } ?>
       		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || isUserAdmin())) {
                 $classStat = $db->getClassStatistics(Appl::getMemberId("aktClass"), false);
             ?>
@@ -177,9 +187,6 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
                 </ul>
             </li>
             <?php } ?>
-            <li>
-                <a href="classlist">Osztályok</a>
-            </li>
             <li>
                 <a href="message">Ünzenőfal</a>
             </li>
@@ -298,9 +305,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
             </span>
         </a>
         */?>
-
-        <span id="o1024">A kolozsvári </span>
-        <?php echo(getAktSchoolName()) ?> <span id="o400">egykori </span>diákjai
+        <?php echo(ucfirst(getAktSchoolName())) ?> <span id="o400">egykori </span>diákjai
         <span id="o480"> <?php echo(getAktClassName()) ?></span>
     </h1>
 </div>

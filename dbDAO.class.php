@@ -166,6 +166,14 @@ class dbDAO {
         }
 		return   $this->dataBase->getElementList("class",$originalId, $sql,null,null,"text asc");
 	}
+
+    /**
+     * Get the list of schoools
+     * @return array
+     */
+    public function getSchoolList($originalId=false) {
+        return $this->dataBase->getElementList("school",$originalId, " 1 = 1",null,null,"name asc");
+    }
 	
 	/**
 	 * Delete a class
@@ -965,63 +973,83 @@ class dbDAO {
             $sqlIpUser .=" and changeUserID='".$userid."' ";
             $sqlCandleIpUser .=" and userID='".$userid."' ";
         }
+        $sqlSchool = getAktSchoolId()==null?"":(" and `class`.schoolID=".getAktSchoolId(). " ");
         if (in_array($filter,array("all"))) {
-            $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select person.id, person.changeDate, 'person' as type, 'change' as action, person.changeUserID from person join class on class.id = person.classID";
+            $sql .= " where person.changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlSchool;
+            $sql .= $sqlIpUser." and ( (person.changeUserID is not null and person.changeForID is null) or person.changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("teacher"))) {
-            $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=1 order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select person.id, person.changeDate, 'person' as type, 'change' as action, person.changeUserID from person join class on class.id = person.classID";
+            $sql .= " where person.changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlSchool;
+            $sql .= $sqlIpUser." and ( (person.changeUserID is not null and person.changeForID is null) or person.changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=1 order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("person"))) {
-            $sql = " (select id, changeDate, 'person' as type, 'change' as action, changeUserID from person where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=0 order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select person.id, person.changeDate, 'person' as type, 'change' as action, person.changeUserID from person join class on class.id = person.classID";
+            $sql .= " where person.changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlSchool;
+            $sql .= $sqlIpUser." and ( (person.changeUserID is not null and person.changeForID is null) or person.changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and isTeacher=0 order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","picture"))) {
             $sql = " (select id, changeDate, 'picture' as type, 'change' as action, changeUserID from picture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') and (isDeleted=0) order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') ";
+            $sql .= getAktSchoolId()==null?"":(" and schoolID=".getAktSchoolId());
+            $sql .=" and (isDeleted=0) order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","class"))) {
             $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
-            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
+            $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "')";
+            $sql .= getAktSchoolId()==null?"":(" and schoolID=".getAktSchoolId());
+            $sql .= " order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","opinion"))) {
-            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and `table`!='message' and `opinion` not like 'easter%'  order by changeDate desc limit " . $limit . ") ";
+            $sql = " (select entryID as id, changeDate, `table` as type, 'opinion' as action, changeUserID from opinion where ";
+            $sql .= getAktSchoolId()==null?"":(" schoolID=".getAktSchoolId(). " and ");
+            $sql .= " changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and `table`!='message' and `opinion` not like 'easter%'  order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","easter"))) {
-            $sql = " (select entryID as id, changeDate, 'person' as type, 'easter' as action, changeUserID from opinion where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and  `opinion` like 'easter%' and  changeDate > '".date("Y")."-01-01' order by changeDate desc limit " . $limit . ") ";
+            $sql  = " (select entryID as id, changeDate, 'person' as type, 'easter' as action, changeUserID from opinion";
+            $sql .= " join person on person.id=opinion.entryID ";
+            $sql .= " where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser.$sqlSchool." and  `opinion` like 'easter%' and  changeDate > '".date("Y")."-01-01' order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","family"))) {
-            $sql = " (select id1 as id, changeDate, 'person' as type, 'family' as action, changeUserID from family where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
+            $sql  = " (select id1 as id, family.changeDate, 'person' as type, 'family' as action, family.changeUserID from family";
+            $sql .= " join person on person.id =family.id1 join class on class.id=person.classID";
+            $sql .= " where family.changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser.$sqlSchool." order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","candle"))) {
-            $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle where showAsAnonymous=0 and lightedDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlCandleIpUser." order by lightedDate desc limit " . $limit . ") ";
+            $sql = " (select personID as id, lightedDate as changeDate, 'person' as type, 'candle' as action, userID as changeUserID from candle ";
+            $sql .= "join person on person.id=candle.personID join class on class.id=person.classID ";
+            $sql .= "where showAsAnonymous=0 and lightedDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlCandleIpUser.$sqlSchool." order by lightedDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","tag"))) {
-            $sql = " (select pictureID as id, changeDate, 'picture' as type, 'marked' as action, changeUserID from personInPicture where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." order by changeDate desc limit " . $limit . ") ";
+            $sql  = " (select pictureID as id, personInPicture.changeDate, 'picture' as type, 'marked' as action, personInPicture.changeUserID from personInPicture join picture on picture.id = personInPicture.pictureID";
+            $sql .= " where personInPicture.changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser;
+            $sql .= getAktSchoolId()==null?"":(" and picture.schoolID=".getAktSchoolId());
+            $sql .= " order by personInPicture.changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
         if (in_array($filter,array("all","message"))) {
-            $sql = " (select id, changeDate, 'message' as type, 'message' as action, changeUserID from message where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser." and endDate is null and privacy='world' order by changeDate desc limit " . $limit . ") ";
+            $sql  = " (select message.id, message.changeDate, 'message' as type, 'message' as action, message.changeUserID from message join person on person.id=message.changeUserID join class on class.id = person.classID where ";
+            $sql .= " message.changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'".$sqlIpUser.$sqlSchool." and endDate is null and privacy='world' order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
             $sql = " (select id, NOW() as changeDate, 'message' as type, 'message' as action, changeUserID from message where true ".$sqlIpUser." and endDate>NOW() and privacy='world' order by endDate desc limit " . $limit . ") ";
@@ -1030,6 +1058,7 @@ class dbDAO {
         }
         if (in_array($filter,array("all","article"))) {
             $sql = " (select id, changeDate, 'article' as type, 'change' as action, changeUserID from article where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
+            $sql .= getAktSchoolId()==null?"":(" and schoolID=".getAktSchoolId());
             $sql .= $sqlIpUser." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "') order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());

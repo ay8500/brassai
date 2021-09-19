@@ -1,6 +1,8 @@
 	<?php
     include_once 'displayCards.inc.php';
+    global $db;global $diak;
     displayPerson($db,$diak,false,false);
+    $schoolList = $db->getSchoolList();
     //Person picture?>
     <?php if(isUserLoggedOn() || $anonymousEditor) {?>
         <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
@@ -91,8 +93,11 @@
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >Iskola</span>
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-                <select class="form-control" name="schoolID" id="schoolID">
-                    <option value="1">Brassai Sámuel líceum</option>
+                <select class="form-control" name="schoolID" id="schoolID" disabled>
+                    <?php foreach ($schoolList as $school) {
+                        $selected = $school["id"]==getAktSchoolId()?"selected=selected":""?>
+                        <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
+                    <?php } ?>
                 </select>
             </div>
             <?php if (isAktClassStaf()) { ?>

@@ -24,7 +24,7 @@ $( document ).ready(function() {
 ");
 $class = $db->getClassById($db->getLoggedInUserClassId());
 if ($class!=null)
-    setAktClass($class["id"]);
+    setAktClass($class["id"],$class["schoolID"]);
 
 
 Appl::setSiteSubTitle('Osztálytárs körlevek '.getAktClassName());

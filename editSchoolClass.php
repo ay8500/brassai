@@ -13,6 +13,12 @@ Appl::addCssStyle('
 ');
 Appl::setSiteTitle("Osztályok módosítása","Osztályok módosítása","Osztályok módosítása");
 
+/**
+ * @var dbBL;
+ */
+global $db;
+$schoolList = $db->getSchoolList();
+
 $action = getParam("action","");
 
 $classid= getIntParam("classid",-1);
@@ -38,7 +44,7 @@ if ($action=="saveclass") {
 	else {
 		$classid=$db->saveClass([
 				"id"=>$classid,
-				"schoolID"=>1,
+				"schoolID"=>getAktSchoolId(),
 				"eveningClass"=>getIntParam("eveningClass",0),
 				"graduationYear"=>getParam("year"),
 				"name"=>getParam("class"),
@@ -48,7 +54,7 @@ if ($action=="saveclass") {
 		]);
 		if ($classid>=0 ) {
 		    $db->updateRecentChangesList();
-			setAktClass($classid);
+			setAktClass($classid,getAktSchoolId());
 			$class=$db->getClassById($classid);
             Appl::setMessage("Osztály sikeresen kimentve! Köszönjük szépen.","success");
 		} else {
@@ -72,7 +78,10 @@ include("homemenu.inc.php");
 		<div class="input-group shadowbox" >
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>
 			<select class="form-control" disabled id="selectSchool">
-				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
+                <?php foreach ($schoolList as $school) {
+                    $selected = $school["id"]==getAktSchoolId()?"selected=selected":""?>
+				    <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
+				<?php } ?>
 			</select>
 		</div>
 
@@ -103,8 +112,11 @@ include("homemenu.inc.php");
 		<div class="input-group shadowbox">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
-				<option value="1">Brassai Sámuel líceum: Kolozsvár</option>
-				<option value="2">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. <?php echo Config::$siteMail?></option>
+                <?php foreach ($schoolList as $school) {
+                    $selected = $school["id"]==getAktSchoolId()?"selected=selected":""?>
+                    <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
+                <?php } ?>
+				<option value="0">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. <?php echo Config::$siteMail?></option>
 			</select>
 		</div>
 		<div class="input-group shadowbox" >
@@ -235,7 +247,7 @@ Appl::addJsScript('
 	}
 
 	function changeSchool() {
-		if ($("#selectSchool").val()==1	) {
+		if ($("#selectSchool").val()!==0	) {
 		    $("#btNew").show();$("#btMail").hide();
 		} else {
 		    $("#btNew").hide();$("#btMail").show();
@@ -249,7 +261,7 @@ Appl::addJsScript('
 	}
 
 	function checkStatus() {
-		if ($("#selectSchool").val()==1	&&
+		if ($("#selectSchool").val()!==0	&&
 			$("#selectYear").val()!=0	&&
 			$("#selectClass").val()!=0	&&
 			$("#selectTeacher").val()!=0 

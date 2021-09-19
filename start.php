@@ -106,6 +106,10 @@ if (getParam("tabOpen")=="easter") {
     $title = "Kellemes húsvéti ünnepeket! ";
 }
 Appl::setSiteTitle($title,$title);
+if (getParam("all")=="all"){
+    unsetAktSchool();
+    unsetAktClass();
+}
 include("homemenu.inc.php");
 
 ?>
@@ -127,6 +131,7 @@ include("homemenu.inc.php");
 		</div>
 		<div class="panel-body">
 			<ul>
+                <li>Szeptember 2021: A honoldal a kolozsvári középiskolákkal bővült</li>
                 <li>Március 2019: Személyeket lehet a fényképeken megjelölni</li>
                 <li>December 2018: Családtagokat lehet megjelölni</li>
                 <li>November 2018: Véleményeket lehet személyekhez és képekhez hozzáfűzni</li>
@@ -144,6 +149,7 @@ include("homemenu.inc.php");
 				<li>Julius 2010:<a href="hometable?classid=74&guests=true">Vendégekkel és jó barátokal</a> bővült az oldal.</li>
 				<li>Május 2010: Zene toplista <a href="zenetoplista?classid=0">Zenetoplista</a></li>
                 <li>Julius 2006: <a href="worldmap?classid=all">Térképen megjelenített szétszóródása a véndiákoknak.</a></li>
+                <li>Junius 1997-óta az oldal online</li>
 			</ul>
 		</div>
 	</div>

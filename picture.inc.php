@@ -103,6 +103,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 						if ($overwrite==false) {
 							$upicture = array();
 							$upicture["id"]=-1;
+                            $upicture["schoolID"] = getAktSchoolId();
 							$upicture[$type]=$typeId;
 							$upicture["file"]="images/".$db->getAktClassFolder().$pFileName;
 							$upicture["isVisibleForAll"]=1;

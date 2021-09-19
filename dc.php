@@ -1,4 +1,7 @@
 <?php
+if (strpos(strtoupper($_SERVER["REQUEST_URI"]),"JPG")!==false)
+    die();
+
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
@@ -39,7 +42,7 @@ pageNotFound();
 function pageNotFound() {
 	header("status: 404"); 
 	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
-	setAktSchool(1);unsetAktClass();
+	unsetAktSchool();unsetAktClass();
 	global $db;
 	include("homemenu.inc.php");
 	?>

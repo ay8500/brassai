@@ -113,4 +113,4 @@ indítottak be. Mivel ezzel párhuzamosan a magyar osztályok számát csökkent
 
 <h4><a href="#000">Vissza</a></h4>
 </div>
-<?PHP  include("homefooter.inc.php");?>
+<?php  include("homefooter.inc.php");?>

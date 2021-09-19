@@ -59,8 +59,7 @@ class dbBL extends dbDAO
         if ($class==null) {
             $class = getAktClass();
         } else {
-            setAktClass($class["id"]);
-            setAktSchool($class["schoolID"]);
+            setAktClass($class["id"],$class["schoolID"]);
         }
         return $class;
     }
@@ -117,7 +116,8 @@ class dbBL extends dbDAO
             "title"=>"",
             "user"=>createPassword(8),
             "passw"=>encrypt_decrypt("encrypt",createPassword(8)),
-            "role"=>""
+            "role"=>"",
+            "gdpr"=>0
         ];
     }
 
@@ -210,8 +210,14 @@ $userDB=new dbDaUser($db);
  * Set aktual person class id
  * @param int $classId
  */
-function setAktClass($classId) {
+function setAktClass($classId, $schoolId=null) {
     $_SESSION['aktClass']=$classId;
+    $_SESSION['aktSchool']=$schoolId;
+    if ($schoolId===null && $classId!==null) {
+        global $db;
+        $class = $db->getClassById($classId);
+        $_SESSION['aktSchool']=$class["schoolID"];
+    }
 }
 
 function unsetAktClass() {
@@ -219,8 +225,7 @@ function unsetAktClass() {
 }
 
 /**
- * Set aktual person class id
- * @param unknown $classId
+ * Set actual school
  */
 function setAktSchool($schoolId) {
     $_SESSION['aktSchool']=$schoolId;
@@ -232,7 +237,7 @@ function unsetAktSchool() {
 
 
 /**
- * The aktual person class id
+ * The actual person class id
  * @return integer or -1
  */
 function getAktClassId() {
@@ -266,8 +271,11 @@ function getAktSchool() {
     $school = \maierlabs\lpfw\Appl::getMember("actSchool");
     if ($school!==null)
         return $school;
-    global $db;
-    return $db->getSchoolById(getAktSchoolId());
+    if (getAktSchoolId()!==null) {
+        global $db;
+        return $db->getSchoolById(getAktSchoolId());
+    }
+    return null;
 }
 
 /**
@@ -285,16 +293,14 @@ function isAktClassStaf() {
 }
 
 /**
- * The aktual person school id
+ * The actual school id
  * @return number|1
  */
 function getAktSchoolId() {
-    /*TODO
     if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)
         return intval($_SESSION['aktSchool']);
     else
-    */
-    return 1;
+        return null;
 }
 
 
@@ -335,9 +341,9 @@ function getClassName($class,$short=false) {
  */
 function getAktSchoolName() {
     $school=getAktSchool();
-    if ($school!=null && isset($school["id"]) && $school["id"]==0)
-        return "";
-    return html_entity_decode($school["name"]);
+    if ($school!==null && isset($school["id"]) )
+        return html_entity_decode($school["name"]);
+    return 'kolozsvári középiskolák ';
 }
 
 /**
@@ -828,8 +834,7 @@ function directLogin($db,$key){
         $class=$db->dbDAO->getClassById($person["classID"]);
         \maierlabs\lpfw\Appl::setMember("aktClass",$class);
         \maierlabs\lpfw\Appl::setMember("actSchool",$db->dbDAO->getStafClassIdBySchoolId($class["schoolID"]));
-        setAktClass($class["id"]);
-        setAktSchool($class["schoolID"]);
+        setAktClass($class["id"],$class["schoolID"]);
         if (!isUserAdmin() && !isUserSuperuser()) {
             \maierlabs\lpfw\Appl::sendHtmlMail(null,
                 "<h2>Login</h2>".
