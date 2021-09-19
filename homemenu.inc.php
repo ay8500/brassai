@@ -309,38 +309,4 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
 
 <?php
 Appl::addJs('js/search.js',true);
-
-/**
- * @param dbDaUser $db
- * @param $key
- * @return string
- */
-function directLogin($db,$key){
-    $keyStr = encrypt_decrypt("decrypt", $key);
-    if (substr($keyStr, 0,2)=="M-") {
-        $action="M";
-        $keyStr=substr($keyStr,2);
-    }
-    $person=$db->getUserByID($keyStr);
-    if (null!=$person) {
-        setAktUserId($keyStr);
-        setUserInSession($db,$person["role"], $person["user"],$keyStr);
-        \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
-        $class=$db->dbDAO->getClassById($person["classID"]);
-        Appl::setMember("aktClass",$class);
-        Appl::setMember("actSchool",$db->dbDAO->getStafClassIdBySchoolId($class["schoolID"]));
-        setAktClass($class["id"]);
-        setAktSchool($class["schoolID"]);
-        if (!isUserAdmin() && !isUserSuperuser()) {
-            \maierlabs\lpfw\Appl::sendHtmlMail(null,
-                "<h2>Login</h2>".
-                "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
-        }
-        return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
-    } else {
-        \maierlabs\lpfw\Logger::_("LoginDirect\t".$key,\maierlabs\lpfw\LoggerLevel::error);
-        return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
-    }
-}
-
 ?>
