@@ -44,7 +44,7 @@ if ($action=="saveclass") {
 	else {
 		$classid=$db->saveClass([
 				"id"=>$classid,
-				"schoolID"=>getAktSchoolId(),
+				"schoolID"=>getActSchoolId(),
 				"eveningClass"=>getIntParam("eveningClass",0),
 				"graduationYear"=>getParam("year"),
 				"name"=>getParam("class"),
@@ -54,7 +54,7 @@ if ($action=="saveclass") {
 		]);
 		if ($classid>=0 ) {
 		    $db->updateRecentChangesList();
-			setAktClass($classid,getAktSchoolId());
+			setActClass($classid,getActSchoolId());
 			$class=$db->getClassById($classid);
             Appl::setMessage("Osztály sikeresen kimentve! Köszönjük szépen.","success");
 		} else {
@@ -79,7 +79,7 @@ include("homemenu.inc.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>
 			<select class="form-control" disabled id="selectSchool">
                 <?php foreach ($schoolList as $school) {
-                    $selected = $school["id"]==getAktSchoolId()?"selected=selected":""?>
+                    $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
 				    <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
 				<?php } ?>
 			</select>
@@ -113,7 +113,7 @@ include("homemenu.inc.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
 			<select class="form-control" onchange="changeSchool()" id="selectSchool">
                 <?php foreach ($schoolList as $school) {
-                    $selected = $school["id"]==getAktSchoolId()?"selected=selected":""?>
+                    $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
                     <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
                 <?php } ?>
 				<option value="0">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. <?php echo Config::$siteMail?></option>
@@ -157,7 +157,7 @@ include("homemenu.inc.php");
 			<option value="0">...válassz...</option>
 			<option value="-1">...nincs a listán...</option>
 			<?php
-				$teachers=$db->getPersonListByClassId($db->getStafClassIdBySchoolId(getAktSchoolId()));
+				$teachers=$db->getPersonListByClassId($db->getStafClassIdBySchoolId(getActSchoolId()));
 				foreach ($teachers as $t) {?>
 				<option value="<?php echo $t['id']?>" <?php echo (isset($class['headTeacherID']) && $t['id']==$class['headTeacherID']?"selected":"") ?> > 
 					<?php echo getPersonName($t).':'.getFieldValueNull($t,'function')?>

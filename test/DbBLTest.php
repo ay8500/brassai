@@ -32,16 +32,16 @@ class DbBLTest extends PHPUnit_Framework_TestCase
 
     public function testClassSchool()
     {
-        unsetAktClass();
-        $this->assertNull(getAktClass());
-        unsetAktSchool();
+        unsetActClass();
+        $this->assertNull(getActClass());
+        unsetActSchool();
 
         //$this->assertNull($this->db->handleClassSchoolChange(null,99992));
-        //$this->assertTrue(getAktSchoolId()===99992);
+        //$this->assertTrue(getActSchoolId()===99992);
 
         //$this->assertNotNull($this->db->handleClassSchoolChange(74,1908998));
-        //$this->assertTrue(getAktSchoolId()===1);
-        //$this->assertTrue(getAktClassId()===74);
+        //$this->assertTrue(getActSchoolId()===1);
+        //$this->assertTrue(getActClassId()===74);
 
 
     }

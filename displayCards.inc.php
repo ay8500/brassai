@@ -23,7 +23,10 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	$d=$person;
 	?>
 	<div class="element">
-        <?php $personClass = displayPersonNameAndGetClass($db,$person,$showClass); ?>
+        <?php
+            displaySchool($d["schoolID"]);
+            $personClass = displayPersonNameAndGetClass($db,$person,$showClass);
+        ?>
         <?php if ($person["gdpr"]==100) {?>
             <img title="A személy jováhagyta a személyes adatainak a használatát kizárolag ezen az oldalon!" src="images/gdpr.png" style="position: absolute;width:88px;left:409px;top:3px" />
         <?php } ?>
@@ -160,6 +163,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
 	<div class="element">
         <div>
             <div style="display: inline-block; ">
+                <?php displaySchool($p["schoolID"]); ?>
                 <h4><?php echo $typeArray["text"];?></h4>
                 <a href="picture?type=<?php echo $typeArray["type"]?>&typeid=<?php echo $typeArray["typeId"]?>&id=<?php echo $picture["id"]?>">
                     <img src="imageConvert?width=396&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
@@ -197,10 +201,13 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
  * @param bool $showDate
  */
 function displayClass($db,$class,$showDate=false) {
+    if ($class["graduationYear"]==0)
+        return;
 	?>
 	<div class="element">
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getClassName($class);?></h4></a><br/>
+            <?php displaySchool($class["schoolID"]); ?>
+            <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getSchoolClassName($class);?></h4></a><br/>
 			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
 				Osztályfőnök: <a href="editDiak?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a> <br/>
@@ -247,6 +254,7 @@ function displayMessage($db,$message,$showDate=true) {
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <?php displaySchool(($db->getPersonByID($message["changeUserID"]))["schoolID"]); ?>
             <h4><i class="material-icons" style="vertical-align: bottom">chat</i> Üzenet</h4>
             <div style="max-height: 300px; overflow-y: scroll;margin-top: 10px">
                 <?php
@@ -279,10 +287,11 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
         $actionText = "Zenét kiválasztotta";
     else
         $actionText = "Mejelőlte mint kendvenc zenéje";
-
+    $d = $db->getPersonByID($userId);
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <?php displaySchool($d["schoolID"]); ?>
             <div style="">
                 <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><h4><span class="glyphicon glyphicon-film"></span> <?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
             </div>
@@ -292,7 +301,7 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
                 </object>
             <?php }?>
             <br/>Megjelenési év:<?php echo $music["year"] ?><br/>
-            <?php echo $actionText.' '.getPersonLinkAndPicture($db->getPersonByID($userId))?>
+            <?php echo $actionText.' '.getPersonLinkAndPicture($d)?>
             <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($date);?>
             <?php
                 if (isset($music["check"])) {
@@ -367,7 +376,7 @@ function displayPersonCandle($db,$person,$date) {
                 <?php } else {
                     $diakClass = $db->getClassById($d["classID"]);
                     if ($diakClass!=null) {
-                        $classText = getClassName($diakClass);
+                        $classText = getSchoolClassName($diakClass);
                         if (isUserGuest($d)) {
                             if ($d["classID"] != 0)
                                 echo '<h5>Jó barát:<a href="hometable?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
@@ -417,7 +426,7 @@ function displayPersonNameAndGetClass ($db,$d) {
     } else {
         if (!isset($d["classText"])) {
             $diakClass = $db->getClassById($d["classID"]);
-            $d["classText"] = getClassName($diakClass);
+            $d["classText"] = getSchoolClassName($diakClass);
         }
         if (isUserGuest($d)) {
             if (strstr($d["classText"],"staf")!==false)
@@ -486,6 +495,14 @@ function displayIcon($d,$field,$image,$title,$appl) {
             echo '<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
         else
             echo '<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
+}
+
+function displaySchool($id) {
+    if (getActSchoolId()==null) {
+        global $schoolList;
+        echo( '<div style="margin-bottom: -15px;">'. $schoolList[array_search($id,array_column($schoolList,"id"))]["name"] . "</div>");
+
+    }
 }
 
 \maierlabs\lpfw\Appl::addJsScript("

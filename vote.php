@@ -23,21 +23,21 @@ Appl::setSiteSubTitle('A következő érettségi találkozónk');
 
 include("homemenu.inc.php");
 
-$class=Appl::getMember("aktClass");
+$class=Appl::getMember("actClass");
 if ($class!=null) {
     $classMeetingCount=date("Y")-intval($class["graduationYear"]);
 
     if (($classMeetingCount % 5)!=0) $classMeetingCount += 5 - ($classMeetingCount % 5);
     if ($classMeetingCount<10) $classMeetingCount=10;
-    $classMeetingYear = intval(Appl::getMember("aktClass")["graduationYear"])+$classMeetingCount;
+    $classMeetingYear = intval(Appl::getMember("actClass")["graduationYear"])+$classMeetingCount;
 
-    $data=$db->getPersonListByClassId(Appl::getMemberId("aktClass"));
+    $data=$db->getPersonListByClassId(Appl::getMemberId("actClass"));
 
 
     //Save vote data
     if (isActionParam("vote")) {
         //Save all data for admins, superusers and editors
-        if ( isUserEditor() || isUserSuperuser() || (isUserLoggedOn() && getAktUserId()==getParam("personID"))) {
+        if ( isUserEditor() || isUserSuperuser() || (isUserLoggedOn() && getActUserId()==getParam("personID"))) {
             $vote=array();
             $vote["personID"]=getParam("personID");
             $vote["classID"]=getParam("classID");
@@ -97,7 +97,7 @@ if ($class!=null) {
                         if (showField($d, "birthname")) echo(' (' . $d["birthname"] . ')'); ?>
                     </td>
                     <?php
-                    if (isUserEditor() || isUserSuperuser() || $d["id"] == getLoggedInUserId() && getRealId(getAktClass()) == $db->getLoggedInUserClassId()) {
+                    if (isUserEditor() || isUserSuperuser() || $d["id"] == getLoggedInUserId() && getRealId(getActClass()) == $db->getLoggedInUserClassId()) {
                         $dis = "";
                         $ro = "";
                     } else {
@@ -142,7 +142,7 @@ if ($class!=null) {
                     </td>
                     <input type="hidden" value="vote" name="action"/>
                     <input type="hidden" value="<?php echo $d["id"] ?>" name="personID"/>
-                    <input type="hidden" value="<?php echo getRealId(getAktClass()) ?>" name="classID"/>
+                    <input type="hidden" value="<?php echo getRealId(getActClass()) ?>" name="classID"/>
                     <input type="hidden" value="<?php echo $classMeetingCount ?>" name="meetAfterYear"/>
                 </tr>
                 </form>

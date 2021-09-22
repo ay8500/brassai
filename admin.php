@@ -26,7 +26,7 @@ Appl::addJsScript("
 if (isActionParam("sendMail")) {
 	if (isUserEditor() || isUserSuperuser()) {
 		include_once ("sendMail.php");
-		$persons = $db->getPersonListByClassId(getAktClassId());
+		$persons = $db->getPersonListByClassId(getActClassId());
 		$mailsSent =0;$mailsError =0;
 		foreach ($persons as $person) {
 			$uid=$person["id"];
@@ -80,7 +80,7 @@ Ide kell írni a szöveget....
 		<button type="button" class="btn btn-default" onclick="checkUncheckAll(false);"><span class="glyphicon glyphicon-unchecked"></span> Megjelöléseket töröl</button>
 		<p>
 		<?php
-		$persons = $db->getPersonListByClassId(getAktClassId());
+		$persons = $db->getPersonListByClassId(getActClassId());
 		foreach ($persons as $d) {
 				echo('<div style="display:inline-block; margin-right:10px">');
 				if (isset($d["email"]) && strlen($d["email"])>2) 
@@ -114,7 +114,7 @@ Ide kell írni a szöveget....
 		</tr>
 		
 		<?php
-		$persons = $db->getPersonListByClassId(getAktClassId());
+		$persons = $db->getPersonListByClassId(getActClassId());
 		foreach ($persons as $l=>$d) {
 			if (!isUserGuest($d)) {
 				if (($l % 2) ==0) 
@@ -154,7 +154,7 @@ Ide kell írni a szöveget....
 		<table class="table-sp"  >
 		<tr style="text-align:center;font-weight:bold;"><td>Név</td><td>E-Mail</td><td id="o400">Telefon</td><td  id="o480">Mobiltelefon</td><td  id="o1024">Skype</td><td  id="o1024">IP</td><td  id="o1024">Datum</td></tr>
 		<?php
-		$persons = $db->getPersonListByClassId(getAktClassId());
+		$persons = $db->getPersonListByClassId(getActClassId());
 		foreach ($persons as $idx=>$d) {
 			if (isuserAdmin($d) || isUserEditor($d))  {
 				if (($idx % 2) ==0) 

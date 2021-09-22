@@ -7,7 +7,7 @@ include_once 'dbBL.class.php';
 use maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("Kolozsvári középiskolák","Kolozsvári középiskolák");
-setAktClass(null,null);
+setActClass(null,null);
 
 include("homemenu.inc.php");
 ?>

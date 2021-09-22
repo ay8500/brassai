@@ -44,7 +44,7 @@ include_once("dbBL.class.php");
 		writeSitemapLink("picture?id=".$picture["id"],$element["changeDate"]);
 	}
 
-	$classList=$db->getClassList(getRealId(getAktSchool()));
+	$classList=$db->getClassList(getRealId(getActSchool()));
 	foreach ($classList as $class) {
 		writeSitemapLink("hometable?classid=".$class["id"],$element["changeDate"]);
 	}

@@ -83,7 +83,7 @@
         <?php
         //Editfields school and class
         if (($edit || $createNewPerson) && !$anonymousEditor && isUserLoggedOn()) {
-            $optionClasses=$db->getClassList(getRealId(getAktSchool()),true);
+            $optionClasses=$db->getClassList(getRealId(getActSchool()),true);
         ?>
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
@@ -95,13 +95,13 @@
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
                 <select class="form-control" name="schoolID" id="schoolID" disabled>
                     <?php foreach ($schoolList as $school) {
-                        $selected = $school["id"]==getAktSchoolId()?"selected=selected":""?>
+                        $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
                         <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <?php if (isAktClassStaf()) { ?>
-                <input type="hidden" name="classID" value="<?php echo getAktClassId()?>" />
+            <?php if (isActClassStaf()) { ?>
+                <input type="hidden" name="classID" value="<?php echo getActClassId()?>" />
             <?php } else { ?>
                 <div style="min-height:30px" class="input-group">
                     <span style="min-width:110px;" class="input-group-addon" >Osztály</span>
@@ -109,14 +109,14 @@
                     <select class="form-control" name="classID" id="classID">
                         <option value="-1" >...válassz...</option>
                         <?php foreach ($optionClasses as $optionClass) {?>
-                            <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getAktClassId()?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
+                            <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getActClassId()?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
                         <?php } ?>
                     </select>
                 </div>
             <?php } ?>
         <?php } else {?>
-            <input type="hidden" name="classID" value="<?php echo getAktClassId()?>" />
-            <input type="hidden" name="schoolID" value="<?php echo getAktSchoolId()?>" />
+            <input type="hidden" name="classID" value="<?php echo getActClassId()?>" />
+            <input type="hidden" name="schoolID" value="<?php echo getActSchoolId()?>" />
         <?php } ?>
 
 
@@ -222,8 +222,8 @@
 <?php } else {
     ?>
     <br/><br/><br/><div>
-        <?php echo $person["lastname"] ?> <?php echo $person["firstname"] ?> a <?php echo getAktSchool()["name"] ?>-ban végzett.
-        Utolsó diákéveit a <?php echo getAktClass()["name"] ?>-ban járta.
+        <?php echo $person["lastname"] ?> <?php echo $person["firstname"] ?> a <?php echo getActSchool()["name"] ?>-ban végzett.
+        Utolsó diákéveit a <?php echo getActClass()["name"] ?>-ban járta.
         <?php if (isset($person["birthname"])) { ?> Osztálytársai <?php echo $person["birthname"] ?> diákkori nevén ismerik. <?php } ?>
     </div>
 <?php } ?>

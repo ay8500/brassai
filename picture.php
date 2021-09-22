@@ -20,10 +20,10 @@ if ($id>=0) {
 if (!isset($type)) {
 	$type=getParam("type");
 	if ($type==null) {
-		if (null!=getAktClass()) {
-			$type="classID";$typeId=getRealId(getAktClass());
+		if (null!=getActClass()) {
+			$type="classID";$typeId=getRealId(getActClass());
 		} else {
-			$type="schoolID";$typeId=getRealId(getAktSchool());
+			$type="schoolID";$typeId=getRealId(getActSchool());
 		}
 	}
 	if(!in_array($type,array("personID","schoolID","classID"))) {
@@ -37,21 +37,21 @@ if (!isset($type)) {
 if (!isset($typeId)) {
 	$typeId=getIntParam("typeid");
 	if ($typeId==0) {
-		if (null!=getAktClass()) {
-			$type="classID";$typeId=getRealId(getAktClass());
+		if (null!=getActClass()) {
+			$type="classID";$typeId=getRealId(getActClass());
 		} else {
-			$type="schoolID";$typeId=getRealId(getAktSchool());
+			$type="schoolID";$typeId=getRealId(getActSchool());
 		}
 	}
 } else {
 	if ($type=="classID") {
-		setAktClass($typeId);
+		setActClass($typeId);
 	}
 }
 $album=getParam("album","");
 
 if ($type=="classID") {
-	$subtitle="Osztályképek: ".getAktClassName()." ".$album;
+	$subtitle="Osztályképek: ".getActSchoolClassName()." ".$album;
 } elseif ($type=="personID") {
 	$person=$db->getPersonByID($typeId);
 	$subtitle=getPersonName($person)." képei";

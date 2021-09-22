@@ -11,6 +11,7 @@ header('Content-Type: application/json');
 $id=getParam("id");
 
 $ret = new stdClass();
+global $db;
 $dbOpinion = new dbDaOpinion($db);
 $ret=$dbOpinion->sendEasterEgg($id);
 

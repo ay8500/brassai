@@ -42,6 +42,7 @@ class dbDaOpinion
         $db = $this->dbDAO->dataBase;
         if ($text != null)
             $data = $db->insertFieldInArray($data, 'text', $text);
+        $data = $db->insertFieldInArray($data, 'schoolID', getActSchoolId());
         $data = $db->insertFieldInArray($data, 'entryID', $id);
         $data = $db->insertFieldInArray($data, 'table', $table);
         $data = $db->insertFieldInArray($data, 'opinion', $type);

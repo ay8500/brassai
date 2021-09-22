@@ -20,18 +20,18 @@ if (getParam("type")=="personID" && getParam("typeid")!=null) {
 if($personid!=null){
     $diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
-		setAktUserId($personid);	//save actual person in case of tab changes
-		setAktClass($diak["classID"],$diak["schoolID"]);
+		setActUserId($personid);	//save actual person in case of tab changes
+		setActClass($diak["classID"],$diak["schoolID"]);
 	} else {
 		$diak=$db->getPersonByUser($personid);
 		if ($diak!=null) {
 			$personid=$diak["id"];
-			setAktUserId($diak["id"]);
+			setActUserId($diak["id"]);
 		}
 	}
 }
 else {
-	$personid=getAktUserId();	
+	$personid=getActUserId();
 }
 
 //Parameters
@@ -47,7 +47,7 @@ $createNewPerson = $action=="newperson" || $action=="newguest" || $action=="newt
 if ( $createNewPerson ) {
 	$diak = $db->getPersonDummy();
 	$diak["id"] = -1;
-	$diak["classID"] = getAktClassId();
+	$diak["classID"] = getActClassId();
     ($action=="newteacher" || $action=="savenewteacher" )? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
     ($action=="newguest"   || $action=="savenewguest" )? $diak["role"]="guest"	:	$diak["role"]="";
 	$personid=-1;
@@ -59,7 +59,7 @@ if ($personid!=null && $personid>=0) {
 	if ($diak!=null) {
 		$classId=$diak["classID"];
 		$class=$db->getClassById($classId);
-		setAktClass($classId, $class["schoolID"]);
+		setActClass($classId, $class["schoolID"]);
         $firstPicture["file"] = "images/".$diak["picture"];
         \maierlabs\lpfw\Appl::setMember("firstPicture",$firstPicture);
     } else {
@@ -125,7 +125,7 @@ if (isUserAdmin()) { //only for admin
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
 	array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
 }
-if ( isAktClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
+if ( isActClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
     $dataFieldObl[19+$offset] = "Évszám mettől meddig pl: 1961-1987";
     $dataFieldCaption[19+$offset] = "Mettől meddig";
     $dataFieldObl[20+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
@@ -157,43 +157,43 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			//No dublicate email address is allowed
 			if (isset($diak["email"]) && checkUserEmailExists($userDB,$diak["id"],$diak["email"])) {
 				Appl::setMessage("E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.","warning");
-                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail exists".getActUserId(),\maierlabs\lpfw\LoggerLevel::error);
 			} elseif ((isset($diak["classID"]) && $diak["classID"]==="-1") || !isset($diak["classID"])) {
 				Appl::setMessage("Osztály nincs kiválasztva!","warning");
-                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tClass not selected".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tClass not selected".getActUserId(),\maierlabs\lpfw\LoggerLevel::error);
 			} elseif (checkUserNameExists($userDB,$diak["id"], $diak["user"])) {
 				Appl::setMessage("Felhasználó név már létezik!<br/>Az adatok kimentése sikertelen.","warning");
-                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tUsername exists".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tUsername exists".getActUserId(),\maierlabs\lpfw\LoggerLevel::error);
                 //Validate the mail address if no admin logged on
 			} elseif (isset($diak["email"]) && $diak["email"]!="" && filter_var($diak["email"],FILTER_VALIDATE_EMAIL)==false && !isUserAdmin()) {
 				Appl::setMessage("E-Mail cím nem helyes! <br/>Az adatok kimentése sikertelen.","warning");
-                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail wrong syntax".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tE-Mail wrong syntax".getActUserId(),\maierlabs\lpfw\LoggerLevel::error);
             } elseif (($diak["lastname"]=="" || $diak["firstname"]=="" ) && !isUserAdmin()) {
 				Appl::setMessage("Családnév vagy Keresztnév üres! <br/>Az adatok kimentése sikertelen.","warning");
-                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tEmpty name fields".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tEmpty name fields".getActUserId(),\maierlabs\lpfw\LoggerLevel::error);
             } elseif ((strlen($diak["lastname"])<3 || strlen($diak["firstname"])<3) && !isUserAdmin()) {
 				Appl::setMessage("Családnév vagy Keresztnév rövidebb mit 3 betű! <br/>Az adatok kimentése sikertelen.","warning");
-                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tName too short".getAktUserId(),\maierlabs\lpfw\LoggerLevel::error);
+                \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\tName too short".getActUserId(),\maierlabs\lpfw\LoggerLevel::error);
             } else {
 				$personid = $db->savePerson($diak);
 				if ($personid>=0) {
-					setAktUserId($personid);		//set actual person in case of tab changes
-					setAktClass($diak["classID"]);	//set actual class in case of class changes
-                    \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId(),\maierlabs\lpfw\LoggerLevel::info);
+					setActUserId($personid);		//set actual person in case of tab changes
+					setActClass($diak["classID"]);	//set actual class in case of class changes
+                    \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getActUserId(),\maierlabs\lpfw\LoggerLevel::info);
 					$db->saveRequest(changeType::personchange);
 					header("location:hometable?class=".$diak["classID"]."&action=saveok");
 				} else {
 					Appl::setMessage("Az adatok kimentése nem sikerült! Hibakód:1631","warning");
-                    \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError:1631",\maierlabs\lpfw\LoggerLevel::error);
+                    \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getActUserId()."\tError:1631",\maierlabs\lpfw\LoggerLevel::error);
 				}
 			}
 		} else {
 			Appl::setMessage("Az adatok kimentése nem sikerült! Hibakód:1034","warning");
-            \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError:1034",\maierlabs\lpfw\LoggerLevel::error);
+            \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getActUserId()."\tError:1034",\maierlabs\lpfw\LoggerLevel::error);
 		}
 	} else {
 		Appl::setMessage("Az adatok módosítása anonim látogatók részére korlátozva van.<br/>Kérünk jelentkezz be ahoz, hogy tovább tudd folytatni a módosításokat.","warning");
-        \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getAktUserId()."\tError: too many",\maierlabs\lpfw\LoggerLevel::error);
+        \maierlabs\lpfw\Logger::_("SaveData\t".getLoggedInUserId()."\t".getActUserId()."\tError: too many",\maierlabs\lpfw\LoggerLevel::error);
 	}
 	if ($personid==-1) {
 		if ($action=="savenewteacher") $action="newteacher";
@@ -208,7 +208,7 @@ if ($action=="changepassw" && isUserLoggedOn()) {
 	if (isset($_GET["newpwd2"])) $newpwd2=$_GET["newpwd2"]; else $newpwd2="";
 	if (strlen($newpwd1)>5) {
 		if ($newpwd1==$newpwd2) {
-            $ret=$userDB->setUserPassword(getAktUserId(),encrypt_decrypt("encrypt",$newpwd1));
+            $ret=$userDB->setUserPassword(getActUserId(),encrypt_decrypt("encrypt",$newpwd1));
 			if ($ret>=0) {
 				if (!isUserAdmin())
                     \maierlabs\lpfw\Logger::_("SavePassw\t".getLoggedInUserId());
@@ -227,7 +227,7 @@ if ($action=="changeuser" && isUserLoggedOn()) {
 	if (isset($_GET["user"]))  $user=$_GET["user"]; else $user="";
 	if (strlen( $user)>2) { 
 		if (!checkUserNameExists($userDB,$personid,$user)) {
-			$ret=$db->savePersonField(getAktUserId(),'user', $user);
+			$ret=$db->savePersonField(getActUserId(),'user', $user);
 			if ($ret>=0) {
 				$_SESSION["USER"]=$user;
 				if (!isUserAdmin())
@@ -275,7 +275,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 			//Only jpg
 			if (strcasecmp($fileName[1],"jpg")==0) {
 				//Create folder is doesn't exists
-				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".$db->getAktClassFolder();
+				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".$db->getActClassFolder();
 				if (!file_exists($fileFolder)) {
  	   				mkdir($fileFolder, 0777, true);
 				}
@@ -294,8 +294,8 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 					$uploadfile=$fileFolder.$pFileName;
 					if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 						if (!$overwrite) {
-							$diak['picture']=$db->getAktClassFolder().$pFileName;
-							if ($db->savePersonField($personid, "picture", $db->getAktClassFolder().$pFileName)>=0) {
+							$diak['picture']=$db->getActClassFolder().$pFileName;
+							if ($db->savePersonField($personid, "picture", $db->getActClassFolder().$pFileName)>=0) {
 								$db->saveRequest(changeType::personupload);
 								resizeImage($uploadfile,400,400,"o");
 								Appl::setMessage($fileName[1]." Profilkép sikeresen feltöltve.","succes");
@@ -331,7 +331,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 
 // Title an subtitle of the page schoolmate or guests
 $guests = isUserGuest($diak);
-if (isAktClassStaf()) {
+if (isActClassStaf()) {
     if (intval($diak["isTeacher"])==1)
         Appl::setSiteSubTitle("Tanári kar");
     else
@@ -339,16 +339,16 @@ if (isAktClassStaf()) {
     Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
 } else {
     if ($guests) {
-        Appl::setSiteSubTitle(getAktClassName()." Vendég jó barát");
+        Appl::setSiteSubTitle(getActSchoolClassName()." Vendég jó barát");
         Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
     } else {
         if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
             $headTeacher=$db->getPersonByID($class["headTeacherID"]);
-            Appl::setSiteSubTitle(getAktClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
+            Appl::setSiteSubTitle(getActSchoolClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
         } else {
-            Appl::setSiteSubTitle("Osztály ".getAktClassName());
+            Appl::setSiteSubTitle("Osztály ".getActSchoolClassName());
         }
-        Appl::$title=getPersonName($diak)." ".getAktClassName();
+        Appl::$title=getPersonName($diak)." ".getActSchoolClassName();
     }
 }
 
@@ -403,7 +403,7 @@ if(isUserLoggedOn() || isUserAdmin()) {
 
 $tabUrl="editDiak";
 ?>
-<?php if (null!=getAktClass()) {?>
+<?php if (null!=getActClass()) {?>
     <div class="container-fluid"><?php
     include Config::$lpfw.'view/tabs.inc.php';?>
 	<div class="well"><?php

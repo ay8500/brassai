@@ -30,15 +30,15 @@ $tab = getParam("tab", "");
 $name = getParam("name", "");
 
 
-if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) && $_SESSION["MoreRequestUid"]!=getAktUserId()) ) {
+if ( !isset($_SESSION["MoreRequestUid"]) || (isset($_SESSION["MoreRequestUid"]) && $_SESSION["MoreRequestUid"]!=getActUserId()) ) {
 
-	$_SESSION["MoreRequestUid"]=getAktUserId();
+	$_SESSION["MoreRequestUid"]=getActUserId();
 
-	$diak=$db->getPersonByID(getAktUserId());
+	$diak=$db->getPersonByID(getActUserId());
 	$key=generateAktUserLoginKey();
 	
 	$text="Kedves ".$diak["lastname"]." ".$diak["firstname"].",<br /><br />";
-	$text .="ezt az üzenetet a ".getAktSchoolName()." végzős diakjainak honoldaláról azért kaptad, mert ".$name;
+	$text .="ezt az üzenetet a ".getActSchoolName()." végzős diakjainak honoldaláról azért kaptad, mert ".$name;
 	$text .=" szertné ha többet olvashatna rólad az -".$title."- oldalon.<br /><br />";
 	$text .="Légyszíves szakíts két perc időt és egészítsd ki az oldalt egy egyszerü kattintással a következö linkre.";
 	$text .='<a href="'.Config::$siteUrl.'/editDiak?tabOpen='.$tab.'&key='.$key.'">Most szeretném vándiák oldalam kiegészíteni</a><br /><br />';

@@ -16,7 +16,7 @@ $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteTitle("A véndiákok ezeket a zenéket hallgatják szívesen");
-if (getAktClassId()==-1) {
+if (getActClassId()==-1) {
     Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják szívesen az iskola véndiákjai.');
 } else {
     Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezeket számokat szívesen hallgatjuk.');
@@ -87,10 +87,10 @@ if ($psong>0 && isUserLoggedOn()) {
 }
 	
 //Read voters List by ClassID
-if (getAktClassId()!=-1)
-    $votersList=$dbSongVote->getVotersListByClassId(getRealId(getAktClass()));
+if (getActClassId()!=-1)
+    $votersList=$dbSongVote->getVotersListByClassId(getRealId(getActClass()));
 else
-    $votersList=$dbSongVote->getVotersListBySchoolId(getRealId(getAktSchool()));
+    $votersList=$dbSongVote->getVotersListBySchoolId(getRealId(getActSchool()));
 usort($votersList, "compareAlphabetical");
 
 $allVotesNoAnonymous=0;
@@ -242,7 +242,7 @@ $year["2000"]=isset($musicFilter["filter_00"])?$musicFilter["filter_00"]:false;
 $year["2010"]=isset($musicFilter["filter_10"])?$musicFilter["filter_10"]:true;
 $year["2020"]=isset($musicFilter["filter_20"])?$musicFilter["filter_20"]:false;
 if (getParam("srcText")==null)
-    $topList= $dbSongVote->readTopList (getRealId(getAktClass()),getLoggedInUserId(),500, $language, $genre,$year);
+    $topList= $dbSongVote->readTopList (getRealId(getActClass()),getLoggedInUserId(),500, $language, $genre,$year);
 else
     $topList= $dbSongVote->searchForMusic(getParam("srcText"));
 

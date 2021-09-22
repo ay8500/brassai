@@ -3,6 +3,11 @@
  * Business layer for the classmate database
  */
 
+use maierlabs\lpfw\Appl;
+use maierlabs\lpfw\Logger;
+use maierlabs\lpfw\LoggerLevel;
+use maierlabs\lpfw\MySqlDbAUH;
+
 include_once 'config.class.php';
 include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'ltools.php';
@@ -34,15 +39,19 @@ class dbBL extends dbDAO
      */
     public function handleClassSchoolChange($classId = "all", $schoolId = null)
     {
+        if ($schoolId == "all") {
+            unsetActSchool();
+            return ;
+        }
 
         if ($schoolId != null) {
-            unsetAktClass();
-            setAktSchool($schoolId);
+            unsetActClass();
+            setActSchool($schoolId);
         }
         $class = null;
         if (null != $classId) {
             if ('all' == $classId) {
-                unsetAktClass();
+                unsetActClass();
                 return null;
             }
             $class = $this->getClassById(intval($classId));
@@ -57,9 +66,9 @@ class dbBL extends dbDAO
             }
         }
         if ($class==null) {
-            $class = getAktClass();
+            $class = getActClass();
         } else {
-            setAktClass($class["id"],$class["schoolID"]);
+            setActClass($class["id"],$class["schoolID"]);
         }
         return $class;
     }
@@ -67,13 +76,13 @@ class dbBL extends dbDAO
     /**
      * The picture folder of the aktual persons class or school
      */
-    public function getAktClassFolder()
+    public function getActClassFolder()
     {
-        $class = getAktClass();
+        $class = getActClass();
         if ($class != null) {
             return $class["name"] . $class["graduationYear"];
         } else {
-            return "school" . getAktSchoolId();
+            return "school" . getActSchoolId();
         }
 
     }
@@ -117,6 +126,7 @@ class dbBL extends dbDAO
             "user"=>createPassword(8),
             "passw"=>encrypt_decrypt("encrypt",createPassword(8)),
             "role"=>"",
+            "gender"=>"m",
             "gdpr"=>0
         ];
     }
@@ -125,8 +135,8 @@ class dbBL extends dbDAO
      * get the first school admin person
      * @return array | null  person
      */
-    public function getAktSchoolAdminPerson() {
-        return $this->dataBase->getEntry('person',"role like '%admin%' and classID=".$this->getStafClassBySchoolId(getAktSchoolId())["id"]);
+    public function getActSchoolAdminPerson() {
+        return $this->dataBase->getEntry('person',"role like '%admin%' and classID=".$this->getStafClassBySchoolId(getActSchoolId())["id"]);
     }
 
     /**
@@ -168,21 +178,22 @@ class dbBL extends dbDAO
     public function getPictureTypeText($pict)
     {
         $type="";$typeid="";$typeText="";
-        if (isset($pict["schoolID"])) {
-            $type = "school";
-            $typeid = $pict[$type . "ID"];
-            $school = $this->getSchoolById($typeid);
-            $typeText = '<a href="picture?type=schoolID&typeid='.$typeid.'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Iskolakép:' . html_entity_decode($school["name"]).'</a>';
-        } elseif (isset($pict["classID"])) {
-            $type = "class";
-            $typeid = $pict[$type . "ID"];
-            $class = $this->getClassById($typeid);
-            $typeText = '<a href="picture?type=classID&typeid='.$typeid.'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Osztálykép:' . $class["text"].'</a>';
-        } elseif (isset($pict["personID"])) {
+        if (isset($pict["personID"])) {
             $type = "person";
             $typeid = $pict[$type . "ID"];
             $picturePerson = $this->getPersonByID($typeid);
             $typeText = '<a href="editDiak?tabOpen=pictures&uid=' . $typeid .'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Személyes kép:'. getPersonName($picturePerson).'</a>';
+        }
+         elseif (isset($pict["classID"])) {
+            $type = "class";
+            $typeid = $pict[$type . "ID"];
+            $class = $this->getClassById($typeid);
+            $typeText = '<a href="picture?type=classID&typeid='.$typeid.'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Osztálykép:' . $class["text"].'</a>';
+        } elseif (isset($pict["schoolID"])) {
+            $type = "school";
+            $typeid = $pict[$type . "ID"];
+            $school = $this->getSchoolById($typeid);
+            $typeText = '<a href="picture?type=schoolID&typeid='.$typeid.'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Iskolakép:' . html_entity_decode($school["name"]).'</a>';
         }
         return array("type"=>$type,"typeId"=>$typeid,"text"=>$typeText);
     }
@@ -192,8 +203,8 @@ class dbBL extends dbDAO
 
 
 //Connect to the DB
-$dbPropertys = \Config::getDatabasePropertys();
-$dataBase = new \maierlabs\lpfw\MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password,true);
+$dbPropertys = Config::getDatabasePropertys();
+$dataBase = new MySqlDbAUH($dbPropertys->host,$dbPropertys->database,$dbPropertys->user,$dbPropertys->password,true);
 
 /**
  * @var dbBL;
@@ -207,32 +218,33 @@ $userDB=new dbDaUser($db);
 
 
 /**
- * Set aktual person class id
+ * Set actual person class id
  * @param int $classId
  */
-function setAktClass($classId, $schoolId=null) {
-    $_SESSION['aktClass']=$classId;
-    $_SESSION['aktSchool']=$schoolId;
+function setActClass($classId, $schoolId=null) {
+    $_SESSION['actClass']=$classId;
+    $_SESSION['actSchool']=$schoolId;
     if ($schoolId===null && $classId!==null) {
         global $db;
         $class = $db->getClassById($classId);
-        $_SESSION['aktSchool']=$class["schoolID"];
+        $_SESSION['actSchool']=$class["schoolID"];
     }
 }
 
-function unsetAktClass() {
-    unset($_SESSION['aktClass']);
+function unsetActClass() {
+    unset($_SESSION['actClass']);
 }
 
 /**
  * Set actual school
  */
-function setAktSchool($schoolId) {
-    $_SESSION['aktSchool']=$schoolId;
+function setActSchool($schoolId) {
+    $_SESSION['actSchool']=$schoolId;
 }
 
-function unsetAktSchool() {
-    unset($_SESSION['aktSchool']);
+function unsetActSchool() {
+    unsetActClass();
+    unset($_SESSION['actSchool']);
 }
 
 
@@ -240,40 +252,26 @@ function unsetAktSchool() {
  * The actual person class id
  * @return integer or -1
  */
-function getAktClassId() {
-    if (isset($_SESSION['aktClass'])) {
-        return intval($_SESSION['aktClass']);
+function getActClassId() {
+    if (isset($_SESSION['actClass'])) {
+        return intval($_SESSION['actClass']);
     } else {
         return -1;
     }
 }
 
-/**
- * The aktual person class id
- * @return array|NULL
- */
-function getAktClass() {
-    $class = \maierlabs\lpfw\Appl::getMember("aktClass");
-    if ($class!==null)
-        return $class;
-    global $db;
-    if (isset($_SESSION['aktClass'])) {
-        return $db->getClassById(intval($_SESSION['aktClass']));
-    }
-    return null;
-}
 
 /**
- * The aktual school id
+ * The actual school id
  * @return array|NULL
  */
-function getAktSchool() {
-    $school = \maierlabs\lpfw\Appl::getMember("actSchool");
+function getActSchool() {
+    $school = Appl::getMember("actSchool");
     if ($school!==null)
         return $school;
-    if (getAktSchoolId()!==null) {
+    if (getActSchoolId()!==null) {
         global $db;
-        return $db->getSchoolById(getAktSchoolId());
+        return $db->getSchoolById(getActSchoolId());
     }
     return null;
 }
@@ -282,49 +280,49 @@ function getAktSchool() {
  * The aktual school staf class id
  * @return boolean
  */
-function isAktClassStaf() {
-    $staf=\maierlabs\lpfw\Appl::getMember("staffClass");
-    $class = \maierlabs\lpfw\Appl::getMember("aktClass");
+function isActClassStaf() {
+    $staf= Appl::getMember("staffClass");
+    $class = Appl::getMember("actClass");
     if ($class!==null && $staf!==null) {
         return $staf["id"]===$class["id"];
     }
     global $db;
-    return $db->getStafClassIdBySchoolId(getAktSchoolId())==getAktClassId();
+    return $db->getStafClassIdBySchoolId(getActSchoolId())==getActClassId();
 }
 
 /**
  * The actual school id
  * @return number|1
  */
-function getAktSchoolId() {
-    if (isset($_SESSION['aktSchool']) && null!=$_SESSION['aktSchool'] && intval($_SESSION['aktSchool'])>0)
-        return intval($_SESSION['aktSchool']);
+function getActSchoolId() {
+    if (isset($_SESSION['actSchool']) && null!=$_SESSION['actSchool'] && intval($_SESSION['actSchool'])>0)
+        return intval($_SESSION['actSchool']);
     else
         return null;
 }
 
 
 /**
- * The name of the aktual school class
+ * The name of the actual school class name
  * @param boolean $short short form without evening class text
  * @return string
  */
-function getAktClassName($short=false) {
-    $class=getAktClass();
+function getActSchoolClassName($short=false) {
+    $class=getActClass();
     if ($class==null)
         return  "";
-    if (isAktClassStaf())
+    if (isActClassStaf())
         return "";
-    return getClassName($class,$short);
+    return getSchoolClassName($class,$short);
 }
 
 
 /**
- * The name of the school class
+ * The name of the actual school class
  * @param boolean $short short form without evening class text
  * @return string
  */
-function getClassName($class,$short=false) {
+function getSchoolClassName($class, $short=false) {
     if (null==$class) return "";
     if (!isset($class["graduationYear"]) || $class["graduationYear"]===0) return "";
 
@@ -337,10 +335,25 @@ function getClassName($class,$short=false) {
 }
 
 /**
- * The name of the aktual persons school
+ * The actual class id
+ * @return array|NULL
  */
-function getAktSchoolName() {
-    $school=getAktSchool();
+function getActClass() {
+    $class = Appl::getMember("actClass");
+    if ($class!==null)
+        return $class;
+    global $db;
+    if (isset($_SESSION['actClass'])) {
+        return $db->getClassById(intval($_SESSION['actClass']));
+    }
+    return null;
+}
+
+/**
+ * The name of the actual school
+ */
+function getActSchoolName() {
+    $school=getActSchool();
     if ($school!==null && isset($school["id"]) )
         return html_entity_decode($school["name"]);
     return 'kolozsvári középiskolák ';
@@ -352,11 +365,11 @@ function getAktSchoolName() {
 function isUserEditor() {
     if (null==getLoggedInUserId())              //No logged in user
         return false;
-    if (getLoggedInUserId()==getAktUserId())    //Logged in user views his entry
+    if (getLoggedInUserId()==getActUserId())    //Logged in user views his entry
         return true;
     global $db;
     //User is editor in his own class
-    if (isset($_SESSION['uRole']) && getAktClassId()==$db->getLoggedInUserClassId()) {
+    if (isset($_SESSION['uRole']) && getActClassId()==$db->getLoggedInUserClassId()) {
         return strstr($_SESSION['uRole'],"editor")!="";
     } else {
         $p=$db->getPersonByID(getLoggedInUserId());
@@ -366,7 +379,7 @@ function isUserEditor() {
                 if (isset($p["children"])) {
                     $c=explode(",", $p["children"]);
                     $ret = false;
-                    $class = getAktClass();
+                    $class = getActClass();
                     if (null!=$class) {
                         foreach ($c as $cc) {
                             if (substr($cc,0,3)==$class["name"] && substr($cc,3,4)==$class["graduationYear"])
@@ -587,7 +600,7 @@ function getFieldAccessValue($field) {
     global $db;
     if (isUserAdmin() || isAktUserTheLoggedInUser())
         return getFieldValue($field);
-    else if (isUserLoggedOn() && getFieldCheckedClass($field)=="checked" && getAktClassId()==$db->getLoggedInUserClassId())
+    else if (isUserLoggedOn() && getFieldCheckedClass($field)=="checked" && getActClassId()==$db->getLoggedInUserClassId())
         return getFieldValue($field);
     else if (isUserLoggedOn() && getFieldCheckedScool($field)=="checked")
         return getFieldValue($field);
@@ -735,7 +748,6 @@ function getPersonByNormalisedName($personLink,$classId=null) {
         foreach ($personlist as $person) {
             if (getPersonLink($person["lastname"], $person["firstname"])==$personLink) {
                 return $person;
-                exit;
             }
         }
     }
@@ -743,7 +755,6 @@ function getPersonByNormalisedName($personLink,$classId=null) {
     foreach ($personlist as $person) {
         if (getPersonLink($person["lastname"], $person["firstname"])==$personLink) {
             return $person;
-            exit;
         }
     }
     return null;
@@ -790,7 +801,7 @@ function getGender($firstname) {
         $ret = maierlabs\lpfw\htmlParser::loadUrl($url);
         $ret = json_decode($ret);
     } catch (Exception $e) {
-        \maierlabs\lpfw\Logger::_("Get gender for $firstname ".$e->getMessage(),\maierlabs\lpfw\LoggerLevel::error);
+        Logger::_("Get gender for $firstname ".$e->getMessage(), LoggerLevel::error);
     }
 
     if (isset($ret->countAll) && $ret->countAll>0) {
@@ -828,23 +839,23 @@ function directLogin($db,$key){
     }
     $person=$db->getUserByID($keyStr);
     if (null!=$person) {
-        setAktUserId($keyStr);
+        setActUserId($keyStr);
         setUserInSession($db,$person["role"], $person["user"],$keyStr);
-        \maierlabs\lpfw\Logger::_("LoginDirect\t".$keyStr);
+        Logger::_("LoginDirect\t".$keyStr);
         $class=$db->dbDAO->getClassById($person["classID"]);
-        \maierlabs\lpfw\Appl::setMember("aktClass",$class);
-        \maierlabs\lpfw\Appl::setMember("actSchool",$db->dbDAO->getStafClassIdBySchoolId($class["schoolID"]));
-        setAktClass($class["id"],$class["schoolID"]);
+        Appl::setMember("actClass",$class);
+        Appl::setMember("actSchool",$db->dbDAO->getStafClassIdBySchoolId($class["schoolID"]));
+        setActClass($class["id"],$class["schoolID"]);
         if (!isUserAdmin() && !isUserSuperuser()) {
-            \maierlabs\lpfw\Appl::sendHtmlMail(null,
+            Appl::sendHtmlMail(null,
                 "<h2>Login</h2>".
                 "Uid:".$_SESSION['uId']." User: ".$person["user"]," Direct-Login");
         }
         return '<div class="alert alert-success">Kedves '.getPersonName($person).' örvendünk mert újból felkeresed a véndiákok oldalát!</div>';
     } else {
-        \maierlabs\lpfw\Logger::_("LoginDirect\t".$key,\maierlabs\lpfw\LoggerLevel::error);
+        Logger::_("LoginDirect\t".$key, LoggerLevel::error);
         return '<div class="alert alert-danger">A kód nem érvényes, vagy lejárt! '.encrypt_decrypt("encrypt", $key).'</div>';
     }
 }
 
-?>
+

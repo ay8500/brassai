@@ -12,7 +12,7 @@ include_once  'dbBL.class.php';
 <table>
 <tr style="background-color:#ffffcb;font-weight:bold;"><td>Sz.</td><td></td><td>Név</td><td>Feleség/férj neve</td><td>Cím</td><td>Email</td><td>Telefon</td><td>Mobil</td><td>Skype</td><td>Munkahely</td><td>Beosztás</td><td>Gyerekek</td></tr>
 		<?php
-        $classId=getRealId(getAktClass());
+        $classId=getRealId(getActClass());
         if ($classId!=null) {
             echo("<tr><td>Diákok</td></tr>");
             $data = $db->getPersonListByClassId($classId,false);

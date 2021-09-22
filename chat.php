@@ -24,10 +24,10 @@ $( document ).ready(function() {
 ");
 $class = $db->getClassById($db->getLoggedInUserClassId());
 if ($class!=null)
-    setAktClass($class["id"],$class["schoolID"]);
+    setActClass($class["id"],$class["schoolID"]);
 
 
-Appl::setSiteSubTitle('Osztálytárs körlevek '.getAktClassName());
+Appl::setSiteSubTitle('Osztálytárs körlevek '.getActSchoolClassName());
 include("homemenu.inc.php");
 include_once 'chat.inc.php';
 
@@ -36,7 +36,7 @@ include_once 'chat.inc.php';
 if (isActionParam("sendMessage") && isUserLoggedOn()) {
 	$mailsSent = 0;
 	include_once ("sendMail.php");
-	$persons = $db->getPersonListByClassId(getAktClassId(),null,null,true);
+	$persons = $db->getPersonListByClassId(getActClassId(),null,null,true);
     $senderPerson=$db->getPersonLogedOn();
 	foreach ($persons as $person) {
 		if (    isset($person["email"]) && strlen($person["email"])>8 &&
@@ -45,14 +45,14 @@ if (isActionParam("sendMessage") && isUserLoggedOn()) {
 		}
 	}
 	Appl::setMessage("Elküldött e-mailek száma:".$mailsSent,"success");
-	$entry["classID"]=getAktClassId();
+	$entry["classID"]=getActClassId();
 	$entry["text"]=htmlspecialchars_decode(urldecode(getParam("Text")));
 	$db->saveNewMessage($entry);
 }
 
-$personList=$db->getPersonListByClassId(getRealId(getAktClass()),null,null,true);
-$messageList=$db->getClassMessages(getAktClassId());
-$administrator=$db->getAktSchoolAdminPerson();
+$personList=$db->getPersonListByClassId(getRealId(getActClass()),null,null,true);
+$messageList=$db->getClassMessages(getActClassId());
+$administrator=$db->getActSchoolAdminPerson();
 if(!isUserLoggedOn()) {
     $message=array();
     $message["changeDate"]=date("Y-m-d H:i:s");
@@ -66,7 +66,7 @@ if(!isUserLoggedOn()) {
 if(sizeof($messageList)==0) {
 	$message=array();
 	$message["changeDate"]=date("Y-m-d H:i:s");
-	$message["changeUserID"]=$db->getAktSchoolAdminPerson()["id"];
+	$message["changeUserID"]=$db->getActSchoolAdminPerson()["id"];
 	$message["text"] ="Kedves véndiákok,<br/><br/>ennek az osztálynak még nincsenek körlevelei. ";
 	$message["text"].="Az itt fogalmazott üzenetek az összes osztálytársnak akiknek ismert az email címe el lessz küldve.";
 	$message["text"].="<br/><br/>Üdvözlettel ".getPersonName($administrator);;

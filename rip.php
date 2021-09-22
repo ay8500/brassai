@@ -3,26 +3,31 @@ include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
-use \maierlabs\lpfw\Appl as Appl;
 include_once 'dbBL.class.php';
 include_once 'dbDaCandle.class.php';
 include_once 'rip.inc.php';
+
+use maierlabs\lpfw\Appl as Appl;
 global $db;
+$dbCandle = new dbDaCandle($db);
+
+if (getParam("schoolid")=="all")
+    unsetActSchool();
+else
+    $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
+
 $SiteDescription="Elhunyt tanáraink és diákok";
 Appl::setSiteTitle($SiteDescription);
-$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 $picture["file"] = "images/candle3.gif";
-\maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
-
-$dbCandle = new dbDaCandle($db);
+Appl::setMember("firstPicture",$picture);
 
 //Type of canlde list new, teacher, people
 if (isActionParam("teacher"))
-	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher=1");
+	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher=1",null,null,getActSchoolId());
 else if (isActionParam("person"))
-	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher<>1");
+	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher<>1",null,null,getActSchoolId());
 else {
-	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),24);
+	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),24, getActSchoolId());
 }
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 

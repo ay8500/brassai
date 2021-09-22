@@ -27,24 +27,24 @@ $isEveningClass=strpos(getParam("tabOpen","day"),"day")===false;
 $isTwentyfirstcentury=strpos(getParam("tabOpen","xx"),"xxi")!==false;
 if (!$isEveningClass && !$isTwentyfirstcentury) {
     Appl::setSiteSubTitle("Nappali osztályok a XX. században");
-    Appl::setSiteDesctiption(getAktSchoolName()." nappali tagozat osztályai XX. században");
-    Appl::setSiteTitle(getAktSchoolName()." nappali tagozat osztályai a XX. században");
+    Appl::setSiteDesctiption(getActSchoolName()." nappali tagozat osztályai XX. században");
+    Appl::setSiteTitle(getActSchoolName()." nappali tagozat osztályai a XX. században");
 }
 if (!$isEveningClass && $isTwentyfirstcentury) {
     Appl::setSiteSubTitle("Nappali osztályok a XXI. században");
-    Appl::setSiteDesctiption(getAktSchoolName()." nappali tagozat osztályai XXI. században");
-    Appl::setSiteTitle(getAktSchoolName()." nappali tagozat osztályai a XXI. században");
+    Appl::setSiteDesctiption(getActSchoolName()." nappali tagozat osztályai XXI. században");
+    Appl::setSiteTitle(getActSchoolName()." nappali tagozat osztályai a XXI. században");
 }
 if ($isEveningClass) {
     Appl::setSiteSubTitle("Esti tagozat osztályai");
-    Appl::setSiteDesctiption(getAktSchoolName()." esti tagozat osztályai");
-    Appl::setSiteTitle(getAktSchoolName()." esti tagozat osztályai");
+    Appl::setSiteDesctiption(getActSchoolName()." esti tagozat osztályai");
+    Appl::setSiteTitle(getActSchoolName()." esti tagozat osztályai");
 }
 
 include("homemenu.inc.php");
 /** @var array $classes */
 global $db;
-$classes = $db->getClassList(getRealId(getAktSchool()),false,$isEveningClass,$isTwentyfirstcentury,!isUserSuperuser());
+$classes = $db->getClassList(getRealId(getActSchool()),false,$isEveningClass,$isTwentyfirstcentury,!isUserSuperuser());
 $tabsCaption = array();
 $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "day", "caption" => 'század nappali tagozat',"iconText"=>"XX.", "glyphicon" => "*wb_sunny"));
@@ -76,7 +76,7 @@ include("homefooter.inc.php");
 function displayClassList($db, $classes) {
 	foreach($classes as $cclass) {
 	    if (($cclass["name"]!="Todo" || isUserSuperuser()) && $cclass["name"]!="Staf"  ) {
-            if (getAktClassId() == $cclass["id"])
+            if (getActClassId() == $cclass["id"])
                 $aktualClass = "classdiv actual_class_in_menu";
             else
                 $aktualClass = "classdiv";

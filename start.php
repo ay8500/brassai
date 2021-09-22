@@ -14,11 +14,14 @@ if ($userId>=0) {
 	$db->savePersonFacebookId($userId,$_SESSION["FacebookId"]);
 }
 
-unsetAktClass();
+unsetActClass();
 
 include_once 'displayCards.inc.php';
 
 if (isActionParam('showmore')) {
+    global $schoolList;
+    if (!isset($schoolList))
+        $schoolList = $db->getSchoolList();
     $date=showRecentChanges($db,getParam('date'));
     echo('#'.$date);
     return;
@@ -107,8 +110,8 @@ if (getParam("tabOpen")=="easter") {
 }
 Appl::setSiteTitle($title,$title);
 if (getParam("all")=="all"){
-    unsetAktSchool();
-    unsetAktClass();
+    unsetActSchool();
+    unsetActClass();
 }
 include("homemenu.inc.php");
 

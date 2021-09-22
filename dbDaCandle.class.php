@@ -20,9 +20,13 @@ class dbDaCandle
         $this->dbDAO = $dbDAO;
     }
 
-    public function getLightedCandleList($id=null, $limit=12) {
+    public function getLightedCandleList($id=null, $limit=12, $schoolId=null) {
         $sql = 'select distinct personID from candle join person on person.id=candle.personID ';
+        if (null!=$schoolId)
+            $sql .=" join class on class.id = person.classID  ";
         $sql .=" where deceasedYear is not null ";
+        if (null!=$schoolId)
+            $sql .=" and  class.schoolID =".$schoolId;
         $sql .=" and  ((candle.userId is null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-2 month"))."')";
         $sql .=" or    (candle.userId is not null and lightedDate >'".date('Y-m-d H:i:s',strtotime("-6 month"))."') )";
         if($id!=null) {

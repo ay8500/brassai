@@ -50,7 +50,7 @@ if (null!=$gdprPerson) {
 		}
 	}
 } else {
-    $gdprPerson = $db->getPersonByID(getAktUserId());
+    $gdprPerson = $db->getPersonByID(getActUserId());
 }
 include 'homemenu.inc.php';
 ?>
@@ -164,7 +164,7 @@ include 'homemenu.inc.php';
 		<b>Fontos:</b> Kérjük a megadott e-mail címre küldött levélben a linket megkattintani, a kérvényezett folyamat csak ezután lessz végrehajtva. A link csak 2 napig érvényes. Örvendünk mert tudtunk segíteni a személyes adatok védelméért.      
 	</div>
 </div>
-<input type="hidden" name="id" value="<?php echo getAktUserId()?>" />
+<input type="hidden" name="id" value="<?php echo getActUserId()?>" />
 </form>
 <?php 
 Appl::addJsScript("

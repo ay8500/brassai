@@ -11,8 +11,8 @@ use maierlabs\lpfw\Appl as Appl;
 Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
 
-unsetAktClass();
-Appl::setSiteSubTitle('Szeretettel köszöntünk a '.getAktSchoolName().' véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
+unsetActClass();
+Appl::setSiteSubTitle('Szeretettel köszöntünk a '.getActSchoolName().' véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
 
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
@@ -56,7 +56,7 @@ include("homemenu.inc.php");
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="hometable?classid=<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>">
+			<a class="inlineBox" href="hometable?classid=<?php echo $db->getStafClassIdBySchoolId(getActSchoolId())?>">
                 <?php if ($haloween) { ?>
                     <div class="inlineBox"><img img class="indeximg" src="images/haloweenfun.png" /></div>
                 <?php } else { ?>

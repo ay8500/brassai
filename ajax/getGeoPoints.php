@@ -12,11 +12,12 @@ $lat2=$_GET["lat2"];
 $lng2=$_GET["lng2"];
 
 $points = Array();
-$classId=getRealId(getAktClass());
+$classId=getRealId(getActClass());
 $where="geolat is not null and geolat <>'' ";
-
-if($classId==null) {
-	$classList=$db->getClassList(getRealId(getAktSchool()),true);
+if (getActSchoolId()==null) {
+	$where .="" ;
+} else if($classId==null) {
+	$classList=$db->getClassList(getRealId(getActSchool()),true);
 	$classIdList=array();
 	foreach ($classList as $c) {
 		array_push($classIdList,$c["id"]);
@@ -27,7 +28,7 @@ if($classId==null) {
 }
 
 
-if ( isUserLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId() || isUserViewer()) {
+if ( isUserLoggedOn() && getActClassId()==$db->getLoggedInUserClassId() || isUserViewer()) {
 	$xrandom=0;
 	$yrandom=0;
 } else {

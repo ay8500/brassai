@@ -12,12 +12,12 @@ function SendNewPassword($diak) {
 	$text='<p style="font-weight: bold;">Kedeves '.$diak["lastname"]." ".$diak["firstname"].'</p>';
 	$text.="Ezt az e-mail azért kapod mert kérdésedre megvátoztak a bejelentkezési adataid.<br />";
 	$text.="<p>";
-	$text.="Végzős osztály:".getAktClassName()."<br/>";
+	$text.="Végzős osztály:".getActSchoolClassName()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".encrypt_decrypt("decrypt",$diak["passw"])."<br/>";
 	$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak?key='.generateUserLoginKey($diak['id']).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
-	$text.='<a href='.Config::$siteUrl.'/index?classid='.getRealId(getAktClass()).'>A véndiakok diákok honlapja</a>';
+	$text.='<a href='.Config::$siteUrl.'/index?classid='.getRealId(getActClass()).'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
 	$text.="<p>Üdvözlettel a vebadminsztátor.";
 	\maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$text," jelszó kérés");
@@ -74,7 +74,7 @@ function sendMailToPerson($uid,$body,$userData,$sender) {
 		if ($userData) {
 			$body.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}
-		$body .='<p>Ezt az e-mailt <a href="'.Config::$siteUrl.'/index?classid='.getAktClassId().'">A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.</p>';
+		$body .='<p>Ezt az e-mailt <a href="'.Config::$siteUrl.'/index?classid='.getActClassId().'">A kolozsvári Brassai Sámuel líceum véndiákjai</a> honlapról kaptad.</p>';
 
         return \maierlabs\lpfw\Appl::sendHtmlMail(getFieldValue($diak["email"]),$body,"", $sender);
 }

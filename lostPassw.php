@@ -28,7 +28,7 @@ if (isActionParam('newPassword')) {
 	   Appl::setMessage('Mail cím nem helyes, vagy a mező üres.!', 'danger');
 }
 
-Appl::setSiteTitle(getAktSchoolName().' regisztrálás','Bejelentkezés, regisztrálás, új jelszó kérés');
+Appl::setSiteTitle(getActSchoolName().' regisztrálás','Bejelentkezés, regisztrálás, új jelszó kérés');
 include 'homemenu.inc.php';
 ?>
 <div class="container-fluid">
@@ -37,7 +37,7 @@ include 'homemenu.inc.php';
         <div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni (regisztrálni).</h4></div>
         <div class="panel-body">
             <div class="alert alert-info">
-                Te is a <?php echo getAktSchoolName()?> véndiákja, tanárnője vagy tanárja vagy és szeretnél volt diákokkal, osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
+                Te is a <?php echo getActSchoolName()?> véndiákja, tanárnője vagy tanárja vagy és szeretnél volt diákokkal, osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
                 <br />
                 Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.
             </div>

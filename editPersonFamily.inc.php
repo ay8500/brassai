@@ -1,7 +1,7 @@
 <?php
 include_once 'dbDaCandle.class.php';
 include_once 'dbDaFamily.class.php';
-
+global $db;
 $dbFamily = new dbDaFamily($db);
 
 /* Parents, Silbling, Life parnter, Children */

@@ -17,15 +17,16 @@ $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
 if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 
 $actClass = $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
-Appl::setMember("aktClass",$actClass);
-Appl::setMember("actSchool",$db->getSchoolById($actClass!=null?$actClass["schoolID"]:getAktSchoolId()));
-Appl::setMember( "staffClass",$db->getStafClassBySchoolId($actClass!=null?$actClass["schoolID"]:getAktSchoolId()));
+Appl::setMember("actClass",$actClass);
+Appl::setMember("actSchool",$db->getSchoolById($actClass!=null?$actClass["schoolID"]:getActSchoolId()));
+Appl::setMember( "staffClass",$db->getStafClassBySchoolId($actClass!=null?$actClass["schoolID"]:getActSchoolId()));
 
 //Login if crypted loginkey present and correct
 if (isset($_GET['key'])) {
     Appl::setMessage(directLogin($userDB,$_GET['key']),"");
 }
 handleLogInOff(new dbDaUser($db));
+$schoolList = $db->getSchoolList();
 
 //Events
 $today = new DateTime();
@@ -88,50 +89,56 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
                 <ul class="dropdown-menu">
                     <li><a href="index">Start</a></li>
                     <li><a href="start?all=all">Újdonságok</a></li>
-                    <li><a href="start?schoolid=1">Brassai Sámuel Líceum</a></li>
-                    <li><a href="start?schoolid=2">Apáczai Csere János Elméleti Líceum</a></li>
+                    <li><a href="rip?classid=all&schoolid=all">Emléküket örökké őrizzük</a></li>
+                    <?php foreach ($schoolList as $school) {
+                        $selected = $school["id"]==getActSchoolId()?"color:lightgray":""?>
+                        <li><a style="<?php echo $selected?>" href="start?schoolid=<?php echo $school["id"] ?>"><?php echo $school["name"] ?></a></li>
+                    <?php } ?>
+                    <li><a href="worldmap?classid=all&schoolid=all">Térkép</a></li>
+                    <li><a href="statistics">Statisztika</a></li>
                 </ul>
             </li>
-            <?php if (getAktSchool()!==null) {?>
+            <?php if (getActSchool()!==null) {?>
             <li class="dropdown">
 				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="classlist">Osztályok</a> </li>
                     <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
+                    <?php if (getActSchoolId()==1) { ?>
         			<li><a href="brassai">Brassai Sámuel élete</a></li>
         			<li><a href="iskola">Líceum története</a></li>
-        			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>">Iskola képek</a></li>
-        			<li><a href="picture?type=schoolID&typeid=<?php echo getAktSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
-                    <li><a href="search?type=incharge">Osztályfelelősők</a></li>
-        			<li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
+                    <li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
                     <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
+                    <?php } ?>
+        			<li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>
+        			<li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
+                    <li><a href="search?type=incharge">Osztályfelelősők</a></li>
         			<li><a href="worldmap?classid=all">Térkép</a></li>
-        			<li><a href="statistics">Statisztika</a></li>
         			<li><a href="zenetoplista?classid=all">Zenetoplista</a></li>
        			</ul>
       		</li>
             <?php } ?>
-      		<?php if ( Appl::getMemberId("aktClass")!=null && (Appl::getMember("aktClass")!=Appl::getMember("staffClass") || isUserAdmin())) {
-                $classStat = $db->getClassStatistics(Appl::getMemberId("aktClass"), false);
+      		<?php if ( Appl::getMemberId("actClass")!=null && (Appl::getMember("actClass")!=Appl::getMember("staffClass") || isUserAdmin())) {
+                $classStat = $db->getClassStatistics(Appl::getMemberId("actClass"), false);
             ?>
             <li id="classmenu" class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getClassName(Appl::getMember("aktClass"),true)); ?><b
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo(getSchoolClassName(Appl::getMember("actClass"),true)); ?><b
                             class="caret"></b></a>
                 <ul class="dropdown-menu multi-level">
-                    <li><a href="hometable?classid=<?php echo Appl::getMemberId("aktClass") ?>">Véndiákok
+                    <li><a href="hometable?classid=<?php echo Appl::getMemberId("actClass") ?>">Véndiákok
                             <?php if ($classStat->personCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->personCount ?></span><?php } ?></a></li>
                     </a></li>
-                    <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("aktClass") ?>">Vendégek barátok
+                    <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("actClass") ?>">Vendégek barátok
                             <?php if ($classStat->guestCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->guestCount ?></span><?php } ?></a></li>
-                    <li><a href="picture?type=classID&typeid=<?php echo Appl::getMemberId("aktClass") ?>">Osztályképek
+                    <li><a href="picture?type=classID&typeid=<?php echo Appl::getMemberId("actClass") ?>">Osztályképek
                             <?php if ($classStat->classPictures > 0) { ?><span
                                     class="badge"><?php echo $classStat->classPictures ?></span><?php } ?></a></li>
                     <?php //<li><a href="chat">Osztálytárs körlevelek</a></li>?>
-                    <li><a href="worldmap?classid=<?php echo Appl::getMemberId("aktClass") ?>">Térkép</a></li>
-                    <?php if (Appl::getMember("aktClass")["text"] == "1985 12A") { ?>
+                    <li><a href="worldmap?classid=<?php echo Appl::getMemberId("actClass") ?>">Térkép</a></li>
+                    <?php if (Appl::getMember("actClass")["text"] == "1985 12A") { ?>
                         <li class="dropdown-submenu"><a>Régi képek</a>
                             <ul class="dropdown-menu">
                                 <li><a href="pictureGallery?view=thumbnails&gallery=CSOPORT">Osztályképek</a></li>
@@ -181,9 +188,9 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
                             </ul>
                         </li>
                     <?php } ?>
-                    <li><a href="vote?classid=<?php echo Appl::getMemberId("aktClass") ?>">A következő Találkozó</a></li>
-                    <li><a href="zenetoplista?classid=<?php echo Appl::getMemberId("aktClass") ?>">Zenetoplista</a></li>
-                    <li><a href="editSchoolClass?classid=<?php echo Appl::getMemberId("aktClass") ?>">Tanárok infók</a></li>
+                    <li><a href="vote?classid=<?php echo Appl::getMemberId("actClass") ?>">A következő Találkozó</a></li>
+                    <li><a href="zenetoplista?classid=<?php echo Appl::getMemberId("actClass") ?>">Zenetoplista</a></li>
+                    <li><a href="editSchoolClass?classid=<?php echo Appl::getMemberId("actClass") ?>">Tanárok infók</a></li>
                 </ul>
             </li>
             <?php } ?>
@@ -305,8 +312,8 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
             </span>
         </a>
         */?>
-        <?php echo(ucfirst(getAktSchoolName())) ?> <span id="o400">egykori </span>diákjai
-        <span id="o480"> <?php echo(getAktClassName()) ?></span>
+        <?php echo(ucfirst(getActSchoolName())) ?> <span id="o400">egykori </span>diákjai
+        <span id="o480"> <?php echo(getActSchoolClassName()) ?></span>
     </h1>
 </div>
 <div class="sub_title"><?php echo Appl::$subTitle ?></div>

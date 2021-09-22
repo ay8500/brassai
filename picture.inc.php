@@ -87,7 +87,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 				$overwrite=true;
 			} else {
 				//Create folder is doesn't exists
-				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".$db->getAktClassFolder();
+				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".$db->getActClassFolder();
 				if (!file_exists($fileFolder)) {
 		 	   		mkdir($fileFolder, 0777, true);
 				}
@@ -103,9 +103,9 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 						if ($overwrite==false) {
 							$upicture = array();
 							$upicture["id"]=-1;
-                            $upicture["schoolID"] = getAktSchoolId();
+                            $upicture["schoolID"] = getActSchoolId();
 							$upicture[$type]=$typeId;
-							$upicture["file"]="images/".$db->getAktClassFolder().$pFileName;
+							$upicture["file"]="images/".$db->getActClassFolder().$pFileName;
 							$upicture["isVisibleForAll"]=1;
 							$upicture["isDeleted"]=0;
 							if (null!=getParam("album") && getParam("album")!="") {

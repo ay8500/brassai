@@ -29,7 +29,7 @@ if (isUserAdmin() || isUserEditor() || isAktUserTheLoggedInUser()) {
 		}
 	}
 }
-if ( isUserAdmin() || (isUserLoggedOn() && getAktClassId()==$db->getLoggedInUserClassId()) ) {
+if ( isUserAdmin() || (isUserLoggedOn() && getActClassId()==$db->getLoggedInUserClassId()) ) {
 	$xrandom=0;
 	$yrandom=0;
 } else {
@@ -78,7 +78,7 @@ if ( isUserAdmin() || (isUserLoggedOn() && getAktClassId()==$db->getLoggedInUser
 	</div>
 	<form name="geo">
 		<input type="hidden" value="changegeo" name="action" />
-		<input type="hidden" value="<?PHP echo(getAktUserId())?>" name="uid" />
+		<input type="hidden" value="<?PHP echo(getActUserId())?>" name="uid" />
 		<input type="hidden" value="<?PHP echo($tabOpen); ?>" name="tabOpen" />
 		Koordináták:<br />
 		<div class="input-group input-group-sl">

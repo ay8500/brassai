@@ -35,7 +35,7 @@ function showChatEnterfields($personList) {
 		if(isset($d["email"]) && strlen($d["email"])>6)
 			$personWithEmail++;
 	}
-	if ( isUserAdmin() || (false && $personWithEmail>0 && getAktClassId()==$userDB->dbDAO->getLoggedInUserClassId() )) {
+	if ( isUserAdmin() || (false && $personWithEmail>0 && getActClassId()==$userDB->dbDAO->getLoggedInUserClassId() )) {
 		?>
 		<form action="chat" method="post" id="chatform">
 			<button id="message-btn" class="btn-c btn btn-default" type="button" onclick="showMessage();"><span class="glyphicon glyphicon-envelope"></span> Körlevelet küldök az osztálynak</button>

@@ -45,7 +45,7 @@ if (!isUserLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 				//create a new class
 				$classid=$db->saveClass(array(
 						"id"=>-1,
-						"schoolID"=>getAktSchoolId(),
+						"schoolID"=>getActSchoolId(),
 						"name"=>substr($classtext, 5,3),
 						"graduationYear"=>substr($classtext, 0,4),
 						"text"=>$classtext));
@@ -97,7 +97,7 @@ if (!isUserLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
 		}
 	}
 }
-Appl::setSiteTitle(getAktSchoolName().' Bejelentkezés','Bejelentkezés regisztrálás');
+Appl::setSiteTitle(getActSchoolName().' Bejelentkezés','Bejelentkezés regisztrálás');
 Appl::addCssStyle('
 	.fb-radio{width: 25px;height: 25px;position: relative;top: -6px;}
 ');
@@ -129,7 +129,7 @@ include 'homemenu.inc.php';
 			</label>
 		</div>
 		<div id="page1">
-			<h4 class="margin-hor">Kapcsolatom a <?php  echo getAktSchoolName() ?> véndiákjaival:</h4>
+			<h4 class="margin-hor">Kapcsolatom a <?php  echo getActSchoolName() ?> véndiákjaival:</h4>
             <div class="margin-def">Légyszíves állítsd be milyen viszonyban állsz a véndiákokkal.</div>
 			<div class="margin-def">
 				<input class="left fb-radio" type="radio" name="role" onclick="setRole(true,1);"/> 
@@ -215,7 +215,7 @@ include 'homemenu.inc.php';
 		}
 		var url="ajax/getPersonsInClass";
 		if (role==4 || role==3)
-			url+="?classid="+<?php echo $db->getStafClassIdBySchoolId(getAktSchoolId())?>;
+			url+="?classid="+<?php echo $db->getStafClassIdBySchoolId(getActSchoolId())?>;
 		else
 			url+="?class="+$("#year").val()+" "+$("#class").val();
 		if (role==2 || role==3) {

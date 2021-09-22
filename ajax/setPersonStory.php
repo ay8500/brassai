@@ -30,7 +30,7 @@ if (isUserEditor() || isUserSuperuser() || isAktUserTheLoggedInUser() ) {
 	
 	if ($db->savePerson($p)>=0) {
         $row = array();
-        $row["classid"] = getAktClassId();
+        $row["classid"] = getActClassId();
         $row["person"] = $personId;
         $row["type"] = $type;
         $row["privacy"] = $privacy;

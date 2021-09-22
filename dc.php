@@ -30,7 +30,7 @@ if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
 		exit;
 	} else {
         header("HTTP/1.1 200 OK");
-		setAktUserId($diak["id"]);
+		setActUserId($diak["id"]);
 		include ("editDiak.php");
         echo($diak["lastname"]);
 		exit();
@@ -42,7 +42,7 @@ pageNotFound();
 function pageNotFound() {
 	header("status: 404"); 
 	Appl::addCss('http://fonts.googleapis.com/css?family=Satisfy');
-	unsetAktSchool();unsetAktClass();
+	unsetActSchool();unsetActClass();
 	global $db;
 	include("homemenu.inc.php");
 	?>
