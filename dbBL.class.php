@@ -334,6 +334,11 @@ function getSchoolClassName($class, $short=false) {
     return $ret;
 }
 
+function getSchoolNameById($id) {
+    global $db;
+    return ($db->getSchoolById($id))["name"];
+}
+
 /**
  * The actual class id
  * @return array|NULL

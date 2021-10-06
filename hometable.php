@@ -8,6 +8,7 @@ include_once 'displayCards.inc.php';
 include_once 'chat.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
+global $db;
 Appl::setMember("actClass",$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid")));
 Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getActSchoolId()));
 $class = Appl::getMember("actClass");

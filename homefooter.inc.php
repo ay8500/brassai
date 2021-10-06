@@ -13,9 +13,14 @@
 			<?PHP }	?>
 			<li><a href="impressum" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">Vers:<?php echo Config::$webAppVersion?></span></li>
 	      </ul>
+        <ul class="nav navbar-nav" style="float: right;margin: 10px;">
+            <li style="margin-top: -12px"><a href="https://www.jetbrains.com/phpstorm/">Built using IntelliJ PhpStorm</a></li>
+            <li><a href="https://jb.gg/OpenSource" style="height: 60px"><img style="margin-top: -34px; margin-left: -22px;" alt="JetBrains" src="images/jb_square.svg"></a></li>
+        </ul>
 	</nav>
 
 	<?php
+        global $db;
 		if (getParam('showDatabaseQuery')!=null) {
 			echo "Querys:".$db->dataBase->getCounter()->querys." Changes:".$db->dataBase->getCounter()->changes." Time:".$db->dataBase->getCounter()->time."<br/>";
 			$sql=$db->dataBase->getCounter()->sql;
@@ -43,7 +48,6 @@ if (isUserAdmin()) {
                         m += "Ország:"+data.x.country_name+"<br/>";
                         m += "Irányítószám:"+data.x.zip+"<br/>";
                         m += "Város:"+data.x.city+"<br/>";
-                        //m += "<img src=\""+data.x.location.country_flag+"\" style=\"height:35px\" /><br/>";
                         m += "ISP:"+data.isp+"<br/>";
                         m += "ORG:"+data.org+"<br/>";
                         m += "AS:"+data.as+"<br/>";
@@ -69,7 +73,7 @@ if ($xmas)
 
 <?php if (!isUserAdmin()) { ?>
 <script type="text/javascript" src="//blue-l.de/stat/track.php?mode=js"></script>
-<noscript> <img src="//blue-l.de/stat/track_noscript.php" border="0" alt="" width="1" height="1"></noscript>
+<noscript> <img src="//blue-l.de/stat/track_noscript.php"  alt="" width="1" height="1"></noscript>
 <?php } ?>
 </html>
 

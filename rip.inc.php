@@ -56,8 +56,11 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 				</div>
 			</a>
 		</div>
-		<div style="width: -webkit-fill-available; display: inline-block;max-width:310px;min-width:200px; vertical-align: top;margin-bottom:10px;">
-			<a href="<?php echo $personLink?>"><h4 style="color: #ffbb66;"><?php echo getPersonName($d);?></h4></a>
+		<div style="display: inline-block;max-width:310px;min-width:200px; vertical-align: top;margin-bottom:10px;">
+            <a href="<?php echo $personLink?>"><h4 style="color: #ffbb66;"><?php echo getPersonName($d);?></h4></a>
+            <?php if (getActSchoolId()==null) {?>
+                <div style="margin-top: -13px"><?php echo getSchoolNameById($d["schoolID"]) ?></div>
+            <?php } ?>
 			<?php if($showClass) {?>
 				<?php if ($d["isTeacher"]==1) { ?>
 					<h5>Tanár
@@ -66,12 +69,12 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 					$classText = getSchoolClassName($diakClass);
 					if (isUserGuest($d)) {
 						if ($d["classID"]!=0)
-							echo '<h5 style="color: #ffbb66;">Jó barát:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5 style="color: #ffbb66;">Jó barát:<a style="color: #ffbb66;" href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
-							echo '<h5 style="color: #ffbb66;">Vendég:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5 style="color: #ffbb66;">Vendég:<a style="color: #ffbb66;" href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 					} else {
 						if (null!=$diakClass)
-							echo '<h5 style="color: #ffbb66;">Véndiák:<a style="color: #ffbb66;"href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
+							echo '<h5 style="color: #ffbb66;">Véndiák:<a style="color: #ffbb66;" href="hometable?classid='.$d["classID"].'">'.$classText.'</a></h5>';
 						else
 							echo('<h5 style="color: #ffbb66;">Véndiák:'.-1 * $d["classID"].'</h5>'); //Graduation year for laurates that are not in the db
 					}
@@ -86,9 +89,9 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 	  		</div>
 	  		<div id="candles<?php echo $d['id']?>" style="text-align: center;" >
 	  		</div>
-	  		<button class="btn btn-warning" style="margin:10px;color:black" onclick="showPersonCandle(<?php echo $d['id']?>);" ><img style="height: 25px;border-radius: 33px;" src="images/candle1.gif"/> Meggyújtotta</button>
+	  		<button class="btn btn-warning" style="margin:10px;color:black" onclick="showPersonCandle(<?php echo $d['id']?>);" ><img style="height: 25px;border-radius: 33px;" src="images/candle1.gif"  alt="Meggyújtotta"/> Meggyújtotta</button>
             <?php if (($daysLeft=$db->checkLightning($d["id"],getLoggedInUserId()))!==false) {?>
-    	  		<button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújt</button>
+    	  		<button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Meggyújt</button>
 	      		<div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
                     Az általad meggyúhtott<br/> gyertya még <?php echo($daysLeft)?>
                     napig ég!
@@ -99,7 +102,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                     Látogass el újból és gyújts új gyertyát elhunyt tanárod vagy osztálytársad emlékére!
                 </div>
             <?php } else {?>
-                <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújt</button>
+                <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Meggyújt</button>
                 <div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
                     Meggyújtok egy gyertyát
                     <button class="btn btn-warning" style="margin:-13px;padding:3px;color:black;float: right" onclick="hideLightCandle(<?php echo $d['id']?>);">
@@ -112,11 +115,11 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                     <?php } else {?>
                         A gyertya 6 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
                         <button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>,false);hideLightCandle(<?php echo $d['id']?>);">
-                            <img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújtom nevem alatt
+                            <img style="height: 25px;border-radius: 33px;" src="images/match.jpg" alt="Meggyújt"/> Meggyújtom nevem alatt
                         </button>
                     <?php } ?>
                     <button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>,true);hideLightCandle(<?php echo $d['id']?>);">
-                        <img style="height: 25px;border-radius: 33px;" src="images/match.jpg"/> Meggyújtom mint anonim
+                        <img style="height: 25px;border-radius: 33px;" src="images/match.jpg" alt="Meggyújt"/> Meggyújtom mint anonim
                     </button>
                 </div>
             <?php }?>

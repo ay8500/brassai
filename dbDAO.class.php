@@ -458,6 +458,7 @@ class dbDAO {
 	 */
 	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false, $notDied=false) {
 		if ($classId>=0) {
+            $class = $this->getClassById($classId);
 			$where ="classID=".$classId;
 			if (!$all) {
 				if($guest)
@@ -472,6 +473,9 @@ class dbDAO {
                 $where.=" and deceasedYear is null";
             }
 			$ret = $this->dataBase->getElementList("person",false,$where);
+            foreach ($ret as $idx=>$r) {
+                $ret[$idx]["schoolID"]=$class["schoolID"];
+            }
 			usort($ret, "compareAlphabetical");
 			return $ret;
 		}
@@ -479,69 +483,28 @@ class dbDAO {
 	}
 
 
-    /**
-     * If you need to strip as many national characters from UTF-8 as possible and keep the rest of input unchanged
-     * (i.e. convert whatever can be converted to ASCII and leave the rest)
-     * @param string $s
-     * @return string
-     */
-    private function clearUTF($s)
-    {
-        setlocale(LC_ALL, 'en_US.UTF8');
-        $r = '';
-        $s1 = iconv('UTF-8', 'ASCII//TRANSLIT', $s);
-        for ($i = 0; $i < strlen($s1); $i++)
-        {
-            $ch1 = $s1[$i];
-            $ch2 = mb_substr($s, $i, 1);
-
-            if ($ch1!="'" && $ch1!='"')
-                $r .= $ch1=='?'?$ch2:$ch1;
-        }
-        return $r;
-    }
-
-    /**
-     * If you need to strip as many national characters from UTF-8 as possible and keep the rest of input unchanged
-     * (i.e. convert whatever can be converted to ASCII and leave the rest)
-     * @param string $s
-     * @return string
-     */
-    private function wildcardUTF($s)
-    {
-        setlocale(LC_ALL, 'en_US.UTF8');
-        $r = '';
-        $s1 = iconv('UTF-8', 'ASCII//TRANSLIT', $s);
-        for ($i = 0; $i < strlen($s1); $i++)
-        {
-            $ch1 = $s1[$i];
-            $ch2 = mb_substr($s, $i, 1);
-
-            if ($ch1!="'" && $ch1!='"')
-                $r .= $ch1=='?'?$ch2:$ch1;
-            else
-                $r .= '_';
-        }
-        return $r;
-    }
-
-    /**
-	 * get the person list!
+     /**
+	 * get the person list using the actual school as filter
 	 */
 	public function getPersonList($where=null,$limit=null,$ofset=null,$order=null,$field="*",$join=null) {
+        if (getActSchoolId()!=null) {
+            $where .= " and class.schoolID =".getActSchoolId();
+            $join = "class on class.id = person.classID";
+        }
+
 		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset,$order,$field,$join);
 		return $ret;
 	}
 
 	/**
-	 * get sorted person list!
+	 * get sorted person list using the actual school as filter
 	 */
 	public function getSortedPersonList($where=null,$limit=null,$ofset=null,$schoolID=null) {
         if ($schoolID!=null) {
             $where .= " and class.schoolID = " . $schoolID;
-            $ret = $this->dataBase->getElementList("person", false, $where, 200, $ofset, null, 'person.*', "class on class.id = person.classID");
+            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $ofset, null, 'person.*', "class on class.id = person.classID");
         } else {
-            $ret = $this->dataBase->getElementList("person", false, $where, 200, $ofset);
+            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $ofset);
         }
 		usort($ret, "compareAlphabeticalTeacher");
 		return $ret;
