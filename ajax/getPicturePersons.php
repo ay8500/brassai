@@ -6,11 +6,12 @@ include_once Config::$lpfw.'appl.class.php';
 include_once __DIR__ . '/../dbBL.class.php';
 include_once __DIR__ . '/../dbDaPersonInPicture.class.php';
 
+global $db;
 $dbPIP = new dbDaPersonInPicture($db);
 
 header('Content-Type: application/json');
 
-$pictureId=getParam("pictureid");
+$pictureId=getIntParam("pictureid");
 
 $ret = array();
 

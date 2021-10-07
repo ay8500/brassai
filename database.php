@@ -9,12 +9,12 @@ if (!isset($_SESSION['uRole']) || strstr($_SESSION['uRole'],"admin")=="")
 
 if (getParam("action")=="todosomething") {
 	include_once("config.class.php");
-	include_once("lpfw/logon.inc.php");
 	include_once("dbBL.class.php");
 
-	$db = new dbDAO;
+    global $db;
+	$sl = $db->getSchoolList();
 
-	echo ("This is a empty function");
+	echo ("This is a empty function, but wi have this number of schools in der database:".sizeof($sl));
 	
 	die();
 }
@@ -37,47 +37,15 @@ if (isUserAdmin()) {?>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<label id="dbDetails">Backup/Restore</label> 
-	</div>
-	<ul class="list-group">
-  		<li class="list-group-item">
-  			<div class="input-group input-group-sm">
-  	  			<span id="inputwidth" class="input-group-addon">Password</span>	
-          		<input type="text" id="dbPassword" class="form-control" />
-  	  		</div>
-  	  		<p></p>
-  			<div class="input-group input-group-sm">
-  	  			<a class="btn btn-success" href="lpfw/backup.sql" >Download</a>
-  	  			&nbsp;
-  	  			<button class="btn btn-warning" onclick="backup();" >Backup</button>
-  	  			&nbsp;
-  	  			<button class="btn btn-danger" onclick="restore();" >Restore</button>
-  	  		</div>
-  		</li>
-  		<li class="list-group-item">
-			<div class="input-group input-group-sm">
-	  			<span id="inputwidth" class="input-group-addon">Result</span>	
-	       		<span style="display: inherit;" type="text" class="form-control" id="dbResult"></span>
-	  		</div>
-	  	</li>
-	</ul>
-</div>
-
-<div class="panel panel-default">
-	<div class="panel-heading">
 		<label id="dbDetails">Picture tools</label> 
 	</div>
 	<ul class="list-group">
   		<li class="list-group-item">
   			<div class="input-group input-group-sm">
-  	  			<a class="btn btn-success" href="images/images.zip" >Download</a>
-  	  			&nbsp;
-  	  			<button class="btn btn-danger" onclick="createZipFile();" >Create ZIP File</button>
-  	  			&nbsp;&nbsp;
   	  			<button class="btn btn-warning" onclick="picturesDB();" >Database</button>
-  	  			&nbsp;&nbsp;
+
   	  			<button class="btn btn-warning" onclick="picturesFS();" >File system</button>
-  	  			&nbsp;
+
   	  			<button class="btn btn-danger" onclick="picturesDelete();" >Delete</button>
   	  		</div>
   		</li>
@@ -122,33 +90,6 @@ if (isUserAdmin()) {?>
 
 <script type="text/javascript">
 
-function backup() {
-    $('#dbResult').html('backup....');
-    $.ajax({
-		url:"../lpfw/dbbackup?password="+$('#dbPassword').val()+"&url=brassai",
-		type:"GET",
-		success:function(data){
-		    $('#dbResult').html(data);
-		},
-		error:function(error) {
-		    $('#dbResult').html("Error:"+error);
-		}
-    });
-}
-
-function restore() {
-    $('#dbResult').html('restore....');
-    $.ajax({
-		url:"../lpfw/dbrestore?password="+$('#dbPassword').val()+"&url=brassai",
-		type:"GET",
-		success:function(data){
-		    $('#dbResult').html(data);
-		},
-		error:function(error) {
-		    $('#bdResult').html("Error:"+error);
-		}
-    });
-}
 
 function picturesDB() {
     $('#pictureResult').html('searching....');
@@ -192,20 +133,6 @@ function picturesDelete() {
 			}
 	    });
     }
-}
-
-function createZipFile() {
-    $('#pictureResult').html('creating zip file....');
-    $.ajax({
-		url:"phpscript/zipPictures",
-		type:"GET",
-		success:function(data){
-		    $('#pictureResult').html(data);
-		},
-		error:function(error) {
-		    $('#pictureResult').html("Error:"+error);
-		}
-    });
 }
 
 function doSomething(action) {

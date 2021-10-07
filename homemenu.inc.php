@@ -88,7 +88,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
                 <a  href="index" class="dropdown-toggle" data-toggle="dropdown" title="Kolozsvári iskolák">Iskolák<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="index">Start</a></li>
-                    <li><a href="start?all=all">Újdonságok</a></li>
+                    <li><a href="start?all=all">Kolozsvári véndiák újdonságok</a></li>
                     <li><a href="rip?classid=all&schoolid=all">Emléküket örökké őrizzük</a></li>
                     <?php foreach ($schoolList as $school) {
                         $selected = $school["id"]==getActSchoolId()?"color:lightgray":""?>
@@ -100,20 +100,21 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
             </li>
             <?php if (getActSchool()!==null) {?>
             <li class="dropdown">
-				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánkról<b class="caret"></b></a>
+				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánk<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="classlist">Osztályok</a> </li>
                     <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
+                    <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("staffClass")?>">Barátaink</a></li>
                     <?php if (getActSchoolId()==1) { ?>
         			<li><a href="brassai">Brassai Sámuel élete</a></li>
         			<li><a href="iskola">Líceum története</a></li>
                     <li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
                     <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
                     <?php } ?>
-        			<li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>
-        			<li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
                     <li><a href="search?type=incharge">Osztályfelelősők</a></li>
+                    <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>
+                    <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
         			<li><a href="worldmap?classid=all">Térkép</a></li>
         			<li><a href="zenetoplista?classid=all">Zenetoplista</a></li>
        			</ul>

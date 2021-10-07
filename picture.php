@@ -10,9 +10,18 @@ $id=getIntParam("id",-1);
 if ($id>=0) {
 	$picture=$db->getPictureById($id);
 	if ($picture!=null) {
-		if (isset($picture["personID"])) $type="personID";
-		if (isset($picture["schoolID"])) $type="schoolID";
-		if (isset($picture["classID"]))  $type="classID";
+        if (isset($picture["schoolID"])) {
+            $type="schoolID";
+            setActSchool($picture["schoolID"]);
+        }
+        if (isset($picture["classID"])) {
+            $type="classID";
+            setActClass($picture["classID"],$picture["schoolID"]);
+        }
+		if (isset($picture["personID"])) {
+            $type="personID";
+
+        }
 		$_GET["type"]=$type;
 		$typeId=$picture[$type];
 	}
@@ -54,6 +63,7 @@ if ($type=="classID") {
 	$subtitle="Osztályképek: ".getActSchoolClassName()." ".$album;
 } elseif ($type=="personID") {
 	$person=$db->getPersonByID($typeId);
+    setActClass($person["classID"],$person["schoolID"]);
 	$subtitle=getPersonName($person)." képei";
 	$link=getPersonLinkAndPicture($person)." képei";
 } elseif ($type=="schoolID") {
@@ -64,7 +74,7 @@ if ($album=="_tablo_" || $type=='tablo') {
 } elseif ($album=="_card_" || $type=='card') {
     $subtitle="Kicsengetési kártyák";
 } elseif ($album=="_sport_" || $type=='sport') {
-    $subtitle="Oskolánk sportolói";
+    $subtitle="Iskolánk sportolói";
 }
 \maierlabs\lpfw\Appl::setSiteTitle($subtitle);
 \maierlabs\lpfw\Appl::setSiteSubTitle($type=="personID"?$link:$subtitle);

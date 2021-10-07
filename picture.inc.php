@@ -168,23 +168,24 @@ if (strpos($sort,"date")!==false)  $sortSql="uploadDate";
 if (strpos($sort,"desc")!==false)  $sortSql .=" desc";
 
 //The list of pictures
-if (isUserAdmin()) {
-    $wherePictureList='true ';
-} else {
-    $wherePictureList="isDeleted<>'1'";
+$wherePictureList=' true ';
+if (!isUserAdmin()) {
+    $wherePictureList .=" and isDeleted<>'1'";
 }
 if ($albumParam=="_tablo_") {
-    $wherePictureList .=" and tag like 'tabl%'";
+    $wherePictureList .=" and tag like 'tabl%' and schoolID =".getActSchoolId();
 } elseif ($albumParam=="_mark_") {
     $wherePictureList .= "and id in (select pictureID from personInPicture where personID=".$typeId.") ";
 } elseif ($albumParam=="_card_") {
-    $wherePictureList .= "and tag like 'kicsenget%'";
+    $wherePictureList .= "and tag like 'kicsenget%' and schoolID =".getActSchoolId();
 } elseif ($albumParam=="_sport_") {
-    $wherePictureList .= "and tag like '%sport%'";
+    $wherePictureList .= "and tag like '%sport%' and schoolID =".getActSchoolId();
 } else {
     $wherePictureList .= ' and '.$type.'='.$typeId;
-    if (getParam("type")=="schoolID")
-        $wherePictureList .=" and (tag is null or tag ='') ";
+    if ($type=="schoolID") {
+        $wherePictureList .= " and personID is null and classID is null ";
+        $wherePictureList .= " and (tag is null or tag ='') ";
+    }
     if ($albumParam!=null) {
         $wherePictureList.=" and albumName='".$albumParam."'";
     } else {

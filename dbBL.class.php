@@ -219,6 +219,7 @@ $userDB=new dbDaUser($db);
 
 /**
  * Set actual person class id
+ * if the school id is not provided the school id from class will be investigated and set
  * @param int $classId
  */
 function setActClass($classId, $schoolId=null) {

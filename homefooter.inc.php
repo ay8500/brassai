@@ -14,7 +14,7 @@
 			<li><a href="impressum" style="display: inline-block;" >Impresszum</a> <span style="display: inline-block;">Vers:<?php echo Config::$webAppVersion?></span></li>
 	      </ul>
         <ul class="nav navbar-nav" style="float: right;margin: 10px;">
-            <li style="margin-top: -12px"><a href="https://www.jetbrains.com/phpstorm/">Built using IntelliJ PhpStorm</a></li>
+            <li style="margin-top: -12px"><a href="https://www.jetbrains.com/phpstorm/">Built using PhpStorm</a></li>
             <li><a href="https://jb.gg/OpenSource" style="height: 60px"><img style="margin-top: -34px; margin-left: -22px;" alt="JetBrains" src="images/jb_square.svg"></a></li>
         </ul>
 	</nav>

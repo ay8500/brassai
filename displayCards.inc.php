@@ -24,7 +24,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	?>
 	<div class="element">
         <?php
-            displaySchool($d["schoolID"]);
+            displaySchool(isset($d["schoolID"])?$d["schoolID"]:null);
             $personClass = displayPersonNameAndGetClass($db,$person,$showClass);
         ?>
         <?php if ($person["gdpr"]==100) {?>

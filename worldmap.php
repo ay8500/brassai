@@ -2,10 +2,15 @@
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'appl.class.php';
+include_once 'dbBL.class.php';
 
-$sTitle = "A véndiakok a vílág térképén";
-$SiteDescription= "Merre szórórdtak szét az Brassai Sámuel véndiákok a nagyvilágban";
-\maierlabs\lpfw\Appl::setSiteTitle($sTitle,"Merre szóródtak szét az osztálytársak",$SiteDescription);
+$title = "A véndiakok a vílág térképén";
+$sTitle = "Merre szóródtak szét a kolozsvári diákok";
+if (getActSchoolId()!=null)
+    $sTitle = "Merre szóródtak szét iskolánk diákjai";
+if (getActClass()!=null)
+    $sTitle = "Merre szóródtak szét az osztályunk diákjai";
+\maierlabs\lpfw\Appl::setSiteTitle($sTitle,$sTitle);
 
 \maierlabs\lpfw\Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
 \maierlabs\lpfw\Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");

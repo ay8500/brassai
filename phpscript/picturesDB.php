@@ -1,4 +1,7 @@
 <?php
+/*****************************************************************************
+ * this script check if picture files from database are existing as file
+ *****************************************************************************/
 include_once __DIR__ . "/../config.class.php";
 include_once Config::$lpfw.'sessionManager.php';
 //User is logged in and have the role of admin
@@ -30,9 +33,9 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 			$okPictures++;
 		} else {
 			$errorPictures++;
+            if(isset($picture["schoolID"])) $id="School:".$picture["schoolID"]." ";
+            if(isset($picture["classID"])) $id="Class:".$picture["classID"]." ";
 			if(isset($picture["personID"])) $id="Person:".$picture["personID"]." ";
-			if(isset($picture["schoolID"])) $id="School:".$picture["schoolID"]." ";
-			if(isset($picture["classID"])) $id="Class:".$picture["classID"]." ";
 			echo($id.$file."<br/>");
 		}
 	}
