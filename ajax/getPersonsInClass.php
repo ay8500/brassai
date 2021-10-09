@@ -10,6 +10,7 @@ include_once __DIR__ . '/../dbBL.class.php';
 
 header('Content-Type: application/json');
 
+global $db;
 $class=$db->getClassByText(getParam("class"));
 if (null==$class) {
 	$class=$db->getClassById(getParam("classid"));
@@ -28,6 +29,8 @@ if ($class!=null) {
 		$n["firstname"]=$p["firstname"];
 		$n["lastname"]=$p["lastname"];
 		$n["birthname"]=$p["birthname"];
+        $n["title"]=$p["title"];
+        $n["gender"]=$p["gender"];
 		if (showField($p,"email"))
 			$n["email"]= getFieldValueNull($p,"email");
 		else

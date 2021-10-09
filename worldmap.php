@@ -6,6 +6,8 @@ include_once 'dbBL.class.php';
 
 $title = "A véndiakok a vílág térképén";
 $sTitle = "Merre szóródtak szét a kolozsvári diákok";
+global $db;
+$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 if (getActSchoolId()!=null)
     $sTitle = "Merre szóródtak szét iskolánk diákjai";
 if (getActClass()!=null)

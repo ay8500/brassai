@@ -241,6 +241,8 @@ class dbDAO {
         if (isset($person["birthyear"]) && ($person["birthyear"]=='' || intval($person["birthyear"])<1800)) {
             $person["birthyear"]=null;
         }
+        if (isset($person["schoolID"]))
+            unset($person["schoolID"]);
 	    $ret =$this->dataBase->saveEntry("person", $person);
 		return $ret;
 	}

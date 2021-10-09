@@ -9,18 +9,19 @@ include_once 'sendMail.php';
 use \maierlabs\lpfw\Appl as Appl;
 
 $mail='';$myname="";$resultText='';$rights="";
+global $db;
 
 //change the password
 if (isActionParam('newPassword')) {
 	if (isset($_GET['mail'])) $mail=$_GET['mail'];
 	if (Appl::checkEmail($mail)) {
-		$ret=resetUserPasswort($userDB,$mail, createPassword(8) );
+		$ret=resetUserPasswort((new dbDaUser($db)),$mail, createPassword(8) );
 		if ($ret>0) { 
 			SendNewPassword($db->getPersonByID($ret));
 			Appl::setMessage('Új jelszó a következő címre elküldve : '.$mail, 'success');
 		}
     	else if ($ret==-1)
-    		Appl::setMessage('Mailcímet az adatbank nem ismeri!', 'danger');
+    		Appl::setMessage('E-mail címet az oldal nem ismeri! Kérünk probálkozz úból.', 'danger');
     	else if ($ret==-3)
     		Appl::setMessage('Jelszó módosítás nem lehetséges!<br/>Naponta csak egyszer lehet új jelszót kérni.', 'danger');
 	}
@@ -37,7 +38,7 @@ include 'homemenu.inc.php';
         <div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni (regisztrálni).</h4></div>
         <div class="panel-body">
             <div class="alert alert-info">
-                Te is a <?php echo getActSchoolName()?> véndiákja, tanárnője vagy tanárja vagy és szeretnél volt diákokkal, osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
+                Te is a kolozsvári iskolák tanárnője, tanárja, véndiákja vagy és szeretnél volt diákokkal, osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
                 <br />
                 Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.
             </div>
@@ -46,7 +47,7 @@ include 'homemenu.inc.php';
     </div>
 
 	<div class="panel panel-default">
-		<div class="panel-heading"><h4>Elfelejtettem a jelszavam, szeretnék az email címemre egy újjat.</h4></div>
+		<div class="panel-heading"><h4>Elfelejtettem a jelszavam, szeretnék az e-mail címemre egy újjat.</h4></div>
   		<div class="panel-body">
 			<form method="get">
 				<input type="hidden"  name="action" value="newPassword" />
