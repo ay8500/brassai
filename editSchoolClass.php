@@ -198,7 +198,7 @@ include("homemenu.inc.php");
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
 		</button>
-		<?php if (isUserAdmin() && isset($personCount) ) :?>
+		<?php if (isUserAdmin() ) :?>
 			<span>Diákok száma:<?php echo $personCount?></span>
 			<button class="btn btn-default " <?php if($personCount>0) echo "disabled";?> onclick="deleteClass();">
 				<span class="glyphicon glyphicon-remove-circle"></span> Osztályt töröl

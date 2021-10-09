@@ -11,6 +11,7 @@ include("homemenu.inc.php");
 ?>
 <div class="well">
     <?php
+    global $db;
         $marks = $db->getPersonMarks();
         foreach ($marks as $mark) {
             if(rand(0,100)==5)

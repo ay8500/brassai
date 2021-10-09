@@ -15,6 +15,7 @@ if (isActionParam("phpunit_logon")) {
     $_SESSION['uRole']='admin';
     $_SESSION['uName']='phptest';
     $_SESSION['uId']=98989898;
+    $_SESSION['actSchool'] =1;
 
     if (getParam("session")!=null) {
         $jsonSession = json_decode(html_entity_decode(getParam("session")),true);

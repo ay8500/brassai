@@ -29,7 +29,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
 
     public function testClassList()
     {
-        $ret = $this->callTestUrl($this->url . "classlist", false);
+        $ret = $this->callTestUrl($this->url . "classlist?schoolid=1", false);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
@@ -39,7 +39,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $this->assertLessThan($divs->length,$divsa->length);
         $divsb = $finder->query("//*[contains(@class, 'classdiv-b')]");
         $this->assertLessThan($divsa->length,$divsb->length);
-        $ret = $this->callTestUrl($this->url . "classlist?tabOpen=dayxxi", false);
+        $ret = $this->callTestUrl($this->url . "classlist?tabOpen=dayxxi&schoolid=1", false);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
@@ -48,7 +48,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $divsxa = $finder->query("//*[contains(@class, 'classdiv-a')]");
         $this->assertLessThan($divxs->length,$divsxa->length);
         $divsxb = $finder->query("//*[contains(@class, 'classdiv-b')]");
-        $this->assertLessThan($divsxa->length,$divsxb->length);
+        $this->assertLessThan($divxs->length,$divsxb->length);
     }
 
     public function testUser1() {
@@ -89,6 +89,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
 
     public function testStartPage()
     {
+        $this->logoff();
         $ret = $this->callTestUrl($this->url . "start", false);
         $this->assertNotNull($ret);
         $tabs = Parser::getListItemsBetween($ret->content, 'role="tablist"', '</ul>', true);
@@ -98,7 +99,40 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $finder = new DOMXPath($dom);
         $divs = $finder->query("//*[contains(@class, 'element')]");
         $this->assertSame(48,$divs->length);
+        $divs = $finder->query("//*[contains(@class, 'schoolname')]");
+        $this->assertSame(48,$divs->length);
         $this->assertContains("function logon() {",$ret->content);
+        $this->logon();
+        $ret = $this->callTestUrl($this->url . "start", false);
+        $dom = new DOMDocument();
+        $dom->loadHTML($ret->content);
+        $finder = new DOMXPath($dom);
+        $divs = $finder->query("//*[contains(@class, 'schoolname')]");
+        $this->assertSame(0,$divs->length);
+    }
+
+    public function testSchoolPage(){
+        $this->logoff();
+        $ret = $this->callTestUrl($this->url . "school", false);
+        $this->assertEquals(200,$ret->http_code);
+        $this->assertContains("Iskola nincs kiválasztva.", $ret->content);
+        $this->logon();
+        //Display
+        $ret = $this->callTestUrl($this->url . "school", false);
+        $this->assertContains("Brassai Sámuel", $ret->content);
+        $this->assertNotNull($ret);
+        $dom = new DOMDocument();
+        $dom->loadHTML($ret->content);
+        $finder = new DOMXPath($dom);
+        $divs = $finder->query("//*[contains(@class, 'element')]");
+        //Edit
+        $ret = $this->callTestUrl($this->url . "school?action=edit", false);
+        $this->assertContains("Brassai Sámuel", $ret->content);
+        $this->assertNotNull($ret);
+        $dom = new DOMDocument();
+        $dom->loadHTML($ret->content);
+        $finder = new DOMXPath($dom);
+        $divs = $finder->query("//*[contains(@class, 'element')]");
     }
 
     /**************************[ private ]*************************************************/
@@ -108,7 +142,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
     }
 
     private function logoff() {
-        return $this->callTestUrl($this->url."ajax/authorization.php?action=phpunit_logoff",true);
+        return $this->callTestUrl($this->url."ajax/authorization.php?action=phpunit_logoff");
     }
 
 }

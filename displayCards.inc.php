@@ -322,6 +322,7 @@ function displayArticle($db,$article,$showDate=true) {
     ?>
     <div class="element">
         <div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <?php displaySchool($article["schoolID"]); ?>
             <h4><?php echo \maierlabs\lpfw\Appl::_($article["category"]) ?></h4><br/>
         </div>
 
@@ -339,62 +340,6 @@ function displayArticle($db,$article,$showDate=true) {
                 Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($article["changeDate"]);?>
             </div>
         <?php }?>
-    </div>
-<?php }
-
-/**
- * Display a lighted candle for a person
- * @param dbDAO $db the database
- * @param array $person
- * @deprecated
-*/
-function displayPersonCandle($db,$person,$date) {
-    if ($person==null) {
-        $person = $db->getPersonDummy();
-        $person["id"]=0;$person["classID"]=-1;$person["isTeacher"]=null;$person["lastname"]="anonim látogató";
-    }
-    $d=$person;
-    ?>
-    <div class="element">
-        <div style="display: inline-block; ">
-            <a href="rip<?php echo $person["id"]!=0?'?id='.$person["id"]:'' ?>" style="display:inline-block;">
-                <div>
-                    <img src="images/candle2.gif" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="diak_image_medium" />
-                    <?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
-                        <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
-                            <?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
-                        </div>
-                    <?php }?>
-                </div>
-            </a>
-        </div>
-        <div style="display: inline-block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <a href="rip<?php echo $person["id"]!=0?'?id='.$person["id"]:'' ?>"><h4><?php echo getPersonName($d);?><br/>gyertyát gyújtott</h4></a>
-            <?php if(true) {?>
-                <?php if ($d["isTeacher"]==1) { ?>
-                    <h5>Tanár</h5>
-                <?php } else {
-                    $diakClass = $db->getClassById($d["classID"]);
-                    if ($diakClass!=null) {
-                        $classText = getSchoolClassName($diakClass);
-                        if (isUserGuest($d)) {
-                            if ($d["classID"] != 0)
-                                echo '<h5>Jó barát:<a href="hometable?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
-                            else
-                                echo '<h5>Vendég:<a href="hometable?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
-                        } else {
-                            if (null != $diakClass)
-                                echo '<h5>Véndiák:<a href="hometable?classid=' . $d["classID"] . '">' . $classText . '</a></h5>';
-                            else
-                                echo('<h5>Véndiák:' . -1 * $d["classID"] . '</h5>'); //Graduation year for laurates that are not in the db
-                        }
-                    }
-                } ?>
-            <?php } ?>
-            <div class="diakCardIcons">
-                 Dátum:<?php echo date("Y.m.d H:i:s",strtotime($date));?><br/>
-             </div>
-        </div>
     </div>
 <?php }
 
@@ -500,7 +445,7 @@ function displayIcon($d,$field,$image,$title,$appl) {
 function displaySchool($id) {
     if (getActSchoolId()==null) {
         global $schoolList;
-        echo( '<div style="margin-bottom: -15px;">'. $schoolList[array_search($id,array_column($schoolList,"id"))]["name"] . "</div>");
+        echo( '<div class="schoolname" style="margin-bottom: -15px;">'. $schoolList[array_search($id,array_column($schoolList,"id"))]["name"] . "</div>");
 
     }
 }

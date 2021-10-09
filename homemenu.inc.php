@@ -103,6 +103,9 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
 				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánk<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="classlist">Osztályok</a> </li>
+                    <?php if (isUserAdmin()) { ?>
+                        <li><a href="school">Iskolánkról</a></li>
+                    <?php } ?>
                     <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("staffClass")?>">Barátaink</a></li>
