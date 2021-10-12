@@ -75,6 +75,7 @@ if (!isUserLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
                         $person["facebookid"] = getParam("fid");
                         $person["classID"] = $classid;
                         $person["gender"] = getGender($person["firstname"]);
+                        $person["gdpr"] = 100;
                         $newUserReturnValue = $db->savePerson($person);
                     } else {
                         //update a person
@@ -89,6 +90,7 @@ if (!isUserLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
                             $person["email"] = html_entity_decode(getParam("email"), ENT_QUOTES, "UTF-8");
                             $person["gender"] = html_entity_decode(getParam("gender"), ENT_QUOTES, "UTF-8");
                             $person["title"] = html_entity_decode(getParam("title"), ENT_QUOTES, "UTF-8");
+                            $person["gdpr"] = 100;
                             $person["facebookid"] = getParam("fid");
                             $newUserReturnValue = $db->savePerson($person);
                         }

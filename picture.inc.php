@@ -86,8 +86,12 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 				unlink($uploadfile);
 				$overwrite=true;
 			} else {
+                if ( getParam("type")=="schoolID")
+                    $filePath = $db->getActSchoolFolder();
+                else
+                    $filePath = $db->getActClassFolder();
+                $fileFolder=dirname($_SERVER["SCRIPT_FILENAME"]).DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR.$filePath;
 				//Create folder is doesn't exists
-				$fileFolder=dirname($_SERVER["SCRIPT_FILENAME"])."/images/".$db->getActClassFolder();
 				if (!file_exists($fileFolder)) {
 		 	   		mkdir($fileFolder, 0777, true);
 				}
@@ -105,7 +109,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="upload")) {
 							$upicture["id"]=-1;
                             $upicture["schoolID"] = getActSchoolId();
 							$upicture[$type]=$typeId;
-							$upicture["file"]="images/".$db->getActClassFolder().$pFileName;
+							$upicture["file"]="images/".$filePath.$pFileName;
 							$upicture["isVisibleForAll"]=1;
 							$upicture["isDeleted"]=0;
 							if (null!=getParam("album") && getParam("album")!="") {
@@ -567,8 +571,8 @@ function  displayPicture($db,$pictures,$idx,$albumList,$albumParam,$view) {
 //Show more button
 Appl::addJsScript("
     var picturesStart=1;
-    var countPictures=".$countPictures.";
-    var limitPictures=".$limitOfPicturesPerPage.";
+    var countPictures=".intval($countPictures).";
+    var limitPictures=".intval($limitOfPicturesPerPage).";
     var picturesButton='';
     function showmore(showNext) {
         picturesButton=$('#buttonmore').html();

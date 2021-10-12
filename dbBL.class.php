@@ -74,15 +74,34 @@ class dbBL extends dbDAO
     }
 
     /**
-     * The picture folder of the aktual persons class or school
+     * The picture folder of the actual persons class or school
+     * eg. 1_12A_2013
      */
     public function getActClassFolder()
     {
         $class = getActClass();
         if ($class != null) {
-            return $class["name"] . $class["graduationYear"];
+            if (getActSchoolId()!==1) {
+                return getActSchoolId() . "_" . $class["name"] . $class["graduationYear"];
+            } else {
+                return  $class["name"] . $class["graduationYear"];
+            }
         } else {
-            return "school" . getActSchoolId();
+            return getActSchoolFolder();
+        }
+
+    }
+
+    /**
+     * The picture folder of the actual school
+     * eg. 1_school
+     */
+    public function getActSchoolFolder()
+    {
+        if ( getActSchoolId() != null) {
+            return "school".getActSchoolId();
+        } else {
+            return "school";
         }
 
     }
@@ -293,7 +312,7 @@ function isActClassStaf() {
 
 /**
  * The actual school id
- * @return number|1
+ * @return id|null
  */
 function getActSchoolId() {
     if (isset($_SESSION['actSchool']) && null!=$_SESSION['actSchool'] && intval($_SESSION['actSchool'])>0)
