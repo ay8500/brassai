@@ -34,6 +34,13 @@ $xmas = (intval(date("m")) === 12 || intval(date("m")) === 1);
 $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
 /*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
+
+if (Appl::getMember("actSchool")==null) {
+    $schoolIcon = "images/kolozsvar.png";
+} else {
+    $schoolIcon = "images" . DIRECTORY_SEPARATOR . $db->getActSchoolFolder() . DIRECTORY_SEPARATOR . Appl::getMember("actSchool")["logo"];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +80,7 @@ $haloween = $today >= new DateTime("October 23") && $today < new DateTime("Novem
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00; <?php echo $eventStyle?>" role="navigation">
   <div class="container-fluid" id="mainmenucontainer" >
     <!-- Brand and toggle get grouped for better mobile display -->
-      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="favicon.jpg" style="height:27px" /></a>
+      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="<?php echo $schoolIcon ?>" style="border: 1px solid gray; border-radius:7px; height: 43px; margin: -5px;" /></a>
       <div class="navbar-header" style="margin-left:32px;">
           <button type="button" class="navbar-toggle" style="float: none" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>

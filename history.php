@@ -13,6 +13,7 @@ Appl::addCssStyle('
 	.history tr  {border-spacing: 2px};
 ');
 include('homemenu.inc.php');
+global $db;
 
 if (!(isUserAdmin() || isUserSuperuser())) {
     ?><div class="alert alert-danger text-center">Adat hozzáférési jog hiányzik!</div><?php
@@ -82,13 +83,20 @@ function displayHistoryElement($db,$item,$itemNext) {
 				$vote=json_decode_utf8($item["jsonData"]);
 			displayVote($db, $item, $vote,$itemNext);
 			break;
-		case "class" :
-			if ($item==null)
-				$class=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
-			else
-				$class=json_decode_utf8($item["jsonData"]);
-			displayClass($db, $item,$class,$itemNext);
-			break;
+        case "class" :
+            if ($item==null)
+                $class=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
+            else
+                $class=json_decode_utf8($item["jsonData"]);
+            displayClass($db, $item,$class,$itemNext);
+            break;
+        case "school" :
+            if ($item==null)
+                $school=$db->dataBase->getEntryById($table,$itemNext["entryID"],true);
+            else
+                $school=json_decode_utf8($item["jsonData"]);
+            displaySchool($db, $item,$school,$itemNext);
+            break;
 	}
 }
 
@@ -148,6 +156,20 @@ function displayClass($db,$item,$class,$itemNext) {
     displayElementObj($class, $classNext, "text");
 	displayElement(getPersonName($db->getPersonByID(array_get($class,"headTeacherID",null))), getPersonName($db->getPersonByID(array_get($classNext,"headTeacherID",null))));
     displayElementObj($class, $classNext, "teachers");
+}
+
+function displaySchool($db,$item,$school,$itemNext) {
+    if($itemNext!=null)
+        $schoolNext=json_decode_utf8($itemNext["jsonData"]);
+    else
+        $schoolNext=null;
+    displayChangeData($db,$school,$itemNext);
+    displayElement(hash("sha256",isset($school["text"])?$school["text"]:''), hash("sha256",isset($schoolNext["text"])?$schoolNext["text"]:''),"Description");
+    displayElementObj($school, $schoolNext, "phone","Phone");
+    displayElementObj($school, $schoolNext, "mail","Mail");
+    displayElementObj($school, $schoolNext, "homepage","WWW");
+    displayElementObj($school, $schoolNext, "addressZipCode","Zip");
+    displayElementObj($school, $schoolNext, "addressStreet","Addr");
 }
 
 function displayPicture($db,$item,$picture,$itemNext) {

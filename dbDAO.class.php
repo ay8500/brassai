@@ -148,6 +148,15 @@ class dbDAO {
 	}
 
     /**
+     * save school
+     * @param array $school
+     * @return number
+     */
+    public function saveSchool($school ) {
+        return $this->dataBase->saveEntry("school", $school);
+    }
+
+    /**
      * Get the list of classes for a schoool
      * @param int $schoolID
      * @return array
