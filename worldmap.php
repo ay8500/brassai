@@ -4,25 +4,27 @@ include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 
+use maierlabs\lpfw\Appl;
+global $db;
+
 $title = "A véndiakok a vílág térképén";
 $sTitle = "Merre szóródtak szét a kolozsvári diákok";
-global $db;
 $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 if (getActSchoolId()!=null)
     $sTitle = "Merre szóródtak szét iskolánk diákjai";
 if (getActClass()!=null)
     $sTitle = "Merre szóródtak szét az osztályunk diákjai";
-\maierlabs\lpfw\Appl::setSiteTitle($sTitle,$sTitle);
+Appl::setSiteTitle($sTitle,$sTitle);
 
-\maierlabs\lpfw\Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
-\maierlabs\lpfw\Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");
+Appl::addCss("//unpkg.com/leaflet@1.3.3/dist/leaflet.css");
+Appl::addJs("https://unpkg.com/leaflet@1.3.3/dist/leaflet.js");
 
-\maierlabs\lpfw\Appl::addCss("css/Control.OSMGeocoder.css");
-\maierlabs\lpfw\Appl::addJs("js/Control.OSMGeocoder.js");
+Appl::addCss("css/Control.OSMGeocoder.css");
+Appl::addJs("js/Control.OSMGeocoder.js");
 
 
-\maierlabs\lpfw\Appl::addJs("js/diakMapLeaflet.js");
-\maierlabs\lpfw\Appl::addCssStyle('
+Appl::addJs("js/diakMapLeaflet.js");
+Appl::addCssStyle('
 #zoom>a>span>img{
     height:30px;
     border-radius:3px;

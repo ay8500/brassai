@@ -39,7 +39,8 @@ include_once 'dbBL.class.php';
 		});
 	});
 ");
-
+    global  $db;
+    global $personid;
 	$person=$db->getPersonByID($personid);
 	
 	$tab=getParam("tabOpen", "cv");
