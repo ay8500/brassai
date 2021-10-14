@@ -18,7 +18,7 @@ global $db;
 if (!(isUserAdmin() || isUserSuperuser())) {
     ?><div class="alert alert-danger text-center">Adat hozzáférési jog hiányzik!</div><?php
     include 'homefooter.inc.php';
-    return;
+    die();
 } else {
 
     if (isActionParam("delete")) {
@@ -267,7 +267,6 @@ function displayElement($text,$nextText="",$title=null,$field="") {
 		echo('<td title="'.$field.':'.$text.'"'.$style.'>'.$title.'</td>');
 	}
 }
-
 
 function displayElementObj($text,$nextText,$field,$title=null) {
 	if (!isset($nextText[$field]))
