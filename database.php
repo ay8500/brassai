@@ -12,10 +12,35 @@ if (getParam("action")=="todosomething") {
 	include_once("dbBL.class.php");
 
     global $db;
-	$sl = $db->getSchoolList();
+	$sl = $db->dataBase->queryArray("SELECT id,children FROM db652851844.person where isTeacher = 1 and children <>''");
 
-	echo ("This is a empty function, but wi have this number of schools in der database:".sizeof($sl));
-	
+	echo ("This is a function to do something,  database:".sizeof($sl));
+    $classCount=0;$classFound=0;$personFound=0;
+    unsetActSchool();
+    foreach ( $sl as $teacher) {
+        $classList = explode(",",$teacher["children"]);
+        foreach ( $classList as $class) {
+            $class = str_replace(".","",$class);
+            $class = str_replace("XIII","13",$class);
+            $class = str_replace("XII","12",$class);
+            $classCount++;
+            $classObj = $db->getClassByText($class);
+            if ($classObj!=null) {
+                $classFound++;
+                if ($classObj["headTeacherID"] == $teacher["id"]) {
+                    $personFound++;
+                } else {
+                    echo("<br/>Set:" . $class.'-'.$classObj["id"].' -> '.$teacher["id"]."-".getPersonName($db->getPersonByID($teacher["id"])));
+                }
+            } else {
+                echo("<br/>Not Found:" . $class. '-'.$classObj["id"].' -> '.$teacher["id"]."-".getPersonName($db->getPersonByID($teacher["id"])));
+            }
+        }
+    }
+    echo ("<br/>PersonFound:".$personFound);
+    echo ("<br/>ClassFound:".$classFound);
+    echo ("<br/>Classcount:".$classCount);
+
 	die();
 }
 

@@ -94,7 +94,7 @@ if (isset($diak["deceasedYear"])){
     array_push($dataFieldCaption,"Temető","Sírhely");
     array_push($dataItemProp,"","");
     array_push($dataCheckFieldVisible,false,false);
-    array_push($dataFieldObl,"Temető neve, helyiség nélkül","");
+    array_push($dataFieldObl,"Temető neve, helység nélkül","");
     $offset=2;
 }
 if(true)  { //Address
@@ -130,8 +130,6 @@ if ( isActClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { 
     $dataFieldCaption[19+$offset] = "Mettől meddig";
     $dataFieldObl[20+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
     $dataFieldCaption[20+$offset] = "Tantárgy";
-    $dataFieldCaption[21+$offset] = "Osztályfönök";
-    $dataFieldObl[21+$offset] = "Év és osztály például: 1985 12A. Több osztály esetén vesszővel elválasztva. Például: 1985 12A,1989 12C";
 }
 
 //save changes

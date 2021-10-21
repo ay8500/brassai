@@ -16,7 +16,6 @@ db_pictures($db->host,$db->user,$db->password,$db->database) ;
 
 
 
-// ab hier nichts mehr ändern
 function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 {
 	echo("Result of pictures checking source filesystem<br/>");

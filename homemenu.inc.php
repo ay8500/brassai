@@ -35,10 +35,10 @@ $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
 /*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
-if (Appl::getMember("actSchool")==null) {
-    $schoolIcon = "images/kolozsvar.png";
+if (getActSchoolId()==null) {
+    $menuSchoolLogo = "images/kolozsvar.png";
 } else {
-    $schoolIcon = "images" . DIRECTORY_SEPARATOR . $db->getActSchoolFolder() . DIRECTORY_SEPARATOR . Appl::getMember("actSchool")["logo"];
+    $menuSchoolLogo = "images" . DIRECTORY_SEPARATOR . $db->getActSchoolFolder() . DIRECTORY_SEPARATOR . Appl::getMember("actSchool")["logo"];
 }
 
 ?>
@@ -80,7 +80,7 @@ if (Appl::getMember("actSchool")==null) {
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00; <?php echo $eventStyle?>" role="navigation">
   <div class="container-fluid" id="mainmenucontainer" >
     <!-- Brand and toggle get grouped for better mobile display -->
-      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="<?php echo $schoolIcon ?>" style="border: 1px solid gray; border-radius:7px; height: 43px; margin: -5px;" /></a>
+      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="<?php echo $menuSchoolLogo ?>" style="border: 1px solid gray; border-radius:7px; height: 43px; margin: -5px;" /></a>
       <div class="navbar-header" style="margin-left:32px;">
           <button type="button" class="navbar-toggle" style="float: none" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
@@ -97,10 +97,10 @@ if (Appl::getMember("actSchool")==null) {
                     <li><a href="index">Start</a></li>
                     <li><a href="start?all=all">Kolozsvári véndiák újdonságok</a></li>
                     <li><a href="rip?classid=all&schoolid=all">Emléküket örökké őrizzük</a></li>
-                    <?php foreach ($schoolList as $school) {
-                        $selected = $school["id"]==getActSchoolId()?"color:lightgray":""?>
-                        <li><a style="<?php echo $selected?>" href="start?schoolid=<?php echo $school["id"] ?>"><?php echo $school["name"] ?></a></li>
-                    <?php } ?>
+                    <?php foreach ($schoolList as $menuSchool) {
+                        $selected = $menuSchool["id"]==getActSchoolId()?"color:lightgray":""?>
+                        <li><a style="<?php echo $selected?>" href="start?schoolid=<?php echo $menuSchool["id"] ?>"><?php echo $menuSchool["name"] ?></a></li>
+                    <?php  }?>
                     <li><a href="worldmap?classid=all&schoolid=all">Térkép</a></li>
                     <li><a href="statistics">Statisztika</a></li>
                 </ul>
@@ -115,10 +115,8 @@ if (Appl::getMember("actSchool")==null) {
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("staffClass")?>">Barátaink</a></li>
                     <?php if (getActSchoolId()==1) { ?>
-        			<li><a href="brassai">Brassai Sámuel élete</a></li>
-        			<li><a href="iskola">Líceum története</a></li>
-                    <li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
-                    <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
+                        <li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
+                        <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
                     <?php } ?>
                     <li><a href="search?type=incharge">Osztályfelelősők</a></li>
                     <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>

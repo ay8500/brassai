@@ -100,7 +100,8 @@ class dbDAO {
     public function getClassByText($text) {
 		$sql="select * from class where text='".trim($text)."'";
 		$sql .=" and changeForID is null";
-		$sql .=" and schoolId =".getActSchoolId();
+        if (getActSchoolId()!=null)
+		    $sql .=" and schoolId =".getActSchoolId();
 		$this->dataBase->query($sql);
 		if ($this->dataBase->count()==1) {
 			$entry = $this->dataBase->fetchRow();

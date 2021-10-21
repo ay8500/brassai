@@ -3,15 +3,17 @@
     global $db;global $diak;
     displayPerson($db,$diak,false,false);
     $schoolList = $db->getSchoolList();
+    global $anonymousEditor, $edit, $createNewPerson, $personid, $tabOpen, $classId, $person, $action;
+    global $dataFieldNames, $dataFieldObl, $dataFieldCaption, $dataItemProp, $dataCheckFieldVisible;
     //Person picture?>
     <?php if(isUserLoggedOn() || $anonymousEditor) {?>
         <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
             <div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
-                <img src="<?php echo getPersonPicture($diak)?>" border="0" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
+                <img src="<?php echo getPersonPicture($diak)?>" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
                 <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
-                    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                    <div style="background-color: black;color: white;height:20px;text-align: center;border-radius: 0 0 10px 10px;position: relative;top: -8px;">
                 <?php } else {?>
-                    <div style="background-color: white;color: black;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
+                    <div style="background-color: white;color: black;height:20px;text-align: center;border-radius: 0 0 10px 10px;position: relative;top: -8px;">
                 <?php }?>
                 <?php if (isset($diak["birthyear"])) {?>
                     <?php echo "* ".intval($diak["birthyear"]).'&nbsp;&nbsp;'; ?>

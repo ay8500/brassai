@@ -50,16 +50,16 @@ function db_pictures($dbhost, $dbuser, $dbpwd, $dbname)
 function checkFilesInPackage($conn,$packageArray,$statistic) {
 	$statistic->package=$statistic->package+1;
 	$statistic->allPictures=$statistic->allPictures+sizeof($packageArray);
-	
+    $toCheckFilesArray=array();
+
 	//check references to the pictures in the database table "picture"
-	$toCheckFilesArray=array();
 	$whereIn="";
 	foreach($packageArray as $id=>$file) {
 		if ($id>0)
 			$whereIn.=",";
 		$fn=str_replace('\\','/',substr($file,strlen(dirname(__DIR__))+1));
 		$whereIn.="'".$fn."'";
-		$toCheckFilesArray[sizeof($toCheckFilesArray)]=$fn;
+		$toCheckFilesArray[]=$fn;
 	}
 	$sql="SELECT file FROM picture where file in (".$whereIn.")";
 	$pictures = mysqli_query($conn,$sql);
@@ -70,23 +70,39 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
             $statistic->okPictures=$statistic->okPictures+1;
         }
     }
-	
+
+    //check references to the pictures in the database table "school"
+    $whereIn="'dummyComma'";
+    foreach($toCheckFilesArray as $id=>$file) {
+        $whereIn.=",'".basename($file)."'";
+    }
+    $sql="SELECT id, logo FROM school where logo in (".$whereIn.")";
+    $pictures = mysqli_query($conn,$sql);
+    while ($picture = mysqli_fetch_array($pictures))
+    {
+        $file = "images/school".$picture["id"]."/".$picture["logo"];
+        if (($key = array_search($file, $toCheckFilesArray)) !== false) {
+            unset($toCheckFilesArray[$key]);
+            $statistic->okPictures=$statistic->okPictures+1;
+        }
+    }
+
 	//check references to the pictures in pictures in the database table "person"
 	$whereIn="'dummyComma'";
 	foreach($toCheckFilesArray as $id=>$file) {
         $file = substr($file,strlen("/images"));
-		$toCheckFilesArray[$id]=$file;
 		$whereIn.=",'".str_replace("_o.",".",$file)."'";
 	}
 	$sql="SELECT picture FROM person where picture in (".$whereIn.")";
 	$pictures = mysqli_query($conn,$sql);
 	while ($picture = mysqli_fetch_array($pictures))
 	{
-		if (($key = array_search($picture["picture"], $toCheckFilesArray)) !== false) {
+        $file = "images/".$picture["picture"];
+		if (($key = array_search($file, $toCheckFilesArray)) !== false) {
 			unset($toCheckFilesArray[$key]);
 			$statistic->okPictures=$statistic->okPictures+1;
 		}
-        $originalFile = str_replace(".", "_o.", $picture["picture"]);
+        $originalFile = str_replace(".", "_o.", $file);
         if (($key = array_search($originalFile, $toCheckFilesArray)) !== false) {
             unset($toCheckFilesArray[$key]);
             $statistic->original=$statistic->original+1;
@@ -96,11 +112,11 @@ function checkFilesInPackage($conn,$packageArray,$statistic) {
 	
 	//The list of not referenced pictures
 	foreach ($toCheckFilesArray as $notFound) {
-		if (strpos($notFound,"images")===false)
-			$notFoundImg = "images/".$notFound;
-		else
+		if (strpos($notFound,"images")!==false)
 			$notFoundImg = $notFound;
-		echo('Not in the DB:'.$notFound.' <a href="'.$notFound.'" target="not_found"><img style="height:50px" src="'.$notFoundImg.'"/></a>');
+		else
+			$notFoundImg = "images/".$notFound;
+		echo('Not in the DB:'.$notFound.' <a href="'.$notFoundImg.'" target="not_found"><img style="height:50px" src="'.$notFoundImg.'"/></a>');
         echo(date ("Y.m.d H:i:s.",filemtime(dirname(__DIR__) . "/images/" .$notFound)));
 		$fa= explode("-",basename($notFound),2);
 		if (sizeof($fa)==2 && substr($fa[0],0,1)=="d") {

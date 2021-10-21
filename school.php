@@ -192,10 +192,12 @@ include("homemenu.inc.php");
 
 
         <div class="row" style="margin: 20px;">
+            <?php if (isUserAdmin()) { ?>
             <form action="school">
                 <input type="hidden" name="schoolid" value="<?php echo $school["id"] ?>" />
                 <button name="action" value="edit" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> módosítom / kiegészítem</button>
             </form>
+            <?php } ?>
             Utoljára módosította: <?php echo getPersonLinkAndPicture($db->getPersonByID($school["changeUserID"])) ?>
             <?php echo Appl::dateTimeAsStr($school["changeDate"]) ?>
         </div>
