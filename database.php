@@ -12,7 +12,7 @@ if (getParam("action")=="todosomething") {
 	include_once("dbBL.class.php");
 
     global $db;
-	$sl = $db->dataBase->queryArray("SELECT id,children FROM db652851844.person where isTeacher = 1 and children <>''");
+	$sl = $db->dataBase->queryArray("SELECT id,children FROM person where schoolIdsAsTeacher is not null and children <>''");
 
 	echo ("This is a function to do something,  database:".sizeof($sl));
     $classCount=0;$classFound=0;$personFound=0;

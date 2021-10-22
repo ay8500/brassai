@@ -19,7 +19,7 @@ $person = Array();
 
 $person["name"]=(isset($p["title"])?$p["title"]." ":"").$p["lastname"]." ".$p["firstname"];
 $person["id"]=$p["id"];
-$person["isTeacher"]=$p["isTeacher"];
+$person["isPersonTeacher"]=$p["schoolIdsAsTeacher"]!=NULL;
 if (isset($p["deceasedYear"]))
 	$person["deceasedYear"]=$p["deceasedYear"];
 $person["classID"]=$p["classID"];

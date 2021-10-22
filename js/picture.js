@@ -421,7 +421,7 @@ function searchPerson(pictureid,x,y) {
         success:function(data){
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
-                    if (row.isTeacher==="0") {
+                    if (row.schoolIdsAsTeacher===NULL) {
                         var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
                     } else {
                         if (row.gender=="f") {

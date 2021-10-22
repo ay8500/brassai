@@ -198,15 +198,15 @@ include("homemenu.inc.php");
 		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
 		</button>
+        <?php $stat=$db->getClassStatistics($classid);?>
 		<?php if (isUserAdmin() ) :?>
-			<span>Diákok száma:<?php echo $personCount?></span>
-			<button class="btn btn-default " <?php if($personCount>0) echo "disabled";?> onclick="deleteClass();">
+			<span>Diákok száma:<?php echo $stat->personCount?></span>
+			<button class="btn btn-default " <?php if($stat->personCount>0) echo "disabled";?> onclick="deleteClass();">
 				<span class="glyphicon glyphicon-remove-circle"></span> Osztályt töröl
 			</button>
 		<?php  endif;?>
 	</div>
 
-	<?php $stat=$db->getClassStatistics($classid);?>
 	<div class="well " style="margin-bottom: 25px;">
 		<h4>Statisztikai adatok</h4>
 		<div class="form">	      		

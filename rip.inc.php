@@ -62,7 +62,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                 <div style="margin-top: -13px"><?php echo getSchoolNameById($d["schoolID"]) ?></div>
             <?php } ?>
 			<?php if($showClass) {?>
-				<?php if ($d["isTeacher"]==1) { ?>
+				<?php if ($d["schoolIdsAsTeacher"]!=NULL) { ?>
 					<h5>Tanár
 					<?php if (isset($d["function"])) { echo $d["function"]; }?></h5>
 				<?php } else {

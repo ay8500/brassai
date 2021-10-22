@@ -48,7 +48,7 @@ if ( $createNewPerson ) {
 	$diak = $db->getPersonDummy();
 	$diak["id"] = -1;
 	$diak["classID"] = getActClassId();
-    ($action=="newteacher" || $action=="savenewteacher" )? $diak["isTeacher"]=1	:	$diak["isTeacher"]=0;
+    ($action=="newteacher" || $action=="savenewteacher" )? $db->addActSchoolTeacher($diak)	:	$diak["schoolIdsAsTeacher"]=NULL;
     ($action=="newguest"   || $action=="savenewguest" )? $diak["role"]="guest"	:	$diak["role"]="";
 	$personid=-1;
 }
@@ -330,7 +330,7 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 // Title an subtitle of the page schoolmate or guests
 $guests = isUserGuest($diak);
 if (isActClassStaf()) {
-    if (intval($diak["isTeacher"])==1)
+    if (intval($diak["schoolIdsAsTeacher"])!=NULL)
         Appl::setSiteSubTitle("Tanári kar");
     else
         Appl::setSiteSubTitle(" Barátaink");
@@ -387,7 +387,7 @@ array_push($tabsCaption ,array("id" => "family", "caption" => "Családtagok", "g
 
 array_push($tabsCaption ,array("id" => "cv", "caption" => "Életrajz", "glyphicon" => "*description"));
 array_push($tabsCaption ,array("id" => "hobbys", "caption" => "Szabadidőmben", "glyphicon" => "*access_time"));
-if ($diak["isTeacher"]==0) {
+if ($diak["schoolIdsAsTeacher"]==NULL) {
     array_push($tabsCaption ,array("id" => "school", "caption" => "Diákkoromból", "glyphicon" => "*folder_shared"));
 } else {
     array_push($tabsCaption ,array("id" => "classes", "caption" => "Tanítványok", "glyphicon" => "*folder_shared"));

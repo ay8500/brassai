@@ -139,7 +139,7 @@ function displayPerson($db,$item,$person,$itemNext) {
 	displayElementObj($person, $personNext,"user","U");
 	displayElementObj($person, $personNext,"passw","P");
 	displayElementObj($person, $personNext,"classID","C");
-	displayElementObj($person, $personNext,"isTeacher","T");
+	displayElementObj($person, $personNext,"schoolIdsAsTeacher","T");
     displayElementObj($person, $personNext,"role","R");
 }
 

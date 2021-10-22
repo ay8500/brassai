@@ -217,7 +217,14 @@ class dbBL extends dbDAO
         return array("type"=>$type,"typeId"=>$typeid,"text"=>$typeText);
     }
 
-
+    /**
+     * Add to the list of school id for a teacher the actual school id
+     * @param $person
+     */
+    public function addActSchoolTeacher(&$person) {
+        if (strpos($person["schoolIdsAsTeacher"],"(".getActSchoolId().")")===false)
+            $person["schoolIdsAsTeacher"] .= "(".getActSchoolId().")";
+    }
 }
 
 
@@ -397,9 +404,12 @@ function isUserEditor() {
     if (isset($_SESSION['uRole']) && getActClassId()==$db->getLoggedInUserClassId()) {
         return strstr($_SESSION['uRole'],"editor")!="";
     } else {
+        return false;
+        //TODO user is the head teacher in the class
+        /*
         $p=$db->getPersonByID(getLoggedInUserId());
         //User is teacher and editor then return editor right for all classes where the teacher is head teacher
-        if ($p["isTeacher"]==1) {
+        if ($p["isTodoTeacher"]==1) {
             if (strstr($_SESSION['uRole'],"editor")!="") {
                 if (isset($p["children"])) {
                     $c=explode(",", $p["children"]);
@@ -421,6 +431,7 @@ function isUserEditor() {
         } else {
             return false;
         }
+        */
     }
 }
 
@@ -489,7 +500,7 @@ function compareAlphabetical($a,$b) {
  * @return int
  */
 function compareAlphabeticalTeacher($a,$b) {
-    $c = strcmp($a["isTeacher"]?'0':'1',$b["isTeacher"]?'0':'1');
+    $c = strcmp($a["schoolIdsAsTeacher"]==NULL?'0':'1',$b["schoolIdsAsTeacher"]==NULL?'0':'1');
     if ($c!=0) {
         return $c;
     }

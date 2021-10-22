@@ -53,7 +53,7 @@ function addWrapperDiv(id) {
         html +='<div style="display: inline-block;max-width:50%;vertical-align: top;margin-bottom:10px;">';
         html +='<h4>'+d.name+'</h4>';
         html +='<div class="fields">'; 
-        if (d.isTeacher=="1") {
+        if (d.schoolIdsAsTeacher) {
             if (d['function']!=null) {
         	html +='<div><div>Tanár:</div><div>'+d['function']+'</div></div>';
             }

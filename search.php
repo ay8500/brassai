@@ -43,75 +43,75 @@ if (null==getParam("type")) {
     if (isUserAdmin() || isUserEditor() || isUserSuperuser()) {
         switch (getParam("type")) {
             case "teacher": {
-                $personList=$db->getPersonList("isTeacher='1'",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1'");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null");
                 $caption ="Tanárok:".$personCount;
                 break;
             }
             case "teacherdeceased": {
-                $personList=$db->getPersonList("isTeacher='1' and deceasedYear is not null",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1' and (email is not null and email <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and deceasedYear is not null",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and (email is not null and email <>'')");
                 $caption ="Elhunyt tanárok:".$personCount;
                 break;
             }
             case "teacherwithpicture": {
-                $personList=$db->getPersonList("isTeacher='1' and (picture is not null and picture <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1' and (picture is not null and picture <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and (picture is not null and picture <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and (picture is not null and picture <>'')");
                 $caption ="Tanárok képpel:".$personCount;
                 break;
             }
             case "teacherwithemail": {
-                $personList=$db->getPersonList("isTeacher='1' and (email is not null and email <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1' and (email is not null and email <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and (email is not null and email <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and (email is not null and email <>'')");
                 $caption ="Tanárok email címmel:".$personCount;
                 break;
             }
             case "teacherwithfacebook": {
-                $personList=$db->getPersonList("isTeacher='1' and (facebook is not null and facebook <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1' and (facebook is not null and facebook <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and (facebook is not null and facebook <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and (facebook is not null and facebook <>'')");
                 $caption ="Tanárok facebookal:".$personCount;
                 break;
             }
             case "teacherwithwikipedia": {
-                $personList=$db->getPersonList("isTeacher='1' and homepage like '%wikipedia%'",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1' and homepage like '%wikipedia%'");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and homepage like '%wikipedia%'",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and homepage like '%wikipedia%'");
                 $caption ="Tanárok wikipédia oldallal:".$personCount;
                 break;
             }
 
             case "classmate": {
-                $personList=$db->getPersonList("isTeacher='0'",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='0'");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null");
                 $caption ="Diákok:".$personCount;
                 break;
             }
             case "classmatedeceased": {
-                $personList=$db->getPersonList("isTeacher='0' and deceasedYear is not null",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='1' and (email is not null and email <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null and deceasedYear is not null",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null' and (email is not null and email <>'')");
                 $caption ="Elhunyt diákok:".$personCount;
                 break;
             }
             case "classmatewithpicture": {
-                $personList=$db->getPersonList("isTeacher='0' and (picture is not null and picture <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='0' and (picture is not null and picture <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null and (picture is not null and picture <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null and (picture is not null and picture <>'')");
                 $caption ="Diákok képpel:".$personCount;
                 break;
             }
             case "classmatewithemail": {
-                $personList=$db->getPersonList("isTeacher='0' and (email is not null and email <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='0' and (email is not null and email <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null and (email is not null and email <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null and (email is not null and email <>'')");
                 $caption ="Diákok email címmel:".$personCount;
                 break;
             }
             case "classmatewithfacebook": {
-                $personList=$db->getPersonList("isTeacher='0' and (facebook is not null and facebook <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='0' and (facebook is not null and facebook <>'')");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null and (facebook is not null and facebook <>'')",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null and (facebook is not null and facebook <>'')");
                 $caption ="Diákok facebookal:".$personCount;
                 break;
             }
             case "classmatewithwikipedia": {
-                $personList=$db->getPersonList("isTeacher='0' and homepage like '%wikipedia%'",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","isTeacher='0' and homepage like '%wikipedia%'");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null and homepage like '%wikipedia%'",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null and homepage like '%wikipedia%'");
                 $caption ="Diákok wikipédia oldallal:".$personCount;
                 break;
             }

@@ -50,7 +50,7 @@ if (isUserAdmin()) {
 	if ($tabOpen=="person") {
 		$dummyPerson=$db->getPersonDummy();
         $dummyPerson["id"]="";$dummyPerson["picture"]="";
-		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["isTeacher"]="";
+		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["schoolIdsAsTeacher"]=NULL;
 		$dummyPerson["address"]="";$dummyPerson["zipcode"]="";$dummyPerson["place"]="";
 		$dummyPerson["phone"]="";$dummyPerson["mobil"]="";$dummyPerson["email"]="";
 		$dummyPerson["homepage"]="";$dummyPerson["skype"]="";$dummyPerson["education"]="";

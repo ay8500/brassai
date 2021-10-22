@@ -12,20 +12,20 @@ global $db;
 
 $dbStatistic = new dbDaStatistic($db);
 
-$classmate=$db->getTableCount("person","isTeacher='0'");
-$classmateDeceased=$db->getTableCount("person","isTeacher='0' and deceasedYear is not null");
-$classmatePicture=$db->getTableCount("person","isTeacher='0' and (picture is not null and picture <>'')");
-$classmateEmail=$db->getTableCount("person","isTeacher='0' and (email is not null and email<>'')");
-$classmateFacebook=$db->getTableCount("person","isTeacher='0' and (facebook is not null and facebook<>'')");
-$classmateWikipedia=$db->getTableCount("person","isTeacher='0' and homepage like '%wikipedia%'");
+$classmate=$db->getTableCount("person","schoolIdsAsTeacher is null");
+$classmateDeceased=$db->getTableCount("person","schoolIdsAsTeacher is null and deceasedYear is not null");
+$classmatePicture=$db->getTableCount("person","schoolIdsAsTeacher is null and (picture is not null and picture <>'')");
+$classmateEmail=$db->getTableCount("person","schoolIdsAsTeacher is null and (email is not null and email<>'')");
+$classmateFacebook=$db->getTableCount("person","schoolIdsAsTeacher is null and (facebook is not null and facebook<>'')");
+$classmateWikipedia=$db->getTableCount("person","schoolIdsAsTeacher is null and homepage like '%wikipedia%'");
 $classmatePictures=$db->getTableCount("picture","personID is not null");
 
-$teacher=$db->getTableCount("person","isTeacher='1'");
-$teacherDeceased=$db->getTableCount("person","isTeacher='1' and deceasedYear is not null");
-$teacherPicture=$db->getTableCount("person","isTeacher='1' and (picture is not null and picture <>'')");;
-$teacherEmail=$db->getTableCount("person","isTeacher='1' and (email is not null and email<>'')");
-$teacherFacebook=$db->getTableCount("person","isTeacher='1' and (facebook is not null and facebook<>'')");
-$teacherWikipedia=$db->getTableCount("person","isTeacher='1' and homepage like '%wikipedia%'");
+$teacher=$db->getTableCount("person","schoolIdsAsTeacher is not null");
+$teacherDeceased=$db->getTableCount("person","schoolIdsAsTeacher is not null and deceasedYear is not null");
+$teacherPicture=$db->getTableCount("person","schoolIdsAsTeacher is not null and (picture is not null and picture <>'')");;
+$teacherEmail=$db->getTableCount("person","schoolIdsAsTeacher is not null and (email is not null and email<>'')");
+$teacherFacebook=$db->getTableCount("person","schoolIdsAsTeacher is not null and (facebook is not null and facebook<>'')");
+$teacherWikipedia=$db->getTableCount("person","schoolIdsAsTeacher is not null and homepage like '%wikipedia%'");
 
 $classCount=$db->getTableCount("class");
 $classGraduationPicture=$db->getTableCount("picture","classID is not null AND tag like '%Tabló%'","classID");

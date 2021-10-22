@@ -23,9 +23,9 @@ Appl::setMember("firstPicture",$picture);
 
 //Type of canlde list new, teacher, people
 if (isActionParam("teacher"))
-	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher=1",200,null,getActSchoolId());
+	$personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher  is not null",200,null,getActSchoolId());
 else if (isActionParam("person"))
-	$personList = $db->getSortedPersonList("deceasedYear is not null and isTeacher<>1",200,null,getActSchoolId());
+	$personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher is null",200,null,getActSchoolId());
 else {
 	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),24, getActSchoolId());
 }

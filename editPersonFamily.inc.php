@@ -167,7 +167,7 @@ Appl::addJsScript('
     		    data.forEach(function(e){
     		        var l = $(\'<li class="form-control" style="display:inline-table"/>\')
     		        var c ="";
-    		        if (e.isTeacher=="1")
+    		        if (e.schoolIdsAsTeacher!==NULL)
     		            c="Tanár "
     		        else
     		            c=e.scoolYear+" "+e.scoolClass+" ";

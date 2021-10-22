@@ -40,7 +40,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             <?php if (strstr($d["role"],"jmlaureat")!==false)
                 echo('<div><a href="search?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
             <div class="fields"><?php
-				if ($d["isTeacher"]==0) {
+				if ($d["schoolIdsAsTeacher"]===NULL) {
 					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".getFieldValue($d,"partner")."</div></div>";
 					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d,"education")."</div></div>";
 					if(showField($d,"employer")) 	{
@@ -53,7 +53,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					    echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
                     if (isset($d["employer"]) && $d["employer"]!="")
                         echo "<div><div>Mettől meddig:</div><div>".getFieldValue($d["employer"])."&nbsp;</div></div>";
-					if (showField($d,"children")) {
+/*					if (showField($d,"children")) {
 						echo "<div><div>Osztályfőnök:</div><div>";
 						$c = explode(",", getFieldValue($d["children"]));
 						foreach ($c as $idx=>$cc) {
@@ -67,6 +67,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 						}
 						echo "</div></div>";
 					}
+*/
 				}
 				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
@@ -126,7 +127,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             }
         }
         */
-        displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["isTeacher"]) && $d["isTeacher"]==='1'),isset($d["deceasedYear"]));
+        displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["schoolIdsAsTeacher"]) && $d["schoolIdsAsTeacher"]!=NULL),isset($d["deceasedYear"]));
     ?>
 	</div>
 <?php
@@ -358,13 +359,13 @@ function displayPersonPictureAndHistory($db,$d) {
 }
 
 function displayPersonNameAndGetClass ($db,$d) {
-    if ($d["isTeacher"]==1) {
+    if ($d["schoolIdsAsTeacher"]!=NULL) {
         $icon = '<i style="vertical-align: bottom" class="material-icons">school</i> ';
     } else {
         $icon = '<i style="vertical-align: bottom" class="material-icons">person</i> ';
     }
     echo '<a href="'.getPersonLink($d["lastname"],$d["firstname"]).'-'. $d["id"] .'"><h4>'.$icon. getPersonName($d).'</h4></a>';
-    if ($d["isTeacher"]==1) {
+    if ($d["schoolIdsAsTeacher"]!=NULL) {
         if ($d["gender"]=='f') $personClass='<h5>Tanárnő</h5>';
         elseif ($d["gender"]=='m') $personClass='<h5>Tanár úr</h5>';
         else $personClass = '<h5>Tanár</h5>';
