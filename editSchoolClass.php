@@ -19,24 +19,30 @@ Appl::setSiteTitle("Osztályok módosítása","Osztályok módosítása","Osztá
 global $db;
 $schoolList = $db->getSchoolList();
 
-$action = getParam("action","");
-
 $classid= getIntParam("classid",-1);
-if ($classid>=0) {
-	$class=$db->getClassById($classid);
-	if ($action=="deleteclass" && isUserAdmin()) {
-        $personCount=sizeof($db->getPersonListByClassId($class["id"]));
-        if(  $personCount==0 ) {
-            if ($db->deleteClass($classid)) {
-                Appl::setMessage("Új osztály sikeresen törölve!", "success");
-                $classid = -1;
-            } else {
-                Appl::setMessage("Új osztály törlése sikertelen!", "warning");
-            }
+$class=$db->getClassById($classid);
+if ($class==null) {
+    Appl::setMessage("Osztály nem létezik!", "danger");
+    include("homemenu.inc.php");
+    include ("homefooter.inc.php");
+    die();
+}
+
+
+if (isActionParam("deleteclass") && isUserAdmin()) {
+    $personCount=sizeof($db->getPersonListByClassId($class["id"]));
+    if(  $personCount==0 ) {
+        if ($db->deleteClass($classid)) {
+            Appl::setMessage("Osztály sikeresen törölve!", "success");
+            $classid = -1;
+        } else {
+            Appl::setMessage("Osztály törlése sikertelen!", "warning");
         }
-	}
-} 
-if ($action=="saveclass") {
+    } else {
+        Appl::setMessage("Osztály tartalmaz diákokat, emiatt a törlés nem lehetséges!", "warning");
+    }
+}
+if (isActionParam("saveclass")) {
 	if ($classid<0) 
 		$class= $db->getClassByText(getParam("year")." ".getParam("class"));
 	if ($class!=null && $classid<0) 
@@ -64,7 +70,6 @@ if ($action=="saveclass") {
 }
 
 include("homemenu.inc.php");
-
 ?>
 <div class="container-fluid">
 	<?php if ($classid>=0) {?>
@@ -189,13 +194,10 @@ include("homemenu.inc.php");
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
 			</a>
 		<?php }?>
-		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if($action!="newclass") echo('style="display:none"');?>>
+		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if (!isActionParam("newclass")) echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>
-		<a class="btn btn-default"   id="btMail" href="mailto:<?php echo Config::$siteMail?>" style="display:none">
-			<span class="glyphicon glyphicon-email"></span> Új iskolát szeretnék
-		</a>
-		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if($action=="newclass") echo('style="display:none"');?>>
+		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if (isActionParam("newclass")) echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
 		</button>
         <?php $stat=$db->getClassStatistics($classid);?>
@@ -224,6 +226,7 @@ include("homemenu.inc.php");
 Appl::addJsScript('
     $(document).ready(function(){
         $(".chosen").chosen();
+        checkStatus();
     });
     
     var teachersChanged = false;
@@ -291,10 +294,8 @@ Appl::addJsScript('
 	
 	function deleteClass() {
 		if (confirm("Biztos ki szeretnéd törölni az osztályt?"))
-	    	document.location="editclass?action=deleteclass&classid='.$classid.'";
+	    	document.location="editSchoolClass?action=deleteclass&classid='.$classid.'";
 	}
 ');
 
 include_once 'homefooter.inc.php';
-
-?>

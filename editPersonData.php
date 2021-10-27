@@ -86,7 +86,8 @@
         //Editfields school and class
         if (($edit || $createNewPerson) && !$anonymousEditor && isUserLoggedOn()) {
             $optionClasses=$db->getClassList(getRealId(getActSchool()),true);
-        ?>
+
+            ?>
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >&nbsp;</span>
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
@@ -95,27 +96,23 @@
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >Iskola</span>
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-                <select class="form-control" name="schoolID" id="schoolID" disabled>
+                <select class="form-control" name="schoolID" id="schoolID" >
                     <?php foreach ($schoolList as $school) {
                         $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
                         <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <?php if (isActClassStaf()) { ?>
-                <input type="hidden" name="classID" value="<?php echo getActClassId()?>" />
-            <?php } else { ?>
-                <div style="min-height:30px" class="input-group">
-                    <span style="min-width:110px;" class="input-group-addon" >Osztály</span>
-                    <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-                    <select class="form-control" name="classID" id="classID">
-                        <option value="-1" >...válassz...</option>
-                        <?php foreach ($optionClasses as $optionClass) {?>
-                            <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getActClassId()?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-            <?php } ?>
+            <div style="min-height:30px" class="input-group">
+                <span style="min-width:110px;" class="input-group-addon" >Osztály</span>
+                <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
+                <select class="form-control" name="classID" id="classID">
+                    <option value="-1" >...válassz...</option>
+                    <?php foreach ($optionClasses as $optionClass) {?>
+                        <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getActClassId()?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
+                    <?php } ?>
+                </select>
+            </div>
         <?php } else {?>
             <input type="hidden" name="classID" value="<?php echo getActClassId()?>" />
             <input type="hidden" name="schoolID" value="<?php echo getActSchoolId()?>" />
@@ -220,6 +217,17 @@
                 echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
         }
     ?>
+        <div class="panel" style="margin-top: 20px">
+            <button class="btn btn-default" onclick="return false">Kolozsvári iskolákban tanár <span class="glyphicon glyphicon-chevron-down"> </span></button>
+            <?php foreach ($schoolList as $school) {
+                $selected = $school["id"]==getActSchoolId()?"checked=checked":""?>
+                <div style="margin-top: 10px;min-height:30px" class="input-group">
+                    <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
+                    <span style="width:40px"  class="input-group-addon"> <input type="checkbox" <?php echo $selected ?>></span>
+                    <input placeholder="mettöl meddig pl: 1970-1989" value="" class="form-control"/>
+                </div>
+            <?php } ?>
+        </div>
     </form>
 <?php } else {
     ?>

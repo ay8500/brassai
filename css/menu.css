@@ -2,6 +2,7 @@
 	form		{ display:inline;}
 	a			{ color:#101010}
 	.inline		{ display:inline;}
+	.inlineBlock { display:inline-block;}
 	.inlineBox	{ display:table-cell;height:50px;padding-right:10px}
 	.left		{ float: left;}
 	.margin-def { margin:10px;}

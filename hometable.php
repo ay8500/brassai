@@ -49,10 +49,14 @@ if (isActionParam("delete_diak") &&  isUserLoggedOn() && ((isUserEditor() && get
 		Appl::setMessage("Véndiák törölése sikertelen! ","warning");
 	}
 }
-if ($class==null) {
-    $class=$db->getStafClassBySchoolId(getActSchoolId());
+if (isActClassStaf()&& !$guests) {
+    $personList = $db->getTeacherListBySchoolId(getActSchoolId());
+} else {
+    if ($class==null) {
+        $class=$db->getStafClassBySchoolId(getActSchoolId());
+    }
+    $personList = $db->getPersonListByClassId($class, $guests);
 }
-$personList=$db->getPersonListByClassId(getRealId($class),$guests);
 
 // Toolbar for new schoolmate or guests
 ?>

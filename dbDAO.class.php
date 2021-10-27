@@ -462,38 +462,54 @@ class dbDAO {
 	
 	/**
 	 * get the list of classmates
-	 * @param integer classId 
+	 * @param integer|array class id or class array
 	 * @param boolean guest default false
 	 * @param boolean withoutFacebookId default false
 	 * @param boolean all default false all entrys
      * @return array
 	 */
-	public function getPersonListByClassId($classId,$guest=false,$withoutFacebookId=false,$all=false, $notDied=false) {
-		if ($classId>=0) {
-            $class = $this->getClassById($classId);
-			$where ="classID=".$classId;
-			if (!$all) {
-				if($guest)
-					$where.=" and role like '%guest%'";
-				else
-					$where.=" and  (role not like '%guest%' or role is null)";
-				if ($withoutFacebookId) {
-					$where.=" and (facebookid is null or length(facebookid)<5) ";
-				}
-			}
-			if ($notDied==true) {
-                $where.=" and deceasedYear is null";
+	public function getPersonListByClassId($class,$guest=false,$withoutFacebookId=false,$all=false, $notDied=false) {
+        if (!is_array($class)) {
+            $class = $this->getClassById($class);
+        }
+        $where ="classID=".$class["id"];
+        if (!$all) {
+            if($guest)
+                $where.=" and role like '%guest%'";
+            else
+                $where.=" and  (role not like '%guest%' or role is null)";
+            if ($withoutFacebookId) {
+                $where.=" and (facebookid is null or length(facebookid)<5) ";
             }
-			$ret = $this->dataBase->getElementList("person",false,$where);
-            foreach ($ret as $idx=>$r) {
-                $ret[$idx]["schoolID"]=$class["schoolID"];
-            }
-			usort($ret, "compareAlphabetical");
-			return $ret;
-		}
-		return array();
+        }
+        if ($notDied==true) {
+            $where.=" and deceasedYear is null";
+        }
+        $ret = $this->dataBase->getElementList("person",false,$where);
+        foreach ($ret as $idx=>$r) {
+            $ret[$idx]["schoolID"]=$class["schoolID"];
+        }
+        usort($ret, "compareAlphabetical");
+        return $ret;
 	}
 
+    /**
+     * get the list of teachers
+     * @param integer|array school id or school array
+     * @return array
+     */
+    public function getTeacherListBySchoolId($school) {
+        if (!is_array($school)) {
+            $school = $this->getSchoolById($school);
+        }
+        $where ="schoolIdsAsTeacher like '%(".$school["id"].")%'";
+        $ret = $this->dataBase->getElementList("person",false,$where);
+        foreach ($ret as $idx=>$r) {
+            $ret[$idx]["schoolID"]=$school["id"];
+        }
+        usort($ret, "compareAlphabetical");
+        return $ret;
+    }
 
      /**
 	 * get the person list using the actual school as filter

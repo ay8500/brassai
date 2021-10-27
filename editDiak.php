@@ -48,7 +48,13 @@ if ( $createNewPerson ) {
 	$diak = $db->getPersonDummy();
 	$diak["id"] = -1;
 	$diak["classID"] = getActClassId();
-    ($action=="newteacher" || $action=="savenewteacher" )? $db->addActSchoolTeacher($diak)	:	$diak["schoolIdsAsTeacher"]=NULL;
+    if ($action=="newteacher" || $action=="savenewteacher" ) {
+        $diak["schoolIdsAsTeacher"]=null;
+        $diak["classID"] = null;
+        $db->addActSchoolTeacher($diak);
+    } else {
+        $diak["schoolIdsAsTeacher"] = NULL;
+    }
     ($action=="newguest"   || $action=="savenewguest" )? $diak["role"]="guest"	:	$diak["role"]="";
 	$personid=-1;
 }
@@ -57,14 +63,27 @@ if ( $createNewPerson ) {
 if ($personid!=null && $personid>=0) {
 	$diak = $db->getPersonByID($personid);
 	if ($diak!=null) {
-		$classId=$diak["classID"];
-		$class=$db->getClassById($classId);
-		setActClass($classId, $class["schoolID"]);
+        if ($diak["classID"]!=0) {
+            $classId = $diak["classID"];
+            $class = $db->getClassById($classId);
+            setActClass($classId, $class["schoolID"]);
+        } else {
+            if ($diak["schoolIdsAsTeacher"]!=null) {
+                $classId = null;
+                $schoolId= intval(trim((explode(")",$diak["schoolIdsAsTeacher"]))[0],"("));
+                if ($schoolId>0) {
+                    setActSchool($schoolId);
+                } else {
+                    pageError("Személy adatai hibásak! <br/>Hiba: hiányzik a végzös osztály és a személy nem tanár");
+                }
+            } else {
+                pageError("Személy adatai hibásak! <br/>Hiba: a személy ismeretlen iskolában tanár.");
+            }
+        }
         $firstPicture["file"] = "images/".$diak["picture"];
         \maierlabs\lpfw\Appl::setMember("firstPicture",$firstPicture);
     } else {
-		header('Location:dc');
-		exit;
+        pageError("Személy adatai hibásak! <br/>Személy nem létezik.");
 	}
 }
 
@@ -83,7 +102,6 @@ if (!isUserAdmin() && $diak["gdpr"]==5) {
 }
 
 //preparation of the field to be edited and the itemprop characteristic
-$offset=0;
 $dataFieldNames 	=array("gender","title","lastname","firstname","email","birthname","birthyear","deceasedYear");
 $dataFieldCaption 	=array("Megszólítás","Akad.titulus","Családnév","Keresztnév","E-Mail","Diákkori név","* Született","† Elhunyt");
 $dataItemProp       =array("gender","title","","","","","","");
@@ -95,7 +113,6 @@ if (isset($diak["deceasedYear"])){
     array_push($dataItemProp,"","");
     array_push($dataCheckFieldVisible,false,false);
     array_push($dataFieldObl,"Temető neve, helység nélkül","");
-    $offset=2;
 }
 if(true)  { //Address
 	array_push($dataFieldNames, "partner","address","zipcode","place","country");
@@ -105,11 +122,18 @@ if(true)  { //Address
 	array_push($dataFieldObl		, "ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
 }
 if (true) { //Communication
-	array_push($dataFieldNames, "phone","mobil","skype","facebook","homepage","education","employer","function","children");
-	array_push($dataItemProp,"","","","","","","","","");
-	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Honoldal","Végzettség","Munkahely","Beosztás","Gyerekek");
-	array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true,true ,true );
-	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,false,false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
+	array_push($dataFieldNames, "phone","mobil","skype","facebook","homepage","education","children");
+	array_push($dataItemProp,"","","","","","","");
+	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Honoldal","Végzettség","Gyerekek");
+	array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true );
+	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
+}
+if ($diak["schoolIdsAsTeacher"]==null) { //Person is not a teacher
+    array_push($dataFieldNames      , "employer","function");
+    array_push($dataItemProp        ,"","");
+    array_push($dataFieldCaption    ,"Munkahely","Beosztás");
+    array_push($dataCheckFieldVisible,true,true );
+    array_push($dataFieldObl		    , false,false);
 }
 if (isUserSuperuser() ) {
     array_push($dataFieldNames, "role");
@@ -124,12 +148,6 @@ if (isUserAdmin()) { //only for admin
 	array_push($dataFieldCaption, "FB-ID","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
 	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
 	array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
-}
-if ( isActClassStaf() || $action=="savenewteacher" || $action=="newteacher" ) { //Teachers
-    $dataFieldObl[19+$offset] = "Évszám mettől meddig pl: 1961-1987";
-    $dataFieldCaption[19+$offset] = "Mettől meddig";
-    $dataFieldObl[20+$offset] = "Leadott tantárgy, maximum kettő pl: matematika, angol nyelv";
-    $dataFieldCaption[20+$offset] = "Tantárgy";
 }
 
 //save changes
@@ -329,11 +347,11 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 
 // Title an subtitle of the page schoolmate or guests
 $guests = isUserGuest($diak);
-if (isActClassStaf()) {
-    if (intval($diak["schoolIdsAsTeacher"])!=NULL)
-        Appl::setSiteSubTitle("Tanári kar");
-    else
-        Appl::setSiteSubTitle(" Barátaink");
+if ($diak["schoolIdsAsTeacher"]!=NULL) {
+    Appl::setSiteSubTitle("Tanári kar");
+    Appl::$title = getPersonName($diak) . ' ' . Appl::$subTitle;
+} else if (isActClassStaf()) {
+    Appl::setSiteSubTitle(" Barátaink");
     Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
 } else {
     if ($guests) {
@@ -401,8 +419,7 @@ if(isUserLoggedOn() || isUserAdmin()) {
 
 $tabUrl="editDiak";
 ?>
-<?php if (null!=getActClass()) {?>
-    <div class="container-fluid"><?php
+<div class="container-fluid"><?php
     include Config::$lpfw.'view/tabs.inc.php';?>
 	<div class="well"><?php
 		//Personal Data
@@ -460,14 +477,7 @@ $tabUrl="editDiak";
 		}
 	}
 </script>
-<?php } else { ?>
-<div class="alert alert-info" >
-	<b>Osztály névsór</b>
-	<br/><br/><br/>
-	<p>Osztály névsórának a módosótásához elöbször válassz ki egy osztályt az "Osztályok" menü segítségével!</p>
-</div>
 <?php
-}
 Appl::addJs('js/chosen.jquery.js');
 Appl::addJsScript('
     $(document).ready(function(){
@@ -475,5 +485,11 @@ Appl::addJsScript('
     });
 ');
 include 'homefooter.inc.php';
-?>
+
+function pageError($text) {
+    include "homemenu.inc.php";
+    Appl::setMessage($text,"danger");
+    include "homefooter.inc.php";
+    die();
+}
 
