@@ -346,7 +346,6 @@ if (isset($_POST["action"]) && $_POST["action"]=="upload_diak" ) {
 }
 
 // Title an subtitle of the page schoolmate or guests
-$guests = isUserGuest($diak);
 if ($diak["schoolIdsAsTeacher"]!=NULL) {
     Appl::setSiteSubTitle("Tanári kar");
     Appl::$title = getPersonName($diak) . ' ' . Appl::$subTitle;
@@ -354,7 +353,7 @@ if ($diak["schoolIdsAsTeacher"]!=NULL) {
     Appl::setSiteSubTitle(" Barátaink");
     Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
 } else {
-    if ($guests) {
+    if (isUserGuest($diak)) {
         Appl::setSiteSubTitle(getActSchoolClassName()." Vendég jó barát");
         Appl::$title=getPersonName($diak).' '.Appl::$subTitle;
     } else {

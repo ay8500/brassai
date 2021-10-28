@@ -216,15 +216,20 @@
             if (!isUserAdmin() && !isUserSuperuser())
                 echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
         }
-    ?>
+        $readonly = ($edit ||$createNewPerson || $anonymousEditor)?"":"readonly disabled";
+        ?>
         <div class="panel" style="margin-top: 20px">
-            <button class="btn btn-default" onclick="return false">Kolozsvári iskolákban tanár <span class="glyphicon glyphicon-chevron-down"> </span></button>
+            <button class="btn btn-default" onclick="return false">Kolozsvári iskolákban tanár </button>
+            <div style="margin-top: 10px;min-height:30px" class="input-group">
+                <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
+                <input name="function" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" <?php echo $readonly?> />
+            </div>
             <?php foreach ($schoolList as $school) {
-                $selected = $school["id"]==getActSchoolId()?"checked=checked":""?>
+                $selected = strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false?"checked=checked":""?>
                 <div style="margin-top: 10px;min-height:30px" class="input-group">
                     <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
-                    <span style="width:40px"  class="input-group-addon"> <input type="checkbox" <?php echo $selected ?>></span>
-                    <input placeholder="mettöl meddig pl: 1970-1989" value="" class="form-control"/>
+                    <span style="width:40px"  class="input-group-addon"> <input type="checkbox" <?php echo $selected ?> <?php echo $readonly?> /></span>
+                    <input id="school_<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" <?php echo $readonly?> />
                 </div>
             <?php } ?>
         </div>
@@ -238,7 +243,7 @@
     </div>
 <?php } ?>
     <span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A tanárok és a véndiákok személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék.
-	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://unternehmen.1und1.de/rechenzentren/">"1 und 1"</a> cég szamitógépközpontjában.
+	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://cloud.ionos.de/rechenzentren">"ionos"</a> cég szamitógépközpontjában.
 	Biztonsági másolatok a személyes adatokról csak az internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az másolatok maximum 6 hónapig vannak tárolva.
 	A személyes adatok és fényképek megjelennek külömbőző internet kereső oldalok találati listáján.
 	A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim látogató és internet kereső oldalok ellen védve vannak. </span><br/>

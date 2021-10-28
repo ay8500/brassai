@@ -97,6 +97,21 @@ class dbDAO {
         return $this->dataBase->getRowList();
     }
 
+    /**
+     * Get teacher period for a school
+     * Example in the field function in school1  {"1":"1975-1976"}, school1 and 3: {"1":"1975-1976","3":"1989-2021"}
+     * @param $person
+     * @param $schoolId
+     */
+    public function getTeacherPeriod($person,$schoolId) {
+        $json = json_decode($person["employer"],true);
+        if ($json==null && $schoolId==1)
+            return $person["employer"];
+        if (isset($json[$schoolId]))
+            return $json[$schoolId];
+        return "";
+    }
+
     public function getClassByText($text) {
 		$sql="select * from class where text='".trim($text)."'";
 		$sql .=" and changeForID is null";
@@ -287,23 +302,31 @@ class dbDAO {
 	}
 	
 	/**
-	 * Get persons,pictures from a class
+	 * Get persons,pictures from a school class
 	 * @param int $classId
 	 * @return stdClass
 	 */
 	public function getClassStatistics($classId,$countPictures=true) {
 		$ret = new stdClass();
-		$ret->personCount=$this->dataBase->queryInt("select count(*) as c from person where classID=".$classId." and changeForID is null ");
-        $ret->classPictures=$this->dataBase->queryInt("select count(*) as c from picture where isDeleted=0 and classID =".$classId." and changeForID is null ");
-        $ret->guestCount=$this->dataBase->queryInt("select count(*) as c from person where classID=".$classId." and changeForID is null and role like '%guest%'");
-		if($countPictures) {
-			$ret->personWithPicture=$this->dataBase->queryInt("select count(id) from person where classID=".$classId." and changeForID is null and picture is not null and picture<>''");
-			$ret->personPictures=$this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=".$classId." and changeForID is null ) and changeForID is null ");
-		}
-		$t = $this->dataBase->querySignleRow("select person.id,title, firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=".$classId);
-		if ($t!=null) {
-		    $ret->teacher=(object)$t;
-		}
+        if ($classId==null || $classId<0 ) {
+            $ret->personCount=0;
+            $ret->classPictures=0;
+            $ret->guestCount=0;
+            $ret->personWithPicture=0;
+            $ret->personPictures=0;
+        } else {
+            $ret->personCount = $this->dataBase->queryInt("select count(*) as c from person where classID=" . $classId . " and changeForID is null ");
+            $ret->classPictures = $this->dataBase->queryInt("select count(*) as c from picture where isDeleted=0 and classID =" . $classId . " and changeForID is null ");
+            $ret->guestCount = $this->dataBase->queryInt("select count(*) as c from person where classID=" . $classId . " and changeForID is null and role like '%guest%'");
+            if ($countPictures) {
+                $ret->personWithPicture = $this->dataBase->queryInt("select count(id) from person where classID=" . $classId . " and changeForID is null and picture is not null and picture<>''");
+                $ret->personPictures = $this->dataBase->queryInt("select count(id) from picture where personID in (select id from person where classID=" . $classId . " and changeForID is null ) and changeForID is null ");
+            }
+            $t = $this->dataBase->querySignleRow("select person.id,title, firstname, lastname,picture from person left join class on class.headTeacherID=person.id where class.id=" . $classId);
+            if ($t != null) {
+                $ret->teacher = (object)$t;
+            }
+        }
 		return $ret;
 	}
 
@@ -442,9 +465,9 @@ class dbDAO {
 		} else {
                 $where = " class.id=".getActClassId();
         }
-        $sql  ="select person.*, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
+        $sql  ="select person.*, class.schoolID as schoolID, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
         $sql .=" left join  class on class.id=person.classID";
-        $sql .=" where (graduationYear != 0 or schoolIdsAsTeacher is not null)";		//No administator users
+        $sql .=" where (graduationYear != 0 or role not like '%guest%' )";		//No administator users
         $sql .=" and ( person.changeForID is null and ".$where;
         $sql .=" and person.id not in ( select changeForID from person where  ".$this->dataBase->getSqlAnonymous("person.")." ) ";
         $sql.=") or (".$this->dataBase->getSqlAnonymous("person.")."and ".$where.") limit 150";

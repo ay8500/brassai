@@ -30,7 +30,7 @@ function searchPersonAndPicture() {
             $('#searchpersonbadge').html(data.length);
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
-                    if (row.schoolIdsAsTeacher!==NULL) {
+                    if (row.schoolIdsAsTeacher===null) {
                         var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
                     } else {
                         if (row.gender=="f") {
@@ -38,6 +38,7 @@ function searchPersonAndPicture() {
                         } else {
                             var pclass = "<?php maierlabs\lpfw\Appl::_('Tanár úr')?>";
                         }
+                        row.schoolID = row.schoolIdsAsTeacher.substring(1,row.schoolIdsAsTeacher.indexOf(")"));
                     }
                     var pname = (row.title != null ? row.title + ' ' : '') + row.lastname + ' ' + row.firstname;
                     pname += ((row.birthname !== null && row.birthname !=='') ? ' ('+row.birthname+')':'');
@@ -49,6 +50,7 @@ function searchPersonAndPicture() {
                     var html = '<tr>';
                     html += '<td style="text-align: center">' + pimg + '</td>';
                     html += '<td><a href="editDiak?uid='+row.id+'">' + pname + '</a></td>';
+                    html += '<td><img src="images/school'+row.schoolID+'/logo.jpg" style="height: 33px"/></td>';
                     html += '<td>' + pclass + '</td>';
                     html += '</tr>';
                     console.log(html);

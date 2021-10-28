@@ -18,16 +18,16 @@ Appl::setSiteTitle("Osztályok módosítása","Osztályok módosítása","Osztá
  */
 global $db;
 $schoolList = $db->getSchoolList();
-
 $classid= getIntParam("classid",-1);
 $class=$db->getClassById($classid);
-if ($class==null) {
+$subTitle= ($classid>=0) ? "Végzős osztály módosítása" : "Új végzős osztály létrehozása";
+
+if ($class==null && !isActionParam("newclass")) {
     Appl::setMessage("Osztály nem létezik!", "danger");
     include("homemenu.inc.php");
     include ("homefooter.inc.php");
     die();
 }
-
 
 if (isActionParam("deleteclass") && isUserAdmin()) {
     $personCount=sizeof($db->getPersonListByClassId($class["id"]));
@@ -42,6 +42,7 @@ if (isActionParam("deleteclass") && isUserAdmin()) {
         Appl::setMessage("Osztály tartalmaz diákokat, emiatt a törlés nem lehetséges!", "warning");
     }
 }
+
 if (isActionParam("saveclass")) {
 	if ($classid<0) 
 		$class= $db->getClassByText(getParam("year")." ".getParam("class"));
@@ -72,11 +73,7 @@ if (isActionParam("saveclass")) {
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
-	<?php if ($classid>=0) {?>
-		<h2 class="sub_title">Végzős osztály módosítása</h2>
-	<?php } else {?>
-		<h2 class="sub_title">Új végzős osztály létrehozása</h2>
-	<?php } ?>
+	<h2 class="sub_title"><?php echo $subTitle?></h2>
 
 	<?php if ($classid>=0 && !isUserAdmin()) {  //Edit an existing class?>
 

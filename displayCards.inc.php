@@ -51,8 +51,16 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 				} else {
 					if (isset($d["function"]))
 					    echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
-                    if (isset($d["employer"]) && $d["employer"]!="")
-                        echo "<div><div>Mettől meddig:</div><div>".getFieldValue($d["employer"])."&nbsp;</div></div>";
+                    echo "<div><div>Iskola:</div><div>";
+                    $schools = explode(")",$d["schoolIdsAsTeacher"]);
+                    foreach ($schools as $school) {
+                        $school = intval(trim($school,"("));
+                        if (($school=$db->getSchoolById($school))!=null) {
+                            echo '<img style="height:33px" src="images/school' . $school["id"] . '/logo.jpg" title="' . $school["name"] . '" />';
+                            echo $db->getTeacherPeriod($d, $school["id"]) . "<br />";
+                        }
+                    }
+                    echo "</div></div>";
 /*					if (showField($d,"children")) {
 						echo "<div><div>Osztályfőnök:</div><div>";
 						$c = explode(",", getFieldValue($d["children"]));
@@ -365,23 +373,25 @@ function displayPersonNameAndGetClass ($db,$d) {
         $icon = '<i style="vertical-align: bottom" class="material-icons">person</i> ';
     }
     echo '<a href="'.getPersonLink($d["lastname"],$d["firstname"]).'-'. $d["id"] .'"><h4>'.$icon. getPersonName($d).'</h4></a>';
-    if ($d["schoolIdsAsTeacher"]!=NULL) {
-        if ($d["gender"]=='f') $personClass='<h5>Tanárnő</h5>';
-        elseif ($d["gender"]=='m') $personClass='<h5>Tanár úr</h5>';
-        else $personClass = '<h5>Tanár</h5>';
-    } else {
+    $personClass ="";
+    if ( isset($d["classID"]) && $d["classID"]>0) {
         if (!isset($d["classText"])) {
             $diakClass = $db->getClassById($d["classID"]);
             $d["classText"] = getSchoolClassName($diakClass);
         }
         if (isUserGuest($d)) {
-            if (strstr($d["classText"],"staf")!==false)
-                $personClass = '<h5>Jó barát:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
+            if (strstr($d["classText"], "staf") !== false)
+                $personClass .= '<h5>Jó barát:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
             else
-                $personClass = '<h5>Vendég:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
+                $personClass .= '<h5>Vendég:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
         } else {
-            $personClass = '<h5>Véndiák:<a href="hometable?classid='.$d["classID"].'">'.$d["classText"].'</a></h5>';
+            $personClass .= '<h5>Véndiák:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
         }
+    }
+    if ($d["schoolIdsAsTeacher"]!=NULL) {
+        if ($d["gender"]=='f') $personClass .='<h5>Tanárnő</h5>';
+        elseif ($d["gender"]=='m') $personClass .='<h5>Tanár úr</h5>';
+        else $personClass = '<h5>Tanár</h5>';
     }
     return $personClass;
 }
