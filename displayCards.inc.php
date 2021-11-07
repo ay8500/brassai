@@ -41,22 +41,22 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                 echo('<div><a href="search?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
             <div class="fields"><?php
 				if ($d["schoolIdsAsTeacher"]===NULL) {
-					if(showField($d,"partner")) 	echo "<div><div>Élettárs:</div><div>".getFieldValue($d,"partner")."</div></div>";
-					if(showField($d,"education")) 	echo "<div><div>Végzettség:</div><div>".getFieldValue($d,"education")."</div></div>";
+					if(showField($d,"partner")) echo "<div><div>Élettárs:&nbsp;</div><div>".getFieldValue($d,"partner")."</div></div>";
+					if(showField($d,"education")) echo "<div><div>Végzettség:&nbsp;</div><div>".getFieldValue($d,"education")."</div></div>";
 					if(showField($d,"employer")) 	{
 						$fieldString = preg_replace("~[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]~", "",	getFieldValue($d["employer"]));
-						echo "<div><div>Munkahely:</div><div>".$fieldString ."</div></div>";
+						echo "<div><div>Munkahely:&nbsp;</div><div>".$fieldString ."</div></div>";
 					}
-					if(showField($d,"function")) 	echo "<div><div>Beosztás:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
+					if(showField($d,"function")) echo "<div><div>Beosztás:&nbsp;</div><div>".getFieldValue($d["function"])."</div></div>";
 				} else {
 					if (isset($d["function"]))
-					    echo "<div><div>Tantárgy:</div><div>".getFieldValue($d["function"])."&nbsp;</div></div>";
-                    echo "<div><div>Iskola:</div><div>";
+					    echo "<div><div>Tantárgy:&nbsp;</div><div> ".getFieldValue($d["function"])."</div></div>";
+                    echo "<div><div>Iskola:&nbsp;</div><div>";
                     $schools = explode(")",$d["schoolIdsAsTeacher"]);
                     foreach ($schools as $school) {
                         $school = intval(trim($school,"("));
                         if (($school=$db->getSchoolById($school))!=null) {
-                            echo '<img style="height:33px" src="images/school' . $school["id"] . '/logo.jpg" title="' . $school["name"] . '" />';
+                            echo '<img style="border-radius:15px;height:33px" src="images/school' . $school["id"] . '/logo.jpg" title="' . $school["name"] . '" />&nbsp;';
                             echo $db->getTeacherPeriod($d, $school["id"]) . "<br />";
                         }
                     }
@@ -77,8 +77,8 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					}
 */
 				}
-				if(showField($d,"country")) 	echo "<div><div>Ország:</div><div>".getFieldValue($d["country"])."</div></div>";
-				if(showField($d,"place")) 		echo "<div><div>Város:</div><div>".getFieldValue($d["place"])."</div></div>";
+				if(showField($d,"country")) 	echo "<div><div>Ország:&nbsp;</div><div>".getFieldValue($d["country"])."</div></div>";
+				if(showField($d,"place")) 		echo "<div><div>Város:&nbsp;</div><div>".getFieldValue($d["place"])."</div></div>";
 				?>
 					<div class="diakCardIcons" style="margin-top:10px">
                     <?php
@@ -454,7 +454,7 @@ function displayIcon($d,$field,$image,$title,$appl) {
 }
 
 function displaySchool($id) {
-    if (getActSchoolId()==null) {
+    if (getActSchoolId()==null || getActSchoolId()!=$id) {
         global $schoolList;
         echo( '<div class="schoolname" style="margin-bottom: -15px;">'. $schoolList[array_search($id,array_column($schoolList,"id"))]["name"] . "</div>");
 

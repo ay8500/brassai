@@ -97,6 +97,6 @@ function setMarkers(data)	{
 	    
 	}				
     }
-    document.getElementById("txtPerson").innerHTML="Osztálytárs a térképen:"+(i+1);
+    document.getElementById("txtPerson").innerHTML="Kolozsvári tanár és véndiák a térképen:"+(i+1);
 } 
 

@@ -128,7 +128,7 @@
                 //field onclick
                 $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
                 //Inpufields
-                if (($edit ||$createNewPerson) && !$anonymousEditor ) {?>
+                if (($edit || $createNewPerson) && !$anonymousEditor ) {?>
                     <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
                     if ( isUserLoggedOn()) {?>
                         <span style="width:40px" id="highlight" class="input-group-addon">
@@ -215,22 +215,39 @@
             echo('<input type="hidden" name="tabOpen"	value="'.$tabOpen.'"  />');
             if (!isUserAdmin() && !isUserSuperuser())
                 echo('<input type="hidden" name="role"	value="'.$diak["role"].'"  />');
+            echo('<input type="hidden" name="schoolIdsAsTeacher" value="'.$diak["schoolIdsAsTeacher"].'"  />');
+            echo('<input type="hidden" name="teacherPeriod"	value="'.$diak["employer"].'"  />');
         }
-        $readonly = ($edit ||$createNewPerson || $anonymousEditor)?"":"readonly disabled";
         ?>
         <div class="panel" style="margin-top: 20px">
-            <button class="btn btn-default" onclick="return false">Kolozsvári iskolákban tanár </button>
-            <div style="margin-top: 10px;min-height:30px" class="input-group">
-                <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
-                <input name="function" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" <?php echo $readonly?> />
-            </div>
-            <?php foreach ($schoolList as $school) {
-                $selected = strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false?"checked=checked":""?>
+            <?php if ($edit || $createNewPerson) { ?>
+                <h5>Kolozsvári iskolákban tanár </h5>
                 <div style="margin-top: 10px;min-height:30px" class="input-group">
-                    <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
-                    <span style="width:40px"  class="input-group-addon"> <input type="checkbox" <?php echo $selected ?> <?php echo $readonly?> /></span>
-                    <input id="school_<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" <?php echo $readonly?> />
+                    <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
+                    <input name="function" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" />
                 </div>
+                <?php foreach ($schoolList as $school) {
+                    $selected = strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false?"checked=checked":""?>
+                    <div style="margin-top: 10px;min-height:30px" class="input-group" id="schoolid_<?php echo $school["id"] ?>">
+                        <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
+                        <span style="width:40px"  class="input-group-addon"> <input id="schoolIdAsTeacher" data="<?php echo $school["id"] ?>" type="checkbox" <?php echo $selected ?>  /></span>
+                        <input id="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" />
+                    </div>
+                <?php }?>
+            <?php } else if ($diak["schoolIdsAsTeacher"]!=null) {?>
+                <h5>Kolozsvári iskolákban tanár </h5>
+                <div style="margin-top: 10px;margin-bottom: 10px;min-height:30px" class="input-group">
+                    <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
+                    <input name="function" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" disabled="disabled" />
+                </div>
+                <?php foreach ($schoolList as $school) {
+                    if ( strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false) { ?>
+                        <div style="min-height:30px" class="input-group" id="schoolid_<?php echo $school["id"] ?>">
+                            <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
+                            <input id="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" disabled="disabled" />
+                        </div>
+                    <?php }?>
+                <?php }?>
             <?php } ?>
         </div>
     </form>
@@ -326,6 +343,7 @@ function showOptionsField($value,$fieldName,$options,$readOnly=false) {
 
 	function savePerson() {
         showWaitMessage();
+        //concat role strings
         var a = $("#role").children();
         if (a != null) {
             var s = '';
@@ -335,6 +353,21 @@ function showOptionsField($value,$fieldName,$options,$readOnly=false) {
             }
             $('input[name="role"]').val(s);
         }
+        //concat schoolIdsAsTeacher
+        s="";
+        $('input[id="schoolIdAsTeacher"]').each(function() {
+           s += this.checked ?  ("("+$(this).attr("data")+")"):"";
+        });
+        $('[name="schoolIdsAsTeacher"]').val(s);
+        //concat period in school
+        s="";
+        $('input[id="schoolTeacherPeriod"]').each(function() {
+            s += $(this).val()!="" ?  ('"'+$(this).attr("data")+'":"'+$(this).val()+'",'):"";
+        });
+        if (s!='') {
+            $('[name="teacherPeriod"]').val('{'+s.slice(0,-1)+'}');
+        }
+
         $('#editform').submit();
     }
 

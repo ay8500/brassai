@@ -207,6 +207,15 @@ class dbDAO {
     public function getSchoolList($originalId=false) {
         return $this->dataBase->getElementList("school",$originalId, " 1 = 1",null,null,"name asc");
     }
+
+    public function getSchoolPersonCount($schoolId, $teacher=false) {
+
+        if ($teacher)
+            $sql = "SELECT COUNT(*) FROM person where schoolIdsAsTeacher like '%(".$schoolId.")%'";
+        else
+            $sql = "SELECT COUNT(*) FROM person JOIN class on class.id = person.classID where class.schoolID=".$schoolId;
+        return $this->dataBase->queryInt($sql);
+    }
 	
 	/**
 	 * Delete a class
@@ -266,8 +275,7 @@ class dbDAO {
         if (isset($person["birthyear"]) && ($person["birthyear"]=='' || intval($person["birthyear"])<1800)) {
             $person["birthyear"]=null;
         }
-        if (isset($person["schoolID"]))
-            unset($person["schoolID"]);
+        unset($person["schoolID"]);
 	    $ret =$this->dataBase->saveEntry("person", $person);
 		return $ret;
 	}
@@ -456,7 +464,7 @@ class dbDAO {
         } elseif( strlen($name)>0 ) {
 
             $where ="(";
-            $name = searchSpecialChars($name);
+            $name = searchSpecialCharsAsRegex($name);
             $where .=" person.lastname rlike '".$name."' ";
             $where .="  or person.firstname rlike '".$name."' ";
             $where .="  or person.birthname rlike '".$name."' ";
@@ -476,8 +484,11 @@ class dbDAO {
         while ($person=$this->dataBase->fetchRow()) {
             if (isset($person["changeForID"]))
                 $person["id"]=$person["changeForID"];
-            if (array_search($person["id"],array_column($ret,"id"))===false)
+            if (array_search($person["id"],array_column($ret,"id"))===false) {
+                if ($person["schoolID"]==NULL && $person["schoolIdsAsTeacher"])
+                    $person["schoolID"] = substr($person["schoolIdsAsTeacher"],1,strpos($person["schoolIdsAsTeacher"],")")-1);
                 array_push($ret, $person);
+            }
         }
         usort($ret, "compareAlphabetical");
 		return $ret;
@@ -580,17 +591,20 @@ class dbDAO {
 	 * @param string $where
 	 * @return integer
 	 */
-	public function getTableCount($table,$where=null,$distinct=null) {
+	public function getTableCount($table,$where=null,$distinct=null,$join=null) {
         if ($distinct!=null)
             $sql =" COUNT(DISTINCT ".$distinct.") ";
         else
             $sql =" COUNT(1) ";
 		//normal entrys
-		$sql="select ".$sql." from ".$table." where ( (changeForID is null and changeUserID is not null) ";
+		$sql  ="SELECT ".$sql." FROM ".$table;
+        if ($join!=null)
+            $sql .=" JOIN ".$join;
+        $sql .=" WHERE ( (".$table.".changeForID is null and ".$table.".changeUserID is not null) ";
 		//anonymous new entrys from the aktual ip
-		$sql.=" or (changeForID is null and changeIP='".$_SERVER["REMOTE_ADDR"]."' and changeUserID is null)  )";
+		$sql.=" or (".$table.".changeForID is null and ".$table.".changeIP='".$_SERVER["REMOTE_ADDR"]."' and ".$table.".changeUserID is null)  )";
 		if ($where!=null)
-			$sql.=" and ".$where;
+			$sql.=" AND ".$where;
 		return $this->dataBase->queryInt($sql);
 	}
 	
@@ -981,7 +995,7 @@ class dbDAO {
 		$ret = array();
 		$name=trim($name);
 		if( strlen($name)>1) {
-		    $name = searchSpecialChars($name);
+		    $name = searchSpecialCharsAsRegex($name);
 			$sql="select p.* from picture as p";
 			//$sql .=" left join  person as cp on c.changeUserID=cp.id where";
             $sql .=" where p.title rlike '".$name."' ";
@@ -1051,6 +1065,7 @@ class dbDAO {
             $sql = " (select id, changeDate, 'class' as type, 'change' as action, changeUserID from class where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "'";
             $sql .= str_replace("person.","",$sqlIpUser)." and ( (changeUserID is not null and changeForID is null) or changeIP='" . $_SERVER["REMOTE_ADDR"] . "')";
             $sql .= getActSchoolId()==null?"":(" and schoolID=".getActSchoolId());
+            $sql .= " and graduationYear>1800 ";
             $sql .= " order by changeDate desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());

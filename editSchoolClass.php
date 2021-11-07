@@ -22,7 +22,7 @@ $classid= getIntParam("classid",-1);
 $class=$db->getClassById($classid);
 $subTitle= ($classid>=0) ? "Végzős osztály módosítása" : "Új végzős osztály létrehozása";
 
-if ($class==null && !isActionParam("newclass")) {
+if ($class==null && !isActionParam("newclass") && !isActionParam("saveclass")) {
     Appl::setMessage("Osztály nem létezik!", "danger");
     include("homemenu.inc.php");
     include ("homefooter.inc.php");
@@ -132,7 +132,7 @@ include("homemenu.inc.php");
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
 			<select class="form-control" onchange="changeYear()" id="selectYear">
 				<option value="0">...válassz...</option>
-				<?php for($year=date("Y")-118;$year<=date("Y");$year++) {?>
+				<?php for($year=date("Y");$year>=date("Y")-118;$year--) {?>
 				<option value="<?php echo $year?>" <?php echo (isset($class) && intval($class["graduationYear"])===$year)?"selected":""?>><?php echo $year?></option>
 				<?php } ?>
 			</select>
@@ -145,11 +145,19 @@ include("homemenu.inc.php");
 				<option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
 				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
 				<?php 
-					for($cl=10;$cl<14;$cl++) {
-						for($cs="A";$cs<="L";$cs++) {
-				?>
-					<option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option>
-				<?php } } ?>
+					$cl=12;for($cs="A";$cs<="L";$cs++) {
+					        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+				 }
+                    $cl=13;for($cs="A";$cs<="L";$cs++) {
+                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                }
+                    $cl=11;for($cs="A";$cs<="F";$cs++) {
+                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                }
+                    $cl=10;for($cs="A";$cs<="D";$cs++) {
+                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                }
+                 ?>
 			</select>
 		</div>
 	<?php } ?>	
@@ -159,6 +167,8 @@ include("homemenu.inc.php");
 			<option value="0">...válassz...</option>
 			<option value="-1">...nincs a listán...</option>
 			<?php
+                //$teachers = $db->getTeacherListBySchoolId(getActSchoolId());
+                //TODO OLD VERSION
 				$teachers=$db->getPersonListByClassId($db->getStafClassIdBySchoolId(getActSchoolId()));
 				foreach ($teachers as $t) {?>
 				<option value="<?php echo $t['id']?>" <?php echo (isset($class['headTeacherID']) && $t['id']==$class['headTeacherID']?"selected":"") ?> > 

@@ -170,6 +170,13 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			if (getIntParam("classID",-1)>-1) {
 				$diak["classID"]=getIntParam("classID");
 			}
+            //schoolIDsAsTeacher
+            if (getParam("schoolIdsAsTeacher","")!="") {
+                $diak["schoolIdsAsTeacher"]=getParam("schoolIdsAsTeacher");
+            }
+            if (getParam("teacherPeriod","")!="") {
+                $diak["employer"]=getParam("teacherPeriod");
+            }
 			//No dublicate email address is allowed
 			if (isset($diak["email"]) && checkUserEmailExists($userDB,$diak["id"],$diak["email"])) {
 				Appl::setMessage("E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.","warning");

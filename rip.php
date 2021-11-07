@@ -73,7 +73,7 @@ include("homemenu.inc.php");
 		</form>
         <h2 class="sub_title">
             Elhunyt tanáraink és iskolatársaink emlékére <?php echo $dbCandle->getAllCandlesCount() ?> gyertyából még <?php echo $dbCandle->getCandlesByPersonId() ?> gyertya ég
-            <p>Gyújts te gyertyákat szeretett tanáraidnál és iskolatársaidnál.</p>
+            <p>Gyújts te is gyertyákat szeretett tanáraidnál és iskolatársaidnál.</p>
         </h2>
 
 	</div>

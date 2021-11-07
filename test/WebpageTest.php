@@ -90,7 +90,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
     public function testStartPage()
     {
         $this->logoff();
-        $ret = $this->callTestUrl($this->url . "start", false);
+        $ret = $this->callTestUrl($this->url . "start?all=all", false);
         $this->assertNotNull($ret);
         $tabs = Parser::getListItemsBetween($ret->content, 'role="tablist"', '</ul>', true);
         $this->assertCount(11, $tabs);

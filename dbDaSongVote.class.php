@@ -210,7 +210,7 @@ class dbDaSongVote
         $ret = array();
         $text=trim($text);
         if( strlen($text)>1) {
-            $text= searchSpecialChars($text);
+            $text= searchSpecialCharsAsRegex($text);
             $sql = "select song.*, interpret.name as interpretName from song ";
             $sql .="join interpret on interpret.id=song.interpretID ";
             $sql .="where song.name rlike '".$text."' ";

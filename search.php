@@ -12,6 +12,8 @@ $personList=array();
 $classList=array();
 $pictureList=array();
 $name="";
+if (getIntParam("schoolid")!=0)
+    setActSchool(getIntParam("schoolid"));
 $start=getIntParam("start",0);
 $link="search?type=".getParam("type")."&start=";
 Appl::setSiteSubTitle("Találatok a véndiákok adatbankjában");
@@ -40,11 +42,12 @@ if (null==getParam("type")) {
     $personCount=$db->getTableCount("person","role like '%unknown%'");
     $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bármilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
 } else {
-    if (isUserAdmin() || isUserEditor() || isUserSuperuser()) {
+    if (isUserAdmin() ) {
         switch (getParam("type")) {
             case "teacher": {
-                $personList=$db->getPersonList("schoolIdsAsTeacher is not null",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null");
+                $where = getActSchoolId()!=null?("schoolIdsAsTeacher like '%(".getActSchoolId().")%'"):"schoolIdsAsTeacher is not null";
+                $personList=$db->getPersonList($where,20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person",$where);
                 $caption ="Tanárok:".$personCount;
                 break;
             }
@@ -80,8 +83,8 @@ if (null==getParam("type")) {
             }
 
             case "classmate": {
-                $personList=$db->getPersonList("schoolIdsAsTeacher is null",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null");
+                $personList=$db->getPersonList("class.graduationYear>1800",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person",getActSchoolId()!=null?("class.schoolID=".getActSchoolId()):"class.graduationYear>1800",null,$join);
                 $caption ="Diákok:".$personCount;
                 break;
             }
@@ -129,9 +132,17 @@ if (null==getParam("type")) {
                 $caption ="Diákok facebook kapcsolattal:".$personCount;
                 break;
             }
+            case "gender": {
+                $sql="gender is null or gender =''";
+                $personList=$db->getPersonList($sql,20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person",$sql);
+                $caption ="Személyek nem nélkül:".$personCount;
+                break;
+            }
         }
     } else {
-        Appl::setMessage('Ezeknek az adatoknak a megtekintése csak bejelentkezett látogatok részére lehetséges.<br/> Jelentkezz be vagy regisztráld magad mert ez az oldal nagyon jó, barátságos, ingyenes és reklámmentes!', "warning");
+        Appl::setMessage('Ezeknek az adatoknak a megtekintése csak bejelentkezett látogatok részére lehetséges.<br/>
+            Jelentkezz be vagy regisztráld magad! Ez az oldal nagyon jó, barátságos, ingyenes és reklámmentes!', "warning");
     }
 }
 Appl::setSiteTitle(" Keresés");
