@@ -84,7 +84,7 @@
     <form method="get" id="editform" action="editDiak">
         <?php
         //Editfields school and class
-        if (($edit || $createNewPerson) && !$anonymousEditor && isUserLoggedOn()) {
+        if (($edit || $createNewPerson) && !$anonymousEditor && isUserLoggedOn() && !isActionParam("newteacher")) {
             $optionClasses=$db->getClassList(getRealId(getActSchool()),true);
 
             ?>
@@ -271,7 +271,7 @@ function showRoleField($value,$fieldName) {
     $options = array();
     $disabled='';
     array_push($options, array('role' => 'unknown', 'text' => 'nem tudunk róla','disabled'=>$disabled));
-    array_push($options, array('role' => 'jmlaureat', 'text' => "Juhász Máthé díjas",'disabled'=>$disabled));
+    array_push($options, array('role' => 'jmlaureat', 'text' => getActSchool()["awardName"]." díjas",'disabled'=>$disabled));
     if(!isUserAdmin() && !isUserSuperuser())
         $disabled='disabled';
     array_push($options, array('role' => 'editor', 'text' => 'osztályfelelős / szervező','disabled'=>$disabled));

@@ -18,7 +18,6 @@ if (getActSchoolId()==null) {
 
 $school=getActSchool();
 $schoolLogo = "images".DIRECTORY_SEPARATOR.$db->getActSchoolFolder().DIRECTORY_SEPARATOR.$school["logo"];
-$readonly = isUserAdmin()?"":'readonly="readonly"';
 
 if (isActionParam("save")) {
     $json = createSchoolJson();
@@ -39,7 +38,7 @@ if (isActionParam("save")) {
 }
 
 if (isActionParam("cancel")) {
-    Appl::setMessage("Cancel:".getParam("nr"),"success");
+    //Appl::setMessage("Cancel:".getParam("nr"),"success");
 }
 
 if (isActionParam("delete")) {
@@ -112,7 +111,7 @@ include("homemenu.inc.php");
 <div class="well">
     <div class="col-md-6">
         <h2>
-            <?php  if (isUserAdmin()) {?>
+            <?php  if (isUserAdmin() ) {?>
                 <a href="history?table=school&id=<?php echo $school["id"]?>" style="display:inline-block;" title="módosítások">
                     <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("school",$school["id"]))?></span>
                 </a>
@@ -159,7 +158,7 @@ include("homemenu.inc.php");
                     <?php if (isset($paragraph["picture"]["url"])) { ?>
                         <img src="<?php echo $paragraph["picture"]["url"] ?>" style="max-width: 100%;"><br/>
                     <?php } ?>
-                    <input  placeholder="url" name="picture-url-<?php echo $idx ?>" <?php echo $readonly ?>
+                    <input  placeholder="url" name="picture-url-<?php echo $idx ?>" <?php echo (isUserAdmin()?"":'disabled="disabled"') ?>
                             value="<?php echo isset($paragraph["picture"]["url"])?$paragraph["picture"]["url"]:"" ?>"
                             style="width:100%"/>
                     <input  placeholder="kép címe" name="picture-text-<?php echo $idx ?>"

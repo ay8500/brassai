@@ -177,6 +177,9 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
             if (getParam("teacherPeriod","")!="") {
                 $diak["employer"]=getParam("teacherPeriod");
             }
+            if (getParam("function")!=null) {
+                $diak["function"]=getParam("function");
+            }
 			//No dublicate email address is allowed
 			if (isset($diak["email"]) && checkUserEmailExists($userDB,$diak["id"],$diak["email"])) {
 				Appl::setMessage("E-Mail cím már létezik az adatbankban!<br/>Az adatok kimentése sikertelen.","warning");

@@ -27,10 +27,11 @@ if (null==getParam("type")) {
 	$classList=$db->searchForClass($name);
 	$pictureList=$db->searchForPicture($name);
 } elseif ('jmlaureat'==getParam("type")) {
-    Appl::setSiteSubTitle("Juhász Máthé díjasok");
+    $school = getActSchool();
+    Appl::setSiteSubTitle($school["awardName"]." díjasok");
     $personList=$db->getPersonList("role like '%jmlaureat%'",null,null,"classText desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%jmlaureat%'");
-    $caption ='Az iskolánk legjelentősebb díját a Juhász Máté István Emlékdíjat az iskola egykori diákja, a műegyetem hallgatójaként rákban elhunyt kiváló tanuló emlékére alapította családja és ösztályfőnöke, Gáll Dénes.';
+    $caption =$school["awardText"];
 } elseif ('incharge'==getParam("type")) {
     Appl::setSiteSubTitle("Osztályfelelősők");
     $personList=$db->getPersonList("role like '%editor%'",null,null,"classText desc",$fields,$join);

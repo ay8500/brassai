@@ -8,6 +8,7 @@ use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteSubTitle('Adatok vizsgálása és jóváhagyása');
 include('homemenu.inc.php');
+global $db, $tabOpen;
 
 $id=getIntParam("id");
 $ret=false;
@@ -36,6 +37,7 @@ if (isUserAdmin()) {
 	//initialise tabs
     $tabsCaption = array();
     $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
+    array_push($tabsCaption ,array("id" => "school", "caption" => 'Iskolák <span class="badge">'.$db->getCountToBeChecked('school').'</span>', "glyphicon" => "align-justify"));
     array_push($tabsCaption ,array("id" => "class", "caption" => 'Osztályok <span class="badge">'.$db->getCountToBeChecked('class').'</span>', "glyphicon" => "align-justify"));
     array_push($tabsCaption ,array("id" => "person", "caption" => 'Személyek <span class="badge">'.$db->getCountToBeChecked('person').'</span>', "glyphicon" => "user"));
     array_push($tabsCaption ,array("id" => "picture", "caption" => 'Képek <span class="badge">'.$db->getCountToBeChecked('picture').'</span>', "glyphicon" => "picture"));
@@ -44,10 +46,11 @@ if (isUserAdmin()) {
     array_push($tabsCaption ,array("id" => "action", "caption" => 'Hozzáférések'));
 
 	include Config::$lpfw.'view/tabs.inc.php';
-	if ($tabOpen=="class") {
+    if ($tabOpen=="school") {
+        generateCheckHtmlTable($db,"Iskolák", "Iskola","School","name",$id,["id"=>0,"name"=>"","address"=>"","mail"=>"","www"=>"","phone"=>"","text"=>""],"getSchoolById","deleteSchoolEntry","saveSchool");
+    } else if ($tabOpen=="class") {
 		generateCheckHtmlTable($db,"Osztályok", "Osztály","Class","text",$id,["id"=>0,"graduationYear"=>"","name"=>"","text"=>""],"getClassById","deleteClass","saveClass");
-	}
-	if ($tabOpen=="person") {
+	} else if ($tabOpen=="person") {
 		$dummyPerson=$db->getPersonDummy();
         $dummyPerson["id"]="";$dummyPerson["picture"]="";
 		$dummyPerson["classID"]="";$dummyPerson["facebook"]="";$dummyPerson["schoolIdsAsTeacher"]=NULL;
@@ -56,11 +59,9 @@ if (isUserAdmin()) {
 		$dummyPerson["homepage"]="";$dummyPerson["skype"]="";$dummyPerson["education"]="";
 		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
 		generateCheckHtmlTable($db,"Személyek", "Személy","Person","lastname",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
-	}
-	if ($tabOpen=="picture") {
+	} else if ($tabOpen=="picture") {
 		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
-	}
-    if ($tabOpen=="mark") {
+	} else if ($tabOpen=="mark") {
         $list=$db->getListToBeChecked('personInPicture');?>
         <p align="center">
             Személy jelölések:<br/>
@@ -84,8 +85,7 @@ if (isUserAdmin()) {
         </table>
         </p>
     <?php
-    }
-	if ($tabOpen=="message") {
+    } else if ($tabOpen=="message") {
 		$list=$db->getListToBeChecked('message');?>
         <p align="center">
            Üzenetek:<br/>
@@ -113,8 +113,7 @@ if (isUserAdmin()) {
             ?>
         </table>
         </p>
-    <?php }?>
-<?php if ($tabOpen=="action") { ?>
+    <?php } else if ($tabOpen=="action") { ?>
 	<p align="center">
 	   Hozzáférések ma:<br/>
    	  <table align="center" border="1">

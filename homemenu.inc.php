@@ -114,10 +114,10 @@ if (getActSchoolId()==null) {
                     <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("staffClass")?>">Barátaink</a></li>
-                    <?php if (getActSchoolId()==1) { ?>
-                        <li><a href="search?type=jmlaureat">Juhász Máthé díjasok</a></li>
-                        <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
+                    <?php if ( getActSchool()["awardName"]!=null) { ?>
+                        <li><a href="search?type=jmlaureat"><?php echo getActSchool()["awardName"] ?> díjasok</a></li>
                     <?php } ?>
+                    <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
                     <li><a href="search?type=incharge">Osztályfelelősők</a></li>
                     <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>
                     <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>&album=_tablo_">Iskola tablói</a></li>

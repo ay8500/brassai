@@ -24,7 +24,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	?>
 	<div class="element">
         <?php
-            displaySchool(isset($d["schoolID"])?$d["schoolID"]:null);
+            $school = displaySchool(isset($d["schoolID"])?$d["schoolID"]:null);
             $personClass = displayPersonNameAndGetClass($db,$person,$showClass);
         ?>
         <?php if ($person["gdpr"]==100) {?>
@@ -38,7 +38,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             <?php if ($showClass)
                 echo($personClass);?>
             <?php if (strstr($d["role"],"jmlaureat")!==false)
-                echo('<div><a href="search?type=jmlaureat">Juhász Máthé díjas</a></div>');?>
+                echo('<div><a href="search?type=jmlaureat">'.$school['awardName'].' díjas</a></div>');?>
             <div class="fields"><?php
 				if ($d["schoolIdsAsTeacher"]===NULL) {
 					if(showField($d,"partner")) echo "<div><div>Élettárs:&nbsp;</div><div>".getFieldValue($d,"partner")."</div></div>";
@@ -454,11 +454,13 @@ function displayIcon($d,$field,$image,$title,$appl) {
 }
 
 function displaySchool($id) {
+    global $schoolList;
+    $school = $schoolList[array_search($id,array_column($schoolList,"id"))];
     if (getActSchoolId()==null || getActSchoolId()!=$id) {
-        global $schoolList;
-        echo( '<div class="schoolname" style="margin-bottom: -15px;">'. $schoolList[array_search($id,array_column($schoolList,"id"))]["name"] . "</div>");
+        echo( '<div class="schoolname" style="margin-bottom: -15px;">'. $school["name"] . "</div>");
 
     }
+    return $school;
 }
 
 \maierlabs\lpfw\Appl::addJsScript("

@@ -553,8 +553,7 @@ class dbDAO {
             $where .= " and class.schoolID =".getActSchoolId();
             $join = "class on class.id = person.classID";
         }
-
-		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset,$order,$field,$join);
+		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset,$order,$field.' ,schoolID',$join);
 		return $ret;
 	}
 
