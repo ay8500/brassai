@@ -383,8 +383,12 @@ class dbDAO {
 	public function getPersonByID($personid,$forceThisID=false) {
 	    if ($personid==null || intval($personid)<=0)
             return null;
-		$person = $this->dataBase->getEntryById("person", $personid,$forceThisID);
-        $person["schoolID"]=($this->getClassById($person["classID"]))["schoolID"];
+		//$person = $this->dataBase->getEntryById("person", $personid,$forceThisID, 'person.*, schoolID', 'class on class.id = person.classID');
+        $person = $this->dataBase->getEntryById("person", $personid,$forceThisID);
+        if ($person["classID"]!=0)
+            $person["schoolID"]=($this->getClassById($person["classID"]))["schoolID"];
+        else
+            $person["schoolID"]=substr($person["schoolIdsAsTeacher"],1,strpos($person["schoolIdsAsTeacher"],')')-1);
 	    return $person;
 	}
 
@@ -534,10 +538,10 @@ class dbDAO {
      */
     public function getTeacherListBySchoolId($school) {
         if (!is_array($school)) {
-            $school = $this->getSchoolById($school);
+            $school = $this->getSchoolById($school,true);
         }
         $where ="schoolIdsAsTeacher like '%(".$school["id"].")%'";
-        $ret = $this->dataBase->getElementList("person",false,$where);
+        $ret = $this->dataBase->getElementList("person",true,$where);
         foreach ($ret as $idx=>$r) {
             $ret[$idx]["schoolID"]=$school["id"];
         }

@@ -170,15 +170,17 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
 			if (getIntParam("classID",-1)>-1) {
 				$diak["classID"]=getIntParam("classID");
 			}
-            //schoolIDsAsTeacher
+            //person is taecher as well
             if (getParam("schoolIdsAsTeacher","")!="") {
                 $diak["schoolIdsAsTeacher"]=getParam("schoolIdsAsTeacher");
-            }
-            if (getParam("teacherPeriod","")!="") {
-                $diak["employer"]=getParam("teacherPeriod");
-            }
-            if (getParam("function")!=null) {
-                $diak["function"]=getParam("function");
+                if (getParam("teacherPeriod","")!="") {
+                    $diak["employer"]=getParam("teacherPeriod");
+                }
+                if (getParam("field")!=null) {
+                    $diak["function"]=getParam("field");
+                }
+            } else {
+                $diak["schoolIdsAsTeacher"]=null;
             }
 			//No dublicate email address is allowed
 			if (isset($diak["email"]) && checkUserEmailExists($userDB,$diak["id"],$diak["email"])) {

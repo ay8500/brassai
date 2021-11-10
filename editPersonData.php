@@ -224,7 +224,7 @@
                 <h5>Kolozsvári iskolákban tanár </h5>
                 <div style="margin-top: 10px;min-height:30px" class="input-group">
                     <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
-                    <input name="function" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" />
+                    <input name="field" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" />
                 </div>
                 <?php foreach ($schoolList as $school) {
                     $selected = strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false?"checked=checked":""?>
@@ -238,7 +238,7 @@
                 <h5>Kolozsvári iskolákban tanár </h5>
                 <div style="margin-top: 10px;margin-bottom: 10px;min-height:30px" class="input-group">
                     <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
-                    <input name="function" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" disabled="disabled" />
+                    <input name="field" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" disabled="disabled" />
                 </div>
                 <?php foreach ($schoolList as $school) {
                     if ( strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false) { ?>

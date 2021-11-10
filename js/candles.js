@@ -50,7 +50,7 @@ var candles = {
 				$firstValue=false;
 			else 
 				echo(',');
-			echo ''.$d["id"].':"'.getActualCandles($d['id']).'"';
+			echo '"'.$d["id"].'":"'.getActualCandles($d['id']).'"';
 		}
 	?>
 };

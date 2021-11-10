@@ -20,6 +20,7 @@ $person = Array();
 $person["name"]=(isset($p["title"])?$p["title"]." ":"").$p["lastname"]." ".$p["firstname"];
 $person["id"]=$p["id"];
 $person["isPersonTeacher"]=$p["schoolIdsAsTeacher"]!=NULL;
+$person["schoolIdsAsTeacher"]=$p["schoolIdsAsTeacher"];
 if (isset($p["deceasedYear"]))
 	$person["deceasedYear"]=$p["deceasedYear"];
 $person["classID"]=$p["classID"];
@@ -57,6 +58,7 @@ if (isset($p["children"]) && showField($p,"children"))
 
 $person["geolocation"] = (isset($p["geolat"]) && $p["geolat"]!="")?1:0;
 $person["isGuest"] = isUserGuest($p)?1:0;
+$person["schoolName"] = $p["schoolName"];
 	
 
 echo(json_encode($person));
@@ -72,11 +74,14 @@ function getRandomPerson() {
 	
 	$p=$db->getPersonByID($idrow["id"]);
 	// Testperson
-	// $p=$db->getPersonByID(700);
+	//$p=$db->getPersonByID(658);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	$p["classEvening"]=$class["eveningClass"];
-	
+	if ($class["schoolID"]>0)
+		$p["schoolName"]=getSchoolNameById($class["schoolID"]);
+	else
+		$p["schoolName"]=getSchoolNameById(substr($p["schoolIdsAsTeacher"],1,strpos($p["schoolIdsAsTeacher"],"]")-1));
 	return $p;
 }
 

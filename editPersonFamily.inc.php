@@ -14,7 +14,6 @@ $family=array(
     array ("code"=>"c", "text"=>"Gyerekem","textf"=>"Lányom","textm"=>"Fiam"),
     array ("code"=>"l", "text"=>"Élettársam","textf"=>"Feleségem","textm"=>"Férjem"),
     array ("code"=>"s", "text"=>"Testvérem","textf"=>"Hugom / Növérem","textm"=>"Fivérem"),
-    array ("code"=>"sls", "text"=>"Testvérem élettársának testvére","textf"=>"Sógornőm/sógorom testvére","textm"=>"Sógornőm/sógorom testvére"),
     array ("code"=>"sc", "text"=>"Testvérem gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
     array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
     array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
@@ -43,6 +42,7 @@ $family=array(
 
     array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sógornőm","textm"=>"Sógorom"),
     array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"sls", "text"=>"Testvérem élettársának testvére","textf"=>"Sógornőm/sógorom testvére","textm"=>"Sógornőm/sógorom testvére"),
     array ("code"=>"lsl", "text"=>"Élettársam testvérének élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
     array ("code"=>"slsl", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
     array ("code"=>"lsls", "text"=>"Élettársam testvérének élettérsának terstvére","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),

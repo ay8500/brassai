@@ -36,7 +36,8 @@ function addWrapperDiv(id) {
 	var d = data[id];
 
 	var w=$("#wrapper").width();
-        var width=Math.round(0.5+w/Math.round(0.5+w/wrapperWidth))-10;
+        var width=Math.round(0.5+w/Math.round(0.7+w/wrapperWidth))-10;
+        width = width<450?450:width;
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; margin: 0px 10px">';
@@ -50,31 +51,36 @@ function addWrapperDiv(id) {
 		}
         html +='</div>';
         html +='</a></div>';
-        html +='<div style="display: inline-block;max-width:50%;vertical-align: top;margin-bottom:10px;">';
+        html +='<div style="display: inline-block;max-width:300px;vertical-align: top;margin-bottom:10px;">';
         html +='<h4>'+d.name+'</h4>';
-        html +='<div class="fields">'; 
+        html +='<h6>'+d.schoolName+'</h6>';
+        html +='<div class="fields">';
+        if (d.classText.indexOf("Tanár")==-1) {
+            if (d.isGuest==0)
+                html +='<div><div>Végzős osztály:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
+            else
+                html +='<div><div>Osztály vendég:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
+        }
         if (d.schoolIdsAsTeacher) {
             if (d['function']!=null) {
-        	html +='<div><div>Tanár:</div><div>'+d['function']+'</div></div>';
+        	    html +='<div><div>Tanár: </div><div>'+d['function']+'</div></div>';
             }
-            if (d.children!=null) {
-    	    	html +='<div><div>Osztályfőnök:</div><div>';
-    	    	var kx= d.children.split(",");
-    	    	for (var k=0;k<kx.length;k++) {
-    	    	    if (k!=0) html+=',';
-    	    	    html +='<a href="hometable?classid='+kx[k]+'">'+kx[k]+'</a> ';
-    	    	}
-    	    	html +='</div></div>';
-            }
-        } else {
-            if (d.isGuest==0)
-        	html +='<div><div>Osztály:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
-            else
-        	html +='<div><div>Osztály:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
+            var schools = d.schoolIdsAsTeacher.split(")",);
+            schools.forEach((schoolId,idx) => {
+                try {
+                    var pjson = JSON.parse(d.employer);
+                    var period = pjson[schoolId.slice(1)] ;
+                } catch (err) {
+                    var period = d.employer;
+                }
+                if (schoolId!="") {
+                    html += '<div><div><img style="height:20px;" src="images/school' + schoolId.slice(1) + '/logo.jpg" /></div><div>'+period+'</div></div>';
+                }
+            });
         }
         if (d.place!=null)
-    		html +='<div><div>Helyiség:</div><div>'+d.place+'</div></div>';
-        if (d.employer!=null)
+    		html +='<div><div>Helység:</div><div>'+d.place+'</div></div>';
+        if (d.employer!=null && !d.isPersonTeacher)
     		html +='<div><div>Munkahely:</div><div>'+d.employer+'</div></div>';
         html +='<div class="diakCardIcons">';
         
@@ -135,7 +141,7 @@ function getWrapperData() {
  	    addWrapperDiv(data.length-1);
  	    //if the max count not reached call the function recursive
  	    if (data.length<countWrapper)
- 		getWrapperData();
+ 		  getWrapperData();
  	}
      });
 

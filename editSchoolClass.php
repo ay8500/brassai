@@ -29,6 +29,11 @@ if ($class==null && !isActionParam("newclass") && !isActionParam("saveclass")) {
     die();
 }
 
+if (isActionParam("newclass")) {
+    if (getIntParam("schoolid")>0)
+        setActSchool(getIntParam("schoolid"));
+}
+
 if (isActionParam("deleteclass") && isUserAdmin()) {
     $personCount=sizeof($db->getPersonListByClassId($class["id"]));
     if(  $personCount==0 ) {
@@ -113,12 +118,11 @@ include("homemenu.inc.php");
 
 		<div class="input-group shadowbox">
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
-			<select class="form-control" onchange="changeSchool()" id="selectSchool">
+			<select class="form-control" onchange="changeSchool();" id="selectSchool">
                 <?php foreach ($schoolList as $school) {
                     $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
                     <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
                 <?php } ?>
-				<option value="0">Hiányzik a te iskolád, szeretnéd ha a tiéd is itt legyen, akkor küldj egy e-mailt a rendszergazdának. <?php echo Config::$siteMail?></option>
 			</select>
 		</div>
 		<div class="input-group shadowbox" >
@@ -167,9 +171,7 @@ include("homemenu.inc.php");
 			<option value="0">...válassz...</option>
 			<option value="-1">...nincs a listán...</option>
 			<?php
-                //$teachers = $db->getTeacherListBySchoolId(getActSchoolId());
-                //TODO OLD VERSION
-				$teachers=$db->getPersonListByClassId($db->getStafClassIdBySchoolId(getActSchoolId()));
+                $teachers = $db->getTeacherListBySchoolId(getActSchoolId());
 				foreach ($teachers as $t) {?>
 				<option value="<?php echo $t['id']?>" <?php echo (isset($class['headTeacherID']) && $t['id']==$class['headTeacherID']?"selected":"") ?> > 
 					<?php echo getPersonName($t).':'.getFieldValueNull($t,'function')?>
@@ -257,13 +259,9 @@ Appl::addJsScript('
 	}
 
 	function changeSchool() {
-		if ($("#selectSchool").val()!==0	) {
-		    $("#btNew").show();$("#btMail").hide();
-		} else {
-		    $("#btNew").hide();$("#btMail").show();
-		    
-		}
-	    checkStatus();
+		if ($("#selectSchool option:selected").val()!==0	) {
+		    document.location.href="editSchoolClass?action=newclass&schoolid="+$("#selectSchool").val();
+		} 
 	}
 
 	function changeTeacher() {

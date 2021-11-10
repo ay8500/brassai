@@ -12,6 +12,8 @@
  * @return int
  */
 function getActualCandles($id) {
+    if (intval($id<=0))
+        return 0;
 	global $db;
     $dbCandle = new dbDaCandle($db);
 	return $dbCandle->getCandlesByPersonId($id);

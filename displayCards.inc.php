@@ -35,10 +35,10 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         <?php } ?>
         <?php displayPersonPictureAndHistory($db,$d);?>
 		<div class="personboxc">
-            <?php if ($showClass)
-                echo($personClass);?>
             <?php if (strstr($d["role"],"jmlaureat")!==false)
                 echo('<div><a href="search?type=jmlaureat">'.$school['awardName'].' díjas</a></div>');?>
+            <?php if ($showClass)
+                echo($personClass);?>
             <div class="fields"><?php
 				if ($d["schoolIdsAsTeacher"]===NULL) {
 					if(showField($d,"partner")) echo "<div><div>Élettárs:&nbsp;</div><div>".getFieldValue($d,"partner")."</div></div>";
@@ -380,12 +380,13 @@ function displayPersonNameAndGetClass ($db,$d) {
             $d["classText"] = getSchoolClassName($diakClass);
         }
         if (isUserGuest($d)) {
-            if (strstr($d["classText"], "staf") !== false)
+            if (strpos($d["classText"],"Tanár")!==false)
                 $personClass .= '<h5>Jó barát:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
             else
                 $personClass .= '<h5>Vendég:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
         } else {
-            $personClass .= '<h5>Véndiák:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
+            if (strpos($d["classText"],"Tanár")===false)
+                $personClass .= '<h5>Véndiák:<a href="hometable?classid=' . $d["classID"] . '">' . $d["classText"] . '</a></h5>';
         }
     }
     if ($d["schoolIdsAsTeacher"]!=NULL) {

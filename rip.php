@@ -27,7 +27,7 @@ if (isActionParam("teacher"))
 else if (isActionParam("person"))
 	$personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher is null",200,null,getActSchoolId());
 else {
-	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),24, getActSchoolId());
+	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),48, getActSchoolId());
 }
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 
