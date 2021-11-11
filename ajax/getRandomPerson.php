@@ -74,7 +74,7 @@ function getRandomPerson() {
 	
 	$p=$db->getPersonByID($idrow["id"]);
 	// Testperson
-	//$p=$db->getPersonByID(658);
+	//$p=$db->getPersonByID(9813);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	$p["classEvening"]=$class["eveningClass"];

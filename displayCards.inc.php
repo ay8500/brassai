@@ -52,30 +52,15 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 					if (isset($d["function"]))
 					    echo "<div><div>Tantárgy:&nbsp;</div><div> ".getFieldValue($d["function"])."</div></div>";
                     echo "<div><div>Iskola:&nbsp;</div><div>";
-                    $schools = explode(")",$d["schoolIdsAsTeacher"]);
-                    foreach ($schools as $school) {
-                        $school = intval(trim($school,"("));
-                        if (($school=$db->getSchoolById($school))!=null) {
-                            echo '<img style="border-radius:15px;height:33px" src="images/school' . $school["id"] . '/logo.jpg" title="' . $school["name"] . '" />&nbsp;';
-                            echo $db->getTeacherPeriod($d, $school["id"]) . "<br />";
+                        $schools = explode(")",$d["schoolIdsAsTeacher"]);
+                        foreach ($schools as $school) {
+                            $school = intval(trim($school,"("));
+                            if (($school=$db->getSchoolById($school,true))!=null) {
+                                echo '<span><img src="images/school' . $school["id"] . '/logo.jpg" title="' . $school["name"] . '"/>&nbsp;';
+                                echo $db->getTeacherPeriod($d, $school["id"]).'</span>';
+                            }
                         }
-                    }
                     echo "</div></div>";
-/*					if (showField($d,"children")) {
-						echo "<div><div>Osztályfőnök:</div><div>";
-						$c = explode(",", getFieldValue($d["children"]));
-						foreach ($c as $idx=>$cc) {
-							$class= $db->getClassByText($cc);
-							if ($idx!=0) echo(',');
-							if ($class!=null) {
-								echo(' <a href="hometable?classid='.$class["id"].'">'.$cc.'</a> ');
-							} else {
-								echo(' <a href="javascript:alert(\'Ennek az osztálynak még nincsenek bejegyzései ezen az oldalon. Szívesen bővitheted a véndiákok oldalát önmagad is. Hozd létre ezt az osztályt és egyenként írd be a diákoknak nevét és adatait. Előre is köszönjük!\')">'.$cc.'</a> ');
-							}
-						}
-						echo "</div></div>";
-					}
-*/
 				}
 				if(showField($d,"country")) 	echo "<div><div>Ország:&nbsp;</div><div>".getFieldValue($d["country"])."</div></div>";
 				if(showField($d,"place")) 		echo "<div><div>Város:&nbsp;</div><div>".getFieldValue($d["place"])."</div></div>";

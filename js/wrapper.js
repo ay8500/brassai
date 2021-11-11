@@ -55,7 +55,7 @@ function addWrapperDiv(id) {
         html +='<h4>'+d.name+'</h4>';
         html +='<h6>'+d.schoolName+'</h6>';
         html +='<div class="fields">';
-        if (d.classText.indexOf("Tanár")==-1) {
+        if (d.classText.indexOf("Tanár")==-1 && d.classText!='') {
             if (d.isGuest==0)
                 html +='<div><div>Végzős osztály:</div><div><a href="hometable?classid='+d.classID+'">'+d.classText+'</a></div></div>';
             else

@@ -84,9 +84,7 @@ if (getActSchoolId()==null) {
       <div class="navbar-header" style="margin-left:32px;">
           <button type="button" class="navbar-toggle" style="float: none" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
+              <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
           </button>
       </div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-left:22px;">
@@ -98,7 +96,7 @@ if (getActSchoolId()==null) {
                     <li><a href="start?all=all">Kolozsvári véndiák újdonságok</a></li>
                     <li><a href="rip?classid=all&schoolid=all">Emléküket örökké őrizzük</a></li>
                     <?php foreach ($schoolList as $menuSchool) {
-                        $selected = $menuSchool["id"]==getActSchoolId()?"color:lightgray":""?>
+                        $selected = $menuSchool["id"]==getActSchoolId()?"font-weight:bold;color:black":""?>
                         <li><a style="<?php echo $selected?>" href="start?schoolid=<?php echo $menuSchool["id"] ?>"><?php echo $menuSchool["name"] ?></a></li>
                     <?php  }?>
                     <li><a href="worldmap?classid=all&schoolid=all">Térkép</a></li>
@@ -328,4 +326,11 @@ if (getActSchoolId()==null) {
 
 <?php
 Appl::addJs('js/search.js',true);
+
+function isMobileDevice() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo
+|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i"
+        , $_SERVER["HTTP_USER_AGENT"]);
+}
+
 ?>

@@ -16,19 +16,23 @@ if (getParam("schoolid")=="all")
 else
     $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
-$SiteDescription="Elhunyt tanáraink és diákok";
-Appl::setSiteTitle($SiteDescription);
 $picture["file"] = "images/candle3.gif";
 Appl::setMember("firstPicture",$picture);
 
 //Type of canlde list new, teacher, people
-if (isActionParam("teacher"))
-	$personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher  is not null",200,null,getActSchoolId());
-else if (isActionParam("person"))
-	$personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher is null",200,null,getActSchoolId());
-else {
+if (isActionParam("teacher")) {
+    $personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher  is not null", 200, null, getActSchoolId());
+    $subTitle = "Tanáraink emlékeére gyújtott gyertyák";
+} else if (isActionParam("person")) {
+    $personList = $db->getSortedPersonList("deceasedYear is not null and schoolIdsAsTeacher is null", 200, null, getActSchoolId());
+    $subTitle = "Diákok emlékeére gyújtott gyertyák";
+} else {
 	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),48, getActSchoolId());
+    $subTitle = "Nemrég gyújtott gyertyák";
 }
+$SiteDescription="Elhunyt tanáraink és diákok";
+Appl::setSiteTitle($SiteDescription,$subTitle);
+
 \maierlabs\lpfw\Appl::addJs('js/candles.js',true);
 
 
