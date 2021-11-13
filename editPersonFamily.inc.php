@@ -130,7 +130,7 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
 
     <div class="input-group shadowbox" style="display:none" id="divSearchName">
         <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokomom</span>
-        <input class ="form-control" id="searchName" placeholder="írd be család vagy keresztnavét" onkeyup="searchPerson()"/>
+        <input class ="form-control" id="searchName" placeholder="család vagy keresztnév, 'tanár' vagy évszám szükíti a találatokat " onkeyup="searchPerson()"/>
     </div>
     <div id="divNames" style="display: none">
         <ul class="input-group shadowbox"  id="selectPerson" style="max-width: 600px" >

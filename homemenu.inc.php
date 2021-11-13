@@ -107,20 +107,20 @@ if (getActSchoolId()==null) {
             <li class="dropdown">
 				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánk<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="classlist">Osztályok</a> </li>
-                    <li><a href="school">Iskolánkról</a></li>
+                    <li><a href="classlist?schoolid=<?php echo getActSchoolId()?>">Osztályok</a> </li>
+                    <li><a href="school?schoolid=<?php echo getActSchoolId()?>">Iskolánkról</a></li>
                     <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("staffClass")?>">Barátaink</a></li>
                     <?php if ( getActSchool()["awardName"]!=null) { ?>
-                        <li><a href="search?type=jmlaureat"><?php echo getActSchool()["awardName"] ?> díjasok</a></li>
+                        <li><a href="search?type=jmlaureat&schoolid=<?php echo getActSchoolId()?>"><?php echo getActSchool()["awardName"] ?> díjasok</a></li>
                     <?php } ?>
-                    <li><a href="search?type=unknown">Nem tudunk róluk</a></li>
-                    <li><a href="search?type=incharge">Osztályfelelősők</a></li>
+                    <li><a href="search?type=unknown&schoolid=<?php echo getActSchoolId()?>">Nem tudunk róluk</a></li>
+                    <li><a href="search?type=incharge&schoolid=<?php echo getActSchoolId()?>">Osztályfelelősők</a></li>
                     <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>
                     <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
-        			<li><a href="worldmap?classid=all">Térkép</a></li>
-        			<li><a href="zenetoplista?classid=all">Zenetoplista</a></li>
+        			<li><a href="worldmap?classid=all&schoolid=<?php echo getActSchoolId()?>">Térkép</a></li>
+        			<li><a href="zenetoplista?classid=all&schoolid=<?php echo getActSchoolId()?>">Zenetoplista</a></li>
        			</ul>
       		</li>
             <?php } ?>

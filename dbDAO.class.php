@@ -421,10 +421,13 @@ class dbDAO {
      *@return array
  	*/
 	public function searchForPerson($name) {
-		$ret = array();
+        $rteacherRegexp = '(tanár|tanár\\súr|tanárnő|Tanár|Tanár\\súr|Tanárnő|tanar|tanar\\sur|tanarno|Tanar|Tanar\\sur|Tanarno)';
+        $teacher =(preg_match($rteacherRegexp, $name) === 1) ;
+        $name = preg_replace($rteacherRegexp,"",$name);
+        $ret = array();
 		$nameItems=explode(' ', trim($name));
 		foreach ($nameItems as $nameWord) {
-				$ret=$this->arrayMergeByFieldId($ret,$this->searchForPersonOneString($nameWord));
+				$ret=$this->arrayMergeByFieldId($ret,$this->searchForPersonOneString($nameWord,$teacher));
 		}
 		usort($ret, "compareAlphabetical");
 		return $ret;
@@ -460,7 +463,7 @@ class dbDAO {
 	 * @param string $name
      * @return array
 	 */
-	private function searchForPersonOneString($name) {
+	private function searchForPersonOneString($name, $teacher=false) {
 		$ret = array();
         $name=trim($name);
         if( intval($name)>1930 && intval($name)<2100 ) {
@@ -480,6 +483,9 @@ class dbDAO {
         $sql  ="select person.*, class.schoolID as schoolID, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
         $sql .=" left join  class on class.id=person.classID";
         $sql .=" where (graduationYear != 0 or role not like '%guest%' )";		//No administator users
+        if ($teacher) {
+            $sql .=" and schoolIdsAsTeacher is not null";
+        }
         $sql .=" and ( person.changeForID is null and ".$where;
         $sql .=" and person.id not in ( select changeForID from person where  ".$this->dataBase->getSqlAnonymous("person.")." ) ";
         $sql.=") or (".$this->dataBase->getSqlAnonymous("person.")."and ".$where.") limit 150";

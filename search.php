@@ -20,6 +20,7 @@ Appl::setSiteSubTitle("Találatok a véndiákok adatbankjában");
 $fields = "person.*,concat(graduationYear,' ',name) as classText";
 $join ="class on person.classID=class.id ";
 $sort="lastName, firstName";
+$title="Keresés";
 
 if (null==getParam("type")) {
 	$name=trim(html_entity_decode(getGetParam("srcText", "")));
@@ -32,16 +33,19 @@ if (null==getParam("type")) {
     $personList=$db->getPersonList("role like '%jmlaureat%'",null,null,"classText desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%jmlaureat%'");
     $caption =$school["awardText"];
+    $title = $school["awardName"]." díazottak";
 } elseif ('incharge'==getParam("type")) {
     Appl::setSiteSubTitle("Osztályfelelősők");
     $personList=$db->getPersonList("role like '%editor%'",null,null,"classText desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%editor%'");
     $caption ='Osztályfelelősők névsora. Kédésekkel osztálytalálkozokkal vagy osztálytársakkal kapcsolatban forduljatok az osztályfelelősőkhőz.';
+    $title = "Osztályfelelősők";
 } elseif ('unknown'==getParam("type")) {
     Appl::setSiteSubTitle("Iskolatársaink akikről sajnos nem tudunk semmit.");
     $personList=$db->getPersonList("role like '%unknown%'",null,null,"classText desc",$fields,$join);
     $personCount=$db->getTableCount("person","role like '%unknown%'");
     $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bármilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
+    $title ="Nem tudunk róluk";
 } else {
     if (isUserAdmin() ) {
         switch (getParam("type")) {
@@ -146,7 +150,7 @@ if (null==getParam("type")) {
             Jelentkezz be vagy regisztráld magad! Ez az oldal nagyon jó, barátságos, ingyenes és reklámmentes!', "warning");
     }
 }
-Appl::setSiteTitle(" Keresés");
+Appl::setSiteTitle($title);
 
 include("homemenu.inc.php");
 include_once 'displayCards.inc.php';
