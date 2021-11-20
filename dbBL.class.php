@@ -87,7 +87,7 @@ class dbBL extends dbDAO
                 return  $class["name"] . $class["graduationYear"];
             }
         } else {
-            return getActSchoolFolder();
+            return $this->getActSchoolFolder();
         }
 
     }
@@ -126,7 +126,7 @@ class dbBL extends dbDAO
         if (null==getLoggedInUserId())
             return -1;
         $loggedInUser=$this->getPersonByID(getLoggedInUserId());
-        if ($loggedInUser!=null)
+        if ($loggedInUser!=null && isset($loggedInUser["classID"]))
             return intval($loggedInUser["classID"]);
 
         return -1;

@@ -75,12 +75,12 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testRIP() {
-        $ret = $this->callTestUrl($this->url . "rip", false);
+        $ret = $this->callTestUrl($this->url . "rip?schoolid=1", false);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
         $div = $finder->query("//*[contains(@class, 'rip-element')]");
-        $this->assertEquals(24,$div->length);
+        $this->assertEquals(48,$div->length,"Expeted 24 persons on this page");
         for ($i =0 ; $i<$div->length;$i++) {
             $text = $div->item($i)->childNodes->item(1)->nodeValue;
             $this->assertContains("†",$text);
@@ -93,7 +93,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $ret = $this->callTestUrl($this->url . "start?all=all", false);
         $this->assertNotNull($ret);
         $tabs = Parser::getListItemsBetween($ret->content, 'role="tablist"', '</ul>', true);
-        $this->assertCount(11, $tabs);
+        $this->assertCount(10, $tabs);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
@@ -104,6 +104,8 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $this->assertContains("function logon() {",$ret->content);
         $this->logon();
         $ret = $this->callTestUrl($this->url . "start", false);
+        $tabs = Parser::getListItemsBetween($ret->content, 'role="tablist"', '</ul>', true);
+        $this->assertCount(11, $tabs);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);

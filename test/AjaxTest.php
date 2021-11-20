@@ -83,6 +83,13 @@ class AjaxTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($ret["content"]) && isset($ret["content"]["id"]) && isset($ret["content"]["name"]) && isset($ret["content"]["image"]) );
     }
 
+    public function testGetGeoPoints() {
+        $url="/brassai/";
+        $ret=(array)$this->callTestUrl($url."ajax/getGeoPoints?lat2=49.28482762264301&lng1=10.55442810058594&lat1=49.015355983769666&lng2=11.696319580078127",false);
+        $this->assertNotNull($ret);
+        $this->assertTrue(isset($ret["content"]) && $ret["content"]="49.116316928174:11.1094140625:Maier Levente (Kalmár)|" );
+    }
+
     public function testCandleLighter() {
         $id = "9898989891";
         $uId = "7878787878";

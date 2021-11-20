@@ -385,6 +385,8 @@ class dbDAO {
             return null;
 		//$person = $this->dataBase->getEntryById("person", $personid,$forceThisID, 'person.*, schoolID', 'class on class.id = person.classID');
         $person = $this->dataBase->getEntryById("person", $personid,$forceThisID);
+        if (null==$person)
+            return null;
         if ($person["classID"]!=0)
             $person["schoolID"]=($this->getClassById($person["classID"]))["schoolID"];
         else
@@ -562,8 +564,9 @@ class dbDAO {
         if (getActSchoolId()!=null) {
             $where .= " and class.schoolID =".getActSchoolId();
             $join = "class on class.id = person.classID";
+            $field .= ' ,schoolID';
         }
-		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset,$order,$field.' ,schoolID',$join);
+		$ret = $this->dataBase->getElementList("person",false,$where,$limit,$ofset,$order,$field,$join);
 		return $ret;
 	}
 
