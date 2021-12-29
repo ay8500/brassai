@@ -7,6 +7,60 @@
 
 class dbDaFamily
 {
+    /* Parents, Silbling, Life parnter, Children */
+public /* Parents, Silbling, Life parnter, Children */
+    $family=array(
+    array ("code"=>"x", "text"=>"Távoli rokon","textf"=>"","textm"=>""),
+    array ("code"=>"ccc", "text"=>"Dédunokám","textf"=>"","textm"=>""),
+    array ("code"=>"ccl", "text"=>"Unokám élettársa", "textf"=>"Unokám felsége","textm"=>"Unokám férje"),
+    array ("code"=>"cc", "text"=>"Unokám","textf"=>"","textm"=>""),
+    array ("code"=>"cl", "text"=>"Gyerekem élettársa","textf"=>"Menyem","textm"=>"Vöm"),
+    array ("code"=>"c", "text"=>"Gyerekem","textf"=>"Lányom","textm"=>"Fiam"),
+    array ("code"=>"l", "text"=>"Élettársam","textf"=>"Feleségem","textm"=>"Férjem"),
+    array ("code"=>"s", "text"=>"Testvérem","textf"=>"Hugom / Növérem","textm"=>"Fivérem"),
+    array ("code"=>"sc", "text"=>"Testvérem gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
+    array ("code"=>"lsc", "text"=>"Élettársam testvérének gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
+    array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
+    array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
+    array ("code"=>"ps", "text"=>"Szüleim testvére","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
+    array ("code"=>"psl", "text"=>"Szüleim testvérének élettársa","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
+    array ("code"=>"psc", "text"=>"Szüleim testvérének gyereke=Unokatestvérem","textf"=>"","textm"=>""),
+    array ("code"=>"pscl", "text"=>"Szüleim testvérének gyerekének élettársa","textf"=>"Unokatestvérem felesége","textm"=>"Unokatestvérem férje"),
+    array ("code"=>"pscc", "text"=>"Szüleim testvérének unokája","textf"=>"Másodunokahugom","textm"=>"Másodunkaöcsém"),
+    array ("code"=>"psccc", "text"=>"Szüleim testvérének dédunokája","textf"=>"","textm"=>""),
+    array ("code"=>"pp", "text"=>"Nagyszüleim","textf"=>"Nagyanyám","textm"=>"Nagyapám"),
+    array ("code"=>"pps", "text"=>"Nagyszüleim testvére","textf"=>"Nagy-nagyanyám","textm"=>"Nagy-nagyapám"),
+    array ("code"=>"ppsc", "text"=>"Nagyszüleim testvérének gyereke","textf"=>"Másodnagynéném","textm"=>"Másodnagybátyám"),
+    array ("code"=>"ppscc", "text"=>"Nagyszüleim testvérének unokája=Másodunokatestvér","textf"=>"","textm"=>""),
+    array ("code"=>"ppsccc", "text"=>"Nagyszüleim testvérének dédunokája","textf"=>"Másodunokahugom","textm"=>"Másodunokaöcsém"),
+    array ("code"=>"ppp", "text"=>"Dédszüleim","textf"=>"Dédanyám","textm"=>"Dédapám"),
+    array ("code"=>"pppsc", "text"=>"Dédszüleim testvérének gyereke","textf"=>"Harmaddédnéném","textm"=>"Harmaddédédbátyám"),
+    array ("code"=>"pppscc", "text"=>"Dédszüleim testvérének unokája","textf"=>"Harmadnagynéném","textm"=>"Harmadnagybátyám"),
+    array ("code"=>"pppsccc", "text"=>"Dédszüleim testvérének dédunokája=Harmadunokatestvér","textf"=>"","textm"=>""),
+
+    array ("code"=>"lp", "text"=>"Élettársam szülei","textf"=>"Anyósom","textm"=>"Apósóm"),
+    array ("code"=>"lps", "text"=>"Élettársam szüleinek testvére","textf"=>"Anyósom/aposom higa/növére","textm"=>"Anyosom/apósóm fivére"),
+    array ("code"=>"lpls", "text"=>"Távoli rokon","textf"=>"Anyósom/Apósóm Sogornője","textm"=>"Anyósom/Apósóm Sogora"),
+    array ("code"=>"lpsc", "text"=>"Élettársam szüleinek testvérének gyereke","textf"=>"Anyósom/aposom unokahuga","textm"=>"Anyosom/apósóm unokaöccse"),
+    array ("code"=>"lpscl", "text"=>"Élettársam szüleinek testvérének gyerekének élettársa","textf"=>"Anyósom/aposom unokahugának/unokaöccsének felesége","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének férje"),
+    array ("code"=>"lpscl", "text"=>"Élettársam szüleinek testvérének gyerekének élettársa","textf"=>"Anyósom/aposom unokahugának/unokaöccsének felesége","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének férje"),
+    array ("code"=>"lpscls", "text"=>"Élettársam szüleinek testvérének gyerekének élettársának gyereke","textf"=>"Anyósom/aposom unokahugának/unokaöccsének élettársának lánya","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének élettársának fia"),
+
+    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"sls", "text"=>"Testvérem élettársának testvére","textf"=>"Sógornőm/sógorom testvére","textm"=>"Sógornőm/sógorom testvére"),
+    array ("code"=>"lsl", "text"=>"Élettársam testvérének élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
+    array ("code"=>"slsl", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
+    array ("code"=>"lsls", "text"=>"Élettársam testvérének élettérsának terstvére","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
+    array ("code"=>"slsc", "text"=>"Testvérem élettársának testvérének gyereke","textf"=>"Sógornőm/sógorom unokahuga","textm"=>"Sógornőm/sógorom unokaöccse"),
+    array ("code"=>"lssc", "text"=>"Élettársam testvérének testvérének gyereke","textf"=>"Sógornőm/sógorom unokahuga","textm"=>"Sógornőm/sógorom unokaöccse"),
+
+    array ("code"=>"clp", "text"=>"Gyerekem élettársának szülei ","textf"=>"Anyatársam","textm"=>"Apatársam"),
+    array ("code"=>"clpls", "text"=>"Távoli rokon","textf"=>"Apatársam/Anyatársam Sógornője","textm"=>"Apatársam/Anyatársam Sógora"),
+
+);
+
+
     /**
      * @var dbDAO
      */
@@ -235,6 +289,18 @@ class dbDaFamily
         $ret = preg_replace("/lc\z/","c",$ret,1); // my lifepartners child is my also my child
 
         return $ret;
+    }
+
+    public function getKinship($code, $gender, $realtiveGender,$deap) {
+        $relative= array_search($code,array_column($this->family,"code"));
+        if ($realtiveGender=="f" || $gender=="f")
+            $textGender =($this->family[$relative]["textf"]!='') ? $this->family[$relative]["textf"] : "";
+        elseif ($realtiveGender=="m" || $gender=="m")
+            $textGender =($this->family[$relative]["textm"]!='') ? $this->family[$relative]["textm"] : "";
+        else {
+            $textGender = ($this->family[$relative]["textf"] != '') ? ($this->family[$relative]["textf"] . " / " . $this->family[$relative]["textm"] ) : "";
+        }
+        return $this->family[$relative]["text"].($textGender!=''?"= ":"").$textGender;
     }
 
 }

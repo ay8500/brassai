@@ -78,7 +78,7 @@ if (isActClassStaf()&& !$guests) {
 		<?php } elseif (!isActClassStaf()) {?>
 			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(Appl::getMember("actClass")), $guests));?></span>
 		<?php } else  {?>
-			Tanárok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getActClass()), $guests));?></span>
+			Tanárok&nbsp;száma:<span id="personCount"><?php echo(sizeof($personList));?></span>
 		<?php } ?>
 	</div>
 <?php

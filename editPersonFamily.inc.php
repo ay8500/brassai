@@ -4,58 +4,12 @@ include_once 'dbDaFamily.class.php';
 global $db;
 $dbFamily = new dbDaFamily($db);
 
-/* Parents, Silbling, Life parnter, Children */
-$family=array(
-    array ("code"=>"x", "text"=>"Távoli rokon","textf"=>"","textm"=>""),
-    array ("code"=>"ccc", "text"=>"Dédunokám","textf"=>"","textm"=>""),
-    array ("code"=>"ccl", "text"=>"Unokám élettársa", "textf"=>"Unokám felsége","textm"=>"Unokám férje"),
-    array ("code"=>"cc", "text"=>"Unokám","textf"=>"","textm"=>""),
-    array ("code"=>"cl", "text"=>"Gyerekem élettársa","textf"=>"Menyem","textm"=>"Vöm"),
-    array ("code"=>"c", "text"=>"Gyerekem","textf"=>"Lányom","textm"=>"Fiam"),
-    array ("code"=>"l", "text"=>"Élettársam","textf"=>"Feleségem","textm"=>"Férjem"),
-    array ("code"=>"s", "text"=>"Testvérem","textf"=>"Hugom / Növérem","textm"=>"Fivérem"),
-    array ("code"=>"sc", "text"=>"Testvérem gyereke","textf"=>"Unokahugom","textm"=>"Unokaöcsém"),
-    array ("code"=>"scc", "text"=>"Testvérem unokája","textf"=>"Dédunokahugom","textm"=>"Dédunokaöcsém"),
-    array ("code"=>"p", "text"=>"Szüleim","textf"=>"Anyukám","textm"=>"Apukám"),
-    array ("code"=>"ps", "text"=>"Szüleim testvére","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
-    array ("code"=>"psl", "text"=>"Szüleim testvérének élettársa","textf"=>"Nagynéném","textm"=>"Nagybátyám"),
-    array ("code"=>"psc", "text"=>"Szüleim testvérének gyereke=Unokatestvérem","textf"=>"","textm"=>""),
-    array ("code"=>"pscl", "text"=>"Szüleim testvérének gyerekének élettársa","textf"=>"Unokatestvérem felesége","textm"=>"Unokatestvérem férje"),
-    array ("code"=>"pscc", "text"=>"Szüleim testvérének unokája","textf"=>"Másodunokahugom","textm"=>"Másodunkaöcsém"),
-    array ("code"=>"psccc", "text"=>"Szüleim testvérének dédunokája","textf"=>"","textm"=>""),
-    array ("code"=>"pp", "text"=>"Nagyszüleim","textf"=>"Nagyanyám","textm"=>"Nagyapám"),
-    array ("code"=>"pps", "text"=>"Nagyszüleim testvére","textf"=>"Nagy-nagyanyám","textm"=>"Nagy-nagyapám"),
-    array ("code"=>"ppsc", "text"=>"Nagyszüleim testvérének gyereke","textf"=>"Másodnagynéném","textm"=>"Másodnagybátyám"),
-    array ("code"=>"ppscc", "text"=>"Nagyszüleim testvérének unokája=Másodunokatestvér","textf"=>"","textm"=>""),
-    array ("code"=>"ppsccc", "text"=>"Nagyszüleim testvérének dédunokája","textf"=>"Másodunokahugom","textm"=>"Másodunokaöcsém"),
-    array ("code"=>"ppp", "text"=>"Dédszüleim","textf"=>"Dédanyám","textm"=>"Dédapám"),
-    array ("code"=>"pppsc", "text"=>"Dédszüleim testvérének gyereke","textf"=>"Harmaddédnéném","textm"=>"Harmaddédédbátyám"),
-    array ("code"=>"pppscc", "text"=>"Dédszüleim testvérének unokája","textf"=>"Harmadnagynéném","textm"=>"Harmadnagybátyám"),
-    array ("code"=>"pppsccc", "text"=>"Dédszüleim testvérének dédunokája=Harmadunokatestvér","textf"=>"","textm"=>""),
-
-    array ("code"=>"lp", "text"=>"Élettársam szülei","textf"=>"Anyósom","textm"=>"Apósóm"),
-    array ("code"=>"lps", "text"=>"Élettársam szüleinek testvére","textf"=>"Anyósom/aposom higa/növére","textm"=>"Anyosom/apósóm fivére"),
-    array ("code"=>"lpsc", "text"=>"Élettársam szüleinek testvérének gyereke","textf"=>"Anyósom/aposom unokahuga","textm"=>"Anyosom/apósóm unokaöccse"),
-    array ("code"=>"lpscl", "text"=>"Élettársam szüleinek testvérének gyerekének élettársa","textf"=>"Anyósom/aposom unokahugának/unokaöccsének felesége","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének férje"),
-    array ("code"=>"lpscl", "text"=>"Élettársam szüleinek testvérének gyerekének élettársa","textf"=>"Anyósom/aposom unokahugának/unokaöccsének felesége","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének férje"),
-    array ("code"=>"lpscls", "text"=>"Élettársam szüleinek testvérének gyerekének élettársának gyereke","textf"=>"Anyósom/aposom unokahugának/unokaöccsének élettársának lánya","textm"=>"Anyosom/apósóm unokahugának/unokaöccsének élettársának fia"),
-
-    array ("code"=>"ls", "text"=>"Élettársam testvére","textf"=>"Sógornőm","textm"=>"Sógorom"),
-    array ("code"=>"sl", "text"=>"Testvérem élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
-    array ("code"=>"sls", "text"=>"Testvérem élettársának testvére","textf"=>"Sógornőm/sógorom testvére","textm"=>"Sógornőm/sógorom testvére"),
-    array ("code"=>"lsl", "text"=>"Élettársam testvérének élettársa","textf"=>"Sógornőm","textm"=>"Sógorom"),
-    array ("code"=>"slsl", "text"=>"Testvérem élettársának testvérének élettérsa","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
-    array ("code"=>"lsls", "text"=>"Élettársam testvérének élettérsának terstvére","textf"=>"Sógornőm/sógorom sógora","textm"=>"Sógornőm/sógorom sógornője"),
-    array ("code"=>"slsc", "text"=>"Testvérem élettársának testvérének gyereke","textf"=>"Sógornőm/sógorom unokahuga","textm"=>"Sógornőm/sógorom unokaöccse"),
-    array ("code"=>"lssc", "text"=>"Élettársam testvérének testvérének gyereke","textf"=>"Sógornőm/sógorom unokahuga","textm"=>"Sógornőm/sógorom unokaöccse"),
-
-);
 
 use \maierlabs\lpfw\Appl as Appl;
 Appl::addJs("js/chosen.jquery.js");
 Appl::addCss("css/chosen.css");
 include_once 'displayCards.inc.php';
-
+global $diak;
 $edit =  isUserSuperuser() || isUserEditor() || $diak["id"]==getLoggedInUserId();
 
 if (isActionParam("save")) {
@@ -83,30 +37,7 @@ if (isActionParam("delete")) {
 $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
 
 ?>
-    <div class="container-fluid"><?php
-        foreach ($familyPersonList as $familyPerson) {
-            $person = $db->getPersonByID($familyPerson["id2"]);
-            ?><div class="element"><?php
-                $relative= array_search($familyPerson["coderec"],array_column($family,"code"));
-                if ($familyPerson["gender"]=="f" || $person["gender"]=="f")
-                    $textGender =($family[$relative]["textf"]!='')?'='.$family[$relative]["textf"]:"";
-                elseif ($familyPerson["gender"]=="m" || $person["gender"]=="m")
-                    $textGender =($family[$relative]["textm"]!='')?'='.$family[$relative]["textm"]:"";
-                else {
-                    $textGender = ($family[$relative]["textf"] != '') ? '=' . $family[$relative]["textf"] . " / " . $family[$relative]["textm"] : "";
-                }
-                echo("<h4>".$family[$relative]["text"].$textGender);
-                if ($edit)
-                    echo ('<span onclick="deleteRelative('.$familyPerson["id"].')" style="float: right;cursor: pointer" class="glyphicon glyphicon-remove-circle"></span>');
-                echo('</h4>');
-                if (isUserAdmin())
-                    echo("<br/>".$familyPerson["coderec"]." Dir: ".$familyPerson["direction"]);
-                displayPerson($db,$person, true,false);
-            ?></div><?php
-        }
-    ?></div>
-
-    <h4>Rokon megjelölése</h4>
+    <h4>Uj Rokonsági kapcsolat megjelölése</h4>
     <div class="input-group shadowbox">
         <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokon neme</span>
         <select class="form-control" onchange="setGender()" id="relativeGender">
@@ -120,7 +51,7 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
         <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokonsági kapcsolat</span>
         <select class="form-control"  id="selectRelativGrad" onchange="$('#divSearchName').show('fast');">
             <option value="">... válassz ...</option>
-            <?php foreach ($family as $f) {
+            <?php foreach ($dbFamily->family as $f) {
                 $text=$f["text"];
                 echo('<option value="'.$f["code"].'">'.$text.'</option>');
             }?>
@@ -138,10 +69,24 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
         </ul>
     </div>
 
+    <div class="container-fluid" style="margin-top: 20px;"><?php
+        foreach ($familyPersonList as $familyPerson) {
+            $person = $db->getPersonByID($familyPerson["id2"]);
+            ?><div class="element"><?php
+            echo("<h4>".$dbFamily->getKinship($familyPerson["coderec"],$person["gender"],$familyPerson["gender"],$familyPerson["deap"]));
+            if ($edit)
+                echo ('<span onclick="deleteRelative('.$familyPerson["id"].')" style="float: right;cursor: pointer" class="glyphicon glyphicon-remove-circle"></span>');
+            echo('</h4>');
+            if (isUserAdmin())
+                echo("<br/>".$familyPerson["coderec"]." Dir: ".$familyPerson["direction"]);
+            displayPerson($db,$person, true,false);
+            ?></div><?php
+        }
+        ?></div>
 
 <?php
 Appl::addJsScript('
-    var family = JSON.parse(\''.json_encode($family).'\');
+    var family = JSON.parse(\''.json_encode($dbFamily->family).'\');
 
     $(document).ready(function(){
         $(".chosen").chosen();

@@ -11,7 +11,7 @@ include_once Config::$lpfw.'dbDaTracker.class.php';
 use maierlabs\lpfw\Appl as Appl;
 global $db;
 global $userDB;
-$trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase);
+$trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase,!isUserSuperuser());
 
 //Image gallery Menue
 if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
@@ -100,6 +100,7 @@ if (getActSchoolId()==null) {
                         <li><a style="<?php echo $selected?>" href="start?schoolid=<?php echo $menuSchool["id"] ?>"><?php echo $menuSchool["name"] ?></a></li>
                     <?php  }?>
                     <li><a href="worldmap?classid=all&schoolid=all">Térkép</a></li>
+                    <li><a href="zenetoplista?classid=all&schoolid=all">Zenetoplista</a></li>
                     <li><a href="statistics">Statisztika</a></li>
                 </ul>
             </li>

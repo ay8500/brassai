@@ -65,8 +65,7 @@
     .element{width:500px;position:relative;display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 10px; border-radius: 7px;margin-right:5px; margin-bottom: 10px; vertical-align: top;}
     .rip {border-top-style: solid; border-width: 10px; border-color: black;}
     .diakCardIcons a {margin-left:1px}
-	/*.personboxc{ display: inline-block;max-width:310px;min-width:325px; vertical-align: top;margin-bottom:10px; }*/
-	.personboxc{ display: inline-block;vertical-align: top;margin-bottom:10px; }
+	.personboxc{ display: inline-block;vertical-align: top;margin-bottom:10px;max-width: 337px; }
 
 	/*zenebox*/
 	.personbox {margin:5px;display:inline-block;width:220px;padding-top:4px;padding:3px 0px 3px 8px;text-align:left;border-radius:5px;background-color: #cccccc;}    

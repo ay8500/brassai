@@ -64,6 +64,40 @@ class dbDaCandle
         }
     }
 
+    public function getDecorationsByPersonId($id=null) {
+        $decoration = new stdClass();
+        $decoration->flowerRightTop = new stdClass();    //max=1
+        $decoration->flowerRightBottom = new stdClass(); //max=1
+        $decoration->rosesDown =  new stdClass();         //max=7
+        $decoration->rosesUp =  new stdClass();           //max=4
+        $decoration->flowerLeft =  new stdClass();        //max=3
+        $decoration->flowerRightTop->count=0;
+        $decoration->flowerRightBottom->count=0;
+        $decoration->rosesDown->count=0;
+        $decoration->rosesUp->count=0;
+        $decoration->flowerLeft->count=0;
+        if ($id==9942) {
+            $decoration->rosesDown->count = 7;
+            $decoration->rosesDown->person = $this->dbDAO->getPersonByID(889);
+            $decoration->rosesDown->text = "Emléked örökre élni fog szívünkben";
+            $decoration->flowerRightBottom->count = 1;
+            $decoration->flowerRightBottom->person = $this->dbDAO->getPersonByID(658);
+            $decoration->flowerRightBottom->text = "Emlékedet megőrizzük";
+        } else if ($id==7899)  {
+            $decoration->flowerRightTop->count=1;
+            $decoration->flowerRightTop->text = "Elcsitult a szív, mely értünk dobogott, számunkra Te sosem leszel halott, örökké élni fogsz, akár a csillagok";
+            $decoration->flowerRightBottom->count=1;
+            $decoration->flowerRightBottom->text = "Amíg éltél szerettünk, amíg élünk nem feledünk";
+            $decoration->rosesDown->count=7;
+            $decoration->rosesDown->text = "Angyalaid vezessenek tovább az utadon, legyen lelkednek örök béke és nyugalom.";
+            $decoration->rosesUp->count=4;
+            $decoration->rosesUp->text = "Az Ő szíve pihen, A miénk vérzik, A fájdalmat csak Az élők érzik";
+            $decoration->flowerLeft->count=3;
+            $decoration->flowerLeft->text = "Ha rám gondoltok, mosolyogjatok, emlékem így áldás lesz rajtatok";
+        }
+        return $decoration;
+    }
+
     public function getAllCandlesCount() {
         return $this->dbDAO->dataBase->queryInt("select count(*) from candle");
     }

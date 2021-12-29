@@ -3,7 +3,7 @@
 	.person-candle {margin:5px;}
 	.person-candle>a { color: #ffbb66 }
 	.rip-element {background-color: black;border-color: #ffbb66;border-width: 1px;border-style: solid;
-	               margin-right: 15px;margin-bottom: 15px;box-shadow: 3px 1px 9px 2px #ffbb66;}
+	               margin-right: 15px;margin-bottom: 15px;box-shadow: 3px 1px 9px 2px #ffbb66;min-height:280px;}
 ');
 
 /**
@@ -17,6 +17,30 @@ function getActualCandles($id) {
 	global $db;
     $dbCandle = new dbDaCandle($db);
 	return $dbCandle->getCandlesByPersonId($id);
+}
+
+/**
+ * get decorations, used in the interpreted javascript file candles.js
+ * @param $id
+ * @return int
+ */
+function getActualDecorations($id) {
+    if (intval($id<=0))
+        return 0;
+    global $db;
+    $dbCandle = new dbDaCandle($db);
+    return $dbCandle->getDecorationsByPersonId($id);
+}
+
+function getTitle($o) {
+    $ret = "";
+    if (isset($o->person)) {
+        $ret .=$o->person["lastname"]." ".$o->person["firstname"];
+    }
+    if (isset($o->text)) {
+        $ret .=': '.$o->text;
+    }
+    echo ' title="'.$ret.'" ';
 }
 
 /**
@@ -44,8 +68,56 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 			$rstyle=' diak_image_empty_rip';
 		}
 		?>
-	<div class="element rip-element" >
-		<div style="display: inline-block; ">
+	<span class="element rip-element" style="position: relative">
+        <?php $decoration = getActualDecorations($d["id"]);
+        ?>
+        <?php  if ($decoration->flowerRightTop->count>0) { //Csokor jobboldalt fent?>
+            <span <?php getTitle($decoration->flowerRightTop)?>>
+                <span style="position: absolute;right:0px;top:0px"><img style="height:230px;" src="images/flower_right_top.png" /></span></span>
+        <?php } ?>
+        <?php if ($decoration->flowerRightBottom->count>0) { //Csokor jobboldalt lent ?>
+            <span <?php getTitle($decoration->flowerRightBottom)?>>
+                <span style="position: absolute;right:-7px;bottom:-19px"><img style="height:120px;" src="images/flower_right_bottom.png" /></span></span>
+        <?php } ?>
+        <?php if ($decoration->flowerLeft->count>0) { // Csokor baloldalt?>
+            <span <?php getTitle($decoration->flowerLeft)?>>
+                <span style="position: absolute;left:-37px;top:0px"><img style="height:180px;" src="images/flower_left.png"></span>
+                <?php  if ($decoration->flowerLeft->count>1) { ?>
+                    <span style="position: absolute;left:-37px;top:160px"><img style="height:180px;" src="images/flower_left.png"></span>
+                <?php } if ($decoration->flowerLeft->count>2) { ?>
+                    <span style="position: absolute;left:-37px;top:320px"><img style="height:180px;" src="images/flower_left.png"></span>
+            <?php } ?></span>
+        <?php } ?>
+        <?php if ($decoration->rosesDown->count>0) { //Rozsák lent max 7 ?>
+            <span <?php getTitle($decoration->rosesDown)?>>
+                <span style="position: absolute;left:0px;bottom:0px"><img style="height:80px;" src="images/flower_left_bottom.png"></span>
+                <?php if ($decoration->rosesDown->count>1) { ?>
+                    <span style="position: absolute;left:60px;bottom:-6px"><img style="height:43px;" src="images/flower_bottom.png"></span>
+                <?php } if ($decoration->rosesDown->count>2) { ?>
+                    <span style="position: absolute;left:110px;bottom:0px"><img style="height:43px;" src="images/flower_bottom.png"></span>
+                <?php } if ($decoration->rosesDown->count>3) { ?>
+                    <span style="position: absolute;left:160px;bottom:-4px"><img style="height:53px;" src="images/flower_bottom.png"></span>
+                <?php } if ($decoration->rosesDown->count>4) { ?>
+                    <span style="position: absolute;left:210px;bottom:-6px"><img style="height:43px;" src="images/flower_bottom.png"></span>
+                <?php } if ($decoration->rosesDown->count>5) { ?>
+                    <span style="position: absolute;left:270px;bottom:0px"><img style="height:43px;" src="images/flower_bottom.png"></span>
+                <?php } if ($decoration->rosesDown->count>6) { ?>
+                    <span style="position: absolute;left:320px;bottom:-6px"><img style="height:33px;" src="images/flower_bottom.png"></span>
+            <?php } ?></span>
+        <?php } ?>
+        <?php if ($decoration->rosesUp->count>0) { // Rózsák fent max 4 ?>
+            <span <?php getTitle($decoration->rosesDown)?>>
+                <span style="position: absolute;right:51px;top:-7px"><img style="height:38px;transform: rotate(186deg);" src="images/flower.png"></span>
+                <?php  if ($decoration->rosesUp->count>1) { ?>
+                    <span style="position: absolute;right:81px;top:-7px"><img style="height:41px;transform: rotate(166deg);" src="images/flower.png"></span>
+                <?php } if ($decoration->rosesUp->count>2) { ?>
+                    <span style="position: absolute;right:121px;top:-7px"><img style="height:45px;transform: rotate(180deg);" src="images/flower.png"></span>
+                <?php } if ($decoration->rosesUp->count>3) { ?>
+                    <span style="position: absolute;right:161px;top:-7px"><img style="height:38px;transform: rotate(200deg);" src="images/flower.png"></span>
+            <?php } ?></span>
+        <?php } ?>
+
+        <div style="display: inline-block; ">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
 				<div>
 					<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
@@ -60,7 +132,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 		</div>
 		<div style="display: inline-block;max-width:310px;min-width:200px; vertical-align: top;margin-bottom:10px;">
             <a href="<?php echo $personLink?>"><h4 style="color: #ffbb66;"><?php echo getPersonName($d);?></h4></a>
-            <?php if (getActSchoolId()==null) {?>
+            <?php if (getActSchoolId()==null && isset($d["schoolID"])) {?>
                 <div style="margin-top: -13px"><?php echo getSchoolNameById($d["schoolID"]) ?></div>
             <?php } ?>
 			<?php if($showClass) {?>
@@ -130,5 +202,5 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                 <button class="btn btn-warning" style="margin:10px;color:black" onclick="hidePersonCandle(<?php echo $d['id']?>);">Bezár</button>
             </div>
 		</div>
-	</div>
+	</span>
 <?php } ?>

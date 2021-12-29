@@ -95,11 +95,14 @@ class dbDaSongVote
     /*
      * get Voterslist by scool id
      */
-    public function getVotersListBySchoolId($schoolId) {
+    public function getVotersListBySchoolId($schoolId=null) {
         $sql  ="select count(*) as count, person.id, person.lastname, person.firstname, person.picture ";
         $sql .= "from opinion join person on person.id=opinion.changeUserID ";
         $sql .="join class on class.id=person.classID ";
-        $sql .="where class.schoolID=".$schoolId." and opinion.table='music' and opinion.opinion='favorite' group by person.id ";
+        $sql .="where opinion.table='music' and opinion.opinion='favorite' ";
+        if ($schoolId!=null)
+            $sql .=" and class.schoolID=".$schoolId." ";
+        $sql .="group by person.id ";
         $sql .="order by count desc";
         $this->dataBase->query($sql);
         $ret = $this->dataBase->getRowList();
@@ -113,7 +116,6 @@ class dbDaSongVote
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
     }
-
 
     /**
      * read songvotelist
@@ -129,7 +131,7 @@ class dbDaSongVote
         $sql .=" where true ";
         if (intval($classId!=0))
             $sql .=" and person.classID=".$classId;
-        if ($language!=null && sizeof($language)>0) {
+        if ($language!=null && sizeof($language)>0 && array_sum($language)>0) {
             $sql .= " and ( song.language in (";
             foreach ($language as $lang=>$value) {
                 if ($value)
@@ -137,7 +139,7 @@ class dbDaSongVote
             }
             $sql = trim($sql,",").") or song.language='') ";
         }
-        if ($genre!=null && sizeof($genre)>0) {
+        if ($genre!=null && sizeof($genre)>0 && array_sum($genre)>0) {
             $sql .= "  and ( song.genre in (";
             foreach ($genre as $gen=>$value) {
                 if ($value!==false)
@@ -145,7 +147,7 @@ class dbDaSongVote
             }
             $sql = trim($sql,",").") or song.genre='') ";
         }
-        if ($year!=null && sizeof($year)>0) {
+        if ($year!=null && sizeof($year)>0 && array_sum($year)>0) {
             $sql .= "  and ( false or ";
             foreach ($year as $y=>$value) {
                 if ($value!==false)

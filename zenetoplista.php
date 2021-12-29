@@ -7,22 +7,27 @@ include_once Config::$lpfw.'htmlParser.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaSongVote.class.php';
 include_once 'displayCards.inc.php';
+use \maierlabs\lpfw\Appl as Appl;
 
 global $db;
 $dbSongVote = new dbDaSongVote($db);
 $dbOpinion = new dbDaOpinion($db);
 $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
-use \maierlabs\lpfw\Appl as Appl;
+$firstPicture["file"] = "images/record-player.png";
+Appl::setMember("firstPicture",$firstPicture);
+
 
 Appl::setSiteTitle("A véndiákok ezeket a zenéket hallgatják szívesen");
-if (getActClassId()==-1) {
+if (getActSchool()==null) {
+    Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják szívesen a kolzsvári véndiákok.');
+} else if (getActClass()==null) {
     Appl::setSiteSubTitle('Zene toplista. Ezt hallgatják szívesen az iskola véndiákjai.');
 } else {
     Appl::setSiteSubTitle('A mi osztályunk zenetoplistája. Ezeket számokat szívesen hallgatjuk.');
 }
 
-\maierlabs\lpfw\Appl::addCssStyle('
+Appl::addCssStyle('
 .music-filter {
     margin-top: 9px;
 }
@@ -87,7 +92,7 @@ if ($psong>0 && isUserLoggedOn()) {
 }
 	
 //Read voters List by ClassID
-if (getActClassId()!=-1)
+if (getActClass()!=null)
     $votersList=$dbSongVote->getVotersListByClassId(getRealId(getActClass()));
 else
     $votersList=$dbSongVote->getVotersListBySchoolId(getRealId(getActSchool()));
@@ -241,7 +246,7 @@ $year["1990"]=isset($musicFilter["filter_90"])?$musicFilter["filter_90"]:true;
 $year["2000"]=isset($musicFilter["filter_00"])?$musicFilter["filter_00"]:false;
 $year["2010"]=isset($musicFilter["filter_10"])?$musicFilter["filter_10"]:true;
 $year["2020"]=isset($musicFilter["filter_20"])?$musicFilter["filter_20"]:false;
-if (getParam("srcText")==null)
+if (getParam("srcText","")=="")
     $topList= $dbSongVote->readTopList (getRealId(getActClass()),getLoggedInUserId(),500, $language, $genre,$year);
 else
     $topList= $dbSongVote->searchForMusic(getParam("srcText"));
@@ -250,61 +255,69 @@ else
 <div class="col-sm-9">
 	<div class="panel panel-default">
 		<div class="panel-heading" style_notgood="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
-			<label id="dbDetails"><?php echo sizeof($topList)?> zenelista lejátszó (max 100)</label><br/>
+			<label id="dbDetails">Kiválasztva: <?php echo sizeof($topList)?> Indítsd a lejátszót! (max 100)</label><br/>
             <div style="">
-			<button class="btn btn-success" onclick="playBackward();"><span class="glyphicon glyphicon-sort-by-order"></span> Legjobb szám elsőnek</button>
-			<button class="btn btn-warning" onclick="playForward();"><span class="glyphicon glyphicon-sort-by-order-alt"></span> Legjobb szám utoljára</button>
-			<button class="btn btn-warning" onclick="playRandom();"><span class="glyphicon glyphicon-transfer"></span> Véletlenszerüen</button>
+                <?php if (getParam("srcText","")=="") {?>
+			        <button class="btn btn-success" onclick="playBackward();"><span class="glyphicon glyphicon-play"></span> Legjobb szám elsőnek</button>
+			        <button class="btn btn-warning" onclick="playForward();"><span class="glyphicon glyphicon-play"></span> Legjobb szám utoljára</button>
+			        <button class="btn btn-warning" onclick="playRandom();"><span class="glyphicon glyphicon-play"></span> Véletlenszerüen</button>
+                <?php } else { ?>
+                    <button class="btn btn-success" onclick="playRandom();"><span class="glyphicon glyphicon-play"></span> Legjobb szám elsőnek</button>
+                <?php } ?>
             </div>
             <div class="music-filter" >
                 <div style="vertical-align:top;display: inline-block;margin-top: 17px;">Keresés</div>
                 <div style="display: inline-block">
                     <div class="input-group" style="width:300px;margin: 3px;display: inline-table;">
-                    <span class="input-group-addon" style="width:30px"><span
+                    <span class="input-group-addon" style="width:30px" onclick="showMusic($('#searchText').val());"><span
                                 class="glyphicon glyphicon-search"></span></span>
                     <input class="form-control" placeholder="Zene címe vagy együttes"
                            id="searchText" value="<?php echo getGetParam("srcText", "") ?>" onkeyup="searchMusic(this);" />
+                    <span class="input-group-addon" style="width:30px" onclick="showMusic(null)"><span
+                          class="glyphicon glyphicon-remove"></span></span>
                     </div>
-                    <button id="showMusic" class="btn btn-default" style="display:none;margin-top: -29px" onclick="showMusic();">Mutasd</button><br/>
+                    <button id="showMusic" class="btn btn-default" style="display:none;margin-top: -29px" onclick="showMusic($('#searchText').val());">Mutasd</button><br/>
                     <div id="searchMusic" style="display: none"><table id="musicList"></table></div>
                 </div>
             </div>
-            <div class="music-filter" >
-                <div style="display: inline-block;margin-bottom: 3px;">Nyelv</div>
-                <div style="display: inline-block">
-                    <div>Magyar   <input id="filter_hu" type="checkbox" name="filter_hu" onclick="musicFilter()" <?php echo $language["hu"]===true?"checked":"" ?>/></div>
-                    <div>Angol    <input id="filter_en" type="checkbox" name="filter_en" onclick="musicFilter()" <?php echo $language["en"]?"checked":"" ?>/></div>
-                    <div>Olasz    <input id="filter_it" type="checkbox" name="filter_it" onclick="musicFilter()" <?php echo $language["it"]?"checked":"" ?>/></div>
-                    <div>Spanyol  <input id="filter_es" type="checkbox" name="filter_es" onclick="musicFilter()" <?php echo $language["es"]?"checked":"" ?>/></div>
-                    <div>Portugál <input id="filter_pt" type="checkbox" name="filter_pt" onclick="musicFilter()" <?php echo $language["pt"]?"checked":"" ?>/></div>
-                    <div>Francia  <input id="filter_fr" type="checkbox" name="filter_fr" onclick="musicFilter()" <?php echo $language["fr"]?"checked":"" ?>/></div>
-                    <div>Nemzetközi <input id="filter_int" type="checkbox" name="filter_int" onclick="musicFilter()" <?php echo $language["int"]?"checked":"" ?>/></div>
+            <?php if (getParam("srcText","")=="") {?>
+                <div class="music-filter" >
+                    <div style="display: inline-block;margin-bottom: 3px;">Nyelv</div>
+                    <div style="display: inline-block">
+                        <div>Magyar   <input id="filter_hu" type="checkbox" name="filter_hu" onclick="musicFilter()" <?php echo $language["hu"]===true?"checked":"" ?>/></div>
+                        <div>Angol    <input id="filter_en" type="checkbox" name="filter_en" onclick="musicFilter()" <?php echo $language["en"]?"checked":"" ?>/></div>
+                        <div>Olasz    <input id="filter_it" type="checkbox" name="filter_it" onclick="musicFilter()" <?php echo $language["it"]?"checked":"" ?>/></div>
+                        <div>Spanyol  <input id="filter_es" type="checkbox" name="filter_es" onclick="musicFilter()" <?php echo $language["es"]?"checked":"" ?>/></div>
+                        <div>Portugál <input id="filter_pt" type="checkbox" name="filter_pt" onclick="musicFilter()" <?php echo $language["pt"]?"checked":"" ?>/></div>
+                        <div>Francia  <input id="filter_fr" type="checkbox" name="filter_fr" onclick="musicFilter()" <?php echo $language["fr"]?"checked":"" ?>/></div>
+                        <div>Nemzetközi <input id="filter_int" type="checkbox" name="filter_int" onclick="musicFilter()" <?php echo $language["int"]?"checked":"" ?>/></div>
+                    </div>
                 </div>
-            </div>
-            <div class="music-filter" >
-                <div style="display: inline-block;margin-bottom: 3px;">Műfaj</div>
-                <div style="display: inline-block">
-                    <div>Tánczene       <input id="filter_d" type="checkbox" name="filter_d" onclick="musicFilter()" <?php echo $genre["dance"]!==false?"checked":"" ?>/></div>
-                    <div>Lassú tánczene <input id="filter_s" type="checkbox" name="filter_s" onclick="musicFilter()" <?php echo $genre["danceslow"]!==false?"checked":"" ?>/></div>
-                    <div>Hardrock       <input id="filter_h" type="checkbox" name="filter_h" onclick="musicFilter()" <?php echo $genre["hardrock"]!==false?"checked":"" ?>/></div>
-                    <div>Klassikus      <input id="filter_c" type="checkbox" name="filter_c" onclick="musicFilter()" <?php echo $genre["classic"]!==false?"checked":"" ?>/></div>
-                    <div>Népzene/Nóta   <input id="filter_f" type="checkbox" name="filter_f" onclick="musicFilter()" <?php echo $genre["folk"]!==false?"checked":"" ?>/></div>
-                    <div>Relax          <input id="filter_r" type="checkbox" name="filter_r" onclick="musicFilter()" <?php echo $genre["relax"]!==false?"checked":"" ?>/></div>
-                    <div>Jazz           <input id="filter_j" type="checkbox" name="filter_j" onclick="musicFilter()" <?php echo $genre["jazz"]!==false?"checked":"" ?>/></div>
+                <div class="music-filter" >
+                    <div style="display: inline-block;margin-bottom: 3px;">Műfaj</div>
+                    <div style="display: inline-block">
+                        <div>Tánczene       <input id="filter_d" type="checkbox" name="filter_d" onclick="musicFilter()" <?php echo $genre["dance"]!==false?"checked":"" ?>/></div>
+                        <div>Lassú tánczene <input id="filter_s" type="checkbox" name="filter_s" onclick="musicFilter()" <?php echo $genre["danceslow"]!==false?"checked":"" ?>/></div>
+                        <div>Hardrock       <input id="filter_h" type="checkbox" name="filter_h" onclick="musicFilter()" <?php echo $genre["hardrock"]!==false?"checked":"" ?>/></div>
+                        <div>Klassikus      <input id="filter_c" type="checkbox" name="filter_c" onclick="musicFilter()" <?php echo $genre["classic"]!==false?"checked":"" ?>/></div>
+                        <div>Népzene/Nóta   <input id="filter_f" type="checkbox" name="filter_f" onclick="musicFilter()" <?php echo $genre["folk"]!==false?"checked":"" ?>/></div>
+                        <div>Relax          <input id="filter_r" type="checkbox" name="filter_r" onclick="musicFilter()" <?php echo $genre["relax"]!==false?"checked":"" ?>/></div>
+                        <div>Jazz           <input id="filter_j" type="checkbox" name="filter_j" onclick="musicFilter()" <?php echo $genre["jazz"]!==false?"checked":"" ?>/></div>
+                    </div>
                 </div>
-            </div>
-            <div class="music-filter" >
-                <div style="display: inline-block;margin-bottom: 3px;">Évszám</div>
-                <div style="display: inline-block">
-                    <div>60-as   <input id="filter_60" type="checkbox" name="filter_60" onclick="musicFilter()" <?php echo $year["1960"]!==false?"checked":"" ?>/></div>
-                    <div>70-es   <input id="filter_70" type="checkbox" name="filter_70" onclick="musicFilter()" <?php echo $year["1970"]!==false?"checked":"" ?>/></div>
-                    <div>80-as   <input id="filter_80" type="checkbox" name="filter_80" onclick="musicFilter()" <?php echo $year["1980"]!==false?"checked":"" ?>/></div>
-                    <div>90-es   <input id="filter_90" type="checkbox" name="filter_90" onclick="musicFilter()" <?php echo $year["1990"]!==false?"checked":"" ?>/></div>
-                    <div>2000-es <input id="filter_00" type="checkbox" name="filter_00" onclick="musicFilter()" <?php echo $year["2000"]!==false?"checked":"" ?>/></div>
-                    <div>2010-es <input id="filter_10" type="checkbox" name="filter_10" onclick="musicFilter()" <?php echo $year["2010"]!==false?"checked":"" ?>/></div>
-                    <div>2020-as <input id="filter_20" type="checkbox" name="filter_20" onclick="musicFilter()" <?php echo $year["2020"]!==false?"checked":"" ?>/></div>
+                <div class="music-filter" >
+                    <div style="display: inline-block;margin-bottom: 3px;">Évtízed</div>
+                    <div style="display: inline-block">
+                        <div>60-as   <input id="filter_60" type="checkbox" name="filter_60" onclick="musicFilter()" <?php echo $year["1960"]!==false?"checked":"" ?>/></div>
+                        <div>70-es   <input id="filter_70" type="checkbox" name="filter_70" onclick="musicFilter()" <?php echo $year["1970"]!==false?"checked":"" ?>/></div>
+                        <div>80-as   <input id="filter_80" type="checkbox" name="filter_80" onclick="musicFilter()" <?php echo $year["1980"]!==false?"checked":"" ?>/></div>
+                        <div>90-es   <input id="filter_90" type="checkbox" name="filter_90" onclick="musicFilter()" <?php echo $year["1990"]!==false?"checked":"" ?>/></div>
+                        <div>2000-es <input id="filter_00" type="checkbox" name="filter_00" onclick="musicFilter()" <?php echo $year["2000"]!==false?"checked":"" ?>/></div>
+                        <div>2010-es <input id="filter_10" type="checkbox" name="filter_10" onclick="musicFilter()" <?php echo $year["2010"]!==false?"checked":"" ?>/></div>
+                        <div>2020-as <input id="filter_20" type="checkbox" name="filter_20" onclick="musicFilter()" <?php echo $year["2020"]!==false?"checked":"" ?>/></div>
+                    </div>
                 </div>
-            </div>
+            <?php  } ?>
 		</div>
 		<div class="form-group navbar-form navbar" >
             <?php
@@ -461,7 +474,7 @@ function autoComplete (field, select, property, forcematch) {
      }
  }
 
-\maierlabs\lpfw\Appl::addJsScript('
+Appl::addJsScript('
     var cookieFilter;
     function musicFilter() {
         cookieFilter = {};
@@ -496,8 +509,11 @@ function autoComplete (field, select, property, forcematch) {
             }
         });
     }
-    function showMusic() {
-        document.location.href="zenetoplista?srcText="+$("#searchText").val();
+    function showMusic(src) {
+        if (src!==null)
+            document.location.href="zenetoplista?srcText="+src;
+        else 
+            document.location.href="zenetoplista";
     }
 ');
 
