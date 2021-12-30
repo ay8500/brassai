@@ -24,7 +24,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 	?>
 	<div class="element">
         <?php
-            $school = displaySchool(isset($d["schoolID"])?$d["schoolID"]:null);
+            $school = displaySchoolName(isset($d["schoolID"])?$d["schoolID"]:null);
             $personClass = displayPersonNameAndGetClass($db,$person,$showClass);
         ?>
         <?php if ($person["gdpr"]==100) {?>
@@ -157,7 +157,7 @@ function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserI
 	<div class="element">
         <div>
             <div style="display: inline-block; ">
-                <?php displaySchool($p["schoolID"]); ?>
+                <?php displaySchoolName($p["schoolID"]); ?>
                 <h4><?php echo $typeArray["text"];?></h4>
                 <a href="picture?type=<?php echo $typeArray["type"]?>&typeid=<?php echo $typeArray["typeId"]?>&id=<?php echo $picture["id"]?>">
                     <img src="imageConvert?width=396&thumb=false&id=<?php echo $picture["id"]?>" title="<?php echo $picture["title"] ?>" />
@@ -200,7 +200,7 @@ function displayClass($db,$class,$showDate=false) {
 	?>
 	<div class="element">
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php displaySchool($class["schoolID"]); ?>
+            <?php displaySchoolName($class["schoolID"]); ?>
             <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getSchoolClassName($class);?></h4></a><br/>
 			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
@@ -238,6 +238,61 @@ function displayClass($db,$class,$showDate=false) {
 <?php }
 
 /**
+ * Display a class
+ * @param dbDAO $db the database
+ * @param array $class
+ * @param bool $showDate
+ */
+function displaySchool($db,$school,$showDate=false) {
+    ?>
+    <div class="element" style="text-align: left">
+        <div style="display: block;max-width:400px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+            <h4><i class="material-icons" style="vertical-align: bottom;">school</i> Iskola: <a href="start?schoolid=<?php echo $school["id"]?>"><?php echo $school["name"];?></h4></a>
+        </div>
+
+        <div style="display: inline-block;vertical-align: top; ">
+            <a href="school?schoolid=<?php echo $school["id"]?>" >
+                <img style="height: 65px" src="images/school<?php echo $school["id"]?>/logo.jpg" />
+            </a>
+        </div>
+        <div style="display: inline-block;vertical-align: top;margin-left: 30px ">
+            <div><span><?php echo $school["addressZipCode"]." ".$school["addressStreet"] ?></span></div>
+            <div><span><a href="<?php echo $school["homepage"] ?>" target="_blank"><?php echo $school["homepage"] ?></a></span></div>
+            <div><span><a href="mailto:<?php echo $school["mail"] ?>" target="_blank"><?php echo $school["mail"] ?></a></span></div>
+        </div>
+
+        <?php if (isset($school["directorId"])) {
+            displayPersonPicture($school["directorId"]);
+        } ?>
+
+        <?php
+        $pictureId = 0;
+        if ($pictureId >0) {?>
+            <div style="display: inline-block;vertical-align: top; ">
+                <a href="picture?id=<?php echo $pictureId?>" >
+                    <img src="imageConvert?width=300&thumb=false&id=<?php echo $pictureId?>" />
+                </a>
+            </div>
+        <?php } ?>
+
+        <?php  if (isUserSuperuser()) {?>
+            <a href="history?table=school&id=<?php echo $school["id"]?>" style="position: absolute; left: 15px;top: 55px;">
+                <span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("school",$school["id"]))?></span>
+            </a>
+        <?php }?>
+        <?php if ($showDate) {
+            $person = $db->getPersonByID($school["changeUserID"]);
+            ?>
+            <br/><div style="display: block;max-width:350px;min-width:300px; vertical-align: top;margin-bottom:10px;">
+                Módosította: <?php echo getPersonLinkAndPicture($person) ?>
+                <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($school["changeDate"]);?>
+            </div>
+        <?php }?>
+    </div>
+<?php }
+
+
+/**
  * Display a message
  * @param dbDAO $db the database
  * @param array $message
@@ -248,7 +303,7 @@ function displayMessage($db,$message,$showDate=true) {
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php displaySchool(($db->getPersonByID($message["changeUserID"]))["schoolID"]); ?>
+            <?php displaySchoolName(($db->getPersonByID($message["changeUserID"]))["schoolID"]); ?>
             <h4><i class="material-icons" style="vertical-align: bottom">chat</i> Üzenet</h4>
             <div style="max-height: 300px; overflow-y: scroll;margin-top: 10px">
                 <?php
@@ -285,7 +340,7 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php displaySchool($d["schoolID"]); ?>
+            <?php displaySchoolName($d["schoolID"]); ?>
             <div style="">
                 <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><h4><span class="glyphicon glyphicon-film"></span> <?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
             </div>
@@ -316,7 +371,7 @@ function displayArticle($db,$article,$showDate=true) {
     ?>
     <div class="element">
         <div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php displaySchool($article["schoolID"]); ?>
+            <?php displaySchoolName($article["schoolID"]); ?>
             <h4><?php echo \maierlabs\lpfw\Appl::_($article["category"]) ?></h4><br/>
         </div>
 
@@ -439,7 +494,7 @@ function displayIcon($d,$field,$image,$title,$appl) {
             echo '<a href="#" onclick="hiddenData(\''.$title.'\');" title="'.$title.'"><img src="images/'.$image.'" /></a>';
 }
 
-function displaySchool($id) {
+function displaySchoolName($id) {
     global $schoolList;
     $school = $schoolList[array_search($id,array_column($schoolList,"id"))];
     if (getActSchoolId()==null || getActSchoolId()!=$id) {

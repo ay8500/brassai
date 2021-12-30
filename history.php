@@ -164,12 +164,15 @@ function displaySchool($db,$item,$school,$itemNext) {
     else
         $schoolNext=null;
     displayChangeData($db,$school,$itemNext);
-    displayElement(hash("sha256",isset($school["text"])?$school["text"]:''), hash("sha256",isset($schoolNext["text"])?$schoolNext["text"]:''),"Description");
-    displayElementObj($school, $schoolNext, "phone","Phone");
+    displayElement(hash("sha256",isset($school["text"])?$school["text"]:''), hash("sha256",isset($schoolNext["text"])?$schoolNext["text"]:''),"Szöveg");
+    displayElementObj($school, $schoolNext, "logo","Logo");
+    displayElementObj($school, $schoolNext, "phone","Tel");
     displayElementObj($school, $schoolNext, "mail","Mail");
     displayElementObj($school, $schoolNext, "homepage","WWW");
     displayElementObj($school, $schoolNext, "addressZipCode","Zip");
-    displayElementObj($school, $schoolNext, "addressStreet","Addr");
+    displayElementObj($school, $schoolNext, "addressStreet","Cím");
+    displayElementObj($school, $schoolNext, "awardName","Díj neve");
+    displayElementObj($school, $schoolNext, "awardText","Díj szöveg");
 }
 
 function displayPicture($db,$item,$picture,$itemNext) {

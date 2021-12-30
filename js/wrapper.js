@@ -1,6 +1,6 @@
-var countWrapper=5;		//Wrappen in line
-var wrapperWidth=700;		//Max wrapper width
-var wrapperSlideCorrection=30;	//This is a correction value of horizontal sliding
+var countWrapper=5; //Wrappen in line
+var wrapperWidth=700; //Max wrapper width
+var wrapperSlideCorrection=30; //This is a correction value of horizontal sliding
 
 var aktWrapper=0;
 var animate=false;
@@ -66,17 +66,29 @@ function addWrapperDiv(id) {
         	    html +='<div><div>Tanár: </div><div>'+d['function']+'</div></div>';
             }
             var schools = d.schoolIdsAsTeacher.split(")",);
-            schools.forEach((schoolId,idx) => {
-                try {
-                    var pjson = JSON.parse(d.employer);
-                    var period = pjson[schoolId.slice(1)] ;
-                } catch (err) {
-                    var period = d.employer;
-                }
-                if (schoolId!="") {
-                    html += '<div><div><img style="height:20px;" src="images/school' + schoolId.slice(1) + '/logo.jpg" /></div><div>'+period+'</div></div>';
-                }
-            });
+            if (schools.length>0) {
+                html +='<div><div style="display: inline-block">Iskola:</div><div style="display: inline-block">';
+                schools.forEach((schoolId, idx) => {
+                    try {
+                        var pjson = JSON.parse(d.employer);
+                        var period = pjson[schoolId.slice(1)];
+                    } catch (err) {
+                        var period = d.employer !== undefined ? d.employer : "&nbsp;";
+                    }
+                    if (period != undefined) {
+                        var periodArray = period.split("-");
+                        if (periodArray.length == 2) {
+                            period = periodArray[0] + "-" + periodArray[1].slice(-2);
+                        }
+                    } else {
+                        period = "";
+                    }
+                    if (schoolId != "") {
+                        html += '<span><img style="height:20px;" src="images/school' + schoolId.slice(1) + '/logo.jpg" />' + period + '&nbsp;&nbsp;</span>';
+                    }
+                });
+                html +='</div></div>';
+            }
         }
         if (d.place!=null)
     		html +='<div><div>Helység:</div><div>'+d.place+'</div></div>';

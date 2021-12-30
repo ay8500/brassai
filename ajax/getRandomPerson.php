@@ -74,14 +74,12 @@ function getRandomPerson() {
 	
 	$p=$db->getPersonByID($idrow["id"]);
 	// Testperson
-	//$p=$db->getPersonByID(9813);
+	//$test = array(10088, 2791,8041,9816,933);
+	//$p=$db->getPersonByID($test[mt_rand(0,sizeof($test)-1)]);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	$p["classEvening"]=$class["eveningClass"];
-	if ($class["schoolID"]>0)
-		$p["schoolName"]=getSchoolNameById($class["schoolID"]);
-	else
-		$p["schoolName"]=getSchoolNameById(substr($p["schoolIdsAsTeacher"],1,strpos($p["schoolIdsAsTeacher"],"]")-1));
+	$p["schoolName"]=getSchoolNameById($p["schoolID"])."";
 	return $p;
 }
 

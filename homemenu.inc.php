@@ -204,7 +204,7 @@ if (getActSchoolId()==null) {
                 <a href="message">Ünzenőfal</a>
             </li>
             <li>
-                <a href="games" class="blob">Játékok</a>
+                <a href="games" class="noblob">Játékok</a>
             </li>
             <li>
             <form class="navbar-form navbar-left" role="search" action="">

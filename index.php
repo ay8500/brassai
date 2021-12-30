@@ -5,8 +5,10 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'config.class.php';
 include_once 'dbBL.class.php';
+include_once 'displayCards.inc.php';
 
 use maierlabs\lpfw\Appl as Appl;
+global $db;
 
 Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
@@ -27,19 +29,21 @@ if (isset($_SESSION["timeout"])) {
     ');
 }
 
-$personIdList=$db->getPersonIdListWithPicture();
-$randPersonID=$personIdList[rand(0,sizeof($personIdList)-1)];
-
 global $haloween;
 global $xmas;
-
-
 include("homemenu.inc.php");
+global $schoolList;
 ?>
 
 <div class="container-fluid">
+    <div  style="padding:10px;text-align: center" class="col-sm-12" >
+    <!--h3>Kolozsvári Líceumok:</h3-->
+    <?php foreach ($schoolList as $menuSchool) {
+        displaySchool($db,$menuSchool,false);
+    }?>
+    </div>
 	<div  style="padding:15px;" class="col-sm-12" >
-		<h3>Lehetőségeid a véndiákok oldalán:</h3>
+		<!--h3>Lehetőségeid a véndiákok oldalán:</h3-->
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="start">
                 <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" />
@@ -125,7 +129,7 @@ include("homemenu.inc.php");
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="zenetoplista?classid=all">
+			<a class="inlineBox" href="zenetoplista?classid=all&schoolid=all">
                 <?php if ($haloween) { ?>
                     <div class="inlineBox"><img img class="indeximg" src="images/haloweenmusic.png" /></div>
                 <?php } else { ?>
@@ -143,7 +147,7 @@ include("homemenu.inc.php");
 </div>
 
 <?php
-Appl::addJsScript("onResize(430);",true);
+Appl::addJsScript("onResize(800);",true);
 include("homefooter.inc.php");
 ?>
 

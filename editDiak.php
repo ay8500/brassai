@@ -380,9 +380,14 @@ if ($diak["schoolIdsAsTeacher"]!=NULL) {
 }
 
 include("homemenu.inc.php");
+if (isActionParam("newperson") && getActSchoolId()==null) {
+    Appl::setMessage("Vállasssz egy iskolát vagy egy osztályt az új személy részére!","warning");
+    include "homefooter.inc.php";
+    die();
+}
 ?>
 
-<?php if (isActionParam("new")=="" && isset($diak)){?>
+<?php if (isActionParam("new") && isset($diak)){?>
 	<div itemscope itemtype="http://schema.org/Person">
 	<h2 class="sub_title" style="text-align: left;margin-left:20px">
 		<img src="<?php echo getPersonPicture($diak) ?>" class="diak_image_icon" />
