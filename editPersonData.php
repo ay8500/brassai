@@ -1,6 +1,7 @@
 	<?php
     include_once 'displayCards.inc.php';
-    global $db;global $diak;
+    include_once 'editPersonDataHelper.php';
+    global $db, $diak, $showAllPersonalData;
     displayPerson($db,$diak,false,false);
     $schoolList = $db->getSchoolList();
     global $anonymousEditor, $edit, $createNewPerson, $personid, $tabOpen, $classId, $person, $action;
@@ -58,27 +59,29 @@
             <?php } ?>
         </div>
     <?php }?>
-    <div style="margin:15px;vertical-align: bottom;">
-   <?php if ($edit) {  ?>	
-		<?php //Don't delete myself?>
-		<?php if (!(getLoggedInUserId()==$diak["id"] ) && (isUserSuperuser() || isUserAdmin()) ) { ?>
-			<button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
-		<?php } ?>
-	<?php } ?>
-	
-	<?php //Save button?>
-	<?php if ($edit || $createNewPerson) {?>
-			<button id="saveButton" onclick="savePerson();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
-            <button onclick="location.href='editDiak'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
-	<?php } ?>
-	<?php //Anonymous user edit button?>
-	<?php if (!$edit && !$createNewPerson) {?>
-			<button onclick="document.location='editDiak?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
-	<?php } ?>
-    <?php if (!isActionParam("newperson")) {?>
-            <button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
-    <?php } ?>
-    </div>
+   <?php if (!isset($showAllPersonalData)) { ?>
+       <div style="margin:15px;vertical-align: bottom;">
+       <?php if ($edit) {  ?>
+            <?php //Don't delete myself?>
+            <?php if (!(getLoggedInUserId()==$diak["id"] ) && (isUserSuperuser() || isUserAdmin()) ) { ?>
+                <button onclick="deleteDiak(<?php echo($diak["id"]);?>);" class="btn btn-danger"><span class="glyphicon glyphicon glyphicon-remove-circle"></span> Véglegesen kitöröl </button>
+            <?php } ?>
+        <?php } ?>
+
+        <?php //Save button?>
+        <?php if ($edit || $createNewPerson) {?>
+                <button id="saveButton" onclick="savePerson();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
+                <button onclick="location.href='editDiak'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
+        <?php } ?>
+        <?php //Anonymous user edit button?>
+        <?php if (!$edit && !$createNewPerson) {?>
+                <button onclick="document.location='editDiak?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
+        <?php } ?>
+        <?php if (!isActionParam("newperson")) {?>
+                <button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
+        <?php } ?>
+        </div>
+   <?php } ?>
 
 <?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
     <form method="get" id="editform" action="editDiak">
@@ -259,119 +262,10 @@
         <?php if (isset($person["birthname"])) { ?> Osztálytársai <?php echo $person["birthname"] ?> diákkori nevén ismerik. <?php } ?>
     </div>
 <?php } ?>
+<?php if (!isset($showAllPersonalData)) { ?>
     <span style="font-size: 10px"><a href="http://ec.europa.eu/justice/smedataprotect/index_hu.htm" title="GDPR az Európai Unió általános adatvédelmi rendelete">GDPR:</a> A tanárok és a véndiákok személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék.
 	A beadott személyes adatok egy web szerveren vannak tárolva (Karlsruhe Németország) az <a href="https://cloud.ionos.de/rechenzentren">"ionos"</a> cég szamitógépközpontjában.
 	Biztonsági másolatok a személyes adatokról csak az internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az másolatok maximum 6 hónapig vannak tárolva.
 	A személyes adatok és fényképek megjelennek külömbőző internet kereső oldalok találati listáján.
 	A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim látogató és internet kereső oldalok ellen védve vannak. </span><br/>
-
-
-<?php
-function showRoleField($value,$fieldName) {
-    $options = array();
-    $disabled='';
-    array_push($options, array('role' => 'unknown', 'text' => 'nem tudunk róla','disabled'=>$disabled));
-    array_push($options, array('role' => 'jmlaureat', 'text' => getActSchool()["awardName"]." díjas",'disabled'=>$disabled));
-    if(!isUserAdmin() && !isUserSuperuser())
-        $disabled='disabled';
-    array_push($options, array('role' => 'editor', 'text' => 'osztályfelelős / szervező','disabled'=>$disabled));
-    array_push($options, array('role' => 'guest', 'text' => 'vendég / barát','disabled'=>$disabled));
-    if (!isUserAdmin())
-        $disabled='disabled';
-    array_push($options, array('role' => 'superuser', 'text' => "rendszerfelelős",'disabled'=>$disabled));
-    array_push($options, array('role' => 'admin', 'text' => "rendszergazda",'disabled'=>'disabled'));
-    showChosenField($value,$fieldName,$options);
-}
-
-function showChosenField($value,$fieldName,$options)
-{
-    echo('<select class="form-control chosen" multiple="true" data-placeholder="...válassz..." id="'.$fieldName.'">');
-    foreach ($options as $option) {
-        $selected = (strstr($value,$option["role"])!==false)?"selected":"";
-        echo('<option value="'.$option["role"].'" '.$selected.' '.$option["disabled"].' >' . $option["text"] . '</option>');
-    }
-    echo('</select>');
-    echo('<input type="hidden" name="'.$fieldName.'"/>');
-}
-
-function showGenderField($value,$fieldName,$readOnly=false) {
-    $options = array(
-            array("value"=>" ","text"=>"...válassz..."),
-            array("value"=>"f","text"=>"Hölgy"),
-            array("value"=>"m","text"=>"Úr")
-    );
-    showOptionsField($value,$fieldName,$options,$readOnly);
-}
-
-function showTitleField($value,$fieldName,$readOnly=false) {
-    $options = array(
-            array("value"=>" ","text"=>"...válassz..."),
-            array("value"=>"Dr.","text"=>"Dr."),
-            array("value"=>"Dr.Med.","text"=>"Dr.Med."),
-            array("value"=>"Prof.","text"=>"Prof."),
-            array("value"=>"Dr.Prof.","text"=>"Dr.Prof."),
-            array("value"=>"Dr.Dr.","text"=>"Dr.Dr.")
-    );
-    showOptionsField($value,$fieldName,$options,$readOnly);
-}
-
-function showOptionsField($value,$fieldName,$options,$readOnly=false) {
-    echo('<select class="form-control" name="'.$fieldName.'" '.($readOnly?"disabled=disabled":"").'>');
-    foreach ($options as $option) {
-        $selected = (strstr($value,$option["value"])!==false)?"selected":"";
-        echo('<option value="'.$option["value"].'" '.$selected.' >' . $option["text"] . '</option>');
-    }
-    echo('</select>');
-}
-?>
-
-<script>
-	function validateEmailInput(sender,button) { 
-		if (validateEmail(sender.value)) {
-			sender.style.color="green";
-			$(button).removeClass("disabled");
-		} else {
-			sender.style.color="red";
-			$(button).addClass("disabled");
-		}
-	} 
-
-	function validateEmail(mail) {
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return re.test(mail);
-	}
-
-	function savePerson() {
-        showWaitMessage();
-        //concat role strings
-        var a = $("#role").children();
-        if (a != null) {
-            var s = '';
-            for (var i = 0; i < a.length; i++) {
-                if (a[i].selected )
-                    s += a[i].value + ' ';
-            }
-            $('input[name="role"]').val(s);
-        }
-        //concat schoolIdsAsTeacher
-        s="";
-        $('input[id="schoolIdAsTeacher"]').each(function() {
-           s += this.checked ?  ("("+$(this).attr("data")+")"):"";
-        });
-        $('[name="schoolIdsAsTeacher"]').val(s);
-        //concat period in school
-        s="";
-        $('input[id="schoolTeacherPeriod"]').each(function() {
-            s += $(this).val()!="" ?  ('"'+$(this).attr("data")+'":"'+$(this).val()+'",'):"";
-        });
-        if (s!='') {
-            $('[name="teacherPeriod"]').val('{'+s.slice(0,-1)+'}');
-        }
-
-        $('#editform').submit();
-    }
-
-    function goGdpr(id) {
-        document.location="gdpr?id="+id;
-    }
-</script>
+<?php } ?>

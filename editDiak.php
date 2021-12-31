@@ -5,6 +5,7 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaCandle.class.php';
+include_once 'editPersonDataHelper.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 global $db;
@@ -101,54 +102,8 @@ if (!isUserAdmin() && $diak["gdpr"]==5) {
     die();
 }
 
-//preparation of the field to be edited and the itemprop characteristic
-$dataFieldNames 	=array("gender","title","lastname","firstname","email","birthname","birthyear","deceasedYear");
-$dataFieldCaption 	=array("Megszólítás","Akad.titulus","Családnév","Keresztnév","E-Mail","Diákkori név","* Született","† Elhunyt");
-$dataItemProp       =array("gender","title","","","","","","");
-$dataCheckFieldVisible	=array(false,false,false,false,true,false,false,false);
-$dataFieldObl			=array("Hölgy/Úr","Akadémia titulus pl: Dr. Dr.Prof. ",true,true,"fontos mező","leánykori családnév","születési év pl.1967","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");
-if (isset($diak["deceasedYear"])){
-    array_push($dataFieldNames ,"cementery","gravestone");
-    array_push($dataFieldCaption,"Temető","Sírhely");
-    array_push($dataItemProp,"","");
-    array_push($dataCheckFieldVisible,false,false);
-    array_push($dataFieldObl,"Temető neve, helység nélkül","");
-}
-if(true)  { //Address
-	array_push($dataFieldNames, "partner","address","zipcode","place","country");
-	array_push($dataItemProp,"","streetAddress","postalCode","addressLocality","addressCountry");
-	array_push($dataFieldCaption, "Élettárs","Cím","Irányítószám","Helység","Ország");
-	array_push($dataCheckFieldVisible, true,true,true,false,false);
-	array_push($dataFieldObl		, "ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
-}
-if (true) { //Communication
-	array_push($dataFieldNames, "phone","mobil","skype","facebook","homepage","education","children");
-	array_push($dataItemProp,"","","","","","","");
-	array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Honoldal","Végzettség","Gyerekek");
-	array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true );
-	array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
-}
-if ($diak["schoolIdsAsTeacher"]==null) { //Person is not a teacher
-    array_push($dataFieldNames      , "employer","function");
-    array_push($dataItemProp        ,"","");
-    array_push($dataFieldCaption    ,"Munkahely","Beosztás");
-    array_push($dataCheckFieldVisible,true,true );
-    array_push($dataFieldObl		    , false,false);
-}
-if (isUserSuperuser() ) {
-    array_push($dataFieldNames, "role");
-    array_push($dataItemProp,"role");
-    array_push($dataFieldCaption, "Opciók");
-    array_push($dataCheckFieldVisible, true);
-    array_push($dataFieldObl, false);
-}
-if (isUserAdmin()) { //only for admin
-	array_push($dataFieldNames, "facebookid","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
-	array_push($dataItemProp,"","","","","","","","","","","");
-	array_push($dataFieldCaption, "FB-ID","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
-	array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
-	array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
-}
+global $dataFieldNames, $dataFieldObl, $dataFieldCaption, $dataItemProp, $dataCheckFieldVisible;
+setPersonFields($diak,isUserSuperuser(),isUserAdmin());
 
 //save changes
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
