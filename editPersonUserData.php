@@ -35,7 +35,7 @@ $diak = $db->getPersonByID($personid);
                 Ezzel a linkkel becenév és jelszó nélkül lehet bejelentkezni.</p></td>
         </tr>
         <tr><td class="caption1">Direkt Link</td><td>&nbsp;</td><td><a href="editDiak?key=<?php echo generateUserLoginKey(getActUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
-        <tr><td class="caption1">Összes infó</td><td>&nbsp;</td><td><a href="personalData?allDataKey=<?php echo generateUserLoginKey("D-".getActUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
+        <tr><td class="caption1">Összes infó</td><td>&nbsp;</td><td><a href="personalData?allDataKey=<?php echo generateUserKeyThatExpires(getActUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></td></tr>
 
         <tr><td colspan="3"><p style="text-align:left" ><span class="glyphicon glyphicon-time"></span> Utolsó bejelentkezés</p></td></tr>
         <tr><td class="caption1">Dátum</td><td>&nbsp;</td><td><?php echo $diak["userLastLogin"]?></a></td></tr>
