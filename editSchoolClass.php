@@ -149,18 +149,19 @@ include("homemenu.inc.php");
 				<option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
 				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
 				<?php 
-					$cl=12;for($cs="A";$cs<="L";$cs++) {
+					$cl=12;for($cs="A";$cs<="K";$cs++) {
 					        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-				 }
-                    $cl=13;for($cs="A";$cs<="L";$cs++) {
+				    } $cs="R";
+                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                    $cl=13;for($cs="A";$cs<="K";$cs++) {
                         ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                }
-                    $cl=11;for($cs="A";$cs<="F";$cs++) {
-                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                }
+                    }
+                        $cl=11;for($cs="A";$cs<="F";$cs++) {
+                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                    }
                     $cl=10;for($cs="A";$cs<="D";$cs++) {
-                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                }
+                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                    }
                  ?>
 			</select>
 		</div>

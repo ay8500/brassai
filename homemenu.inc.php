@@ -12,6 +12,7 @@ use maierlabs\lpfw\Appl as Appl;
 global $db;
 global $userDB;
 $trackerDb = new \maierlabs\lpfw\dbDaTracker($db->dataBase,!isUserSuperuser());
+automaticLogin($userDB);
 
 //Image gallery Menue
 if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
