@@ -100,7 +100,7 @@ if (!isUserLoggedOn() && isActionParam("newUser") && getParam("classtext", "")!=
                         $db->saveRequest(changeType::newuser);
                         Appl::setMessage('Köszünjük szépen!<br/>Bejelenkezési adatok sikeresen kimentve. Hamarosam e-mailtben visszajelezzük a bejelenkezési adatokat.<br/>Jó szorakozást és sikeres kapcsolatfelvételt kivánunk a véndiákok oldalán.', 'info');
                         setUserInSession($userDB, $person["role"], $person["user"], $newUserReturnValue);
-                        sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"], $person["user"], "", $class["graduationYear"], $class["name"], $person["id"]);
+                        sendNewUserMail($person["firstname"], $person["lastname"], $person["email"], $person["passw"], $person["user"], "", $class["graduationYear"], $class["name"],getActSchool(), $person["id"]);
                     } else {
                         logoutUser();
                         Appl::setMessage('Bejelenkezést nem sikerült, kérünk probálkozz késöbb még egyszer! Hibakód:'.$newUserReturnValue, 'warning');

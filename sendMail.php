@@ -26,14 +26,14 @@ function SendNewPassword($diak) {
 /**
  * send mail to new user
  */
-function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$class,$uid=null) {
+function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$class,$school,$uid=null) {
 	$text='<p style="font-weight: bold;">Kedves '.$lastname." ".$firstname.'</p>';
-	$text.="Ezt az e-mail azért kapod mert bejelentkeztél a Brassai Sámuel véndiákok honoldalára.<br />";
+	$text.="Ezt az e-mail azért kapod mert bejelentkeztél a kolozsvári véndiákok honoldalára.<br />";
 	$text.="<p>Ennek nagyön örvendünk, és köszöjük érdeklődésed. </p>";
-	$text.="<p>A véndiákok honoldala lehetőséget nyújt neked, a volt iskola- és osztálytásaiddal kapcsolatba lépjél. Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.</p>";
+	$text.="<p>A véndiákok honoldala lehetőséget nyújt, a volt iskola- és osztálytásaiddal kapcsolatba lépjél. Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.</p>";
 	$text.="<p>";
 	if (isset($year) && isset($class))
-		$text.="Végzős osztály:".$year.'-'.$class."<br/>";
+		$text.="Végzős osztály:".$school["name"]." ".$year.'-'.$class."<br/>";
 	if (isset($uid) && null!=$uid) {
 		$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
 	}
