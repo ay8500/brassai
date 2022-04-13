@@ -14,7 +14,7 @@ Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
 
 unsetActClass();
-Appl::setSiteSubTitle('Szeretettel köszöntünk a '.getActSchoolName().' véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
+Appl::setSiteSubTitle('Szeretettel köszöntünk<br /> a '.getActSchoolName().' véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
 
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");

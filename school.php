@@ -6,6 +6,7 @@ include_once "dbBL.class.php";
 
 use maierlabs\lpfw\Appl as Appl;
 global $db;
+$db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
 Appl::setSiteTitle("Kolozsvári középiskola");
 Appl::setSiteSubTitle(getActSchoolName());
@@ -18,6 +19,8 @@ if (getActSchoolId()==null) {
 
 $school=getActSchool();
 $schoolLogo = "images".DIRECTORY_SEPARATOR.$db->getActSchoolFolder().DIRECTORY_SEPARATOR.$school["logo"];
+$firstPicture["file"] = $schoolLogo;
+Appl::setMember("firstPicture",$firstPicture);
 
 if (isActionParam("save")) {
     $json = createSchoolJson();

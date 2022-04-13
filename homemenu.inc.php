@@ -33,7 +33,7 @@ $schoolList = $db->getSchoolList();
 $today = new DateTime();
 $xmas = (intval(date("m")) === 12 || intval(date("m")) === 1);
 $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
-/*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
+/*easter*/ $eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 if (getActSchoolId()==null) {
@@ -98,19 +98,19 @@ if (getActSchoolId()==null) {
                     <li><a href="rip?classid=all&schoolid=all">Emléküket örökké őrizzük</a></li>
                     <?php foreach ($schoolList as $menuSchool) {
                         $selected = $menuSchool["id"]==getActSchoolId()?"font-weight:bold;color:black":""?>
-                        <li><a style="<?php echo $selected?>" href="start?schoolid=<?php echo $menuSchool["id"] ?>"><?php echo $menuSchool["name"] ?></a></li>
+                        <li><a style="<?php echo $selected?>" href="iskola-<?php echo $menuSchool["shortLink"] ?>"><?php echo $menuSchool["name"] ?></a></li>
                     <?php  }?>
-                    <li><a href="worldmap?classid=all&schoolid=all">Térkép</a></li>
+                    <li><a href="iskola-terkep">Térkép</a></li>
                     <li><a href="zenetoplista?classid=all&schoolid=all">Zenetoplista</a></li>
                     <li><a href="statistics">Statisztika</a></li>
                 </ul>
             </li>
-            <?php if (getActSchool()!==null) {?>
+            <?php if (($menuActSchool = getActSchool())!==null) { ?>
             <li class="dropdown">
 				<a href="index" class="dropdown-toggle" data-toggle="dropdown">Iskolánk<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="classlist?schoolid=<?php echo getActSchoolId()?>">Osztályok</a> </li>
-                    <li><a href="school?schoolid=<?php echo getActSchoolId()?>">Iskolánkról</a></li>
+                    <li><a href="iskola-<?php echo $menuActSchool["shortLink"]?>-info">Iskolánkról</a></li>
                     <li><a href="rip?classid=all">Emléküket örökké őrizzük</a></li>
 					<li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanáraink</a></li>
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("staffClass")?>">Barátaink</a></li>
@@ -119,9 +119,9 @@ if (getActSchoolId()==null) {
                     <?php } ?>
                     <li><a href="search?type=unknown&schoolid=<?php echo getActSchoolId()?>">Nem tudunk róluk</a></li>
                     <li><a href="search?type=incharge&schoolid=<?php echo getActSchoolId()?>">Osztályfelelősők</a></li>
-                    <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>">Iskola képek</a></li>
+                    <li><a href="iskola-<?php echo $menuActSchool["shortLink"]?>-kepek">Iskola képek</a></li>
                     <li><a href="picture?type=schoolID&typeid=<?php echo getActSchoolId()?>&album=_tablo_">Iskola tablói</a></li>
-        			<li><a href="worldmap?classid=all&schoolid=<?php echo getActSchoolId()?>">Térkép</a></li>
+        			<li><a href="iskola-<?php echo $menuActSchool["shortLink"]?>-terkep">Térkép</a></li>
         			<li><a href="zenetoplista?classid=all&schoolid=<?php echo getActSchoolId()?>">Zenetoplista</a></li>
        			</ul>
       		</li>
@@ -306,19 +306,19 @@ if (getActSchoolId()==null) {
 </div>
 <?php
 /*easter*/
-//$rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter'/*,2022*/);
+$rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2022);
 
 ?>
 <div id="topLine">
     <h1 class="appltitle">
-        <?php /*easter
+        <?php /*easter*/ ?>
         <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user)?> ">
             <img class="blob" src="images/easter.png" style="width: 50px" />
             <span class="badge" style="left: -20px;position: relative;top: 4px;">
                 <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
             </span>
         </a>
-        */?>
+        <?php ?>
         <?php echo(ucfirst(getActSchoolName())) ?> <span id="o400">egykori </span>diákjai
         <span id="o480"> <?php echo(getActSchoolClassName()) ?></span>
     </h1>

@@ -111,15 +111,15 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         <?php }?>
     <?php
         /*Easter*/
-        /*
-        if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) && strtotime("now")<strtotime("2021-04-08")) {
+
+        if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) ) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !isUserLoggedOn())) {
                 ?>
                 <button style="margin-bottom: 5px" onclick="return saveEasterOpinion(<?php echo $person['id'] ?>,'person','easter',<?php echo getLoggedInUserId()!=null?getLoggedInUserId():"null" ?>)" title="Megszabad locsolni?" class="btn btn-success"><img src="images/easter.png" style="width: 26px"/> Szabad öntözni?</button>
                 <?php
             }
         }
-        */
+
         displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["schoolIdsAsTeacher"]) && $d["schoolIdsAsTeacher"]!=NULL),isset($d["deceasedYear"]));
     ?>
 	</div>
