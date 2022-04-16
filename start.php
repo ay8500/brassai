@@ -111,6 +111,11 @@ if (getParam("all")=="all"){
     unsetActSchool();
     unsetActClass();
 }
+if (getParam("tabOpen")=="easter") {
+    $firstPicture["file"] = "images/easter.jpg";
+    \maierlabs\lpfw\Appl::setMember("firstPicture",$firstPicture);
+}
+
 include("homemenu.inc.php");
 
 ?>

@@ -28,10 +28,10 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             $personClass = displayPersonNameAndGetClass($db,$person,$showClass);
         ?>
         <?php if ($person["gdpr"]==100) {?>
-            <img title="A személy jováhagyta a személyes adatainak a használatát kizárolag ezen az oldalon!" src="images/gdpr.png" style="position: absolute;width:88px;left:409px;top:3px" />
+            <img title="A személy jováhagyta a személyes adatainak a használatát kizárolag ezen az oldalon!" src="images/gdpr.png" style="position: absolute;width:58px;left:435px;top:3px" />
         <?php } ?>
         <?php if ($person["gdpr"]>0 && $person["gdpr"]<=5) {?>
-            <img title="A személy tiltja részben vagy teljes mértékben a személyes adatainak a használatát!" src="images/gdpr.png" style="position: absolute;width:150px;left:335px;top:3px;filter: hue-rotate(90deg);" />
+            <img title="A személy tiltja részben vagy teljes mértékben a személyes adatainak a használatát!" src="images/gdpr.png" style="position: absolute;width:58px;left:435px;top:3px;filter: hue-rotate(90deg);" />
         <?php } ?>
         <?php displayPersonPictureAndHistory($db,$d);?>
 		<div class="personboxc">

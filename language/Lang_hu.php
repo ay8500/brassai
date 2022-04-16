@@ -5,8 +5,10 @@ $TXT["Logout"]	    ="Kijelentkezés";
 $TXT["User name"]   ="Felhasználónév";
 $TXT["Password"]	="Jelszó";
 $TXT["User name or e-mail"]	="Felhasználó név vagy e-mail cím";
-$TXT["Sign in or the login user and password have been forgotten"]	="Bejelenkezési adataim nincsenek vagy elfelejtettem.";
-$TXT["Sign in / forgotten"]	="Nincs / Elfelejtettem";
+$TXT["Create a new user"]	= "Új felhasználó létrehozása ";
+$TXT["Lost password"]	= "Elfelejtettem a jelszavam";
+$TXT['New user sign in']	= 'Új bejelentkezés';
+$TXT['Reset password']	= 'Elfelejtettem';
 
 $TXT["Login failed!"]="Belépés sikertelen! ";
 $TXT["User name and password are empty."]="Felhasználónév és jelszó hiányzik.";

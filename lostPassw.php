@@ -34,18 +34,6 @@ include 'homemenu.inc.php';
 ?>
 <div class="container-fluid">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni (regisztrálni).</h4></div>
-        <div class="panel-body">
-            <div class="alert alert-info">
-                Te is a kolozsvári iskolák tanárnője, tanárja, véndiákja vagy és szeretnél volt diákokkal, osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
-                <br />
-                Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.
-            </div>
-            <button class="btn btn-default" onclick="newUser();"><span class="glyphicon glyphicon-user"></span> Szeretnék bejelentkezni</button>
-        </div>
-    </div>
-
 	<div class="panel panel-default">
 		<div class="panel-heading"><h4>Elfelejtettem a jelszavam, szeretnék az e-mail címemre egy újjat.</h4></div>
   		<div class="panel-body">
@@ -62,8 +50,21 @@ include 'homemenu.inc.php';
 			</form>
 		</div>
 	</div>
-		
-	<div class="panel panel-default">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>Új vagyok ezen az oldalon szeretnék én is bejelentkezni (regisztrálni).</h4></div>
+        <div class="panel-body">
+            <div class="alert alert-info">
+                Te is a kolozsvári iskolák tanárnője, tanárja, véndiákja vagy és szeretnél volt diákokkal, osztálytársaiddal és iskolatáraiddal kapcsolatba kerülni, rajta, jelentkezz be!
+                <br />
+                Ez az oldal ingyenes, nem tartalmaz reklámot és ami a legfontosabb, látogatásod és aktivitásaid biztonságban maradnak! Adataid, képeid és bejegyzésed csak arra a célra vannak tárólva, hogy a véndiákok oldalát gazdagítsák! Ezenkivül csak te határozod meg ki láthatja őket.
+            </div>
+            <button class="btn btn-default" onclick="newUser();"><span class="glyphicon glyphicon-user"></span> Szeretnék bejelentkezni</button>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
   		<div class="panel-heading"><h4>Vannak bejelenkezési adataim de nem sikerül bejelentkezni.</h4></div>
   		<div class="panel-body">
   			<div class="alert alert-info">

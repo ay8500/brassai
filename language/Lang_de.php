@@ -6,8 +6,11 @@ $TXT["Login "]      ="Login";
 $TXT["User name"]   ="Benutzername";
 $TXT["Password"]	="Kennwort";
 $TXT["User name or e-mail"]	="Benutzername oder e-Mail Adresse";
-$TXT["Sign in or the login user and password have been forgotten"]	="Anmelden oder ich habe meine Benutzerdaten vergessen";
-$TXT["Sign in / forgotten"]	="Anmelden / Vergessen";
+$TXT["Create a new user"]	= "Neue Benutzer anlegen";
+$TXT["Lost password"]	= "Passwort vergessen";
+$TXT['New user sign in']	= 'Registirieren';
+$TXT['Reset password']	= 'Vergessen';
+
 
 $TXT["Login failed!"]="Einloggen gescheitert! ";
 $TXT["User name and password are empty."]="Benutzername und Kennwort ist leer!";
