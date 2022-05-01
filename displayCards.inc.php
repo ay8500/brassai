@@ -111,7 +111,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         <?php }?>
     <?php
         /*Easter*/
-
+        /*
         if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) ) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !isUserLoggedOn())) {
                 ?>
@@ -119,7 +119,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                 <?php
             }
         }
-
+        */
         displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["schoolIdsAsTeacher"]) && $d["schoolIdsAsTeacher"]!=NULL),isset($d["deceasedYear"]));
     ?>
 	</div>
@@ -247,7 +247,7 @@ function displaySchool($db,$school,$showDate=false) {
     ?>
     <div class="element" style="text-align: left">
         <div style="display: block;max-width:400px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <h4><i class="material-icons" style="vertical-align: bottom;">school</i> Iskola: <a href="start?schoolid=<?php echo $school["id"]?>"><?php echo $school["name"];?></h4></a>
+            <h4><i class="material-icons" style="vertical-align: bottom;">school</i> Iskola: <a href="iskola-<?php echo $school["shortLink"] ?>"><?php echo $school["name"];?></h4></a>
         </div>
 
         <div style="display: inline-block;vertical-align: top; ">

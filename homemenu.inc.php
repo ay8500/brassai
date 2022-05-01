@@ -33,7 +33,7 @@ $schoolList = $db->getSchoolList();
 $today = new DateTime();
 $xmas = (intval(date("m")) === 12 || intval(date("m")) === 1);
 $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
-/*easter*/ $eventStyle = " border-bottom: 2px solid green;";
+/*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 if (getActSchoolId()==null) {
@@ -306,19 +306,19 @@ if (getActSchoolId()==null) {
 </div>
 <?php
 /*easter*/
-$rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2022);
+//$rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2022);
 
 ?>
 <div id="topLine">
     <h1 class="appltitle">
-        <?php /*easter*/ ?>
+        <?php /*easter*/ /*?>
         <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user)?> ">
             <img class="blob" src="images/easter.png" style="width: 50px" />
             <span class="badge" style="left: -20px;position: relative;top: 4px;">
                 <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
             </span>
         </a>
-        <?php ?>
+        <?php */ ?>
         <?php echo(ucfirst(getActSchoolName())) ?> <span id="o400">egykori </span>diákjai
         <span id="o480"> <?php echo(getActSchoolClassName()) ?></span>
     </h1>

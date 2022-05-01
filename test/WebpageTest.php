@@ -80,10 +80,10 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
         $div = $finder->query("//*[contains(@class, 'rip-element')]");
-        $this->assertEquals(48,$div->length,"Expeted 24 persons on this page");
+        $this->assertEquals(48,$div->length,"Expected to found 48 persons on this page");
         for ($i =0 ; $i<$div->length;$i++) {
             $text = $div->item($i)->childNodes->item(1)->nodeValue;
-            $this->assertContains("†",$text);
+            $this->assertContains("†",$text,"Element nr:".$i);
         }
     }
 
