@@ -326,7 +326,12 @@ if ($diak["schoolIdsAsTeacher"]!=NULL) {
     } else {
         if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
             $headTeacher=$db->getPersonByID($class["headTeacherID"]);
-            Appl::setSiteSubTitle(getActSchoolClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
+            $applSubTitle = getActSchoolClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
+            if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>=0) {
+                $secondHeadTeacher=$db->getPersonByID($class["secondHeadTeacherID"]);
+                $applSubTitle .=" ".getPersonLinkAndPicture($secondHeadTeacher);
+            }
+            Appl::setSiteSubTitle($applSubTitle);
         } else {
             Appl::setSiteSubTitle("Osztály ".getActSchoolClassName());
         }

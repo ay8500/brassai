@@ -204,12 +204,20 @@ function displayClass($db,$class,$showDate=false) {
             <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getSchoolClassName($class);?></h4></a><br/>
 			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
-				Osztályfőnök: <a href="editDiak?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a> <br/>
-			<?php } ?>
+				Osztályfőnök: <a href="editDiak?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a>
+                <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>=0) {
+                    $secondHeadTeacher = $db->getPersonByID($class["secondHeadTeacherID"]);?>
+                    és <a href="editDiak?uid=<?php echo $class["secondHeadTeacherID"]?>" ><?php echo $secondHeadTeacher["lastname"]." ".$secondHeadTeacher["firstname"]?></a> <br/>
+                <?php } ?>
+                <br/>
+            <?php } ?>
 		</div>
 		<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 		    displayPersonPicture($headTeacher);
 		} ?>
+        <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>=0) {
+            displayPersonPicture($secondHeadTeacher);
+        } ?>
 
 		<?php
             $pictureId = $db->getGroupPictureIdByClassId($class["id"]);

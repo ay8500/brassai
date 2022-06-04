@@ -72,6 +72,8 @@ class dbDAO {
         $teachers = explode(',',$class["teachers"]);
         if (isset($class["headTeacherID"]))
             $teachers[]=$class["headTeacherID"];
+        if (isset($class["secondHeadTeacherID"]))
+            $teachers[]=$class["secondHeadTeacherID"];
         return $teachers;
     }
 
@@ -92,7 +94,7 @@ class dbDAO {
      * @return array
      */
     public function getClassListByHeadTeacherID($id) {
-        $sql="select * from class where headTeacherID =".$id;
+        $sql="select * from class where headTeacherID =".$id. " or secondHeadTeacherID = ".$id ;
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
     }

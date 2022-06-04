@@ -25,7 +25,12 @@ if (isActClassStaf()) {
 	} else {
 		if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
 			$headTeacher=$db->getPersonByID($class["headTeacherID"]);
-			Appl::setSiteSubTitle(getActSchoolClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher));
+            $applSubTitle = getActSchoolClassName()." Osztályfőnök: ".getPersonLinkAndPicture($headTeacher);
+            if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>=0) {
+                $secondHeadTeacher = $db->getPersonByID($class["secondHeadTeacherID"]);
+                $applSubTitle .= " és ".getPersonLinkAndPicture($secondHeadTeacher);
+            }
+			Appl::setSiteSubTitle($applSubTitle);
             Appl::setSiteTitle(getActSchoolClassName()." Osztályfőnök ".getPersonName($headTeacher));
 		} else {
 			Appl::setSiteSubTitle(getActSchoolClassName()." Osztálytársak");
