@@ -174,15 +174,16 @@ function checkMessageContent($message) {
 	$rr = array("/","=","-",":",",",".","(",")","?","!","  ");
 	$msg = str_replace($rr, " ", $msg);
 	$whiteList = array(	"lessz ", " volt "," van "," rossz "," hogy "," az "," ez "," azt "," ezt "," ezzel "," azzal "," ahoz "," itt ", " ott "," de "," is "," és ",
-						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok ", " puszi ", "kellemes ","nagyon ","puszilok ",
+						" igen "," nem ", "akkor ", " csak ", "szia ","sziasztok ", " puszi ", "kellemes ","nagyon ","puszilok ", "szép",
 						"legyek", " aki ", "mikor", "honlap", "oldal","vagyok","leszek"," vagy "," minden ",
-						" én "," te ", " brassai ","köszön", "üdvöz",
-						"ünnep",  "boldog ", "karácsony", "húsvét", "egy ","minden","senki","neked","fénykép" );
+						" én "," te ", " brassai ","köszön","köszi", "üdvöz","kedves", "iskola",
+						"ünnep",  "boldog ", "karácsony", "húsvét", "egy ","minden","senki","neked","fénykép",
+                        " református ", " jzsuk ", " apácai ", " unitárius ", " tanár", );
 	foreach ($whiteList as $s) {
 		$ret->count += substr_count($msg, $s);
 	}
 	$ret->words=sizeof(explode(" ",trim($msg)));
-	$ret->ok = $ret->count >= $ret->words/20 && $ret->words>9;
+	$ret->ok = $ret->count >= $ret->words/20 && $ret->words>4;
 	return $ret;
 }
 

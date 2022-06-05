@@ -11,7 +11,6 @@ Appl::addCss("css/chosen.css");
 Appl::addCssStyle('
     .shadowbox {margin-bottom: 25px; box-shadow: 3px 4px 7px 1px lightgray;}
 ');
-Appl::setSiteTitle("Osztályok módosítása","Osztályok módosítása","Osztályok módosítása");
 
 /**
  * @var dbBL;
@@ -20,7 +19,9 @@ global $db;
 $schoolList = $db->getSchoolList();
 $classid= getIntParam("classid",-1);
 $class=$db->getClassById($classid);
-$subTitle= ($classid>=0) ? "Végzős osztály módosítása" : "Új végzős osztály létrehozása";
+$changedByPerson = $db->getPersonByID($class["changeUserID"]);
+$subTitle= ($classid>=0) ? "végzős osztály módosítása" :  "új végzős osztály létrehozása";
+Appl::setSiteTitle($class["text"]. " osztály módosítása",$class["text"]. " osztály módosítása");
 
 if ($class==null && !isActionParam("newclass") && !isActionParam("saveclass")) {
     Appl::setMessage("Osztály nem létezik!", "danger");
@@ -62,14 +63,15 @@ if (isActionParam("saveclass")) {
 				"name"=>getParam("class"),
 				"text"=>getParam("year")." ".getParam("class"),
 				"teachers"=>getParam("teachers"),
-				"headTeacherID"=>getIntParam("teacher",0)
+				"headTeacherID"=>getIntParam("teacher",0),
+                "secondHeadTeacherID"=>getIntParam("secondTeacher",0)
 		]);
 		if ($classid>=0 ) {
 		    $db->updateRecentChangesList();
 			setActClass($classid,getActSchoolId());
 			$class=$db->getClassById($classid);
             Appl::setMessage("Osztály sikeresen kimentve! Köszönjük szépen.","success");
-		} else {
+        } else {
 			Appl::setMessage("Osztály kimentése sikertelen!","warning");
 		}
 	}
@@ -78,8 +80,6 @@ if (isActionParam("saveclass")) {
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
-	<h2 class="sub_title"><?php echo $subTitle?></h2>
-
 	<?php if ($classid>=0 && !isUserAdmin()) {  //Edit an existing class?>
 
 		<div class="input-group shadowbox" >
@@ -180,6 +180,20 @@ include("homemenu.inc.php");
 			<?php } ?>
 		</select>
 	</div>
+    <div class="input-group shadowbox">
+        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Második osztályfőnők</span>
+        <select class="form-control" onchange="changeTeacher()" id="selectHeadTeacher">
+            <option value="0">...válassz...</option>
+            <option value="-1">...nincs...</option>
+            <?php
+            $teachers = $db->getTeacherListBySchoolId(getActSchoolId());
+            foreach ($teachers as $t) {?>
+                <option value="<?php echo $t['id']?>" <?php echo (isset($class['secondHeadTeacherID']) && $t['id']==$class['secondHeadTeacherID']?"selected":"") ?> >
+                    <?php echo getPersonName($t).':'.getFieldValueNull($t,'function')?>
+                </option>
+            <?php } ?>
+        </select>
+    </div>
 
     <div class="input-group shadowbox">
         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tanáraink</span>
@@ -192,7 +206,7 @@ include("homemenu.inc.php");
             }
             foreach ($teachers as $teacher) {
                 $selected = in_array($teacher["id"],$savedTeachers)?"selected":"";
-                if (!isset($class["headTeacherID"]) || $teacher["id"]!==$class["headTeacherID"])  {?>
+                if (!(isset($class["headTeacherID"]) && $teacher["id"]==$class["headTeacherID"]) && !(isset($class["secondHeadTeacherID"]) && $teacher["id"]==$class["secondHeadTeacherID"]) )  {?>
                     <option value="<?php echo $teacher["id"]?>" <?php echo $selected?>><?php echo getPersonName($teacher).':'.getFieldValueNull($teacher,'function')?></option>
             <?php } }?>
         </select>
@@ -204,16 +218,16 @@ include("homemenu.inc.php");
 				<span class="badge"><?php echo sizeof($db->dataBase->getHistoryInfo("class",$class["id"]))?></span>
 			</a>
 		<?php }?>
-		<button class="btn btn-default disabled"   id="btNew" onclick="saveNewClass();" <?php if (!isActionParam("newclass")) echo('style="display:none"');?>>
+		<button class="btn btn-success disabled"   id="btNew" onclick="saveNewClass();" <?php if (!isActionParam("newclass")) echo('style="display:none"');?>>
 			<span class="glyphicon glyphicon-ok-circle"></span> Új osztályt létrehozom!
 		</button>
-		<button class="btn btn-default disabled"  id="btSave" onclick="saveClass();" <?php if (isActionParam("newclass")) echo('style="display:none"');?>>
-			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment!
+		<button class="btn btn-success disabled"  id="btSave" onclick="saveClass();" <?php if (isActionParam("newclass")) echo('style="display:none"');?>>
+			<span class="glyphicon glyphicon-ok-circle"></span> Osztály módosításokat kiment
 		</button>
         <?php $stat=$db->getClassStatistics($classid);?>
 		<?php if (isUserAdmin() ) :?>
 			<span>Diákok száma:<?php echo $stat->personCount?></span>
-			<button class="btn btn-default " <?php if($stat->personCount>0) echo "disabled";?> onclick="deleteClass();">
+			<button class="btn btn-danger " <?php if($stat->personCount>0) echo "disabled";?> onclick="deleteClass();">
 				<span class="glyphicon glyphicon-remove-circle"></span> Osztályt töröl
 			</button>
 		<?php  endif;?>
@@ -222,12 +236,15 @@ include("homemenu.inc.php");
 	<div class="well " style="margin-bottom: 25px;">
 		<h4>Statisztikai adatok</h4>
 		<div class="form">	      		
-		<a href="hometable?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
-        <a href="hometable?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
-		Diákok képpel:<?php echo $stat->personWithPicture?><br/>
-		Diakok képei:<?php echo $stat->personPictures?><br/>
-		<a href="picture?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
-		</div>
+            <a href="hometable?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
+            <a href="hometable?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
+            Diákok képpel:<?php echo $stat->personWithPicture?><br/>
+            Diakok képei:<?php echo $stat->personPictures?><br/>
+            <a href="picture?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
+            Utoljára módosítva:
+            <?php echo getPersonLinkAndPicture($changedByPerson) ?>
+            <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
+        </div>
 	</div>
 </div>
 
@@ -286,7 +303,7 @@ Appl::addJsScript('
 
 	function saveClass() {
 	    showWaitMessage();
-	    document.location="editSchoolClass?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
+	    document.location="editSchoolClass?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&secondTeacher="+$("#selectHeadTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
 	}
 
 	function saveNewClass() {

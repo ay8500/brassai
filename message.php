@@ -7,6 +7,8 @@ include_once 'dbBL.class.php';
 include 'message.inc.php';
 
 use \maierlabs\lpfw\Appl as Appl;
+global $db;
+global $userDB;
 
 \maierlabs\lpfw\Appl::addCss('editor/ui/trumbowyg.min.css');
 \maierlabs\lpfw\Appl::addJs('editor/trumbowyg.min.js');
@@ -60,7 +62,7 @@ if (isActionParam("postMessage")) {
                 Appl::setMessage("A beadott üzenet kimentése nem sikerült!","warning");
 			}
 		} else {
-            Appl::setMessage("A beadott üzenet úgytűnik nem tartalmaz érthető magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben.", "info");
+            Appl::setMessage("A beadott üzenet úgytűnik nem tartalmaz érthető magyar szöveget! <br/> Probálkozz rövidítések nélkül vagy írj egy kicsitt bővebben. <br/> Azért kell a szöveget ellenőrizni, hogy ne lehessen az oldalt reklám céljával visszaélésre használni. ", "info");
         }
 	}
 	else {
