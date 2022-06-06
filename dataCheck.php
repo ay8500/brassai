@@ -65,7 +65,7 @@ if (isUserAdmin()) {
 		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
 		generateCheckHtmlTable($db,"Személyek", "Személy","Person","lastname",$id,$dummyPerson,"getPersonByID4DataCheck","deletePersonEntry","savePerson");
 	} else if ($tabOpen=="picture") {
-		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
+		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","albumName"=>"","tag"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0,"personID"=>0,"schoolID"=>0,"classID"=>0],"getPictureById","deletePictureEntry","savePicture");
 	} else if ($tabOpen=="mark") {
         $list=$db->getListToBeChecked('personInPicture');?>
         <p align="center">
