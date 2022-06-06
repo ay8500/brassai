@@ -7,6 +7,11 @@ include_once Config::$lpfw.'appl.class.php';
 use \maierlabs\lpfw\Appl as Appl;
 
 Appl::setSiteSubTitle('Adatok vizsgálása és jóváhagyása');
+Appl::addCssStyle('
+    td, th { padding: 4px; border: 1px solid}
+    table { margin-left: auto; margin-right:auto }
+    tr:first-child {height: 39px;font-size: 18px;background-color: lightgray; }
+');
 include('homemenu.inc.php');
 global $db, $tabOpen;
 
@@ -58,14 +63,14 @@ if (isUserAdmin()) {
 		$dummyPerson["phone"]="";$dummyPerson["mobil"]="";$dummyPerson["email"]="";
 		$dummyPerson["homepage"]="";$dummyPerson["skype"]="";$dummyPerson["education"]="";
 		$dummyPerson["employer"]="";$dummyPerson["function"]="";$dummyPerson["children"]="";
-		generateCheckHtmlTable($db,"Személyek", "Személy","Person","lastname",$id,$dummyPerson,"getPersonByID","deletePersonEntry","savePerson");
+		generateCheckHtmlTable($db,"Személyek", "Személy","Person","lastname",$id,$dummyPerson,"getPersonByID4DataCheck","deletePersonEntry","savePerson");
 	} else if ($tabOpen=="picture") {
 		generateCheckHtmlTable($db,"Képek", "Kép","Picture","file",$id,["id"=>0,"title"=>"","comment"=>"","file"=>"","isVisibleForAll"=>0,"isDeleted"=>0],"getPictureById","deletePictureEntry","savePicture");
 	} else if ($tabOpen=="mark") {
         $list=$db->getListToBeChecked('personInPicture');?>
         <p align="center">
             Személy jelölések:<br/>
-        <table align="center" border="1">
+        <table>
             <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
                 <td>Személy</td><td>Kép</td><td>Személy</td><td>Datum</td><td>Ip</td><td colspan="2">Akció</td>
             </tr>
@@ -223,12 +228,12 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	$list = $db->getListToBeChecked(strtolower($fieldDb));
 
 ?>
-<p align="center">
-<?php echo($title)?>:<br/>
+<div class="panel">
+<h2 style="text-align: center"><?php echo($title)?></h2>
 <?php //** The table of the  changes?>
-	  <table align="center" border="1">
-	    <tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    	<td><?php echo $fieldText ?></td><td>Datum</td><td>Ip</td><td colspan="3">Akció</td></tr>
+	  <table>
+	    <tr>
+	    	<td><?php echo $fieldText ?></td><td>Dátum</td><td>IP cím</td><td colspan="3">Akció</td></tr>
 	  	<?php
 	  		foreach ($list as $i=>$l) {
 	   			echo('<tr >');
@@ -240,8 +245,8 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	   			}else{
 	   				echo('<td><button class="btn btn-default" onclick="edit'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-open"></span></button></td>');
 	   			}
-	   			echo('<td><button class="btn btn-default" onclick="accept'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
-	   			echo('<td><button class="btn btn-default" onclick="delete'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
+	   			echo('<td><button class="btn btn-success" onclick="accept'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-ok"></span></button></td>');
+	   			echo('<td><button class="btn btn-danger" onclick="delete'.$fieldDb.'Change('.$l["id"].');"><span class="glyphicon glyphicon-remove"></span></button></td>');
 	   			echo("</tr>");
 	  		}
 	  	?>
@@ -263,9 +268,9 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	  		}
 		?>
 			<?php //** The table of the changes ?>
-			<table align="center" border="1" style="margin-top: 20px">
+			<table style="margin-top: 20px">
 	    		<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    			<td>Mezö</td>
+	    			<td>Mező</td>
 	    			<?php if ($compare) {?><td>Eredeti</td><?php }?>
 	    			<td>Módosítás</td>
 	    			<?php if ($compare) {?><td>Akció</td><?php }?>
@@ -301,7 +306,7 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	    				<?php if ($compare) { //Button?>
 		    				<td >
 		    					<?php if (strstr($field,"change")=="" && $field!="id" && $cp[$field]!=$value) :?>
-		    						<button class="btn btn-default" onclick="accept<?php echo $fieldDb?>FieldChange(<?php echo $id ?>,'<?php echo $field?>');"><span class="glyphicon glyphicon-edit"></span></button>
+		    						<button class="btn btn-success" onclick="accept<?php echo $fieldDb?>FieldChange(<?php echo $id ?>,'<?php echo $field?>');"><span class="glyphicon glyphicon-edit"></span></button>
 		    					<?php endif;?>
 		    				</td>
 		    			<?php }?>
@@ -312,7 +317,7 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	  	}
 		?>
 	 </table>  
-</p>
+</div>
 <?php
     Appl::addJsScript('
         function delete'.$fieldDb.'Change(id) {
@@ -331,5 +336,6 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
         }
     ');
 }
+
 include 'homefooter.inc.php';
 

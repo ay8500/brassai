@@ -155,6 +155,7 @@ function displayClass($db,$item,$class,$itemNext) {
     displayElementObj($class, $classNext, "eveningClass","E");
     displayElementObj($class, $classNext, "text");
 	displayElement(getPersonName($db->getPersonByID(array_get($class,"headTeacherID",null))), getPersonName($db->getPersonByID(array_get($classNext,"headTeacherID",null))));
+    displayElement(getPersonName($db->getPersonByID(array_get($class,"secondHeadTeacherID",null))), getPersonName($db->getPersonByID(array_get($classNext,"secondHeadTeacherID",null))));
     displayElementObj($class, $classNext, "teachers");
 }
 

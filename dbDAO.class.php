@@ -396,6 +396,17 @@ class dbDAO {
 	    return $person;
 	}
 
+    public function getPersonByID4DataCheck($id) {
+        $d = $this->getPersonByID($id);
+        $class = $this->getClassById($d["classID"]);
+        $school = $this->getSchoolById($d["schoolID"]);
+        $ret["Iskola"]=$school["name"];
+        $ret["Osztály"]=$class["text"];
+        $ret = array_merge($ret,$d);
+        return $ret;
+    }
+
+
     function getPersonWithInfo($personId) {
         $sql = "SELECT ";
         $sql .= "person.*, ";
@@ -638,11 +649,7 @@ class dbDAO {
         //c.changeUserID is null
 		$sql.="where  c.changeForID is not null or c.changeUserID is null ";
 		$sql.="order by c.changeDate asc";
-		$this->dataBase->query($sql);
-		if ($this->dataBase->count()>0) {
-			return $this->dataBase->getRowList();
-		} else 
-			return array();
+		return $this->dataBase->queryArray($sql);
 	}
 
     /**
