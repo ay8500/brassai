@@ -1,8 +1,9 @@
 <?php
-include_once 'config.class.php';
+include_once "config.class.php";
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'appl.class.php';
-include_once("dbBL.class.php");
+include_once "dbBL.class.php";
+include_once "displayCards.inc.php";
 
 use maierlabs\lpfw\Appl as Appl;
 
@@ -80,7 +81,8 @@ if (isActionParam("saveclass")) {
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
-	<?php if ($classid>=0 && !isUserAdmin()) {  //Edit an existing class?>
+    <?php displayClass($db, $class, false) ?>
+    <?php if ($classid>=0 && !isUserAdmin()) {  //Edit an existing class?>
 
 		<div class="input-group shadowbox" >
 			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>
@@ -183,7 +185,7 @@ include("homemenu.inc.php");
     <div class="input-group shadowbox">
         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Második osztályfőnők</span>
         <select class="form-control" onchange="changeTeacher()" id="selectHeadTeacher">
-            <option value="0">...válassz...</option>
+            <option value="-1">...válassz...</option>
             <option value="-1">...nincs...</option>
             <?php
             $teachers = $db->getTeacherListBySchoolId(getActSchoolId());
