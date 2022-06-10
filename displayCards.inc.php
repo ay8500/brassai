@@ -246,10 +246,10 @@ function displayClass($db,$class,$showDate=false) {
 <?php }
 
 /**
- * Display a class
+ * Display a school
  * @param dbDAO $db the database
- * @param array $class
- * @param bool $showDate
+ * @param array $school the school
+ * @param bool $showDate show change date
  */
 function displaySchool($db,$school,$showDate=false) {
     ?>
@@ -259,8 +259,8 @@ function displaySchool($db,$school,$showDate=false) {
         </div>
 
         <div style="display: inline-block;vertical-align: top; ">
-            <a href="school?schoolid=<?php echo $school["id"]?>" >
-                <img style="height: 65px" src="images/school<?php echo $school["id"]?>/logo.jpg" />
+            <a href="iskola-<?php echo $school["shortLink"] ?>" >
+                <img style="height: 65px" src="images/school<?php echo $school["id"]."/".$school["logo"]?>" />
             </a>
         </div>
         <div style="display: inline-block;vertical-align: top;margin-left: 30px ">
@@ -268,17 +268,16 @@ function displaySchool($db,$school,$showDate=false) {
             <div><span><a href="<?php echo $school["homepage"] ?>" target="_blank"><?php echo $school["homepage"] ?></a></span></div>
             <div><span><a href="mailto:<?php echo $school["mail"] ?>" target="_blank"><?php echo $school["mail"] ?></a></span></div>
         </div>
-
-        <?php if (isset($school["directorId"])) {
-            displayPersonPicture($school["directorId"]);
+        <br/><br/>
+        <?php if (isset($school["directorID"])) {
+            displayPersonPicture($db->getPersonByID($school["directorID"]),true);
         } ?>
 
         <?php
-        $pictureId = 0;
-        if ($pictureId >0) {?>
-            <div style="display: inline-block;vertical-align: top; ">
-                <a href="picture?id=<?php echo $pictureId?>" >
-                    <img src="imageConvert?width=300&thumb=false&id=<?php echo $pictureId?>" />
+        if (isset($school["pictureID"])) {?>
+            <div style="display: inline-block;vertical-align: top;">
+                <a href="picture?id=<?php echo $school["pictureID"]?>" >
+                    <img src="imageConvert?width=300&thumb=false&id=<?php echo $school["pictureID"]?>" />
                 </a>
             </div>
         <?php } ?>
@@ -445,7 +444,7 @@ function displayPersonNameAndGetClass ($db,$d) {
     return $personClass;
 }
 
-function displayPersonPicture($d)
+function displayPersonPicture($d,$displayName=false)
 {
     //mini icon
     if (isset($d["picture"]) && $d["picture"] != "") {
@@ -481,6 +480,7 @@ function displayPersonPicture($d)
                 </div>
             <?php }?>
         </div>
+        <?php if ($displayName) echo getPersonName($d) ?>
     </a>
     <?php
     return $personLink;

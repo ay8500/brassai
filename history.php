@@ -172,6 +172,8 @@ function displaySchool($db,$item,$school,$itemNext) {
     displayElementObj($school, $schoolNext, "homepage","WWW");
     displayElementObj($school, $schoolNext, "addressZipCode","Zip");
     displayElementObj($school, $schoolNext, "addressStreet","Cím");
+    displayElementObj($school, $schoolNext, "directorID","Igazgató");
+    displayElementObj($school, $schoolNext, "pictureID","Kép");
     displayElementObj($school, $schoolNext, "awardName","Díj neve");
     displayElementObj($school, $schoolNext, "awardText","Díj szöveg");
 }

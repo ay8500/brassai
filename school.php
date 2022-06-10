@@ -2,25 +2,28 @@
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'appl.class.php';
+include_once Config::$lpfw.'view/formTools.inc.php';
 include_once "dbBL.class.php";
+include_once "displayCards.inc.php";
+
 
 use maierlabs\lpfw\Appl as Appl;
 global $db;
 $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 
-Appl::setSiteTitle("Kolozsvári középiskola");
-Appl::setSiteSubTitle(getActSchoolName());
 if (getActSchoolId()==null) {
     include("homemenu.inc.php");
     ?><div class="well">Iskola nincs kiválasztva.</div><?php
     include ("homefooter.inc.php");
     die();
 }
+Appl::setSiteTitle("Kolozsvári középiskola ".getActSchoolName(),"Iskola története és adatai");
 
 $school=getActSchool();
 $schoolLogo = "images".DIRECTORY_SEPARATOR.$db->getActSchoolFolder().DIRECTORY_SEPARATOR.$school["logo"];
 $firstPicture["file"] = $schoolLogo;
 Appl::setMember("firstPicture",$firstPicture);
+$pageInEditMode = isActionParam("edit") || isActionParam("cancel")  || isActionParam("up") || isActionParam("down") || isActionParam("delete") || isActionParam("new");
 
 if (isActionParam("save")) {
     $json = createSchoolJson();
@@ -38,6 +41,15 @@ if (isActionParam("save")) {
         else
             Appl::setMessage("Kimentés nem sikerült, probálkozz még egyszer!", "danger");
     }
+}
+
+if (isActionParam("saveDirectorAndPicture")) {
+    $school["directorID"] = getParam("directorID",0)==="0" ? NULL :getParam("directorID");
+    $school["pictureID"] = getParam("pictureID",0)==="0" ? NULL :getParam("pictureID");
+    if ($db->saveSchool($school))
+        Appl::setMessage("Kimentés sikerült.Köszönjük a kiegészítést vagy módosítást.", "success");
+    else
+        Appl::setMessage("Kimentés nem sikerült, probálkozz még egyszer!", "danger");
 }
 
 if (isActionParam("cancel")) {
@@ -130,17 +142,69 @@ include("homemenu.inc.php");
             </ul>
         </div>
     </div>
-    <div class="col-md-5" style="padding: 20px;border: 1px lightgrey solid;">
+    <div class="col-md-6" style="padding: 20px;border: 1px lightgrey solid;margin-bottom: 10px;">
         <span style="width: 100px; text-align: right; padding: 3px; display: inline-block">Telefon:</span><?php echo $school["phone"] ?><br />
         <span style="width: 100px; text-align: right; padding: 3px; display: inline-block">E-Mail:</span><?php echo $school["mail"] ?><br />
         <span style="width: 100px; text-align: right; padding: 3px; display: inline-block">Intenet:</span><?php echo $school["homepage"] ?><br />
         <span style="width: 100px; text-align: right; padding: 3px; display: inline-block">Cím:</span><?php echo $school["addressZipCode"]."  ".$school["addressCity"] ?><br />
         <span style="width: 100px; text-align: right; padding: 3px; display: inline-block"></span><?php echo $school["addressStreet"] ?>
     </div>
+    <?php if( $pageInEditMode) { ?>
+        <form action="school" method="post">
+            <div class="input-group shadowbox">
+                <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Igazgató</span>
+                <select class="form-control" name="directorID">
+                    <option value="0">...válassz...</option>
+                    <?php
+                    $teachers = $db->getTeacherListBySchoolId(getActSchoolId());
+                    foreach ($teachers as $t) {?>
+                        <option value="<?php echo $t['id']?>" <?php echo (isset($school['directorID']) && $t['id']==$school['directorID']?"selected":"") ?> >
+                            <?php echo getPersonName($t).':'.getFieldValueNull($t,'function')?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <p></p>
+            <div class="input-group shadowbox">
+                <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola épülete</span>
+                <select class="form-control"  name="pictureID">
+                    <option value="0">...válassz...</option>
+                    <?php
+                    $pictures = $db->getPictureList("schoolID=".$school["id"]." and personID is null and classID is null and tag is null and (albumName='' or albumName is null) ");
+                    foreach ($pictures as $p) {?>
+                        <option value="<?php echo $p['id']?>" <?php echo (isset($school['pictureID']) && $p['id']==$school['pictureID']?"selected":"") ?> >
+                            <?php echo $p["title"] ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <p></p>
+            <input type="hidden" name="action" value="saveDirectorAndPicture">
+            <button class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
+        </form>
+    <?php } else { ?>
+        <div class="col-md-6">
+            <div class="col-md-4">
+            <?php if (isset($school["directorID"])) {
+                displayPersonPicture($director = $db->getPersonByID($school["directorID"]));
+                echo("<br/>Igazgató: ".getPersonName($director));
+            } ?>
+            </div>
+            <div class="col-md-8">
+            <?php if (isset($school["pictureID"])) {?>
+                <div style="display: inline-block;vertical-align: top;">
+                    <a href="picture?id=<?php echo $school["pictureID"]?>" >
+                        <img src="imageConvert?width=300&thumb=false&id=<?php echo $school["pictureID"]?>" />
+                    </a><br />Iskola épülete
+                </div>
+            <?php } ?>
+            </div>
+        </div>
+    <?php } ?>
     <div class="row"></div>
 
 
-    <?php if (isActionParam("edit") || isActionParam("cancel")  || isActionParam("up") || isActionParam("down") || isActionParam("delete") || isActionParam("new")) { ?>
+    <?php if ($pageInEditMode) { ?>
         <form action="school" method="post">
         <?php foreach ($content as $idx=>$paragraph) { ?>
             <div class="row" id="paragraph-<?php echo $idx ?>">
@@ -174,7 +238,7 @@ include("homemenu.inc.php");
             </div>
             <div class="row col-md-11" style="padding: 15px;">
                     <button name="action" value="save" class="btn btn-success" onclick="return schoolSubmit(<?php echo $idx ?>,0);"><span class="glyphicon glyphicon-floppy-disk"></span> kiment</button>
-                    <button name="action" value="cancel" class="btn btn-warning" onclick="return schoolSubmit(<?php echo $idx ?>,1);"><span class="glyphicon glyphicon-refresh"></span> vissza állít</button>
+                    <button name="action" value="cancel" class="btn btn-edit" onclick="return schoolSubmit(<?php echo $idx ?>,1);"><span class="glyphicon glyphicon-refresh"></span> vissza állít</button>
                     <button name="action" value="delete" class="btn btn-danger" onclick="return schoolSubmit(<?php echo $idx ?>,2);"><span class="glyphicon glyphicon-remove"></span> töröl</button>
                     <button name="action" value="new" class="btn btn-warning" onclick="return schoolSubmit(<?php echo $idx ?>,0);"><span class="glyphicon glyphicon-plus"></span> új bekedzés</button>
                     <?php if ($idx>0) { ?>
@@ -194,7 +258,7 @@ include("homemenu.inc.php");
 
 
         <div class="row" style="margin: 20px;">
-            <?php if (isUserAdmin()) { ?>
+            <?php if (isUserSuperuser()) { ?>
             <form action="school">
                 <input type="hidden" name="schoolid" value="<?php echo $school["id"] ?>" />
                 <button name="action" value="edit" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> módosítom / kiegészítem</button>
