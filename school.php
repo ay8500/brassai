@@ -170,7 +170,7 @@ include("homemenu.inc.php");
                 <select class="form-control"  name="pictureID">
                     <option value="0">...válassz...</option>
                     <?php
-                    $pictures = $db->getPictureList("schoolID=".$school["id"]." and personID is null and classID is null and tag is null and (albumName='' or albumName is null) ");
+                    $pictures = $db->getPictureList("schoolID=".$school["id"]." and personID is null and classID is null and isDeleted=0 and (tag is null or tag='' )and (albumName='' or albumName is null) and changeForID is null");
                     foreach ($pictures as $p) {?>
                         <option value="<?php echo $p['id']?>" <?php echo (isset($school['pictureID']) && $p['id']==$school['pictureID']?"selected":"") ?> >
                             <?php echo $p["title"] ?>
