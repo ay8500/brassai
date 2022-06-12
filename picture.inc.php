@@ -188,7 +188,7 @@ if ($albumParam=="_tablo_") {
     $wherePictureList .= ' and '.$type.'='.$typeId;
     if ($type=="schoolID") {
         $wherePictureList .= " and personID is null and classID is null ";
-        $wherePictureList .= " and (tag is null or tag ='') ";
+        $wherePictureList .= " and (albumName is null or albumName='')";
     }
     if ($albumParam!=null) {
         $wherePictureList.=" and albumName='".$albumParam."'";
@@ -218,11 +218,14 @@ if ($view=="table") {
 \maierlabs\lpfw\Appl::addJs('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
 
 //Create standard albumlist
-$startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"),getParam("type")=="schoolID");
+$startAlbumList=$db->getMainAlbumCount($type,$typeId,Appl::__("Főalbum"));
 if (getParam("type")=="schoolID") {
-	$startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>$db->getPictureTagCount("tabl"))));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>$db->getPictureTagCount("kicsengetési"))));
-    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_sport_","albumText"=>Appl::__("Sportolók"),"albumName"=>"_sport_","count"=>$db->getPictureTagCount("sportolóink"))));
+    if ($count = $db->getPictureTagCount("tabl") >0 )
+	    $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_tablo_","albumText"=>Appl::__("Tablók"),"albumName"=>"_tablo_","count"=>$count)));
+    if ($count = $db->getPictureTagCount("kicsengetési") >0 )
+        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_card_","albumText"=>Appl::__("Kicsengetési kártyák"),"albumName"=>"_card_","count"=>$count)));
+    if ($count =$db->getPictureTagCount("sportolóink") >0)
+        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"picture?type=schoolID&typeid=".getParam("typeid")."&album=_sport_","albumText"=>Appl::__("Sportolók"),"albumName"=>"_sport_","count"=>$count)));
 }
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
     $countMark = $db->getPersonMarksCount($typeId);
@@ -382,8 +385,8 @@ if (!isActionParam("showmore") ) {
                     <button title="<?php Appl::_("következő kép")?>" id="nextpicture" class="pbtn" onclick="return slideToNextPicture(true);"><span class="glyphicon glyphicon-arrow-right"></span></button>
                 </div>
             </div>
+            <div id="personlist"></div>
         </div>
-        <div id="personlist"></div>
     </div>
 </div>
 

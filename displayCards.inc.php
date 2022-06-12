@@ -56,7 +56,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         foreach ($schools as $school) {
                             $school = intval(trim($school,"("));
                             if (($school=$db->getSchoolById($school,true))!=null) {
-                                echo '<span><img src="images/school' . $school["id"] . '/logo.jpg" title="' . $school["name"] . '"/>&nbsp;';
+                                echo '<span><img src="images/school' . $school["id"] . '/'.$school["logo"].'" title="' . $school["name"] . '"/>&nbsp;';
                                 echo $db->getTeacherPeriod($d, $school["id"]).'</span>';
                             }
                         }

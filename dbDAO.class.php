@@ -821,14 +821,12 @@ class dbDAO {
         return array_merge($startList,$ret);
     }
 
-    public function getMainAlbumCount($type,$typeId,$text,$tagHaveToBeNull) {
+    public function getMainAlbumCount($type,$typeId,$text) {
         $sql ="select count(*) as count, '".$text."' as albumText, '' as albumName from picture";
-        $sql .= " where ".$type."=".$typeId. " and isDeleted=0 and (albumName='' or `albumName` is null)";
+        $sql .= " where ".$type."=".$typeId. " and isDeleted=0 and (albumName is null or albumName='') and changeForID is null";
         if ($type=="schoolID") {
             $sql .=" and personID is null and classID is null";
         }
-        if ($tagHaveToBeNull)
-            $sql .=" and tag is null";
         $this->dataBase->query($sql);
         return $this->dataBase->getRowList();
     }
@@ -840,7 +838,7 @@ class dbDAO {
      */
     public function getPictureTagCount($tag) {
         $sql  = "select count(*)  from picture";
-        $sql .= " where isDeleted=0 and (albumName='' or `albumName` is null) and tag like '%".$tag."%'";
+        $sql .= " where isDeleted=0 and (albumName='' or `albumName` is null) and tag like '%".$tag."%' and changeForID is null";
         if (getActSchoolId()!=null) {
             $sql .= " and schoolId =".getActSchoolId();
         }

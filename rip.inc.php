@@ -1,5 +1,7 @@
 <?php
-\maierlabs\lpfw\Appl::addCssStyle('
+use maierlabs\lpfw\Appl as Appl;
+
+Appl::addCssStyle('
 	.person-candle {margin:5px;}
 	.person-candle>a { color: #ffbb66 }
 	.rip-element {background-color: black;border-color: #ffbb66;border-width: 1px;border-style: solid;

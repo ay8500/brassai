@@ -4,6 +4,8 @@ include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once("dbBL.class.php");
+
+use maierlabs\lpfw\Appl as Appl;
 global $db;
 
 $id=getIntParam("id",-1);
@@ -67,30 +69,30 @@ if ($type=="classID") {
 	$subtitle=getPersonName($person)." képei";
 	$link=getPersonLinkAndPicture($person)." képei";
 } elseif ($type=="schoolID") {
-	$subtitle="Képek iskolánkról: ".$album;
+	$subtitle="Iskola képek ".$album;
 }
 if ($album=="_tablo_" || $type=='tablo') {
-	$subtitle="Iskolánk tabló képei";
+	$subtitle="Tabló képek";
 } elseif ($album=="_card_" || $type=='card') {
     $subtitle="Kicsengetési kártyák";
 } elseif ($album=="_sport_" || $type=='sport') {
-    $subtitle="Iskolánk sportolói";
+    $subtitle="Iskola sportolói";
 }
-\maierlabs\lpfw\Appl::setSiteTitle($subtitle);
-\maierlabs\lpfw\Appl::setSiteSubTitle($type=="personID"?$link:$subtitle);
+Appl::setSiteTitle($subtitle);
+Appl::setSiteSubTitle($type=="personID"?$link:$subtitle);
 if (isset($picture)) {
-    \maierlabs\lpfw\Appl::setMember("firstPicture",$picture);
+    Appl::setMember("firstPicture",$picture);
 }
-\maierlabs\lpfw\Appl::addCss('css/chosen.css');
+Appl::addCss('css/chosen.css');
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
-<?php include_once 'picture.inc.php';?>
+    <?php include_once 'picture.inc.php';?>
 </div>
 
 <?php
-\maierlabs\lpfw\Appl::addJs('js/chosen.jquery.js');
-\maierlabs\lpfw\Appl::addJsScript('
+Appl::addJs('js/chosen.jquery.js');
+Appl::addJsScript('
     $(document).ready(function(){
         $(".chosen").chosen({width:"100%",no_results_text:"Ilyen tartalmi megjelölés nincs!"});
     });
