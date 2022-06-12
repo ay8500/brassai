@@ -823,7 +823,8 @@ class dbDAO {
 
     public function getMainAlbumCount($type,$typeId,$text) {
         $sql ="select count(*) as count, '".$text."' as albumText, '' as albumName from picture";
-        $sql .= " where ".$type."=".$typeId. " and isDeleted=0 and (albumName is null or albumName='') and changeForID is null";
+        $sql .= " where ".$type."=".$typeId. " and isDeleted=0 and (albumName is null or albumName='')";
+        $sql .= " and (tag not like 'sport%' or tag is null) and changeForID is null";
         if ($type=="schoolID") {
             $sql .=" and personID is null and classID is null";
         }
