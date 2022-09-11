@@ -72,7 +72,7 @@ if (isActionParam("postMessage")) {
 		else { 
 			if (checkMessageContent($paramText)->ok) {
 				if ($db->checkRequesterIP(changeType::message)) {
-					if (writeMessage($paramText, getParam("privacy"), getParam("name"))>=0) {
+					if (writeMessage($db,$paramText, getParam("privacy"), getParam("name"))>=0) {
                         $db->saveRequest(changeType::message);
 						Appl::setMessage('A beadott üzenet elküldése sikerült!',"success");
 						$paramName="";
