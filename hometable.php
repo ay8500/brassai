@@ -13,7 +13,7 @@ Appl::setMember("actClass",$db->handleClassSchoolChange(getParam("classid"),getP
 Appl::setMember( "staffClass",$db->getStafClassBySchoolId(getActSchoolId()));
 $class = Appl::getMember("actClass");
 
-// Title an subtitle of the page schoolmate or guests
+// Title and subtitle of the page schoolmate or guests
 $guests = getParam("guests", "")=="true";
 if (isActClassStaf()) {
 	Appl::setSiteSubTitle($guests?"Barátaink":"Tanáraink");
@@ -42,19 +42,19 @@ if (isActClassStaf()) {
 include("homemenu.inc.php");
 
 if (isActionParam("saveok")) {
-	Appl::setMessage("Köszzönjük szépen, személyes adatok kimentése sikerült.", "success");
+	Appl::setMessage("Köszzönjük szépen a hozzájárásod. Személyes adatok kimentése sikerült.", "success");
 }
 
 
 if (isActionParam("delete_diak") &&  isUserLoggedOn() && ((isUserEditor() && getRealId(getActClass())==$db->getLoggedInUserClassId()) || isUserSuperuser()) ) {
 	if ($db->deletePersonEntry(getIntParam("uid" ))) {
-        Appl::setMessage("Véndiák sikeresen törölve!", "success");
+        Appl::setMessage("Személy sikeresen törölve!", "success");
         $db->updateRecentChangesList();
     } else {
-		Appl::setMessage("Véndiák törölése sikertelen! ","warning");
+		Appl::setMessage("Személy törölése sikertelen! ","danger");
 	}
 }
-if (isActClassStaf()&& !$guests) {
+if (isActClassStaf() && !$guests) {
     $personList = $db->getTeacherListBySchoolId(getActSchoolId());
 } else {
     if ($class==null) {
@@ -82,7 +82,9 @@ if (isActClassStaf()&& !$guests) {
 			Vendégek&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(getActClass()), $guests));?></span>
 		<?php } elseif (!isActClassStaf()) {?>
 			Véndiákok&nbsp;száma:<span id="personCount"><?php echo($db->getCountOfPersons(getRealId(Appl::getMember("actClass")), $guests));?></span>
-		<?php } else  {?>
+		<?php } else  {
+            usort($personList, "compareAlphabeticalByLastFirstName");
+            ?>
 			Tanárok&nbsp;száma:<span id="personCount"><?php echo(sizeof($personList));?></span>
 		<?php } ?>
 	</div>

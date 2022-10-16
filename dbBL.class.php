@@ -472,26 +472,41 @@ function writePersonName($person) {
 
 
 /**
- * Compare classmates by firstname,lastname,birthname
+ * Compare classmates by birthname,lastname,firstname
  * @param person $a
  * @param person $b
  * @return int
  */
 function compareAlphabetical($a,$b) {
-    if (strstr($a["lastname"],"Dr. ")!="")
-        $a["lastname"]=substr($a["lastname"], 4);
-    if (strstr($b["lastname"],"Dr. ")!="")
-        $b["lastname"]=substr($b["lastname"], 4);
+    if (strpos($a["lastname"],"Dr.")!==false)
+        $a["lastname"]=trim(substr($a["lastname"], 2)," .");
+    if (strpos($b["lastname"],"Dr.")!==false)
+        $b["lastname"]=trim(substr($b["lastname"], 2)," .");
+
     if (isset($a["birthname"]) && $a["birthname"]!="")
         $aa=$a["birthname"]." ".$a["firstname"];
     else
         $aa=$a["lastname"]." ".$a["firstname"];
+
     if (isset($b["birthname"]) && $b["birthname"]!="")
         $bb=$b["birthname"]." ".$b["firstname"];
     else
         $bb=$b["lastname"]." ".$b["firstname"];
+
     return strcmp(getNormalisedChars($aa), getNormalisedChars($bb));
 }
+
+/**
+ * Compare classmates by lastname,firstname
+ * @param person $a
+ * @param person $b
+ * @return int
+ */
+function compareAlphabeticalByLastFirstName($a,$b) {
+    $a["birthname"] =""; $b["birthname"]="";
+    return compareAlphabetical($a, $b);
+}
+
 
 /**
  * Compare persons by isTeacher,firstname,lastname,birthname
