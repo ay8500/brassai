@@ -43,6 +43,20 @@ if ($sum>0) {
         }
         $html .= '</div>';
     }
+    $purchases = $dbCandle->getDecorationPurcasesByPersonId($id);
+    foreach ($purchases as $purchase ) {
+        $html .='<div class="person-candle">';
+        if (isset($purchase->person))
+            $html .= getPersonLinkAndPicture($purchase->person);
+        else
+            $html .= appl::_text('anonim látogató');
+        $html .= '<span style="float:right">' . appl::dateAsStr($purchase->date) . '</span>';
+        if (isUserAdmin()) {
+            $html .= '<span title="' . $purchase->ip . '" onclick="showip(' . "'" . $purchase->ip . "'" . ')"> IP</span>';
+        }
+        $html .= '<div style="font-style: italic">'.$purchase->text.'</div>';
+        $html .= '</div>';
+    }
     echo($html);
 }
 ?>

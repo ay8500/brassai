@@ -64,6 +64,55 @@ class dbDaCandle
         }
     }
 
+    /**
+     * Returns the purchases to one person
+     * @param $id
+     * @return array of objects
+     */
+    public function getDecorationPurcasesByPersonId($id) {
+        $purchases= array();
+        if ($id==9942) {
+            $purchase = new stdClass();
+            $purchase->ip="192.168.1.1";
+            $purchase->date = new DateTime("2022-03-23");
+            $purchase->text = "Emléked örökre élni fog szívünkben";
+            $purchase->person = $this->dbDAO->getPersonByID(889);
+            $purchases[] = $purchase;
+            $purchase = new stdClass();
+            $purchase->ip="192.168.1.1";
+            $purchase->date = new DateTime("2021-04-02");
+            $purchase->text = "Emlékedet megőrizzük";
+            $purchase->person = $this->dbDAO->getPersonByID(658);
+            $purchases[] = $purchase;
+            $purchase = new stdClass();
+            $purchase->ip="192.168.1.1";
+            $purchase->date = new DateTime("2020-09-06");
+            $purchase->text = "Ha rám gondoltok, mosolyogjatok, emlékem így áldás lesz rajtatok";
+            //$purchase->person = $this->dbDAO->getPersonByID(658);
+            $purchases[] = $purchase;
+        } else if ($id==7899)  {
+            $purchase = new stdClass();
+            $purchase->ip="192.168.1.1";
+            $purchase->date = new DateTime("2020-01-23");
+            $purchase->text = "Elcsitult a szív, mely értünk dobogott, számunkra Te sosem leszel halott, örökké élni fogsz, akár a csillagok";
+            $purchase->person = $this->dbDAO->getPersonByID(889);
+            $purchases[] = $purchase;
+            $purchase = new stdClass();
+            $purchase->ip="192.168.1.1";
+            $purchase->date = new DateTime("2021-03-23");
+            $purchase->text = "Amíg éltél szerettünk, amíg élünk nem feledünk";
+            $purchase->person = $this->dbDAO->getPersonByID(889);
+            $purchases[] = $purchase;
+            $purchase = new stdClass();
+            $purchase->ip="192.168.1.1";
+            $purchase->date = new DateTime("2020-04-02");
+            $purchase->text = "Angyalaid vezessenek tovább az utadon, legyen lelkednek örök béke és nyugalom.";
+            $purchase->person = $this->dbDAO->getPersonByID(658);
+            $purchases[] = $purchase;
+        }
+        return $purchases;
+    }
+
     public function getDecorationsByPersonId($id=null) {
         $decoration = new stdClass();
         $decoration->flowerRightTop = new stdClass();    //max=1
@@ -76,24 +125,16 @@ class dbDaCandle
         $decoration->rosesDown->count=0;
         $decoration->rosesUp->count=0;
         $decoration->flowerLeft->count=0;
+        //TODO get Date from Database
         if ($id==9942) {
             $decoration->rosesDown->count = 7;
-            $decoration->rosesDown->person = $this->dbDAO->getPersonByID(889);
-            $decoration->rosesDown->text = "Emléked örökre élni fog szívünkben";
             $decoration->flowerRightBottom->count = 1;
-            $decoration->flowerRightBottom->person = $this->dbDAO->getPersonByID(658);
-            $decoration->flowerRightBottom->text = "Emlékedet megőrizzük";
         } else if ($id==7899)  {
             $decoration->flowerRightTop->count=1;
-            $decoration->flowerRightTop->text = "Elcsitult a szív, mely értünk dobogott, számunkra Te sosem leszel halott, örökké élni fogsz, akár a csillagok";
             $decoration->flowerRightBottom->count=1;
-            $decoration->flowerRightBottom->text = "Amíg éltél szerettünk, amíg élünk nem feledünk";
             $decoration->rosesDown->count=7;
-            $decoration->rosesDown->text = "Angyalaid vezessenek tovább az utadon, legyen lelkednek örök béke és nyugalom.";
             $decoration->rosesUp->count=4;
-            $decoration->rosesUp->text = "Az Ő szíve pihen, A miénk vérzik, A fájdalmat csak Az élők érzik";
             $decoration->flowerLeft->count=3;
-            $decoration->flowerLeft->text = "Ha rám gondoltok, mosolyogjatok, emlékem így áldás lesz rajtatok";
         }
         return $decoration;
     }

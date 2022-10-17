@@ -6,6 +6,13 @@ Appl::addCssStyle('
 	.person-candle>a { color: #ffbb66 }
 	.rip-element {background-color: black;border-color: #ffbb66;border-width: 1px;border-style: solid;
 	               margin-right: 15px;margin-bottom: 15px;box-shadow: 3px 1px 9px 2px #ffbb66;min-height:280px;}
+	.popupr {display:none; margin:5px; background-color:black; color:#ffbb66; border-color:#ffbb66;}
+	.popupt {display: inline-block;max-width:330px;min-width:200px; vertical-align: top;margin-bottom:10px;}
+	.popupclose {margin:-15px; padding:7px; color:black; float:right; position:relativ; z-index:1100;}
+	table {width:300px; margin: 20px;}
+	table td:nth-child(2) {text-decoration: line-through;}
+	table tr:nth-child(1) td {font-weight: bold;text-decoration:none;}
+	table tr:nth-child(1) {border-bottom: 1px solid;border-top: 1px solid;}
 ');
 
 /**
@@ -85,7 +92,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 			</a>
 		</div>
 
-		<div style="display: inline-block;max-width:310px;min-width:200px; vertical-align: top;margin-bottom:10px;">
+		<div class="popupt">
             <a href="<?php echo $personLink?>"><h4 style="color: #ffbb66;"><?php echo getPersonName($d);?></h4></a>
             <?php if (getActSchoolId()==null && isset($d["schoolID"])) {?>
                 <div style="margin-top: -13px"><?php echo getSchoolNameById($d["schoolID"]) ?></div>
@@ -111,32 +118,34 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 			<?php } ?>
 			<div class="fields" style="color: #ffbb66;">
 			<?php
-                if(showField($d,"cementery")) 	echo '<div><div>Temető:</div><div style="color: #ffbb66;">'.getFieldValue($d["cementery"])."</div></div>";
+                if(showField($d,"cementery")) echo '<div><div>Temető:</div><div style="color: #ffbb66;">'.getFieldValue($d["cementery"])."</div></div>";
 				if(showField($d,"country")) 	echo '<div><div>Ország:</div><div style="color: #ffbb66;">'.getFieldValue($d["country"])."</div></div>";
-				if(showField($d,"place")) 		echo '<div><div>Város:</div><div style="color: #ffbb66;">'.getFieldValue($d["place"])."</div></div>";
+				if(showField($d,"place")) 	echo '<div><div>Város:</div><div style="color: #ffbb66;">'.getFieldValue($d["place"])."</div></div>";
 			?>
 	  		</div>
 	  		<div id="candles<?php echo $d['id']?>" style="text-align: center;" >
 	  		</div>
-	  		<button class="btn btn-warning" style="margin:10px;color:black" onclick="showPersonCandle(<?php echo $d['id']?>);" ><img style="height: 25px;border-radius: 33px;" src="images/candle1.gif"  alt="Meggyújtotta"/> Meggyújtotta</button>
+        </div>
+
+        <div>
+	  		<button class="btn btn-warning" style="margin:3px;color:black" onclick="showPersonCandle(<?php echo $d['id']?>);" >Látogatók</button>
+	  		<button class="btn btn-warning" style="margin:3px;color:black" onclick="showFlowers(<?php echo $d['id']?>);" ><img style="height: 25px;border-radius: 33px;" src="images/flower.png"  alt="Virágot teszek"/> Megemlékezés / virágok</button>
+            <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:3px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Gyertyát gyújt</button>
             <?php if (($daysLeft=$db->checkLightning($d["id"],getLoggedInUserId()))!==false) {?>
-    	  		<button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Meggyújt</button>
-	      		<div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
-                    Az általad meggyúhtott<br/> gyertya még <?php echo($daysLeft)?>
-                    napig ég!
-                    <button class="btn btn-warning" style="margin:-13px;padding:3px;color:black;float: right" onclick="hideLightCandle(<?php echo $d['id']?>);">
+	      		<div id="light-candle<?php echo $d['id']?>"  class="well popupr" >
+                    <button class="btn btn-warning popupclose" onclick="hideLightCandle(<?php echo $d['id']?>);">
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </button>
+                    Az általad meggyújtott<br/> gyertya még <?php echo($daysLeft)?> napig ég!
                     <div style="clear: both"></div><br/>
                     Látogass el újból és gyújts új gyertyát elhunyt tanárod vagy osztálytársad emlékére!
                 </div>
             <?php } else {?>
-                <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:10px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Meggyújt</button>
-                <div id="light-candle<?php echo $d['id']?>"  class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
-                    Meggyújtok egy gyertyát
-                    <button class="btn btn-warning" style="margin:-13px;padding:3px;color:black;float: right" onclick="hideLightCandle(<?php echo $d['id']?>);">
+                <div id="light-candle<?php echo $d['id']?>" class="well popupr">
+                    <button class="btn btn-warning popupclose" onclick="hideLightCandle(<?php echo $d['id']?>);">
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </button>
+                    Meggyújtok egy gyertyát!
                     <div style="clear: both"></div><br/>
                     <?php if (!isUserLoggedOn()){ ?>
                         A gyertya 2 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
@@ -152,14 +161,20 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                     </button>
                 </div>
             <?php }?>
-            <div id="person-candle<?php echo $d['id']?>" class="well" style="display:none;margin:10px;background-color: black; color: #ffbb66;border-color: #ffbb66;">
-                <div id="personlist<?php echo $d['id']?>"></div>
-                <button class="btn btn-warning" style="margin:10px;color:black" onclick="hidePersonCandle(<?php echo $d['id']?>);">Bezár</button>
+            <div id="person-flowers<?php echo $d['id']?>"  class="well popupr">
+                <button class="btn btn-warning popupclose" onclick="hideFlowers(<?php echo $d['id']?>);">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                </button>
+                <div id="personflower<?php echo $d['id']?>"></div>
             </div>
+            <div id="person-candle<?php echo $d['id']?>" class="well popupr">
+                <div id="personlist<?php echo $d['id']?>"></div>
+            </div>
+            <div style="height: 35px"></div>
 		</div>
 
-                <?php $decoration = getActualDecorations($d["id"]);
-                ?>
+        <?php $decoration = getActualDecorations($d["id"]);
+        ?>
         <?php  if ($decoration->flowerRightTop->count>0) { //Csokor jobboldalt fent?>
             <span <?php getTitle($decoration->flowerRightTop)?>>
                 <span style="position: absolute;right:0px;top:0px"><img style="height:230px;" src="images/flower_right_top.png" /></span></span>

@@ -2,8 +2,25 @@ $( document ).ready(
 		function() {showAllCandles();
 });
 
+function showFlowers(id) {
+	hideLightCandle(id);
+	hidePersonCandle(id);
+	$.ajax({
+		url: "ajax/getRipFlowers?id="+id,
+		success:function(data) {
+			$("#personflower"+id).html(data);
+			$("#person-flowers"+id).show();
+		}
+	});
+}
+
+function hideFlowers(id) {
+	$("#person-flowers"+id).hide();
+}
+
 function showPersonCandle(id) {
 	hideLightCandle(id);
+	hideFlowers(id);
 	$.ajax({
 		url: "ajax/getCandleLighters?id="+id,
 		success:function(data) {
@@ -19,6 +36,7 @@ function hidePersonCandle(id) {
 
 function showLightCandle(id) {
 	hidePersonCandle(id);
+	hideFlowers(id);
 	$("#light-candle"+id).show();
 }
 

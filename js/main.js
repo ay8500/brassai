@@ -35,16 +35,12 @@ function onResize(hplus) {
     }
 }
 
-function removePX(p) {
-    if (null!=p)
-        return parseInt(p.substr(0,p.length-2));
-    else
-        return 0;
-}
-
-$(".diak_image_medium").hover(function (self) {
-    console.log($(o).attr("src"));
-},function (o) {
-    console.log("ss");
-});
-
+$(".diak_image_medium").hover(
+    function (self) {
+        console.log($(this).attr("src"));
+        //$(this).css("border","solid 1px gray");
+    },function (o) {
+        //$(this).css("border","solid 1px lightgray");
+        console.log("out");
+    }
+);

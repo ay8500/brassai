@@ -202,20 +202,20 @@ function displayClass($db,$class,$showDate=false) {
 		<div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
             <?php displaySchoolName($class["schoolID"]); ?>
             <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getSchoolClassName($class);?></h4></a><br/>
-			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
+			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>0) {
 			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
 				Osztályfőnök: <a href="editDiak?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a>
-                <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>=0) {
+                <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>0) {
                     $secondHeadTeacher = $db->getPersonByID($class["secondHeadTeacherID"]);?>
                     és <a href="editDiak?uid=<?php echo $class["secondHeadTeacherID"]?>" ><?php echo $secondHeadTeacher["lastname"]." ".$secondHeadTeacher["firstname"]?></a> <br/>
                 <?php } ?>
                 <br/>
             <?php } ?>
 		</div>
-		<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>=0) {
+		<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>0) {
 		    displayPersonPicture($headTeacher);
 		} ?>
-        <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>=0) {
+        <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>0) {
             displayPersonPicture($secondHeadTeacher);
         } ?>
 
@@ -453,16 +453,12 @@ function displayPersonPicture($d,$displayName=false)
         $rstyle = ' diak_image_empty';
     }
     if ($d["id"]!=-1) {
-        //if (isUserLoggedOn() || isLocalhost()) {
-        //     $personLink="editDiak?uid=".$d["id"];
-        //} else {
-            $personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
-        //}
+        $personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
     } else {
-        $personLink="javascript:alert('Sajnos erről a személyről nincsenek adatok.');";
+        $personLink="javascript:alert('Erről a személyről nincsenek adatok.');";
     }
     ?>
-    <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
+    <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-flex;text-decoration: none;">
         <div>
             <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="position: relative" />
             <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
