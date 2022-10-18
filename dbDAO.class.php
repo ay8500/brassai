@@ -603,8 +603,10 @@ class dbDAO {
     public function getSortedTeacherList($where=null, $limit=null, $offset=null, $schoolID=null) {
         if ($schoolID!=null) {
             $where .= " and schoolIdsAsTeacher like '%(" . $schoolID. ")%'";
+            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $offset, null, 'person.*, '.$schoolID.' as schoolID ' );
+        } else {
+            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $offset, null, 'person.*, schoolIdsAsTeacher as schoolID ');
         }
-        $ret = $this->dataBase->getElementList("person", false, $where, $limit, $offset, null, 'person.*, schoolID', "class on class.id = person.classID");
         usort($ret, "compareAlphabeticalTeacher");
         return $ret;
     }
