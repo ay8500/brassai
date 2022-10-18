@@ -8,7 +8,8 @@ Appl::addCssStyle('
 	               margin-right: 15px;margin-bottom: 15px;box-shadow: 3px 1px 9px 2px #ffbb66;min-height:280px;}
 	.popupr {display:none; margin:5px; background-color:black; color:#ffbb66; border-color:#ffbb66;}
 	.popupt {display: inline-block;max-width:330px;min-width:200px; vertical-align: top;margin-bottom:10px;}
-	.popupclose {margin:-15px; padding:7px; color:black; float:right; position:relativ; z-index:1100;}
+	.popupclose {margin:-15px; padding:7px; color:black; float:right; z-index:1100;}
+	.popupbtn { color:black; z-index:1100;}
 	table {width:300px; margin: 20px;}
 	table td:nth-child(2) {text-decoration: line-through;}
 	table tr:nth-child(1) td {font-weight: bold;text-decoration:none;}
@@ -129,46 +130,16 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 
         <div>
 	  		<button class="btn btn-warning" style="margin:3px;color:black" onclick="showPersonCandle(<?php echo $d['id']?>);" >Látogatók</button>
+            <button class="btn btn-warning" style="margin:3px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);" id="light-button<?php echo $d['id']?>"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Gyertyát gyújt</button>
 	  		<button class="btn btn-warning" style="margin:3px;color:black" onclick="showFlowers(<?php echo $d['id']?>);" ><img style="height: 25px;border-radius: 33px;" src="images/flower.png"  alt="Virágot teszek"/> Megemlékezés / virágok</button>
-            <button id="light-button<?php echo $d['id']?>" class="btn btn-warning" style="margin:3px;color:black" onclick="showLightCandle(<?php echo $d['id']?>);"><img style="height: 25px;border-radius: 33px;" src="images/match.jpg"  alt="Meggyújt"/> Gyertyát gyújt</button>
-            <?php if (($daysLeft=$db->checkLightning($d["id"],getLoggedInUserId()))!==false) {?>
-	      		<div id="light-candle<?php echo $d['id']?>"  class="well popupr" >
-                    <button class="btn btn-warning popupclose" onclick="hideLightCandle(<?php echo $d['id']?>);">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </button>
-                    Az általad meggyújtott<br/> gyertya még <?php echo($daysLeft)?> napig ég!
-                    <div style="clear: both"></div><br/>
-                    Látogass el újból és gyújts új gyertyát elhunyt tanárod vagy osztálytársad emlékére!
-                </div>
-            <?php } else {?>
-                <div id="light-candle<?php echo $d['id']?>" class="well popupr">
-                    <button class="btn btn-warning popupclose" onclick="hideLightCandle(<?php echo $d['id']?>);">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </button>
-                    Meggyújtok egy gyertyát!
-                    <div style="clear: both"></div><br/>
-                    <?php if (!isUserLoggedOn()){ ?>
-                        A gyertya 2 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
-                        Jelentkezz be, ha szeretnéd hogy gyertyáid <b>6</b> hónapot égjenek.
-                    <?php } else {?>
-                        A gyertya 6 hónapig fog égni, látogass majd megint el, és gyújtsd meg újból.<br/><br/>
-                        <button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>,false);hideLightCandle(<?php echo $d['id']?>);">
-                            <img style="height: 25px;border-radius: 33px;" src="images/match.jpg" alt="Meggyújt"/> Meggyújtom nevem alatt
-                        </button>
-                    <?php } ?>
-                    <button class="btn btn-warning" style="margin:10px;color:black" onclick="lightCandle(<?php echo $d['id']?>,true);hideLightCandle(<?php echo $d['id']?>);">
-                        <img style="height: 25px;border-radius: 33px;" src="images/match.jpg" alt="Meggyújt"/> Meggyújtom mint anonim
-                    </button>
-                </div>
-            <?php }?>
+	      	<div id="light-candle<?php echo $d['id']?>"  class="well popupr" >
+                <div id="lightcandle<?php echo $d['id']?>"></div>
+            </div>
             <div id="person-flowers<?php echo $d['id']?>"  class="well popupr">
-                <button class="btn btn-warning popupclose" onclick="hideFlowers(<?php echo $d['id']?>);">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                </button>
                 <div id="personflower<?php echo $d['id']?>"></div>
             </div>
             <div id="person-candle<?php echo $d['id']?>" class="well popupr">
-                <div id="personlist<?php echo $d['id']?>"></div>
+                <div id="personcandle<?php echo $d['id']?>"></div>
             </div>
             <div style="height: 35px"></div>
 		</div>
@@ -194,7 +165,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
         <?php } ?>
         <?php if ($decoration->rosesDown->count>0) { //Rozsák lent max 7 ?>
             <span <?php getTitle($decoration->rosesDown)?>>
-                <span style="position: absolute;left:0px;bottom:0px"><img style="height:80px;" src="images/flower_left_bottom.png"></span>
+                <span style="position: absolute;left:0px;bottom:0px"><img style="height:57px;" src="images/flower_bottom.png"></span>
                 <?php if ($decoration->rosesDown->count>1) { ?>
                     <span style="position: absolute;left:60px;bottom:-6px"><img style="height:43px;" src="images/flower_bottom.png"></span>
                 <?php } if ($decoration->rosesDown->count>2) { ?>

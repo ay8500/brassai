@@ -71,7 +71,14 @@ class dbDaCandle
      */
     public function getDecorationPurcasesByPersonId($id) {
         $purchases= array();
-        if ($id==9942) {
+        if ($id==851) {
+            $purchase = new stdClass();
+            $purchase->ip = "192.168.1.1";
+            $purchase->date = new DateTime("2022-09-23 13:44:00");
+            $purchase->text = "Angyalaid vezessenek tovább az utadon, legyen lelkednek örök béke és nyugalom.";
+            $purchase->person = $this->dbDAO->getPersonByID(658);
+            $purchases[] = $purchase;
+        } else if ($id==9942) {
             $purchase = new stdClass();
             $purchase->ip="192.168.1.1";
             $purchase->date = new DateTime("2022-03-23");
@@ -114,6 +121,7 @@ class dbDaCandle
     }
 
     public function getDecorationsByPersonId($id=null) {
+        $decesedYear = $this->dbDAO->dataBase->queryInt("select deceasedYear from person where id=".$id);
         $decoration = new stdClass();
         $decoration->flowerRightTop = new stdClass();    //max=1
         $decoration->flowerRightBottom = new stdClass(); //max=1
@@ -135,6 +143,13 @@ class dbDaCandle
             $decoration->rosesDown->count=7;
             $decoration->rosesUp->count=4;
             $decoration->flowerLeft->count=3;
+        } else if ($id==662)  {
+            $decoration->rosesUp->count=1;
+        } else if ($id==851)  {
+            $decoration->flowerRightTop->count=1;
+            $decoration->rosesUp->count=1;
+        } else if ($decesedYear == intval(Date("Y"))) {
+            $decoration->flowerRightTop->count=1;
         }
         return $decoration;
     }

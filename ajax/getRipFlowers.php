@@ -23,14 +23,14 @@ $id=getIntParam("id");
 $html ="";
 
 $html .='
-    <button class="btn btn-warning popupclose" onclick="hidePersonCandle('.$id.');">
+    <button class="btn btn-warning popupclose" onclick="hideFlowers('.$id.');">
         <span class="glyphicon glyphicon-remove-circle"></span>
     </button>
 ';
 
 $html .='
-    Diszítsd a gyertyákat virágokkal.<br/>
-    Hamarosan örökké friss virákokkal és személyes megemlékezéssel lehet az elhunyt kedveseink emlékét feleleveníteni.
+    <h3>Díszítsd a gyertyákat virágokkal.</h3>
+    Hamarosan örökké friss virákokkal és személyes megemlékezéssel lehet az elhunyt kedveseink emlékét feleleveníteni. 
 ';
 
 $html .="
@@ -44,6 +44,12 @@ $html .="
         <tr><td>Virágcsokor</td><td> 19€</td><td>10€ </td></tr>
     </table>
 ";
+
+$html .='
+    <button class="btn btn-warning popupbtn" onclick="alert(\'A megemlékezés és a virágok kiválasztása elökészületben. Kicsi türelmet kérünk.\n Addig is a kolozsvarivendiakok@blue-l.de címen bármilyen kivánságot teljesítünk. \');">
+        <span class="glyphicon glyphicon-euro"> Kiválasztás</span>
+    </button>
+';
 
 echo($html);
 ?>

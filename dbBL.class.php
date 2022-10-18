@@ -519,7 +519,7 @@ function compareAlphabeticalTeacher($a,$b) {
     if ($c!=0) {
         return $c;
     }
-    return compareAlphabetical($a, $b);
+    return compareAlphabeticalByLastFirstName($a, $b);
 }
 
 /**

@@ -586,18 +586,31 @@ class dbDAO {
 	/**
 	 * get sorted person list using the actual school as filter
 	 */
-	public function getSortedPersonList($where=null,$limit=null,$ofset=null,$schoolID=null) {
+	public function getSortedPersonList($where=null, $limit=null, $offset=null, $schoolID=null) {
         if ($schoolID!=null) {
             $where .= " and class.schoolID = " . $schoolID;
-            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $ofset, null, 'person.*', "class on class.id = person.classID");
+            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $offset, null, 'person.*, schoolID', "class on class.id = person.classID");
         } else {
-            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $ofset);
+            $ret = $this->dataBase->getElementList("person", false, $where, $limit, $offset, null, 'person.*, schoolID', "class on class.id = person.classID");
         }
-		usort($ret, "compareAlphabeticalTeacher");
+		usort($ret, "compareAlphabeticalByLastFirstName");
 		return $ret;
 	}
 
-	/**********************************[ Article ]*****************************/
+    /**
+     * get sorted teacher list using the actual school as filter
+     */
+    public function getSortedTeacherList($where=null, $limit=null, $offset=null, $schoolID=null) {
+        if ($schoolID!=null) {
+            $where .= " and schoolIdsAsTeacher like '%(" . $schoolID. ")%'";
+        }
+        $ret = $this->dataBase->getElementList("person", false, $where, $limit, $offset, null, 'person.*, schoolID', "class on class.id = person.classID");
+        usort($ret, "compareAlphabeticalTeacher");
+        return $ret;
+    }
+
+
+    /**********************************[ Article ]*****************************/
 
     /**
      * get article by id

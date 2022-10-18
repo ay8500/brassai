@@ -24,7 +24,7 @@ function showPersonCandle(id) {
 	$.ajax({
 		url: "ajax/getCandleLighters?id="+id,
 		success:function(data) {
-			$("#personlist"+id).html(data);
+			$("#personcandle"+id).html(data);
 			$("#person-candle"+id).show();
 		}
 	});
@@ -37,12 +37,19 @@ function hidePersonCandle(id) {
 function showLightCandle(id) {
 	hidePersonCandle(id);
 	hideFlowers(id);
-	$("#light-candle"+id).show();
+	$.ajax({
+		url: "ajax/getLightCandle?id="+id,
+		success:function(data) {
+			$("#lightcandle"+id).html(data);
+			$("#light-candle"+id).show();
+		}
+	});
 }
 
 function hideLightCandle(id) {
 	$("#light-candle"+id).hide();
 }
+
 function lightCandle(id,asAnonymous) {
 	candles[id] = ++candles[id];
     showWaitMessage();
