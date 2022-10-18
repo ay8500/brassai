@@ -78,7 +78,7 @@ class dbDaCandle
             $purchase->text = "Angyalaid vezessenek tovább az utadon, legyen lelkednek örök béke és nyugalom.";
             $purchase->person = $this->dbDAO->getPersonByID(658);
             $purchases[] = $purchase;
-        } else if ($id==9942) {
+        } else if ($id==9942) { // Kalmár József
             $purchase = new stdClass();
             $purchase->ip="192.168.1.1";
             $purchase->date = new DateTime("2022-03-23");
@@ -135,9 +135,11 @@ class dbDaCandle
         $decoration->flowerLeft->count=0;
         //TODO get Date from Database
         if ($id==9942) {
+            $decoration->extended = true;
             $decoration->rosesDown->count = 7;
             $decoration->flowerRightBottom->count = 1;
         } else if ($id==7899)  {
+            $decoration->extended = true;
             $decoration->flowerRightTop->count=1;
             $decoration->flowerRightBottom->count=1;
             $decoration->rosesDown->count=7;

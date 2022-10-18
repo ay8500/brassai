@@ -36,7 +36,7 @@ $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
 /*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
-if (getActSchoolId()==null) {
+if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl::getMember("actSchool")["logo"]) ) {
     $menuSchoolLogo = "images/kolozsvar.png";
 } else {
     $menuSchoolLogo = "images" . DIRECTORY_SEPARATOR . $db->getActSchoolFolder() . DIRECTORY_SEPARATOR . Appl::getMember("actSchool")["logo"];

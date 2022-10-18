@@ -6,14 +6,17 @@ Appl::addCssStyle('
 	.person-candle>a { color: #ffbb66 }
 	.rip-element {background-color: black;border-color: #ffbb66;border-width: 1px;border-style: solid;
 	               margin-right: 15px;margin-bottom: 15px;box-shadow: 3px 1px 9px 2px #ffbb66;min-height:280px;}
-	.popupr {display:none; margin:5px; background-color:black; color:#ffbb66; border-color:#ffbb66;}
+	.rip-element-extended {min-height:480px;width:900px;}
+	.popupr {display:none; margin:5px; background-color:black; color:#ffbb66; border-color:#ffbb66;max-width: 700px;}
 	.popupt {display: inline-block;max-width:330px;min-width:200px; vertical-align: top;margin-bottom:10px;}
+	.popupt-extended { max-width: 570px;}
 	.popupclose {margin:-15px; padding:7px; color:black; float:right; z-index:1100;}
 	.popupbtn { color:black; z-index:1100;}
-	table {width:300px; margin: 20px;}
+	table {min-width:400px; margin: 20px;}
 	table td:nth-child(2) {text-decoration: line-through;}
 	table tr:nth-child(1) td {font-weight: bold;text-decoration:none;}
 	table tr:nth-child(1) {border-bottom: 1px solid;border-top: 1px solid;}
+	table button {background-color: black;color: #ffbb66;border: 3px solid;border-radius: 18px;width: 28px;font-weight: bolder;}
 ');
 
 /**
@@ -62,6 +65,7 @@ function getTitle($o) {
  */
 function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate=false) {
 	$d=$person;
+    $decoration = getActualDecorations($d["id"]);
 	if ($d["id"]!=-1) {
 		if (isUserLoggedOn() || isLocalhost()) {
 			$personLink="editDiak?uid=".$d["id"];
@@ -73,16 +77,16 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 	}
 	//mini icon
 	if (isset($person["picture"]) && $person["picture"]!="")
-		$rstyle=' diak_image_medium';
+		$rstyle=$decoration->extended?' diak_image_original':' diak_image_medium';
 		else {
 			$rstyle=' diak_image_empty_rip';
 		}
 		?>
-	<span class="element rip-element" style="position: relative">
+	<span class="element rip-element <?php echo $decoration->extended?"rip-element-extended":""?>" style="position: relative">
         <div style="display: inline-block; ">
 			<a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;">
 				<div>
-					<img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
+					<img src="<?php echo getPersonPicture($d,$decoration->extended)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" />
 					<?php if (isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) {?>
                         <div style="background-color: black;color: #ffbb66;;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">
                             <?php if (isset($d["birthyear"]) && intval($d["birthyear"])>1800) { echo '* '.intval($d["birthyear"]).'&nbsp;'; } ?>
@@ -93,7 +97,7 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
 			</a>
 		</div>
 
-		<div class="popupt">
+		<div class="popupt <?php echo $decoration->extended?"popupt-extended":"" ?>">
             <a href="<?php echo $personLink?>"><h4 style="color: #ffbb66;"><?php echo getPersonName($d);?></h4></a>
             <?php if (getActSchoolId()==null && isset($d["schoolID"])) {?>
                 <div style="margin-top: -13px"><?php echo getSchoolNameById($d["schoolID"]) ?></div>
@@ -144,15 +148,13 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
             <div style="height: 35px"></div>
 		</div>
 
-        <?php $decoration = getActualDecorations($d["id"]);
-        ?>
         <?php  if ($decoration->flowerRightTop->count>0) { //Csokor jobboldalt fent?>
             <span <?php getTitle($decoration->flowerRightTop)?>>
-                <span style="position: absolute;right:0px;top:0px"><img style="height:230px;" src="images/flower_right_top.png" /></span></span>
+                <span style="position: absolute;right:0px;top:0px"><img style="height:<?php echo $decoration->extended?325:230?>px;" src="images/flower_right_top.png" /></span></span>
         <?php } ?>
         <?php if ($decoration->flowerRightBottom->count>0) { //Csokor jobboldalt lent ?>
             <span <?php getTitle($decoration->flowerRightBottom)?>>
-                <span style="position: absolute;right:-7px;bottom:-19px"><img style="height:120px;" src="images/flower_right_bottom.png" /></span></span>
+                <span style="position: absolute;right:-7px;bottom:-19px"><img style="height:<?php echo $decoration->extended?250:120?>px;" src="images/flower_right_bottom.png" /></span></span>
         <?php } ?>
         <?php if ($decoration->flowerLeft->count>0) { // Csokor baloldalt?>
             <span <?php getTitle($decoration->flowerLeft)?>>
@@ -191,6 +193,14 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
                     <span style="position: absolute;right:161px;top:-7px"><img style="height:38px;transform: rotate(200deg);" src="images/flower.png"></span>
                 <?php } ?></span>
         <?php } ?>
+
+        <?php
+            if ($decoration->extended) {
+                Appl::addCssStyle('
+                    #candles'.$d['id'].' img {width:130px !important;}
+                ');
+            }
+        ?>
 
 	</span>
 <?php } ?>

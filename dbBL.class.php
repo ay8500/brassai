@@ -435,15 +435,18 @@ function isUserEditor() {
     }
 }
 
-function getPersonPicture($person) {
+function getPersonPicture($person, $highResolution=false) {
     if (null==$person || !isset($person["picture"]) || $person["picture"]=="") {
         if (isset($person["gender"]) && $person["gender"]=="f")
             return "images/woman.png";
         else
             return "images/man.png";
-    } else {
-        return "images/".$person["picture"];
     }
+
+    if ($highResolution)
+        return "images/".pathinfo($person["picture"], PATHINFO_DIRNAME).DIRECTORY_SEPARATOR.pathinfo($person["picture"], PATHINFO_FILENAME)."_o.".pathinfo($person["picture"], PATHINFO_EXTENSION);
+
+    return "images/".$person["picture"];
 }
 
 function getPersonLinkAndPicture($person,$fullLink=false) {
