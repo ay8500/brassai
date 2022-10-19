@@ -34,6 +34,12 @@ RewriteRule ^iskola-apacai-kepek$ /brassai/picture?type=schoolID&typeid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium-kepek$ /brassai/picture?type=schoolID&typeid=4 [NC,L]
 RewriteRule ^iskola-jzsuk-kepek$ /brassai/picture?type=schoolID&typeid=5 [NC,L]
 
+RewriteRule ^iskola-brassai-osztalyok$ /brassai/classlist?schoolid=1 [NC,L]
+RewriteRule ^iskola-bathory-osztalyok$ /brassai/classlist?schoolid=2 [NC,L]
+RewriteRule ^iskola-apacai-osztalyok$ /brassai/classlist?schoolid=3 [NC,L]
+RewriteRule ^iskola-reformatus-kollegium-osztalyok$ /brassai/classlist?schoolid=4 [NC,L]
+RewriteRule ^iskola-jzsuk-osztalyokk$ /brassai/classlist?schoolid=5 [NC,L]
+
 RewriteRule ^iskola-terkep$ /brassai/worldmap?classid=all&schoolid=all [NC,L]
 RewriteRule ^iskola-brassai-terkep$ /brassai/worldmap?classid=all&schoolid=1 [NC,L]
 RewriteRule ^iskola-bathory-terkep$ /brassai/worldmap?classid=all&schoolid=2 [NC,L]

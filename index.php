@@ -14,7 +14,8 @@ Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
 
 unsetActClass();
-Appl::setSiteSubTitle('Szeretettel köszöntünk<br /> a '.getActSchoolName().' véndiákok honlapján<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
+$schoolName = ' '.(strtoupper(substr(getActSchoolName(),0,1))=='A'?'az':'a').' '.getActSchoolName();
+Appl::setSiteSubTitle('Szeretettel köszöntünk<br />'.$schoolName.' véndiákjainak oldalán<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
 
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
@@ -39,7 +40,8 @@ global $schoolList;
     <div  style="padding:10px;text-align: center" class="col-sm-12" >
     <!--h3>Kolozsvári Líceumok:</h3-->
     <?php foreach ($schoolList as $menuSchool) {
-        displaySchool($db,$menuSchool,false);
+        if (getActSchoolId()==null || getActSchoolId()==$menuSchool['id'])
+            displaySchool($db,$menuSchool,false);
     }?>
     </div>
 	<div  style="padding:15px;" class="col-sm-12" >

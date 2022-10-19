@@ -125,7 +125,7 @@ class dbBL extends dbDAO
     function getLoggedInUserClassId() {
         if (null==getLoggedInUserId())
             return -1;
-        $loggedInUser=$this->getPersonByID(getLoggedInUserId());
+        $loggedInUser=$this->getPersonLogedOn();
         if ($loggedInUser!=null && isset($loggedInUser["classID"]))
             return intval($loggedInUser["classID"]);
 
@@ -388,7 +388,7 @@ function getActSchoolName() {
     $school=getActSchool();
     if ($school!==null && isset($school["id"]) )
         return html_entity_decode($school["name"]);
-    return 'kolozsvári középiskolák ';
+    return 'kolozsvári iskolák';
 }
 
 /**

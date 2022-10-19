@@ -29,21 +29,22 @@ $html .='
 ';
 
 $html .='
-    <h3>Díszítsd a gyertyákat virágokkal.</h3>
+    <h3>Díszítsd a gyertyákat virágokkal és megemlékezéssel.</h3>
     Hamarosan örökké friss virágokkal és személyes megemlékezéssel lehet az elhunyt kedveseink emlékét feleleveníteni.
-    A virágokat, megemlékezési szöveget vagy a kiemelt megjelenítést egy önkéntes adománnyal lehet véglegesíteni. Az önkéntes hozzájárulási adómány kizárolag az oldal üzemeltetését biztosítsa.   
+    A virágokat, megemlékezési szöveget vagy a kiemelt megjelenítést egy önkéntes adománnyal lehet véglegesíteni. Az önkéntes hozzájárulási adómány kizárolag az oldal üzemeltetését biztosítsa.
+    A cikkek a megrendelő kérésére vagy neve alatt vagy mint anonim lesznek kitüntetve.   
 ';
 
 $html .='
-    <table>
+    <table class="riptable">
         <tr><td></td><td>önkéntes<br/>adomány</td><td>rövid ideig<br/>kedvezményes</td><td><button onclick="alert(\'A kedvezményes ár csak rövid ideig érvényes.\n Siess ne halazd el az alkalmat.\');">i</button></td></tr>
-        <tr><td>Kiemelt megjelenités</td><td>199€</td><td>99€</td><td><button onclick="alert(\'Kiemelt megjelenítés azaz nagy felbontású fénykép, nagy gyertyák és jó felbontású virágok\n Csak egyszer lehet megrendelni, és 20 év után szűnik meg. \');">i</button></td></tr>
-        <tr><td>Virágcsokor</td><td> 19€</td><td>10€ </td><td><button onclick="alert(\'Virágcsokor a bejegyzés jobb alsó sarkán\n Csak egyszer lehet megrendelni 10 évenként.\');">i</button></td></tr>
-        <tr><td>Kicsi virágcsokor</td><td> 15€</td><td>5€ </td><td><button onclick="alert(\'Virágcsokor a bejegyzés jobb felső sarkán\n Csak egyszer lehet megrendelni 10 évenként.\');">i</button></td></tr>
-        <tr><td>Mezei virágok</td><td> 5€/db</td><td>1€/db</td><td><button onclick="alert(\'Virágcsokor a bejegyzés bal felső sarkán\n Háromszor lehet megrendelni 5 évenként.\');">i</button></td></tr>
-        <tr><td>Piros rózsa</td><td>1€/db</td><td>díjmentes</td><td><button onclick="alert(\'Virág a bejegyzés alsó részén\n Négyszer lehet megrendelni 3 évenként.\');">i</button></td></tr>
-        <tr><td>Rózsaszinü rózsa</td><td> 1€/db</td><td>díjmentes</td><td><button onclick="alert(\'Virág a bejegyzés felső részén\n Hatszor lehet megrendelni 3 évenként.\');">i</button></td></tr>
-        <tr><td>Megemlékezés</td><td>1€</td><td>díjmentes</td><td><button onclick="alert(\'Megemlékezés, meghatározott szöveg kiválasztása vagy egyéni szöveg\nA szöveg a látogatók listáján jelenik meg.\');">i</button></td></tr>
+        <tr><td>Kiemelt megjelenités</td><td>199€</td><td>99€</td><td><button onclick="alert(\'Kiemelt megjelenítés azaz nagy felbontású fénykép, nagy gyertyák és jó felbontású virágok.\n Megrendelés 20 év után szűnik meg. \');">i</button></td></tr>
+        <tr><td>Virágcsokor</td><td> 19€</td><td>10€ </td><td><button onclick="alert(\'Virágcsokor a bejegyzés jobb alsó sarkán\n Megrendelés 10 évig érvényes.\');">i</button></td></tr>
+        <tr><td>Kicsi virágcsokor</td><td> 15€</td><td>5€ </td><td><button onclick="alert(\'Virágcsokor a bejegyzés jobb felső sarkán\n Megrendelés 10 évre szól.\');">i</button></td></tr>
+        <tr><td>Mezei virágok</td><td> 5€/db</td><td>1€/db</td><td><button onclick="alert(\'Virágcsokor a bejegyzés bal felső sarkán\nHáromszór lehet megrendelni az 5 éves rendelést.\');">i</button></td></tr>
+        <tr><td>Piros rózsa</td><td>1€/db</td><td>díjmentes</td><td><button onclick="alert(\'Virágok a bejegyzés alsó részén\n Hétszer lehet megrendelni 3 évig érvényes.\');">i</button></td></tr>
+        <tr><td>Rózsaszinű rózsa</td><td> 1€/db</td><td>díjmentes</td><td><button onclick="alert(\'Virágok a bejegyzés felső részén\n Négyszer lehet megrendelni 3 évig érvényes.\');">i</button></td></tr>
+        <tr><td>Megemlékezés</td><td>1€</td><td>díjmentes</td><td><button onclick="alert(\'Megemlékezés, meghatározott szöveg kiválasztása vagy egyéni szöveg\nA szöveg a látogatók listáján korlátlan ideig jelenik meg.\');">i</button></td></tr>
     </table>
 ';
 

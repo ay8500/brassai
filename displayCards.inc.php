@@ -255,7 +255,7 @@ function displaySchool($db,$school,$showDate=false) {
     ?>
     <div class="element" style="text-align: left">
         <div style="display: block;max-width:400px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <h4><i class="material-icons" style="vertical-align: bottom;">school</i> Iskola: <a href="iskola-<?php echo $school["shortLink"] ?>"><?php echo $school["name"];?></h4></a>
+            <h4><i class="material-icons" style="vertical-align: bottom;">school</i> Iskola: <a href="iskola-<?php echo $school["shortLink"] ?>-info"><?php echo $school["name"];?></h4></a>
         </div>
 
         <div style="display: inline-block;vertical-align: top; ">
@@ -270,15 +270,23 @@ function displaySchool($db,$school,$showDate=false) {
         </div>
         <br/><br/>
         <?php if (isset($school["directorID"])) {
-            displayPersonPicture($db->getPersonByID($school["directorID"]),true);
+            ?><div style="width: 150px; display: inline-block;"><?php
+                $director =$db->getPersonByID($school["directorID"]);
+                displayPersonPicture($director);
+            ?></div><?php
         } ?>
 
         <?php
         if (isset($school["pictureID"])) {?>
             <div style="display: inline-block;vertical-align: top;">
                 <a href="picture?id=<?php echo $school["pictureID"]?>" >
-                    <img src="imageConvert?width=300&thumb=false&id=<?php echo $school["pictureID"]?>" />
+                    <img src="imageConvert?width=220&thumb=false&id=<?php echo $school["pictureID"]?>" />
                 </a>
+            </div>
+        <?php } ?>
+        <?php if (isset($school["directorID"])) {?>
+            <div>
+                Igazgató: <?php echo getPersonName($director); ?>
             </div>
         <?php } ?>
 
@@ -444,7 +452,7 @@ function displayPersonNameAndGetClass ($db,$d) {
     return $personClass;
 }
 
-function displayPersonPicture($d,$displayName=false)
+function displayPersonPicture($d)
 {
     //mini icon
     if (isset($d["picture"]) && $d["picture"] != "") {
@@ -458,7 +466,7 @@ function displayPersonPicture($d,$displayName=false)
         $personLink="javascript:alert('Erről a személyről nincsenek adatok.');";
     }
     ?>
-    <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-flex;text-decoration: none;">
+    <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;text-decoration: none;">
         <div>
             <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="position: relative" />
             <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
@@ -476,7 +484,6 @@ function displayPersonPicture($d,$displayName=false)
                 </div>
             <?php }?>
         </div>
-        <?php if ($displayName) echo getPersonName($d) ?>
     </a>
     <?php
     return $personLink;

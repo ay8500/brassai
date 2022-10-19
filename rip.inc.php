@@ -12,11 +12,26 @@ Appl::addCssStyle('
 	.popupt-extended { max-width: 570px;}
 	.popupclose {margin:-15px; padding:7px; color:black; float:right; z-index:1100;}
 	.popupbtn { color:black; z-index:1100;}
-	table {min-width:400px; margin: 20px;}
-	table td:nth-child(2) {text-decoration: line-through;}
-	table tr:nth-child(1) td {font-weight: bold;text-decoration:none;}
-	table tr:nth-child(1) {border-bottom: 1px solid;border-top: 1px solid;}
-	table button {background-color: black;color: #ffbb66;border: 3px solid;border-radius: 18px;width: 28px;font-weight: bolder;}
+	.riptable  {min-width:400px; margin: 20px;}
+	.riptable td:nth-child(2) {text-decoration: line-through;}
+	.riptable tr:nth-child(1) td {font-weight: bold;text-decoration:none;}
+	.riptable tr:nth-child(1) {border-bottom: 1px solid;border-top: 1px solid;}
+	.riptable button {background-color: black;color: #ffbb66;border: 3px solid;border-radius: 18px;width: 28px;font-weight: bolder;}
+	
+	.deco-frt {position: absolute;right:0px;top:0px;}
+	.deco-frb {position: absolute;right:-7px;bottom:-19px}
+	
+	.riphr {height: 35px}
+	
+	@media screen and (max-width: 500px) {
+	    .popupt {margin-left: 40px;}
+	    .rip-element-extended {min-height:480px;width:100%;box-shadow: none;border:none;border-top: solid 1px;}
+	    .rip-element {width:100%;box-shadow: none;border:none; border-top:solid 1px;}
+    	.riptable  {min-width: auto;margin: 0px;}
+    	.riphr {height: 65px}
+    	.deco-frb {width:200px}
+    }
+}
 ');
 
 /**
@@ -145,16 +160,16 @@ function displayRipPerson($db,$person,$diakClass=null,$showClass=false,$showDate
             <div id="person-candle<?php echo $d['id']?>" class="well popupr">
                 <div id="personcandle<?php echo $d['id']?>"></div>
             </div>
-            <div style="height: 35px"></div>
+            <div class="riphr"></div>
 		</div>
 
         <?php  if ($decoration->flowerRightTop->count>0) { //Csokor jobboldalt fent?>
             <span <?php getTitle($decoration->flowerRightTop)?>>
-                <span style="position: absolute;right:0px;top:0px"><img style="height:<?php echo $decoration->extended?325:230?>px;" src="images/flower_right_top.png" /></span></span>
+                <span class="deco-frt"><img style="height:<?php echo $decoration->extended?325:230?>px;" src="images/flower_right_top.png" /></span></span>
         <?php } ?>
         <?php if ($decoration->flowerRightBottom->count>0) { //Csokor jobboldalt lent ?>
             <span <?php getTitle($decoration->flowerRightBottom)?>>
-                <span style="position: absolute;right:-7px;bottom:-19px"><img style="height:<?php echo $decoration->extended?250:120?>px;" src="images/flower_right_bottom.png" /></span></span>
+                <span class="deco-frb"><img style="height:<?php echo $decoration->extended?250:120?>px;" src="images/flower_right_bottom.png" /></span></span>
         <?php } ?>
         <?php if ($decoration->flowerLeft->count>0) { // Csokor baloldalt?>
             <span <?php getTitle($decoration->flowerLeft)?>>

@@ -139,6 +139,13 @@ include("homemenu.inc.php");
             <?php foreach ($content as $idx=>$paragraph) { ?>
                 <li><a href="#section-<?php echo $idx ?>"><?php echo isset($paragraph["title"])?$paragraph["title"]:"" ?></a></li>
             <?php } ?>
+                <li><a href="hometable?classid=<?php echo Appl::getMemberId("staffClass")?>">Tanárok</a></li>
+                <li><a href="iskola-<?php echo $school["shortLink"]?>-osztalyok">Osztályok</a></li>
+                <?php if ( $school["awardName"]!=null) { ?>
+                    <li><a href="search?type=jmlaureat&schoolid=<?php echo $school['id']?>"><?php echo $school["awardName"] ?> díjasok</a></li>
+                <?php } ?>
+                <li><a href="iskola-<?php echo $school["shortLink"]?>-kepek">Képek</a></li>
+                <li><a href="iskola-<?php echo $school["shortLink"]?>-terkep">Merre szórodtak szét a véndiákok</a></li>
             </ul>
         </div>
     </div>
