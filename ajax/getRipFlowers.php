@@ -31,12 +31,12 @@ $html .='
 $html .='
     <h3>Díszítsd a gyertyákat virágokkal.</h3>
     Hamarosan örökké friss virágokkal és személyes megemlékezéssel lehet az elhunyt kedveseink emlékét feleleveníteni.
-    A virágokat, megemlékezési szöveget vagy a kiemelt megjelenítést egy adománnyal lehet véglegesíteni. Az adómány kizárolag az oldal üzemeltetését biztosítsa.   
+    A virágokat, megemlékezési szöveget vagy a kiemelt megjelenítést egy önkéntes adománnyal lehet véglegesíteni. Az önkéntes hozzájárulási adómány kizárolag az oldal üzemeltetését biztosítsa.   
 ';
 
 $html .='
     <table>
-        <tr><td></td><td>adomány</td><td>rövid ideig<br/>kedvezményes ár</td><td><button onclick="alert(\'A kedvezményes ár csak rövid ideig érvényes.\n Siess ne halazd el az alkalmat.\');">i</button></td></tr>
+        <tr><td></td><td>önkéntes<br/>adomány</td><td>rövid ideig<br/>kedvezményes</td><td><button onclick="alert(\'A kedvezményes ár csak rövid ideig érvényes.\n Siess ne halazd el az alkalmat.\');">i</button></td></tr>
         <tr><td>Kiemelt megjelenités</td><td>199€</td><td>99€</td><td><button onclick="alert(\'Kiemelt megjelenítés azaz nagy felbontású fénykép, nagy gyertyák és jó felbontású virágok\n Csak egyszer lehet megrendelni, és 20 év után szűnik meg. \');">i</button></td></tr>
         <tr><td>Virágcsokor</td><td> 19€</td><td>10€ </td><td><button onclick="alert(\'Virágcsokor a bejegyzés jobb alsó sarkán\n Csak egyszer lehet megrendelni 10 évenként.\');">i</button></td></tr>
         <tr><td>Kicsi virágcsokor</td><td> 15€</td><td>5€ </td><td><button onclick="alert(\'Virágcsokor a bejegyzés jobb felső sarkán\n Csak egyszer lehet megrendelni 10 évenként.\');">i</button></td></tr>

@@ -71,6 +71,7 @@ class dbDaCandle
      */
     public function getDecorationPurcasesByPersonId($id) {
         $purchases= array();
+        //TODO get Data from Data
         if ($id==851) {
             $purchase = new stdClass();
             $purchase->ip = "192.168.1.1";
@@ -123,6 +124,7 @@ class dbDaCandle
     public function getDecorationsByPersonId($id=null) {
         $decesedYear = $this->dbDAO->dataBase->queryInt("select deceasedYear from person where id=".$id);
         $decoration = new stdClass();
+        $decoration->extended = false;
         $decoration->flowerRightTop = new stdClass();    //max=1
         $decoration->flowerRightBottom = new stdClass(); //max=1
         $decoration->rosesDown =  new stdClass();         //max=7
@@ -133,21 +135,21 @@ class dbDaCandle
         $decoration->rosesDown->count=0;
         $decoration->rosesUp->count=0;
         $decoration->flowerLeft->count=0;
-        //TODO get Date from Database
-        if ($id==9942) {
+        //TODO get Data from Database
+        if ($id==9942) { //Kalmár József
             $decoration->extended = true;
             $decoration->rosesDown->count = 7;
             $decoration->flowerRightBottom->count = 1;
-        } else if ($id==7899)  {
+        } else if ($id==7899)  { //Nemes Mária
             $decoration->extended = true;
             $decoration->flowerRightTop->count=1;
             $decoration->flowerRightBottom->count=1;
             $decoration->rosesDown->count=7;
             $decoration->rosesUp->count=4;
             $decoration->flowerLeft->count=3;
-        } else if ($id==662)  {
-            $decoration->rosesUp->count=1;
-        } else if ($id==851)  {
+        } else if ($id==662)  {  //Kovács László
+            $decoration->rosesUp->count=2;
+        } else if ($id==851)  {  //Pazmany Zsuzsa
             $decoration->flowerRightTop->count=1;
             $decoration->rosesUp->count=1;
         } else if ($decesedYear == intval(Date("Y"))) {
