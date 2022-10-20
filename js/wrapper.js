@@ -37,21 +37,21 @@ function addWrapperDiv(id) {
 
 	var w=$("#wrapper").width();
         var width=Math.round(0.5+w/Math.round(0.7+w/wrapperWidth))-10;
-        width = width<450?450:width;
+        width = width<460?460:width;
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; margin: 0px 10px">';
-        html +='<a href="editDiak?uid='+d.id+'" title="'+d.name+'">';
-        html +='<div >';
-        html +='<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium">';
+        html +=     '<a href="editDiak?uid='+d.id+'" title="'+d.name+'">';
+        html +=     '<div >';
+        html +=         '<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium">';
         if (d["deceasedYear"]!=null && parseInt(d["deceasedYear"])>=0) {
         	html +='<div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 10px 10px;position: relative;top: -8px;">';
         	html += parseInt(d["deceasedYear"])==0?"†":"† "+parseInt(d["deceasedYear"]); 
 			html +='</div>';
 		}
-        html +='</div>';
+        html +=     '</div>';
         html +='</a></div>';
-        html +='<div style="display: inline-block;max-width:300px;vertical-align: top;margin-bottom:10px;">';
+        html +='<div style="display: inline-block;max-width:250px;vertical-align: top;margin-bottom:10px;">';
         html +='<h4>'+d.name+'</h4>';
         html +='<h6>'+d.schoolName+'</h6>';
         html +='<div class="fields">';

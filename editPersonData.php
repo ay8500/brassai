@@ -10,7 +10,7 @@
     <?php if(isUserLoggedOn() || $anonymousEditor) {?>
         <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
             <div class="diak_picture" style="display: inline-block;margin-bottom: 5px;">
-                <img src="<?php echo getPersonPicture($diak)?>" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
+                <img src="<?php echo getPersonPicture($diak,true)?>" alt="" itemprop="image" class="diak_image" title="<?php echo $diak["lastname"]." ".$diak["firstname"]?>" />
                 <?php if (isset($diak["deceasedYear"])&& intval($diak["deceasedYear"])>=0) {?>
                     <div style="background-color: black;color: white;height:20px;text-align: center;border-radius: 0 0 10px 10px;position: relative;top: -8px;">
                 <?php } else {?>
@@ -33,7 +33,7 @@
             <?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
                 <div style="display: inline-block;margin:15px;vertical-align: bottom;max-width: 400px;">
                     <form enctype="multipart/form-data" action="editDiak" method="post">
-                        <h4>Profiképed</h4>
+                        <h4>Profilkép</h4>
                         <div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
                         <span>Válassz egy új jpg képet max. 2MByte</span>
                         <input class="btn btn-default" name="userfile" type="file" size="44" accept=".jpg" />

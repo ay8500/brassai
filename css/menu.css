@@ -242,7 +242,7 @@
 	.diak_image_empty {	height:34px;width: 42px}
 	.element{width:100%; display: inline-block;overflow:hidden; background-color: #E5E9EA;  padding: 5px; border-radius: 7px; margin-bottom: 10px; vertical-align: top;}
 	.panel-body {padding:0px;}
-	.personboxc {min-width: 250px;}
+	.personboxc {max-width: 215px;}
 	.nav-justified > li {
 		display: inline-block;
 		width: 29px !important;
