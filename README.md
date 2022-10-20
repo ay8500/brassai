@@ -6,7 +6,7 @@ Therefore the visitor of this php based web page has the possibility to create a
 
 Former teachers and students form a valuable database for people search. The world map shows the distribution of students after high school.
 
-This webpage kann help to organise classmate reunion meetings.
+This webpage can be used to organise classmate reunion meetings.
 
 An important part of the software is the photo album.
 
