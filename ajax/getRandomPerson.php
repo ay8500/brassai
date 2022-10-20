@@ -74,8 +74,8 @@ function getRandomPerson() {
 	
 	$p=$db->getPersonByID($idrow["id"]);
 	// Testperson
-	$test = array(656, 2791,8041,9816,933);
-	$p=$db->getPersonByID($test[mt_rand(0,sizeof($test)-1)]);
+	//$test = array(656, 2791,8041,9816,933);
+	//$p=$db->getPersonByID($test[mt_rand(0,sizeof($test)-1)]);
 	$class=$db->getClassById($p["classID"]);
 	$p["classText"]=$class["text"];
 	$p["classEvening"]=$class["eveningClass"];

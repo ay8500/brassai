@@ -414,6 +414,11 @@ $tabUrl="editDiak";
                 $personList[0] = $diak;
                 \maierlabs\lpfw\Appl::addJs('js/candles.js', true);
                 displayRipPerson(new dbDaCandle($db), $diak);
+                $link = getPersonLink($diak["lastname"],$diak["firstname"])."-megemlekezes-".$diak["id"];
+                ?>
+
+                <div><a href="<?php echo config::$siteUrl.'/'. $link?>">Megemlékezési oldal</a></div>
+                <?php
             }
         }
 		//Pictures
