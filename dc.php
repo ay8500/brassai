@@ -103,7 +103,7 @@ function showHeader($person) {?>
     <?php Appl::renderingStarted(); ?>
 </head>
 <body style="background-color: black; text-align: center">
-    <img id="firstPicture" style="display:none" src="images" />
+    <img id="firstPicture" style="display:none" src="images/<?php echo $person["picture"]?>" />
     <div style="margin-top: 30px;">
 <?php
 }

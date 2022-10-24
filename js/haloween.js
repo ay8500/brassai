@@ -1,3 +1,12 @@
+$("#mainmenucontainer").css("background-image","url('images/fire.gif')");
+$("#mainmenucontainer").css("background-size","cover");
+$(".navbar-header").css("margin-left","0px");
+$(".navbar-toggle").css("margin-left","50px");
+$(".navbar-toggle").css("height","38px");
+$("#mainmenucontainer a").css("margin-left","5px");
+
+
+
 var flyingObjects = (function(window, document) {
 
     this.animationInterval = 30;
@@ -17,9 +26,7 @@ var flyingObjects = (function(window, document) {
     this.movingObjects[1].element = document.createElement("div");
 
 //****************************************************************************************************
-    $("#mainmenucontainer").css("background-image","url('images/fire.gif')");
-    $("#mainmenucontainer").css("background-size","cover");
-    $("#mainmenucontainer").css("background-position-y","bottom");
+
 
     this.moveObject = function(element,x,y,ydir,xdir) {
         var s = document.documentElement.scrollTop || document.body.scrollTop;
