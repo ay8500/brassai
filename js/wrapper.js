@@ -84,7 +84,10 @@ function addWrapperDiv(id) {
                         period = "";
                     }
                     if (schoolId != "") {
-                        html += '<span><img style="height:20px;" src="images/school' + schoolId.slice(1) + '/logo.jpg" />' + period + '&nbsp;&nbsp;</span>';
+                        if (schoolId === "5")
+                            html += '<span><img style="height:20px;" src="images/school' + schoolId.slice(1) + '/logo.png" />' + period + '&nbsp;&nbsp;</span>';
+                        else
+                            html += '<span><img style="height:20px;" src="images/school' + schoolId.slice(1) + '/logo.jpg" />' + period + '&nbsp;&nbsp;</span>';
                     }
                 });
                 html +='</div></div>';
