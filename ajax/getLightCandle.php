@@ -31,7 +31,7 @@ $html .='
 
 if (($daysLeft=$dbCandle->checkLightning($person["id"],getLoggedInUserId()))!==false) {
     $html .='
-        Az általad meggyújtott<br/> gyertya még <?php echo($daysLeft)?> napig ég!
+        Az általad meggyújtott<br/> gyertya még '. $daysLeft.' napig ég!
         <div style="clear: both"></div><br/>
         Látogass el újból és gyújts új gyertyát elhunyt tanárod vagy osztálytársad emlékére!
     ';

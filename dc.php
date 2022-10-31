@@ -41,6 +41,7 @@ if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
         unsetActClass();unsetActSchool();
         $personList=array($diak);
         showHeader($diak);
+        echo("<h2 style='color:orange'>Megemlékezés</h2>");
         displayRipPerson($db,$diak,$db->getClassById($diak["classID"]),true,true);
         showFooter();
         exit();
@@ -110,6 +111,7 @@ function showHeader($person) {?>
 
 function showFooter() {
     ?>
+        <div style="width:100%;text-align:center;color:orange;position: absolute;bottom: 0px;">&copy; <?php echo date("Y");?><a style="color: orange; text-decoration: none" href="https://kolozsvarivendiakok.blue-l.de" target="_blank"> kolozsvarivendiakok.blue-l.de</a></div>
     </html>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
