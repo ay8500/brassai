@@ -93,7 +93,7 @@ class dbDaSongVote
     }
 
     /*
-     * get Voterslist by scool id
+     * get Voterslist by school id
      */
     public function getVotersListBySchoolId($schoolId=null) {
         $sql  ="select count(*) as count, person.id, person.lastname, person.firstname, person.picture ";

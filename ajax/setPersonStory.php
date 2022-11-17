@@ -15,7 +15,7 @@ $privacy = getPostParam("privacy", "class");
 
 if (isUserEditor() || isUserSuperuser() || isAktUserTheLoggedInUser() ) {
 	if ($privacy=="world") $text="~~".$text;
-	if ($privacy=="scool") $text="~".$text;
+	if ($privacy=="school") $text="~".$text;
 	
 	$text=htmlspecialchars_decode(urldecode($text));
 	

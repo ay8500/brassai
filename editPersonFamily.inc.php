@@ -113,11 +113,11 @@ Appl::addJsScript('
     		        var l = $(\'<li class="form-control" style="display:inline-table"/>\')
     		        var c="";
     		        if (e.schoolID!=null)
-    		            c ="<img src=\"images/school"+e.schoolID+"/logo.jpg\" style=\"height:33px;border-radius:15px;\" />";
+    		            c ="<img src=\"images/school"+e.schoolID+"/"+e.schoolLogo+"\" style=\"height:33px;border-radius:15px;\" />";
     		        if (e.schoolIdsAsTeacher!==null)
     		            c+="Tanár "
     		        else
-    		            c+=e.scoolYear+" "+e.scoolClass+" ";
+    		            c+=e.schoolYear+" "+e.schoolClass+" ";
     		        c +="<a target=\"_blank\" href=\"editDiak?uid="+e.id+"\">";  
     		        var name= e.lastname+" "+e.firstname; 
     		        c +="<b>"+name+((e.birthname!=null && e.birthname!="")?" ("+e.birthname+")":"")+"</b>";

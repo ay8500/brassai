@@ -10,5 +10,24 @@ $name = getParam("name","");
 
 global $db;
 $persons=$db->searchForPerson($name);
+$return = array();
 
-echo(json_encode($persons));
+foreach ($persons as $person) {
+    $ret= new stdClass();
+    $ret->id = $person["id"];
+    $ret->title = $person["title"];
+    $ret->firstname = $person["firstname"];
+    $ret->lastname = $person["lastname"];
+    $ret->birthname = $person["birthname"];
+    $ret->gender = $person["gender"];
+    $ret->picture = $person["picture"];
+    $ret->schoolID = $person["schoolID"];
+    $ret->schoolIdsAsTeacher = isset($person["schoolIdsAsTeacher"])?$person["schoolIdsAsTeacher"]:null;
+    $ret->schoolLogo = $person["schoolLogo"];
+    $ret->schoolYear = $person["schoolYear"];
+    $ret->schoolClass = $person["schoolClass"];
+    $ret->deceasedYear = $person["deceasedYear"];
+    $return[] = $ret;
+}
+
+echo(json_encode($return));

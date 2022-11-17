@@ -422,7 +422,7 @@ function searchPerson(pictureid,x,y) {
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
                     if (row.schoolIdsAsTeacher===null) {
-                        var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
+                        var pclass = row.schoolYear + ' ' + row.schoolClass + ' ';
                     } else {
                         if (row.gender=="f") {
                             var pclass = "<?php maierlabs\lpfw\Appl::_('Tanárnő')?>";

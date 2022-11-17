@@ -62,8 +62,8 @@ function displayMessage($message, $person) {
                 echo '<span class="cmessage message_world">Ezt az üzenetet mindenki látja.</span>';
             if ($message["privacy"]=="class")
                 echo '<span class="cmessage message_class">Ezt az üzenetet csak az én osztálytársaim tekinthetik meg.</span>';
-            if ($message["privacy"]=="scool")
-                echo '<span class="cmessage message_scool">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
+            if ($message["privacy"]=="school")
+                echo '<span class="cmessage message_school">Ezt az üzenetet csak a iskolatársaim tekinthetik meg.</span>';
             //Delete button
             if ($message["changeIP"]==$_SERVER["REMOTE_ADDR"] || isUserAdmin() ||
                 (isset($message["changeUserID"]) && $message["changeUserID"]!=1) &&

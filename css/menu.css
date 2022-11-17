@@ -39,7 +39,7 @@
 	
 	.cradio 	{ border-style: none;border-radius: 6px;background-color: #dddddd;width: 25px;height: 39px;text-align: center;vertical-align:bottom; display: inline-block;}
 	.radio_world {background-image: url("../images/world-16.png");background-repeat: no-repeat;background-position: 5px 20px;}
-	.radio_scool {background-image: url("../images/study.png");background-repeat: no-repeat; background-position: 5px 20px;}
+	.radio_school {background-image: url("../images/study.png");background-repeat: no-repeat; background-position: 5px 20px;}
 	.radio_class {background-image: url("../images/friends.png");background-repeat: no-repeat; background-position: 5px 20px;}
 	.radiogroup { display:inline-block; padding: 7px; border-style: solid; border-width: 1px; vertical-align: middle; border-color: lightgray; border-radius: 5px; eight: 44px;}
 	.trumbowyg-editor {background-color: white;}
@@ -48,7 +48,7 @@
 
 	.cmessage 	{ border-style: none;border-radius: 6px;background-color: #dddddd;padding: 5px 5px 5px 35px; margin: 0px 10px 0px 10px; display: inline-block;}
 	.message_world {background-image: url("../images/world-16.png");background-repeat: no-repeat;background-position: 5px 5px;}
-	.message_scool {background-image: url("../images/study.png");background-repeat: no-repeat; background-position: 5px 5px;}
+	.message_school {background-image: url("../images/study.png");background-repeat: no-repeat; background-position: 5px 5px;}
 	.message_class {background-image: url("../images/friends.png");background-repeat: no-repeat; background-position: 5px 5px;}
     .message_text {background-color: white;padding: 5px;border-radius: 5px;}
     

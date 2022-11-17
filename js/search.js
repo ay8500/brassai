@@ -31,7 +31,7 @@ function searchPersonAndPicture() {
             if (data!=null && data.length>0) {
                 data.forEach(function (row) {
                     if (row.schoolIdsAsTeacher===null) {
-                        var pclass = row.scoolYear + ' ' + row.scoolClass + ' ';
+                        var pclass = row.schoolYear + ' ' + row.schoolClass + ' ';
                     } else {
                         if (row.gender=="f") {
                             var pclass = "<?php maierlabs\lpfw\Appl::_('Tanárnő')?>";
@@ -48,12 +48,11 @@ function searchPersonAndPicture() {
                         var pimg = '<img src="images/' + (row.gender==="f"?"woman.png":"man.png") + '" class="diak_image_icon" />';
                     }
                     var html = '<tr>';
-                    html += '<td style="text-align: center">' + pimg + '</td>';
+                    html += '<td '+(row.deceasedYear!==null?'style="background-color:black"':'')+'>' + pimg + '</td>';
                     html += '<td><a href="editDiak?uid='+row.id+'">' + pname + '</a></td>';
-                    html += '<td><img src="images/school'+row.schoolID+'/logo.jpg" style="height: 33px"/></td>';
+                    html += '<td><img src="images/school'+row.schoolID+'/'+row.schoolLogo+'" style="height: 33px"/></td>';
                     html += '<td>' + pclass + '</td>';
                     html += '</tr>';
-                    console.log(html);
                     $('#searchpersontable').append(html);
                 });
             }
@@ -79,7 +78,6 @@ function searchPersonAndPicture() {
                     html += '<td><a href="picture?id='+row.id+'">' + pname + '</a></td>';
                     //html += '<td>' + pclass + '</td>';
                     html += '</tr>';
-                    console.log(html);
                     $('#searchpicturetable').append(html);
                 });
             }

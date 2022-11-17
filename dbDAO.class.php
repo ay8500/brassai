@@ -495,8 +495,9 @@ class dbDAO {
 		} else {
                 $where = " class.id=".getActClassId();
         }
-        $sql  ="select person.*, class.schoolID as schoolID, class.graduationYear as scoolYear, class.eveningClass, class.name as scoolClass from person";
+        $sql  ="select person.*, class.schoolID as schoolID, class.graduationYear as schoolYear, class.eveningClass, class.name as schoolClass, school.Logo as schoolLogo  from person";
         $sql .=" left join  class on class.id=person.classID";
+        $sql .=" left join  school on school.id=class.schoolID";
         $sql .=" where (graduationYear != 0 or role not like '%guest%' )";		//No administator users
         if ($teacher) {
             $sql .=" and schoolIdsAsTeacher is not null";
@@ -505,13 +506,15 @@ class dbDAO {
         $sql .=" and person.id not in ( select changeForID from person where  ".$this->dataBase->getSqlAnonymous("person.")." ) ";
         $sql.=") or (".$this->dataBase->getSqlAnonymous("person.")."and ".$where.") limit 150";
 
-        $this->dataBase->query($sql);
-        while ($person=$this->dataBase->fetchRow()) {
+        $persons = $this->dataBase->queryArray($sql);
+        foreach ($persons as $person) {
             if (isset($person["changeForID"]))
                 $person["id"]=$person["changeForID"];
             if (array_search($person["id"],array_column($ret,"id"))===false) {
-                if ($person["schoolID"]==NULL && $person["schoolIdsAsTeacher"])
-                    $person["schoolID"] = substr($person["schoolIdsAsTeacher"],1,strpos($person["schoolIdsAsTeacher"],")")-1);
+                if ($person["schoolID"]==NULL && $person["schoolIdsAsTeacher"]) {
+                    $person["schoolID"] = substr($person["schoolIdsAsTeacher"], 1, strpos($person["schoolIdsAsTeacher"], ")") - 1);
+                    $person["schoolLogo"] = $this->getSchoolById($person["schoolID"])["logo"];
+                }
                 array_push($ret, $person);
             }
         }

@@ -71,7 +71,7 @@ include_once 'dbBL.class.php';
 			<div class="radiogroup">
 				<div style="display: inline-block; padding:5px" >Ki láthatja<br /> ezt a szöveget?</div>
 				<div title="Az egész világ" class="cradio radio_world"><input type="radio" name="privacy" value="world" <?php echo getFieldCheckedWord($text)?> onclick="saveStory();" /></div>
-				<div title="Az iskolatársak" class="cradio radio_scool"><input type="radio" name="privacy" value="scool" <?php echo getFieldCheckedScool($text)?> onclick="saveStory();" /></div>
+				<div title="Az iskolatársak" class="cradio radio_school"><input type="radio" name="privacy" value="school" <?php echo getFieldCheckedScool($text)?> onclick="saveStory();" /></div>
 				<div title="Az osztálytársak" class="cradio radio_class"><input type="radio" name="privacy" value="class" <?php echo getFieldCheckedClass($text)?> onclick="saveStory();" /></div>
 			</div> 
 			<div class="radiogroup">

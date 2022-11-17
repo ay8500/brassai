@@ -427,7 +427,7 @@ $tabUrl="editDiak";
 			$typeId=getRealId($diak);
 			include_once "picture.inc.php";
 		}
-		//Change storys cv, scool trory, sparetime
+		//Change storys cv, school strory, sparetime
 		if (in_array($tabOpen,array("cv","hobbys","school"))) {
 			include("editPersonStorys.php");
 		}
