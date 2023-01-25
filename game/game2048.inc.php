@@ -57,6 +57,6 @@
     <div class="slidedown" slide="2"><span class="glyphicon glyphicon-arrow-down" slide="2"></span></div>
 
     <p class="game-explanation">
-        <strong class="important">HOGYAN KELL JÁTSZANI:</strong> A nyílbillentyűkkel mozgasd a lapkákat. Amikor két azonos számú lapka érintkezik, egybeolvadnak!
+        <strong class="important">Hogyan kell játszani:</strong> A nyílbillentyűkkel vagy kattintással a barna nyílakra told az összes lapkákat egy irányba. Amikor két azonos számú lapka érintkezik, egybeolvadnak és értékük összeadodik! A játék célja egy lapkát minimum 2048-al elérni. A játéknak vége ha nincs több lehetőség új lapkákat beilleszteni a játékba.
     </p>
 </div>

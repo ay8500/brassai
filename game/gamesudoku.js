@@ -495,7 +495,6 @@ Sudoku.prototype.saveGame = function() {
             alert("A játék szerver nem elérhetö, probáld késöbb újból!");
         }
     });
-
 }
 
 /** Add note from sudoku console to selected board cell */

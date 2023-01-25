@@ -1,4 +1,10 @@
 <?php
+/**
+ * Save Game Status
+ * Parameter:
+ * gameid Integer
+ * gamestatus JsonString
+ */
 include_once '../config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';

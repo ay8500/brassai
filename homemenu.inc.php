@@ -31,7 +31,7 @@ $schoolList = $db->getSchoolList();
 
 //Events
 $today = new DateTime();
-$xmas = (intval(date("m")) === 12 || intval(date("m")) === 1);
+$xmas = (intval(date("m")) === 12 );
 $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
 /*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");

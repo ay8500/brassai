@@ -110,6 +110,11 @@ strong.important {
   text-transform: uppercase;
 }
 
+.container div span {
+  color:saddlebrown;
+  font-size: 60px;
+}
+
 hr {
   border: none;
   border-bottom: 1px solid #d8d4d0;
@@ -527,7 +532,7 @@ hr {
 
 .slideup, .slidedown {
   display: block !important;
-  width: 580px;
+  width: 647px;
   height: 37px;
   text-align: center;
   padding-top: 5px;
@@ -537,7 +542,7 @@ hr {
 .slideleft, .slideright {
   display: inline-block;
   height: 510px;
-  width: 36px;
+  width: 70px;
   vertical-align: top;
 }
 
@@ -547,12 +552,12 @@ hr {
     font-size: 30px;
 }
 
-.slideup { border-top-left-radius: 10px; border-top-right-radius: 10px;}
-.slidedown { border-bottom-left-radius: 10px;border-bottom-right-radius: 10px; }
+.slideup { border-top-left-radius: 10px; border-top-right-radius: 10px; height:70px;}
+.slidedown { border-bottom-left-radius: 10px;border-bottom-right-radius: 10px; height:70px;}
 
 
 @media screen and (max-width: 770px) {
-  .slideup, .slidedown { width: 398px; }
+  .slideup, .slidedown { width: 398px;height:40px; }
   .slideleft, .slideright {width:30px; height: 365px;}
   .slideleft>span, .slideright>span {top:170px}
 
@@ -571,6 +576,12 @@ hr {
     margin: 0 auto;
   }
 
+  .container div span {
+    color:saddlebrown;
+    font-size: 25px;
+  }
+
+
   .score-container {
     margin-top: 0;
   }
@@ -580,7 +591,7 @@ hr {
   }
 
   .game-container {
-    margin-top: 40px;
+    margin-top: 10px;
     position: relative;
     padding: 15px;
     cursor: default;

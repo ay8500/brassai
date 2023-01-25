@@ -15,11 +15,10 @@ $dbGames = new dbDaGames($db);
 $tabsCaption = array();
 $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
-array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
+array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
 array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
-if (isUserAdmin()) {
-    array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
-}
+array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
+
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
 if (isUserLoggedOn() || getParam("userid")!=null) {
     if (getParam("userid")!=null) {
@@ -60,6 +59,50 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="bestlist") {?>
                 <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
                     <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                        <h2>Solitaire</h2>
+                        <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
+                        <br/><br/> <img src="images/gamesolitaire.jpg" style="width: 200px;"/>
+                    </div>
+                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                        <table>
+                            <?php
+                            $personList = $dbGames->getBestPlayers(3,15);
+                            foreach ($personList as $idx=>$person) {?>
+                                <tr>
+                                    <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
+                                    <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
+                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
+                                    <td style="text-align: right"><?php echo $person["highScore"]?></td>
+                                </tr>
+                            <?php }
+                            ?>
+                        </table>
+                    </div>
+                </div>
+                <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
+                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                        <h2>Sudoku</h2>
+                        <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
+                        <br/> <img src="images/gamesudoku.jpg" style="width: 200px;"/>
+                    </div>
+                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                        <table>
+                            <?php
+                            $personList = $dbGames->getBestPlayers(2,15);
+                            foreach ($personList as $idx=>$person) {?>
+                                <tr>
+                                    <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
+                                    <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
+                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
+                                    <td style="text-align: right"><?php echo $person["highScore"]?></td>
+                                </tr>
+                            <?php }
+                            ?>
+                        </table>
+                    </div>
+                </div>
+                <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
+                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>2048</h2>
                         <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
                         <br/> <img src="images/game2048.jpg" style="width: 200px;"/>
@@ -84,28 +127,6 @@ include("homemenu.inc.php");
                                     </tr>
                             <?php }
                         ?>
-                        </table>
-                    </div>
-                </div>
-                <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
-                        <h2>Sudoku</h2>
-                        <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
-                        <br/> <img src="images/gamesudoku.jpg" style="width: 200px;"/>
-                    </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
-                        <table>
-                            <?php
-                            $personList = $dbGames->getBestPlayers(2,15);
-                            foreach ($personList as $idx=>$person) {?>
-                                <tr>
-                                    <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
-                                    <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
-                                    <td style="text-align: right"><?php echo $person["highScore"]?></td>
-                                </tr>
-                            <?php }
-                            ?>
                         </table>
                     </div>
                 </div>
@@ -140,25 +161,23 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="solitaire") {
                 \maierlabs\lpfw\Appl::addJs("game/gamesolitaire.js");
                 include_once "game/gamesolitaire.inc.php";
-                $tile = new stdClass();
+                $gameStatus = new stdClass();
                 $gameId = null;
                 if (getIntParam("gameid")==3 && getIntParam("id",-1)!=-1) {
                     $game = $dbGames->getGameById(getIntParam("id"));
                     $gameId = $game["id"];
-                    $tile = $game["gameStatus"];
+                    $gameStatus = $game["gameStatus"];
                 } else {
                     $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,3);
                     if ($game!=null) {
                         $gameId = $game["id"];
                         if (isset($game["gameStatus"]))
-                            $tile = $game["gameStatus"];
+                            $gameStatus = $game["gameStatus"];
                     } else {
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
                     }
                 }
-                \maierlabs\lpfw\Appl::addJsScript('
-                    startSolaireGame('.$gameId.');
-                ',true);
+                \maierlabs\lpfw\Appl::addJsScript('SG.newGame('.$gameId.",". json_encode($gameStatus).");",true);
             }?>
 
             <?php if ($tabOpen=="memory") {
@@ -202,6 +221,72 @@ include("homemenu.inc.php");
             }?>
 
             <?php if ($tabOpen=="user") {?>
+                <div style="border: 1px solid black;border-radius: 5px; margin-bottom: 15px;">
+                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                        <h2>Solitaire</h2>
+                        <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
+                        <br/> <img src="images/gamesolitaire.jpg" style="width: 200px;"/>
+                    </div>
+                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                        <?php
+                        $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,3,25);
+                        if (sizeof($gameList)>0) {
+                            ?><table><?php
+                            foreach ($gameList as $game) {?>
+                                <tr>
+                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
+                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
+                                    <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
+                                    <td style="padding: 5px">
+                                        <?php if (isset($game["gameStatus"]["won"]) && ($game["gameStatus"]["won"])===false) { ?>
+                                            <a class="btn btn-success" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Folytatom</a>
+                                        <?php }  ?>
+                                    </td>
+
+                                </tr>
+                            <?php  }
+                            ?></table><?php
+                        } else {
+                            ?>
+                            Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
+                            <?php
+                        } ?>
+                    </div>
+                </div>
+
+                <div style="border: 1px solid black;border-radius: 5px; margin-bottom: 15px;">
+                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                        <h2>Sudoku</h2>
+                        <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
+                        <br/> <img src="images/gamesudoku.jpg" style="width: 200px;"/>
+                    </div>
+                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                        <?php
+                        $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,2,25);
+                        if (sizeof($gameList)>0) {
+                            ?><table><?php
+                            foreach ($gameList as $game) {?>
+                                <tr>
+                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
+                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
+                                    <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
+                                    <td style="padding: 5px">
+                                        <?php if (isset($game["gameStatus"]["won"]) && ($game["gameStatus"]["won"])===false) { ?>
+                                            <a class="btn btn-success" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Folytatom</a>
+                                        <?php }  ?>
+                                    </td>
+
+                                </tr>
+                            <?php  }
+                            ?></table><?php
+                        } else {
+                            ?>
+                            Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
+                            <?php
+                        } ?>
+                    </div>
+                </div>
+
                 <div style="border: 1px solid black;border-radius: 5px;margin-bottom: 15px; ">
                     <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>2048</h2>
@@ -233,38 +318,6 @@ include("homemenu.inc.php");
                         } else {
                             ?>
                                 Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
-                            <?php
-                        } ?>
-                    </div>
-                </div>
-                <div style="border: 1px solid black;border-radius: 5px; margin-bottom: 15px;">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
-                        <h2>Sudoku</h2>
-                        <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
-                        <br/> <img src="images/gamesudoku.jpg" style="width: 200px;"/>
-                    </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
-                        <?php
-                        $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,2,25);
-                        if (sizeof($gameList)>0) {
-                            ?><table><?php
-                            foreach ($gameList as $game) {?>
-                                    <tr>
-                                        <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
-                                        <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                        <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
-                                        <td style="padding: 5px">
-                                            <?php if (isset($game["gameStatus"]["won"]) && ($game["gameStatus"]["won"])===false) { ?>
-                                                <a class="btn btn-success" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Folytatom</a>
-                                            <?php }  ?>
-                                        </td>
-
-                                    </tr>
-                            <?php  }
-                            ?></table><?php
-                        } else {
-                            ?>
-                            Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
                             <?php
                         } ?>
                     </div>
