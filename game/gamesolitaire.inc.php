@@ -1,11 +1,11 @@
 <?php //https://codepen.io/ejsado/pen/XNpVmr?>
 <div id="solitaire">
     <div id="menu-bar">
-        <button id="new-game" onclick="SG.newGame(undefined)">új játék</button>
+        <button id="new-game" onclick="SG.newGame()">új játék</button>
         <button id="undo" onclick="SG.undoMove()">visszalép</button>
         <span id="move-count">0 lépés</span>
-        <span id="score">0 pontszám</span>
-        <span id="time">0</span>
+        <span id="score">pontszám:</span>
+        <span id="time"></span>
     </div>
     <div class="card-pile-row" id="top-row">
         <div class="card-pile" id="stock" onclick="SG.moveStockCard()" data-card-count="52"></div>

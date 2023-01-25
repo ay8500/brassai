@@ -1,5 +1,6 @@
 /** Sudoku game */
 function Sudoku(params) {
+    //Status values stored in this.status.
     this.INIT = 0;
     this.RUNNING = 1;
     this.END = 2;
@@ -427,7 +428,7 @@ Sudoku.prototype.addValue = function(value) {
     $( this.cell ).find('span').text( (value === 0) ? '' : value );
     this.boardValues[this.getCellIndex()]=value;
 
-    console.log('Value added ', value);
+    console.log('Value added:', value, " gameId:", this.gameId);
     $(this.cell).removeClass('notvalid');
     if (value!=0) {
         if (this.boardSolution[this.getCellIndex()]==value) {
@@ -483,7 +484,7 @@ Sudoku.prototype.saveGame = function() {
     var json = {"board":game.board,"boardSolution":game.boardSolution,
         "boardValues":game.boardValues,"boardNotes":game.boardNotes,
         "fixedCellsNr":game.fixCellsNr,"secondsElapsed":game.secondsElapsed,
-        "score":game.score,"over":false,"won":game.getCellsComplete() === 81};
+        "score":game.score,"over":game.status === game.END,"won":game.getCellsComplete() === 81};
 
     $.ajax({
         url: "ajax/setGameStatus?gameid="+game.gameId+"&gamestatus="+JSON.stringify(json),
@@ -561,60 +562,62 @@ Sudoku.prototype.gameOver = function(){
 };
 
 /** Run a new sudoku game */
-Sudoku.prototype.run = function(){
-    this.status = this.RUNNING;
-
+Sudoku.prototype.run = function(isGameOver){
     var t = this;
     this.drawBoard();
+    if (!isGameOver) {
+        t.status = t.RUNNING;
 
-    //click on board cell
-    $('#'+ this.id +' .sudoku_board .cell').on('click', function(e){
-        t.cellSelect(this);
-    });
+        //click on board cell
+        $('#' + this.id + ' .sudoku_board .cell').on('click', function (e) {
+            t.cellSelect(this);
+        });
 
-    //click on console num
-    $('#'+ this.id +' .board_console .num').on('click', function(e){
-        var
-            value          = $.isNumeric($(this).text()) ? parseInt($(this).text()) : 0,
-            clickMarkNotes = $(this).hasClass('note'),
-            clickRemove = $(this).hasClass('remove'),
-            numSelected    = $(this).hasClass('selected');
+        //click on console num
+        $('#' + this.id + ' .board_console .num').on('click', function (e) {
+            var
+                value = $.isNumeric($(this).text()) ? parseInt($(this).text()) : 0,
+                clickMarkNotes = $(this).hasClass('note'),
+                clickRemove = $(this).hasClass('remove'),
+                numSelected = $(this).hasClass('selected');
 
-        if (clickMarkNotes) {
-            console.log('clickMarkNotes'+t.markNotes);
-            t.markNotes = !t.markNotes;
-            t.showConsole(t.cell);
+            if (clickMarkNotes) {
+                console.log('clickMarkNotes' + t.markNotes);
+                t.markNotes = !t.markNotes;
+                t.showConsole(t.cell);
 
-            if(t.markNotes) {
-                $(this).addClass('selected');
+                if (t.markNotes) {
+                    $(this).addClass('selected');
+                } else {
+                    $(this).removeClass('selected');
+                }
+
             } else {
-                $(this).removeClass('selected');
-            }
-
-        } else {
-            if (t.markNotes) {
-                if (!numSelected) {
-                    if (!value) {
-                        t.removeNote(0).hideConsole();
+                if (t.markNotes) {
+                    if (!numSelected) {
+                        if (!value) {
+                            t.removeNote(0).hideConsole();
+                        } else {
+                            t.addValue(0).addNote(value).hideConsole();
+                        }
                     } else {
-                        t.addValue(0).addNote(value).hideConsole();
+                        t.removeNote(value).hideConsole();
                     }
                 } else {
-                    t.removeNote(value).hideConsole();
+                    t.removeNote(0).addValue(value).hideConsole();
                 }
-            } else {
-                t.removeNote(0).addValue(value).hideConsole();
             }
-        }
-    });
+        });
 
-    //click outer console
-    $('#'+ this.id +' .board_console_container').on('click', function(e){
-        if ( $(e.target).is('.board_console_container') ) {
-            $(this).hide();
-        }
-    });
-
+        //click outer console
+        $('#' + this.id + ' .board_console_container').on('click', function (e) {
+            if ($(e.target).is('.board_console_container')) {
+                $(this).hide();
+            }
+        });
+    } else {
+        $('#sudoku_title').html("Befejezett/Megoldott Sudoku");
+    }
     $( window ).resize(function() {
         t.resizeWindow();
     });
@@ -622,7 +625,7 @@ Sudoku.prototype.run = function(){
 
 //main
 var game;
-function gamesudoku(gameId,fixedCellsNr,secondsElapsed,score,board,boardSolution,boardValues,boardNotes) {
+function gamesudoku(gameId,fixedCellsNr,secondsElapsed,score,board,boardSolution,boardValues,boardNotes, isGameOver) {
     game = new Sudoku({
         id: 'sudoku_container',
         gameId :gameId,
@@ -635,7 +638,7 @@ function gamesudoku(gameId,fixedCellsNr,secondsElapsed,score,board,boardSolution
         boardNotes:boardNotes,
     });
 
-    game.run();
+    game.run(isGameOver);
 
     $('#sidebar-toggle').on('click', function (e) {
         $('#sudoku_menu').toggleClass("open-sidebar");
@@ -644,30 +647,38 @@ function gamesudoku(gameId,fixedCellsNr,secondsElapsed,score,board,boardSolution
     //restart game
 
     $('.restart1').on('click', function () {
+        game.status = game.END;
+        game.saveGame();
         game.init(1).run();
         $('.gameover_container').hide();
         $('#sudoku_menu').removeClass('open-sidebar');
-        game.saveGame();
+        //game.saveGame();
     });
 
     $('.restart2').on('click', function () {
+        game.status = game.END;
+        game.saveGame();
         game.init(2).run();
         $('.gameover_container').hide();
         $('#sudoku_menu').removeClass('open-sidebar');
-        game.saveGame();
+        //game.saveGame();
     });
 
     $('.restart3').on('click', function () {
+        game.status = game.END;
+        game.saveGame();
         game.init(3).run();
         $('.gameover_container').hide();
         $('#sudoku_menu').removeClass('open-sidebar');
-        game.saveGame();
+        //game.saveGame();
     });
 
     $('.restart4').on('click', function () {
+        game.status = game.END;
+        game.saveGame();
         game.init(4).run();
         $('.gameover_container').hide();
         $('#sudoku_menu').removeClass('open-sidebar');
-        game.saveGame();
+        //game.saveGame();
     });
 }

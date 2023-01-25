@@ -123,6 +123,12 @@ class dbDaGames
     private function decodeGameDataInArray($games)  {
         foreach ($games as $idx=>$game) {
             $games[$idx]["gameStatus"]=$this->getGameDataFromJsonString($game["gameStatusJson"]);
+            if (!isset($games[$idx]["gameStatus"]["won"]))
+                $games[$idx]["gameStatus"]["won"]=false;
+            if (!isset($games[$idx]["gameStatus"]["over"]))
+                $games[$idx]["gameStatus"]["over"]=false;
+            if ($games[$idx]["gameStatus"]["won"]===true)
+                $games[$idx]["gameStatus"]["over"]===true;
         }
         return $games;
     }

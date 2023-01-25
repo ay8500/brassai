@@ -46,7 +46,7 @@
 }
 
 .sudoku_board .cell.selected, .sudoku_board .cell.selected.fix {
-    background:#FFE;
+    background:#c9e2fd;
 }
 
 .sudoku_board .cell.selected.current {
@@ -82,7 +82,7 @@
 }
 
 .sudoku_board .cell.fix span {
-    color:#7f8c8d;
+    /*color:#7f8c8d;*/
 }
 
 .sudoku_board .cell .solution {

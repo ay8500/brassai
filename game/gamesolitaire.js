@@ -32,9 +32,9 @@ var SG = {
         SG.moveCount = 0;
         SG.score = 0;
         SG.time = 0;
+        SG.isGameOver = false;
         if (SG.mytimer!==undefined)
             clearInterval(SG.mytimer);
-        SG.mytimer = setInterval(this.timer,1000);
 
     },
 
@@ -49,7 +49,7 @@ var SG = {
     ///////////////
 
     // create a div element that will display a card
-    drawCard: function(suit, color, value, faceup, offset) {
+    drawCard: function(suit, color, value, faceup, offset,isGameOver) {
         var cardClass = "card " + color;
         if(!faceup) {
             cardClass += " facedown";
@@ -57,7 +57,8 @@ var SG = {
         var cardDiv = document.createElement("div");
         cardDiv.setAttribute("class", cardClass);
         cardDiv.setAttribute("id", suit + value);
-        cardDiv.setAttribute("onclick", "SG.attemptToMove(this)");
+        if (!SG.isGameOver)
+            cardDiv.setAttribute("onclick", "SG.attemptToMove(this)");
         cardDiv.style.top = offset + "%";
         var bgTop = SG.cardSuits.indexOf(suit) * 33.3333333333333;
         var bgLeft = (value - 1) * 7.692307692307692;
@@ -419,30 +420,57 @@ var SG = {
         SG.drawAllCards(SG.queueCardAnimations(movedCards));
     },
 
-    // start the game
-    newGame: function(gameID,game) {
+    // start a stored game
+    startGame: function(gameID,gameStatus) {
         SG.init();
         SG.gameID = gameID;
-        var game = loadGame(gameID,game);
+        if (gameStatus===undefined || gameStatus===null || gameStatus.cardPositions===undefined)
+            gameStatus = resetGame();
+        SG.cardPositions = gameStatus.cardPositions;
+        SG.moveCount = gameStatus.moveCount;
+        SG.time = gameStatus.time;
+        SG.score = gameStatus.score;
+        SG.flipTableauTopCards();
+        $("#victory").css("display", "none");
+        SG.isGameOver = gameStatus.over;
+        SG.drawAllCards();
+        if (gameStatus.over!==true)
+            SG.mytimer = setInterval(this.timer,1000);
+    },
+
+    // start the game
+    newGame: function() {
+        console.log("GameID:"+SG.gameID)
+        saveGame(SG.gameID,SG.moveCount,SG.score,SG.time,SG.cardPositions,true,false);
+        console.log("GameID:"+SG.gameID)
+        var game = resetGame();
         SG.cardPositions = game.cardPositions;
         SG.moveCount = game.moveCount;
         SG.time = game.time;
         SG.score = game.score;
         SG.flipTableauTopCards();
         $("#victory").css("display", "none");
+        if (SG.mytimer!==undefined)
+            clearInterval(SG.mytimer);
+        SG.mytimer = setInterval(this.timer,1000);
+        SG.isGameOver = false;
         SG.drawAllCards();
     }
 
 };
 
-
+/**
+ * Save game status
+ * @param gameID  the game id
+ * @param moveCount
+ * @param score
+ * @param time
+ * @param cardPosition
+ * @param over this game is over a new game id will be generated
+ * @param won game is won a new game id will be generated
+ */
 function saveGame(gameID,moveCount,score,time,cardPosition,over,won) {
-    if (gameID===undefined) {
-        console.log("Error: no game id\n\r");
-        return;
-    }
     var save = new Object();
-    save.gameID = gameID;
     save.moveCount = moveCount;
     save.score = score;
     save.time = time;
@@ -452,41 +480,40 @@ function saveGame(gameID,moveCount,score,time,cardPosition,over,won) {
     var json = JSON.stringify(save);
     //console.log(json+"\n\r");
 
-    $.ajax({
-        url: "ajax/setGameStatus?gameid="+gameID+"&gamestatus="+json,
-        type:"GET",
-        success:function(data){
-            console.log("Save Ok\n\r");
+    $.when(
+        $.ajax({url: "ajax/setGameStatus?gameid="+gameID+"&gamestatus="+json })
+    ).then( function (data, textStatus, jqXHR){
+        if (jqXHR.status === 200) {
+            console.log("Save Ok. gameId="+data.id+"\n\r");
             if (SG!==undefined)
                 SG.gameID = data.id;
-        },
-        error:function(data) {
-            alert("A játék szerver nem elérhetö, probáld késöbb újból!");
+        } else {
+            alert("A játék szerver nem elérhetö, probáld késöbb újból! Error:"+jqXHR.status);
         }
     });
 
 }
 
-function loadGame(gameID,game) {
-    if (gameID ===undefined || game.cardPositions === undefined) {
-        cardPositions = {
-            stock: [],
-            waste: [],
-            foundation: [[],[],[],[]],
-            tableau: [[],[],[],[],[],[],[]]
-        };
-        cardPositions.stock= SG.createDeck();
-        SG.shuffleArray(cardPositions.stock);
-        SG.dealCards(cardPositions);
-        ret = new Object();
-        ret.cardPositions = cardPositions;
-        ret.moveCount = 0;
-        ret.time = 0;
-        ret.score = 0;
-        return ret;
-    } else {
-        //var game = {"moveCount":97,"score":61789,"time":0,"cardPositions":{"stock":[{"id":"spades7","suit":"spades","color":"black","value":7,"faceup":false},{"id":"clubs8","suit":"clubs","color":"black","value":8,"faceup":false},{"id":"spades6","suit":"spades","color":"black","value":6,"faceup":false},{"id":"hearts8","suit":"hearts","color":"red","value":8,"faceup":false},{"id":"diamonds9","suit":"diamonds","color":"red","value":9,"faceup":false}],"waste":[],"foundation":[[{"id":"hearts1","suit":"hearts","color":"red","value":1,"faceup":true},{"id":"hearts2","suit":"hearts","color":"red","value":2,"faceup":true},{"id":"hearts3","suit":"hearts","color":"red","value":3,"faceup":true}],[{"id":"clubs1","suit":"clubs","color":"black","value":1,"faceup":true},{"id":"clubs2","suit":"clubs","color":"black","value":2,"faceup":true},{"id":"clubs3","suit":"clubs","color":"black","value":3,"faceup":true},{"id":"clubs4","suit":"clubs","color":"black","value":4,"faceup":true},{"id":"clubs5","suit":"clubs","color":"black","value":5,"faceup":true}],[{"id":"diamonds1","suit":"diamonds","color":"red","value":1,"faceup":true},{"id":"diamonds2","suit":"diamonds","color":"red","value":2,"faceup":true},{"id":"diamonds3","suit":"diamonds","color":"red","value":3,"faceup":true},{"id":"diamonds4","suit":"diamonds","color":"red","value":4,"faceup":true},{"id":"diamonds5","suit":"diamonds","color":"red","value":5,"faceup":true},{"id":"diamonds6","suit":"diamonds","color":"red","value":6,"faceup":true},{"id":"diamonds7","suit":"diamonds","color":"red","value":7,"faceup":true}],[{"id":"spades1","suit":"spades","color":"black","value":1,"faceup":true},{"id":"spades2","suit":"spades","color":"black","value":2,"faceup":true},{"id":"spades3","suit":"spades","color":"black","value":3,"faceup":true},{"id":"spades4","suit":"spades","color":"black","value":4,"faceup":true}]],"tableau":[[{"id":"spades13","suit":"spades","color":"black","value":13,"faceup":true},{"id":"diamonds12","suit":"diamonds","color":"red","value":12,"faceup":true},{"id":"spades11","suit":"spades","color":"black","value":11,"faceup":true},{"id":"hearts10","suit":"hearts","color":"red","value":10,"faceup":true},{"id":"clubs9","suit":"clubs","color":"black","value":9,"faceup":true},{"id":"diamonds8","suit":"diamonds","color":"red","value":8,"faceup":true},{"id":"clubs7","suit":"clubs","color":"black","value":7,"faceup":true},{"id":"hearts6","suit":"hearts","color":"red","value":6,"faceup":true},{"id":"spades5","suit":"spades","color":"black","value":5,"faceup":true},{"id":"hearts4","suit":"hearts","color":"red","value":4,"faceup":true}],[{"id":"diamonds13","suit":"diamonds","color":"red","value":13,"faceup":true},{"id":"spades12","suit":"spades","color":"black","value":12,"faceup":true},{"id":"diamonds11","suit":"diamonds","color":"red","value":11,"faceup":true},{"id":"spades10","suit":"spades","color":"black","value":10,"faceup":true},{"id":"hearts9","suit":"hearts","color":"red","value":9,"faceup":true},{"id":"spades8","suit":"spades","color":"black","value":8,"faceup":true},{"id":"hearts7","suit":"hearts","color":"red","value":7,"faceup":true},{"id":"clubs6","suit":"clubs","color":"black","value":6,"faceup":true},{"id":"hearts5","suit":"hearts","color":"red","value":5,"faceup":true}],[{"id":"diamonds10","suit":"diamonds","color":"red","value":10,"faceup":true},{"id":"spades9","suit":"spades","color":"black","value":9,"faceup":true}],[{"id":"hearts13","suit":"hearts","color":"red","value":13,"faceup":true},{"id":"clubs12","suit":"clubs","color":"black","value":12,"faceup":true},{"id":"hearts11","suit":"hearts","color":"red","value":11,"faceup":true},{"id":"clubs10","suit":"clubs","color":"black","value":10,"faceup":true}],[],[{"id":"clubs13","suit":"clubs","color":"black","value":13,"faceup":true},{"id":"hearts12","suit":"hearts","color":"red","value":12,"faceup":true},{"id":"clubs11","suit":"clubs","color":"black","value":11,"faceup":true}],[]]}};
-        //var game = {"moveCount":142,"score":131989,"time":0,"cardPositions":{"stock":[],"waste":[],"foundation":[[{"id":"hearts1","suit":"hearts","color":"red","value":1,"faceup":true},{"id":"hearts2","suit":"hearts","color":"red","value":2,"faceup":true},{"id":"hearts3","suit":"hearts","color":"red","value":3,"faceup":true},{"id":"hearts4","suit":"hearts","color":"red","value":4,"faceup":true},{"id":"hearts5","suit":"hearts","color":"red","value":5,"faceup":true},{"id":"hearts6","suit":"hearts","color":"red","value":6,"faceup":true},{"id":"hearts7","suit":"hearts","color":"red","value":7,"faceup":true},{"id":"hearts8","suit":"hearts","color":"red","value":8,"faceup":true},{"id":"hearts9","suit":"hearts","color":"red","value":9,"faceup":true},{"id":"hearts10","suit":"hearts","color":"red","value":10,"faceup":true},{"id":"hearts11","suit":"hearts","color":"red","value":11,"faceup":true},{"id":"hearts12","suit":"hearts","color":"red","value":12,"faceup":true}],[{"id":"clubs1","suit":"clubs","color":"black","value":1,"faceup":true},{"id":"clubs2","suit":"clubs","color":"black","value":2,"faceup":true},{"id":"clubs3","suit":"clubs","color":"black","value":3,"faceup":true},{"id":"clubs4","suit":"clubs","color":"black","value":4,"faceup":true},{"id":"clubs5","suit":"clubs","color":"black","value":5,"faceup":true},{"id":"clubs6","suit":"clubs","color":"black","value":6,"faceup":true},{"id":"clubs7","suit":"clubs","color":"black","value":7,"faceup":true},{"id":"clubs8","suit":"clubs","color":"black","value":8,"faceup":true},{"id":"clubs9","suit":"clubs","color":"black","value":9,"faceup":true},{"id":"clubs10","suit":"clubs","color":"black","value":10,"faceup":true},{"id":"clubs11","suit":"clubs","color":"black","value":11,"faceup":true},{"id":"clubs12","suit":"clubs","color":"black","value":12,"faceup":true}],[{"id":"diamonds1","suit":"diamonds","color":"red","value":1,"faceup":true},{"id":"diamonds2","suit":"diamonds","color":"red","value":2,"faceup":true},{"id":"diamonds3","suit":"diamonds","color":"red","value":3,"faceup":true},{"id":"diamonds4","suit":"diamonds","color":"red","value":4,"faceup":true},{"id":"diamonds5","suit":"diamonds","color":"red","value":5,"faceup":true},{"id":"diamonds6","suit":"diamonds","color":"red","value":6,"faceup":true},{"id":"diamonds7","suit":"diamonds","color":"red","value":7,"faceup":true},{"id":"diamonds8","suit":"diamonds","color":"red","value":8,"faceup":true},{"id":"diamonds9","suit":"diamonds","color":"red","value":9,"faceup":true},{"id":"diamonds10","suit":"diamonds","color":"red","value":10,"faceup":true},{"id":"diamonds11","suit":"diamonds","color":"red","value":11,"faceup":true},{"id":"diamonds12","suit":"diamonds","color":"red","value":12,"faceup":true}],[{"id":"spades1","suit":"spades","color":"black","value":1,"faceup":true},{"id":"spades2","suit":"spades","color":"black","value":2,"faceup":true},{"id":"spades3","suit":"spades","color":"black","value":3,"faceup":true},{"id":"spades4","suit":"spades","color":"black","value":4,"faceup":true},{"id":"spades5","suit":"spades","color":"black","value":5,"faceup":true},{"id":"spades6","suit":"spades","color":"black","value":6,"faceup":true},{"id":"spades7","suit":"spades","color":"black","value":7,"faceup":true},{"id":"spades8","suit":"spades","color":"black","value":8,"faceup":true},{"id":"spades9","suit":"spades","color":"black","value":9,"faceup":true},{"id":"spades10","suit":"spades","color":"black","value":10,"faceup":true},{"id":"spades11","suit":"spades","color":"black","value":11,"faceup":true},{"id":"spades12","suit":"spades","color":"black","value":12,"faceup":true}]],"tableau":[[{"id":"diamonds13","suit":"diamonds","color":"red","value":13,"faceup":true}],[{"id":"spades13","suit":"spades","color":"black","value":13,"faceup":true}],[{"id":"hearts13","suit":"hearts","color":"red","value":13,"faceup":true}],[{"id":"clubs13","suit":"clubs","color":"black","value":13,"faceup":true}],[],[],[]]}};
-        return game;
-    }
+/**
+ * reset a game schuffle the cards and set the deal cards
+ * @returns {Object}
+ */
+function resetGame(gameID,game) {
+    cardPositions = {
+        stock: [],
+        waste: [],
+        foundation: [[],[],[],[]],
+        tableau: [[],[],[],[],[],[],[]]
+    };
+    cardPositions.stock= SG.createDeck();
+    SG.shuffleArray(cardPositions.stock);
+    SG.dealCards(cardPositions);
+    ret = new Object();
+    ret.cardPositions = cardPositions;
+    ret.moveCount = 0;
+    ret.time = 0;
+    ret.score = 0;
+     //var ret = {"moveCount":97,"score":61789,"time":0,"cardPositions":{"stock":[{"id":"spades7","suit":"spades","color":"black","value":7,"faceup":false},{"id":"clubs8","suit":"clubs","color":"black","value":8,"faceup":false},{"id":"spades6","suit":"spades","color":"black","value":6,"faceup":false},{"id":"hearts8","suit":"hearts","color":"red","value":8,"faceup":false},{"id":"diamonds9","suit":"diamonds","color":"red","value":9,"faceup":false}],"waste":[],"foundation":[[{"id":"hearts1","suit":"hearts","color":"red","value":1,"faceup":true},{"id":"hearts2","suit":"hearts","color":"red","value":2,"faceup":true},{"id":"hearts3","suit":"hearts","color":"red","value":3,"faceup":true}],[{"id":"clubs1","suit":"clubs","color":"black","value":1,"faceup":true},{"id":"clubs2","suit":"clubs","color":"black","value":2,"faceup":true},{"id":"clubs3","suit":"clubs","color":"black","value":3,"faceup":true},{"id":"clubs4","suit":"clubs","color":"black","value":4,"faceup":true},{"id":"clubs5","suit":"clubs","color":"black","value":5,"faceup":true}],[{"id":"diamonds1","suit":"diamonds","color":"red","value":1,"faceup":true},{"id":"diamonds2","suit":"diamonds","color":"red","value":2,"faceup":true},{"id":"diamonds3","suit":"diamonds","color":"red","value":3,"faceup":true},{"id":"diamonds4","suit":"diamonds","color":"red","value":4,"faceup":true},{"id":"diamonds5","suit":"diamonds","color":"red","value":5,"faceup":true},{"id":"diamonds6","suit":"diamonds","color":"red","value":6,"faceup":true},{"id":"diamonds7","suit":"diamonds","color":"red","value":7,"faceup":true}],[{"id":"spades1","suit":"spades","color":"black","value":1,"faceup":true},{"id":"spades2","suit":"spades","color":"black","value":2,"faceup":true},{"id":"spades3","suit":"spades","color":"black","value":3,"faceup":true},{"id":"spades4","suit":"spades","color":"black","value":4,"faceup":true}]],"tableau":[[{"id":"spades13","suit":"spades","color":"black","value":13,"faceup":true},{"id":"diamonds12","suit":"diamonds","color":"red","value":12,"faceup":true},{"id":"spades11","suit":"spades","color":"black","value":11,"faceup":true},{"id":"hearts10","suit":"hearts","color":"red","value":10,"faceup":true},{"id":"clubs9","suit":"clubs","color":"black","value":9,"faceup":true},{"id":"diamonds8","suit":"diamonds","color":"red","value":8,"faceup":true},{"id":"clubs7","suit":"clubs","color":"black","value":7,"faceup":true},{"id":"hearts6","suit":"hearts","color":"red","value":6,"faceup":true},{"id":"spades5","suit":"spades","color":"black","value":5,"faceup":true},{"id":"hearts4","suit":"hearts","color":"red","value":4,"faceup":true}],[{"id":"diamonds13","suit":"diamonds","color":"red","value":13,"faceup":true},{"id":"spades12","suit":"spades","color":"black","value":12,"faceup":true},{"id":"diamonds11","suit":"diamonds","color":"red","value":11,"faceup":true},{"id":"spades10","suit":"spades","color":"black","value":10,"faceup":true},{"id":"hearts9","suit":"hearts","color":"red","value":9,"faceup":true},{"id":"spades8","suit":"spades","color":"black","value":8,"faceup":true},{"id":"hearts7","suit":"hearts","color":"red","value":7,"faceup":true},{"id":"clubs6","suit":"clubs","color":"black","value":6,"faceup":true},{"id":"hearts5","suit":"hearts","color":"red","value":5,"faceup":true}],[{"id":"diamonds10","suit":"diamonds","color":"red","value":10,"faceup":true},{"id":"spades9","suit":"spades","color":"black","value":9,"faceup":true}],[{"id":"hearts13","suit":"hearts","color":"red","value":13,"faceup":true},{"id":"clubs12","suit":"clubs","color":"black","value":12,"faceup":true},{"id":"hearts11","suit":"hearts","color":"red","value":11,"faceup":true},{"id":"clubs10","suit":"clubs","color":"black","value":10,"faceup":true}],[],[{"id":"clubs13","suit":"clubs","color":"black","value":13,"faceup":true},{"id":"hearts12","suit":"hearts","color":"red","value":12,"faceup":true},{"id":"clubs11","suit":"clubs","color":"black","value":11,"faceup":true}],[]]}};
+     //var ret = {"moveCount":142,"score":131989,"time":0,"cardPositions":{"stock":[],"waste":[],"foundation":[[{"id":"hearts1","suit":"hearts","color":"red","value":1,"faceup":true},{"id":"hearts2","suit":"hearts","color":"red","value":2,"faceup":true},{"id":"hearts3","suit":"hearts","color":"red","value":3,"faceup":true},{"id":"hearts4","suit":"hearts","color":"red","value":4,"faceup":true},{"id":"hearts5","suit":"hearts","color":"red","value":5,"faceup":true},{"id":"hearts6","suit":"hearts","color":"red","value":6,"faceup":true},{"id":"hearts7","suit":"hearts","color":"red","value":7,"faceup":true},{"id":"hearts8","suit":"hearts","color":"red","value":8,"faceup":true},{"id":"hearts9","suit":"hearts","color":"red","value":9,"faceup":true},{"id":"hearts10","suit":"hearts","color":"red","value":10,"faceup":true},{"id":"hearts11","suit":"hearts","color":"red","value":11,"faceup":true},{"id":"hearts12","suit":"hearts","color":"red","value":12,"faceup":true}],[{"id":"clubs1","suit":"clubs","color":"black","value":1,"faceup":true},{"id":"clubs2","suit":"clubs","color":"black","value":2,"faceup":true},{"id":"clubs3","suit":"clubs","color":"black","value":3,"faceup":true},{"id":"clubs4","suit":"clubs","color":"black","value":4,"faceup":true},{"id":"clubs5","suit":"clubs","color":"black","value":5,"faceup":true},{"id":"clubs6","suit":"clubs","color":"black","value":6,"faceup":true},{"id":"clubs7","suit":"clubs","color":"black","value":7,"faceup":true},{"id":"clubs8","suit":"clubs","color":"black","value":8,"faceup":true},{"id":"clubs9","suit":"clubs","color":"black","value":9,"faceup":true},{"id":"clubs10","suit":"clubs","color":"black","value":10,"faceup":true},{"id":"clubs11","suit":"clubs","color":"black","value":11,"faceup":true},{"id":"clubs12","suit":"clubs","color":"black","value":12,"faceup":true}],[{"id":"diamonds1","suit":"diamonds","color":"red","value":1,"faceup":true},{"id":"diamonds2","suit":"diamonds","color":"red","value":2,"faceup":true},{"id":"diamonds3","suit":"diamonds","color":"red","value":3,"faceup":true},{"id":"diamonds4","suit":"diamonds","color":"red","value":4,"faceup":true},{"id":"diamonds5","suit":"diamonds","color":"red","value":5,"faceup":true},{"id":"diamonds6","suit":"diamonds","color":"red","value":6,"faceup":true},{"id":"diamonds7","suit":"diamonds","color":"red","value":7,"faceup":true},{"id":"diamonds8","suit":"diamonds","color":"red","value":8,"faceup":true},{"id":"diamonds9","suit":"diamonds","color":"red","value":9,"faceup":true},{"id":"diamonds10","suit":"diamonds","color":"red","value":10,"faceup":true},{"id":"diamonds11","suit":"diamonds","color":"red","value":11,"faceup":true},{"id":"diamonds12","suit":"diamonds","color":"red","value":12,"faceup":true}],[{"id":"spades1","suit":"spades","color":"black","value":1,"faceup":true},{"id":"spades2","suit":"spades","color":"black","value":2,"faceup":true},{"id":"spades3","suit":"spades","color":"black","value":3,"faceup":true},{"id":"spades4","suit":"spades","color":"black","value":4,"faceup":true},{"id":"spades5","suit":"spades","color":"black","value":5,"faceup":true},{"id":"spades6","suit":"spades","color":"black","value":6,"faceup":true},{"id":"spades7","suit":"spades","color":"black","value":7,"faceup":true},{"id":"spades8","suit":"spades","color":"black","value":8,"faceup":true},{"id":"spades9","suit":"spades","color":"black","value":9,"faceup":true},{"id":"spades10","suit":"spades","color":"black","value":10,"faceup":true},{"id":"spades11","suit":"spades","color":"black","value":11,"faceup":true},{"id":"spades12","suit":"spades","color":"black","value":12,"faceup":true}]],"tableau":[[{"id":"diamonds13","suit":"diamonds","color":"red","value":13,"faceup":true}],[{"id":"spades13","suit":"spades","color":"black","value":13,"faceup":true}],[{"id":"hearts13","suit":"hearts","color":"red","value":13,"faceup":true}],[{"id":"clubs13","suit":"clubs","color":"black","value":13,"faceup":true}],[],[],[]]}};
+     return ret;
 }

@@ -15,7 +15,7 @@
     justify-content: space-between;
     padding-top: 1rem;
 }
-#solitaire button, #solitaire #move-count, #solitaire #score {
+#solitaire button, #solitaire #move-count, #solitaire #score, #solitaire #time {
     margin-left: 2vw;
     margin-right: 2vw;
     padding: 0 0.5rem 0 0.5rem;

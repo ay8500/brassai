@@ -177,7 +177,7 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
                     }
                 }
-                \maierlabs\lpfw\Appl::addJsScript('SG.newGame('.$gameId.",". json_encode($gameStatus).");",true);
+                \maierlabs\lpfw\Appl::addJsScript('SG.startGame('.$gameId.",". json_encode($gameStatus).");",true);
             }?>
 
             <?php if ($tabOpen=="memory") {
@@ -194,10 +194,8 @@ include("homemenu.inc.php");
                     $game = $dbGames->getGameById(getIntParam("id"));
                     $gameId = $game["id"];
                     $status = $game["gameStatus"];
-                    if ($status["won"]) {
-                        $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,2);
+                    if (!isset($status["won"]))
                         $status = getNewSudokuGameStatus();
-                    }
                 } else {
                     $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,2);
                     if ($game!=null) {
@@ -216,7 +214,8 @@ include("homemenu.inc.php");
                                 '.json_encode($status["board"]).',
                                 '.json_encode($status["boardSolution"]).',
                                 '.json_encode($status["boardValues"]).',
-                                '.json_encode($status["boardNotes"]).');
+                                '.json_encode($status["boardNotes"]).',
+                                '.json_encode(isset($status["over"])?$status["over"]:false).');
                 ',true);
             }?>
 
@@ -238,8 +237,10 @@ include("homemenu.inc.php");
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                     <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
-                                        <?php if (isset($game["gameStatus"]["won"]) && ($game["gameStatus"]["won"])===false) { ?>
-                                            <a class="btn btn-success" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Folytatom</a>
+                                        <?php if (($game["gameStatus"]["over"])===true) { ?>
+                                            <a class="btn btn-warning" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                        <?php } else { ?>
+                                            <a class="btn btn-success" href="games?tabOpen=solitaire&gameid=3&&id=<?php echo($game["id"])?>">Folytatom</a>
                                         <?php }  ?>
                                     </td>
 
@@ -271,11 +272,12 @@ include("homemenu.inc.php");
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                     <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
-                                        <?php if (isset($game["gameStatus"]["won"]) && ($game["gameStatus"]["won"])===false) { ?>
-                                            <a class="btn btn-success" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Folytatom</a>
+                                        <?php if (($game["gameStatus"]["over"])===true) { ?>
+                                            <a class="btn btn-warning" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                        <?php } else { ?>
+                                            <a class="btn btn-success" href="games?tabOpen=sudoku&gameid=2&&id=<?php echo($game["id"])?>">Folytatom</a>
                                         <?php }  ?>
                                     </td>
-
                                 </tr>
                             <?php  }
                             ?></table><?php
@@ -304,12 +306,10 @@ include("homemenu.inc.php");
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                     <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
-                                        <?php if (isset($game["gameStatus"]["over"])) { ?>
-                                    <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                        <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Végeredmény</a>
-                                    <?php } else { ?>
-                                        <a class="btn btn-success" href="games?tabOpen=2048&gameid=1&&id=<?php echo($game["id"])?>">Folytatom</a>
-                                    <?php }  ?>
+                                        <?php if (($game["gameStatus"]["over"])===true) { ?>
+                                            <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                        <?php } else { ?>
+                                            <a class="btn btn-success" href="games?tabOpen=2048&gameid=1&&id=<?php echo($game["id"])?>">Folytatom</a>
                                         <?php }  ?>
                                     </td>
                                 </tr>
@@ -333,7 +333,7 @@ include("homemenu.inc.php");
 include("homefooter.inc.php");
 
 function getNewSudokuGameStatus() {
-    return array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardNotes"=>null,"won"=>false);
+    return array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardNotes"=>null,"won"=>false,"over"=>false);
 }
 
 ?>

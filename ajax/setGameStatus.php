@@ -1,9 +1,9 @@
 <?php
 /**
- * Save Game Status
+ * Save Game Status if a game is over or won an new game will be created
  * Parameter:
  * gameid Integer
- * gamestatus JsonString
+ * gamestatus JsonString important fields are won and over
  */
 include_once '../config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
@@ -25,6 +25,7 @@ if ($game==null) {
 }
 $gamestatus = json_decode($game["gameStatusJson"],true);
 
+//Only running games are updated
 if ($gamestatus["over"]==false &&  $gamestatus["won"]==false) {
     if ($dbGame->saveGame(getIntParam("gameid"), htmlspecialchars_decode(getParam("gamestatus")))) {
         $gamestatus = json_decode(htmlspecialchars_decode(getParam("gamestatus")), true);
