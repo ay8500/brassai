@@ -8,6 +8,8 @@ include_once("dbBL.class.php");
 use maierlabs\lpfw\Appl as Appl;
 global $db;
 
+
+
 $id=getIntParam("id",-1);
 if ($id>=0) {
 	$picture=$db->getPictureById($id);

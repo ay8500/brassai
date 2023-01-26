@@ -165,12 +165,16 @@ Sudoku.prototype.boardGenerator = function(fixCellsNr) {
     this.boardNotes=new Array(81).fill('',0,81);
     this.boardValues=new Array(81).fill(0,0,81);
 
+    this.getPossibleValuesForAllCells();
+
+};
+
+Sudoku.prototype.getPossibleValuesForAllCells = function() {
     for (var i =0; i<81 ; i++) {
         if (this.board[i]===0) {
             this.boardNotes[i]=this.getPossibleValues(i);
         }
     }
-
 };
 
 Sudoku.prototype.getPossibleValues = function(cellIdx) {
@@ -204,7 +208,7 @@ Sudoku.prototype.drawBoard = function(){
 
     var sudoku_board = $('<div></div>').addClass('sudoku_board');
     var sts ='<b>Mezők:</b> <span class="cells_complete">'+ this.getCellsComplete() +'/'+81;
-    sts +='</span> <b>Idő:</b> <span class="time">' + this.secondsElapsed + '</span>';
+    sts +='</span> <b>Idő:</b> <span class="time">' + this.secondsElapsed + '</span>s';
     sts +='</span> <b>Pontszám:</b> <span class="score">' + Math.round(this.score) + '</span>';
     var sudoku_statistics = $('<div></div>')
         .addClass('statistics')
@@ -481,14 +485,21 @@ Sudoku.prototype.animateScore = function(o,points) {
 /** save game status **/
 Sudoku.prototype.saveGame = function() {
     //Ajax savescore
-    var json = {"board":game.board,"boardSolution":game.boardSolution,
-        "boardValues":game.boardValues,"boardNotes":game.boardNotes,
-        "fixedCellsNr":game.fixCellsNr,"secondsElapsed":game.secondsElapsed,
-        "score":game.score,"over":game.status === game.END,"won":game.getCellsComplete() === 81};
+    var json = {
+        "score":game.score,
+        "secondsElapsed":game.secondsElapsed,
+        "over":game.status === game.END,
+        "won":game.getCellsComplete() === 81,
+        "board":game.board,
+        "boardSolution":game.boardSolution,
+        "boardValues":game.boardValues,
+        "boardNotes":game.boardNotes,
+        "fixedCellsNr":game.fixCellsNr};
 
     $.ajax({
-        url: "ajax/setGameStatus?gameid="+game.gameId+"&gamestatus="+JSON.stringify(json),
-        type:"GET",
+        url: "ajax/setGameStatus",
+        type:"POST",
+        data: {"gameid":game.gameId, "gamestatus":JSON.stringify(json)},
         success:function(data){
             game.gameId = data.id;
         },

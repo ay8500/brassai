@@ -242,7 +242,7 @@ include("homemenu.inc.php");
             <a href="hometable?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
             Diákok képpel:<?php echo $stat->personWithPicture?><br/>
             Diakok képei:<?php echo $stat->personPictures?><br/>
-            <a href="picture?classid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
+            <a href="picture?type=classID&typeid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
             Utoljára módosítva:
             <?php echo getPersonLinkAndPicture($changedByPerson) ?>
             <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>

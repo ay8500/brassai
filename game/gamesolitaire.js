@@ -1,18 +1,22 @@
-// define Card
-var Card = function(newSuit, newColor, newValue) {
-    this.id = newSuit + newValue;
-    this.suit = newSuit;
-    this.color = newColor;
-    this.value = newValue;
+/**
+ * This is a card with face down
+ * @param suit
+ * @param color
+ * @param value
+ * @constructor
+ */
+var Card = function(suit, color, value) {
+    this.id = suit + value;
+    this.suit = suit;
+    this.color = color;
+    this.value = value;
     this.faceup = false;
 }
 
-// define Solitaire Game
+/**
+ * The solitaie game
+ */
 var SG = {
-
-    //////////////////////////
-    // initialization stuff
-    //////////////////////////
 
     init: function() {
 
@@ -24,9 +28,7 @@ var SG = {
             foundation: [[],[],[],[]],
             tableau: [[],[],[],[],[],[],[]]
         };
-
         SG.previousMove = [];
-
         SG.previousFlippedCard = null;
         SG.gameID = undefined;
         SG.moveCount = 0;
@@ -35,7 +37,6 @@ var SG = {
         SG.isGameOver = false;
         if (SG.mytimer!==undefined)
             clearInterval(SG.mytimer);
-
     },
 
     timer: function() {
@@ -43,10 +44,6 @@ var SG = {
         $("#time").html((SG.time)+"s");
     },
 
-
-    ///////////////
-    // DOM stuff
-    ///////////////
 
     // create a div element that will display a card
     drawCard: function(suit, color, value, faceup, offset,isGameOver) {
@@ -142,13 +139,9 @@ var SG = {
         if(cardsToAnimate) {
             SG.animateCards(cardsToAnimate);
         }
-        saveGame(SG.gameID,SG.moveCount,SG.score,SG.time,SG.cardPositions,false,false);
+        SG.saveGame(false,false);
     },
 
-
-    /////////////////////
-    // logic stuff
-    /////////////////////
 
     // build a deck of cards
     createDeck: function() {
@@ -165,15 +158,16 @@ var SG = {
         return stock;
     },
 
-    // shuffle an array
-    // used to shuffle the deck of cards
+    // shuffle an array used to shuffle the deck of cards
     shuffleArray: function(o) {
         for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
     },
 
-    // return the top (last) card in the array
-    // if position is empty, return null
+    /**
+     *  return the top (last) card in the array if position is empty, return null
+     *  @param positionArray array of cards
+    */
     getTopCard: function(positionArray) {
         if(positionArray.length == 0) {
             return null;
@@ -331,7 +325,7 @@ var SG = {
         return moves;
     },
 
-    // check if the player won
+    // check if the player won (all foundations have 13 cards)
     victory: function() {
         for(var i = 0; i < SG.cardPositions.foundation.length; i++) {
             if(SG.cardPositions.foundation[i].length != 13) {
@@ -356,7 +350,7 @@ var SG = {
                 SG.previousMove = [];
                 $("#victory").html("Hurrá sikerült " + SG.moveCount + " lépésből megoldani. Pontszám:"+SG.score);
                 $("#victory").css("display", "block");
-                saveGame(SG.gameID,SG.moveCount,SG.score,SG.time,SG.cardPositions,true,true);
+                SG.saveGame(true,true);
             }
         } else {
             // card cannot be moved
@@ -424,12 +418,15 @@ var SG = {
     startGame: function(gameID,gameStatus) {
         SG.init();
         SG.gameID = gameID;
-        if (gameStatus===undefined || gameStatus===null || gameStatus.cardPositions===undefined)
-            gameStatus = resetGame();
-        SG.cardPositions = gameStatus.cardPositions;
-        SG.moveCount = gameStatus.moveCount;
-        SG.time = gameStatus.time;
-        SG.score = gameStatus.score;
+        if (gameStatus===undefined || gameStatus===null || gameStatus.cardPositions===undefined) {
+            SG.resetGame();
+            SG.saveGame(false,false);
+        } else {
+            SG.cardPositions = gameStatus.cardPositions;
+            SG.moveCount = gameStatus.moveCount;
+            SG.time = gameStatus.time;
+            SG.score = gameStatus.score;
+        }
         SG.flipTableauTopCards();
         $("#victory").css("display", "none");
         SG.isGameOver = gameStatus.over;
@@ -441,13 +438,9 @@ var SG = {
     // start the game
     newGame: function() {
         console.log("GameID:"+SG.gameID)
-        saveGame(SG.gameID,SG.moveCount,SG.score,SG.time,SG.cardPositions,true,false);
+        SG.saveGame(true,false);
         console.log("GameID:"+SG.gameID)
-        var game = resetGame();
-        SG.cardPositions = game.cardPositions;
-        SG.moveCount = game.moveCount;
-        SG.time = game.time;
-        SG.score = game.score;
+        SG.resetGame();
         SG.flipTableauTopCards();
         $("#victory").css("display", "none");
         if (SG.mytimer!==undefined)
@@ -455,65 +448,54 @@ var SG = {
         SG.mytimer = setInterval(this.timer,1000);
         SG.isGameOver = false;
         SG.drawAllCards();
+    },
+
+    /**
+     * reset a game schuffle the cards and set the deal cards
+     */
+    resetGame: function() {
+        SG.cardPositions = {
+            stock: [],
+            waste: [],
+            foundation: [[],[],[],[]],
+            tableau: [[],[],[],[],[],[],[]]
+        };
+        SG.cardPositions.stock= SG.createDeck();
+        SG.shuffleArray(SG.cardPositions.stock);
+        SG.dealCards(SG.cardPositions);
+        SG.moveCount = 0;
+        SG.time = 0;
+        SG.score = 0;
+    },
+
+    /**
+     * Save game status
+     * @param over this game is over a new game id will be generated
+     * @param won game is won a new game id will be generated
+     */
+    saveGame: function(over,won) {
+        var save = new Object();
+        save.score = SG.score;
+        save.time = SG.time;
+        save.over = over;
+        save.won = won;
+        save.moveCount = SG.moveCount;
+        save.cardPositions = SG.cardPositions;
+
+        $.ajax({
+            url: "ajax/setGameStatus",
+            type:"POST",
+            data: {"gameid":SG.gameID, "gamestatus":JSON.stringify(save)},
+            success:function(data){
+                console.log("Save Ok. gameId="+data.id+"\n\r");
+                if (SG!==undefined)
+                    SG.gameID = data.id;
+            },
+            error:function(data) {
+                alert("A játék szerver nem elérhetö, probáld késöbb újból!");
+            }
+        });
     }
 
 };
 
-/**
- * Save game status
- * @param gameID  the game id
- * @param moveCount
- * @param score
- * @param time
- * @param cardPosition
- * @param over this game is over a new game id will be generated
- * @param won game is won a new game id will be generated
- */
-function saveGame(gameID,moveCount,score,time,cardPosition,over,won) {
-    var save = new Object();
-    save.moveCount = moveCount;
-    save.score = score;
-    save.time = time;
-    save.cardPositions = cardPosition;
-    save.over = over;
-    save.won = won;
-    var json = JSON.stringify(save);
-    //console.log(json+"\n\r");
-
-    $.when(
-        $.ajax({url: "ajax/setGameStatus?gameid="+gameID+"&gamestatus="+json })
-    ).then( function (data, textStatus, jqXHR){
-        if (jqXHR.status === 200) {
-            console.log("Save Ok. gameId="+data.id+"\n\r");
-            if (SG!==undefined)
-                SG.gameID = data.id;
-        } else {
-            alert("A játék szerver nem elérhetö, probáld késöbb újból! Error:"+jqXHR.status);
-        }
-    });
-
-}
-
-/**
- * reset a game schuffle the cards and set the deal cards
- * @returns {Object}
- */
-function resetGame(gameID,game) {
-    cardPositions = {
-        stock: [],
-        waste: [],
-        foundation: [[],[],[],[]],
-        tableau: [[],[],[],[],[],[],[]]
-    };
-    cardPositions.stock= SG.createDeck();
-    SG.shuffleArray(cardPositions.stock);
-    SG.dealCards(cardPositions);
-    ret = new Object();
-    ret.cardPositions = cardPositions;
-    ret.moveCount = 0;
-    ret.time = 0;
-    ret.score = 0;
-     //var ret = {"moveCount":97,"score":61789,"time":0,"cardPositions":{"stock":[{"id":"spades7","suit":"spades","color":"black","value":7,"faceup":false},{"id":"clubs8","suit":"clubs","color":"black","value":8,"faceup":false},{"id":"spades6","suit":"spades","color":"black","value":6,"faceup":false},{"id":"hearts8","suit":"hearts","color":"red","value":8,"faceup":false},{"id":"diamonds9","suit":"diamonds","color":"red","value":9,"faceup":false}],"waste":[],"foundation":[[{"id":"hearts1","suit":"hearts","color":"red","value":1,"faceup":true},{"id":"hearts2","suit":"hearts","color":"red","value":2,"faceup":true},{"id":"hearts3","suit":"hearts","color":"red","value":3,"faceup":true}],[{"id":"clubs1","suit":"clubs","color":"black","value":1,"faceup":true},{"id":"clubs2","suit":"clubs","color":"black","value":2,"faceup":true},{"id":"clubs3","suit":"clubs","color":"black","value":3,"faceup":true},{"id":"clubs4","suit":"clubs","color":"black","value":4,"faceup":true},{"id":"clubs5","suit":"clubs","color":"black","value":5,"faceup":true}],[{"id":"diamonds1","suit":"diamonds","color":"red","value":1,"faceup":true},{"id":"diamonds2","suit":"diamonds","color":"red","value":2,"faceup":true},{"id":"diamonds3","suit":"diamonds","color":"red","value":3,"faceup":true},{"id":"diamonds4","suit":"diamonds","color":"red","value":4,"faceup":true},{"id":"diamonds5","suit":"diamonds","color":"red","value":5,"faceup":true},{"id":"diamonds6","suit":"diamonds","color":"red","value":6,"faceup":true},{"id":"diamonds7","suit":"diamonds","color":"red","value":7,"faceup":true}],[{"id":"spades1","suit":"spades","color":"black","value":1,"faceup":true},{"id":"spades2","suit":"spades","color":"black","value":2,"faceup":true},{"id":"spades3","suit":"spades","color":"black","value":3,"faceup":true},{"id":"spades4","suit":"spades","color":"black","value":4,"faceup":true}]],"tableau":[[{"id":"spades13","suit":"spades","color":"black","value":13,"faceup":true},{"id":"diamonds12","suit":"diamonds","color":"red","value":12,"faceup":true},{"id":"spades11","suit":"spades","color":"black","value":11,"faceup":true},{"id":"hearts10","suit":"hearts","color":"red","value":10,"faceup":true},{"id":"clubs9","suit":"clubs","color":"black","value":9,"faceup":true},{"id":"diamonds8","suit":"diamonds","color":"red","value":8,"faceup":true},{"id":"clubs7","suit":"clubs","color":"black","value":7,"faceup":true},{"id":"hearts6","suit":"hearts","color":"red","value":6,"faceup":true},{"id":"spades5","suit":"spades","color":"black","value":5,"faceup":true},{"id":"hearts4","suit":"hearts","color":"red","value":4,"faceup":true}],[{"id":"diamonds13","suit":"diamonds","color":"red","value":13,"faceup":true},{"id":"spades12","suit":"spades","color":"black","value":12,"faceup":true},{"id":"diamonds11","suit":"diamonds","color":"red","value":11,"faceup":true},{"id":"spades10","suit":"spades","color":"black","value":10,"faceup":true},{"id":"hearts9","suit":"hearts","color":"red","value":9,"faceup":true},{"id":"spades8","suit":"spades","color":"black","value":8,"faceup":true},{"id":"hearts7","suit":"hearts","color":"red","value":7,"faceup":true},{"id":"clubs6","suit":"clubs","color":"black","value":6,"faceup":true},{"id":"hearts5","suit":"hearts","color":"red","value":5,"faceup":true}],[{"id":"diamonds10","suit":"diamonds","color":"red","value":10,"faceup":true},{"id":"spades9","suit":"spades","color":"black","value":9,"faceup":true}],[{"id":"hearts13","suit":"hearts","color":"red","value":13,"faceup":true},{"id":"clubs12","suit":"clubs","color":"black","value":12,"faceup":true},{"id":"hearts11","suit":"hearts","color":"red","value":11,"faceup":true},{"id":"clubs10","suit":"clubs","color":"black","value":10,"faceup":true}],[],[{"id":"clubs13","suit":"clubs","color":"black","value":13,"faceup":true},{"id":"hearts12","suit":"hearts","color":"red","value":12,"faceup":true},{"id":"clubs11","suit":"clubs","color":"black","value":11,"faceup":true}],[]]}};
-     //var ret = {"moveCount":142,"score":131989,"time":0,"cardPositions":{"stock":[],"waste":[],"foundation":[[{"id":"hearts1","suit":"hearts","color":"red","value":1,"faceup":true},{"id":"hearts2","suit":"hearts","color":"red","value":2,"faceup":true},{"id":"hearts3","suit":"hearts","color":"red","value":3,"faceup":true},{"id":"hearts4","suit":"hearts","color":"red","value":4,"faceup":true},{"id":"hearts5","suit":"hearts","color":"red","value":5,"faceup":true},{"id":"hearts6","suit":"hearts","color":"red","value":6,"faceup":true},{"id":"hearts7","suit":"hearts","color":"red","value":7,"faceup":true},{"id":"hearts8","suit":"hearts","color":"red","value":8,"faceup":true},{"id":"hearts9","suit":"hearts","color":"red","value":9,"faceup":true},{"id":"hearts10","suit":"hearts","color":"red","value":10,"faceup":true},{"id":"hearts11","suit":"hearts","color":"red","value":11,"faceup":true},{"id":"hearts12","suit":"hearts","color":"red","value":12,"faceup":true}],[{"id":"clubs1","suit":"clubs","color":"black","value":1,"faceup":true},{"id":"clubs2","suit":"clubs","color":"black","value":2,"faceup":true},{"id":"clubs3","suit":"clubs","color":"black","value":3,"faceup":true},{"id":"clubs4","suit":"clubs","color":"black","value":4,"faceup":true},{"id":"clubs5","suit":"clubs","color":"black","value":5,"faceup":true},{"id":"clubs6","suit":"clubs","color":"black","value":6,"faceup":true},{"id":"clubs7","suit":"clubs","color":"black","value":7,"faceup":true},{"id":"clubs8","suit":"clubs","color":"black","value":8,"faceup":true},{"id":"clubs9","suit":"clubs","color":"black","value":9,"faceup":true},{"id":"clubs10","suit":"clubs","color":"black","value":10,"faceup":true},{"id":"clubs11","suit":"clubs","color":"black","value":11,"faceup":true},{"id":"clubs12","suit":"clubs","color":"black","value":12,"faceup":true}],[{"id":"diamonds1","suit":"diamonds","color":"red","value":1,"faceup":true},{"id":"diamonds2","suit":"diamonds","color":"red","value":2,"faceup":true},{"id":"diamonds3","suit":"diamonds","color":"red","value":3,"faceup":true},{"id":"diamonds4","suit":"diamonds","color":"red","value":4,"faceup":true},{"id":"diamonds5","suit":"diamonds","color":"red","value":5,"faceup":true},{"id":"diamonds6","suit":"diamonds","color":"red","value":6,"faceup":true},{"id":"diamonds7","suit":"diamonds","color":"red","value":7,"faceup":true},{"id":"diamonds8","suit":"diamonds","color":"red","value":8,"faceup":true},{"id":"diamonds9","suit":"diamonds","color":"red","value":9,"faceup":true},{"id":"diamonds10","suit":"diamonds","color":"red","value":10,"faceup":true},{"id":"diamonds11","suit":"diamonds","color":"red","value":11,"faceup":true},{"id":"diamonds12","suit":"diamonds","color":"red","value":12,"faceup":true}],[{"id":"spades1","suit":"spades","color":"black","value":1,"faceup":true},{"id":"spades2","suit":"spades","color":"black","value":2,"faceup":true},{"id":"spades3","suit":"spades","color":"black","value":3,"faceup":true},{"id":"spades4","suit":"spades","color":"black","value":4,"faceup":true},{"id":"spades5","suit":"spades","color":"black","value":5,"faceup":true},{"id":"spades6","suit":"spades","color":"black","value":6,"faceup":true},{"id":"spades7","suit":"spades","color":"black","value":7,"faceup":true},{"id":"spades8","suit":"spades","color":"black","value":8,"faceup":true},{"id":"spades9","suit":"spades","color":"black","value":9,"faceup":true},{"id":"spades10","suit":"spades","color":"black","value":10,"faceup":true},{"id":"spades11","suit":"spades","color":"black","value":11,"faceup":true},{"id":"spades12","suit":"spades","color":"black","value":12,"faceup":true}]],"tableau":[[{"id":"diamonds13","suit":"diamonds","color":"red","value":13,"faceup":true}],[{"id":"spades13","suit":"spades","color":"black","value":13,"faceup":true}],[{"id":"hearts13","suit":"hearts","color":"red","value":13,"faceup":true}],[{"id":"clubs13","suit":"clubs","color":"black","value":13,"faceup":true}],[],[],[]]}};
-     return ret;
-}

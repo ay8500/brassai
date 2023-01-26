@@ -46,6 +46,7 @@ RewriteRule ^iskola-bathory-terkep$ /brassai/worldmap?classid=all&schoolid=2 [NC
 RewriteRule ^iskola-apacai-terkep$ /brassai/worldmap?classid=all&schoolid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium-terkep$ /brassai/worldmap?classid=all&schoolid=4 [NC,L]
 RewriteRule ^iskola-jzsuk-terkep$ /brassai/worldmap?classid=all&schoolid=5 [NC,L]
+ReWriteRule ^brassai/picture?classid=([0-9]+)$ /brassai/picture?type=classID&typeid=$1 [NC,L]
 
 ## hide .php extension
 # To externally redirect /dir/foo.php to /dir/foo
