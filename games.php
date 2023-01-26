@@ -11,6 +11,18 @@ global $db;
 global $tabOpen;
 $dbGames = new dbDaGames($db);
 
+Appl::addCssStyle('
+  .game-box {
+        vertical-align: text-top; width:600px; min-height:410px;
+        border: 1px solid gray;  border-radius: 5px;display: inline-block;margin: 0px 15px 15px 0px;
+        -webkit-box-shadow: 5px 5px 13px 5px rgba(0,0,0,0.61); 
+        box-shadow: 5px 5px 13px 5px rgba(0,0,0,0.61);
+  }
+  .game-box-left {display:inline-block;margin-left: 5px;text-align: center;}     
+  .game-box-right {display:inline-block;vertical-align: top;margin: 10px;}  
+  .game-logo { width:170px;display: block;margin-top: 30px; }
+');
+
 //initialise tabs
 $tabsCaption = array();
 $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
@@ -57,11 +69,11 @@ include("homemenu.inc.php");
 		<div class="panel-body">
 
             <?php if ($tabOpen=="bestlist") {?>
-                <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
+                <div class="game-box">
                     <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>Solitaire</h2>
                         <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
-                        <br/><br/> <img src="images/gamesolitaire.jpg" style="width: 200px;"/>
+                        <img src="images/gamesolitaire.jpg" class="game-logo"/>
                     </div>
                     <div style="display: inline-block;vertical-align: top;margin: 10px">
                         <table>
@@ -79,11 +91,11 @@ include("homemenu.inc.php");
                         </table>
                     </div>
                 </div>
-                <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
+                <div class="game-box">
                     <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>Sudoku</h2>
                         <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
-                        <br/> <img src="images/gamesudoku.jpg" style="width: 200px;"/>
+                        <img src="images/gamesudoku.jpg" class="game-logo"/>
                     </div>
                     <div style="display: inline-block;vertical-align: top;margin: 10px">
                         <table>
@@ -101,11 +113,11 @@ include("homemenu.inc.php");
                         </table>
                     </div>
                 </div>
-                <div style="border: 1px solid black; max-width: 600px;border-radius: 5px;display: inline-block;margin-bottom: 15px;">
+                <div class="game-box">
                     <div style="display: inline-block;margin-left: 5px;text-align: center ">
                         <h2>2048</h2>
                         <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
-                        <br/> <img src="images/game2048.jpg" style="width: 200px;"/>
+                        <img src="images/game2048.jpg" class="game-logo"/>
                     </div>
                     <div style="display: inline-block;vertical-align: top;margin: 10px">
                         <table>
@@ -220,13 +232,13 @@ include("homemenu.inc.php");
             }?>
 
             <?php if ($tabOpen=="user") {?>
-                <div style="border: 1px solid black;border-radius: 5px; margin-bottom: 15px;">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                <div class="game-box">
+                    <div  class="game-box-left">
                         <h2>Solitaire</h2>
                         <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
-                        <br/> <img src="images/gamesolitaire.jpg" style="width: 200px;"/>
+                        <img src="images/gamesolitaire.jpg" class="game-logo"/>
                     </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                    <div class="game-box-right">
                         <?php
                         $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,3,25);
                         if (sizeof($gameList)>0) {
@@ -238,7 +250,7 @@ include("homemenu.inc.php");
                                     <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                            <a class="btn btn-warning" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                            <a class="btn btn-warning" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Eredmény</a>
                                         <?php } else { ?>
                                             <a class="btn btn-success" href="games?tabOpen=solitaire&gameid=3&&id=<?php echo($game["id"])?>">Folytatom</a>
                                         <?php }  ?>
@@ -255,13 +267,13 @@ include("homemenu.inc.php");
                     </div>
                 </div>
 
-                <div style="border: 1px solid black;border-radius: 5px; margin-bottom: 15px;">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                <div class="game-box">
+                    <div class="game-box-left">
                         <h2>Sudoku</h2>
                         <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
-                        <br/> <img src="images/gamesudoku.jpg" style="width: 200px;"/>
+                        <img src="images/gamesudoku.jpg" class="game-logo"/>
                     </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                    <div class="game-box-right">
                         <?php
                         $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,2,25);
                         if (sizeof($gameList)>0) {
@@ -273,7 +285,7 @@ include("homemenu.inc.php");
                                     <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                            <a class="btn btn-warning" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                            <a class="btn btn-warning" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Eredmény</a>
                                         <?php } else { ?>
                                             <a class="btn btn-success" href="games?tabOpen=sudoku&gameid=2&&id=<?php echo($game["id"])?>">Folytatom</a>
                                         <?php }  ?>
@@ -289,13 +301,13 @@ include("homemenu.inc.php");
                     </div>
                 </div>
 
-                <div style="border: 1px solid black;border-radius: 5px;margin-bottom: 15px; ">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                <div class="game-box">
+                    <div class="game-box-left">
                         <h2>2048</h2>
                         <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
-                        <br/> <img src="images/game2048.jpg" style="width: 200px;"/>
+                        <img src="images/game2048.jpg" class="game-logo"/>
                     </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                    <div class="game-box-right">
                         <?php
                         $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,1,25);
                         if (sizeof($gameList)>0) {
@@ -307,7 +319,7 @@ include("homemenu.inc.php");
                                     <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                            <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Végeredmény</a>
+                                            <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Eredmény</a>
                                         <?php } else { ?>
                                             <a class="btn btn-success" href="games?tabOpen=2048&gameid=1&&id=<?php echo($game["id"])?>">Folytatom</a>
                                         <?php }  ?>
