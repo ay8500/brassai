@@ -139,7 +139,8 @@ var SG = {
         if(cardsToAnimate) {
             SG.animateCards(cardsToAnimate);
         }
-        SG.saveGame(false,false);
+        if (SG.moveCount>0 && SG.isGameOver!==true)
+            SG.saveGame(false,false);
     },
 
 
@@ -341,16 +342,18 @@ var SG = {
         var clickedCard = SG.getCardById(cardToMove.id);
         var clickedPosition = SG.getPositionArray($(cardToMove).parent().attr('id'));
         var possibleMoves = SG.getLegalMoves(clickedCard, clickedPosition);
-        if(possibleMoves.length > 0) {
+        if(possibleMoves.length > 0 && SG.isGameOver===false) {
             var movedCards = SG.moveCards(cardToMove, clickedPosition, possibleMoves[0]);
             SG.previousFlippedCard = null;
             SG.flipTableauTopCards();
             SG.drawAllCards(SG.queueCardAnimations(movedCards));
             if(SG.victory()) {
+                SG.isGameOver = true;
                 SG.previousMove = [];
                 $("#victory").html("Hurrá sikerült " + SG.moveCount + " lépésből megoldani. Pontszám:"+SG.score);
                 $("#victory").css("display", "block");
-                SG.saveGame(true,true);
+                SG.saveGame(true,true).then(response => SG.gameID = response.id!==undefined?response.id:SG.gameID);
+                console.log("GameID:"+SG.gameID);
             }
         } else {
             // card cannot be moved
@@ -390,6 +393,8 @@ var SG = {
     // move a card from the stock to the waste
     // if stock is empty, move all cards from waste to stock
     moveStockCard: function() {
+        if (SG.isGameOver)
+            return ;
         var movedCards;
         // select top card of stock
         var stockCard = SG.getTopCard(SG.cardPositions.stock);
@@ -426,20 +431,21 @@ var SG = {
             SG.moveCount = gameStatus.moveCount;
             SG.time = gameStatus.time;
             SG.score = gameStatus.score;
+            SG.isGameOver = gameStatus.over;
         }
         SG.flipTableauTopCards();
         $("#victory").css("display", "none");
-        SG.isGameOver = gameStatus.over;
         SG.drawAllCards();
-        if (gameStatus.over!==true)
+        if (SG.isGameOver!==true)
             SG.mytimer = setInterval(this.timer,1000);
     },
 
     // start the game
     newGame: function() {
-        console.log("GameID:"+SG.gameID)
-        SG.saveGame(true,false);
-        console.log("GameID:"+SG.gameID)
+        if (SG.moveCount>0) {
+            SG.saveGame(true, false).then(response => SG.gameID = response.id!==undefined?response.id:SG.gameID);
+            console.log("GameID:" + SG.gameID)
+        }
         SG.resetGame();
         SG.flipTableauTopCards();
         $("#victory").css("display", "none");
@@ -466,6 +472,7 @@ var SG = {
         SG.moveCount = 0;
         SG.time = 0;
         SG.score = 0;
+        SG.isGameOver = false;
     },
 
     /**
@@ -482,14 +489,13 @@ var SG = {
         save.moveCount = SG.moveCount;
         save.cardPositions = SG.cardPositions;
 
-        $.ajax({
+        return $.ajax({
             url: "ajax/setGameStatus",
             type:"POST",
             data: {"gameid":SG.gameID, "gamestatus":JSON.stringify(save)},
             success:function(data){
                 console.log("Save Ok. gameId="+data.id+"\n\r");
-                if (SG!==undefined)
-                    SG.gameID = data.id;
+                SG.gameID = data.id;
             },
             error:function(data) {
                 alert("A játék szerver nem elérhetö, probáld késöbb újból!");

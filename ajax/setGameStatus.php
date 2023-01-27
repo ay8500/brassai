@@ -40,7 +40,7 @@ if ($gamestatus["over"]==false &&  $gamestatus["won"]==false) {
         header("HTTP/1.0 500 Internal Server Error");
         die("Save Error");
     }
+    echo json_encode($game);
 }
-echo json_encode($game);
 
 ?>
