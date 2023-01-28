@@ -28,15 +28,15 @@
 }
 
 .sudoku_board .cell.border_h {
-    box-shadow: 0px 0px 0px 1px #bdc3c7, inset 0px -2px 0 0 #34495e;
+    box-shadow: 0px 0px 0px 1px #bdc3c7, inset 0px -3px 0 0 #34495e;
 }
 
 .sudoku_board .cell.border_v {
-    box-shadow: 0px 0px 0px 1px #bdc3c7, inset -2px 0 0 #34495e;
+    box-shadow: 0px 0px 0px 1px #bdc3c7, inset -3px 0 0 #34495e;
 }
 
 .sudoku_board .cell.border_h.border_v {
-    box-shadow: 0px 0px 0px 1px #bdc3c7, inset -2px 0 0 black, inset 0px -2px 0 black;
+    box-shadow: 0px 0px 0px 1px #bdc3c7, inset -3px 0 0 black, inset 0px -3px 0 black;
 }
 
 .sudoku_board .cell span {

@@ -20,7 +20,7 @@ $dbGame = new dbDaGames($db);
 
 $game = $dbGame->getGameById(getIntParam("gameid"));
 if ($game==null) {
-    header("HTTP/1.0 500 Internal Server Error");
+    header("HTTP/1.0 404 Game not found");
     die("Game not found");
 }
 $gamestatus = json_decode($game["gameStatusJson"],true);

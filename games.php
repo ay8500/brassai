@@ -19,7 +19,10 @@ Appl::addCssStyle('
         box-shadow: 5px 5px 13px 5px rgba(0,0,0,0.61);
   }
   .game-box-left {display:inline-block;margin-left: 5px;text-align: center;}     
-  .game-box-right {display:inline-block;vertical-align: top;margin: 10px;}  
+  .game-box-right {
+    display:inline-block;vertical-align: top;margin: 10px;height: 400px;
+    overflow-y: auto; margin-right: 25px;position: relative;float: right;
+    }  
   .game-logo { width:170px;display: block;margin-top: 30px; }
 ');
 
@@ -70,12 +73,12 @@ include("homemenu.inc.php");
 
             <?php if ($tabOpen=="bestlist") {?>
                 <div class="game-box">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                    <div class="game-box-left">
                         <h2>Solitaire</h2>
                         <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
                         <img src="images/gamesolitaire.jpg" class="game-logo"/>
                     </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                    <div class="game-box-right">
                         <table>
                             <?php
                             $personList = $dbGames->getBestPlayers(3,15);
@@ -92,12 +95,12 @@ include("homemenu.inc.php");
                     </div>
                 </div>
                 <div class="game-box">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                    <div class="game-box-left">
                         <h2>Sudoku</h2>
                         <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
                         <img src="images/gamesudoku.jpg" class="game-logo"/>
                     </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                    <div class="game-box-right">
                         <table>
                             <?php
                             $personList = $dbGames->getBestPlayers(2,15);
@@ -114,12 +117,12 @@ include("homemenu.inc.php");
                     </div>
                 </div>
                 <div class="game-box">
-                    <div style="display: inline-block;margin-left: 5px;text-align: center ">
+                    <div class="game-box-left">
                         <h2>2048</h2>
                         <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
                         <img src="images/game2048.jpg" class="game-logo"/>
                     </div>
-                    <div style="display: inline-block;vertical-align: top;margin: 10px">
+                    <div class="game-box-right">
                         <table>
                         <?php
                             $personList = $dbGames->getBestPlayers(1,15);
@@ -220,13 +223,12 @@ include("homemenu.inc.php");
                 }
                 \maierlabs\lpfw\Appl::addJsScript('
                     gamesudoku('.$gameId.',
-                                '.$status["fixedCellsNr"].',
-                                '.intval($status["secondsElapsed"]).',
-                                '.intval($status["score"]).',
-                                '.json_encode($status["board"]).',
-                                '.json_encode($status["boardSolution"]).',
-                                '.json_encode($status["boardValues"]).',
-                                '.json_encode($status["boardNotes"]).',
+                                '.(isset($status["fixedCellsNr"])?$status["fixedCellsNr"]:40).',
+                                '.(isset($status["secondsElapsed"])?intval($status["secondsElapsed"]):0).',
+                                '.(isset($status["score"])?intval($status["score"]):0).',
+                                '.(isset($status["board"])?json_encode($status["board"]):json_encode([])).',
+                                '.(isset($status["boardSolution"])?json_encode($status["boardSolution"]):json_encode([])).',
+                                '.(isset($status["boardValues"])?json_encode($status["boardValues"]):json_encode([])).',
                                 '.json_encode(isset($status["over"])?$status["over"]:false).');
                 ',true);
             }?>
@@ -247,7 +249,7 @@ include("homemenu.inc.php");
                                 <tr>
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                    <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
+                                    <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
                                             <a class="btn btn-warning" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Eredmény</a>
@@ -282,7 +284,7 @@ include("homemenu.inc.php");
                                 <tr>
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                    <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
+                                    <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
                                             <a class="btn btn-warning" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Eredmény</a>
@@ -316,7 +318,7 @@ include("homemenu.inc.php");
                                 <tr>
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
                                     <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                    <td style="text-align:right;width: 100px"><b><?php echo $game["highScore"]?></b></td>
+                                    <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
                                             <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Eredmény</a>

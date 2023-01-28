@@ -20,8 +20,8 @@
 
 <div class="gameover_container" style="display: none">
     <div class="gameover">
-        Ügyes! Sikerült. Játszodj újból<br/>
-        Elért pontszám:<span id="gameover_score">0</span>
+        Ügyes vagy, sikerült. Elért pontszám:<span id="gameover_score">0</span>
+        Játszodj újból!<br/>
         <ul>
             <li><a class="restart1" href="#">Ügyeseknek</a></li>
             <li><a class="restart2" href="#">Haladóknak</a></li>
