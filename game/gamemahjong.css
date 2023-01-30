@@ -1,0 +1,6 @@
+html.lit::after {
+    opacity: 0;
+}
+html.after-lit::after {
+    display: none;
+}

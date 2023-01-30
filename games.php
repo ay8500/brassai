@@ -32,6 +32,8 @@ $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
 array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
 array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
+if (isUserAdmin())
+    array_push($tabsCaption ,array("id" => "mahjong", "caption" => 'Mahjong', "glyphicon" => "th"));
 array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
 
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
@@ -62,6 +64,8 @@ elseif (getParam("tabOpen")=="2048")
     \maierlabs\lpfw\Appl::addCss("game/game2048.css");
 elseif (getParam("tabOpen")=="solitaire")
     \maierlabs\lpfw\Appl::addCss("game/gamesolitaire.css");
+elseif (getParam("tabOpen")=="mahjong")
+    \maierlabs\lpfw\Appl::addCss("game/gamemahjong.css");
 
 include("homemenu.inc.php");
 ?>
@@ -194,6 +198,91 @@ include("homemenu.inc.php");
                 }
                 \maierlabs\lpfw\Appl::addJsScript('SG.startGame('.$gameId.",". json_encode($gameStatus).");",true);
             }?>
+
+            <?php if ($tabOpen=="mahjong") {
+                ?><div id="mahjong">Levi<?php
+                \maierlabs\lpfw\Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
+                \maierlabs\lpfw\Appl::addJs("game/gamemahjong.js");
+                Appl::addJsScript('
+                    startGame({
+    "layout": "test",
+    "tiles": [
+        {
+            "active": false,
+            "name": 13
+        },
+        {
+            "active": true,
+            "name": 20
+        },
+        {
+            "active": true,
+            "name": 14
+        },
+        {
+            "active": true,
+            "name": 16
+        },
+        {
+            "active": true,
+            "name": 17
+        },
+        {
+            "active": true,
+            "name": 11
+        },
+        {
+            "active": true,
+            "name": 16
+        },
+        {
+            "active": true,
+            "name": 19
+        },
+        {
+            "active": true,
+            "name": 18
+        },
+        {
+            "active": true,
+            "name": 12
+        },
+        {
+            "active": false,
+            "name": 13
+        },
+        {
+            "active": true,
+            "name": 18
+        },
+        {
+            "active": true,
+            "name": 20
+        },
+        {
+            "active": true,
+            "name": 14
+        },
+        {
+            "active": true,
+            "name": 17
+        },
+        {
+            "active": true,
+            "name": 12
+        },
+        {
+            "active": true,
+            "name": 19
+        },
+        {
+            "active": true,
+            "name": 11
+        }
+    ]
+});
+                ',true);
+                ?></div><?php }?>
 
             <?php if ($tabOpen=="memory") {
                 \maierlabs\lpfw\Appl::addJs("game/gamememory.js");
