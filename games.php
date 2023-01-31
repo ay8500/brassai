@@ -200,9 +200,14 @@ include("homemenu.inc.php");
             }?>
 
             <?php if ($tabOpen=="mahjong") {
-                ?><div id="mahjong">Levi<?php
-                \maierlabs\lpfw\Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
-                \maierlabs\lpfw\Appl::addJs("game/gamemahjong.js");
+                ?>
+                    <div>Lehetséges párok:<span id="game-pairs"></span></div>
+                    <div id="game-mahjong" style="width: 100%; height: 600px;">
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js"></script>
+                <script type="text/javascript" src="game/gamemahjong.js"></script>
+                <?php
+                //\maierlabs\lpfw\Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
+                //\maierlabs\lpfw\Appl::addJs("game/gamemahjong.js");
                 Appl::addJsScript('
                     startGame({
     "layout": "test",

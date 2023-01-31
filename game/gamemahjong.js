@@ -1,3 +1,5 @@
+//https://codepen.io/lewster32/pen/gOYvWZO
+
 "use strict";
 
 class Tile extends Phaser.GameObjects.Sprite {
@@ -340,6 +342,7 @@ class Board extends Phaser.GameObjects.Container {
         if (this.scene.debug && this.getTiles().length%2 == 0) {
             console.log("Valid pairs left: ", remainingCount/2, " Tiles",this.getTiles().length);
         }
+        $("#game-pairs").html(remainingCount/2);
         if (this.scene.debug && this.getTiles().length%2 == 0) {
             console.log(this.getGameStaus());
         }
@@ -654,8 +657,9 @@ class Preloader extends Phaser.Scene {
 
 
 function startGame(gameStatus) {
-    new Phaser.Game({
+    var game = new Phaser.Game({
         type: Phaser.AUTO,
+        parent: "game-mahjong",
         transparent: true,
         scale: {
             mode: Phaser.Scale.FIT,
