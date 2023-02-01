@@ -7,9 +7,16 @@ include_once 'dbBL.class.php';
 include_once 'dbDaGames.class.php';
 
 use \maierlabs\lpfw\Appl as Appl;
-global $db;
+global $db ;
 global $tabOpen;
 $dbGames = new dbDaGames($db);
+
+abstract class GameType {
+    const GAME2048 = 1;
+    const SUDOKU = 2;
+    const SOLITAIRE = 3;
+    const MAHJONG = 4;
+}
 
 Appl::addCssStyle('
   .game-box {
@@ -33,7 +40,7 @@ array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb ját�
 array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
 array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
 if (isUserAdmin())
-    array_push($tabsCaption ,array("id" => "mahjong", "caption" => 'Mahjong', "glyphicon" => "th"));
+    array_push($tabsCaption ,array("id" => "mahjong", "caption" => 'Mahjong', "glyphicon" => "yen"));
 array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
 
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
@@ -57,15 +64,15 @@ $title = 'Logikai játékok: '. $tabsCaption[(array_search(getParam("tabOpen","A
 Appl::setSiteTitle($title,$title);
 
 if (getParam("tabOpen")=="sudoku")
-    \maierlabs\lpfw\Appl::addCss("game/gamesudoku.css");
+    Appl::addCss("game/gamesudoku.css");
 elseif (getParam("tabOpen")=="memory")
-    \maierlabs\lpfw\Appl::addCss("game/gamememory.css");
+    Appl::addCss("game/gamememory.css");
 elseif (getParam("tabOpen")=="2048")
-    \maierlabs\lpfw\Appl::addCss("game/game2048.css");
+    Appl::addCss("game/game2048.css");
 elseif (getParam("tabOpen")=="solitaire")
-    \maierlabs\lpfw\Appl::addCss("game/gamesolitaire.css");
+    Appl::addCss("game/gamesolitaire.css");
 elseif (getParam("tabOpen")=="mahjong")
-    \maierlabs\lpfw\Appl::addCss("game/gamemahjong.css");
+    Appl::addCss("game/gamemahjong.css");
 
 include("homemenu.inc.php");
 ?>
@@ -85,12 +92,12 @@ include("homemenu.inc.php");
                     <div class="game-box-right">
                         <table>
                             <?php
-                            $personList = $dbGames->getBestPlayers(3,15);
+                            $personList = $dbGames->getBestPlayers(GameType::SOLITAIRE,15);
                             foreach ($personList as $idx=>$person) {?>
                                 <tr>
                                     <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
                                     <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
+                                    <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
                                     <td style="text-align: right"><?php echo $person["highScore"]?></td>
                                 </tr>
                             <?php }
@@ -112,7 +119,7 @@ include("homemenu.inc.php");
                                 <tr>
                                     <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
                                     <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                    <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
+                                    <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
                                     <td style="text-align: right"><?php echo $person["highScore"]?></td>
                                 </tr>
                             <?php }
@@ -134,7 +141,7 @@ include("homemenu.inc.php");
                                     <tr>
                                         <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
                                         <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                        <td style="padding-right: 10px"><?php echo \maierlabs\lpfw\Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
+                                        <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
                                         <td style="text-align: right"><?php echo $person["highScore"]?></td>
                                         <?php /*
                                         <td style="padding-left: 10px">
@@ -152,7 +159,7 @@ include("homemenu.inc.php");
             <?php }?>
 
             <?php if ($tabOpen=="2048") {
-                \maierlabs\lpfw\Appl::addJs("game/game2048.js");
+                Appl::addJs("game/game2048.js");
                 include_once "game/game2048.inc.php";
                 $tile = new stdClass();
                 $gameId = null;
@@ -170,15 +177,15 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,1);
                     }
                 }
-                \maierlabs\lpfw\Appl::addJsScript('var game2048=null');
-                \maierlabs\lpfw\Appl::addJsScript('
+                Appl::addJsScript('var game2048=null');
+                Appl::addJsScript('
                     game2048 = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($tile).'\','.$gameId.');
                 ',true);
             }?>
 
 
             <?php if ($tabOpen=="solitaire") {
-                \maierlabs\lpfw\Appl::addJs("game/gamesolitaire.js");
+                Appl::addJs("game/gamesolitaire.js");
                 include_once "game/gamesolitaire.inc.php";
                 $gameStatus = new stdClass();
                 $gameId = null;
@@ -196,106 +203,27 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
                     }
                 }
-                \maierlabs\lpfw\Appl::addJsScript('SG.startGame('.$gameId.",". json_encode($gameStatus).");",true);
+                Appl::addJsScript('SG.startGame('.$gameId.",". json_encode($gameStatus).");",true);
             }?>
 
             <?php if ($tabOpen=="mahjong") {
                 ?>
                     <div>Lehetséges párok:<span id="game-pairs"></span></div>
-                    <div id="game-mahjong" style="width: 100%; height: 600px;">
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js"></script>
-                <script type="text/javascript" src="game/gamemahjong.js"></script>
+                    <div id="game-mahjong" style="width: 100%; height: 600px;"></div>
                 <?php
-                //\maierlabs\lpfw\Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
-                //\maierlabs\lpfw\Appl::addJs("game/gamemahjong.js");
-                Appl::addJsScript('
-                    startGame({
-    "layout": "test",
-    "tiles": [
-        {
-            "active": false,
-            "name": 13
-        },
-        {
-            "active": true,
-            "name": 20
-        },
-        {
-            "active": true,
-            "name": 14
-        },
-        {
-            "active": true,
-            "name": 16
-        },
-        {
-            "active": true,
-            "name": 17
-        },
-        {
-            "active": true,
-            "name": 11
-        },
-        {
-            "active": true,
-            "name": 16
-        },
-        {
-            "active": true,
-            "name": 19
-        },
-        {
-            "active": true,
-            "name": 18
-        },
-        {
-            "active": true,
-            "name": 12
-        },
-        {
-            "active": false,
-            "name": 13
-        },
-        {
-            "active": true,
-            "name": 18
-        },
-        {
-            "active": true,
-            "name": 20
-        },
-        {
-            "active": true,
-            "name": 14
-        },
-        {
-            "active": true,
-            "name": 17
-        },
-        {
-            "active": true,
-            "name": 12
-        },
-        {
-            "active": true,
-            "name": 19
-        },
-        {
-            "active": true,
-            "name": 11
-        }
-    ]
-});
-                ',true);
-                ?></div><?php }?>
+                Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
+                Appl::addJs("game/gamemahjong.js");
+                $gameId="undefined";
+                Appl::addJsScript('startGame( '.$gameId.','. json_encode(getNewMahongGameStatus()).',true)');
+            } ?>
 
             <?php if ($tabOpen=="memory") {
-                \maierlabs\lpfw\Appl::addJs("game/gamememory.js");
+                Appl::addJs("game/gamememory.js");
                 include_once "game/gamememory.inc.php";
             }?>
 
             <?php if ($tabOpen=="sudoku") {
-                \maierlabs\lpfw\Appl::addJs("game/gamesudoku.js");
+                Appl::addJs("game/gamesudoku.js");
                 include_once "game/gamesudoku.inc.php";
                 $status =getNewSudokuGameStatus();
                 $gameId = null;
@@ -315,7 +243,7 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,2);
                     }
                 }
-                \maierlabs\lpfw\Appl::addJsScript('
+                Appl::addJsScript('
                     gamesudoku('.$gameId.',
                                 '.(isset($status["fixedCellsNr"])?$status["fixedCellsNr"]:40).',
                                 '.(isset($status["secondsElapsed"])?intval($status["secondsElapsed"]):0).',
@@ -341,8 +269,8 @@ include("homemenu.inc.php");
                             ?><table><?php
                             foreach ($gameList as $game) {?>
                                 <tr>
-                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
-                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
+                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
+                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                     <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
@@ -376,8 +304,8 @@ include("homemenu.inc.php");
                             ?><table><?php
                             foreach ($gameList as $game) {?>
                                 <tr>
-                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
-                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
+                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
+                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                     <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
@@ -410,8 +338,8 @@ include("homemenu.inc.php");
                             ?><table><?php
                             foreach ($gameList as $game) {?>
                                 <tr>
-                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
-                                    <td style="padding: 10px"><?php echo \maierlabs\lpfw\Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
+                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
+                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
                                     <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                                     <td style="padding: 5px">
                                         <?php if (($game["gameStatus"]["over"])===true) { ?>
@@ -443,5 +371,52 @@ include("homefooter.inc.php");
 function getNewSudokuGameStatus() {
     return array("fixedCellsNr"=>40,"secondsElapsed"=>0,"score"=>0,"board"=>null,"boardSolution"=>null,"boardValues"=>null,"boardNotes"=>null,"won"=>false,"over"=>false);
 }
+
+function getNewMahongGameStatus() {
+    return  array( "layout"=> "test",  "tiles"=> array( 
+            array("active"=>false,"name"=> 13),
+            array("active" => true,"name" => 20),
+            array("active" => true, "name" => 14),
+            array("active" => true, "name" => 16),
+            array("active" => true, "name" => 17),
+            array("active" => true, "name" => 11),
+            array("active" => true, "name" => 16),
+            array("active" => true, "name" => 19),
+            array("active" => true, "name" => 18),
+            array("active" => true, "name" => 12),
+            array("active" => false,"name" => 13),
+            array("active" => true, "name" => 18),
+            array("active" => true, "name" => 20),
+            array("active" => true, "name" => 14),
+            array("active" => true, "name" => 17),
+            array("active" => true, "name" => 12),
+            array("active" => true, "name" => 19),
+            array("active" => true, "name" => 11)
+    ));
+}
+
+/**
+ * Get game from database or create a new game if game not exist or gameId is null
+ * @param dbDaGames $dbGames
+ * @param int $gameId
+ * @param int $gameTypeId
+ * @return object
+ */
+function getGameFromDB($dbGames, $gameId, $gameTypeId) {
+    $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $gameStatus = new stdClass();
+    if ($gameId != -1) {
+        $game = $dbGames->getGameById(getIntParam("id"));
+    } else {
+        $game = $dbGames->getLastActivGame(getLoggedInUserId(), $ip, $agent, $lang, $gameTypeId);
+    }
+    if ($game == null) {
+        $game = $dbGames->createGame(getLoggedInUserId(), $ip, $agent, $lang, $gameTypeId);
+    }
+    return $game;
+}
+
 
 ?>

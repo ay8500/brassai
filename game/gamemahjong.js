@@ -324,27 +324,9 @@ class Board extends Phaser.GameObjects.Container {
             tile.neighbours.above = this.getTilesNear(tile, "above");
         });
 
-        let remaining = this.getTiles().filter(tile => !tile.isBlocked());
-        let remainingCount = 0;
-        remaining.forEach(tile1 => {
-            const matching = remaining.filter(tile2 => {
-                return tile1.isMatch(tile2);
-            });
-            if (matching && matching.length) {
-                if (this.scene.debug) {
-                    matching.forEach(tile => {
-                        tile.setTint(0xffaaff);
-                    });
-                }
-                remainingCount += matching.length;
-            }
-        });
+        let remainingCount = this.getRemainingCount();
         if (this.scene.debug && this.getTiles().length%2 == 0) {
-            console.log("Valid pairs left: ", remainingCount/2, " Tiles",this.getTiles().length);
-        }
-        $("#game-pairs").html(remainingCount/2);
-        if (this.scene.debug && this.getTiles().length%2 == 0) {
-            console.log(this.getGameStaus());
+            saveGame(this.gameId, this.getGameStaus());
         }
         // GAME OVER YEAHHHHH
         if (remainingCount === 0 && this.getTiles().length%2 == 0) {
@@ -366,8 +348,30 @@ class Board extends Phaser.GameObjects.Container {
         }
     }
 
+    getRemainingCount() {
+        let remaining = this.getTiles().filter(tile => !tile.isBlocked());
+        let remainingCount = 0;
+        remaining.forEach(tile1 => {
+            const matching = remaining.filter(tile2 => {
+                return tile1.isMatch(tile2);
+            });
+            if (matching && matching.length) {
+                if (this.scene.debug) {
+                    matching.forEach(tile => {
+                        tile.setTint(0xffaaff);
+                    });
+                }
+                remainingCount += matching.length;
+            }
+        });
+        return remainingCount/2;
+    }
+
     getGameStaus() {
         let ret = new Object();
+        ret.gameId = this.gameId;
+        ret.remainingCount=this.getRemainingCount();
+        ret.remainingTiles=this.getTiles().length%2;
         ret.layout = this.layout.board.name;
         ret.tiles = [];
         this.getAllTiles().forEach(tile => {
@@ -586,9 +590,10 @@ class BoardLayout {
 }
 
 class Main extends Phaser.Scene {
-    constructor(gameStatus) {
+    constructor(gameId,gameStatus) {
         super({ key: "main" });
         this.gameStatus=gameStatus;
+        this.gameId=gameId;
     }
     create() {
         this.debug = true; // turn this on if you're a nasty rotten cheat
@@ -656,7 +661,7 @@ class Preloader extends Phaser.Scene {
 }
 
 
-function startGame(gameStatus) {
+function startGame(gameId,gameStatus) {
     var game = new Phaser.Game({
         type: Phaser.AUTO,
         parent: "game-mahjong",
@@ -667,6 +672,11 @@ function startGame(gameStatus) {
             width: 1024,
             height: 960
         },
-        scene: [new Preloader(), new Main(gameStatus)]
+        scene: [new Preloader(), new Main(gameId,gameStatus)]
     });
+}
+
+function saveGame(gameId,gameStatus) {
+    $("#game-pairs").html(gameStatus.remainingCount);
+    console.log("Save gameId:",gameId, "Valid pairs left: ", gameStatus.remainingCount, " Tiles: ",gameStatus.remainingTiles);
 }
