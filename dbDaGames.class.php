@@ -89,7 +89,7 @@ class dbDaGames
             if (sizeof($ret) != 0)
                 return $this->decodeGameDataInArray($ret);
             else
-                return null;
+                return array();
         }
         //IP, Agent, Language
         $query  = "select *, GREATEST(dateBegin,dateEnd) as aktDate from game  ";

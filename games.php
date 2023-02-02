@@ -82,85 +82,18 @@ include("homemenu.inc.php");
     	include Config::$lpfw.'view/tabs.inc.php';?>
 		<div class="panel-body">
 
-            <?php if ($tabOpen=="bestlist") {?>
-                <div class="game-box">
-                    <div class="game-box-left">
-                        <h2>Solitaire</h2>
-                        <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
-                        <img src="images/gamesolitaire.jpg" class="game-logo"/>
-                    </div>
-                    <div class="game-box-right">
-                        <table>
-                            <?php
-                            $personList = $dbGames->getBestPlayers(GameType::SOLITAIRE,15);
-                            foreach ($personList as $idx=>$person) {?>
-                                <tr>
-                                    <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
-                                    <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                    <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
-                                    <td style="text-align: right"><?php echo $person["highScore"]?></td>
-                                </tr>
-                            <?php }
-                            ?>
-                        </table>
-                    </div>
-                </div>
-                <div class="game-box">
-                    <div class="game-box-left">
-                        <h2>Sudoku</h2>
-                        <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
-                        <img src="images/gamesudoku.jpg" class="game-logo"/>
-                    </div>
-                    <div class="game-box-right">
-                        <table>
-                            <?php
-                            $personList = $dbGames->getBestPlayers(2,15);
-                            foreach ($personList as $idx=>$person) {?>
-                                <tr>
-                                    <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
-                                    <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                    <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
-                                    <td style="text-align: right"><?php echo $person["highScore"]?></td>
-                                </tr>
-                            <?php }
-                            ?>
-                        </table>
-                    </div>
-                </div>
-                <div class="game-box">
-                    <div class="game-box-left">
-                        <h2>2048</h2>
-                        <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
-                        <img src="images/game2048.jpg" class="game-logo"/>
-                    </div>
-                    <div class="game-box-right">
-                        <table>
-                        <?php
-                            $personList = $dbGames->getBestPlayers(1,15);
-                            foreach ($personList as $idx=>$person) {?>
-                                    <tr>
-                                        <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
-                                        <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
-                                        <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
-                                        <td style="text-align: right"><?php echo $person["highScore"]?></td>
-                                        <?php /*
-                                        <td style="padding-left: 10px">
-                                            <?php if ($person["gameStatus"]["over"]==true || $person["gameStatus"]["won"]==true ) { ?>
-                                                <a class="btn btn-success btn-xs" href="games?tabOpen=2048&gameid=1&id=<?php echo($person["theGameId"])?>">Lássam</a>
-                                            <?php }?>
-                                        </td>
-                                        */ ?>
-                                    </tr>
-                            <?php }
-                        ?>
-                        </table>
-                    </div>
-                </div>
-            <?php }?>
+            <?php if ($tabOpen=="bestlist") {
+                showBestList($dbGames,GameType::SOLITAIRE,"Solitaire","solitaire","images/gamesolitaire.jpg");
+                showBestList($dbGames,GameType::SUDOKU,"Sudoku","sudoku","images/gamesudoku.jpg");
+                showBestList($dbGames,GameType::MAHJONG,"Mahjong","mahjong","images/game2048.jpg");
+                showBestList($dbGames,GameType::GAME2048,"2048","2048","images/game2048.jpg");
+            }?>
 
             <?php if ($tabOpen=="2048") {
                 Appl::addJs("game/game2048.js");
                 include_once "game/game2048.inc.php";
+                $game = getGameFromDB($dbGames, getIntParam("id",-1), GameType::GAME2048);
+                /*
                 $tile = new stdClass();
                 $gameId = null;
                 if (getIntParam("gameid")==1 && getIntParam("id",-1)!=-1) {
@@ -177,9 +110,10 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,1);
                     }
                 }
+                */
                 Appl::addJsScript('var game2048=null');
                 Appl::addJsScript('
-                    game2048 = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($tile).'\','.$gameId.');
+                    game2048 = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($game->gameStatus).'\','.$game->gameId.');
                 ',true);
             }?>
 
@@ -187,6 +121,7 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="solitaire") {
                 Appl::addJs("game/gamesolitaire.js");
                 include_once "game/gamesolitaire.inc.php";
+                /*
                 $gameStatus = new stdClass();
                 $gameId = null;
                 if (getIntParam("gameid")==3 && getIntParam("id",-1)!=-1) {
@@ -203,16 +138,19 @@ include("homemenu.inc.php");
                         $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
                     }
                 }
-                Appl::addJsScript('SG.startGame('.$gameId.",". json_encode($gameStatus).");",true);
+                */
+                $game = getGameFromDB($dbGames, getIntParam("id",-1), GameType::SOLITAIRE);
+                Appl::addJsScript('SG.startGame('.$game->gameId.",". json_encode($game->gameStatus).");",true);
             }?>
 
             <?php if ($tabOpen=="mahjong") {
+                Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
+                Appl::addJs("game/gamemahjong.js");
                 ?>
                     <div>Lehetséges párok:<span id="game-pairs"></span></div>
                     <div id="game-mahjong" style="width: 100%; height: 600px;"></div>
+                    <button onclick="suffleBoard()">Új keverés!</button>
                 <?php
-                Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
-                Appl::addJs("game/gamemahjong.js");
                 $gameId="undefined";
                 Appl::addJsScript('startGame( '.$gameId.','. json_encode(getNewMahongGameStatus()).',true)');
             } ?>
@@ -255,111 +193,12 @@ include("homemenu.inc.php");
                 ',true);
             }?>
 
-            <?php if ($tabOpen=="user") {?>
-                <div class="game-box">
-                    <div  class="game-box-left">
-                        <h2>Solitaire</h2>
-                        <a class="btn btn-success" href="games?tabOpen=solitaire">Játszani szeretnék</a>
-                        <img src="images/gamesolitaire.jpg" class="game-logo"/>
-                    </div>
-                    <div class="game-box-right">
-                        <?php
-                        $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,3,25);
-                        if (sizeof($gameList)>0) {
-                            ?><table><?php
-                            foreach ($gameList as $game) {?>
-                                <tr>
-                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
-                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                    <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
-                                    <td style="padding: 5px">
-                                        <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                            <a class="btn btn-warning" href="games?tabOpen=solitaire&gameid=3&id=<?php echo($game["id"])?>">Eredmény</a>
-                                        <?php } else { ?>
-                                            <a class="btn btn-success" href="games?tabOpen=solitaire&gameid=3&&id=<?php echo($game["id"])?>">Folytatom</a>
-                                        <?php }  ?>
-                                    </td>
-
-                                </tr>
-                            <?php  }
-                            ?></table><?php
-                        } else {
-                            ?>
-                            Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
-                            <?php
-                        } ?>
-                    </div>
-                </div>
-
-                <div class="game-box">
-                    <div class="game-box-left">
-                        <h2>Sudoku</h2>
-                        <a class="btn btn-success" href="games?tabOpen=sudoku">Játszani szeretnék</a>
-                        <img src="images/gamesudoku.jpg" class="game-logo"/>
-                    </div>
-                    <div class="game-box-right">
-                        <?php
-                        $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,2,25);
-                        if (sizeof($gameList)>0) {
-                            ?><table><?php
-                            foreach ($gameList as $game) {?>
-                                <tr>
-                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
-                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                    <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
-                                    <td style="padding: 5px">
-                                        <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                            <a class="btn btn-warning" href="games?tabOpen=sudoku&gameid=2&id=<?php echo($game["id"])?>">Eredmény</a>
-                                        <?php } else { ?>
-                                            <a class="btn btn-success" href="games?tabOpen=sudoku&gameid=2&&id=<?php echo($game["id"])?>">Folytatom</a>
-                                        <?php }  ?>
-                                    </td>
-                                </tr>
-                            <?php  }
-                            ?></table><?php
-                        } else {
-                            ?>
-                            Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
-                            <?php
-                        } ?>
-                    </div>
-                </div>
-
-                <div class="game-box">
-                    <div class="game-box-left">
-                        <h2>2048</h2>
-                        <a class="btn btn-success" href="games?tabOpen=2048">Játszani szeretnék</a>
-                        <img src="images/game2048.jpg" class="game-logo"/>
-                    </div>
-                    <div class="game-box-right">
-                        <?php
-                        $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,1,25);
-                        if (sizeof($gameList)>0) {
-                            ?><table><?php
-                            foreach ($gameList as $game) {?>
-                                <tr>
-                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["dateBegin"])) ?></td>
-                                    <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
-                                    <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
-                                    <td style="padding: 5px">
-                                        <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                            <a class="btn btn-warning" href="games?tabOpen=2048&gameid=1&id=<?php echo($game["id"])?>">Eredmény</a>
-                                        <?php } else { ?>
-                                            <a class="btn btn-success" href="games?tabOpen=2048&gameid=1&&id=<?php echo($game["id"])?>">Folytatom</a>
-                                        <?php }  ?>
-                                    </td>
-                                </tr>
-                            <?php  }
-                        ?></table><?php
-                        } else {
-                            ?>
-                                Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
-                            <?php
-                        } ?>
-                    </div>
-                </div>
-            <?php }?>
-
+            <?php if ($tabOpen=="user") {
+                showUserGames($dbGames, GameType::SOLITAIRE, "Solitaire", "solitaire", "images/gamesolitaire.jpg");
+                showUserGames($dbGames, GameType::SUDOKU, "Sudoku", "sudoku", "images/gamesudoku.jpg");
+                showUserGames($dbGames, GameType::MAHJONG, "Mahjong", "mahjong", "images/game2048.jpg");
+                showUserGames($dbGames, GameType::GAME2048, "2048", "2048", "images/game2048.jpg");
+            }?>
 		</div>
 	</div>
 </div>
@@ -373,9 +212,9 @@ function getNewSudokuGameStatus() {
 }
 
 function getNewMahongGameStatus() {
-    return  array( "layout"=> "test",  "tiles"=> array( 
-            array("active"=>false,"name"=> 13),
-            array("active" => true,"name" => 20),
+    return  array( "layout"=> "turtle",  "tiles"=> array(
+            array("active" => true, "name"=> 13),
+            array("active" => true, "name" => 20),
             array("active" => true, "name" => 14),
             array("active" => true, "name" => 16),
             array("active" => true, "name" => 17),
@@ -384,7 +223,7 @@ function getNewMahongGameStatus() {
             array("active" => true, "name" => 19),
             array("active" => true, "name" => 18),
             array("active" => true, "name" => 12),
-            array("active" => false,"name" => 13),
+            array("active" => true, "name" => 13),
             array("active" => true, "name" => 18),
             array("active" => true, "name" => 20),
             array("active" => true, "name" => 14),
@@ -406,17 +245,110 @@ function getGameFromDB($dbGames, $gameId, $gameTypeId) {
     $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     $agent = $_SERVER['HTTP_USER_AGENT'];
     $ip = $_SERVER['REMOTE_ADDR'];
-    $gameStatus = new stdClass();
+    $ret = new stdClass();
     if ($gameId != -1) {
+        //return a game by id
         $game = $dbGames->getGameById(getIntParam("id"));
+        $ret->gameId = $game["id"];
+        if (isset($game["gameStatus"]))
+            $ret->gameStatus=$game["gameStatus"];
     } else {
+        //return a game that is not over
         $game = $dbGames->getLastActivGame(getLoggedInUserId(), $ip, $agent, $lang, $gameTypeId);
+        if ($game != null) {
+            $ret->gameId = $game["id"];
+            if (isset($game["gameStatus"]))
+                $ret->gameStatus = $game["gameStatus"];
+        } else {
+            //create a new game
+            $ret->gameId = $dbGames->createGame(getLoggedInUserId(), $ip, $agent, $lang, $gameTypeId);
+            $ret->gameStatus = null;
+        }
     }
-    if ($game == null) {
-        $game = $dbGames->createGame(getLoggedInUserId(), $ip, $agent, $lang, $gameTypeId);
-    }
-    return $game;
+    return $ret;
 }
 
-
+/**
+ * Show the list of best user
+ * @param dbDaGames $dbGames
+ * @param GameType $gameType
+ * @param string $gameName
+ * @param string $tabId
+ * @param string $gameLogo
+ */
+function showBestList($dbGames,$gameType,$gameName,$tabId,$gameLogo) {
 ?>
+    <div class="game-box">
+    <div class="game-box-left">
+        <h2><?php echo $gameName ?></h2>
+        <a class="btn btn-success" href="games?tabOpen=<?php echo $tabId?>">Játszani szeretnék</a>
+        <img src="<?php echo $gameLogo?>" class="game-logo"/>
+    </div>
+    <div class="game-box-right">
+        <table>
+            <?php
+            $personList = $dbGames->getBestPlayers($gameType,15);
+            foreach ($personList as $idx=>$person) {?>
+                <tr>
+                    <td style="padding-right: 10px;padding-bottom: 5px"><?php echo $idx+1 ?></td>
+                    <td style="padding-right: 10px"><?php writePersonLinkAndPicture($person)?></td>
+                    <td style="padding-right: 10px"><?php echo Appl::dateAsStr(new DateTime($person["aktDate"])) ?></td>
+                    <td style="text-align: right"><?php echo $person["highScore"]?></td>
+                </tr>
+            <?php }
+            ?>
+        </table>
+    </div>
+</div>
+<?php
+}
+
+/**
+ * Show a list of the user games based on userId or IP or UserAgent und Language
+ * @param dbDaGames $dbGames
+ * @param GameType $gameType
+ * @param string $gameName
+ * @param string $tabId
+ * @param string $gameLogo
+ */
+function showUserGames($dbGames,$gameType,$gameName,$tabId,$gameLogo) {
+    $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+    $ip = $_SERVER['REMOTE_ADDR'];
+    ?>
+    <div class="game-box">
+        <div  class="game-box-left">
+            <h2><?php echo $gameName?></h2>
+            <a class="btn btn-success" href="games?tabOpen=<?php echo $tabId?>">Játszani szeretnék</a>
+            <img src="<?php echo $gameLogo?>" class="game-logo"/>
+        </div>
+        <div class="game-box-right">
+            <?php
+            $gameList = $dbGames->getGameByUseridAgentLangGameId(getLoggedInUserId(),$ip,$agent,$lang,$gameType,25);
+            if (sizeof($gameList)>0) {
+                ?><table><?php
+                foreach ($gameList as $game) {?>
+                    <tr>
+                        <td style="padding: 10px"><?php echo Appl::dateTimeAsStr(new DateTime($game["aktDate"])) ?></td>
+                        <td style="padding: 10px"><?php echo Appl::dateTimeAsIntervalStr(new DateTime($game["dateBegin"]),new DateTime($game["dateEnd"])) ?></td>
+                        <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
+                        <td style="padding: 5px">
+                            <?php if (($game["gameStatus"]["over"])===true) { ?>
+                                <a class="btn btn-warning" href="games?tabOpen=<?php echo $tabId?>&gameid=<?php echo $gameType?>&id=<?php echo($game["id"])?>">Eredmény</a>
+                            <?php } else { ?>
+                                <a class="btn btn-success" href="games?tabOpen=<?php echo $tabId?>&gameid=<?php echo $gameType?>&id=<?php echo($game["id"])?>">Folytatom</a>
+                            <?php }  ?>
+                        </td>
+
+                    </tr>
+                <?php  }
+                ?></table><?php
+            } else {
+                ?>
+                Sajnos ezt a játékot még nem próbáltad ki<br/>Rajta, kattints a "Játszani szeretnék" gombra!'
+                <?php
+            } ?>
+        </div>
+    </div>
+    <?php
+}

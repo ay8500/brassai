@@ -1,6 +1,6 @@
+"use strict";
 //https://codepen.io/lewster32/pen/gOYvWZO
 
-"use strict";
 
 class Tile extends Phaser.GameObjects.Sprite {
     static get OK_TINT() {
@@ -407,7 +407,25 @@ class BoardLayout {
                 layout.createTile(5,2.5, 1);
                 layout.createTile(9,3.5, 1);
             },
+            //Positions: 106
             turtle: layout => {
+                layout.createColumn(0, 1, 10, 0);
+                layout.createColumn(1, 4, 7, 0);
+                layout.createColumn(2, 3, 8, 0);
+                layout.createRect(3, 2, 5, 9, 0);
+                layout.createColumn(6, 3, 8, 0);
+                layout.createColumn(7, 4, 7, 0);
+                layout.createColumn(8, 1, 10, 0);
+                layout.createTile(4, 10, 0);
+                layout.createColumn(4, 0, 1, 0);
+                layout.createTile(4, 0, 1);
+                layout.createRect(0.5,4.5,6.5, 6.5, 1);
+                layout.createRect(1, 5, 6, 6, 2);
+                layout.createRect(1.5, 5.5, 5.5, 5.5, 3);
+                //layout.createTile(6.5, 3.5, 4);
+            },
+            //Positions: 120
+            turtleh: layout => {
                 layout.createRow(1, 12, 0, 0);
                 layout.createRow(3, 10, 1, 0);
                 layout.createRow(2, 11, 2, 0);
@@ -422,6 +440,7 @@ class BoardLayout {
                 layout.createRect(6, 3, 7, 4, 3);
                 layout.createTile(6.5, 3.5, 4);
             },
+            //Positions: 238
             castle: layout => {
                 layout.createCube(1, 0, 9, 8, 0, 3);
                 layout.createCube(2, 1, 8, 7, 1, 4, true);
@@ -432,10 +451,12 @@ class BoardLayout {
                 layout.createTile(3, 1.5, 2);
                 layout.createRow(6.5, 7.5, 6.5, 1);
                 layout.createTile(7, 6.5, 2);
+                layout.createTile(5, 0, 4);
                 layout.createTile(1, 0, 4);
                 layout.createTile(9, 0, 4);
                 layout.createTile(1, 8, 4);
                 layout.createTile(9, 8, 4);
+
             },
             castleh: layout => {
                 layout.createCube(1, 1, 12, 7, 0, 3);
@@ -449,6 +470,7 @@ class BoardLayout {
                 layout.createRow(9.5, 10.5, 5.5, 1);
                 layout.createTile(10, 5.5, 2);
             },
+            //Positions: 144
             duncher: layout => {
                 layout.createRect(2, 1, 8, 3, 0);
                 layout.createRect(3, 1, 7, 3, 1);
@@ -503,7 +525,7 @@ class BoardLayout {
             });
         } else {
             this.positions.forEach(pos => {
-                if  (tiles[frameIndex].active) {
+                if  (tiles[frameIndex % tiles.length].active) {
                     this.board.add(
                         new Tile(
                             this.board.scene,
@@ -511,7 +533,7 @@ class BoardLayout {
                             pos.x,
                             pos.y,
                             pos.z,
-                            tiles[frameIndex].name
+                            tiles[frameIndex % tiles.length].name
                         )
                     );
                 }
@@ -598,6 +620,7 @@ class Main extends Phaser.Scene {
     create() {
         this.debug = true; // turn this on if you're a nasty rotten cheat
         const board = new Board(this, 72, 72, new BoardLayout());
+        this.board = board;
 
         //test,turtle, castle,castleh, duncher
         board.layout.loadPreset(this.gameStatus);
@@ -660,9 +683,9 @@ class Preloader extends Phaser.Scene {
     }
 }
 
-
+var game = null;
 function startGame(gameId,gameStatus) {
-    var game = new Phaser.Game({
+    game = new Phaser.Game({
         type: Phaser.AUTO,
         parent: "game-mahjong",
         transparent: true,
@@ -679,4 +702,9 @@ function startGame(gameId,gameStatus) {
 function saveGame(gameId,gameStatus) {
     $("#game-pairs").html(gameStatus.remainingCount);
     console.log("Save gameId:",gameId, "Valid pairs left: ", gameStatus.remainingCount, " Tiles: ",gameStatus.remainingTiles);
+}
+
+function suffleBoard() {
+    game.scene.keys["main"].board.shuffle();
+    //saveGame(game.gameId, game.getGameStaus());
 }
