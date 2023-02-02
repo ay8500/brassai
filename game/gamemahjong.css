@@ -4,3 +4,8 @@ html.lit::after {
 html.after-lit::after {
     display: none;
 }
+
+#game-mahjong{
+    position: relative;
+    top: -25px;
+}

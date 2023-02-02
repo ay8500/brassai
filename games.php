@@ -85,7 +85,7 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="bestlist") {
                 showBestList($dbGames,GameType::SOLITAIRE,"Solitaire","solitaire","images/gamesolitaire.jpg");
                 showBestList($dbGames,GameType::SUDOKU,"Sudoku","sudoku","images/gamesudoku.jpg");
-                showBestList($dbGames,GameType::MAHJONG,"Mahjong","mahjong","images/game2048.jpg");
+                showBestList($dbGames,GameType::MAHJONG,"Mahjong","mahjong","images/gamemahjong.jpg");
                 showBestList($dbGames,GameType::GAME2048,"2048","2048","images/game2048.jpg");
             }?>
 
@@ -93,24 +93,6 @@ include("homemenu.inc.php");
                 Appl::addJs("game/game2048.js");
                 include_once "game/game2048.inc.php";
                 $game = getGameFromDB($dbGames, getIntParam("id",-1), GameType::GAME2048);
-                /*
-                $tile = new stdClass();
-                $gameId = null;
-                if (getIntParam("gameid")==1 && getIntParam("id",-1)!=-1) {
-                    $game = $dbGames->getGameById(getIntParam("id"));
-                    $gameId = $game["id"];
-                    $tile = $game["gameStatus"];
-                } else {
-                    $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,1);
-                    if ($game!=null) {
-                        $gameId = $game["id"];
-                        if (isset($game["gameStatus"]))
-                            $tile = $game["gameStatus"];
-                    } else {
-                        $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,1);
-                    }
-                }
-                */
                 Appl::addJsScript('var game2048=null');
                 Appl::addJsScript('
                     game2048 = new GameManager(4, KeyboardInputManager, HTMLActuator,\''.json_encode($game->gameStatus).'\','.$game->gameId.');
@@ -121,24 +103,6 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="solitaire") {
                 Appl::addJs("game/gamesolitaire.js");
                 include_once "game/gamesolitaire.inc.php";
-                /*
-                $gameStatus = new stdClass();
-                $gameId = null;
-                if (getIntParam("gameid")==3 && getIntParam("id",-1)!=-1) {
-                    $game = $dbGames->getGameById(getIntParam("id"));
-                    $gameId = $game["id"];
-                    $gameStatus = $game["gameStatus"];
-                } else {
-                    $game = $dbGames->getLastActivGame(getLoggedInUserId(),$ip,$agent,$lang,3);
-                    if ($game!=null) {
-                        $gameId = $game["id"];
-                        if (isset($game["gameStatus"]))
-                            $gameStatus = $game["gameStatus"];
-                    } else {
-                        $gameId = $dbGames->createGame(getLoggedInUserId(),$ip,$agent,$lang,3);
-                    }
-                }
-                */
                 $game = getGameFromDB($dbGames, getIntParam("id",-1), GameType::SOLITAIRE);
                 Appl::addJsScript('SG.startGame('.$game->gameId.",". json_encode($game->gameStatus).");",true);
             }?>
@@ -146,11 +110,7 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="mahjong") {
                 Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
                 Appl::addJs("game/gamemahjong.js");
-                ?>
-                    <div>Lehetséges párok:<span id="game-pairs"></span></div>
-                    <div id="game-mahjong" style="width: 100%; height: 600px;"></div>
-                    <button onclick="suffleBoard()">Új keverés!</button>
-                <?php
+                include_once "game/gamemahjong.inc.php";
                 $gameId="undefined";
                 Appl::addJsScript('startGame( '.$gameId.','. json_encode(getNewMahongGameStatus()).',true)');
             } ?>
@@ -196,7 +156,7 @@ include("homemenu.inc.php");
             <?php if ($tabOpen=="user") {
                 showUserGames($dbGames, GameType::SOLITAIRE, "Solitaire", "solitaire", "images/gamesolitaire.jpg");
                 showUserGames($dbGames, GameType::SUDOKU, "Sudoku", "sudoku", "images/gamesudoku.jpg");
-                showUserGames($dbGames, GameType::MAHJONG, "Mahjong", "mahjong", "images/game2048.jpg");
+                showUserGames($dbGames, GameType::MAHJONG, "Mahjong", "mahjong", "images/gamemahjong.jpg");
                 showUserGames($dbGames, GameType::GAME2048, "2048", "2048", "images/game2048.jpg");
             }?>
 		</div>

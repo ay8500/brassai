@@ -412,17 +412,25 @@ class BoardLayout {
                 layout.createColumn(0, 1, 10, 0);
                 layout.createColumn(1, 4, 7, 0);
                 layout.createColumn(2, 3, 8, 0);
-                layout.createRect(3, 2, 5, 9, 0);
-                layout.createColumn(6, 3, 8, 0);
-                layout.createColumn(7, 4, 7, 0);
-                layout.createColumn(8, 1, 10, 0);
-                layout.createTile(4, 10, 0);
-                layout.createColumn(4, 0, 1, 0);
-                layout.createTile(4, 0, 1);
-                layout.createRect(0.5,4.5,6.5, 6.5, 1);
-                layout.createRect(1, 5, 6, 6, 2);
-                layout.createRect(1.5, 5.5, 5.5, 5.5, 3);
-                //layout.createTile(6.5, 3.5, 4);
+                layout.createColumn(3, 3, 8, 0);
+                layout.createRect(4, 2, 6, 9, 0);
+                layout.createColumn(7, 3, 8, 0);
+                layout.createColumn(8, 3, 8, 0);
+                layout.createColumn(9, 4, 7, 0);
+                layout.createColumn(10, 1, 10, 0);
+                layout.createTile(5, 10, 0);
+                layout.createColumn(5, 0, 1, 0);
+                layout.createTile(5, 0, 1);
+                layout.createRect(0.5,4.5,9.5, 6.5, 1);
+                layout.createRect(1, 5, 9, 6, 2);
+                layout.createRow(2.5, 7.5, 5.5, 3);
+                layout.createRow(2.5,7.5,3.5,1);
+                layout.createRow(2.5,7.5,7.5,1);
+                layout.createRow(3,7,4,2);
+                layout.createRow(3,7,7,2);
+                layout.createRow(3.5,6.5,4.5,3);
+                layout.createRow(3.5,6.5,6.5,3);
+                layout.createRect(4, 5,6, 6,4);
             },
             //Positions: 120
             turtleh: layout => {
@@ -496,10 +504,19 @@ class BoardLayout {
         this.frames = [];
         if (layout===undefined || layout=="test") {
             this.frames = this.frames.concat(Tile.DOTS);
-        } else {
+        }
+        if (layout=="turtle") {
+                this.frames = this.frames.concat(Tile.DOTS,Tile.DOTS, Tile.BAMBOO,Tile.BAMBOO, Tile.CHARACTERS,Tile.CHARACTERS);
+                this.frames = this.frames.concat(Tile.DOTS,Tile.DOTS, Tile.BAMBOO,Tile.BAMBOO, Tile.CHARACTERS,Tile.CHARACTERS);
+                this.frames = this.frames.concat(Tile.DOTS,Tile.DOTS, Tile.CHARACTERS,Tile.CHARACTERS);
+                this.frames = this.frames.concat(Tile.FLOWERS, Tile.WINDS,Tile.WINDS);
+                this.frames = this.frames.concat(Tile.WINDS,Tile.WINDS);
+                this.frames = this.frames.concat(Tile.DRAGONS,Tile.DRAGONS);
+        }
+        if (this.frames.length==0) {
             // Create 4x each of the ordinary tiles
             for (let i = 0; i < 4; i++) {
-                this.frames = this.frames.concat(Tile.DOTS, Tile.BAMBOO, Tile.CHARACTERS, Tile.WINDS, Tile.DRAGONS);
+                this.frames = this.frames.concat(Tile.DOTS,Tile.BAMBOO, Tile.CHARACTERS, Tile.WINDS, Tile.DRAGONS);
             }
             // Create 1x each of the bonus (season and flower) tiles
             this.frames = this.frames.concat(Tile.FLOWERS, Tile.SEASONS);
@@ -607,7 +624,8 @@ class BoardLayout {
             BoardLayout.LAYOUTS[gameStatus.layout](this);
             console.log("Total positions:", this.positions.length," Frames:",this.frames.length);
         }
-        this.fillPositions(gameStatus.tiles);
+        //this.fillPositions(gameStatus.tiles);
+        this.fillPositions(undefined);
     }
 }
 
@@ -619,7 +637,7 @@ class Main extends Phaser.Scene {
     }
     create() {
         this.debug = true; // turn this on if you're a nasty rotten cheat
-        const board = new Board(this, 72, 72, new BoardLayout());
+        const board = new Board(this, 72, 72, new BoardLayout(this.gameStatus.layout));
         this.board = board;
 
         //test,turtle, castle,castleh, duncher
@@ -693,10 +711,11 @@ function startGame(gameId,gameStatus) {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
             width: 1024,
-            height: 960
+            height:1024,
         },
         scene: [new Preloader(), new Main(gameId,gameStatus)]
     });
+    setInterval(gameTimer,1000);
 }
 
 function saveGame(gameId,gameStatus) {
@@ -707,4 +726,14 @@ function saveGame(gameId,gameStatus) {
 function suffleBoard() {
     game.scene.keys["main"].board.shuffle();
     //saveGame(game.gameId, game.getGameStaus());
+}
+
+function gameTimer() {
+    if (game.scene.keys["main"].gameStatus.time !== undefined)
+        var t = game.scene.keys["main"].gameStatus.time;
+    else
+        var t =0;
+    t++;
+    game.scene.keys["main"].gameStatus.time = t;
+    $("#game-time").html(t);
 }
