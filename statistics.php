@@ -60,7 +60,7 @@ include('homemenu.inc.php');?>
             ?>
             <div style="display: inline-block; margin: 2px; background-color: #e8e8e8; padding: 2px;">
                 <span style="width: 36px;display: inline-block;"><img src="<?php echo getPersonPicture($person)?>" class="diak_image_sicon" style="margin:2px;"/></span>
-                <span style="width: 146px;display: inline-block;"><a href="editDiak?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
+                <span style="width: 146px;display: inline-block;"><a href="editPerson?uid=<?php echo $uid?>" ><?php echo $personName?></a></span>
                 <span style="width: 100px;display: inline-block;">Pontok:<?php echo $person["count"]?></span>
             </div>
             <?php

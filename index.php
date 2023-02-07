@@ -93,7 +93,7 @@ global $schoolList;
             </a>
 		</div>
 		<div class="col-sm-4" style="margin-top: 14px;">
-			<a class="inlineBox" href="editDiak?uid=658&tabOpen=school">
+			<a class="inlineBox" href="editPerson?uid=658&tabOpen=school">
                 <div class="inlineBox"><img img class="indeximg" src="images/hand-holding-cv.png" /></div>
                 <div class="inlineBox" style="vertical-align: middle;">Történetek, képek és életrajz megosztása.</div>
             </a>

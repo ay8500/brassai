@@ -3,7 +3,6 @@ include_once "config.class.php";
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once "dbBL.class.php";
-include_once "displayCards.inc.php";
 
 use maierlabs\lpfw\Appl as Appl;
 
@@ -81,93 +80,68 @@ if (isActionParam("saveclass")) {
 include("homemenu.inc.php");
 ?>
 <div class="container-fluid">
-    <?php displayClass($db, $class, false) ?>
-    <?php if ($classid>=0 && !isUserAdmin()) {  //Edit an existing class?>
+    <?php if ($classid>=0) {
+        include_once "displayCards.inc.php";
+        displayClass($db, $class, false);
+    } ?>
 
-		<div class="input-group shadowbox" >
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>
-			<select class="form-control" disabled id="selectSchool">
-                <?php foreach ($schoolList as $school) {
-                    $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
-				    <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
-				<?php } ?>
-			</select>
-		</div>
+    <div class="input-group shadowbox">
+        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>
+        <select class="form-control" onchange="changeSchool();" <?php echo (isUserSuperuser() || isUserAdmin() || isActionParam("newclass"))?"":"disabled" ?> id="selectSchool">
+            <?php foreach ($schoolList as $school) {
+                $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
+                <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
+            <?php } ?>
+        </select>
+    </div>
 
-		<div class="input-group shadowbox" >
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>	      		
-			<select class="form-control" onchange="checkStatus()" id="eveningClass">
-				<option value="0" <?php echo $class["eveningClass"]==0?"selected":""?>>nappali tagozat</option>
-				<option value="1" <?php echo $class["eveningClass"]==1?"selected":""?>>esti tagozat</option>
-			</select>
-		</div>
+    <div class="input-group shadowbox" >
+        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>
+        <select class="form-control" onchange="checkStatus()" id="eveningClass">
+            <option value="0" <?php echo $class["eveningClass"]==0?"selected":""?>>nappali tagozat</option>
+            <option value="1" <?php echo $class["eveningClass"]==1?"selected":""?>>esti tagozat</option>
+        </select>
+    </div>
 
-		<div class="input-group shadowbox">
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
-			<select class="form-control" disabled id="selectYear">
-				<option value="<?php echo $class["graduationYear"] ?>"><?php echo $class["graduationYear"] ?></option>
-			</select>
-		</div>
-		
-		<div class="input-group shadowbox" >
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztály</span>	      		
-			<select class="form-control" disabled id="selectClass">
-				<option value="<?php echo $class["name"] ?>"><?php echo $class["name"] ?></option>
-			</select>
-		</div>
-
-	<?php } else {  //Create a new or change class ?>
-
-		<div class="input-group shadowbox">
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Iskola</span>	      		
-			<select class="form-control" onchange="changeSchool();" id="selectSchool">
-                <?php foreach ($schoolList as $school) {
-                    $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
-                    <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
+    <div class="input-group shadowbox">
+        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>
+        <?php if (isUserAdmin() || isUserSuperuser()) {?>
+            <input type="text" id="year" class="form-control" onkeyup="changeYear()" value="<?php echo intval($class["graduationYear"])?>"/>
+        <?php } else { ?>
+            <select class="form-control" onchange="changeYear()" <?php echo (isUserEditor() || isActionParam("newclass"))?"":"disabled" ?> id="selectYear"/>
+                <option value="0">...válassz...</option>
+                <option selected value="<?php echo isset($class)?intval($class["graduationYear"]):""?>"><?php echo isset($class)?intval($class["graduationYear"]):""?></option>
+                 <?php for($year=date("Y");$year>=date("Y")-70;$year--) {?>
+                    <option value="<?php echo $year?>" <?php echo (isset($class) && intval($class["graduationYear"])===$year)?"selected":""?>><?php echo $year?></option>
                 <?php } ?>
-			</select>
-		</div>
-		<div class="input-group shadowbox" >
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Tagozat</span>	      		
-			<select class="form-control" onchange="checkStatus()" id="eveningClass">
-				<option value="0" <?php echo (isset($class) && intval($class["eveningClass"])===0)?"selected":""?>>nappali tagozat</option>
-				<option value="1" <?php echo (isset($class) && intval($class["eveningClass"])===1)?"selected":""?>>esti tagozat</option>
-			</select>
-		</div>
-		<div class="input-group shadowbox" >
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>	      		
-			<select class="form-control" onchange="changeYear()" id="selectYear">
-				<option value="0">...válassz...</option>
-				<?php for($year=date("Y");$year>=date("Y")-123;$year--) {?>
-				<option value="<?php echo $year?>" <?php echo (isset($class) && intval($class["graduationYear"])===$year)?"selected":""?>><?php echo $year?></option>
-				<?php } ?>
-			</select>
-		</div>
-		
-		<div class="input-group shadowbox">
-			<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztály</span>	      		
-			<select class="form-control" onchange="changeClass()" id="selectClass">
-				<option value="0">...válassz...</option>
-				<option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
-				<option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
-				<?php 
-					$cl=12;for($cs="A";$cs<="K";$cs++) {
-					        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-				    } $cs="R";
+            </select>
+        <?php }?>
+    </div>
+
+    <div class="input-group shadowbox">
+        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztály</span>
+        <select class="form-control" onchange="changeClass()" <?php echo (isUserSuperuser() || isUserAdmin() || isUserEditor() || isActionParam("newclass"))?"":"disabled" ?> id="selectClass">
+            <option value="0">...válassz...</option>
+            <option value="" <?php echo (isset($class) && $class["name"]=="")?"selected":""?>>összes nappali osztályok</option>
+            <option value="esti" <?php echo (isset($class) && $class["name"]=="esti")?"selected":""?>>összes esti osztályok</option>
+            <?php
+                $cl=12;for($cs="A";$cs<="K";$cs++) {
+                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                } $cs="R";
+                ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                $cl=13;for($cs="A";$cs<="K";$cs++) {
                     ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                    $cl=13;for($cs="A";$cs<="K";$cs++) {
-                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                    }
-                        $cl=11;for($cs="A";$cs<="F";$cs++) {
-                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                    }
-                    $cl=10;for($cs="A";$cs<="D";$cs++) {
-                        ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
-                    }
-                 ?>
-			</select>
-		</div>
-	<?php } ?>	
+                }
+                    $cl=11;for($cs="A";$cs<="F";$cs++) {
+                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                }
+                $cl=10;for($cs="A";$cs<="D";$cs++) {
+                    ?><option value="<?php echo $cl.$cs ?>" <?php echo (isset($class) && $class["name"]===$cl.$cs)?"selected":""?>><?php echo $cl.$cs ?></option><?php
+                }
+             ?>
+        </select>
+    </div>
+
 	<div class="input-group shadowbox">
 		<span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Osztályfőnők</span>	      		
 		<select class="form-control" onchange="changeTeacher()" id="selectTeacher">
@@ -182,6 +156,7 @@ include("homemenu.inc.php");
 			<?php } ?>
 		</select>
 	</div>
+
     <div class="input-group shadowbox">
         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Második osztályfőnők</span>
         <select class="form-control" onchange="changeTeacher()" id="selectHeadTeacher">
@@ -289,14 +264,15 @@ Appl::addJsScript('
 	}
 
 	function checkStatus() {
-		if ($("#selectSchool").val()!==0	&&
-			$("#selectYear").val()!=0	&&
+		if ($("#selectSchool").val()!==0 &&
+			($("#selectYear").val()!=0 || ($("#year").length>0 && $("#year").val().length==4 && $("#year").val()>1800 && $("#year").val()<2500)) &&
 			$("#selectClass").val()!=0	&&
 			$("#selectTeacher").val()!=0 
 			) {
 			$("#btNew").removeClass("disabled");
 			$("#btSave").removeClass("disabled");
 		} else {
+		    console.log("Save conditions not given!");
 		    $("#btNew").addClass("disabled");
 		    $("#btSave").addClass("disabled");
 		}
@@ -305,12 +281,20 @@ Appl::addJsScript('
 
 	function saveClass() {
 	    showWaitMessage();
-	    document.location="editSchoolClass?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&secondTeacher="+$("#selectHeadTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
+	    console.log("Save class id:"+'.$classid.');
+	    var year = $("#selectYear").val();
+	    if (year == undefined)
+	      year = $("#year").val();
+	    document.location="editSchoolClass?action=saveclass&year="+year+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&secondTeacher="+$("#selectHeadTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val()+"&classid='.$classid.'";
 	}
 
 	function saveNewClass() {
 	    showWaitMessage();
-	    document.location="editSchoolClass?action=saveclass&year="+$("#selectYear").val()+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val();
+	    console.log("Save new class ");
+	    var year = $("#selectYear").val();
+	    if (year == undefined)
+	      year = $("#year").val();
+	    document.location="editSchoolClass?action=saveclass&year="+year+"&class="+$("#selectClass").val()+"&teacher="+$("#selectTeacher").val()+"&secondTeacher="+$("#selectHeadTeacher").val()+"&teachers="+getTeachers()+"&eveningClass="+$("#eveningClass").val();
 	}
 	
 	function getTeachers() {

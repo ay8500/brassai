@@ -140,7 +140,7 @@ function showTagging(show) {
                     html += '<span onmouseover="personShow(' + p.personID + ',true)"';
                     html += ' onmouseout="personShow(' + p.personID + ',false)" class="personlist" ';
                     html += ' style="border-radius:3px" person-id="' + p.personID + '">';
-                    html += '<a href="editDiak?uid=' + p.personID + '">' + (p.title != null ? p.title + ' ' : '') + p.lastname + ' ' + p.firstname + "</a>";
+                    html += '<a href="editPerson?uid=' + p.personID + '">' + (p.title != null ? p.title + ' ' : '') + p.lastname + ' ' + p.firstname + "</a>";
                     html += '&nbsp;<span title="Töröl" class="glyphicon glyphicon-remove-circle" onclick="deletePerson(' + p.personID + ',' + p.pictureID + ')"></span>';
                     html += '</span>';
                     $("#personlist").append(html);

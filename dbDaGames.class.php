@@ -49,6 +49,15 @@ class dbDaGames
         return $ret;
     }
 
+    public function getGameHighScore($gameId) {
+        $sql = "select * from game where gameId=".$gameId." order by highScore desc limit 1";
+        $ret = $this->dataBase->querySignleRow($sql);
+        if ($ret==null)
+            return null;
+        $ret["gameStatus"]=$this->getGameDataFromJsonString($ret["gameStatusJson"]);
+        return $ret;
+    }
+
     public function saveGame($gameId,$gameStatus) {
         $data=array();
         $data=$this->dbDAO->dataBase->insertFieldInArray($data, "gameStatusJson", $gameStatus);

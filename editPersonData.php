@@ -32,7 +32,7 @@
             <?php //Person picture download only  if person already saved?>
             <?php if (($edit || $createNewPerson) && strlen(trim($diak["lastname"]))>2 && strlen(trim($diak["firstname"]))>2) {  ?>
                 <div style="display: inline-block;margin:15px;vertical-align: bottom;max-width: 400px;">
-                    <form enctype="multipart/form-data" action="editDiak" method="post">
+                    <form enctype="multipart/form-data" action="editPerson" method="post">
                         <h4>Profilkép</h4>
                         <div style="margin-bottom: 5px;">A perfekt profilkép ez érettségi tablon felhasznált képed, kicsengetési kártya képe vagy bármilyen privát arckép.</div>
                         <span>Válassz egy új jpg képet max. 2MByte</span>
@@ -71,11 +71,11 @@
         <?php //Save button?>
         <?php if ($edit || $createNewPerson) {?>
                 <button id="saveButton" onclick="savePerson();" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Kiment</button>
-                <button onclick="location.href='editDiak'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
+                <button onclick="location.href='editPerson'" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Mégse </button>
         <?php } ?>
         <?php //Anonymous user edit button?>
         <?php if (!$edit && !$createNewPerson) {?>
-                <button onclick="document.location='editDiak?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
+                <button onclick="document.location='editPerson?anonymousEditor=true';" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span> Módosítani szeretnék</button>
         <?php } ?>
         <?php if (!isActionParam("newperson")) {?>
                 <button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
@@ -84,7 +84,7 @@
    <?php } ?>
 
 <?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
-    <form method="get" id="editform" action="editDiak">
+    <form method="get" id="editform" action="editPerson">
         <?php
         //Editfields school and class
         if (($edit || $createNewPerson) && !$anonymousEditor && isUserLoggedOn() && !isActionParam("newteacher")) {
@@ -130,7 +130,7 @@
                 $dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
                 //field onclick
                 $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-                //Inpufields
+                //Inputfields
                 if (($edit || $createNewPerson) && !$anonymousEditor ) {?>
                     <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
                     if ( isUserLoggedOn()) {?>

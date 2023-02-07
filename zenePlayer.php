@@ -44,16 +44,20 @@ else {
 	else $Video="";
 	
 }
-//Get the vote list for this music
-$voters =$dbSongVote->getVotersListForMusicId(getIntParam("id"));
 
+
+if (null !=$playlist) {
+    $Title = "Zenedoboz mindig a legjobb zene!";
+    $voters = array();
+} else {
+    $voters =$dbSongVote->getVotersListForMusicId(getIntParam("id"));
 //Check if video exists
 //https://console.developers.google.com/apis/api/youtubeoembed.googleapis.com/quotas?project=skilful-works-806
-$apiPublicKey=encrypt_decrypt("decrypt","STRGZTdISFVONExKVVhkOE1Bay9ZOVhjMmVPQnZpUE5oNi84UlBBeDJ3OGZ6aDZyY3hWTGZkT3lEMHZUS0w4Ng==");
-$response = maierlabs\lpfw\htmlParser::loadUrl('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $Video . '&key=' . $apiPublicKey);
-$json = json_decode($response);
-
-$Title="Zenedoboz".(is_object($json)&&isset($json->title)?': '.$json->title:'');
+    $apiPublicKey = encrypt_decrypt("decrypt", "STRGZTdISFVONExKVVhkOE1Bay9ZOVhjMmVPQnZpUE5oNi84UlBBeDJ3OGZ6aDZyY3hWTGZkT3lEMHZUS0w4Ng==");
+    $response = maierlabs\lpfw\htmlParser::loadUrl('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $Video . '&key=' . $apiPublicKey);
+    $json = json_decode($response);
+    $Title = "Zenedoboz" . (is_object($json) && isset($json->title) ? ': ' . $json->title : '');
+}
 $SiteDescription="Kendvenc zenénket itt lejátszhatod";
 Appl::setSiteTitle($Title,$Title,$SiteDescription);
 include("homemenu.inc.php");
@@ -125,30 +129,65 @@ include("homemenu.inc.php");
             </div>
         <?php } ?>
 
-        <?php if (is_object($json)&& !isset($json->error) ) {?>
-			<div class="tabEmpty"><a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
-			<?php if (null==$playlist):?>
-				<h2><?php echo (is_object($json)&&isset($json->title)?' '.$json->title:'')?></h2>
-                <object  class="embed-responsive embed-responsive-16by9">
-                    <embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
-                </object>
-			<?php else: ?>
-				<h2>Toplista teljes lejátszása <?php echo getParam("listdir","")?></h2>
-                <object  class="embed-responsive embed-responsive-16by9">
-                    <embed src="https://www.youtube.com/v/<?php echo $Video?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&playlist=<?php echo $playlist?>" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
-                </object>
-			<?php endif;?>
-		<?php } else {?>
-			<div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?>
+        <div class="tabEmpty">
+            <a style="margin-bottom: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a>
+            <?php if (null!=$playlist) {?>
+                <a style="margin-bottom: 10px" class="btn btn-default" onclick="nextSong();">Ugrodjunk előre </a>
+            <?php } ?>
+        </div>
+        <?php if (null==$playlist  ) {?>
+            <?php if (is_object($json) && !isset($json->error)) {?>
+                <h2 id="song-title"><?php echo (is_object($json)&&isset($json->title)?' '.$json->title:'')?></h2>
+                <div id="player"></div>
+            <?php } else {?>
+                <div class="alert alert-warning" >Video nem létezik! Youtube cód:<?php echo $Video?>
                 <?php if (isUserAdmin()) { print_r($json->error); } ?>
-            </div>
-		<?php }?>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <h2>Toplista teljes lejátszása <?php echo getParam("listdir","")?> <span id="song-position"><?php echo 1+substr_count($playlist,",")."/1" ?></span></h2>
+            <div id="player"></div>
+        <?php } ?>
 		<div class="tabEmpty"><a style="margin: 10px" class="btn btn-default" href="zenetoplista">Vissza a toplistához. </a></div>
 	</div>
 
-
-
 </div>
+<script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
- <?php include "homefooter.inc.php" ?>
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '480',
+            width: '100%',
+            videoId: '<?php echo $Video ?>',
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
 
+    function nextSong() {
+        if (videoList.length>0 && videoListIndex<videoList.length && videoList[videoListIndex]!="") {
+            player.loadVideoById(videoList[videoListIndex++], 0, "large")
+            $("#song-position").html((videoList.length+1)+"/"+(videoListIndex+1));
+        }
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+    var videoList = "<?php echo trim($playlist,',') ?>".split(",");
+    var videoListIndex=0;
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+            nextSong();
+        }
+    }
+</script>
+<?php include "homefooter.inc.php" ?>

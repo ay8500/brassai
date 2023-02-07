@@ -230,7 +230,7 @@ if (getParam("type")=="schoolID") {
 if (getParam("type")=="personID" || getParam("tabOpen")=="pictures")  {
     $countMark = $db->getPersonMarksCount($typeId);
     if( $countMark>0 ) {
-        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editDiak?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
+        $startAlbumList=array_merge($startAlbumList,array(array("albumLink"=>"editPerson?type=personID&typeid=".getParam("typeid")."&album=_mark_","albumText"=>Appl::__("Megjelölések"),"albumName"=>"_mark_","count"=>$countMark)));
     }
 }
 

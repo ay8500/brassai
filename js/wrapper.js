@@ -41,7 +41,7 @@ function addWrapperDiv(id) {
         
         var html='<div style="height:230px;width:'+width+'px" id="wrapper'+aktWrapper +'">';
         html +='<div style="display: inline-block; margin: 0px 10px">';
-        html +=     '<a href="editDiak?uid='+d.id+'" title="'+d.name+'">';
+        html +=     '<a href="editPerson?uid='+d.id+'" title="'+d.name+'">';
         html +=     '<div >';
         html +=         '<img src="images/'+d.image+'" border="0" title="'+d.name+'" class="diak_image_medium">';
         if (d["deceasedYear"]!=null && parseInt(d["deceasedYear"])>=0) {
@@ -108,7 +108,7 @@ function addWrapperDiv(id) {
         if (d.homepage!=null)
     		html +='&nbsp;<a target="_new" href='+d.homepage+'><img src="images/www.png" /></a>';
         if (d.geolocation===1)
-        	html +='&nbsp;<a href=editDiak?tabOpen=geoplace&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
+        	html +='&nbsp;<a href=editPerson?tabOpen=geoplace&uid='+d.id+'><img style="width:25px" src="images/geolocation.png" /></a>';
         html +='</div>';
 
         html +='</div>';

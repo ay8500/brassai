@@ -15,7 +15,7 @@ function SendNewPassword($diak) {
 	$text.="Végzős osztály:".getActSchoolClassName()."<br/>";
 	$text.="Felhasználónév:".$diak["user"]."<br/>";
 	$text.="Jelszó:".encrypt_decrypt("decrypt",$diak["passw"])."<br/>";
-	$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak?key='.generateUserLoginKey($diak['id']).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
+	$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editPerson?key='.generateUserLoginKey($diak['id']).'">'.$diak["lastname"]." ".$diak["firstname"].'</a><br/>';
 	$text.="</p><p>";
 	$text.='<a href='.Config::$siteUrl.'/index?classid='.getRealId(getActClass()).'>A véndiakok diákok honlapja</a>';
 	$text.="</p>";
@@ -35,7 +35,7 @@ function sendNewUserMail($firstname,$lastname,$mail,$passw,$user,$rights,$year,$
 	if (isset($year) && isset($class))
 		$text.="Végzős osztály:".$school["name"]." ".$year.'-'.$class."<br/>";
 	if (isset($uid) && null!=$uid) {
-		$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
+		$text.='Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editPerson?key='.generateUserLoginKey($uid).'">'.$lastname."&nbsp;".$firstname.'</a><br/>';
 	}
 	if ($passw=="") {
 		$text.="Hamarosan még egy emailt fogsz kapni a felhasználó névvel és jelszóval.<br/>";
@@ -70,7 +70,7 @@ function sendMailToPerson($uid,$body,$userData,$sender) {
 		
 		$body=str_replace("%%name%%",$diak["lastname"]." ".$diak["firstname"],$body);
 		$body=str_replace("\"","&quot;",$body);
-		$body.='<hr/><p>Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editDiak?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
+		$body.='<hr/><p>Direkt link az én adataimhoz: <a href="'.Config::$siteUrl.'/editPerson?key='.generateUserLoginKey($uid).'">'.$diak["lastname"]." ".$diak["firstname"].'</a></p>';
 		if ($userData) {
 			$body.="<hr/><p>Bejelentkezési Adatok<br/>Becenév: ".$diak["user"]." <br/>Jelszó: ".encrypt_decrypt("decrypt",$diak["passw"])."<br/></p>";
 		}

@@ -1153,6 +1153,15 @@ class dbDAO {
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
+        if (in_array($filter,array("all","game"))) {
+            $sql = " (select game.id as id, dateEnd as changeDate, 'game' as type, 'played' as action, userId as changeUserID from game";
+            $sql .= " join person on person.id=game.userId join class on class.id=person.classID ";
+            $sql .=  " where dateEnd<='" . $dateFrom->format("Y-m-d H:i:s") . "' ".(getActSchoolId()==null?"":(" and schoolID=".getActSchoolId()));
+            $sql .= "order by dateEnd desc limit " . $limit . ") ";
+            $this->dataBase->query($sql);
+            $rows = array_merge($rows, $this->dataBase->getRowList());
+        }
+        /*
         if (in_array($filter,array("all","article"))) {
             $sql = " (select id, changeDate, 'article' as type, 'change' as action, changeUserID from article where changeDate<='" . $dateFrom->format("Y-m-d H:i:s") . "' ";
             $sql .= getActSchoolId()==null?"":(" and schoolID=".getActSchoolId());
@@ -1160,7 +1169,7 @@ class dbDAO {
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
-
+        */
         //Order list by change date using the spaceship operator
         usort($rows,function($a,$b) {
             return ($b["changeDate"]<=>$a["changeDate"]);

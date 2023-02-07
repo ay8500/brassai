@@ -62,12 +62,15 @@ function showRecentChanges(dbDAO $db,$date=null) {
         } elseif ($id["type"] == "class") {
             $class= $db->getClassById($id["id"]);
             displayClass($db, $class,true);
-        } elseif ($id["type"] == "article") {
+        /*} elseif ($id["type"] == "article") {
             $article= $db->getArticleById($id["id"]);
             displayArticle($db, $article,true);
+        */
         } elseif ($id["type"] == "message") {
             $message= $db->getMessage($id["id"]);
             displayMessage($db, $message,true);
+        } elseif ($id["type"] == "game") {
+            displayGame($db, $id["id"]);
         } elseif ($id["type"] == "music") {
             $musicVote = $dbSong->getSongById($id["id"]);
             displayMusic($db, $musicVote,$id["action"],$id["changeUserID"],$id["changeDate"],true);

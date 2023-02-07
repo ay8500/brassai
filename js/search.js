@@ -49,7 +49,7 @@ function searchPersonAndPicture() {
                     }
                     var html = '<tr>';
                     html += '<td '+(row.deceasedYear!==null?'style="background-color:black"':'')+'>' + pimg + '</td>';
-                    html += '<td><a href="editDiak?uid='+row.id+'">' + pname + '</a></td>';
+                    html += '<td><a href="editPerson?uid='+row.id+'">' + pname + '</a></td>';
                     html += '<td><img src="images/school'+row.schoolID+'/'+row.schoolLogo+'" style="height: 33px"/></td>';
                     html += '<td>' + pclass + '</td>';
                     html += '</tr>';

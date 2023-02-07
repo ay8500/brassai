@@ -5,18 +5,12 @@ include_once Config::$lpfw.'userManager.php';
 include_once Config::$lpfw.'appl.class.php';
 include_once 'dbBL.class.php';
 include_once 'dbDaGames.class.php';
+include_once 'game/gameTypes.php';
 
 use \maierlabs\lpfw\Appl as Appl;
 global $db ;
 global $tabOpen;
 $dbGames = new dbDaGames($db);
-
-abstract class GameType {
-    const GAME2048 = 1;
-    const SUDOKU = 2;
-    const SOLITAIRE = 3;
-    const MAHJONG = 4;
-}
 
 Appl::addCssStyle('
   .game-box {
@@ -37,11 +31,11 @@ Appl::addCssStyle('
 $tabsCaption = array();
 $tabsTranslate["search"] = array(".php");$tabsTranslate["replace"] = array("");
 array_push($tabsCaption ,array("id" => "bestlist", "caption" => 'A legjobb játékosok', "glyphicon" => "globe"));
-array_push($tabsCaption, array("id" => "solitaire", "caption" => 'Solitaire', "glyphicon" => "heart"));
-array_push($tabsCaption ,array("id" => "sudoku", "caption" => 'Sudoku', "glyphicon" => "th"));
+array_push($tabsCaption, array("id" => strtolower(gameName[GameType::SOLITAIRE]["name"]), "caption" => gameName[GameType::SOLITAIRE]["name"], "glyphicon" => gameName[GameType::SOLITAIRE]["icon"]));
+array_push($tabsCaption ,array("id" => strtolower(gameName[GameType::SUDOKU]["name"]), "caption" => gameName[GameType::SUDOKU]["name"], "glyphicon" => gameName[GameType::SUDOKU]["icon"]));
 if (isUserAdmin())
-    array_push($tabsCaption ,array("id" => "mahjong", "caption" => 'Mahjong', "glyphicon" => "yen"));
-array_push($tabsCaption ,array("id" => "2048", "caption" => '2048', "glyphicon" => "pawn"));
+    array_push($tabsCaption ,array("id" => strtolower(gameName[GameType::MAHJONG]["name"]), "caption" => gameName[GameType::MAHJONG]["name"], "glyphicon" => gameName[GameType::MAHJONG]["icon"]));
+array_push($tabsCaption ,array("id" => strtolower(gameName[GameType::GAME2048]["name"]), "caption" => gameName[GameType::GAME2048]["name"], "glyphicon" => gameName[GameType::GAME2048]["icon"]));
 
 //array_push($tabsCaption ,array("id" => "memory", "caption" => 'Memory', "glyphicon" => ""));
 if (isUserLoggedOn() || getParam("userid")!=null) {
@@ -63,15 +57,13 @@ $ip = $_SERVER['REMOTE_ADDR'];
 $title = 'Logikai játékok: '. $tabsCaption[(array_search(getParam("tabOpen","A legjobb játékosok"),array_column($tabsCaption,"id")))]["caption"];
 Appl::setSiteTitle($title,$title);
 
-if (getParam("tabOpen")=="sudoku")
+if (getParam("tabOpen")==strtolower(gameName[GameType::SUDOKU]["name"]))
     Appl::addCss("game/gamesudoku.css");
-elseif (getParam("tabOpen")=="memory")
-    Appl::addCss("game/gamememory.css");
-elseif (getParam("tabOpen")=="2048")
+elseif (getParam("tabOpen")==strtolower(gameName[GameType::GAME2048]["name"]))
     Appl::addCss("game/game2048.css");
-elseif (getParam("tabOpen")=="solitaire")
+elseif (getParam("tabOpen")==strtolower(gameName[GameType::SOLITAIRE]["name"]))
     Appl::addCss("game/gamesolitaire.css");
-elseif (getParam("tabOpen")=="mahjong")
+elseif (getParam("tabOpen")==strtolower(gameName[GameType::MAHJONG]["name"]))
     Appl::addCss("game/gamemahjong.css");
 
 include("homemenu.inc.php");
@@ -83,13 +75,13 @@ include("homemenu.inc.php");
 		<div class="panel-body">
 
             <?php if ($tabOpen=="bestlist") {
-                showBestList($dbGames,GameType::SOLITAIRE,"Solitaire","solitaire","images/gamesolitaire.jpg");
-                showBestList($dbGames,GameType::SUDOKU,"Sudoku","sudoku","images/gamesudoku.jpg");
-                showBestList($dbGames,GameType::MAHJONG,"Mahjong","mahjong","images/gamemahjong.jpg");
-                showBestList($dbGames,GameType::GAME2048,"2048","2048","images/game2048.jpg");
+                showBestList($dbGames,GameType::SOLITAIRE);
+                showBestList($dbGames,GameType::SUDOKU);
+                showBestList($dbGames,GameType::MAHJONG);
+                showBestList($dbGames,GameType::GAME2048);
             }?>
 
-            <?php if ($tabOpen=="2048") {
+            <?php if ($tabOpen==strtolower(gameName[GameType::GAME2048]["name"])) {
                 Appl::addJs("game/game2048.js");
                 include_once "game/game2048.inc.php";
                 $game = getGameFromDB($dbGames, getIntParam("id",-1), GameType::GAME2048);
@@ -100,27 +92,21 @@ include("homemenu.inc.php");
             }?>
 
 
-            <?php if ($tabOpen=="solitaire") {
+            <?php if ($tabOpen==strtolower(gameName[GameType::SOLITAIRE]["name"])) {
                 Appl::addJs("game/gamesolitaire.js");
                 include_once "game/gamesolitaire.inc.php";
                 $game = getGameFromDB($dbGames, getIntParam("id",-1), GameType::SOLITAIRE);
                 Appl::addJsScript('SG.startGame('.$game->gameId.",". json_encode($game->gameStatus).");",true);
             }?>
 
-            <?php if ($tabOpen=="mahjong") {
+            <?php if ($tabOpen==strtolower(gameName[GameType::MAHJONG]["name"])) {
                 Appl::addJs("https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js");
                 Appl::addJs("game/gamemahjong.js");
                 include_once "game/gamemahjong.inc.php";
                 $gameId="undefined";
                 Appl::addJsScript('startGame( '.$gameId.','. json_encode(getNewMahongGameStatus()).',true)');
             } ?>
-
-            <?php if ($tabOpen=="memory") {
-                Appl::addJs("game/gamememory.js");
-                include_once "game/gamememory.inc.php";
-            }?>
-
-            <?php if ($tabOpen=="sudoku") {
+            <?php if ($tabOpen==strtolower(gameName[GameType::SUDOKU]["name"])) {
                 Appl::addJs("game/gamesudoku.js");
                 include_once "game/gamesudoku.inc.php";
                 $status =getNewSudokuGameStatus();
@@ -154,10 +140,10 @@ include("homemenu.inc.php");
             }?>
 
             <?php if ($tabOpen=="user") {
-                showUserGames($dbGames, GameType::SOLITAIRE, "Solitaire", "solitaire", "images/gamesolitaire.jpg");
-                showUserGames($dbGames, GameType::SUDOKU, "Sudoku", "sudoku", "images/gamesudoku.jpg");
-                showUserGames($dbGames, GameType::MAHJONG, "Mahjong", "mahjong", "images/gamemahjong.jpg");
-                showUserGames($dbGames, GameType::GAME2048, "2048", "2048", "images/game2048.jpg");
+                showUserGames($dbGames, GameType::SOLITAIRE);
+                showUserGames($dbGames, GameType::SUDOKU);
+                showUserGames($dbGames, GameType::MAHJONG);
+                showUserGames($dbGames, GameType::GAME2048);
             }?>
 		</div>
 	</div>
@@ -172,7 +158,7 @@ function getNewSudokuGameStatus() {
 }
 
 function getNewMahongGameStatus() {
-    return  array( "layout"=> "turtle",  "tiles"=> array(
+    return  array( "layout"=> "duncher",  "tiles"=> array(
             array("active" => true, "name"=> 13),
             array("active" => true, "name" => 20),
             array("active" => true, "name" => 14),
@@ -232,17 +218,14 @@ function getGameFromDB($dbGames, $gameId, $gameTypeId) {
  * Show the list of best user
  * @param dbDaGames $dbGames
  * @param GameType $gameType
- * @param string $gameName
- * @param string $tabId
- * @param string $gameLogo
  */
-function showBestList($dbGames,$gameType,$gameName,$tabId,$gameLogo) {
+function showBestList($dbGames,$gameType) {
 ?>
     <div class="game-box">
     <div class="game-box-left">
-        <h2><?php echo $gameName ?></h2>
-        <a class="btn btn-success" href="games?tabOpen=<?php echo $tabId?>">Játszani szeretnék</a>
-        <img src="<?php echo $gameLogo?>" class="game-logo"/>
+        <h2><?php echo gameName[$gameType]["name"] ?></h2>
+        <a class="btn btn-success" href="games?tabOpen=<?php echo strtolower(gameName[$gameType]["name"])?>">Játszani szeretnék</a>
+        <img src="<?php echo gameName[$gameType]["logo"]?>" class="game-logo"/>
     </div>
     <div class="game-box-right">
         <table>
@@ -267,20 +250,17 @@ function showBestList($dbGames,$gameType,$gameName,$tabId,$gameLogo) {
  * Show a list of the user games based on userId or IP or UserAgent und Language
  * @param dbDaGames $dbGames
  * @param GameType $gameType
- * @param string $gameName
- * @param string $tabId
- * @param string $gameLogo
  */
-function showUserGames($dbGames,$gameType,$gameName,$tabId,$gameLogo) {
+function showUserGames($dbGames,$gameType) {
     $lang= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     $agent = $_SERVER['HTTP_USER_AGENT'];
     $ip = $_SERVER['REMOTE_ADDR'];
     ?>
     <div class="game-box">
         <div  class="game-box-left">
-            <h2><?php echo $gameName?></h2>
-            <a class="btn btn-success" href="games?tabOpen=<?php echo $tabId?>">Játszani szeretnék</a>
-            <img src="<?php echo $gameLogo?>" class="game-logo"/>
+            <h2><?php echo gameName[$gameType]["name"]?></h2>
+            <a class="btn btn-success" href="games?tabOpen=<?php echo strtolower(gameName[$gameType]["name"])?>">Játszani szeretnék</a>
+            <img src="<?php echo gameName[$gameType]["logo"]?>" class="game-logo"/>
         </div>
         <div class="game-box-right">
             <?php
@@ -294,9 +274,9 @@ function showUserGames($dbGames,$gameType,$gameName,$tabId,$gameLogo) {
                         <td style="text-align:right;width: 80px"><b><?php echo $game["highScore"]?></b></td>
                         <td style="padding: 5px">
                             <?php if (($game["gameStatus"]["over"])===true) { ?>
-                                <a class="btn btn-warning" href="games?tabOpen=<?php echo $tabId?>&gameid=<?php echo $gameType?>&id=<?php echo($game["id"])?>">Eredmény</a>
+                                <a class="btn btn-warning" href="games?tabOpen=<?php echo strtolower(gameName[$gameType]["name"])?>&gameid=<?php echo $gameType?>&id=<?php echo($game["id"])?>">Eredmény</a>
                             <?php } else { ?>
-                                <a class="btn btn-success" href="games?tabOpen=<?php echo $tabId?>&gameid=<?php echo $gameType?>&id=<?php echo($game["id"])?>">Folytatom</a>
+                                <a class="btn btn-success" href="games?tabOpen=<?php echo strtolower(gameName[$gameType]["name"])?>&gameid=<?php echo $gameType?>&id=<?php echo($game["id"])?>">Folytatom</a>
                             <?php }  ?>
                         </td>
 

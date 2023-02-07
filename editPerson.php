@@ -33,6 +33,7 @@ if($personid!=null){
 }
 else {
 	$personid=getActUserId();
+    $diak = $db->getPersonByID($personid);
 }
 
 //Parameters
@@ -363,7 +364,7 @@ if (isActionParam("newperson") && getActSchoolId()==null) {
 
 //initialize tabs
 $tabsTranslate["search"] = array(".php","/dc?","/brassai/dc?");
-$tabsTranslate["replace"] = array("","/editDiak?","/brassai/editDiak?");
+$tabsTranslate["replace"] = array("","/editPerson?","/brassai/editPerson?");
 if ($action=="newperson") {
     $tabsCaption = array(array("id" => "person", "caption" => "Új diák adatai", "glyphicon" => "*person"));
 } else if ($action=="newguest") {
@@ -393,7 +394,7 @@ if(isUserLoggedOn() || isUserAdmin()) {
     array_push($tabsCaption ,array("id" => "info", "caption" => "Infók", "glyphicon" => "info-sign"));
 }
 
-$tabUrl="editDiak";
+$tabUrl="editPerson";
 ?>
 <div class="container-fluid"><?php
     include Config::$lpfw.'view/tabs.inc.php';?>

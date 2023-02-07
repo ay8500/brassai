@@ -253,7 +253,7 @@ include 'homemenu.inc.php';
 		<button class="margin-def btn btn-success disabled"  onclick="signin()" id="signinbtn">Bejelentkezem</button>
         <button class="margin-def btn btn-warning"  onclick="document.location.href='index'" >Kilép</button>
 		<?php } else {?>
-			<button class="btn btn-default" onclick="javascript:document.location.href='editDiak?uid=<?php echo $newUserReturnValue?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
+			<button class="btn btn-default" onclick="javascript:document.location.href='editPerson?uid=<?php echo $newUserReturnValue?>'">Mutasd személyes adataim</button> Bejelentkezés sikerült
 		<?php } ?>
 	</div>
 </div></div>

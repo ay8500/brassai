@@ -48,7 +48,7 @@ if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
 	} else {
         header("HTTP/1.1 200 OK");
 		setActUserId($diak["id"]);
-		include ("editDiak.php");
+		include ("editPerson.php");
         echo($diak["lastname"]);
 		exit();
 	}

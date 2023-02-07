@@ -365,7 +365,7 @@ else
 const songs = [<?php
     foreach($topList as $i=>$v) {
         echo(($i!=0?',"':'"').$v['video'].'"');
-        if ($i>100)
+        if ($i>=99)
             break;
     }
 ?>];

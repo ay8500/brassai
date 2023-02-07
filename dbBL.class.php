@@ -201,7 +201,7 @@ class dbBL extends dbDAO
             $type = "person";
             $typeid = $pict[$type . "ID"];
             $picturePerson = $this->getPersonByID($typeid);
-            $typeText = '<a href="editDiak?tabOpen=pictures&uid=' . $typeid .'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Személyes kép:'. getPersonName($picturePerson).'</a>';
+            $typeText = '<a href="editPerson?tabOpen=pictures&uid=' . $typeid .'"><i style="vertical-align: bottom" class="material-icons">photo_camera</i> Személyes kép:'. getPersonName($picturePerson).'</a>';
         }
          elseif (isset($pict["classID"])) {
             $type = "class";

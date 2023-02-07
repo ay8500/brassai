@@ -52,12 +52,12 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testUser1() {
-        $ret = $this->callTestUrl($this->url . "editDiak?uid=834", false);
+        $ret = $this->callTestUrl($this->url . "editPerson?uid=834", false);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $firstPicture = $dom->getElementById("firstPicture");
         $this->assertSame("img",$firstPicture->tagName);
-        $ret = $this->callTestUrl($this->url . "editDiak?&tabOpen=pictures", false);
+        $ret = $this->callTestUrl($this->url . "editPerson?&tabOpen=pictures", false);
         $dom = new DOMDocument();
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);

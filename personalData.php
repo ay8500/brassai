@@ -118,7 +118,7 @@ if (null==$person || $action!="D" || $dayKey-$dayNow+7 < 0) {
         <h3> Játékok </h3>
         <?php
         $games = $db->dataBase->queryArray("select * from game where userId=".$person["id"]);
-        $gameArray = array("2048","Sudoku","Solitaire","Mine");
+        $gameArray = array("2048","Sudoku","Solitaire","Mahjong");
         if (sizeof($games)==0) {
             Appl::_("Jelenleg még nem játszodtál játékokat ezen az oldalon!");
         } else {

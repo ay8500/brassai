@@ -15,7 +15,7 @@ $diak = $db->getPersonByID($personid);
     </div>
 
     <div class="user-setting">
-        <form action="editDiak" method="get">
+        <form action="editPerson" method="get">
 			<div><h3><span class="glyphicon glyphicon-user"></span> Becenév módosítása</h3>A becenév minimum 6 karakter hosszú kell legyen. </div>
 			<div><span>Becenév</span><input type="text" class="input2" name="user" value="<?php  echo $diak["user"] ?>" /></div>
 			<div><span></span><input type="submit" class="btn btn-success" value="kimentés" title="Új becenév kimentése" /></div>
@@ -26,7 +26,7 @@ $diak = $db->getPersonByID($personid);
     </div>
 
     <div class="user-setting">
-		<form action="editDiak" method="get">
+		<form action="editPerson" method="get">
 			<div><p style="text-align:left"><h3><span class="glyphicon glyphicon-wrench"></span> Jelszó módosítása</h3> A jelszó minimum 6 karakter hosszú kell legyen. </p></div>
             <div><span>Jelszó</span><input type="password" xclass="form-control" name="newpwd1" value="" /></div>
             <div><span>Jelszó ismétlése</span><input type="password" xclass="form-control" name="newpwd2" value="" /></div>
@@ -39,7 +39,7 @@ $diak = $db->getPersonByID($personid);
 
     <div class="user-setting">
         <div><p style="text-align:left" ><h3><span class="glyphicon glyphicon-link"></span> Direkt link az adataimhoz</h3>Ezzel a linkkel becenév és jelszó nélkül lehet bejelentkezni.</p></div>
-        <div><span>Direkt link</span><a class="btn btn-default" href="editDiak?key=<?php echo generateUserLoginKey(getActUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></div>
+        <div><span>Direkt link</span><a class="btn btn-default" href="editPerson?key=<?php echo generateUserLoginKey(getActUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></div>
         <?php if (isUserAdmin()) {?>
             <div><span>Összes infó</span><a class="btn btn-default" href="personalData?allDataKey=<?php echo generateUserKeyThatExpires(getActUserId())?> "> <?php echo $diak["lastname"]." ".$diak["firstname"]?></a></div>
         <?php } ?>
@@ -48,7 +48,7 @@ $diak = $db->getPersonByID($personid);
 
     <?php if (isset($diak["facebookid"]) && $diak["facebookid"]!='0' && (isUserAdmin() || (isset($_SESSION['FacebookId']) && $diak["facebookid"]==$_SESSION['FacebookId']))) : ?>
     <div class="user-setting">
-        <form action="editDiak" method="get">
+        <form action="editPerson" method="get">
             <div><h3><span class="glyphicon glyphicon-scissors"></span> Facebook</h3>Jelenleg Facebook kapcsolat létezik közötted és "<?php echo isset($_SESSION["FacebookName"])?$_SESSION["FacebookName"]:"nem bejelentkezett" ?>" Facebook felhasználóval.</div>
             <div><span>Facebook kép</span><img src="https://graph.facebook.com/<?php echo $diak['facebookid']; ?>/picture" /></div>
             <div><span></span><input type="submit" class="btn btn-warning" value="Facebook kapcsolatot töröl" /></div>

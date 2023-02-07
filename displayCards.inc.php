@@ -75,18 +75,18 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         displayIcon($d,"homepage","www.png","Honoldal","");
                         $pictures=$db->getNrOfPersonPictures($d["id"]);
 						if ($pictures>0)
-							echo '<a href="editDiak?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
+							echo '<a href="editPerson?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
 						if (isset($d["cv"]) && $d["cv"]!="")
-							echo '<a href="editDiak?tabOpen=cv&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
+							echo '<a href="editPerson?tabOpen=cv&uid='.$d["id"].'" title="Életrajz"><img src="images/calendar.png" /></a>';
 						if (isset($d["story"]) && $d["story"]!="")
-							echo '<a href="editDiak?tabOpen=school&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
+							echo '<a href="editPerson?tabOpen=school&uid='.$d["id"].'" title="Diákkori történet"><img src="images/gradcap.png" /></a>';
 						if (isset($d["aboutMe"]) && $d["aboutMe"]!="")
-							echo '<a href="editDiak?tabOpen=hobbys&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
+							echo '<a href="editPerson?tabOpen=hobbys&uid='.$d["id"].'" title="Magamról szabadidőmben"><img src="images/info.gif" /></a>';
 						if (isset($d["geolat"]) && $d["geolat"]!="")
-							echo '<a href="editDiak?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
+							echo '<a href="editPerson?tabOpen=geoplace&uid='.$d["id"].'" title="Itt vagyok otthon"><img style="width:25px" src="images/geolocation.png" /></a>';
 						$relatives=$dbFamily->getPersonRelativesCountById($d["id"]);
 						if ($relatives>0)
-                            echo '<a href="editDiak?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
+                            echo '<a href="editPerson?tabOpen=family&uid='.$d["id"].'" title="Családom"><img style="width:25px" src="images/relatives.png" /><span class="countTag">'.$relatives.'</span></a>';
 					?>
 				</div>
 	  		</div>
@@ -204,10 +204,10 @@ function displayClass($db,$class,$showDate=false) {
             <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getSchoolClassName($class);?></h4></a><br/>
 			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>0) {
 			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
-				Osztályfőnök: <a href="editDiak?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a>
+				Osztályfőnök: <a href="editPerson?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a>
                 <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>0) {
                     $secondHeadTeacher = $db->getPersonByID($class["secondHeadTeacherID"]);?>
-                    és <a href="editDiak?uid=<?php echo $class["secondHeadTeacherID"]?>" ><?php echo $secondHeadTeacher["lastname"]." ".$secondHeadTeacher["firstname"]?></a> <br/>
+                    és <a href="editPerson?uid=<?php echo $class["secondHeadTeacherID"]?>" ><?php echo $secondHeadTeacher["lastname"]." ".$secondHeadTeacher["firstname"]?></a> <br/>
                 <?php } ?>
                 <br/>
             <?php } ?>
@@ -306,7 +306,6 @@ function displaySchool($db,$school,$showDate=false) {
     </div>
 <?php }
 
-
 /**
  * Display a message
  * @param dbDAO $db the database
@@ -360,9 +359,9 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
                 <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><h4><span class="glyphicon glyphicon-film"></span> <?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
             </div>
             <?php if ($showVideo) {?>
-                <object  class="embed-responsive embed-responsive-16by9">
-                    <embed src="https://www.youtube.com/v/<?php echo $music["video"]?>&hl=de_DE&enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
-                </object>
+                <iframe id="ytplayer" type="text/html" width="400" height="280"
+                        src="https://www.youtube.com/embed/<?php echo $music["video"]?>?autoplay=0"
+                        frameborder="0"></iframe>
             <?php }?>
             <br/>Megjelenési év:<?php echo $music["year"] ?><br/>
             <?php echo $actionText.' '.getPersonLinkAndPicture($d)?>
@@ -376,6 +375,35 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
         <?php  displayMusicOpinion($dbOpinion,$music["id"]); ?>
     </div>
 <?php }
+
+function displayGame($db,$gameId) {
+    include_once "game/gameTypes.php";
+    include_once "dbDaGames.class.php";
+    $dbGame = new dbDaGames($db);
+    $game = $dbGame->getGameById($gameId);
+    $person = $db->getPersonByID($game["userId"]);
+    ?>
+    <div class="element">
+            <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
+                <div>
+                    <a href="games?tabOpen=<?php echo strtolower(gameName[$game["gameId"]]["name"])?>"><h4><span class="glyphicon glyphicon-<?php echo gameName[$game["gameId"]]["icon"] ?>"></span> Játék: <?php echo gameName[$game["gameId"]]["name"] ?></h4></a>
+                    <div style="display: inline-block">
+                        <img src="<?php echo gameName[$game["gameId"]]["logo"] ?>" style="width: 200px;"/></div>
+                    <div style="display: inline-block; text-align: center; width: 250px">
+                        Elért pontszám:
+                        <br/><span style="font-size: 47px"><?php echo $game["highScore"]  ?></span>
+                        <br/>Legjobb pontszám:
+                        <br/><?php echo $dbGame->getGameHighScore($game["gameId"])["highScore"]  ?>
+                    </div>
+                </div>
+                <div style="margin-top:5px; margin-bottom: 5px">
+                    <?php  echo 'Játszodta: '. getPersonLinkAndPicture($person) ?>
+                    <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($game["dateEnd"])?>
+                </div>
+            </div>
+    </div>
+    <?php
+}
 
 /**
  * Display an article class
@@ -400,7 +428,7 @@ function displayArticle($db,$article,$showDate=true) {
             $c = $db->getPersonByID($article["changeUserID"]);
             ?>
             <br/><div style="display: block;max-width:310px;min-width:300px; vertical-align: top;margin-bottom:10px;">
-                Módosította: <a href="editDiak?uid=<?php echo $article["changeUserID"]?>" ><?php echo $c["lastname"]." ".$c["firstname"]?></a> <br/>
+                Módosította: <a href="editPerson?uid=<?php echo $article["changeUserID"]?>" ><?php echo $c["lastname"]." ".$c["firstname"]?></a> <br/>
                 Dátum:<?php echo maierlabs\lpfw\Appl::dateTimeAsStr($article["changeDate"]);?>
             </div>
         <?php }?>
@@ -468,7 +496,7 @@ function displayPersonPicture($d)
     ?>
     <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;text-decoration: none;">
         <div>
-            <img src="<?php echo getPersonPicture($d)?>" border="0" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="position: relative" />
+            <img src="<?php echo getPersonPicture($d)?>" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="vertical-align: bottom;position: relative" />
             <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
                 <?php if (isset($d["deceasedYear"])) {?>
                     <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">

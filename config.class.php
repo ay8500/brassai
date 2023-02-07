@@ -18,7 +18,8 @@ class Config {
 
     public static $siteUrl = "https://brassai.blue-l.de";
     public static $siteMail ="brassai@blue-l.de";
-    public static $facebookApplId="1606012466308740";
+    //public static $facebookApplId="1606012466308740";
+    public static $facebookApplId="";
     public static $timeZoneOffsetMinutes=60;                // Server timezone eg: London=0, Berlin=60, Moscow=120
     public static $dateTimeFormat="text";
     public static $dateFormat="text";
