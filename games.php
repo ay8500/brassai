@@ -158,7 +158,7 @@ function getNewSudokuGameStatus() {
 }
 
 function getNewMahongGameStatus() {
-    return  array( "layout"=> "duncher",  "tiles"=> array(
+    return  array( "layout"=> "turtle",  "tiles"=> array(
             array("active" => true, "name"=> 13),
             array("active" => true, "name" => 20),
             array("active" => true, "name" => 14),

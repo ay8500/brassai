@@ -103,23 +103,23 @@ if (!isUserAdmin() && $diak["gdpr"]==5) {
     die();
 }
 
-global $dataFieldNames, $dataFieldObl, $dataFieldCaption, $dataItemProp, $dataCheckFieldVisible;
-setPersonFields($diak,isUserSuperuser(),isUserAdmin());
+global $dataFieldObl, $dataFieldCaption, $dataItemProp, $dataCheckFieldVisible;
+$personFields = setPersonFields($diak,isUserSuperuser(),isUserAdmin());
 
 //save changes
 if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteacher" || $action=="savenewguest") {
 	if ($db->checkRequesterIP(changeType::personchange)) {
 		if ($diak!=null) {
-			for ($i=0;$i<sizeof($dataFieldNames);$i++) {
+			foreach ($personFields as $field) {
 				$tilde="";
-				if ($dataCheckFieldVisible[$i]) {
-					if (getParam("cb_".$dataFieldNames[$i])!=null)
+				if ($field["canBeHidden"]) {
+					if (getParam("cb_".$field["name"])!=null)
 						$tilde="~";
 				}
 				//save the fields in the person array
-				$fvalue =trim(getParam($dataFieldNames[$i]));
+				$fvalue =trim(getParam($field["name"]));
                 if ($fvalue!==null) {
-                    $diak[$dataFieldNames[$i]] = $tilde . $fvalue;
+                    $diak[$field["name"]] = $tilde . $fvalue;
                 }
 			}
 			//ClassID
@@ -130,7 +130,11 @@ if ($action=="changediak" || $action=="savenewperson" || $action=="savenewteache
             if (getParam("schoolIdsAsTeacher","")!="") {
                 $diak["schoolIdsAsTeacher"]=getParam("schoolIdsAsTeacher");
                 if (getParam("teacherPeriod","")!="") {
-                    $diak["employer"]=getParam("teacherPeriod");
+                    if (trim(getParam("employer","")," ")!="") {
+                        $diak["employer"] = '{ "employer":"'.trim(getParam("employer",""), " ").'", '.substr(getParam("teacherPeriod"),1);
+                    } else {
+                        $diak["employer"] = getParam("teacherPeriod");
+                    }
                 }
                 if (getParam("field")!=null) {
                     $diak["function"]=getParam("field");

@@ -636,7 +636,7 @@ class Main extends Phaser.Scene {
         this.gameId=gameId;
     }
     create() {
-        this.debug = true; // turn this on if you're a nasty rotten cheat
+        this.debug = false; // turn this on if you're a nasty rotten cheat
         const board = new Board(this, 72, 72, new BoardLayout(this.gameStatus.layout));
         this.board = board;
 

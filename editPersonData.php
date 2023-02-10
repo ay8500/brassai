@@ -4,8 +4,7 @@
     global $db, $diak, $showAllPersonalData;
     displayPerson($db,$diak,false,false);
     $schoolList = $db->getSchoolList();
-    global $anonymousEditor, $edit, $createNewPerson, $personid, $tabOpen, $classId, $person, $action;
-    global $dataFieldNames, $dataFieldObl, $dataFieldCaption, $dataItemProp, $dataCheckFieldVisible;
+    global $personFields,$anonymousEditor, $edit, $createNewPerson, $personid, $tabOpen, $classId, $person, $action;
     //Person picture?>
     <?php if(isUserLoggedOn() || $anonymousEditor) {?>
         <div style="display: inline-block; background-color: #E5E9EA; padding: 10px;border-radius: 5px; max-width: 900px">
@@ -58,8 +57,9 @@
                 </div>
             <?php } ?>
         </div>
-    <?php }?>
-   <?php if (!isset($showAllPersonalData)) { ?>
+    <?php }
+    //Buttons
+   if (!isset($showAllPersonalData)) { ?>
        <div style="margin:15px;vertical-align: bottom;">
        <?php if ($edit) {  ?>
             <?php //Don't delete myself?>
@@ -83,7 +83,7 @@
         </div>
    <?php } ?>
 
-<?php if ($edit || $createNewPerson || $anonymousEditor || true) {?>
+<?php if ($edit || $createNewPerson || $anonymousEditor || true ) {?>
     <form method="get" id="editform" action="editPerson">
         <?php
         //Editfields school and class
@@ -99,7 +99,7 @@
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >Iskola</span>
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-                <select class="form-control" name="schoolID" id="schoolID" >
+                <select disabled="disabled" class="form-control" name="schoolID" id="schoolID" >
                     <?php foreach ($schoolList as $school) {
                         $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
                         <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>
@@ -111,8 +111,9 @@
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
                 <select class="form-control" name="classID" id="classID">
                     <option value="-1" >...válassz...</option>
+                    <option value="<?php echo \maierlabs\lpfw\Appl::getMember("staffClass")["id"]?>" <?php echo (intval(\maierlabs\lpfw\Appl::getMember("staffClass")["id"])==intval($diak["classID"]))?"selected":""?> >Iskola személyzete</option>
                     <?php foreach ($optionClasses as $optionClass) {?>
-                        <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==getActClassId()?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
+                        <option value="<?php echo $optionClass["id"]?>" <?php echo intval($optionClass["id"])==$diak["classID"]?"selected":""?>><?php echo $optionClass["text"].' '.($optionClass["eveningClass"]!='0'?"esti tagozat":"nappali tagozat")?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -123,78 +124,44 @@
 
 
         <div itemtype="http://schema.org/PostalAddress" itemprop="address" itemscope style="overflow-x: hidden;" >
-        <?php for ($i=0;$i<sizeof($dataFieldNames);$i++) {?>
+        <?php foreach ($personFields as $field) {?>
             <div class="input-group"><?php
-                //Placeholder
-                $obl=$dataFieldObl[$i];
-                $dataFieldObl[$i]===true ? $obl="kötelező mező":false ;
-                //field onclick
-                $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-                //Inputfields
+                //Inputfields for
                 if (($edit || $createNewPerson) && !$anonymousEditor ) {?>
-                    <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
+                    <span style="padding: 6px;min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $field["caption"]?></span><?php
                     if ( isUserLoggedOn()) {?>
                         <span style="width:40px" id="highlight" class="input-group-addon">
-                            <?php if ($dataCheckFieldVisible[$i]) {?>
-                                <input type="checkbox" name="cb_<?php echo $dataFieldNames[$i].'" '.getFieldChecked($diak,$dataFieldNames[$i])?> title="A megjelölt mezöket csak az osztálytásaid látják." />
+                            <?php if ($field["canBeHidden"]) {?>
+                                <input type="checkbox" name="cb_<?php echo $field["name"].'" '.getFieldChecked($diak,$field["name"])?> title="A megjelölt mezöket csak az osztálytásaid látják." />
                             <?php } else { echo '&nbsp'; }?>
                         </span><?php
                     }
-                    if ($dataItemProp[$i]==="role") {
-                            showRoleField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
-                    } elseif ($dataItemProp[$i]==="title") {
-                        showTitleField(getFieldValueNull($diak, $dataFieldNames[$i]), $dataFieldNames[$i]);
-                    } elseif ($dataItemProp[$i]==="gender") {
-                            showGenderField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
+                    if ($field["itemProp"]==="role") {
+                            showRoleField(getFieldValueNull($diak,$field["name"]),$field["name"]);
                     } else {
-                        echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-                        if ($dataFieldNames[$i]=="changeUserID") {
-                            $person=$db->getPersonById(getFieldValueNull($diak,$dataFieldNames[$i]));
+                        if (showOptionFields($diak,$field))
+                            showInputField($diak,$field,false);
+                        if ($field["name"]=="changeUserID") {
+                            $person=$db->getPersonById(getFieldValueNull($diak,$field["name"]));
                             echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
                         }
                     }
                 //Inpufields anonymous user
                 } elseif ($anonymousEditor) {?>
-                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
-                    if (getFieldChecked($diak,$dataFieldNames[$i])=="") {
-                        $dataFieldNames[$i]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-                        if ($dataItemProp[$i]==="title") {
-                            showTitleField(getFieldValueNull($diak, $dataFieldNames[$i]), $dataFieldNames[$i]);
-                        } elseif ($dataItemProp[$i]==="gender") {
-                            showGenderField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i]);
-                        } else {
-                            echo('<input type="text" class="form-control" value="'.getFieldValueNull($diak,$dataFieldNames[$i]).'" name="'.$dataFieldNames[$i].'"'.$emc.' placeholder="'.$obl.'"/>');
-                        }
+                    <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $field["caption"]?></span><?php
+                    if (getFieldChecked($diak,$field["name"])=="") {
+                        if (showOptionFields($diak,$field))
+                            showInputField($diak,$field,false);
                     } else {
-                        echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
+                        if (showOptionFields($diak,$field,true))
+                            showInputField($diak,$field,true);
                     }
                 //Display fields no editing just show
                 } else {
-                    if (showField($diak,$dataFieldNames[$i])) {
-                        $itemprop="";
-                        if ($dataItemProp[$i]!="" && $dataItemProp[$i]!="combobox")
-                            $itemprop='itemprop="'.$dataItemProp[$i].'"';
-                        ?>
-                        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $dataFieldCaption[$i]?></span><?php
-                        if ($db->isClassIdForStaf($classId) && $dataFieldNames[$i]=="children") {
-                            $c = explode(",", getFieldValueNull($diak,$dataFieldNames[$i]));
-                            echo('<div  class="form-control" style="height:auto;">');
-                            foreach ($c as $id=>$cc) {
-                                if ($id!=0) echo(',');
-                                $class= $db->getClassByText($cc);
-                                echo(' <a href="hometable?classid='.$class["id"].'">'.$cc.'</a> ');
-                            }
-                            echo('</div>');
-                        } else {
-                            if ($dataItemProp[$i]==="title") {
-                                showTitleField(getFieldValueNull($diak, $dataFieldNames[$i]), $dataFieldNames[$i],true);
-                            } elseif ($dataItemProp[$i]==="gender") {
-                                showGenderField(getFieldValueNull($diak,$dataFieldNames[$i]),$dataFieldNames[$i],true);
-                            } else {
-                                echo('<div ' . $itemprop . ' class="form-control" style="height:auto;">' . createLink(getFieldValueNull($diak, $dataFieldNames[$i])) . '</div>');
-                            }
-                        }
-                     }
+                    if (showField($diak,$field["name"])) { ?>
+                        <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $field["caption"]?></span><?php
+                        showInputField($diak,$field,false,true);
+                    }
                 }?>
             </div><?php
         } ?>
@@ -225,10 +192,12 @@
         <div class="panel" style="margin-top: 20px">
             <?php if ($edit || $createNewPerson) { ?>
                 <h5>Kolozsvári iskolákban tanár </h5>
+                <?php /*
                 <div style="margin-top: 10px;min-height:30px" class="input-group">
                     <span style="min-width:300px;" class="input-group-addon" >Tantárgy</span>
                     <input name="field" placeholder="tantárgyak pl: matematika, biologia, magyar" value="<?php echo $diak["function"] ?>" class="form-control" />
                 </div>
+                */?>
                 <?php foreach ($schoolList as $school) {
                     $selected = strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false?"checked=checked":""?>
                     <div style="margin-top: 10px;min-height:30px" class="input-group" id="schoolid_<?php echo $school["id"] ?>">
@@ -247,7 +216,7 @@
                     if ( strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false) { ?>
                         <div style="min-height:30px" class="input-group" id="schoolid_<?php echo $school["id"] ?>">
                             <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
-                            <input id="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" disabled="disabled" />
+                            <input id="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" disabled="disabled" />
                         </div>
                     <?php }?>
                 <?php }?>
@@ -256,10 +225,15 @@
     </form>
 <?php } else {
     ?>
-    <br/><br/><br/><div>
-        <?php echo $person["lastname"] ?> <?php echo $person["firstname"] ?> a <?php echo getActSchool()["name"] ?>-ban végzett.
-        Utolsó diákéveit a <?php echo getActClass()["name"] ?>-ban járta.
-        <?php if (isset($person["birthname"])) { ?> Osztálytársai <?php echo $person["birthname"] ?> diákkori nevén ismerik. <?php } ?>
+    <div style="font-size: larger; margin: 20px;">
+        <?php
+            echo fillTemplate(
+                '<p>{{p.title}} {{p.lastname}} {{p.firstname}} utolsó diákéveit a {{s.name}}ban a {{c.name}} osztályban {{c.graduationYear}}ban/ben}} járta.</p>
+                {?eval"{{p.birthyear}}"!=""?}Született {{p.birthyear}}ban/ben}} ?}
+                {?eval"{{p.deceasedYear}}"==""?}, ebben az évben '.(intval(date('Y'))-intval($diak['birthyear'])).'. születésnapját ünnepli.?} 
+                {?eval"{{p.deceasedYear}}"!=""?}, meghalt {{p.deceasedYear}}ban/ben}} ?}{?eval"{{p.birthyear}}"!=""?} '.($diak['deceasedYear']-$diak['birthyear']).'. életévében.?}',
+                $diak,getActClass(),getActSchool());
+        ?>
     </div>
 <?php } ?>
 <?php if (!isset($showAllPersonalData)) { ?>
@@ -268,4 +242,83 @@
 	Biztonsági másolatok a személyes adatokról csak az internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az másolatok maximum 6 hónapig vannak tárolva.
 	A személyes adatok és fényképek megjelennek külömbőző internet kereső oldalok találati listáján.
 	A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim látogató és internet kereső oldalok ellen védve vannak. </span><br/>
-<?php } ?>
+<?php }
+
+function fillTemplate($text,$person,$class,$school) {
+    $elements = explode("{{",$text);
+    foreach ($elements as $idx=>$element){
+        $part = explode("}}",$element);
+        if(sizeof($part)>1) {
+            if (strpos($part[0],"p.")===0)
+                $data=$person[substr($part[0],2)];
+            if (strpos($part[0],"c.")===0)
+                $data=$class[substr($part[0],2)];
+            if (strpos($part[0],"s.")===0)
+                $data=$school[substr($part[0],2)];
+            if (sizeof($part)>2) {
+                if ($part[1]=="ban/ben") {
+                    if ($data % 10 == 0) {
+                        if ($data % 100 == 10 || $data % 100 == 40 || $data % 100 == 50 ||
+                            $data % 100 ==70 || $data % 100 ==90 || $data == 2000) {
+                           $data = $data."-ben";
+                        } else {
+                           $data = $data."-ban";
+                        }
+                    } elseif ($data % 10  == 3 ||$data % 10  == 6 || $data % 10  == 8)
+                        $data = $data."-ban";
+                    else
+                        $data = $data."-ben";
+                }
+                $elements[$idx]=$data.$part[2];
+            } else {
+                $elements[$idx]=$data.$part[1];
+            }
+
+        }
+    }
+    //Conditions
+    $elements = explode("{?",implode("",$elements));
+    foreach ($elements as $idx=>$element) {
+        $part = explode("?}",$element);
+        if (sizeof($part)>1) {
+            if (strpos($part[0],"eval")==0 && eval('return '.substr($part[0],4).';')!==true)
+                $elements[$idx] = "";
+            else
+                $elements[$idx] = $part[1];
+        }
+    }
+    return implode("",$elements);
+}
+
+function showInputField($person,$field,$hidden,$displayOnly=false) {
+    if ($displayOnly) {
+        $itemprop="";
+        if ($field["itemProp"]!="" && $field["itemProp"]!="gender" && $field["itemProp"]!="title" && $field["itemProp"]!="role")
+        $itemprop='itemprop="'.$field["itemProp"].'"';
+        if (showOptionFields($person,$field,true))
+            echo('<div ' . $itemprop . ' class="form-control" style="height:auto;">' . createLink(getFieldValueNull($person, $field["name"],$field["json"])) . '</div>');
+        return;
+    }
+    if (!$hidden) {
+        //field onclick validate
+        $field["name"]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
+        if ($field["name"]=="deceasedYear" || $field["name"]=="birthyear") $emc=' onkeyup="fieldChanged();validateYearInput(this,0,true);" ';
+        if (showOptionFields($person,$field))
+            echo('<input type="text" class="form-control" value="'.getFieldValueNull($person,$field["name"],$field["json"]).'" name="'.$field["name"].'"'.$emc.' placeholder="'.$field["hint"].'"/>');
+    } else {
+        if (showOptionFields($person,$field,true))
+            echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
+    }
+}
+
+function showOptionFields($person,$field,$readOnly=false) {
+    if ($field["itemProp"]==="title") {
+        showTitleField(getFieldValueNull($person, $field["name"]), $field["name"],$readOnly);
+        return false;
+    }
+    if ($field["itemProp"]==="gender") {
+        showGenderField(getFieldValueNull($person,$field["name"]),$field["name"],$readOnly);
+        return false;
+    }
+    return true;
+}

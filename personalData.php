@@ -9,7 +9,7 @@ include_once "dbBL.class.php";
 include_once "dbDaOpinion.class.php";
 
 use \maierlabs\lpfw\Appl as Appl;
-global $db;
+global $db,$personFields;
 
 Appl::setSiteTitle("Mit tud rólam az oldal?");
 Appl::setSiteSubTitle("Az összes infomációk az adatbankból.");
@@ -45,7 +45,7 @@ if (null==$person || $action!="D" || $dayKey-$dayNow+7 < 0) {
         unset($_SESSION['uName']);
         unset($_SESSION['uId']);
         Appl::_('<h3>Igy látják a személyes kártyámat nem bejelentkezett felhasználók</h3>');
-        setPersonFields($person,false,false);
+        $personFields = setPersonFields($person,false,false);
         $showAllPersonalData = true;
         $multipleInclude = true;
         include "editPersonData.php";
@@ -54,14 +54,14 @@ if (null==$person || $action!="D" || $dayKey-$dayNow+7 < 0) {
         $_SESSION['uName'] = "User";
         $_SESSION['uId'] = "12";
         Appl::_('<h3>Igy látják a személyes kártyámat bejelentkezett felhasználók</h3>');
-        setPersonFields($person,false,false);
+        $personFields = setPersonFields($person,false,false);
         include "editPersonData.php";
 
         $_SESSION['uRole'] = "admin";
         $_SESSION['uName'] = "User";
         $_SESSION['uId'] = "12";
         Appl::_('<h3>Igy látják a személyes kártyámat adminisztrátorok</h3>');
-        setPersonFields($person,true,true);
+        $personFields = setPersonFields($person,true,true);
         include "editPersonData.php";
 
 

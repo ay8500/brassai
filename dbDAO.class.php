@@ -107,8 +107,8 @@ class dbDAO {
      */
     public function getTeacherPeriod($person,$schoolId) {
         $json = json_decode($person["employer"],true);
-        if ($json==null && $schoolId==1)
-            return $person["employer"];
+        if ($json==null)
+            return "";
         if (isset($json[$schoolId]))
             return $json[$schoolId];
         return "";

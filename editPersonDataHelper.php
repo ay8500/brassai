@@ -62,59 +62,68 @@ function showOptionsField($value,$fieldName,$options,$readOnly=false) {
 }
 
 function setPersonFields($diak,$isUserSuperuser,$isUserAdmin) {
-    global $dataFieldNames, $dataFieldObl, $dataFieldCaption, $dataItemProp, $dataCheckFieldVisible;
-
-    $dataFieldNames 	=array("gender","title","lastname","firstname","email","birthname","birthyear","deceasedYear");
-    $dataFieldCaption 	=array("Megszólítás","Akad.titulus","Családnév","Keresztnév","E-Mail","Diákkori név","* Született","† Elhunyt");
-    $dataItemProp       =array("gender","title","","","","","","");
-    $dataCheckFieldVisible	=array(false,false,false,false,true,false,false,false);
-    $dataFieldObl			=array("Hölgy/Úr","Akadémia titulus pl: Dr. Dr.Prof. ",true,true,"fontos mező","leánykori családnév","születési év pl.1967","csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");
+    $ret = array();
+    $ret[] = array("name"=>"gender","caption"=>"Megszólítás","itemProp"=>"gender","json"=>"","canBeHidden"=>false,"required"=>true,"hint"=>"Hölgy/Úr");
+    $ret[] = array("name"=>"title","caption"=>"Akad.titulus","itemProp"=>"title","json"=>"","canBeHidden"=>false,"required"=>false,"hint"=>"Akadémia titulus pl: Dr. vagy Dr.Prof.");
+    $ret[] = array("name"=>"lastname","caption"=>"Családnév","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>true, "hint"=>"");
+    $ret[] = array("name"=>"firstname","caption"=>"Keresztnév","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>true, "hint"=>"");
+    $ret[] = array("name"=>"email","caption"=>"E-Mail","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"E-Mail cím");
+    $ret[] = array("name"=>"birthname","caption"=>"Diákkori név","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"leánykori családnév");
+    $ret[] = array("name"=>"birthyear","caption"=>"* Született","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"születési év pl.1967");
+    $ret[] = array("name"=>"deceasedYear","caption"=>"† Elhunyt","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"csak az évszámot kell beírni, ha nem tudod pontosan akkor 0-t írj ebbe a mezőbe. Kimentés után beadhatod a sírhelyet.");
 
     if (isset($diak["deceasedYear"])){
-        array_push($dataFieldNames ,"cementery","gravestone");
-        array_push($dataFieldCaption,"Temető","Sírhely");
-        array_push($dataItemProp,"","");
-        array_push($dataCheckFieldVisible,false,false);
-        array_push($dataFieldObl,"Temető neve, helység nélkül","");
+        $ret[] = array("name"=>"cementery","caption"=>"Temető","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"Temető neve, helység nélkül");
+        $ret[] = array("name"=>"gravestone","caption"=>"Sírhely","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"Sírhely száma vagy azonosítója");
     }
-    if(true)  { //Address
-        array_push($dataFieldNames, "partner","address","zipcode","place","country");
-        array_push($dataItemProp,"","streetAddress","postalCode","addressLocality","addressCountry");
-        array_push($dataFieldCaption, "Élettárs","Cím","Irányítószám","Helység","Ország");
-        array_push($dataCheckFieldVisible, true,true,true,false,false);
-        array_push($dataFieldObl		, "ha külömbőzik akkor a családneve is","útca, házszám, épület, emelet, apartament",false,"fontos mező","fontos mező");
-    }
-    if (true) { //Communication
-        array_push($dataFieldNames, "phone","mobil","skype","facebook","homepage","education","children");
-        array_push($dataItemProp,"","","","","","","");
-        array_push($dataFieldCaption,"Telefon","Mobil","Skype","Facebook","Honoldal","Végzettség","Gyerekek");
-        array_push($dataCheckFieldVisible,true ,true ,true ,true,true ,true ,true );
-        array_push($dataFieldObl		, '+40 123 456789','+40 111 123456',false,'https://www.facebook.com/...','http://',false,"nevük és születési évük pl: Éva 1991, Tamás 2002");
-    }
-    if ($diak["schoolIdsAsTeacher"]==null) { //Person is not a teacher
-        array_push($dataFieldNames      , "employer","function");
-        array_push($dataItemProp        ,"","");
-        array_push($dataFieldCaption    ,"Munkahely","Beosztás");
-        array_push($dataCheckFieldVisible,true,true );
-        array_push($dataFieldObl		    , false,false);
-    }
+    //Address
+    $ret[] = array("name"=>"partner","caption"=>"Élettárs","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"ha külömbőzik akkor a családneve is");
+    $ret[] = array("name"=>"address","caption"=>"Cím","itemProp"=>"streetAddress","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"útca, házszám, épület, emelet, apartament");
+    $ret[] = array("name"=>"zipcode","caption"=>"Irányítószám","itemProp"=>"postalCode","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"");
+    $ret[] = array("name"=>"place","caption"=>"Helység","itemProp"=>"addressLocality","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"város, község, falú");
+    $ret[] = array("name"=>"country","caption"=>"Ország","itemProp"=>"addressCountry","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"csak külfödi országok megadása lényeges");
+     //Communication
+    $ret[] = array("name"=>"phone","caption"=>"Telefon","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"+40 123 456789");
+    $ret[] = array("name"=>"mobil","caption"=>"Mobil","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"+40 111 123456");
+    $ret[] = array("name"=>"skype","caption"=>"Skype","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"");
+    $ret[] = array("name"=>"facebook","caption"=>"Facebook","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"https://www.facebook.com/...");
+    $ret[] = array("name"=>"homepage","caption"=>"Honoldal","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"http://....");
+    $ret[] = array("name"=>"education","caption"=>"Végzettség","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"");
+    $ret[] = array("name"=>"children","caption"=>"Gyerekek","itemProp"=>"","json"=>"","canBeHidden"=>true,"required"=>false, "hint"=>"nevük és születési évük pl: Éva 1991, Tamás 2002");
+    $ret[] = array("name"=>"wikipedia","caption"=>"Wikipedia","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"https://wikipedia.....");
+    $ret[] = array("name"=>"major","caption"=>"Szak","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"Gimnáziumi szak pl: matematika, zongora, turizmus...");
+    //Employer
+    $ret[] = array("name"=>"employer","caption"=>"Munkahely","itemProp"=>"","json"=>"employer","canBeHidden"=>false,"required"=>false, "hint"=>"");
+    $ret[] = array("name"=>"function","caption"=>"Beosztás","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"pl: könyvelő, lakatos, fodrász, kémia/fizika tanár, gyerekorvos, csillagász stb.");
+
     if ($isUserSuperuser ) {
-        array_push($dataFieldNames, "role");
-        array_push($dataItemProp,"role");
-        array_push($dataFieldCaption, "Opciók");
-        array_push($dataCheckFieldVisible, true);
-        array_push($dataFieldObl, false);
+        $ret[] = array("name"=>"role","caption"=>"Opciók","itemProp"=>"role","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
     }
     if ($isUserAdmin) { //only for admin
-        array_push($dataFieldNames, "facebookid","id", "user", "passw", "geolat", "geolng","userLastLogin","changeIP","changeDate","changeUserID","changeForID");
-        array_push($dataItemProp,"","","","","","","","","","","");
-        array_push($dataFieldCaption, "FB-ID","ID", "Felhasználó", "Jelszó", "X", "Y","Utolsó login","IP","Dátum","User","changeForID");
-        array_push($dataCheckFieldVisible, false,false,false,false,false,false,false,false,false,false,false);
-        array_push($dataFieldObl	 	 , false,true,true,true,false,false,'2000-01-01',false,'2000-01-01',false,false);
+        $ret[] = array("name"=>"facebookid","caption"=>"FB-ID","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"user","caption"=>"Felhasználó","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"passw","caption"=>"Jelszó","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"geolat","caption"=>"X","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"geolng","caption"=>"Y","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"userLastLogin","caption"=>"Utolsó login","json"=>"","itemProp"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"changeIP","caption"=>"IP","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"changeUserID","caption"=>"UserID","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"changeDate","caption"=>"Datum","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
     }
+    return $ret;
 }
 
 Appl::addJsScript('
+    function validateYearInput(sender,button,allowZero){
+        if ( (sender.value === "0" && allowZero) || (sender.value>1800 && sender.value<2200) ) {
+            sender.style.color="green";
+            $(button).removeClass("disabled");
+        } else {
+            sender.style.color="red";
+            $(button).addClass("disabled");
+        }
+    }
+
     function validateEmailInput(sender,button) {
         if (validateEmail(sender.value)) {
             sender.style.color="green";

@@ -73,6 +73,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                         displayIcon($d,"facebook","facebook.png","Facebook","");
                         //displayIcon($d,"twitter","twitter.png","Twitter","");
                         displayIcon($d,"homepage","www.png","Honoldal","");
+                        displayIcon($d,"wikipedia","wikipedia.png","Wikipedia","");
                         $pictures=$db->getNrOfPersonPictures($d["id"]);
 						if ($pictures>0)
 							echo '<a href="editPerson?tabOpen=pictures&uid='.$d["id"].'" title="Képek"><img src="images/picture.png" /><span class="countTag">'.$pictures.'</span></a>';
@@ -526,7 +527,7 @@ function displayPersonPicture($d)
  * @param string $appl application name mailto, phoneto
  */
 function displayIcon($d,$field,$image,$title,$appl) {
-    if (isset($d[$field]) && strlen($d[$field])>6)
+    if (isset($d[$field]) && strlen($d[$field])>4)
         if(showField($d,$field))
             echo '<a target="_blank" href="'.$appl.getFieldValue($d[$field]).'" title="'.$title.'"><img src="images/'.$image.'" /></a>';
         else

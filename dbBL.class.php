@@ -695,10 +695,18 @@ function getFieldValue($person,$field=null) {
     return  $ret;
 }
 
-function getFieldValueNull($diak,$field) {
-    if ( !isset($diak[$field]) || $diak[$field]=="")
+function getFieldValueNull($person,$field,$jsonField=null) {
+    if ( !isset($person[$field]) || $person[$field]=="")
         return "";
-    $ret = ltrim($diak[$field],"~");
+    if ($jsonField!=null) {
+        $json = json_decode($person[$field],true);
+        if ($json==null)
+            return $person[$field];
+        if (!isset($json[$jsonField]))
+            return "";
+        return $json[$jsonField];
+    }
+    $ret = ltrim($person[$field],"~");
     $ret = trim($ret);
     $ret= str_replace("%3D", "=", $ret);
     return  $ret;

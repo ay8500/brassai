@@ -21,24 +21,28 @@ RewriteRule ^iskola-bathory$ /brassai/start?schoolid=2 [NC,L]
 RewriteRule ^iskola-apacai$ /brassai/start?schoolid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium$ /brassai/start?schoolid=4 [NC,L]
 RewriteRule ^iskola-jzsuk$ /brassai/start?schoolid=5 [NC,L]
+RewriteRule ^iskola-zeneiskola$ /brassai/start?schoolid=6 [NC,L]
 
 RewriteRule ^iskola-brassai-info$ /brassai/school?schoolid=1 [NC,L]
 RewriteRule ^iskola-bathory-info$ /brassai/school?schoolid=2 [NC,L]
 RewriteRule ^iskola-apacai-info$ /brassai/school?schoolid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium-info$ /brassai/school?schoolid=4 [NC,L]
 RewriteRule ^iskola-jzsuk-info$ /brassai/school?schoolid=5 [NC,L]
+RewriteRule ^iskola-zeneiskola-info$ /brassai/school?schoolid=6 [NC,L]
 
 RewriteRule ^iskola-brassai-kepek$ /brassai/picture?type=schoolID&typeid=1 [NC,L]
 RewriteRule ^iskola-bathory-kepek$ /brassai/picture?type=schoolID&typeid=2 [NC,L]
 RewriteRule ^iskola-apacai-kepek$ /brassai/picture?type=schoolID&typeid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium-kepek$ /brassai/picture?type=schoolID&typeid=4 [NC,L]
 RewriteRule ^iskola-jzsuk-kepek$ /brassai/picture?type=schoolID&typeid=5 [NC,L]
+RewriteRule ^iskola-zeneiskola-kepek$ /brassai/picture?type=schoolID&typeid=6 [NC,L]
 
 RewriteRule ^iskola-brassai-osztalyok$ /brassai/classlist?schoolid=1 [NC,L]
 RewriteRule ^iskola-bathory-osztalyok$ /brassai/classlist?schoolid=2 [NC,L]
 RewriteRule ^iskola-apacai-osztalyok$ /brassai/classlist?schoolid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium-osztalyok$ /brassai/classlist?schoolid=4 [NC,L]
 RewriteRule ^iskola-jzsuk-osztalyokk$ /brassai/classlist?schoolid=5 [NC,L]
+RewriteRule ^iskola-zeneiskola-osztalyok$ /brassai/classlist?schoolid=6 [NC,L]
 
 RewriteRule ^iskola-terkep$ /brassai/worldmap?classid=all&schoolid=all [NC,L]
 RewriteRule ^iskola-brassai-terkep$ /brassai/worldmap?classid=all&schoolid=1 [NC,L]
@@ -46,6 +50,8 @@ RewriteRule ^iskola-bathory-terkep$ /brassai/worldmap?classid=all&schoolid=2 [NC
 RewriteRule ^iskola-apacai-terkep$ /brassai/worldmap?classid=all&schoolid=3 [NC,L]
 RewriteRule ^iskola-reformatus-kollegium-terkep$ /brassai/worldmap?classid=all&schoolid=4 [NC,L]
 RewriteRule ^iskola-jzsuk-terkep$ /brassai/worldmap?classid=all&schoolid=5 [NC,L]
+RewriteRule ^iskola-zeneiskola-terkep$ /brassai/worldmap?classid=all&schoolid=6 [NC,L]
+
 ReWriteRule ^brassai/picture?classid=([0-9]+)$ /brassai/picture?type=classID&typeid=$1 [NC,L]
 
 ## hide .php extension
