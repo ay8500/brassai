@@ -94,6 +94,7 @@
     <div class="optiondiv">
         <span class="otitle">{title}</span>
         <span style="display: inline-block; float: right;">
+            <a class="btn btn-warning lightcandle" style="height:34px;margin:3px;color:black" href="editPerson?&uid={id}&tabOpen=candles" ><img style="height: 25px;border-radius: 33px;" src="images/match.jpg" alt="Meggyújt"> Gyertyát gyújt</a>
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div style="display: inline-block; height:150px; width:100%; overflow:auto; background-color:white;border-radius: 5px;">

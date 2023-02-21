@@ -22,7 +22,7 @@ function displayPersonOpinion($db,$id,$gender,$teacher,$decesed) {
     $ofriends = $o->friends>0?'':'style="display:none"';
     $osport = $o->sport>0?'':'style="display:none"';
     $oeaster = $o->easter>0?'':'style="display:none"';
-    $ocandles = $o->candles>1 && $decesed?'':'style="display:none"';
+    $ocandles = $o->candles>0 && $decesed?'':'style="display:none"';
     ?>
     <div>
         <buton onclick="<?php
@@ -36,7 +36,10 @@ function displayPersonOpinion($db,$id,$gender,$teacher,$decesed) {
         <a id="c-person-candle-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Égő gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
             <span style="margin-right: -8px;">
-                <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/><span class="countTag"><?php echo $o->candles-1?></span>
+                <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/>
+                <?php if ($o->candles>1) {?>
+                    <span class="countTag"><?php echo $o->candles-1?></span>
+                <?php } ?>
             </span>
         </a>
         <a id="c-person-text-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Vélemények','person','text',<?php echo getLoggedInUserIdOrNull() ?>)"
@@ -381,6 +384,7 @@ function getLoggedInUserIdOrNull() {
                     title=opinionTitle;
                 }
                 html = html.replace(new RegExp('{title}', 'g'),title);
+                console.log(html);
                 $('#o-'+type+'-'+id).hide();
                 $('#o-'+type+'-'+id).html(html);
                 $('#o-'+type+'-'+id).show('fast');

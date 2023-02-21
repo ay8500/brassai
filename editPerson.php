@@ -422,7 +422,7 @@ $tabUrl="editPerson";
                 $link = getPersonLink($diak["lastname"],$diak["firstname"])."-megemlekezes-".$diak["id"];
                 ?>
 
-                <div><a href="<?php echo config::$siteUrl.'/'. $link?>">Megemlékezési oldal</a></div>
+                <div><a class="btn btn-warning" style="color: black" href="<?php echo config::$siteUrl.'/'. $link?>">Megemlékezési oldal</a></div>
                 <?php
             }
         }
