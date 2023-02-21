@@ -36,9 +36,10 @@ function displayPersonOpinion($db,$id,$gender,$teacher,$decesed) {
         <a id="c-person-candle-<?php echo $id ?>" class="aopinion" onclick="showOpinions(<?php echo $id ?>,'Emlékére gyertyát gyújtottak:','person','candle',<?php echo getLoggedInUserIdOrNull() ?>)"
            title="Égő gyertyák száma: <?php echo $o->candles-1 ?>" <?php echo $ocandles ?>>
             <span style="margin-right: -8px;">
-                <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/>
                 <?php if ($o->candles>1) {?>
-                    <span class="countTag"><?php echo $o->candles-1?></span>
+                    <img src="images/candle6.gif" style="border-radius:5px; width: 32px"/><span class="countTag"><?php echo $o->candles-1?></span>
+                <?php } else { ?>
+                    <img src="images/candle6.gif" style="border-radius:5px; width: 32px;margin-right: 7px;"/>
                 <?php } ?>
             </span>
         </a>
@@ -360,7 +361,7 @@ function getLoggedInUserIdOrNull() {
             success:function(data){
                 var html=$('#opinionlist').html();
                 var text = '';
-                data.forEach(function(e) {
+                data.list.forEach(function(e) {
                     text +='<div><div class=\"uname\">'+e.name;
                     text +='<span title=\"' +e.ip+  '\" onclick=\"showip(\''+e.ip+ '\')\"> '+(e.ip==''?'':' show IP')+'</span>';
                     text +='<span style=\"float:right\">'+e.date;
@@ -384,10 +385,11 @@ function getLoggedInUserIdOrNull() {
                     title=opinionTitle;
                 }
                 html = html.replace(new RegExp('{title}', 'g'),title);
-                console.log(html);
                 $('#o-'+type+'-'+id).hide();
                 $('#o-'+type+'-'+id).html(html);
                 $('#o-'+type+'-'+id).show('fast');
+                if (data.count==='candle')
+                    $('#lightcandle-'+data.id).show(); 
             },
             error:function(error) {
                 $('#o-'+type+'-'+id).html('error');

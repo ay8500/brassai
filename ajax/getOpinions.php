@@ -74,6 +74,10 @@ if ($count!='candle') {
         array_push($ret, $op);
     }
 }
-
-echo(json_encode($ret));
+$r = new stdClass();
+$r->type = $type;
+$r->id = $id;
+$r->count=$count;
+$r->list = $ret;
+echo(json_encode($r));
 ?>
