@@ -122,7 +122,7 @@ class dbBL extends dbDAO
      * get the logged in user class id
      * @return integer or -1 if no user logged on
      */
-    function getLoggedInUserClassId() {
+    public function getLoggedInUserClassId() {
         if (null==getLoggedInUserId())
             return -1;
         $loggedInUser=$this->getPersonLogedOn();
@@ -139,6 +139,7 @@ class dbBL extends dbDAO
      */
     public function getPersonDummy() {
         return [
+            "id"=>0,
             "firstname"=>"",
             "lastname"=>"",
             "title"=>"",
@@ -146,7 +147,8 @@ class dbBL extends dbDAO
             "passw"=>encrypt_decrypt("encrypt",createPassword(8)),
             "role"=>"",
             "gender"=>"m",
-            "gdpr"=>0
+            "gdpr"=>0,
+            "schoolIdsAsTeacher"=>null
         ];
     }
 

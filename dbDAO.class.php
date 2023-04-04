@@ -195,9 +195,9 @@ class dbDAO {
         }
         if ($isTwentyfirstcentury!==null) {
             if ($isTwentyfirstcentury)
-                $sql .= " and graduationYear > 1999";
+                $sql .= " and graduationYear > 2000";
             else
-                $sql .= " and graduationYear <= 1999";
+                $sql .= " and graduationYear <= 2000";
         }
 		return   $this->dataBase->getElementList("class",$originalId, $sql,null,null,"text asc");
 	}

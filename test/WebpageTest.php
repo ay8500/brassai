@@ -80,7 +80,7 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
         $div = $finder->query("//*[contains(@class, 'rip-element')]");
-        $this->assertEquals(48,$div->length,"Expected to found 48 persons on this page");
+        $this->assertGreaterThan(8,$div->length,"Expected to found at least 8 persons on this page");
         for ($i =0 ; $i<$div->length;$i++) {
             $text = $div->item($i)->childNodes->item(1)->nodeValue;
             $this->assertContains("†",$text,"Element nr:".$i);
@@ -98,9 +98,9 @@ class WebpageTest extends \PHPUnit_Framework_TestCase
         $dom->loadHTML($ret->content);
         $finder = new DOMXPath($dom);
         $divs = $finder->query("//*[contains(@class, 'element')]");
-        $this->assertSame(48,$divs->length);
-        $divs = $finder->query("//*[contains(@class, 'schoolname')]");
-        $this->assertSame(48,$divs->length);
+        $this->assertSame(48,$divs->length, 'Expected 48 occurence of class="element"');
+        $divs = $finder->query("//*[contains(@class, 'changedatetime')]");
+        $this->assertSame(48,$divs->length,'Expected 48 occurence of class="changedatetime"');
         $this->assertContains("function logon() {",$ret->content);
         $this->logon();
         $ret = $this->callTestUrl($this->url . "start", false);

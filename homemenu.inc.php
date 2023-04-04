@@ -33,7 +33,7 @@ $schoolList = $db->getSchoolList();
 $today = new DateTime();
 $xmas = (intval(date("m")) === 12 );
 $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
-/*easter*/ //$eventStyle = " border-bottom: 2px solid green;";
+/*easter to be changed*/ $eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl::getMember("actSchool")["logo"]) ) {
@@ -305,20 +305,20 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
     </div>
 </div>
 <?php
-/*easter*/
-//$rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2022);
+/*easter to be changed*/
+$rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2023);
 
 ?>
 <div id="topLine">
     <h1 class="appltitle">
-        <?php /*easter*/ /*?>
+        <?php /*easter to be changed*/ ?>
         <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user)?> ">
             <img class="blob" src="images/easter.png" style="width: 50px" />
             <span class="badge" style="left: -20px;position: relative;top: 4px;">
                 <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
             </span>
         </a>
-        <?php */ ?>
+        <?php  ?>
         <?php echo(ucfirst(getActSchoolName())) ?> <span id="o400">egykori </span>diákjai
         <span id="o480"> <?php echo(getActSchoolClassName()) ?></span>
     </h1>
