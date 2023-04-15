@@ -113,6 +113,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
         <?php }?>
     <?php
         /*Easter to be changed*/
+        /*
         if ((!isset($person["deceasedYear"]) || $person["deceasedYear"]==null) ) {
             if (!isset($person["gender"]) || $person["gender"]=="f" && ($db->getPersonByID(getLoggedInUserId())["gender"]=="m" || !isUserLoggedOn())) {
                 ?>
@@ -120,6 +121,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                 <?php
             }
         }
+        */
         displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["schoolIdsAsTeacher"]) && $d["schoolIdsAsTeacher"]!=NULL),isset($d["deceasedYear"]));
     ?>
 	</div>
