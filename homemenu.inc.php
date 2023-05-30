@@ -58,7 +58,7 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
 	<?PHP } ?>
 	<meta name="geo.placename" content="Kolozsvár" />
 	<meta name="geo.position" content="46.771919;23.592248" />
-	<meta name="author" content="Levente Maier" />
+	<meta name="author" content="MaierLabs Germany" />
 	<meta name="description" content="<?php echo(Config::$SiteTitle.' '.Appl::$description) ?>" />
 	<meta name="keywords" content="<?php echo Appl::getMemberField("actSchool","name","")?> iskola líceum Kolozsvár Cluj Klausenburg diák diákok osztálytárs osztálytalálkozó osztályfelelös ballagás véndiák véndiákok" />
 	<!--[if lt IE 9]>

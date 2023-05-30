@@ -13,7 +13,7 @@ $html_border_color 		= "#".sprintf("%02s", dechex($border_color[0])).sprintf("%0
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="author" content="Levente Maier" />
+	<meta name="author" content="MaierLabs Germany" />
 	<title><?PHP echo($TXT["Title"]);?></title>
 	<style type="text/css">
 		body	{font-family:	arial, sans-serif;

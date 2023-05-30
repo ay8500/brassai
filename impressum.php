@@ -11,20 +11,20 @@ include_once("homemenu.inc.php");
 ?>
 <div class="container-fluid">
 <h1>Impresszum: </h1 >
-		Weboldal tulajdonos<br/> <a href="editPerson?uid=658&tabOpen=person">természetes személy Maier Levente</a><br/>
-		Bergstr. 33 a  91790 Bergen/Germany<br/><br/>
+		Weboldal tulajdonos<br/> <a href="editPerson?uid=658&tabOpen=person"MaierLabs</a><br/>
+		91790 Bergen/Germany<br/>Tel: +49 914795035<br/>
 		<p>A véndiákok és tanárok személyes adatai kizárolag azt e célt szolgálják, hogy ezt az oldalt bővítsék. A beadott személyes adatok egy internet szerveren vannak tárolva (Karlsruhe Németország) az "ionos" cég szamitógépközpontjában. Biztonsági másolatok a személyes adatokról csak az internetoldal tulajdonos privát számítogépein és az internet szerveren léteznek. Ezek az adatok maximum 6 hónapig vannak tárolva. A személyes adatok megjelennek külömbőző internet kereső oldalok találati listáján. A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim felhasználok és internet kereső oldalok ellen védve vannak.</p>
 	    <p>Az eropai adatvédelmi törvények értelmében (GDPR) a személyes adatok törléset ezen az <a style="text-decoration: underline" href="https://brassai.blue-l.de/gdpr"> oldalon </a> lehet kérvényezni.</p>
         <p>A felhasználó IP címe adat módosítások alkalmával a fent megadott szerveren tárolva vannak. Erre azért van szükség, hogy bejelentkezési adatok nélkül lehessen módosításokat tárolni.</p>
 		<p>A véndiákok weboldalai, illetve annak tartalma, vagy bármely részlete szerzői jogvédelem alá esnek.</p>
-		<p>Levente Maier írásbeli engedélye nélkül tilos a weboldalak tartalmának egészét vagy részeit bármilyen formában felhasználni, reprodukálni, átruházni, terjeszteni, átdolgozni, vagy tárolni.</p>
-		<p>Levente Maier fenntartja a jogot, hogy a véndiákok veboldalait bármikor módosítsa, vagy átdolgozza, illetve elérhetoségüket korlátozza, vagy megszüntesse. Levente Maier nem garantálja, hogy a weboldalakhoz való hozzáférés folyamatos vagy hibamentes lesz.</p>
-		<p>Levente Maier nem vállal felelősséget olyan, harmadik fél által létrehozott, továbbított, tárolt, hozzáférhetővé tett, vagy publikált tartalmakért, melyekhez a véndiákok weboldalai kapcsolódnak, vagy amelyekre hivatkoznak</p>
+		<p>MaierLabs írásbeli engedélye nélkül tilos a weboldalak tartalmának egészét vagy részeit bármilyen formában felhasználni, reprodukálni, átruházni, terjeszteni, átdolgozni, vagy tárolni.</p>
+		<p>MaierLabs fenntartja a jogot, hogy a véndiákok veboldalait bármikor módosítsa, vagy átdolgozza, illetve elérhetoségüket korlátozza, vagy megszüntesse. MaierLabs nem garantálja, hogy a weboldalakhoz való hozzáférés folyamatos vagy hibamentes lesz.</p>
+		<p>MaierLabs nem vállal felelősséget olyan, harmadik fél által létrehozott, továbbított, tárolt, hozzáférhetővé tett, vagy publikált tartalmakért, melyekhez a véndiákok weboldalai kapcsolódnak, vagy amelyekre hivatkoznak</p>
 		<p>A honlappal kapcsolatos tartalmi, technikai, formai kérdéseket, észrevételeket kérjük a <a href="mailto:<?php echo Config::$siteMail?>"><?php echo Config::$siteMail?></a> címre küldeni.</p>
 
 		<hr />
-		<p>Kontakt: Privatperson Levente Maier</p>
-		<p>brassai@blue-l.de 91790 Bergen, Bergstr. 33 a</p>
+		<p>Kontakt: MaierLabs</p>
+		<p>brassai@blue-l.de</p>
         <p><strong>Schutz der persönlichen Daten (GDPR):</strong><br/>Die personenbezogenen Daten von Schülern und Lehrern dienen ausschließlich der Erweiterung dieser Website. Die eingegebenen personenbezogenen Daten werden auf einem Internetserver (Karlsruhe, Deutschland) im Rechenzentrum der Firma „Ionos“ gespeichert. Sicherungen personenbezogener Daten existieren nur auf den privaten Computern und dem Internetserver des Website-Betreibers. Diese Date werden maximal 6 Monate gespeichert. Personenbezogene Daten erscheinen in der Ergebnisliste verschiedener Internetsuchseiten. Der Inhalt der geschützten Felder und einige entsprechend gekennzeichnete Fotos sind gegen anonyme Benutzer und Internetsuchseiten geschützt. </p>
         <p> Nach europäischem Datenschutzrecht kann auf dieser <a style="text-decoration: underline" href="https://brassai.blue-l.de/gdpr"> Seite </a> die Löschung personenbezogener Daten beantragt werden. </p>
 		<p><strong>Haftung für Inhalte</strong><br /> Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt und ständig überprüft. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>

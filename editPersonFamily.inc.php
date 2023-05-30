@@ -65,7 +65,7 @@ $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
     </div>
     <div id="divNames" style="display: none">
         <ul class="input-group shadowbox"  id="selectPerson" style="max-width: 600px" >
-            <li>Levente Maier</li>
+            <li></li>
         </ul>
     </div>
 

@@ -89,7 +89,7 @@ function showHeader($person) {?>
     <?PHP } ?>
     <meta name="geo.placename" content="Kolozsvár" />
     <meta name="geo.position" content="46.771919;23.592248" />
-    <meta name="author" content="Levente Maier" />
+    <meta name="author" content="MaierLabs" />
     <meta name="description" content="Véndiák megemlékezés <?php echo getPersonName($person)?>" />
     <meta name="keywords" content="Véndiák megemlékezés <?php echo getPersonName($person)?>" />
     <!--[if lt IE 9]>

@@ -1,6 +1,6 @@
 <?PHP
 $TXT["Title"] 			="Fotó album";
-$TXT["Footer"] 			="Fotó album (p) Levente Maier 2008";
+$TXT["Footer"] 			="Fotó album (p) MaierLabs 2008";
 $TXT["Album"] 			="Album";
 $TXT["Change"] 			="Módosít";
 $TXT["NewAlbum"] 		="Új album";
