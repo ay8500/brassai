@@ -38,6 +38,7 @@ if (null==$person || $action!="D" || $dayKey-$dayNow+7 < 0) {
     A kód még érvényes <?php echo $dayKey-$dayNow+7 ?> napig.
     <?php
         $diak = $person;
+        //save logen in user
         $role = $_SESSION['uRole'];
         $userName = $_SESSION['uName'];
         $userId = $_SESSION['uId'];
@@ -63,8 +64,10 @@ if (null==$person || $action!="D" || $dayKey-$dayNow+7 < 0) {
         Appl::_('<h3>Igy látják a személyes kártyámat adminisztrátorok</h3>');
         $personFields = setPersonFields($person,true,true);
         include "editPersonData.php";
-
-
+        //restore loged in user
+        $_SESSION['uRole']= $role;
+        $_SESSION['uName'] = $userName;
+        $_SESSION['uId'] = $userId;
     ?>
 </div>
 <div style="text-align: left;margin: 20px;" class="table table-hover">

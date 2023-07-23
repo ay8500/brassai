@@ -140,7 +140,7 @@
                             showRoleField(getFieldValueNull($diak,$field["name"]),$field["name"]);
                     } else {
                         if (showOptionFields($diak,$field))
-                            showInputField($diak,$field,false);
+                            showInputField($db,$diak,$field,false);
                         if ($field["name"]=="changeUserID") {
                             $person=$db->getPersonById(getFieldValueNull($diak,$field["name"]));
                             echo('<span class="input-group-addon"><span class="">'.$person["lastname"]." ".$person["firstname"].'</span></span>');
@@ -151,16 +151,16 @@
                     <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $field["caption"]?></span><?php
                     if (getFieldChecked($diak,$field["name"])=="") {
                         if (showOptionFields($diak,$field))
-                            showInputField($diak,$field,false);
+                            showInputField($db,$diak,$field,false);
                     } else {
                         if (showOptionFields($diak,$field,true))
-                            showInputField($diak,$field,true);
+                            showInputField($db,$diak,$field,true);
                     }
                 //Display fields no editing just show
                 } else {
                     if (showField($diak,$field["name"])) { ?>
                         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1"><?php echo $field["caption"]?></span><?php
-                        showInputField($diak,$field,false,true);
+                        showInputField($db,$diak,$field,false,true);
                     }
                 }?>
             </div><?php
@@ -227,7 +227,7 @@
     ?>
     <div style="font-size: larger; margin: 20px;">
         <?php
-            echo fillTemplate(
+            echo fillPersonTemplate(
                 '<p>{{p.title}} {{p.lastname}} {{p.firstname}} utolsó diákéveit a {{s.name}}ban a {{c.name}} osztályban {{c.graduationYear}}ban/ben}} járta.</p>
                 {?eval"{{p.birthyear}}"!=""?}Született {{p.birthyear}}ban/ben}} ?}
                 {?eval"{{p.deceasedYear}}"==""?}, ebben az évben '.(intval(date('Y'))-intval($diak['birthyear'])).'. születésnapját ünnepli.?} 
@@ -244,81 +244,4 @@
 	A védett mezők tartalma valamint egyes megfelelöen megjelölt fényképek anonim látogató és internet kereső oldalok ellen védve vannak. </span><br/>
 <?php }
 
-function fillTemplate($text,$person,$class,$school) {
-    $elements = explode("{{",$text);
-    foreach ($elements as $idx=>$element){
-        $part = explode("}}",$element);
-        if(sizeof($part)>1) {
-            if (strpos($part[0],"p.")===0)
-                $data=$person[substr($part[0],2)];
-            if (strpos($part[0],"c.")===0)
-                $data=$class[substr($part[0],2)];
-            if (strpos($part[0],"s.")===0)
-                $data=$school[substr($part[0],2)];
-            if (sizeof($part)>2) {
-                if ($part[1]=="ban/ben") {
-                    if ($data % 10 == 0) {
-                        if ($data % 100 == 10 || $data % 100 == 40 || $data % 100 == 50 ||
-                            $data % 100 ==70 || $data % 100 ==90 || $data == 2000) {
-                           $data = $data."-ben";
-                        } else {
-                           $data = $data."-ban";
-                        }
-                    } elseif ($data % 10  == 3 ||$data % 10  == 6 || $data % 10  == 8)
-                        $data = $data."-ban";
-                    else
-                        $data = $data."-ben";
-                }
-                $elements[$idx]=$data.$part[2];
-            } else {
-                $elements[$idx]=$data.$part[1];
-            }
 
-        }
-    }
-    //Conditions
-    $elements = explode("{?",implode("",$elements));
-    foreach ($elements as $idx=>$element) {
-        $part = explode("?}",$element);
-        if (sizeof($part)>1) {
-            if (strpos($part[0],"eval")==0 && eval('return '.substr($part[0],4).';')!==true)
-                $elements[$idx] = "";
-            else
-                $elements[$idx] = $part[1];
-        }
-    }
-    return implode("",$elements);
-}
-
-function showInputField($person,$field,$hidden,$displayOnly=false) {
-    if ($displayOnly) {
-        $itemprop="";
-        if ($field["itemProp"]!="" && $field["itemProp"]!="gender" && $field["itemProp"]!="title" && $field["itemProp"]!="role")
-        $itemprop='itemprop="'.$field["itemProp"].'"';
-        if (showOptionFields($person,$field,true))
-            echo('<div ' . $itemprop . ' class="form-control" style="height:auto;">' . createLink(getFieldValueNull($person, $field["name"],$field["json"])) . '</div>');
-        return;
-    }
-    if (!$hidden) {
-        //field onclick validate
-        $field["name"]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
-        if ($field["name"]=="deceasedYear" || $field["name"]=="birthyear") $emc=' onkeyup="fieldChanged();validateYearInput(this,0,true);" ';
-        if (showOptionFields($person,$field))
-            echo('<input type="text" class="form-control" value="'.getFieldValueNull($person,$field["name"],$field["json"]).'" name="'.$field["name"].'"'.$emc.' placeholder="'.$field["hint"].'"/>');
-    } else {
-        if (showOptionFields($person,$field,true))
-            echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
-    }
-}
-
-function showOptionFields($person,$field,$readOnly=false) {
-    if ($field["itemProp"]==="title") {
-        showTitleField(getFieldValueNull($person, $field["name"]), $field["name"],$readOnly);
-        return false;
-    }
-    if ($field["itemProp"]==="gender") {
-        showGenderField(getFieldValueNull($person,$field["name"]),$field["name"],$readOnly);
-        return false;
-    }
-    return true;
-}

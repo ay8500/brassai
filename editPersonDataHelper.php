@@ -102,17 +102,115 @@ function setPersonFields($diak,$isUserSuperuser,$isUserAdmin) {
     if ($isUserAdmin) { //only for admin
         $ret[] = array("name"=>"facebookid","caption"=>"FB-ID","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"user","caption"=>"Felhasználó","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
-        $ret[] = array("name"=>"passw","caption"=>"Jelszó","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        //$ret[] = array("name"=>"passw","caption"=>"Jelszó","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"geolat","caption"=>"X","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"geolng","caption"=>"Y","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"userLastLogin","caption"=>"Utolsó login","json"=>"","itemProp"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"changeUserID","caption"=>"Modosította","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"changeIP","caption"=>"IP","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
-        $ret[] = array("name"=>"changeUserID","caption"=>"UserID","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"changeDate","caption"=>"Datum","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
     }
     return $ret;
 }
 
+function fillPersonTemplate($text,$person,$class,$school) {
+    $elements = explode("{{",$text);
+    foreach ($elements as $idx=>$element){
+        $part = explode("}}",$element);
+        if(sizeof($part)>1) {
+            if (strpos($part[0],"p.")===0)
+                $data=$person[substr($part[0],2)];
+            if (strpos($part[0],"c.")===0)
+                $data=$class[substr($part[0],2)];
+            if (strpos($part[0],"s.")===0)
+                $data=$school[substr($part[0],2)];
+            if (sizeof($part)>2) {
+                if ($part[1]=="ban/ben") {
+                    if ($data % 10 == 0) {
+                        if ($data % 100 == 10 || $data % 100 == 40 || $data % 100 == 50 ||
+                            $data % 100 ==70 || $data % 100 ==90 || $data == 2000) {
+                            $data = $data."-ben";
+                        } else {
+                            $data = $data."-ban";
+                        }
+                    } elseif ($data % 10  == 3 ||$data % 10  == 6 || $data % 10  == 8)
+                        $data = $data."-ban";
+                    else
+                        $data = $data."-ben";
+                }
+                $elements[$idx]=$data.$part[2];
+            } else {
+                $elements[$idx]=$data.$part[1];
+            }
+
+        }
+    }
+    //Conditions
+    $elements = explode("{?",implode("",$elements));
+    foreach ($elements as $idx=>$element) {
+        $part = explode("?}",$element);
+        if (sizeof($part)>1) {
+            if (strpos($part[0],"eval")==0 && eval('return '.substr($part[0],4).';')!==true)
+                $elements[$idx] = "";
+            else
+                $elements[$idx] = $part[1];
+        }
+    }
+    return implode("",$elements);
+}
+
+/**
+ * Show Input field for a person
+ * @param $db
+ * @param $person
+ * @param $field
+ * @param $hidden
+ * @param $displayOnly
+ * @return void
+ */
+function showInputField($db, $person,$field,$hidden,$displayOnly=false) {
+    if ($displayOnly) {
+        $itemprop="";
+        if ($field["name"]=="changeUserID") {
+            echo('<div class="form-control" style="height:auto;">'. getPersonLinkAndPicture($db->getPersonById($person["changeUserID"]))  .'</div>');
+            return;
+        }
+        if ($field["itemProp"]!="" && $field["itemProp"]!="gender" && $field["itemProp"]!="title" && $field["itemProp"]!="role")
+            $itemprop='itemprop="'.$field["itemProp"].'"';
+        if (showOptionFields($person,$field,true))
+            echo('<div ' . $itemprop . ' class="form-control" style="height:auto;">' . createLink(getFieldValueNull($person, $field["name"],$field["json"])) . '</div>');
+        return;
+    }
+    if (!$hidden) {
+        //field onclick validate
+        $field["name"]=="email" ? $emc=' onkeyup="fieldChanged();validateEmailInput(this);" ' : $emc=' onkeyup="fieldChanged();"';
+        if ($field["name"]=="deceasedYear" || $field["name"]=="birthyear") $emc=' onkeyup="fieldChanged();validateYearInput(this,0,true);" ';
+        if (showOptionFields($person,$field))
+            echo('<input type="text" class="form-control" value="'.getFieldValueNull($person,$field["name"],$field["json"]).'" name="'.$field["name"].'"'.$emc.' placeholder="'.$field["hint"].'"/>');
+    } else {
+        if (showOptionFields($person,$field,true))
+            echo('<input type="text" class="form-control" value="" readonly name="" placeholder="Ez a mező védve van, csak osztálytársak láthatják."/>');
+    }
+}
+
+/**
+ * Show the 2 option fields title and gender for a person
+ * @param $person the person
+ * @param $field
+ * @param $readOnly
+ * @return bool true if the field is not the title or the gender
+ */
+function showOptionFields($person,$field,$readOnly=false) {
+    if ($field["itemProp"]==="title") {
+        showTitleField(getFieldValueNull($person, $field["name"]), $field["name"],$readOnly);
+        return false;
+    }
+    if ($field["itemProp"]==="gender") {
+        showGenderField(getFieldValueNull($person,$field["name"]),$field["name"],$readOnly);
+        return false;
+    }
+    return true;
+}
 Appl::addJsScript('
     function validateYearInput(sender,button,allowZero){
         if ( (sender.value === "0" && allowZero) || (sender.value>1800 && sender.value<2200) ) {
