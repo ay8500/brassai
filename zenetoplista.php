@@ -118,7 +118,7 @@ include("homemenu.inc.php");
 	<div id="newEntry" <?php echo (getParam("newinterpret")==null && getParam("interpret")==null)?'style="display: none"':''?> class="panel panel-default">
 		<?php if (!($pinterpret>0)) { ?>
 			<div class="panel-heading">
-				<label id="dbDetails">Válaszd ki az előadót</label>
+				<span id="dbDetails">Válaszd ki az előadót</span>
 			</div>
 			<div class="form-group navbar-form">
 				Válaszd ki a kedvenc előadód, ha nem találod a listában akkor írd be a lenti mezőbe.
@@ -141,7 +141,6 @@ include("homemenu.inc.php");
 	    	   	<input name="newinterpret" id="newinterpret" type="text" size="50" onkeyup="autoComplete(this,this.form.interpret,'text',false)" class="form-control" placeholder="Például: ABBA, Hungaria, Vangelis stb." />
 	    	</div>
 			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" ></label>
 	    		<button class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span> Tovább</button>
 	    	</div>
 			<?php } else {?>
@@ -191,7 +190,7 @@ include("homemenu.inc.php");
                 </select>
             </div>
             <div class="input-group" style="margin-bottom: 10px;">
-                <label style="min-width:200px; text-align:right" for="link" class="input-group-addon" id="basic-addon1">Zenetipus</label>
+                <label style="min-width:200px; text-align:right" for="newGenre" class="input-group-addon" id="basic-addon1">Zenetipus</label>
                 <select type="text" class="form-control" id="newGenre" name="newGenre" >
                     <option value="">határozattlan</option>
                     <option <?php echo $song["genre"]==="dance"?'selected="selected"':''?> value="dance">Tánczene</option>
@@ -208,7 +207,7 @@ include("homemenu.inc.php");
 		    	<input name="newVideo" id="newVideo" type="text" size="50" class="form-control" value="<?php echo $pnewVideo; ?>" placeholder="a youtube kód pl: 234fwe523_1"/>
 		    </div>
 			<div class="form-group navbar-form navbar">
-	    	   	<label style="min-width:300px;" ></label>
+	    	   	<span style="min-width:300px;" ></span>
 	    		<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Ez az én kedvencem!</button>
 	    		<button class="btn btn-warning" onclick="document.location.href='zenetoplista?reload';return false;"><span class="glyphicon glyphicon-remove"></span> Újból előadót választok</button>
 	    	</div>
@@ -255,7 +254,7 @@ else
 <div class="col-sm-9">
 	<div class="panel panel-default">
 		<div class="panel-heading" style_notgood="background-image: url(images/tenor.gif);background-size: contain;background-blend-mode: difference;">
-			<label id="dbDetails">Kiválasztva: <?php echo sizeof($topList)?> Indítsd a lejátszót! (max 100)</label><br/>
+			<span id="dbDetails">Kiválasztva: <?php echo sizeof($topList)?> Indítsd a lejátszót! (max 100)</span><br/>
             <div style="">
                 <?php if (getParam("srcText","")=="") {?>
 			        <button class="btn btn-success" onclick="playBackward();"><span class="glyphicon glyphicon-play"></span> Legjobb szám elsőnek</button>
@@ -340,7 +339,7 @@ else
 <div class="col-sm-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<label id="dbDetails">Kedvenc zene jelölések száma:<?PHP echo($allVotesNoAnonymous); ?></label>
+			<span id="dbDetails">Kedvenc zene jelölések száma:<?PHP echo($allVotesNoAnonymous); ?></span>
 		</div>
 		<div class="form-group navbar-form navbar">
 			<table>

@@ -202,8 +202,8 @@
                     $selected = strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false?"checked=checked":""?>
                     <div style="margin-top: 10px;min-height:30px" class="input-group" id="schoolid_<?php echo $school["id"] ?>">
                         <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
-                        <span style="width:40px"  class="input-group-addon"> <input id="schoolIdAsTeacher" data="<?php echo $school["id"] ?>" type="checkbox" <?php echo $selected ?>  /></span>
-                        <input id="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" />
+                        <span style="width:40px"  class="input-group-addon"> <input class="schoolIdAsTeacher" id="schoolIdAsTeacher-<?php echo $school["id"] ?>" data="<?php echo $school["id"] ?>" type="checkbox" <?php echo $selected ?>  /></span>
+                        <input class="schoolTeacherPeriod" id="schoolTeacherPeriod-<?php echo $school["id"] ?>" data="<?php echo $school["id"] ?>" placeholder="mettöl meddig pl: 1970-1989" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" />
                     </div>
                 <?php }?>
             <?php } else if ($diak["schoolIdsAsTeacher"]!=null) {?>
@@ -216,7 +216,7 @@
                     if ( strpos($diak["schoolIdsAsTeacher"],"(".$school["id"].")")!==false) { ?>
                         <div style="min-height:30px" class="input-group" id="schoolid_<?php echo $school["id"] ?>">
                             <span style="min-width:300px;" class="input-group-addon" ><?php echo $school["name"]?></span>
-                            <input id="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" disabled="disabled" />
+                            <input class="schoolTeacherPeriod" data="<?php echo $school["id"] ?>" value="<?php echo $db->getTeacherPeriod($diak,$school["id"])?>" class="form-control" disabled="disabled" />
                         </div>
                     <?php }?>
                 <?php }?>

@@ -253,13 +253,13 @@ Appl::addJsScript('
         }
         //concat schoolIdsAsTeacher
         s="";
-        $("input[id=\'schoolIdAsTeacher\']").each(function() {
+        $("input[class=\'schoolIdAsTeacher\']").each(function() {
             s += this.checked ?  ("("+$(this).attr(\'data\')+")"):"";
         });
         $("[name=\'schoolIdsAsTeacher\']").val(s);
         //concat period in school
         s="";
-        $("input[id=\'schoolTeacherPeriod\']").each(function() {
+        $("input[class=\'schoolTeacherPeriod\']").each(function() {
             s += $(this).val()!="" ?  ("\""+$(this).attr("data")+"\":\""+$(this).val()+"\","):"";
         });
         if (s!="") {

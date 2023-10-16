@@ -361,7 +361,7 @@ function displayMusic($db,$music,$action,$userId,$date,$showVideo=false) {
     ?>
     <div class="element">
         <div style="display: block;min-width:300px; vertical-align: top;margin-bottom:10px;">
-            <?php displaySchoolName($d["schoolID"]); ?>
+            <?php if (NULL!==$d) displaySchoolName($d["schoolID"]); ?>
             <div style="">
                 <a href="zenePlayer?link=<?php echo $music["video"]?>&id=<?php echo $music['id']?>"><h4><span class="glyphicon glyphicon-film"></span> <?php echo(htmlspecialchars_decode($music["interpretName"]))?> - <?php echo(htmlspecialchars_decode($music["name"]))?></h4></a>
             </div>

@@ -6,7 +6,7 @@
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div  class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, dicséreted"></textarea>
+            <textarea id='t-person-{id}' name='opinionperson' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, dicséreted"></textarea>
         </div>
         <div>
             <hr/>
@@ -25,7 +25,7 @@
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div  class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, élményed"></textarea>
+            <textarea id='t-{type}-{id}' name='opinionteacher' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, élményed"></textarea>
         </div>
         <div>
             <hr/>
@@ -43,7 +43,7 @@
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide dicséreted, megjegyzésed, gondolatod"></textarea>
+            <textarea id='t-picture-{id}' name='opinionpicture' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide dicséreted, megjegyzésed, gondolatod"></textarea>
         </div>
         <div>
             <hr/>
@@ -62,7 +62,7 @@
         <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
     </span>
         <div class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, hozzászólásod"></textarea>
+            <textarea id='t-message-{id}' name='opinionmessage' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, hozzászólásod"></textarea>
         </div>
         <div>
             <hr/>
@@ -80,7 +80,7 @@
             <button onclick="return closeOpinionList({id},'{type}')" title="Bezár" class="btn btn-sm "><span class="glyphicon glyphicon-remove-circle"></span> </button>
         </span>
         <div class="taopinion">
-            <textarea id='t-{type}-{id}' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, hozzászólásod"></textarea>
+            <textarea id='t-music-{id}' name='opinionmusic' style="height: 100%;width: 100%;border-radius: 5px" placeholder="Írd ide véleményed, megjegyzésed, gondolatod, hozzászólásod"></textarea>
         </div>
         <div>
             <hr/>
