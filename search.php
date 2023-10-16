@@ -52,6 +52,9 @@ if (null==getParam("type")) {
     $personList=$db->getPersonList($sql,20,20*getIntParam("start",0),$sort,$fields,$join);
     $personCount=$db->getTableCount("person",$sql);
     Appl::setSiteSubTitle("Bogáncs Zurboló tagok:".$personCount);
+    $firstPicture= array();
+    $firstPicture["file"]="images/bogancszurbolo.jpg";
+    Appl::setMember("firstPicture",$firstPicture);
     $caption ='BOGÁNCS-ZURBOLÓ egyesület tagjai. Intenet elérhetőség a <a href="https://zurbolo.ro/bogancs-neptancegyuttes/">Bogáncs</a> néptáncegyüttes és a <a href="https://zurbolo.ro/zurbolo-tancegyuttes/">Zurboló</a> táncegyüttes.';
     $title ="Bogáncs Zurboló tagok:".$personCount;
 } else {
