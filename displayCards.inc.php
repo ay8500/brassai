@@ -208,9 +208,11 @@ function displayClass($db,$class,$showDate=false) {
             <?php displaySchoolName($class["schoolID"]); ?>
             <h4><i class="material-icons" style="vertical-align: bottom;">group</i> Osztály: <a href="hometable?classid=<?php echo $class["id"]?>"><?php echo getSchoolClassName($class);?></h4></a><br/>
 			<?php if (isset($class["headTeacherID"]) && $class["headTeacherID"]>0) {
-			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);?>
-				Osztályfőnök: <a href="editPerson?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a>
-                <?php if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>0) {
+			    $headTeacher = $db->getPersonByID($class["headTeacherID"]);
+                if ($headTeacher!=NULL) { ?>
+				    Osztályfőnök: <a href="editPerson?uid=<?php echo $class["headTeacherID"]?>" ><?php echo $headTeacher["lastname"]." ".$headTeacher["firstname"]?></a>
+                <?php }
+                if (isset($class["secondHeadTeacherID"]) && $class["secondHeadTeacherID"]>0) {
                     $secondHeadTeacher = $db->getPersonByID($class["secondHeadTeacherID"]);?>
                     és <a href="editPerson?uid=<?php echo $class["secondHeadTeacherID"]?>" ><?php echo $secondHeadTeacher["lastname"]." ".$secondHeadTeacher["firstname"]?></a> <br/>
                 <?php } ?>
@@ -493,32 +495,32 @@ function displayPersonPicture($d)
     } else {
         $rstyle = ' diak_image_empty';
     }
-    if ($d["id"]!=-1) {
+    if (NULL!=$d && $d["id"]!=-1) {
         $personLink=getPersonLink($d["lastname"],$d["firstname"])."-".$d["id"];
+        ?>
+        <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;text-decoration: none;">
+            <div>
+                <img src="<?php echo getPersonPicture($d)?>" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="vertical-align: bottom;position: relative" />
+                <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
+                <?php if (isset($d["deceasedYear"])) {?>
+                <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">
+                    <?php } else { ?>
+                    <div style="background-color: lightgray;color: black;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">
+                        <?php }?>
+                        <?php if (isset($d["birthyear"]) && intval($d["birthyear"])>1800) {?>
+                            <?php echo "* ".intval($d["birthyear"]).'&nbsp;&nbsp;'; ?>
+                        <?php } ?>
+                        <?php if (isset($d["deceasedYear"])) {?>
+                            <?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
+                        <?php } ?>
+                    </div>
+                    <?php }?>
+                </div>
+        </a>
+        <?php
     } else {
         $personLink="javascript:alert('Erről a személyről nincsenek adatok.');";
     }
-    ?>
-    <a href="<?php echo $personLink?>" title="<?php echo ($d["lastname"]." ".$d["firstname"])?>" style="display:inline-block;text-decoration: none;">
-        <div>
-            <img src="<?php echo getPersonPicture($d)?>" title="<?php echo $d["lastname"].' '.$d["firstname"]?>" class="<?php echo $rstyle?>" style="vertical-align: bottom;position: relative" />
-            <?php if ((isset($d["deceasedYear"]) && intval($d["deceasedYear"])>=0) || isset($d["birthyear"])) {?>
-                <?php if (isset($d["deceasedYear"])) {?>
-                    <div style="background-color: black;color: white;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">
-                <?php } else { ?>
-                    <div style="background-color: lightgray;color: black;hight:20px;text-align: center;border-radius: 0px 0px 5px 5px;position: relative;top: -8px;">
-                <?php }?>
-                <?php if (isset($d["birthyear"]) && intval($d["birthyear"])>1800) {?>
-                    <?php echo "* ".intval($d["birthyear"]).'&nbsp;&nbsp;'; ?>
-                <?php } ?>
-                <?php if (isset($d["deceasedYear"])) {?>
-                    <?php echo intval($d["deceasedYear"])==0?"†":"† ".intval($d["deceasedYear"]); ?>
-                <?php } ?>
-                </div>
-            <?php }?>
-        </div>
-    </a>
-    <?php
     return $personLink;
 }
 

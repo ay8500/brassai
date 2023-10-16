@@ -46,6 +46,14 @@ if (null==getParam("type")) {
     $personCount=$db->getTableCount("person","role like '%unknown%'");
     $caption ='Ezen a listán azok az egykori iskolatársak jelennek meg, akikről nem tudjuk mit történt velük. Segítsetek bármilyen információval. Egyszerüen módosítsátok az adatokat, írjatok üzenetet vagy e-mailt. Előre is nagyon szépen köszönjük.';
     $title ="Nem tudunk róluk";
+} elseif ('bogancszurbolo'==getParam("type")) {
+    unsetActSchool();
+    $sql="role like '%bogancszurbolo%'";
+    $personList=$db->getPersonList($sql,20,20*getIntParam("start",0),$sort,$fields,$join);
+    $personCount=$db->getTableCount("person",$sql);
+    Appl::setSiteSubTitle("Bogáncs Zurboló tagok:".$personCount);
+    $caption ='BOGÁNCS-ZURBOLÓ egyesület tagjai. Intenet elérhetőség a <a href="https://zurbolo.ro/bogancs-neptancegyuttes/">Bogáncs</a> néptáncegyüttes és a <a href="https://zurbolo.ro/zurbolo-tancegyuttes/">Zurboló</a> táncegyüttes.';
+    $title ="Bogáncs Zurboló tagok:".$personCount;
 } else {
     if (isUserAdmin() ) {
         switch (getParam("type")) {
@@ -81,8 +89,8 @@ if (null==getParam("type")) {
                 break;
             }
             case "teacherwithwikipedia": {
-                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and homepage like '%wikipedia%'",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and homepage like '%wikipedia%'");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is not null and wikipedia is not null and wikipedia != '' ",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is not null and wikipedia is not null and wikipedia != '' ");
                 $caption ="Tanárok wikipédia oldallal:".$personCount;
                 break;
             }
@@ -118,8 +126,8 @@ if (null==getParam("type")) {
                 break;
             }
             case "classmatewithwikipedia": {
-                $personList=$db->getPersonList("schoolIdsAsTeacher is null and homepage like '%wikipedia%'",20,20*getIntParam("start",0),$sort,$fields,$join);
-                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null and homepage like '%wikipedia%'");
+                $personList=$db->getPersonList("schoolIdsAsTeacher is null and wikipedia is not null and wikipedia != '' ",20,20*getIntParam("start",0),$sort,$fields,$join);
+                $personCount=$db->getTableCount("person","schoolIdsAsTeacher is null and wikipedia is not null and wikipedia != '' ");
                 $caption ="Diákok wikipédia oldallal:".$personCount;
                 break;
             }

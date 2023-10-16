@@ -93,13 +93,14 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
             <li>
                 <a  href="index" class="dropdown-toggle" data-toggle="dropdown" title="Kolozsvári iskolák">Iskolák<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="index">Start</a></li>
-                    <li><a href="start?all=all">Kolozsvári véndiák újdonságok</a></li>
-                    <li><a href="rip?classid=all&schoolid=all">Emléküket örökké őrizzük</a></li>
+                    <li><a href="index"><img style="height:20px; margin-right: 6px" src="images/kolozsvar.png" />Start</a></li>
+                    <li><a href="start?all=all"><img style="height:20px; margin-right: 6px" src="images/logo.JPG" />Kolozsvári véndiák újdonságok</a></li>
+                    <li><a href="rip?classid=all&schoolid=all"><img style="height:20px; margin-right: 6px" src="images/candle7.gif" />Emléküket örökké őrizzük</a></li>
                     <?php foreach ($schoolList as $menuSchool) {
                         $selected = $menuSchool["id"]==getActSchoolId()?"font-weight:bold;color:black":""?>
-                        <li><a style="<?php echo $selected?>" href="iskola-<?php echo $menuSchool["shortLink"] ?>"><?php echo $menuSchool["name"] ?></a></li>
+                        <li><a style="<?php echo $selected?>" href="iskola-<?php echo $menuSchool["shortLink"] ?>"><img style="height:20px; margin-right: 6px" src="images\school<?php echo $menuSchool["id"].DIRECTORY_SEPARATOR.$menuSchool["logo"]?>" /><?php echo $menuSchool["name"] ?></a></li>
                     <?php  }?>
+                    <li><a href="search?type=bogancszurbolo">Bogáncs Zurboló tagok</a> </li>
                     <li><a href="iskola-terkep">Térkép</a></li>
                     <li><a href="zenetoplista?classid=all&schoolid=all">Zenetoplista</a></li>
                     <li><a href="statistics">Statisztika</a></li>

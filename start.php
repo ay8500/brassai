@@ -14,7 +14,7 @@ if ($userId>=0) {
 	$db->savePersonFacebookId($userId,$_SESSION["FacebookId"]);
 }
 
-unsetActClass();
+unsetActSchool();
 
 include_once 'displayCards.inc.php';
 

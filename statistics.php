@@ -18,14 +18,14 @@ $classmateDeceased=$db->getTableCount("person","schoolIdsAsTeacher is null and d
 $classmatePicture=$db->getTableCount("person","schoolIdsAsTeacher is null and (picture is not null and picture <>'')");
 $classmateEmail=$db->getTableCount("person","schoolIdsAsTeacher is null and (email is not null and email<>'')");
 $classmateFacebook=$db->getTableCount("person","schoolIdsAsTeacher is null and (facebook is not null and facebook<>'')");
-$classmateWikipedia=$db->getTableCount("person","schoolIdsAsTeacher is null and homepage like '%wikipedia%'");
+$classmateWikipedia=$db->getTableCount("person","schoolIdsAsTeacher is null and wikipedia is not null and wikipedia != '' ");
 $classmatePictures=$db->getTableCount("picture","personID is not null");
 
 $teacherDeceased=$db->getTableCount("person","schoolIdsAsTeacher is not null and deceasedYear is not null");
 $teacherPicture=$db->getTableCount("person","schoolIdsAsTeacher is not null and (picture is not null and picture <>'')");;
 $teacherEmail=$db->getTableCount("person","schoolIdsAsTeacher is not null and (email is not null and email<>'')");
 $teacherFacebook=$db->getTableCount("person","schoolIdsAsTeacher is not null and (facebook is not null and facebook<>'')");
-$teacherWikipedia=$db->getTableCount("person","schoolIdsAsTeacher is not null and homepage like '%wikipedia%'");
+$teacherWikipedia=$db->getTableCount("person","schoolIdsAsTeacher is not null and wikipedia is not null and wikipedia != '' ");
 
 $classGraduationPicture=$db->getTableCount("picture","classID is not null AND tag like '%Tabló%'","classID");
 $classGraduationCardPicture=$db->getTableCount("picture","classID is not null AND tag like '%Kicsengetési kártya%'","classID");

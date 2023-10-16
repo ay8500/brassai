@@ -108,7 +108,7 @@ class dbDaStatistic
     }
 
     /**
-     * get the list of the best persons regarding to the activities
+     * get the list of the best persons regarding the activities
      * @param int $count
      * @return array
      */
@@ -149,10 +149,11 @@ class dbDaStatistic
         asort($ret);
         $ret = array_reverse($ret,true);
 
+        //create return array without admin
         $rets=array();
         foreach ($ret as $uid=>$ucount) {
             $person = $this->dbDAO->getPersonByID($uid, true);
-            if (strpos($person["role"],"admin")===false) {
+            if (strpos($person["role"],"admin")===false && isset($person["lastname"]))  {
                 $person["count"] = $ucount;
                 $rets[$uid] = $person;
                 if (sizeof($rets) == $count)

@@ -1157,7 +1157,7 @@ class dbDAO {
             $sql = " (select game.id as id, dateEnd as changeDate, 'game' as type, 'played' as action, userId as changeUserID from game";
             $sql .= " join person on person.id=game.userId join class on class.id=person.classID ";
             $sql .=  " where dateEnd<='" . $dateFrom->format("Y-m-d H:i:s") . "' ".(getActSchoolId()==null?"":(" and schoolID=".getActSchoolId()));
-            $sql .= $sqlCandleIpUser. "order by dateEnd desc limit " . $limit . ") ";
+            $sql .= $sqlCandleIpUser. " order by dateEnd desc limit " . $limit . ") ";
             $this->dataBase->query($sql);
             $rows = array_merge($rows, $this->dataBase->getRowList());
         }
