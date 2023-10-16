@@ -106,7 +106,7 @@ class dbDaOpinion
     }
 
     /**
-     * get only one opinion from logge in user or teh ip address
+     * get only one opinion from logged in user or the ip address
      * @param $id
      * @param $table
      * @param $type
@@ -166,6 +166,15 @@ class dbDaOpinion
     public function getOpinionCount($id, $type)
     {
         $ret = new stdClass();
+        $ret->opinions = 0;
+        $ret->favorite = 0;
+        $ret->content = 0;
+        $ret->friends = 0;
+        $ret->sport = 0;
+        $ret->easter = 0;
+        $ret->candles = 0;
+        if ($id==null)
+            return $ret;
         if ($type == 'picture') {
             $ret->opinions = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='text' and entryID=" . $id);
             $ret->favorite = $this->dbDAO->dataBase->queryInt("select count(1) from opinion where `table`='picture' and opinion='favorite' and entryID=" . $id);

@@ -136,7 +136,7 @@ public /* Parents, Silbling, Life parnter, Children */
     }
 
 
-    private function getPersonRelativesRecursive($id,$code="",$direction,$deap,$idList) {
+    private function getPersonRelativesRecursive($id,$code,$direction,$deap,$idList) {
         $return = array();
         $sql = "select id,id1,id2, code, gender from family where id1=".$id;
         $this->dataBase->query($sql);

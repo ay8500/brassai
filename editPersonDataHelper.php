@@ -6,6 +6,8 @@ use \maierlabs\lpfw\Appl as Appl;
 function showRoleField($value,$fieldName) {
     $options = array();
     $disabled='';
+
+    array_push($options, array('role' => 'bogancszurbolo', 'text' => 'Bogáncs-Zurboló tag','disabled'=>$disabled));
     array_push($options, array('role' => 'unknown', 'text' => 'nem tudunk róla','disabled'=>$disabled));
     array_push($options, array('role' => 'jmlaureat', 'text' => getActSchool()["awardName"]." díjas",'disabled'=>$disabled));
     if(!isUserAdmin() && !isUserSuperuser())

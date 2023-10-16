@@ -139,6 +139,9 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
  * @return void
  */
 function displayPicture($db,$picture,$showSchool=false,$action=null,$changeUserID=null, $changeDate=null) {
+    if ($picture==null) {
+        $picture = $db->getPictureById(2158);
+    }
     $dbOpinion = new dbDaOpinion($db);
 	$p=$picture;
     if ($action!='change')

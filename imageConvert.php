@@ -23,6 +23,8 @@ include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'ltools.php';
 include_once 'dbBL.class.php';
 
+global $db;
+
 
 //file Name without extensions
 $file_name = getParam("file", "");

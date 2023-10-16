@@ -25,7 +25,7 @@ class dbBL extends dbDAO
     /**
      * Check the requester IP
      * User can't login more then a defined time per day. This is a safety function
-     * to prevent automatic loging of password crack or to mutch anonymous changes and uploads
+     * to prevent automatic loging or password crack or to mutch anonymous changes and uploads
      * @param changeType $action
      */
     function checkRequesterIP($action) {
@@ -75,7 +75,7 @@ class dbBL extends dbDAO
 
     /**
      * The picture folder of the actual persons class or school
-     * eg. 1_12A_2013
+     * eg. 1_12A2013
      */
     public function getActClassFolder()
     {
