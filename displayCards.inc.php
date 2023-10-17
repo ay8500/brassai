@@ -38,6 +38,8 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
 		<div class="personboxc">
             <?php if (strstr($d["role"],"jmlaureat")!==false)
                 echo('<div><a href="search?type=jmlaureat">'.$school['awardName'].' díjas</a></div>');?>
+            <?php if (strstr($d["role"],"bogancszurbolo")!==false)
+                echo('<div><a href="search?type=bogancszurbolo">'.'Bogáncs Zurboló tánccsoport tag</a></div>');?>
             <?php if ($showClass)
                 echo($personClass);?>
             <div class="fields"><?php
@@ -541,6 +543,8 @@ function displayIcon($d,$field,$image,$title,$appl) {
 }
 
 function displaySchoolName($id) {
+    if (NULL==$id)
+        return NULL;
     global $schoolList;
     $school = $schoolList[array_search($id,array_column($schoolList,"id"))];
     if (getActSchoolId()==null || getActSchoolId()!=$id) {

@@ -19,7 +19,7 @@ if (getIntParam("schoolid")!=0)
 $start=getIntParam("start",0);
 $link="search?type=".getParam("type")."&start=";
 Appl::setSiteSubTitle("Találatok a véndiákok adatbankjában");
-$fields = "person.*,concat(graduationYear,' ',name) as classText";
+$fields = "person.*,concat(graduationYear,' ',name) as classText,schoolID";
 $join ="class on person.classID=class.id ";
 $sort="lastName, firstName";
 $title="Keresés";
