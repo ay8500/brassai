@@ -39,7 +39,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             <?php if (strstr($d["role"],"jmlaureat")!==false)
                 echo('<div><a href="search?type=jmlaureat">'.$school['awardName'].' díjas</a></div>');?>
             <?php if (strstr($d["role"],"bogancszurbolo")!==false)
-                echo('<div><a href="search?type=bogancszurbolo">'.'Bogáncs Zurboló tánccsoport tag</a></div>');?>
+                echo('<div><a href="search?type=bogancszurbolo"><img style="height:22px;display: inline-block;margin-right: 5px" src="images/bogancszurbolologoxs.jpg"/>Bogáncs Zurboló tánccsoport tag</a></div>');?>
             <?php if ($showClass)
                 echo($personClass);?>
             <div class="fields"><?php

@@ -57,7 +57,12 @@ if (null==getParam("type")) {
     $firstPicture= array();
     $firstPicture["file"]="images/bogancszurbolo.jpg";
     Appl::setMember("firstPicture",$firstPicture);
-    $caption ='BOGÁNCS-ZURBOLÓ egyesület tagjai. Intenet elérhetőség a <a href="https://zurbolo.ro/bogancs-neptancegyuttes/">Bogáncs</a> néptáncegyüttes és a <a href="https://zurbolo.ro/zurbolo-tancegyuttes/">Zurboló</a> táncegyüttes.';
+    $caption ='<img style="display: inline-block; margin-right: 10px" src="images/bogancszurbolologo.jpg" /><div style="display: inline-block"> 
+        <b>BOGÁNCS-ZURBOLÓ egyesület tagjai.</b><br/> Intenet elérhetőség a <a href="https://zurbolo.ro/bogancs-neptancegyuttes/">
+        Bogáncs</a> néptáncegyüttes és a <a href="https://zurbolo.ro/zurbolo-tancegyuttes/">Zurboló</a> táncegyüttes.<br/>
+        <a href="https://www.facebook.com/zurbolo/?locale=hu_HU"><img src="images/facebook.png"> Facebook oldalon</a>
+        </div>
+    ';
     $title ="Bogáncs Zurboló tagok:".$personCount;
 } else {
     if (isUserAdmin() ) {
