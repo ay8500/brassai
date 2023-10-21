@@ -37,7 +37,7 @@ if (isActionParam("delete")) {
 $familyPersonList = $dbFamily->getPersonRelativesById($diak["id"]);
 
 ?>
-    <h4>Uj Rokonsági kapcsolat megjelölése</h4>
+    <h4>Új rokonsági kapcsolat megjelölése</h4>
     <div class="input-group shadowbox">
         <span style="min-width:160px; text-align:right" class="input-group-addon" id="basic-addon1">Rokon neme</span>
         <select class="form-control" onchange="setGender()" id="relativeGender">

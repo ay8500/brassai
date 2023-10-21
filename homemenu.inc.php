@@ -17,15 +17,16 @@ automaticLogin($userDB);
 //Image gallery Menue
 if (isset($_SESSION['MENUTREE'])) $menuTree =$_SESSION['MENUTREE']; else $menuTree="";
 
+//Login if crypted loginkey present and correct
+if (isset($_GET['key'])) {
+    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
+}
+
 $actClass = $db->handleClassSchoolChange(getParam("classid"),getParam("schoolid"));
 Appl::setMember("actClass",$actClass);
 Appl::setMember("actSchool",$db->getSchoolById($actClass!=null?$actClass["schoolID"]:getActSchoolId()));
 Appl::setMember( "staffClass",$db->getStafClassBySchoolId($actClass!=null?$actClass["schoolID"]:getActSchoolId()));
 
-//Login if crypted loginkey present and correct
-if (isset($_GET['key'])) {
-    Appl::setMessage(directLogin($userDB,$_GET['key']),"");
-}
 handleLogInOff(new dbDaUser($db));
 $schoolList = $db->getSchoolList();
 
@@ -93,14 +94,14 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
             <li>
                 <a  href="index" class="dropdown-toggle" data-toggle="dropdown" title="Kolozsvári iskolák">Iskolák<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="index"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/kolozsvar.png" />Start</a></li>
-                    <li><a href="start?all=all"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/logo.JPG" />Kolozsvári véndiák újdonságok</a></li>
-                    <li><a href="rip?classid=all&schoolid=all"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/candle7.gif" />Emléküket örökké őrizzük</a></li>
+                    <li><a href="index"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/logo.JPG" />Start</a></li>
+                    <li><a href="start?all=all"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/kolozsvar.png" />Kolozsvári véndiák újdonságok</a></li>
+                    <li><a href="rip?classid=all&schoolid=all"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/candle10.gif" />Emléküket örökké őrizzük</a></li>
                     <?php foreach ($schoolList as $menuSchool) {
                         $selected = $menuSchool["id"]==getActSchoolId()?"font-weight:bold;color:black":""?>
                         <li><a style="<?php echo $selected?>" href="iskola-<?php echo $menuSchool["shortLink"] ?>"><img style="display:inline-block;height:22px; margin-right: 6px" src="images\school<?php echo $menuSchool["id"].DIRECTORY_SEPARATOR.$menuSchool["logo"]?>" /><?php echo $menuSchool["name"] ?></a></li>
                     <?php  }?>
-                    <li><a href="search?type=bogancszurbolo">Bogáncs Zurboló tagok</a> </li>
+                    <li><a href="search?type=bogancszurbolo"><img style="display:inline-block;height:22px; margin-right: 6px" src="images/bogancszurbolologoxs.jpg" />Bogáncs Zurboló tagok</a> </li>
                     <li><a href="iskola-terkep">Térkép</a></li>
                     <li><a href="zenetoplista?classid=all&schoolid=all">Zenetoplista</a></li>
                     <li><a href="statistics">Statisztika</a></li>

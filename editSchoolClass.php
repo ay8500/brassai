@@ -18,12 +18,16 @@ Appl::addCssStyle('
 global $db;
 $schoolList = $db->getSchoolList();
 $classid= getIntParam("classid",-1);
-$class=$db->getClassById($classid);
-$changedByPerson = $db->getPersonByID($class["changeUserID"]);
-$subTitle= ($classid>=0) ? "végzős osztály módosítása" :  "új végzős osztály létrehozása";
-Appl::setSiteTitle($class["text"]. " osztály módosítása",$class["text"]. " osztály módosítása");
+if ($classid!=-1) {
+    $class = $db->getClassById($classid);
+    $changedByPerson = $db->getPersonByID($class["changeUserID"]);
+    Appl::setSiteTitle($class["text"]. " osztály módosítása",$class["text"]. " osztály módosítása");
+} else {
+    $changedByPerson=NULL;
+    Appl::setSiteTitle("új osztály létrehozása","új osztály létrehozása");
+}
 
-if ($class==null && !isActionParam("newclass") && !isActionParam("saveclass")) {
+if ($classid==-1 && !isActionParam("newclass") && !isActionParam("saveclass")) {
     Appl::setMessage("Osztály nem létezik!", "danger");
     include("homemenu.inc.php");
     include ("homefooter.inc.php");
@@ -33,6 +37,10 @@ if ($class==null && !isActionParam("newclass") && !isActionParam("saveclass")) {
 if (isActionParam("newclass")) {
     if (getIntParam("schoolid")>0)
         setActSchool(getIntParam("schoolid"));
+    $class = array("id"=>-1, "schoolID"=>getActSchoolId(),"eveningClass"=>0,
+        "graduationYear"=>2000,"name"=>"","text"=>"2000","changeDate"=>new DateTime(),
+        "teachers"=>"","headTeacherID"=>NULL,"secondHeadTeacherID"=>NULL);
+
 }
 
 if (isActionParam("deleteclass") && isUserAdmin()) {
@@ -106,7 +114,7 @@ include("homemenu.inc.php");
     <div class="input-group shadowbox">
         <span style="min-width:110px; text-align:right" class="input-group-addon" id="basic-addon1">Ballagási év</span>
         <?php if (isUserAdmin() || isUserSuperuser()) {?>
-            <input type="text" id="year" class="form-control" onkeyup="changeYear()" value="<?php echo intval($class["graduationYear"])?>"/>
+            <input type="text" id="year" class="form-control" onkeyup="changeYear()" value="<?php echo NULL!=$class?intval($class["graduationYear"]):''?>"/>
         <?php } else { ?>
             <select class="form-control" onchange="changeYear()" <?php echo (isUserEditor() || isActionParam("newclass"))?"":"disabled" ?> id="selectYear"/>
                 <option value="0">...válassz...</option>
@@ -209,20 +217,21 @@ include("homemenu.inc.php");
 			</button>
 		<?php  endif;?>
 	</div>
-
-	<div class="well " style="margin-bottom: 25px;">
-		<h4>Statisztikai adatok</h4>
-		<div class="form">	      		
-            <a href="hometable?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
-            <a href="hometable?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
-            Diákok képpel:<?php echo $stat->personWithPicture?><br/>
-            Diakok képei:<?php echo $stat->personPictures?><br/>
-            <a href="picture?type=classID&typeid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
-            Utoljára módosítva:
-            <?php echo getPersonLinkAndPicture($changedByPerson) ?>
-            <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
+    <?php if (NULL!=$class) {?>
+        <div class="well " style="margin-bottom: 25px;">
+            <h4>Statisztikai adatok</h4>
+            <div class="form">
+                <a href="hometable?classid=<?php echo $classid?>">Diákok</a> száma:<?php echo $stat->personCount?><br/>
+                <a href="hometable?guests=true&classid=<?php echo $classid?>">Vendégek barátok</a> száma:<?php echo $stat->guestCount?><br/>
+                Diákok képpel:<?php echo $stat->personWithPicture?><br/>
+                Diakok képei:<?php echo $stat->personPictures?><br/>
+                <a href="picture?type=classID&typeid=<?php echo $classid?>">Osztályképek:</a><?php echo $stat->classPictures?><br/>
+                Utoljára módosítva:
+                <?php echo getPersonLinkAndPicture($changedByPerson) ?>
+                <?php echo maierlabs\lpfw\Appl::dateTimeAsStr($class["changeDate"]);?>
+            </div>
         </div>
-	</div>
+    <?php } ?>
 </div>
 
 
