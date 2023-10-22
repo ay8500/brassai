@@ -80,6 +80,9 @@
         <?php if (!isActionParam("newperson")) {?>
                 <button onclick="goGdpr(<?php echo $diak["id"]?>);" class="btn btn-default"><span class="glyphicon glyphicon-exclamation-sign"></span> Személyes adatok védelme</button>
         <?php } ?>
+        <?php if (isUserSuperuser()) { ?>
+            <button class="btn btn-warning" onclick="document.location='editPersonSchool?id=<?php echo $diak["id"]?>';">Iskola csere!</button>
+        <?php } ?>
         </div>
    <?php } ?>
 
@@ -99,7 +102,7 @@
             <div style="min-height:30px" class="input-group">
                 <span style="min-width:110px;" class="input-group-addon" >Iskola</span>
                 <span style="width:40px" id="highlight" class="input-group-addon">&nbsp;</span>
-                <select disabled="disabled" class="form-control" name="schoolID" id="schoolID" >
+                <select <?php echo isUserSuperuser()?'':'disabled="disabled"' ?> class="form-control" name="schoolID" id="schoolID" >
                     <?php foreach ($schoolList as $school) {
                         $selected = $school["id"]==getActSchoolId()?"selected=selected":""?>
                         <option value="<?php echo $school["id"] ?>" <?php echo $selected ?>><?php echo $school["name"] ?></option>

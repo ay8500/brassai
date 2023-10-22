@@ -70,7 +70,7 @@ if (isActionParam("saveclass")) {
 				"graduationYear"=>getParam("year"),
 				"name"=>getParam("class"),
 				"text"=>getParam("year")." ".getParam("class"),
-				"teachers"=>getParam("teachers"),
+				"teachers"=>getParam("teachers")!=NULL?getParam("teachers"):"",
 				"headTeacherID"=>getIntParam("teacher",0),
                 "secondHeadTeacherID"=>getIntParam("secondTeacher",0)
 		]);
