@@ -20,7 +20,18 @@ $picture["file"] = "images/candle3.gif";
 Appl::setMember("firstPicture",$picture);
 
 //Type of canlde list new, teacher, people
-if (isActionParam("teacher")) {
+if (getParam("classid")!==NULL) {
+    $class = $db->getClassById(getIntParam("classid"));
+    $personList = $db->getSortedPersonList("deceasedYear is not null and classID=".$class["id"], 200, null);
+    $teachers=$class["teachers"];
+    if (!empty($class["headTeacherID"]))
+        $teachers .=",".$class["headTeacherID"];
+    if (!empty($class["secondHeadTeacherID"]))
+        $teachers .=",".$class["secondHeadTeacherID"];
+    $teacherList = $db->getSortedTeacherList("deceasedYear is not null and schoolIdsAsTeacher  is not null and id in(".$teachers.")", 200, null, getActSchoolId());
+    $personList = array_merge($personList,$teacherList);
+    $subTitle = $class["name"]." ".$class["text"] ." Tanárok és Diákok emlékeére gyújtott gyertyák";
+} else if (isActionParam("teacher")) {
     $personList = $db->getSortedTeacherList("deceasedYear is not null and schoolIdsAsTeacher  is not null", 200, null, getActSchoolId());
     $subTitle = "Tanáraink emlékeére gyújtott gyertyák";
 } else if (isActionParam("person")) {

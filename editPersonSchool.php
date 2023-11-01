@@ -19,6 +19,8 @@ include_once "homemenu.inc.php";
 
 global $schoolList, $db;
 $person = $db->getPersonByID(getParam("id"));
+
+// Save the new class in the person table.
 if (getIntParam("classid",-1)>-1) {
     $person["classID"] = getIntParam("classid");
     if ($db->savePersonField($person['id'],'classID',getIntParam("classid"),true)>=0)
@@ -27,7 +29,10 @@ if (getIntParam("classid",-1)>-1) {
         Appl::setMessage("Sikertelen iskola modosítás","danger");
     $person = $db->getPersonByID(getParam("id"));
 }
+
+//Show the person that will be changed
 displayPerson($db,$person,true, false);
+
 echo('<div class="well">');
 if (getParam("schoolid")!=NULL) {
     Appl::_("Második lépes: válassz osztályt");
@@ -35,6 +40,8 @@ if (getParam("schoolid")!=NULL) {
     Appl::_("Elsö lépes: válassz új iskolát");
 }
 echo("</div>");
+
+//The school list
 foreach ($schoolList as $school) {
     if ($person["schoolID"]!=$school["id"]) { ?>
         <br/>

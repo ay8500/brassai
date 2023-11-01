@@ -63,7 +63,7 @@ class dbDAO {
 	 * @return array or null
 	 */
 	public function getClassById($id,$forceThisID=false) {
-		return $this->dataBase->getEntryById("class", $id,$forceThisID);
+		return $this->dataBase->getEntryById("class", $id,$forceThisID, "class.*, school.name", "school on class.schoolID=school.id");
 	}
 
 

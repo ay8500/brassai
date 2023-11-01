@@ -142,6 +142,7 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("actClass") ?>">Vendégek barátok
                             <?php if ($classStat->guestCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->guestCount ?></span><?php } ?></a></li>
+                    <li><a href="rip?classid=<?php echo $actClass["id"]?>">Emléküket örökké örizzük</a></li>
                     <li><a href="picture?type=classID&typeid=<?php echo Appl::getMemberId("actClass") ?>">Osztályképek
                             <?php if ($classStat->classPictures > 0) { ?><span
                                     class="badge"><?php echo $classStat->classPictures ?></span><?php } ?></a></li>
