@@ -16,6 +16,37 @@ if ( !isUserSuperuser()) {
     die();
 }
 
+global $db;
+$type  = getIntParam("t");
+$id = getIntParam("id",-1);
+if ($type>0 && $type<4 && $id>-1) {
+    if ($type===1) {
+        $url = "https://bmceh.ro/interact.php?id=".$id;
+        if (!empty(getParam("linktokv")))
+            $url .= "&idkv=".getParam("linktokv");
+        if (!empty(getParam("linktokt")))
+            $url .= "&idkt=".getParam("linktokt");
+        $ret = \maierlabs\lpfw\htmlParser::loadUrl($url);
+        Appl::setMessage("Kapcsolat BMC -> végrehajtva!");
+    }
+    if ($type===2) {
+        $url = "https://kolozsvartarsasag.bmceh.ro/interact.php?id=".$id;
+        if (!empty(getParam("linktobmc")))
+            $url .= "&idbmc=".getParam("linktobmc");
+        if (!empty(getParam("linktokv")))
+            $url .= "&idkv=".getParam("linktokv");
+        $ret = \maierlabs\lpfw\htmlParser::loadUrl($url);
+        Appl::setMessage("Kapcsolat Kolozsvar Társaság -> végrehajtva!");
+    }
+    if ($type===3) {
+        if (!empty(getParam("linktobmc")))
+            $db->savePersonField($id,"linkToBMC",getIntParam("linktobmc"),true);
+        if (!empty(getParam("linktokt")))
+            $db->savePersonField($id,"linkToKT",getIntParam("linktokt"),true);
+        Appl::setMessage("Kapcsolat Kolozsvari Véndiákok -> végrehajtva!");
+    }
+}
+
 $list = json_decode(\maierlabs\lpfw\htmlParser::loadUrl("https://bmceh.ro/interact.php"));
 foreach($list as $id=>$person) {
     $list[$id]->t = 1;
@@ -46,23 +77,11 @@ usort($list,function($item1,$item2) {
         <?php
             $count = 1;
             foreach ($list as $idx=>$person) {
+                if ($idx>1  && $list[$idx-2]->t == 1 &&  $list[$idx]->t == 3) {
+                    $count = checkAndDisplayPair($list[$idx-2], $list[$idx],$count, true);
+                }
                 if ($idx>0  && $list[$idx]->t != $list[$idx-1]->t) {
-                    $sorte1 = explode(" ", $list[$idx]->sort);
-                    $sorte1s = array_merge(array(),$sorte1);
-                    sort($sorte1s);
-                    $sorte2 = explode(" ", $list[$idx - 1]->sort);
-                    $sorte2s = array_merge(array(),$sorte2);
-                    sort($sorte2s);
-                    if (
-                        $list[$idx]->sort === $list[$idx-1]->sort ||
-                        (sizeof($sorte1)>1 && sizeof($sorte2)>1 && $sorte1[0] === $sorte2[0] && $sorte1[1] === $sorte2[1]) ||
-                        (sizeof($sorte1)>1 && sizeof($sorte2)>1 && substr($sorte1[0],0,4) === substr($sorte2[0],0,4) && substr($sorte1[1],0,3) === substr($sorte2[1],0,3)) ||
-                        //(sizeof($sorte1s)>1 && sizeof($sorte2s)>1 && $sorte1s[0] === $sorte2s[0] && $sorte1s[1] === $sorte2s[1]) ||
-                        (!empty($list[$idx - 1]->email) && !empty($list[$idx]->email) && $list[$idx]->email === $list[$idx - 1]->email) ||
-                        (!empty($list[$idx - 1]->wikipedia) && !empty($list[$idx]->wikipedia) && $list[$idx]->wikipedia === $list[$idx - 1]->wikipedia) ||
-                        (!empty($list[$idx - 1]->facebook) && !empty($list[$idx]->facebook) && $list[$idx]->facebook === $list[$idx - 1]->facebook)
-                    )
-                        displayPair($list[$idx - 1], $list[$idx], $count++);
+                    $count = checkAndDisplayPair($list[$idx-1], $list[$idx],$count);
                 }
             }
         ?>
@@ -92,15 +111,36 @@ function getLocalList() {
     return $ret;
 }
 
-function displayPair($p1,$p2, $count) {
-    echo '<div>';
+function checkAndDisplayPair($p1,$p2,$count,$flag=false) {
+    $sorte1 = explode(" ", $p1->sort);
+    $sorte1s = array_merge(array(), $sorte1);
+    sort($sorte1s);
+    $sorte2 = explode(" ", $p2->sort);
+    $sorte2s = array_merge(array(), $sorte2);
+    sort($sorte2s);
+    if (
+        $p1->sort === $p2->sort ||
+        (sizeof($sorte1) > 1 && sizeof($sorte2) > 1 && $sorte1[0] === $sorte2[0] && $sorte1[1] === $sorte2[1]) ||
+        (sizeof($sorte1) > 1 && sizeof($sorte2) > 1 && substr($sorte1[0], 0, 4) === substr($sorte2[0], 0, 4) && substr($sorte1[1], 0, 3) === substr($sorte2[1], 0, 3)) ||
+        //(sizeof($sorte1s)>1 && sizeof($sorte2s)>1 && $sorte1s[0] === $sorte2s[0] && $sorte1s[1] === $sorte2s[1]) ||
+        (!empty($p1->email) && !empty($p2->email) && $p1->email === $p2->email) ||
+        (!empty($p1->wikipedia) && !empty($p2->wikipedia) && $p1->wikipedia === $p2->wikipedia) ||
+        (!empty($p1->facebook) && !empty($p2->facebook) && $p1->facebook === $p2->facebook)
+        )
+        displayPair($p1, $p2, $count++,$flag);
+    return $count;
+}
+
+function displayPair($p1,$p2, $count, $flag) {
+    echo '<div id="'.echoElementId($p1).'">';
     echo '<span style="display:inline-block;width: 40px;">'.$count.'</span>';
     echo '<span style="display:inline-block;width: 100px;">';
         displayLogo($p1);displayLink($p1,$p2); displayLogo($p2);
     echo '</span>';
     displayField($p1,$p2,"name");
-    echo ' <button onclick="<?php createLinkUrl($p1,$p2)?>" class="btn btn-info">Kapcsolatot létrehoz</button> ';
+    displayButtons($p1,$p2);
     displayMoreFields($p1,$p2,array("email","facebook","wikipedia","birthyear","deceasedyear"));
+    echo $flag?"true":"false";
     echo '</div>';
     return $count++;
 }
@@ -110,6 +150,10 @@ function displayField($p1,$p2,$field) {
     $s2 = !empty($p2->$field)?$p2->$field:"";
     $css = $s1==$s2?"color:green":"color:black";
     echo '<div style="display:inline-block;width:440px;'.$css.'" >'.$s1.','.$s2. '</div>';
+}
+
+function echoElementId($p) {
+    return "ref".$p->id;
 }
 
 function displayMoreFields($p1,$p2,$fields) {
@@ -132,7 +176,20 @@ function sortWords($words) {
     return implode(" ",$wordslist);
 }
 
-function displayLogo($p) {
+function displayButtons($p1,$p2) {
+    $link12 = getLink($p1,$p2);
+    $link21 = getLink($p2,$p1);
+    if ($link12===FALSE)
+        echo '<button class="btn btn-default" onclick="'.createInteractLink($p1,$p2,TRUE).'">'.displayLogo($p1,1).displayLogo($p2,1).'</button>';
+    else
+        echo '<button class="btn btn-danger" onclick="'.createInteractLink($p1,$p2,FALSE).'">'.displayLogo($p1,1).displayLogo($p2,1).'</button>';
+    if ($link21===FALSE)
+        echo '<button class="btn btn-default" onclick="'.createInteractLink($p2,$p1,TRUE).'">'.displayLogo($p2,1).displayLogo($p1,1).'</button>';
+    else
+        echo '<button class="btn btn-danger" onclick="'.createInteractLink($p2,$p1,FALSE).'">'.displayLogo($p2,1).displayLogo($p1,1).'</button>';
+}
+
+function displayLogo($p,$return=0) {
     if ($p->t==1) {
         $src = "images/bmceh_logo.png";
         $title = "Barthe Miklós Céh";
@@ -143,12 +200,50 @@ function displayLogo($p) {
         $src= "images/kolozsvar.png";
         $title = "Koloszvári Véndiákok";
     }
-    echo '<img title="'.$title.'-'.$p->id.'" src="'.$src.'"  style="height: 32px;width: 32px;border: none; border-radius:7px;margin-right:5px;"/>';
+    $ret = '<img title="'.$title.'-'.$p->id.'" src="'.$src.'"  style="height: 32px;width: 32px;border: none; border-radius:7px;margin-right:5px;"/>';
+    if ($return==0)
+        echo $ret;
+    else
+        return $ret;
 }
 
 function displayLink($p1,$p2) {
+    $link12 = getLink($p1,$p2);
+    $link21 = getLink($p2,$p1);
+    if ($link12!==FALSE && $link21!==FALSE)
+        displayArrowLR();
+    elseif ($link12===FALSE && $link21!==FALSE)
+        displayArrowL();
+    elseif ($link12!==FALSE && $link21===FALSE)
+        displayArrowR();
+    else
+        echo( '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16"></svg> ' );
+}
 
-    displayArrowLR();
+function getLink($p1,$p2) {
+    if ($p1->t ===1) {
+        if ($p2->t === 2)
+            return isset($p1->linkToKT) && $p1->linkToKT>-1 ? $p1->linkToKT : FALSE;
+        elseif ($p2->t === 3)
+            return isset($p1->linkToKV) && $p1->linkToKV>-1 ? $p1->linkToKV : FALSE;
+        else
+            return FALSE;
+    } elseif ($p1->t ===2) {
+        if ($p2->t === 1)
+            return isset($p1->linkToBMC)  && $p1->linkToBMC>-1 ? $p1->linkToBMC : FALSE;
+        elseif ($p2->t === 3)
+            return  isset($p1->linkToKV)  && $p1->linkToKV>-1  ? $p1->linkToKV : FALSE;
+        else
+            return FALSE;
+    } elseif ($p1->t ===3) {
+        if ($p2->t === 1)
+            return isset($p1->linkToBMC)  && $p1->linkToBMC>-1 ? $p1->linkToBMC : FALSE;
+        elseif ($p2->t === 2)
+            return  isset($p1->linkToKT)  && $p1->linkToKT>-1 ? $p1->linkToKT : FALSE;
+        else
+            return FALSE;
+    } else
+        return FALSE;
 }
 
 function displayArrowLR() {
@@ -169,16 +264,29 @@ function displayArrowR() {
 </svg> ' );
 }
 
-function createLinkUrl($p1, $p2) {
-    $url = 'document.location.url=';
+function createInteractLink($p1, $p2, $create=TRUE) {
+    $url = "$('body').css('opacity',0.5);document.location.href='interact";
+    $url .= '?id='.$p1->id;
+    $url .= '&t='.$p1->t;
+    if ($p2->t ===1 )
+        $url .= '&linktobmc='.($create?$p2->id:"null");
+    elseif ($p2->t ===2 )
+        $url .= '&linktokt='.($create?$p2->id:"null");
+    elseif ($p2->t ===3 )
+        $url .= '&linktokv='.($create?$p2->id:"null");
+    $url .= "'";
+    return $url;
 }
 
-?>
-<script>
+\maierlabs\lpfw\Appl::addJsScript('
+   $(function (){
+       document.getElementById("ref'.getIntParam("id").'").scrollIntoView( {behavior: "smooth" });
+   });
+
    function showDetails(o) {
        $(".div-details").hide();
        $(o).next().show();
    }
-</script>
-<?php include "homefooter.inc.php";
-?>
+ ');
+
+include "homefooter.inc.php";
