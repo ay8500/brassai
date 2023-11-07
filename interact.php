@@ -7,7 +7,7 @@ include_once Config::$lpfw.'htmlParser.class.php';
 include_once 'dbBL.class.php';
 use maierlabs\lpfw\Appl as Appl;
 
-Appl::setSiteSubTitle("Bartha Miklós céh, Kolozsvár társaság és kolozsvári véndiákok összevonása");
+Appl::setSiteSubTitle("Barabás Miklós céh, Kolozsvár társaság és kolozsvári véndiákok összevonása");
 unsetActSchool();
 include "homemenu.inc.php";
 if ( !isUserSuperuser()) {

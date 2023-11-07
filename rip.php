@@ -33,10 +33,10 @@ if (getParam("classid")!==NULL) {
     $subTitle = $class["schoolName"]." ".$class["text"] ." Tanárok és Diákok emlékére gyújtott gyertyák";
 } else if (isActionParam("teacher")) {
     $personList = $db->getSortedTeacherList("deceasedYear is not null and schoolIdsAsTeacher  is not null", 200, null, getActSchoolId());
-    $subTitle = "Tanáraink emlékeére gyújtott gyertyák";
+    $subTitle = "Tanáraink emlékére gyújtott gyertyák";
 } else if (isActionParam("person")) {
     $personList = $db->getSortedPersonList("deceasedYear is not null ", 200, null, getActSchoolId());
-    $subTitle = "Diákok emlékeére gyújtott gyertyák";
+    $subTitle = "Diákok emlékére gyújtott gyertyák";
 } else {
 	$personList = $dbCandle->getLightedCandleList(getIntParam("id",null),48, getActSchoolId());
     $subTitle = "Nemrég gyújtott gyertyák";
@@ -71,9 +71,9 @@ include("homemenu.inc.php");
         </div>
     </div>
     <div style="display: inline-block;width: 340px;">
-        <object  class="embed-responsive embed-responsive-16by9" style="border-radius: 10px;">
-            <embed src="https://www.youtube.com/v/UgmfzsYHqxA?enablejsapi=0&fs=1&rel=0&border=1&autoplay=0&showinfo=0&modestbranding=1&rel=0&start=13" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"  />
-        </object>
+        <iframe id="ytplayer" type="text/html" width="340" height="180"
+                src="https://www.youtube.com/embed/UgmfzsYHqxA"
+                frameborder="0" ></iframe>
     </div>
 	<div class="well" style="background-color: black; color: #ffbb66;border-color: black;">
 		<form>

@@ -40,6 +40,10 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
                 echo('<div><a href="search?type=jmlaureat">'.$school['awardName'].' díjas</a></div>');?>
             <?php if (strstr($d["role"],"bogancszurbolo")!==false)
                 echo('<div><a href="search?type=bogancszurbolo"><img style="height:22px;display: inline-block;margin-right: 5px" src="images/bogancszurbolologoxs.jpg"/>Bogáncs Zurboló tánccsoport tag</a></div>');?>
+            <?php if (!empty($d["linkToBMC"]))
+                echo('<div><a href="search?type=bmc"><img style="height:22px;display: inline-block;margin-right: 5px" src="images/bmceh_logo.png"/>Barabás Miklós Céh tag</a></div>');?>
+            <?php if (!empty($d["linkToKT"]))
+                echo('<div><a href="search?type=kt"><img style="height:22px;display: inline-block;margin-right: 5px" src="images/kt_logo.jpg"/>Kolozsvár Társaság tagja</a></div>');?>
             <?php if ($showClass)
                 echo($personClass);?>
             <div class="fields"><?php

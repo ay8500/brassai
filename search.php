@@ -63,7 +63,39 @@ if (null==getParam("type")) {
         <a href="https://www.facebook.com/zurbolo/?locale=hu_HU"><img src="images/facebook.png"> Facebook oldalon</a>
         </div>
     ';
-    $title ="Bogáncs Zurboló tagok:".$personCount;
+    $title ="Bogáncs Zurboló tagok";
+} elseif ('bmc'==getParam("type")) {
+    unsetActSchool();
+    $sql="linkToBMC is not null";
+    $personList=$db->getPersonList($sql,ITEMSONPAGE,ITEMSONPAGE*getIntParam("start",0),$sort,$fields,$join);
+    $personCount=$db->getTableCount("person",$sql);
+    Appl::setSiteSubTitle("Barabás Miklós Céh tagok:".$personCount);
+    $firstPicture= array();
+    $firstPicture["file"]="images/bmceh_logo.png";
+    Appl::setMember("firstPicture",$firstPicture);
+    $caption ='<img style="display: inline-block; margin-right: 10px; width:80px;" src="images/bmceh_logo.png" /><div style="display: inline-block"> 
+        <b>Barabás Miklós Céh tagjai.</b><br/> Intenet elérhetőség: <a href="https://bmceh.ro">
+        BMC honoldal</a> és  <a href="https://bmceh.ro/kolozsvari-vendiakok.php"> Kolozsvári véndiákok </a> a BMC oldalon.<br/>
+        <a href="https://www.facebook.com/groups/722960454398161?locale=hu_HU"><img src="images/facebook.png"> BMC Facebook oldal</a>
+        </div>
+    ';
+    $title ="Barabás Miklós Céh tagok";
+} elseif ('kt'==getParam("type")) {
+    unsetActSchool();
+    $sql="linkToKT is not null";
+    $personList=$db->getPersonList($sql,ITEMSONPAGE,ITEMSONPAGE*getIntParam("start",0),$sort,$fields,$join);
+    $personCount=$db->getTableCount("person",$sql);
+    Appl::setSiteSubTitle("Kolozsvár Társaság tagok:".$personCount);
+    $firstPicture= array();
+    $firstPicture["file"]="images/kt_logo.jpg";
+    Appl::setMember("firstPicture",$firstPicture);
+    $caption ='<img style="display: inline-block; margin-right: 10px; width:140px;" src="images/kt_logo.jpg" /><div style="display: inline-block"> 
+        <b>Kolozsvár Társaság tagjai.</b><br/> Intenet elérhetőség: <a href="https://kolozsvartarsasag.bmceh.ro">
+        Kolozsvár Társaság honoldal</a> és  <a href="https://kolozsvartarsasag.bmceh.ro/kolozsvari-vendiakok.php"> Kolozsvári véndiákok </a> a Kolozsvár Társaság oldalon.<br/>
+        <a href="https://www.facebook.com/koltars?locale=hu_HU"><img src="images/facebook.png"> BMC Facebook oldal</a>
+        </div>
+    ';
+    $title ="Kolozsvár Társaság tagok";
 } else {
     if (isUserAdmin() ) {
         switch (getParam("type")) {
