@@ -107,6 +107,8 @@ function setPersonFields($diak,$isUserSuperuser,$isUserAdmin) {
         //$ret[] = array("name"=>"passw","caption"=>"Jelszó","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"geolat","caption"=>"X","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"geolng","caption"=>"Y","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"linkToBMC","caption"=>"BMC link","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
+        $ret[] = array("name"=>"linkToKT","caption"=>"KT link","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"userLastLogin","caption"=>"Utolsó login","json"=>"","itemProp"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"changeUserID","caption"=>"Modosította","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");
         $ret[] = array("name"=>"changeIP","caption"=>"IP","itemProp"=>"","json"=>"","canBeHidden"=>false,"required"=>false, "hint"=>"");

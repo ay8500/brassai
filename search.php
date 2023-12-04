@@ -197,7 +197,7 @@ if (null==getParam("type")) {
         }
     } else {
         Appl::setMessage('Ezeknek az adatoknak a megtekintése csak bejelentkezett látogatok részére lehetséges.<br/>
-            Jelentkezz be vagy regisztráld magad! Ez az oldal nagyon jó, barátságos, ingyenes és reklámmentes!', "warning");
+            Jelentkezz be! Ez az oldal nagyon jó, informativ, barátságos, zenés, játékos, ingyenes és reklámmentes!', "warning");
     }
 }
 Appl::setSiteTitle($title);
