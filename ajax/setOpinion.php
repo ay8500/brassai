@@ -50,7 +50,7 @@ if (!$db->checkRequesterIP(changeType::opinion)) {
 
 $dbOpinion = new dbDaOpinion($db);
 
-$oldOpinion = $dbOpinion->getOpinion($id,$table,$type,$type=="easter"?("changeDate > '".date("Y")."-01-01 00:00:00'"):null);
+$oldOpinion = $dbOpinion->getOpinion($id,$table,$type,$type=="easter"?("changeDate > '".date("Y")."2024-01-01 00:00:00'"):null);
 if (sizeof($oldOpinion)>0 && $type!='text') {
     $ret->result='exists';
     echo(json_encode($ret));

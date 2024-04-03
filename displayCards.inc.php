@@ -128,6 +128,7 @@ function displayPerson($db,$person,$showClass=false,$showDate=false,$action=null
             }
         }
         */
+        /*Easter end */
         displayPersonOpinion($dbOpinion,$d["id"],$d["gender"],(isset($d["schoolIdsAsTeacher"]) && $d["schoolIdsAsTeacher"]!=NULL),isset($d["deceasedYear"]));
     ?>
 	</div>

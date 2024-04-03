@@ -20,7 +20,7 @@ $picture["file"] = "images/candle3.gif";
 Appl::setMember("firstPicture",$picture);
 
 //Type of canlde list new, teacher, people
-if (getParam("classid")!==NULL) {
+if (getParam("classid")!==NULL && strtolower(getParam("classid"))!=="all") {
     $class = $db->getClassById(getIntParam("classid"));
     $personList = $db->getSortedPersonList("deceasedYear is not null and classID=".$class["id"], 200, null);
     $teachers=empty($class["teachers"])?"0":$class["teachers"];

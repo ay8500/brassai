@@ -677,9 +677,12 @@ class dbDAO {
      */
     public function getCountToBeChecked($table) {
         $sql ="select count(1) from ".$table." as c ";
-        if ($table!="personInPicture")
-          $sql.="left join ".$table." as o on c.changeForID=o.id  ";
-        $sql.="where c.changeForID is not null or c.changeUserID is null ";
+        if ($table!="personInPicture") {
+            $sql .= "left join " . $table . " as o on c.changeForID=o.id  ";
+            $sql .= "where c.changeForID is not null or c.changeUserID is null ";
+        } else  {
+            $sql .= "where c.changeUserID is null ";
+        }
         $sql.="order by c.changeDate asc";
         return $this->dataBase->queryInt($sql);
     }

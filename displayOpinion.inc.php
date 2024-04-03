@@ -368,8 +368,11 @@ function getLoggedInUserIdOrNull() {
                     if (e.myopinion) {
                         text +=' <span title=\"kitöröl\" class=\"oglyph glyphicon glyphicon-remove\" onclick=\"deleteOpinion('+e.id+')\"></span>';
                     }
-                    if (e.sendEgg!=null) {
+                    if (e.sendEgg === true) {
                         text +='<button style=\"margin-left:5px;border: 1px solid green;\" onclick=\"sendEgg('+e.id+')\" title=\"Köszönetként piros tojást küldök a locsolónak\">piros tojást küldök</button>';
+                    }
+                    if (e.sendEgg === false) {
+                        text +='<img title=\"Piros tolyás elküldve\" src=\"images/easter.png\" style=\"width: 32px\">';
                     }
                     text +='</span></div>';
                     if (null!=e.text)

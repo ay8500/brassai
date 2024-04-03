@@ -217,7 +217,7 @@ include("homemenu.inc.php");
     </form>
     <?php
 	} else {?>
-        <div class="panel-heading">
+        <div class="page-header">
             Ha szeretnél új zenét felvenni a listába, akkor kattints a "Belépés"-re és jelentkezz be. Köszönjük az új zenét!
         </div>
     <?php }
@@ -341,7 +341,7 @@ else
 		<div class="panel-heading">
 			<span id="dbDetails">Kedvenc zene jelölések száma:<?PHP echo($allVotesNoAnonymous); ?></span>
 		</div>
-		<div class="form-group navbar-form navbar">
+		<div class="panel-default">
 			<table>
 			  <?php foreach ($votersList as $voter) {
 			     	if (intval($voter["count"])>0) {?>

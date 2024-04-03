@@ -42,6 +42,7 @@ if (null!=$id && $id!=='' && $id!==0 && ctype_digit($id)) {
         $personList=array($diak);
         showHeader($diak);
         echo("<h2 style='color:orange'>Megemlékezés</h2>");
+        echo("<h4 style='color:orange'>Tégedet feledni nem lehet,<br />Míg élünk ide hív a szeretet.</h4>");
         displayRipPerson($db,$diak,$db->getClassById($diak["classID"]),true,true);
         showFooter();
         exit();

@@ -34,7 +34,7 @@ $schoolList = $db->getSchoolList();
 $today = new DateTime();
 $xmas = (intval(date("m")) === 12 );
 $eventStyle = $xmas?" border-bottom: 2px solid red;":"border:0px";
-/*easter to be changed*/ //$eventStyle = " border-bottom: 2px solid green;";
+/*easter to be added/removed */ //$eventStyle = " border-bottom: 2px solid green;";
 $haloween = $today >= new DateTime("October 23") && $today < new DateTime("November 6");
 
 if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl::getMember("actSchool")["logo"]) ) {
@@ -82,9 +82,9 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
 <nav id="main-menu" class="navbar navbar-default" style="background-color: #ffffff00; <?php echo $eventStyle?>" role="navigation">
   <div class="container-fluid" id="mainmenucontainer" >
     <!-- Brand and toggle get grouped for better mobile display -->
-      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="<?php echo $menuSchoolLogo ?>" style="border: 1px solid gray; border-radius:7px; height: 43px; margin: -5px;" /></a>
+      <a class="btn btn-default" style="top:7px; padding:3px; position: absolute" href="start" title="Újdonságok"><img src="<?php echo $menuSchoolLogo ?>" style="border: 1px solid gray; border-radius:7px; height: 38px; margin: -5px;" /></a>
       <div class="navbar-header" style="margin-left:32px;">
-          <button type="button" class="navbar-toggle" style="float: none" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <button type="button" class="navbar-toggle" style="" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
           </button>
@@ -138,7 +138,6 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
                     <li><a href="hometable?classid=<?php echo Appl::getMemberId("actClass") ?>">Véndiákok
                             <?php if ($classStat->personCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->personCount ?></span><?php } ?></a></li>
-                    </a></li>
                     <li><a href="hometable?guests=true&classid=<?php echo Appl::getMemberId("actClass") ?>">Vendégek barátok
                             <?php if ($classStat->guestCount > 0) { ?><span
                                     class="badge"><?php echo $classStat->guestCount ?></span><?php } ?></a></li>
@@ -205,7 +204,7 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
             </li>
             <?php } ?>
             <li>
-                <a href="message">Ünzenőfal</a>
+                <a href="message">Üzenőfal</a>
             </li>
             <li>
                 <a href="games" class="noblob">Játékok</a>
@@ -312,8 +311,8 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
 ?>
 <div id="topLine">
     <h1 class="appltitle">
-        <?php /*easter to be changed
-            $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2023);
+        <?php /*easter to be changed*/
+            $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2024);
         ?>
         <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user)?> ">
             <img class="blob" src="images/easter.png" style="width: 50px" />
@@ -321,7 +320,7 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
                 <?php echo (sizeof($rpo->opinion).'/'.sizeof($rpo->user))?>
             </span>
         </a>
-        <?php */ ?>
+        <?php /*easter end */ ?>
         <?php echo(ucfirst(getActSchoolName())) ?> <span id="o400">egykori </span>diákjai
         <span id="o480"> <?php echo(getActSchoolClassName()) ?></span>
     </h1>
