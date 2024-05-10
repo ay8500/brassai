@@ -54,9 +54,18 @@ class dbDaPersonInPicture
         return $this->dataBase->insert("personInPicture",$data)!==false;
     }
 
-    public function setUserForPersonInPicture($personId, $pictureId) {
+    /**
+     * Set the User of a face tag or delete it
+     * @param $personId
+     * @param $pictureId
+     * @param $delete
+     * @return bool|int
+     */
+    public function setUserForPersonInPicture($personId, $pictureId,$delete=false) {
         $data = array();
         $data = $this->dataBase->insertFieldInArray($data,"changeUserID",getLoggedInUserId());
+        if ($delete)
+            return $this->dataBase->deleteWhere("personInPicture","personId=".$personId." and pictureId=".$pictureId);
         return $this->dataBase->updateWhere("personInPicture",$data,"personId=".$personId." and pictureId=".$pictureId);
     }
 
