@@ -312,6 +312,7 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
 <div id="topLine">
     <h1 class="appltitle">
         <?php /*easter to be changed*/
+        /*
             $rpo=(new dbDaOpinion($db))->getOpinionPersonCount('person','easter',2024);
         ?>
         <a href="start?tabOpen=easter" title="<?php echo 'Meglocsolt virágszállak:'.sizeof($rpo->opinion).' locsolók:'.sizeof($rpo->user)?> ">
@@ -330,11 +331,4 @@ if (getActSchoolId()==null || Appl::getMember("actSchool")==null || !isset(Appl:
 
 <?php
 Appl::addJs('js/search.js',true);
-
-function isMobileDevice() {
-    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo
-|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i"
-        , $_SERVER["HTTP_USER_AGENT"]);
-}
-
 ?>
