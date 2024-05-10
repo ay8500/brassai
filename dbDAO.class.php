@@ -661,11 +661,10 @@ class dbDAO {
         if ($table!="personInPicture") {
             $sql = "select c.*, o.id as changeForIDjoin from " . $table . " as c ";
             $sql .= "left join " . $table . " as o on c.changeForID=o.id  ";
+            $sql.="where c.changeForID is not null or c.changeUserID is null ";
         } else {
-            $sql = "select c.* from " . $table . " as c ";
+            $sql = "select c.* from " . $table . " as c where c.changeUserID is null ";
         }
-        //c.changeUserID is null
-		$sql.="where  c.changeForID is not null or c.changeUserID is null ";
 		$sql.="order by c.changeDate asc";
 		return $this->dataBase->queryArray($sql);
 	}

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 include_once 'config.class.php';
 include_once Config::$lpfw.'sessionManager.php';
 include_once Config::$lpfw.'userManager.php';
@@ -13,9 +13,8 @@ global $db;
 Appl::addCss("css/wrapper.css");
 Appl::addJs("js/wrapper.js");
 
-unsetActClass();
-$schoolName = ' '.(strtoupper(substr(getActSchoolName(),0,1))=='A'?'az':'a').' '.getActSchoolName();
-Appl::setSiteSubTitle('Szeretettel köszöntünk<br />'.$schoolName.' véndiákjainak oldalán<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal iskolatársaiddal és barátaiddal!');
+unsetActSchool();
+Appl::setSiteSubTitle('Szeretettel köszöntünk<br />a kolozsvári véndiákok oldalán<br/>Használd ezt az oldalt, hogy kapcsolatba lépj és maradj egykori tanáraiddal, osztálytársaiddal, iskolatársaiddal és barátaiddal!');
 
 if (getParam('loginok')=="true")
 	Appl::setMessage("Szeretettel üdvözlünk kedves ".getPersonName($db->getPersonByID(getLoggedInUserId())), "success");
@@ -45,7 +44,7 @@ global $schoolList;
     }?>
     </div>
 	<div  style="padding:15px;" class="col-sm-12" >
-		<!--h3>Lehetőségeid a véndiákok oldalán:</h3-->
+		<h3>Lehetőségeid a véndiákok oldalán:</h3>
 		<div class="col-sm-4" style="margin-top: 14px;">
 			<a class="inlineBox" href="start">
                 <div class="inlineBox"><img img class="indeximg" src="images/classmatex.png" />
@@ -144,7 +143,7 @@ global $schoolList;
 	<div class="row">&nbsp;</div>
 	<div id="wrapper"></div>
 	<div >  			
-		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módosítva <b>2020. december 13.</b>-án.
+		Ez az oldal <B>1997. junius 11.</B>-e óta elérhető.	Utoljára módosítva <b>2024. március 18.</b>-án.
 	</div>
 </div>
 

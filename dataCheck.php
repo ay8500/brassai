@@ -78,8 +78,13 @@ if (isUserAdmin()) {
             foreach ($list as $i=>$l) {
                 echo('<tr >');
                 echo("<td>".getPersonName($db->getPersonByID($l["personID"]))."</td>");
-                echo('<td><img src="'.($db->getPictureById($l["pictureID"]))["file"].'" style="height:75px" /></td>');
-                echo('<td><img src="imageTaggedPerson?personid='.$l["personID"].'&pictureid='.$l["pictureID"].'" style="height:75px" /></td>');
+                $picture = $db->getPictureById($l["pictureID"]);
+                if (NULL!==$picture) {
+                    echo('<td><img src="' . $picture["file"] . '" style="height:75px" /></td>');
+                    echo('<td><img src="imageTaggedPerson?personid=' . $l["personID"] . '&pictureid=' . $l["pictureID"] . '" style="height:75px" /></td>');
+                }
+                else
+                    echo("<td>No Image</td><td></td>");
                 echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
                 echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
                 echo('<td><button class="btn btn-default" onclick="return okPersonMark(this,'.$l["personID"].','.$l["pictureID"].');"><span class="glyphicon glyphicon-ok-circle"></span></button></td>');
@@ -231,12 +236,16 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 <div class="panel">
 <h2 style="text-align: center"><?php echo($title)?></h2>
 <?php //** The table of the  changes?>
+   <div style="display: inline-block; vertical-align: top; margin: 15px;">
 	  <table>
 	    <tr>
 	    	<td><?php echo $fieldText ?></td><td>Dátum</td><td>IP cím</td><td colspan="3">Akció</td></tr>
 	  	<?php
 	  		foreach ($list as $i=>$l) {
-	   			echo('<tr >');
+	   			if ($l["id"]==getIntParam("id"))
+                    echo('<tr style="background-color: #c1e2b3">');
+                else
+                    echo('<tr >');
 	   			echo("<td>".$l[$showField]."</td>");
 	   			echo("<td>".\maierlabs\lpfw\Appl::dateTimeAsStr($l["changeDate"])."</td>");
 	   			echo("<td><a href=\"javascript:showip('".$l["changeIP"]."')\">".$l["changeIP"]."</td>");
@@ -250,31 +259,34 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 	   			echo("</tr>");
 	  		}
 	  	?>
-	  	<?php //Parameter read and action handling
-	  	if ((isActionParam("show".$fieldDb."Change") || isActionParam("accept".$fieldDb."FieldChange")) && isUserAdmin()) {
-  			$cp=call_user_func_array(array($db,$functionGetByID),array($id,true));
-  			if ($compare = isset($cp["changeForID"])) 
-  				$op=call_user_func_array(array($db,$functionGetByID),array($cp["changeForID"],true));
-  			else 
-  				$op=$emptyEntry;
-	  		if (getParam("action")=="accept".$fieldDb."FieldChange") {
-	  			$field=getParam("field");
-	  			$op[$field]=$cp[$field];
-  				$ret=call_user_func_array(array($db,$functionSave),array($op))>=0;
-	  			if ($ret) {
-					Appl::setMessage('Rendben, a müvelet sikerült','success');}
-				else {
-					Appl::setMessage('Sajnos nem sikerült a müvelet!','danger');}
-	  		}
-		?>
-			<?php //** The table of the changes ?>
-			<table style="margin-top: 20px">
-	    		<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
-	    			<td>Mező</td>
-	    			<?php if ($compare) {?><td>Eredeti</td><?php }?>
-	    			<td>Módosítás</td>
-	    			<?php if ($compare) {?><td>Akció</td><?php }?>
-	    		</tr>
+      </table>
+   </div>
+    <?php //Parameter read and action handling
+    if ((isActionParam("show".$fieldDb."Change") || isActionParam("accept".$fieldDb."FieldChange")) && isUserAdmin()) {
+        $cp=call_user_func_array(array($db,$functionGetByID),array($id,true));
+        if ($compare = isset($cp["changeForID"]))
+            $op=call_user_func_array(array($db,$functionGetByID),array($cp["changeForID"],true));
+        else
+            $op=$emptyEntry;
+        if (getParam("action")=="accept".$fieldDb."FieldChange") {
+            $field=getParam("field");
+            $op[$field]=$cp[$field];
+            $ret=call_user_func_array(array($db,$functionSave),array($op))>=0;
+            if ($ret) {
+                Appl::setMessage('Rendben, a müvelet sikerült','success');}
+            else {
+                Appl::setMessage('Sajnos nem sikerült a müvelet!','danger');}
+        }
+    ?>
+    <?php //** The table of the changes ?>
+    <div style="display: inline-block">
+		<table style="margin-top: 20px">
+	    	<tr style="height: 39px;font-size: 18px;background-color: lightgray; text-align: center;">
+	    		<td>Mező</td>
+	    		<?php if ($compare) {?><td>Eredeti</td><?php }?>
+	    		<td>Módosítás</td>
+	    		<?php if ($compare) {?><td>Akció</td><?php }?>
+	    	</tr>
 	    		<?php foreach ($op as $field=>$value) {
 	    			$s=$cp[$field]!=$value?' style="background-color:yellow;"':'';
 	    		?>
@@ -312,11 +324,11 @@ function generateCheckHtmlTable($db,$title,$fieldText,$fieldDb,$showField,$id,$e
 		    			<?php }?>
 	    			</tr>
 	    		<?php }	?>
-			</table>
+		</table>
+    </div>
 		<?php 
 	  	}
 		?>
-	 </table>  
 </div>
 <?php
     Appl::addJsScript('
