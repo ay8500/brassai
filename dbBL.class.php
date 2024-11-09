@@ -365,7 +365,11 @@ function getSchoolClassName($class, $short=false) {
 
 function getSchoolNameById($id) {
     global $db;
-    return ($db->getSchoolById($id))["name"];
+    $school = $db->getSchoolById($id);
+    if (is_array($school))
+        return $school["name"];
+    logger::_("No School found with id=".$id,LoggerLevel::info);
+    return "";
 }
 
 /**

@@ -389,9 +389,10 @@ class dbDAO {
         $person = $this->dataBase->getEntryById("person", $personid,$forceThisID);
         if (null==$person)
             return null;
-        if ($person["classID"]!=0)
-            $person["schoolID"]=($this->getClassById($person["classID"]))["schoolID"];
-        else
+        if ($person["classID"]!=0) {
+            $class = $this->getClassById($person["classID"]);
+            $person["schoolID"] = is_array($class)?$class["schoolID"]:NULL;
+        } else
             $person["schoolID"]=substr($person["schoolIdsAsTeacher"],1,strpos($person["schoolIdsAsTeacher"],')')-1);
 	    return $person;
 	}
@@ -961,6 +962,7 @@ class dbDAO {
 		if ($this->dataBase->count()==1) {
 			return $this->dataBase->fetchRow();
 		} else {
+            \maierlabs\lpfw\Logger::_("DB Error picture not found with id=".$id,\maierlabs\lpfw\LoggerLevel::error);
 			return null;
 		}
 	}
@@ -1160,8 +1162,12 @@ class dbDAO {
             $sql .= " join person on person.id=game.userId join class on class.id=person.classID ";
             $sql .=  " where dateEnd<='" . $dateFrom->format("Y-m-d H:i:s") . "' ".(getActSchoolId()==null?"":(" and schoolID=".getActSchoolId()));
             $sql .= $sqlCandleIpUser. " order by dateEnd desc limit " . $limit . ") ";
-            $this->dataBase->query($sql);
-            $rows = array_merge($rows, $this->dataBase->getRowList());
+            try {
+                $this->dataBase->query($sql);
+                $rows = array_merge($rows, $this->dataBase->getRowList());
+            } catch (Exception $e) {
+                \maierlabs\lpfw\Logger::_("DB error on reading Games last changes",\maierlabs\lpfw\LoggerLevel::error);
+            }
         }
         /*
         if (in_array($filter,array("all","article"))) {
